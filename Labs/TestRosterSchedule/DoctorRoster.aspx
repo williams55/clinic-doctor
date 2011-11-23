@@ -6,10 +6,12 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>Doctor Roster</title>
     <script src="Scripts/jquery-1.4.1.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="Scripts/codebase/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
+    <script src="Scripts/codebase/dhtmlxscheduler_debug.js" type="text/javascript" charset="utf-8"></script>
     <script src="Scripts/codebase/ext/dhtmlxscheduler_minical.js" type="text/javascript"
         charset="utf-8"></script>
     <script src="Scripts/codebase/ext/dhtmlxscheduler_recurring.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="Scripts/codebase/ext/dhtmlxscheduler_serialize.js" type="text/javascript"
         charset="utf-8"></script>
     <link rel="stylesheet" href="Scripts/codebase/dhtmlxscheduler.css" type="text/css"
         media="screen" title="no title" charset="utf-8" />
@@ -20,54 +22,6 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
-        }
-        
-        /*event in day or week view*/
-        .dhx_cal_event.past_event div
-        {
-            background-color: black !important;
-            color: white !important;
-        }
-        /*multi-day event in month view*/
-        .dhx_cal_event_line.past_event
-        {
-            background-color: black !important;
-            color: white !important;
-        }
-        /*event with fixed time, in month view*/
-        .dhx_cal_event_clear.past_event
-        {
-            color: black !important;
-        }
-        
-        .dhx_cal_event.event_math div, .dhx_cal_event_line.event_math
-        {
-            background-color: orange !important;
-            color: blue !important;
-        }
-        .dhx_cal_event_clear.event_math
-        {
-            color: blue !important;
-        }
-        
-        .dhx_cal_event.event_science div, .dhx_cal_event_line.event_science
-        {
-            background-color: #add8e6 !important;
-            color: #8b0000 !important;
-        }
-        .dhx_cal_event_clear.event_science
-        {
-            color: #8b0000 !important;
-        }
-        
-        .dhx_cal_event.event_english div, .dhx_cal_event_line.event_english
-        {
-            background-color: #e0ffff !important;
-            color: #008b8b !important;
-        }
-        .dhx_cal_event_clear.event_english
-        {
-            color: #008b8b !important;
         }
     </style>
     <script type="text/javascript" charset="utf-8">
@@ -82,17 +36,61 @@
             scheduler.locale.labels.section_description = "Name";
 
             scheduler.attachEvent("onViewChange", function (mode, date) {
-                
+
             });
+
             scheduler.attachEvent("onEventSave", function (id, data, is_new_event) {
-                alert(id);
+                //                alert(scheduler.toXML());
+                alert(scheduler.toJSON());
                 return true;
-            })
+            });
 
-            scheduler.init('scheduler_here', new Date(), "week");
+            var subject = [
+                { key: 'appt', label: 'Appointment' },
+                { key: 'english', label: 'English' },
+                { key: 'math', label: 'Math' },
+                { key: 'science', label: 'Science' }
+            ];
 
-            scheduler.addEvent("22-11-2011 12:35", "22-11-2011 12:55", "Test repeat", "123#1234", { data1: "abc", data2: "xyz" });
-            scheduler.addEvent("23-11-2011 12:35", "23-11-2011 12:55", "Test repeat", "123#6342", { data1: "hhh", data2: "uuu" });
+            var doctor = [
+                { key: '1', label: 'Phat' },
+                { key: '2', label: 'Vy' },
+                { key: '3', label: 'Huy' },
+                { key: '4', label: 'Not' }
+            ];
+
+            scheduler.config.lightbox.sections = [
+                { name: "description", height: 43, map_to: "text", type: "textarea", focus: true },
+                { name: "recurring", height: 115, type: "recurring", map_to: "rec_type", button: "recurring" },
+                { name: "subject", height: 20, type: "select", options: subject, map_to: "subject" },
+                { name: "doctor", height: 20, type: "select", options: doctor, map_to: "doctor" },
+                { name: "time", height: 72, type: "time", map_to: "auto" }
+            ];
+
+            scheduler.init('scheduler_here', new Date(2010, 0, 20), "month");
+
+            scheduler.data_attributes = function () {
+                var empty = function (a) { return a || ""; }
+                return [["id"],
+               ["text"],
+               ["start_date", scheduler.templates.xml_format],
+               ["end_date", scheduler.templates.xml_format],
+               ["rec_type", empty],
+               ["event_length", empty],
+               ["event_pid", empty]];
+            }
+            scheduler.load("TextFile.txt", "json");
+//            scheduler.load("data_r.xml");
+
+            //            scheduler.addEvent({ start_date: "22-11-2011 17:00", end_date: "22-11-2011 17:30", text: "fdhdf", id: "7567", subject: "science" });
+            //            scheduler.addEvent({ start_date: "11-21-2011 07:00", end_date: "11-21-2011 07:30", text: "Test repeat1", id: "44", subject: "science", rec_type: "week_1___1,4,5#no" });
+            //            scheduler.addEvent({ id: "44#123" });
+            //            scheduler.addEvent({ id: "44#6342" });
+
+            //            scheduler.addEvent({ start_date: "22-11-2011 07:00", end_date: "22-11-2011 07:30", text: "New event", id: "1269366989368", event_pid: "", event_length: "300", rec_type: "week_1___2#no"});
+            //            scheduler.addEvent({ start_date: "22-11-2011 07:00", end_date: "22-11-2011 07:30", text: "Test repeat2", id: "1269366989372", event_pid: "1269366989368", event_length: "1263247200", rec_type: "" });
+            //            scheduler.addEvent({ id: "1269366989368", text: "New event", start_date: "2010-01-04 00:00", end_date: "2010-01-04 00:05", rec_type: "week_1___2#no", event_length: "300", event_pid: "" });
+            //            scheduler.addEvent({ id: "1269366989372", text: "New event", start_date: "2010-01-14 00:00", end_date: "2010-01-14 00:05", rec_type: "", event_length: "1263247200", event_pid: "1269366989368" });
         }
 
         $(document).ready(function () {

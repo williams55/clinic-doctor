@@ -1,0 +1,4 @@
+﻿[
+{ id:"1269366989368" , text:"New event" , start_date:"2010-01-04 00:00" , end_date:"9999-02-01 00:00" , rec_type:"week_1___2#no" , event_length:"300" , event_pid:"" }
+,{ id:"1269366989372" , text:"New event1" , start_date:"2010-01-14 00:00" , end_date:"2010-01-14 00:05" , rec_type:"" , event_length:"1263247200" , event_pid:"1269366989368" }
+]
