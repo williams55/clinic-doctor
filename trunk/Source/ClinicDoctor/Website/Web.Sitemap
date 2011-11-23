@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+
+  <siteMapNode title="Admin" roles="*">
+    <siteMapNode title="Group" roles="*">
+      <siteMapNode url="~/Admin/WebUsera.aspx" title="User"  description="" />
+      <siteMapNode url="~/Admin/WebUserEdita.aspx" title="Add New User"  description="" />
+      <siteMapNode url="~/Admin/SettingPrefixa.aspx" title="Setting Prefix"  description="" />
+    </siteMapNode>
+    <siteMapNode title="Settings" roles="Admin">
+      <siteMapNode url="~/Admin/WebUser.aspx" title="User"  description="" />
+      <siteMapNode url="~/Admin/WebUserEdit.aspx" title="Add New User"  description="" />
+      <siteMapNode url="~/Admin/SettingPrefix.aspx" title="Setting Prefix"  description="" />
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

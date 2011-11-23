@@ -5,6 +5,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 		<data:GridViewSearchPanel ID="GridViewSearchPanel1" runat="server" GridViewControlID="GridView1" PersistenceMethod="Session" />
 		<br />
+		
 		<data:EntityGridView ID="GridView1" runat="server"			
 				AutoGenerateColumns="False"					
 				OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
@@ -15,6 +16,7 @@
 				DefaultSortDirection="Ascending"	
 				ExcelExportFileName="Export_Customer.xls"  		
 			>
+			
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
 				<asp:BoundField DataField="FirstName" HeaderText="First Name" SortExpression="[FirstName]"  />
