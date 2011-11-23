@@ -1,0 +1,5 @@
+D:\Work\UrMovies\MyUtilities\bin\Debug\MyUtilities.dll
+D:\Work\UrMovies\MyUtilities\bin\Debug\MyUtilities.pdb
+D:\Work\UrMovies\MyUtilities\obj\Debug\ResolveAssemblyReference.cache
+D:\Work\UrMovies\MyUtilities\obj\Debug\MyUtilities.dll
+D:\Work\UrMovies\MyUtilities\obj\Debug\MyUtilities.pdb
