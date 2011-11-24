@@ -13,7 +13,8 @@
         charset="utf-8"></script>
     <script src="Scripts/codebase/ext/dhtmlxscheduler_serialize.js" type="text/javascript"
         charset="utf-8"></script>
-    <link rel="stylesheet" href="Scripts/codebase/dhtmlxscheduler.css" type="text/css"
+ 	<script src="Scripts/codebase/ext/dhtmlxscheduler_editors.js" type="text/javascript" charset="utf-8"></script>
+   <link rel="stylesheet" href="Scripts/codebase/dhtmlxscheduler.css" type="text/css"
         media="screen" title="no title" charset="utf-8" />
     <style type="text/css" media="screen">
         html, body
@@ -41,8 +42,13 @@
 
             scheduler.attachEvent("onEventSave", function (id, data, is_new_event) {
                 //                alert(scheduler.toXML());
-                alert(scheduler.toJSON());
                 return true;
+            });
+
+            scheduler.attachEvent("onEventAdded", function (event_id, event_object) {
+                //any custom logic here
+                alert(scheduler.toJSON());
+                scheduler.deleteEvent(event_id);
             });
 
             var subject = [
@@ -61,13 +67,14 @@
 
             scheduler.config.lightbox.sections = [
                 { name: "description", height: 43, map_to: "text", type: "textarea", focus: true },
-                { name: "recurring", height: 115, type: "recurring", map_to: "rec_type", button: "recurring" },
+//                { name: "recurring", height: 115, type: "recurring", map_to: "rec_type", button: "recurring" },
                 { name: "subject", height: 20, type: "select", options: subject, map_to: "subject" },
-                { name: "doctor", height: 20, type: "select", options: doctor, map_to: "doctor" },
+                { name: "doctor", height: 70, type: "checkbox", checked_value: "1", unchecked_value: "0" },
                 { name: "time", height: 72, type: "time", map_to: "auto" }
             ];
 
-            scheduler.init('scheduler_here', new Date(2010, 0, 20), "month");
+            //scheduler.init('scheduler_here', new Date(2010, 0, 20), "month");
+            scheduler.init('scheduler_here', new Date(), "month");
 
             scheduler.data_attributes = function () {
                 var empty = function (a) { return a || ""; }
@@ -79,8 +86,8 @@
                ["event_length", empty],
                ["event_pid", empty]];
             }
-            scheduler.load("TextFile.txt", "json");
-//            scheduler.load("data_r.xml");
+//            scheduler.load("TextFile.txt", "json");
+            //            scheduler.load("data_r.xml");
 
             //            scheduler.addEvent({ start_date: "22-11-2011 17:00", end_date: "22-11-2011 17:30", text: "fdhdf", id: "7567", subject: "science" });
             //            scheduler.addEvent({ start_date: "11-21-2011 07:00", end_date: "11-21-2011 07:30", text: "Test repeat1", id: "44", subject: "science", rec_type: "week_1___1,4,5#no" });
@@ -114,6 +121,7 @@
     </script>
 </head>
 <body>
+    <input type="button" value="Click here" id="btn" />
     <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 100%;'>
         <div class="dhx_cal_navline">
             <div class="dhx_cal_prev_button">
@@ -140,3 +148,10 @@
     </div>
 </body>
 </html>
+<script type="text/javascript" charset="utf-8">
+    $("#btn").click(function () {
+        evs = scheduler.getEvents(new Date(2011, 11, 1), new Date(2011, 11, 30));
+        for (var i = 0; i < evs.length; i++)
+            alert(evs[i].text);
+    });
+</script>
