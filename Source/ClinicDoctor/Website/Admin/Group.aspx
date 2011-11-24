@@ -13,16 +13,22 @@
 				AllowMultiColumnSorting="false"
 				DefaultSortColumnName="" 
 				DefaultSortDirection="Ascending"	
-				ExcelExportFileName="Export_Group.xls"  		
+				ExcelExportFileName="Export_Group.xls" onrowcommand="GridView1_RowCommand"  		
 			>
 			<Columns>
-				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
+				<asp:CommandField ShowSelectButton="True"  />				
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
-				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]"  />
 				<asp:BoundField DataField="CreateDate" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Create Date" SortExpression="[CreateDate]"  />
 				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]"  />
 				<asp:BoundField DataField="UpdateDate" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Update Date" SortExpression="[UpdateDate]"  />
+			     <asp:TemplateField>
+                <ItemTemplate>
+                    <asp:ImageButton ID="btn_Delete" runat="server" CommandName="CustomDelete" CommandArgument='<%#Eval("Id") %>'
+                        ImageUrl="~/Admin/resources/images/icons/cross_circle.png"
+                        OnClientClick="return confirm('Are you sure want to delete?');" />
+                </ItemTemplate>
+            </asp:TemplateField>
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No Group Found!</b>
