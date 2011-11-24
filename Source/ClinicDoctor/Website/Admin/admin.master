@@ -83,7 +83,7 @@
                     <a href="Default.aspx">Simpla Admin</a></h1>
                 <!-- Logo (221px wide) -->
                 <a href="#">
-                    <img id="logo" src="../media/images/logo.png" alt="Simpla Admin logo" /></a>
+                    <img id="logo" src="<%= Page.ResolveClientUrl("~/media/images/logo.png") %>" alt="Simpla Admin logo" /></a>
                 <!-- Sidebar Profile links -->
                 <div id="profile-links">
                     Hello,
