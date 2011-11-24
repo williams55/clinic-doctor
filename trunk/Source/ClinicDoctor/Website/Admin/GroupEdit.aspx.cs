@@ -31,7 +31,28 @@ public partial class GroupEdit : System.Web.UI.Page
 	{
 		string urlParams = string.Format("Id={0}", GridViewGroupRoles2.SelectedDataKey.Values[0]);
 		Response.Redirect("GroupRolesEdit.aspx?" + urlParams, true);		
-	}	
+	}
+    protected void FormView1_Load(object sender, EventArgs e)
+    {
+        if (FormView1.CurrentMode == FormViewMode.Insert)
+        {
+            TextBox tbCreateDate = (TextBox)FormView1.Row.FindControl("dataCreateDate");
+            tbCreateDate.Text = DateTime.Now.ToString("dd-MMM-yyyy");
+            tbCreateDate.Enabled = false;
+            
+            TextBox tbUpdateDate = (TextBox)FormView1.Row.FindControl("dataUpdateDate");
+            tbUpdateDate.Enabled = false;
+        }
+        else
+        {
+            TextBox tbCreateDate = (TextBox)FormView1.Row.FindControl("dataCreateDate");
+            tbCreateDate.Enabled = false;
+
+            TextBox tbUpdateDate = (TextBox)FormView1.Row.FindControl("dataUpdateDate");
+            tbUpdateDate.Text = DateTime.Now.ToString("dd-MMM-yyyy");
+            tbUpdateDate.Enabled = false;
+        }
+    }
 }
 
 

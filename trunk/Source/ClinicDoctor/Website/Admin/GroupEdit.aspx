@@ -1,8 +1,10 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="GroupEdit.aspx.cs" Inherits="GroupEdit" Title="Group Edit" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Group - Add/Edit</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">
+    Group - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="GroupDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" 
+            DataSourceID="GroupDataSource" onload="FormView1_Load">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/GroupFields.ascx" />
@@ -69,7 +71,8 @@
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No Staff Found! </b>
-				<asp:HyperLink runat="server" ID="hypStaff" NavigateUrl="~/admin/StaffEdit.aspx">Add New</asp:HyperLink>
+				<asp:HyperLink runat="server" ID="hypStaff" NavigateUrl="~/admin/StaffEdit.aspx">Add 
+                New</asp:HyperLink>
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		
@@ -122,7 +125,8 @@
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No Group Roles Found! </b>
-				<asp:HyperLink runat="server" ID="hypGroupRoles" NavigateUrl="~/admin/GroupRolesEdit.aspx">Add New</asp:HyperLink>
+				<asp:HyperLink runat="server" ID="hypGroupRoles" NavigateUrl="~/admin/GroupRolesEdit.aspx">Add 
+                New</asp:HyperLink>
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		

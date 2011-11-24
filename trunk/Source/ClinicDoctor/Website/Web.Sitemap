@@ -3,14 +3,21 @@
 
   <siteMapNode title="Admin" roles="*">
     <siteMapNode title="Group" roles="*">
-      <siteMapNode url="~/Admin/WebUsera.aspx" title="User"  description="" />
-      <siteMapNode url="~/Admin/WebUserEdita.aspx" title="Add New User"  description="" />
-      <siteMapNode url="~/Admin/SettingPrefixa.aspx" title="Setting Prefix"  description="" />
+      <siteMapNode url="~/Admin/Group.aspx" title="Manage Group"  description="" />
+      <siteMapNode url="~/Admin/GroupEdit.aspx" title="Add New Group"  description="" />
+      <siteMapNode url="~/Admin/GroupRoles.aspx" title="Manage Group Role"  description="" />
+      <siteMapNode url="~/Admin/GroupRolesEdit.aspx" title="Add New Group Role"  description="" />
+    </siteMapNode>
+    <siteMapNode title="Staff" roles="*">
+      <siteMapNode url="~/Admin/Staff.aspx" title="Manage Staff"  description="" />
+      <siteMapNode url="~/Admin/StaffEdit.aspx" title="Add New Staff"  description="" />
+     
     </siteMapNode>
     <siteMapNode title="Settings" roles="Admin">
       <siteMapNode url="~/Admin/WebUser.aspx" title="User"  description="" />
       <siteMapNode url="~/Admin/WebUserEdit.aspx" title="Add New User"  description="" />
       <siteMapNode url="~/Admin/SettingPrefix.aspx" title="Setting Prefix"  description="" />
     </siteMapNode>
+    
   </siteMapNode>
 </siteMap>
