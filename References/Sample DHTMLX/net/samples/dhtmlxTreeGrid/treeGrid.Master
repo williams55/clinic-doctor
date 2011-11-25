@@ -1,0 +1,32 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Sample.master" %>
+
+<asp:Content ContentPlaceHolderID="head" ID="HeadContent" runat="server">
+    <title>TreeGrid Connector</title>
+<%--	<link rel='STYLESHEET' type='text/css' 
+	       href='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxGrid/codebase/dhtmlxgrid.css'>
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxGrid/codebase/dhtmlxcommon.js'></script>
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxGrid/codebase/dhtmlxgrid.js'></script>	
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxDataProcessor/codebase/dhtmlxDataProcessor.js'></script>		
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxGrid/codebase/dhtmlxgridcell.js'></script>	
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxDataProcessor/codebase/connector.js'></script>	
+	<script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxTreeGrid/codebase/dhtmlxtreegrid.js'></script>	--%>
+</asp:Content>
+
+<asp:Content ContentPlaceHolderID="SampleContent" ID="Main" runat="server">
+    <div id="gridbox" width="450px" height="550px" style="background-color:white;overflow:hidden"></div>
+    <script>
+        mygrid = new dhtmlXGridObject('gridbox');
+        mygrid.setImagePath("<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>imgs/");
+        mygrid.setHeader("Folder name, Order of appearance, Description");
+        mygrid.setInitWidths("200,*,*")
+        mygrid.setColTypes("tree,ed,ed");
+        mygrid.setColSorting("connector,connector")
+        mygrid.setSkin("light");
+        mygrid.init();
+    </script>
+    <asp:ContentPlaceHolder ID="LoadGridXMLPlaceholder" runat="server">
+    
+    </asp:ContentPlaceHolder>
+    <input type="button" name="add" value="add row" onclick="var id=mygrid.uid(); mygrid.addRow(id,'',0); mygrid.showRow(id);">
+    <input type="button" name="delete" value="delete row" onclick="mygrid.deleteSelectedRows()">
+</asp:Content>

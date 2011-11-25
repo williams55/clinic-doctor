@@ -1,0 +1,27 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Layout.Master" %>
+
+<asp:Content ContentPlaceHolderID="head" runat="server" ID="Content0">
+    <link rel='STYLESHEET' type='text/css' 
+	       href='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlx.css'>
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlx.js'></script>
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>connector.js'></script>
+    
+    <asp:ContentPlaceHolder id="head" runat="server"/>
+</asp:Content>
+
+<asp:Content ID="Content1" runat="server" ContentPlaceHolderID="ButtonsContent">
+    <script>
+        function viewSource(codeBehind) {
+            var pageName = window.location.href.replace(/[^\/]*\//ig, '');
+            var root = window.location.href.replace(/[a-zA-Z]*\/[^\/]*$/ig, '');
+            var folder = window.location.href.replace('/' + pageName, '').replace(root, '');
+            var url = root + 'viewSource.aspx?target=' + pageName + '&codeBehind=' + (codeBehind ? 'true' : 'false') + '&folder=' + folder;
+            window.open(url);
+        }
+    </script>
+    <a class="SampleTitle" href="javascript:viewSource(false);">View HTML Source</a>&nbsp;&nbsp;<a class="SampleTitle" href="javascript:viewSource(true);">View Connector</a>
+</asp:Content>
+
+<asp:Content ID="Content2" runat="server" ContentPlaceHolderID="SampleContent">
+    <asp:ContentPlaceHolder id="SampleContent" runat="server"/>
+</asp:Content>

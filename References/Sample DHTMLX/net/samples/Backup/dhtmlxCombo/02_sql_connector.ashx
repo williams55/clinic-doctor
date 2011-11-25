@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="01_sql_connector.ashx.cs" Class="dhtmlxConnector.Net_Samples.Combo._2_sql_connector" %>

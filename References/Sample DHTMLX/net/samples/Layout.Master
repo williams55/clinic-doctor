@@ -1,0 +1,102 @@
+﻿<%@ Master Language="C#" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style>
+        HTML, BODY, FORM
+        {
+        	padding:0px 0px 0px 0px;
+            margin:0px 0px 0px 0px;
+        }
+        
+        .SampleTitle, .SampleTitle A
+        {
+        	font-family: Arial,Helvetica,sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            font-size: 13px;
+            line-height: 13px;
+            color: #0482ad;
+        }
+        
+        .Folder
+        {
+        	font-family: Arial,Helvetica,sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            font-size: 13px;
+            line-height: 13px;
+            color: #0482ad;
+        }
+        
+        .CodeContainer
+        {
+        	font-family: Arial,Helvetica,sans-serif;
+            font-style: normal;
+            font-size:10pt;
+            overflow:auto;
+        }
+        
+        .BottomBorder
+        {
+            border-bottom:1px solid #0482ad;
+        }
+        
+        .Label
+        {
+        	font-family: Arial,Helvetica,sans-serif;
+            font-style: normal;
+            font-size:10pt;
+        }
+    </style>
+</head>
+<body onload="">
+    <form id="form1" runat="server">
+        <table id="container" width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed;">
+            <tr>
+	            <td height="55" xwidth="286" valign="top" background="/App_Themes/DHX/bg_sampleexplorer_header.gif"><a href="/Default.aspx"><img src="/App_Themes/DHX/logo_sampleexplorer.gif" width="256" height="55" border="0" /></a></td>
+	            <td background="/App_Themes/DHX/bg_sampleexplorer_header.gif" align="right" valign="top"  height="55">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="height:30px;" class="BottomBorder" valign="top">
+                    <div class="SampleTitle">
+                        <asp:SiteMapPath ID="SiteMap" runat="server" Font-Names="Verdana" 
+                            Font-Size="0.8em" PathSeparator=" : " >
+                            <PathSeparatorStyle Font-Bold="True" ForeColor="#990000" />
+                            <CurrentNodeStyle ForeColor="#333333" />
+                            <NodeStyle Font-Bold="True" ForeColor="#990000" />
+                            <RootNodeStyle Font-Bold="True" ForeColor="#FF8000" />
+                        </asp:SiteMapPath>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" valign="top">
+                    <asp:ContentPlaceHolder id="SampleContent" runat="server"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" valign="top">
+                    <asp:ContentPlaceHolder ID="ButtonsContent" runat="server">&nbsp;</asp:ContentPlaceHolder>
+                </td>
+            </tr>
+            <%--<tr>
+                <td colspan="2" style="height:30px;" class="SampleTitle">Sample source:</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="CodeContainer" id="TextContainer" runat="server">
+                    
+                    </div>
+                </td>
+            </tr>--%>
+        </table>
+    </form>
+</body>
+</html>

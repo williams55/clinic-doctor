@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4FDE08FF-4567-4F44-95AA-6D14F5ABBD4A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>dhtmlxConnectors</RootNamespace>
+    <AssemblyName>dhtmlxConnector.NET</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Debug\dhtmlxConnector.NET.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\dhtmlxConnector.NET.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Connectors\dhtmlxFieldOptionsCollection.cs" />
+    <Compile Include="Connectors\dhtmlxGridConnectorBase.cs" />
+    <Compile Include="Connectors\dhtmlxOptionsCollection.cs" />
+    <Compile Include="Connectors\dhtmlxOptionsConnector.cs" />
+    <Compile Include="Connectors\dhtmlxOptionsItem.cs" />
+    <Compile Include="Connectors\dhtmlxFieldsCollection.cs" />
+    <Compile Include="DataAction.cs" />
+    <Compile Include="Connectors\dhtmlxComboItem.cs" />
+    <Compile Include="Connectors\dhtmlxDataItem.cs" />
+    <Compile Include="Connectors\dhtmlxSchedulerConnector.cs" />
+    <Compile Include="Connectors\dhtmlxTreeDataItem.cs" />
+    <Compile Include="Connectors\dhtmlxTreeGridConnector.cs" />
+    <Compile Include="Connectors\dhtmlxComboConnector.cs" />
+    <Compile Include="Connectors\dhtmlxConnector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Connectors\dhtmlxGridConnector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Connectors\dhtmlxTreeConnector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Connectors\dhtmlxGridDataItem.cs" />
+    <Compile Include="Connectors\dhtmlxTreeGridDataItem.cs" />
+    <Compile Include="Connectors\IdhtmlxConnector.cs" />
+    <Compile Include="Connectors\dhtmlxSchedulerDataItem.cs" />
+    <Compile Include="DatabaseAdapter.cs" />
+    <Compile Include="DatabaseAdapter_Parsing.cs" />
+    <Compile Include="DataRequest.cs" />
+    <Compile Include="DataRequest_StaticInterface.cs" />
+    <Compile Include="dhtmlxRequestHandler.cs" />
+    <Compile Include="dhtmlxDataAdapterException.cs" />
+    <Compile Include="Events\Events.cs" />
+    <Compile Include="ExpressionField.cs" />
+    <Compile Include="ExpressionRule.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Field.cs" />
+    <Compile Include="IdhtmlxDatabaseAdapter.cs" />
+    <Compile Include="Log.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OrderByExpression.cs" />
+    <Compile Include="OrderByField.cs" />
+    <Compile Include="OrderByStatement.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FieldRule.cs" />
+    <Compile Include="Rule.cs" />
+    <Compile Include="TableField.cs" />
+    <Compile Include="Tools.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

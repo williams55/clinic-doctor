@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="schedulerConnector.ashx" Class="dhtmlxConnector.Net_Samples.dhtmlxScheduler.schedulerConnector" %>

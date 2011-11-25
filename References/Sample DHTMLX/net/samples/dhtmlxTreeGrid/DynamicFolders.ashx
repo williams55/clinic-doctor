@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="DynamicFolders.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxTreeGrid.DynamicFolders" %>
