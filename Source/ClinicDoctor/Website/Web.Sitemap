@@ -2,16 +2,29 @@
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
 
     <siteMapNode title="Admin" roles="*">
-        <siteMapNode title="Group" roles="*">
-            <siteMapNode url="~/Admin/Group.aspx" title="Manage Group"  description="" />
-            <siteMapNode url="~/Admin/GroupEdit.aspx" title="Add New Group"  description="" />
-            <siteMapNode url="~/Admin/GroupRoles.aspx" title="Manage Group Role"  description="" />
-            <siteMapNode url="~/Admin/GroupRolesEdit.aspx" title="Add New Group Role"  description="" />
-        </siteMapNode>
+       
         <siteMapNode title="Staff" roles="*">
             <siteMapNode url="~/Admin/Staff.aspx" title="Manage Staff"  description="" />
             <siteMapNode url="~/Admin/StaffEdit.aspx" title="Add New Staff"  description="" />
+          <siteMapNode url="~/Admin/Group.aspx" title="Manage Group"  description="" />
+          <siteMapNode url="~/Admin/GroupEdit.aspx" title="Add New Group"  description="" />
+          <siteMapNode url="~/Admin/GroupRoles.aspx" title="Manage Group Role"  description="" />
+          <siteMapNode url="~/Admin/GroupRolesEdit.aspx" title="Add New Group Role"  description="" />
+          <siteMapNode url="~/Admin/Role.aspx" title="Manage Role"  description="" />
+          <siteMapNode url="~/Admin/RoleEdit.aspx" title="Add New Role"  description="" />
+          <siteMapNode url="~/Admin/StaffRoles.aspx" title="Manage Staff Role"  description="" />
+          <siteMapNode url="~/Admin/StaffRolesEdit.aspx" title="Add New Staff Role"  description="" />
         </siteMapNode>
+      <siteMapNode title="Customer" roles="*">
+        <siteMapNode url="~/Admin/Customer.aspx" title="Manage Customer"  description="" />
+        <siteMapNode url="~/Admin/CustomerEdit.aspx" title="Add New Customer"  description="" />
+      </siteMapNode>
+      <siteMapNode title="Appointment" roles="*">
+        <siteMapNode url="~/Admin/Appointment.aspx" title="Manage Appointment"  description="" />
+        <siteMapNode url="~/Admin/AppointmentEdit.aspx" title="Add New Appointment"  description="" />
+        <siteMapNode url="~/Admin/Status.aspx" title="Manage Status"  description="" />
+        <siteMapNode url="~/Admin/StatusEdit.aspx" title="Add New Status"  description="" />
+      </siteMapNode>
         <siteMapNode title="Settings" roles="Admin">
             <siteMapNode url="~/Admin/WebUser.aspx" title="User"  description="" />
             <siteMapNode url="~/Admin/WebUserEdit.aspx" title="Add New User"  description="" />
