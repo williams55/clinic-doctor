@@ -62,8 +62,8 @@
                 <td>
                     <asp:RadioButtonList runat="server" ID="dataIsDisabled" SelectedValue='<%# Bind("IsDisabled") %>'
                         RepeatDirection="Horizontal">
-                        <asp:ListItem Value="True" Text="Yes" Selected="True"></asp:ListItem>
-                        <asp:ListItem Value="False" Text="No"></asp:ListItem>
+                        <asp:ListItem Value="True" Text="Yes" ></asp:ListItem>
+                        <asp:ListItem Value="False" Text="No" Selected="True"></asp:ListItem>
                     </asp:RadioButtonList>
                 </td>
             </tr>
