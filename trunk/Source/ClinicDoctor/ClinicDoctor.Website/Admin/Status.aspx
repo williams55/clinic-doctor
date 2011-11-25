@@ -20,6 +20,7 @@
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
 				<asp:BoundField DataField="ColorCode" HeaderText="Color Code" SortExpression="[ColorCode]"  />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
+				<asp:BoundField DataField="StatusType" HeaderText="Status Type" SortExpression="[StatusType]"  />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]"  />
 				<asp:BoundField DataField="CreateDate" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Create Date" SortExpression="[CreateDate]"  />

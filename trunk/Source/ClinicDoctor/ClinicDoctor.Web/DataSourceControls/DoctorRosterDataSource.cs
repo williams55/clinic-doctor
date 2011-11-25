@@ -159,9 +159,10 @@ namespace ClinicDoctor.Web.Data
 			DoctorRoster item;
 			count = 0;
 			
-			System.Int32 _id;
-			System.Int32? _rosterId_nullable;
 			System.Int32? _doctorId_nullable;
+			System.Boolean? _isDisabled_nullable;
+			System.Int32? _rosterId_nullable;
+			System.Int32 _id;
 
 			switch ( SelectMethod )
 			{
@@ -194,15 +195,45 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				// FK
-				case DoctorRosterSelectMethod.GetByRosterId:
-					_rosterId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RosterId"], typeof(System.Int32?));
-					results = DoctorRosterProvider.GetByRosterId(GetTransactionManager(), _rosterId_nullable, this.StartIndex, this.PageSize, out count);
-					break;
 				case DoctorRosterSelectMethod.GetByDoctorId:
 					_doctorId_nullable = (System.Int32?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int32?));
 					results = DoctorRosterProvider.GetByDoctorId(GetTransactionManager(), _doctorId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
+				case DoctorRosterSelectMethod.GetByDoctorIdIsDisabled:
+					_doctorId_nullable = (System.Int32?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRosterProvider.GetByDoctorIdIsDisabled(GetTransactionManager(), _doctorId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByDoctorIdRosterId:
+					_doctorId_nullable = (System.Int32?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int32?));
+					_rosterId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RosterId"], typeof(System.Int32?));
+					results = DoctorRosterProvider.GetByDoctorIdRosterId(GetTransactionManager(), _doctorId_nullable, _rosterId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByDoctorIdRosterIdIsDisabled:
+					_doctorId_nullable = (System.Int32?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int32?));
+					_rosterId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RosterId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRosterProvider.GetByDoctorIdRosterIdIsDisabled(GetTransactionManager(), _doctorId_nullable, _rosterId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRosterProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRosterProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByRosterId:
+					_rosterId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RosterId"], typeof(System.Int32?));
+					results = DoctorRosterProvider.GetByRosterId(GetTransactionManager(), _rosterId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByRosterIdIsDisabled:
+					_rosterId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RosterId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRosterProvider.GetByRosterIdIsDisabled(GetTransactionManager(), _rosterId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				// FK
 				// M:M
 				// Custom
 				default:
@@ -380,17 +411,41 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
+		/// Represents the GetByDoctorId method.
 		/// </summary>
-		GetById,
+		GetByDoctorId,
+		/// <summary>
+		/// Represents the GetByDoctorIdIsDisabled method.
+		/// </summary>
+		GetByDoctorIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByDoctorIdRosterId method.
+		/// </summary>
+		GetByDoctorIdRosterId,
+		/// <summary>
+		/// Represents the GetByDoctorIdRosterIdIsDisabled method.
+		/// </summary>
+		GetByDoctorIdRosterIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
 		/// <summary>
 		/// Represents the GetByRosterId method.
 		/// </summary>
 		GetByRosterId,
 		/// <summary>
-		/// Represents the GetByDoctorId method.
+		/// Represents the GetByRosterIdIsDisabled method.
 		/// </summary>
-		GetByDoctorId
+		GetByRosterIdIsDisabled,
+		/// <summary>
+		/// Represents the GetById method.
+		/// </summary>
+		GetById
 	}
 	
 	#endregion DoctorRosterSelectMethod

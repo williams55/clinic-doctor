@@ -58,176 +58,6 @@ namespace ClinicDoctor.Data.Bases
 		#endregion Delete Methods
 		
 		#region Get By Foreign Key Functions
-	
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Group key.
-		///		FK_GroupRoles_Group Description: 
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public TList<GroupRoles> GetByGroupId(System.Int32? _groupId)
-		{
-			int count = -1;
-			return GetByGroupId(_groupId, 0,int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Group key.
-		///		FK_GroupRoles_Group Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		/// <remarks></remarks>
-		public TList<GroupRoles> GetByGroupId(TransactionManager transactionManager, System.Int32? _groupId)
-		{
-			int count = -1;
-			return GetByGroupId(transactionManager, _groupId, 0, int.MaxValue, out count);
-		}
-		
-			/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Group key.
-		///		FK_GroupRoles_Group Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		///  <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public TList<GroupRoles> GetByGroupId(TransactionManager transactionManager, System.Int32? _groupId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByGroupId(transactionManager, _groupId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Group key.
-		///		fkGroupRolesGroup Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_groupId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public TList<GroupRoles> GetByGroupId(System.Int32? _groupId, int start, int pageLength)
-		{
-			int count =  -1;
-			return GetByGroupId(null, _groupId, start, pageLength,out count);	
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Group key.
-		///		fkGroupRolesGroup Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_groupId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public TList<GroupRoles> GetByGroupId(System.Int32? _groupId, int start, int pageLength,out int count)
-		{
-			return GetByGroupId(null, _groupId, start, pageLength, out count);	
-		}
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Group key.
-		///		FK_GroupRoles_Group Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public abstract TList<GroupRoles> GetByGroupId(TransactionManager transactionManager, System.Int32? _groupId, int start, int pageLength, out int count);
-		
-	
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Role key.
-		///		FK_GroupRoles_Role Description: 
-		/// </summary>
-		/// <param name="_roleId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public TList<GroupRoles> GetByRoleId(System.Int32? _roleId)
-		{
-			int count = -1;
-			return GetByRoleId(_roleId, 0,int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Role key.
-		///		FK_GroupRoles_Role Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_roleId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		/// <remarks></remarks>
-		public TList<GroupRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId)
-		{
-			int count = -1;
-			return GetByRoleId(transactionManager, _roleId, 0, int.MaxValue, out count);
-		}
-		
-			/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Role key.
-		///		FK_GroupRoles_Role Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_roleId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		///  <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public TList<GroupRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByRoleId(transactionManager, _roleId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Role key.
-		///		fkGroupRolesRole Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_roleId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public TList<GroupRoles> GetByRoleId(System.Int32? _roleId, int start, int pageLength)
-		{
-			int count =  -1;
-			return GetByRoleId(null, _roleId, start, pageLength,out count);	
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Role key.
-		///		fkGroupRolesRole Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_roleId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public TList<GroupRoles> GetByRoleId(System.Int32? _roleId, int start, int pageLength,out int count)
-		{
-			return GetByRoleId(null, _roleId, start, pageLength, out count);	
-		}
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Role key.
-		///		FK_GroupRoles_Role Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_roleId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
-		public abstract TList<GroupRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength, out int count);
-		
 		#endregion
 
 		#region Get By Index Functions
@@ -245,6 +75,674 @@ namespace ClinicDoctor.Data.Bases
 			return GetById(transactionManager, key.Id, start, pageLength);
 		}
 		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_GroupRoles_GroupId index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupId(System.Int32? _groupId)
+		{
+			int count = -1;
+			return GetByGroupId(null,_groupId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupId(System.Int32? _groupId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupId(null, _groupId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupId(TransactionManager transactionManager, System.Int32? _groupId)
+		{
+			int count = -1;
+			return GetByGroupId(transactionManager, _groupId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupId(TransactionManager transactionManager, System.Int32? _groupId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupId(transactionManager, _groupId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupId(System.Int32? _groupId, int start, int pageLength, out int count)
+		{
+			return GetByGroupId(null, _groupId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public abstract TList<GroupRoles> GetByGroupId(TransactionManager transactionManager, System.Int32? _groupId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_GroupRoles_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdIsDisabled(System.Int32? _groupId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByGroupIdIsDisabled(null,_groupId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdIsDisabled(System.Int32? _groupId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdIsDisabled(null, _groupId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int32? _groupId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByGroupIdIsDisabled(transactionManager, _groupId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int32? _groupId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdIsDisabled(transactionManager, _groupId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdIsDisabled(System.Int32? _groupId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByGroupIdIsDisabled(null, _groupId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public abstract TList<GroupRoles> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int32? _groupId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_GroupRoles_GroupId_RoleId index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleId(System.Int32? _groupId, System.Int32? _roleId)
+		{
+			int count = -1;
+			return GetByGroupIdRoleId(null,_groupId, _roleId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleId(System.Int32? _groupId, System.Int32? _roleId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdRoleId(null, _groupId, _roleId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleId(TransactionManager transactionManager, System.Int32? _groupId, System.Int32? _roleId)
+		{
+			int count = -1;
+			return GetByGroupIdRoleId(transactionManager, _groupId, _roleId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleId(TransactionManager transactionManager, System.Int32? _groupId, System.Int32? _roleId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdRoleId(transactionManager, _groupId, _roleId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleId(System.Int32? _groupId, System.Int32? _roleId, int start, int pageLength, out int count)
+		{
+			return GetByGroupIdRoleId(null, _groupId, _roleId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public abstract TList<GroupRoles> GetByGroupIdRoleId(TransactionManager transactionManager, System.Int32? _groupId, System.Int32? _roleId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_GroupRoles_GroupId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleIdIsDisabled(System.Int32? _groupId, System.Int32? _roleId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByGroupIdRoleIdIsDisabled(null,_groupId, _roleId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleIdIsDisabled(System.Int32? _groupId, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdRoleIdIsDisabled(null, _groupId, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _groupId, System.Int32? _roleId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByGroupIdRoleIdIsDisabled(transactionManager, _groupId, _roleId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _groupId, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdRoleIdIsDisabled(transactionManager, _groupId, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByGroupIdRoleIdIsDisabled(System.Int32? _groupId, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByGroupIdRoleIdIsDisabled(null, _groupId, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public abstract TList<GroupRoles> GetByGroupIdRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _groupId, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_GroupRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null,_id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public abstract TList<GroupRoles> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_GroupRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIsDisabled(System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(null,_isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public abstract TList<GroupRoles> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_GroupRoles_RoleId index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleId(System.Int32? _roleId)
+		{
+			int count = -1;
+			return GetByRoleId(null,_roleId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleId(System.Int32? _roleId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByRoleId(null, _roleId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId)
+		{
+			int count = -1;
+			return GetByRoleId(transactionManager, _roleId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByRoleId(transactionManager, _roleId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleId(System.Int32? _roleId, int start, int pageLength, out int count)
+		{
+			return GetByRoleId(null, _roleId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public abstract TList<GroupRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_GroupRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleIdIsDisabled(System.Int32? _roleId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByRoleIdIsDisabled(null,_roleId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleIdIsDisabled(System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByRoleIdIsDisabled(null, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _roleId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByRoleIdIsDisabled(transactionManager, _roleId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByRoleIdIsDisabled(transactionManager, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public TList<GroupRoles> GetByRoleIdIsDisabled(System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByRoleIdIsDisabled(null, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		public abstract TList<GroupRoles> GetByRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key PK_GroupRoles index.
 		/// </summary>

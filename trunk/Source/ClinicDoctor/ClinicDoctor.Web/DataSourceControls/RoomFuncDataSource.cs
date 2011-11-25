@@ -159,8 +159,9 @@ namespace ClinicDoctor.Web.Data
 			RoomFunc item;
 			count = 0;
 			
-			System.Int32 _id;
 			System.Int32? _funcId_nullable;
+			System.Boolean? _isDisabled_nullable;
+			System.Int32 _id;
 			System.Int32? _roomId_nullable;
 
 			switch ( SelectMethod )
@@ -194,15 +195,45 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				// FK
 				case RoomFuncSelectMethod.GetByFuncId:
 					_funcId_nullable = (System.Int32?) EntityUtil.ChangeType(values["FuncId"], typeof(System.Int32?));
 					results = RoomFuncProvider.GetByFuncId(GetTransactionManager(), _funcId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RoomFuncSelectMethod.GetByFuncIdIsDisabled:
+					_funcId_nullable = (System.Int32?) EntityUtil.ChangeType(values["FuncId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RoomFuncProvider.GetByFuncIdIsDisabled(GetTransactionManager(), _funcId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RoomFuncSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RoomFuncProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RoomFuncSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RoomFuncProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case RoomFuncSelectMethod.GetByRoomId:
 					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
 					results = RoomFuncProvider.GetByRoomId(GetTransactionManager(), _roomId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
+				case RoomFuncSelectMethod.GetByRoomIdFuncId:
+					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
+					_funcId_nullable = (System.Int32?) EntityUtil.ChangeType(values["FuncId"], typeof(System.Int32?));
+					results = RoomFuncProvider.GetByRoomIdFuncId(GetTransactionManager(), _roomId_nullable, _funcId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RoomFuncSelectMethod.GetByRoomIdFuncIdIsDisabled:
+					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
+					_funcId_nullable = (System.Int32?) EntityUtil.ChangeType(values["FuncId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RoomFuncProvider.GetByRoomIdFuncIdIsDisabled(GetTransactionManager(), _roomId_nullable, _funcId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RoomFuncSelectMethod.GetByRoomIdIsDisabled:
+					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RoomFuncProvider.GetByRoomIdIsDisabled(GetTransactionManager(), _roomId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				// FK
 				// M:M
 				// Custom
 				default:
@@ -380,17 +411,41 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
-		/// </summary>
-		GetById,
-		/// <summary>
 		/// Represents the GetByFuncId method.
 		/// </summary>
 		GetByFuncId,
 		/// <summary>
+		/// Represents the GetByFuncIdIsDisabled method.
+		/// </summary>
+		GetByFuncIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
+		/// <summary>
 		/// Represents the GetByRoomId method.
 		/// </summary>
-		GetByRoomId
+		GetByRoomId,
+		/// <summary>
+		/// Represents the GetByRoomIdFuncId method.
+		/// </summary>
+		GetByRoomIdFuncId,
+		/// <summary>
+		/// Represents the GetByRoomIdFuncIdIsDisabled method.
+		/// </summary>
+		GetByRoomIdFuncIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByRoomIdIsDisabled method.
+		/// </summary>
+		GetByRoomIdIsDisabled,
+		/// <summary>
+		/// Represents the GetById method.
+		/// </summary>
+		GetById
 	}
 	
 	#endregion RoomFuncSelectMethod

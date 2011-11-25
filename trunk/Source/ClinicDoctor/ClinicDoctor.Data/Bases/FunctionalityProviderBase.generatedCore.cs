@@ -76,6 +76,170 @@ namespace ClinicDoctor.Data.Bases
 		}
 		
 		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Functionality_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null,_id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public abstract TList<Functionality> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Functionality_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIsDisabled(System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(null,_isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public TList<Functionality> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Functionality_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Functionality&gt;"/> class.</returns>
+		public abstract TList<Functionality> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key PK_Functionality index.
 		/// </summary>
 		/// <param name="_id"></param>

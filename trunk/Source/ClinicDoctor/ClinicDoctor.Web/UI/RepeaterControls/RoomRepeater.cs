@@ -359,13 +359,13 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.Note; }
 		}
         /// <summary>
-        /// Gets the Status
+        /// Gets the StatusId
         /// </summary>
-        /// <value>The Status.</value>
+        /// <value>The StatusId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String Status
+		public System.Int32? StatusId
 		{
-			get { return _entity.Status; }
+			get { return _entity.StatusId; }
 		}
         /// <summary>
         /// Gets the IsDisabled

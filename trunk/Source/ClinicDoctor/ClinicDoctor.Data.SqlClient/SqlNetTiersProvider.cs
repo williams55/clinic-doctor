@@ -582,6 +582,84 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion
 		
 		
+		#region "ContentProvider"
+			
+		private SqlContentProvider innerSqlContentProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="Content"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override ContentProviderBase ContentProvider
+		{
+			get
+			{
+				if (innerSqlContentProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlContentProvider == null)
+						{
+							this.innerSqlContentProvider = new SqlContentProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlContentProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlContentProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlContentProvider SqlContentProvider
+		{
+			get {return ContentProvider as SqlContentProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "StatusProvider"
+			
+		private SqlStatusProvider innerSqlStatusProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="Status"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override StatusProviderBase StatusProvider
+		{
+			get
+			{
+				if (innerSqlStatusProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlStatusProvider == null)
+						{
+							this.innerSqlStatusProvider = new SqlStatusProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlStatusProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlStatusProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlStatusProvider SqlStatusProvider
+		{
+			get {return StatusProvider as SqlStatusProvider;}
+		}
+		
+		#endregion
+		
+		
 		#region "CustomerProvider"
 			
 		private SqlCustomerProvider innerSqlCustomerProvider;
@@ -699,84 +777,6 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion
 		
 		
-		#region "ContentProvider"
-			
-		private SqlContentProvider innerSqlContentProvider;
-
-		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="Content"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		/// <value></value>
-		public override ContentProviderBase ContentProvider
-		{
-			get
-			{
-				if (innerSqlContentProvider == null) 
-				{
-					lock (syncRoot) 
-					{
-						if (innerSqlContentProvider == null)
-						{
-							this.innerSqlContentProvider = new SqlContentProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
-						}
-					}
-				}
-				return innerSqlContentProvider;
-			}
-		}
-		
-		/// <summary>
-		/// Gets the current <c cref="SqlContentProvider"/>.
-		/// </summary>
-		/// <value></value>
-		public SqlContentProvider SqlContentProvider
-		{
-			get {return ContentProvider as SqlContentProvider;}
-		}
-		
-		#endregion
-		
-		
-		#region "FunctionalityProvider"
-			
-		private SqlFunctionalityProvider innerSqlFunctionalityProvider;
-
-		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="Functionality"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		/// <value></value>
-		public override FunctionalityProviderBase FunctionalityProvider
-		{
-			get
-			{
-				if (innerSqlFunctionalityProvider == null) 
-				{
-					lock (syncRoot) 
-					{
-						if (innerSqlFunctionalityProvider == null)
-						{
-							this.innerSqlFunctionalityProvider = new SqlFunctionalityProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
-						}
-					}
-				}
-				return innerSqlFunctionalityProvider;
-			}
-		}
-		
-		/// <summary>
-		/// Gets the current <c cref="SqlFunctionalityProvider"/>.
-		/// </summary>
-		/// <value></value>
-		public SqlFunctionalityProvider SqlFunctionalityProvider
-		{
-			get {return FunctionalityProvider as SqlFunctionalityProvider;}
-		}
-		
-		#endregion
-		
-		
 		#region "DoctorRoomProvider"
 			
 		private SqlDoctorRoomProvider innerSqlDoctorRoomProvider;
@@ -816,45 +816,6 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion
 		
 		
-		#region "StatusProvider"
-			
-		private SqlStatusProvider innerSqlStatusProvider;
-
-		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="Status"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		/// <value></value>
-		public override StatusProviderBase StatusProvider
-		{
-			get
-			{
-				if (innerSqlStatusProvider == null) 
-				{
-					lock (syncRoot) 
-					{
-						if (innerSqlStatusProvider == null)
-						{
-							this.innerSqlStatusProvider = new SqlStatusProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
-						}
-					}
-				}
-				return innerSqlStatusProvider;
-			}
-		}
-		
-		/// <summary>
-		/// Gets the current <c cref="SqlStatusProvider"/>.
-		/// </summary>
-		/// <value></value>
-		public SqlStatusProvider SqlStatusProvider
-		{
-			get {return StatusProvider as SqlStatusProvider;}
-		}
-		
-		#endregion
-		
-		
 		#region "DoctorRosterProvider"
 			
 		private SqlDoctorRosterProvider innerSqlDoctorRosterProvider;
@@ -889,6 +850,45 @@ namespace ClinicDoctor.Data.SqlClient
 		public SqlDoctorRosterProvider SqlDoctorRosterProvider
 		{
 			get {return DoctorRosterProvider as SqlDoctorRosterProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "FunctionalityProvider"
+			
+		private SqlFunctionalityProvider innerSqlFunctionalityProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="Functionality"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override FunctionalityProviderBase FunctionalityProvider
+		{
+			get
+			{
+				if (innerSqlFunctionalityProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlFunctionalityProvider == null)
+						{
+							this.innerSqlFunctionalityProvider = new SqlFunctionalityProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlFunctionalityProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlFunctionalityProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlFunctionalityProvider SqlFunctionalityProvider
+		{
+			get {return FunctionalityProvider as SqlFunctionalityProvider;}
 		}
 		
 		#endregion

@@ -512,6 +512,144 @@ namespace ClinicDoctor.Data.SqlClient
 	
 		#region Get By Index Functions
 
+		#region GetByIdIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Group_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Group&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Group> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Group_GetByIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Group> tmp = new TList<Group>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Group_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Group&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Group> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Group_GetByIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Group> tmp = new TList<Group>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
 		#region GetById
 					
 		/// <summary>

@@ -35,6 +35,11 @@ namespace ClinicDoctor.Entities
 		System.String  Note  { get; set; }
 		
 		/// <summary>
+		/// StatusType : 
+		/// </summary>
+		System.String  StatusType  { get; set; }
+		
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		System.Boolean?  IsDisabled  { get; set; }
@@ -73,6 +78,13 @@ namespace ClinicDoctor.Entities
 		///	which are related to this object through the relation _appointmentStatusId
 		/// </summary>	
 		TList<Appointment> AppointmentCollection {  get;  set;}	
+
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _roomStatusId
+		/// </summary>	
+		TList<Room> RoomCollection {  get;  set;}	
 
 		#endregion Data Properties
 

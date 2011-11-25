@@ -76,6 +76,334 @@ namespace ClinicDoctor.Data.Bases
 		}
 		
 		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Customer_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null,_id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public abstract TList<Customer> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Customer_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsDisabled(System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(null,_isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public abstract TList<Customer> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Customer_IsFemale index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemale(System.Boolean? _isFemale)
+		{
+			int count = -1;
+			return GetByIsFemale(null,_isFemale, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemale(System.Boolean? _isFemale, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsFemale(null, _isFemale, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemale(TransactionManager transactionManager, System.Boolean? _isFemale)
+		{
+			int count = -1;
+			return GetByIsFemale(transactionManager, _isFemale, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemale(TransactionManager transactionManager, System.Boolean? _isFemale, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsFemale(transactionManager, _isFemale, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemale(System.Boolean? _isFemale, int start, int pageLength, out int count)
+		{
+			return GetByIsFemale(null, _isFemale, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public abstract TList<Customer> GetByIsFemale(TransactionManager transactionManager, System.Boolean? _isFemale, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Customer_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemaleIsDisabled(System.Boolean? _isFemale, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsFemaleIsDisabled(null,_isFemale, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemaleIsDisabled(System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsFemaleIsDisabled(null, _isFemale, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemaleIsDisabled(TransactionManager transactionManager, System.Boolean? _isFemale, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsFemaleIsDisabled(transactionManager, _isFemale, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemaleIsDisabled(TransactionManager transactionManager, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsFemaleIsDisabled(transactionManager, _isFemale, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public TList<Customer> GetByIsFemaleIsDisabled(System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsFemaleIsDisabled(null, _isFemale, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Customer_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Customer&gt;"/> class.</returns>
+		public abstract TList<Customer> GetByIsFemaleIsDisabled(TransactionManager transactionManager, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key PK_Customer index.
 		/// </summary>
 		/// <param name="_id"></param>

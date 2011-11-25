@@ -81,6 +81,7 @@ namespace ClinicDoctor.Entities
 		///<summary>
 		/// Creates a new <see cref="RosterTypeBase"/> instance.
 		///</summary>
+		///<param name="_title"></param>
 		///<param name="_isBooked"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
@@ -88,12 +89,14 @@ namespace ClinicDoctor.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public RosterTypeBase(System.Boolean? _isBooked, System.String _note, System.Boolean? _isDisabled, 
-			System.String _createUser, System.DateTime? _createDate, System.String _updateUser, System.DateTime? _updateDate)
+		public RosterTypeBase(System.String _title, System.Boolean? _isBooked, System.String _note, 
+			System.Boolean? _isDisabled, System.String _createUser, System.DateTime? _createDate, System.String _updateUser, 
+			System.DateTime? _updateDate)
 		{
 			this.entityData = new RosterTypeEntityData();
 			this.backupData = null;
 
+			this.Title = _title;
 			this.IsBooked = _isBooked;
 			this.Note = _note;
 			this.IsDisabled = _isDisabled;
@@ -106,6 +109,7 @@ namespace ClinicDoctor.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="RosterType"/> instance.
 		///</summary>
+		///<param name="_title"></param>
 		///<param name="_isBooked"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
@@ -113,10 +117,12 @@ namespace ClinicDoctor.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static RosterType CreateRosterType(System.Boolean? _isBooked, System.String _note, System.Boolean? _isDisabled, 
-			System.String _createUser, System.DateTime? _createDate, System.String _updateUser, System.DateTime? _updateDate)
+		public static RosterType CreateRosterType(System.String _title, System.Boolean? _isBooked, System.String _note, 
+			System.Boolean? _isDisabled, System.String _createUser, System.DateTime? _createDate, System.String _updateUser, 
+			System.DateTime? _updateDate)
 		{
 			RosterType newRosterType = new RosterType();
+			newRosterType.Title = _title;
 			newRosterType.IsBooked = _isBooked;
 			newRosterType.Note = _note;
 			newRosterType.IsDisabled = _isDisabled;
@@ -165,6 +171,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(RosterTypeColumn.Id, this.entityData.Id);
 				OnPropertyChanged("Id");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the Title property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 100)]
+		public virtual System.String Title
+		{
+			get
+			{
+				return this.entityData.Title; 
+			}
+			
+			set
+			{
+				if (this.entityData.Title == value)
+					return;
+					
+				OnColumnChanging(RosterTypeColumn.Title, this.entityData.Title);
+				this.entityData.Title = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(RosterTypeColumn.Title, this.entityData.Title);
+				OnPropertyChanged("Title");
 			}
 		}
 		
@@ -452,6 +493,8 @@ namespace ClinicDoctor.Entities
 		{
 			//Validation rules based on database schema.
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("Title", "Title", 100));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
@@ -478,7 +521,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "IsBooked", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Title", "IsBooked", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -627,6 +670,7 @@ namespace ClinicDoctor.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
+				copy.Title = this.Title;
 				copy.IsBooked = this.IsBooked;
 				copy.Note = this.Note;
 				copy.IsDisabled = this.IsDisabled;
@@ -770,6 +814,8 @@ namespace ClinicDoctor.Entities
 			{
 					case RosterTypeColumn.Id:
 					return entityData.Id != _originalData.Id;
+					case RosterTypeColumn.Title:
+					return entityData.Title != _originalData.Title;
 					case RosterTypeColumn.IsBooked:
 					return entityData.IsBooked != _originalData.IsBooked;
 					case RosterTypeColumn.Note:
@@ -812,6 +858,7 @@ namespace ClinicDoctor.Entities
 		{
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
+			result = result || entityData.Title != _originalData.Title;
 			result = result || entityData.IsBooked != _originalData.IsBooked;
 			result = result || entityData.Note != _originalData.Note;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
@@ -829,6 +876,7 @@ namespace ClinicDoctor.Entities
 		{
 			if (_originalData != null)
 				return CreateRosterType(
+				_originalData.Title,
 				_originalData.IsBooked,
 				_originalData.Note,
 				_originalData.IsDisabled,
@@ -866,6 +914,7 @@ namespace ClinicDoctor.Entities
         public override int GetHashCode()
         {
 			return this.Id.GetHashCode() ^ 
+					((this.Title == null) ? string.Empty : this.Title.ToString()).GetHashCode() ^ 
 					((this.IsBooked == null) ? string.Empty : this.IsBooked.ToString()).GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
 					((this.IsDisabled == null) ? string.Empty : this.IsDisabled.ToString()).GetHashCode() ^ 
@@ -907,6 +956,15 @@ namespace ClinicDoctor.Entities
 			bool equal = true;
 			if (Object1.Id != Object2.Id)
 				equal = false;
+			if ( Object1.Title != null && Object2.Title != null )
+			{
+				if (Object1.Title != Object2.Title)
+					equal = false;
+			}
+			else if (Object1.Title == null ^ Object2.Title == null )
+			{
+				equal = false;
+			}
 			if ( Object1.IsBooked != null && Object2.IsBooked != null )
 			{
 				if (Object1.IsBooked != Object2.IsBooked)
@@ -1016,6 +1074,12 @@ namespace ClinicDoctor.Entities
             	
             	case RosterTypeColumn.Id:
             		return this.Id.CompareTo(rhs.Id);
+            		
+            		                 
+            	
+            	
+            	case RosterTypeColumn.Title:
+            		return this.Title.CompareTo(rhs.Title);
             		
             		                 
             	
@@ -1194,8 +1258,9 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{9}{8}- Id: {0}{8}- IsBooked: {1}{8}- Note: {2}{8}- IsDisabled: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
+				"{10}{9}- Id: {0}{9}- Title: {1}{9}- IsBooked: {2}{9}- Note: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
 				this.Id,
+				(this.Title == null) ? string.Empty : this.Title.ToString(),
 				(this.IsBooked == null) ? string.Empty : this.IsBooked.ToString(),
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
 				(this.IsDisabled == null) ? string.Empty : this.IsDisabled.ToString(),
@@ -1236,6 +1301,11 @@ namespace ClinicDoctor.Entities
 		
 		#region Non Primary key(s)
 		
+		
+		/// <summary>
+		/// Title : 
+		/// </summary>
+		public System.String		  Title = null;
 		
 		/// <summary>
 		/// IsBooked : 
@@ -1319,6 +1389,7 @@ namespace ClinicDoctor.Entities
 						
 			_tmp.Id = this.Id;
 			
+			_tmp.Title = this.Title;
 			_tmp.IsBooked = this.IsBooked;
 			_tmp.Note = this.Note;
 			_tmp.IsDisabled = this.IsDisabled;
@@ -1355,6 +1426,7 @@ namespace ClinicDoctor.Entities
 						
 			_tmp.Id = this.Id;
 			
+			_tmp.Title = this.Title;
 			_tmp.IsBooked = this.IsBooked;
 			_tmp.Note = this.Note;
 			_tmp.IsDisabled = this.IsDisabled;
@@ -1744,47 +1816,53 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("Id", typeof(System.Int32), System.Data.DbType.Int32, true, true, false)]
 		Id = 1,
 		/// <summary>
+		/// Title : 
+		/// </summary>
+		[EnumTextValue("Title")]
+		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 100)]
+		Title = 2,
+		/// <summary>
 		/// IsBooked : 
 		/// </summary>
 		[EnumTextValue("IsBooked")]
 		[ColumnEnum("IsBooked", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, true)]
-		IsBooked = 2,
+		IsBooked = 3,
 		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 3,
+		Note = 4,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, true)]
-		IsDisabled = 4,
+		IsDisabled = 5,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 5,
+		CreateUser = 6,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		CreateDate = 6,
+		CreateDate = 7,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 7,
+		UpdateUser = 8,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		UpdateDate = 8
+		UpdateDate = 9
 	}//End enum
 
 	#endregion RosterTypeColumn Enum

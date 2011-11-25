@@ -178,7 +178,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@Status", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@StatusId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, DBNull.Value);
@@ -216,10 +216,10 @@ namespace ClinicDoctor.Data.SqlClient
 						clause.Trim().Remove(0,4).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
-				if (clause.Trim().StartsWith("status ") || clause.Trim().StartsWith("status="))
+				if (clause.Trim().StartsWith("statusid ") || clause.Trim().StartsWith("statusid="))
 				{
-					database.SetParameterValue(commandWrapper, "@Status", 
-						clause.Trim().Remove(0,6).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					database.SetParameterValue(commandWrapper, "@StatusId", 
+						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("isdisabled ") || clause.Trim().StartsWith("isdisabled="))
@@ -526,6 +526,282 @@ namespace ClinicDoctor.Data.SqlClient
 	
 		#region Get By Index Functions
 
+		#region GetByIdIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Room_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Room&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Room> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_GetByIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Room> tmp = new TList<Room>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Room_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Room&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Room> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_GetByIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Room> tmp = new TList<Room>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByStatusId
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Room_StatusId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_statusId"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Room&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Room> GetByStatusId(TransactionManager transactionManager, System.Int32? _statusId, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_GetByStatusId", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@StatusId", DbType.Int32, _statusId);
+			
+			IDataReader reader = null;
+			TList<Room> tmp = new TList<Room>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByStatusId", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByStatusId", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByStatusIdIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Room_StatusId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Room&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Room> GetByStatusIdIsDisabled(TransactionManager transactionManager, System.Int32? _statusId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_GetByStatusIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@StatusId", DbType.Int32, _statusId);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Room> tmp = new TList<Room>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByStatusIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByStatusIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
 		#region GetById
 					
 		/// <summary>
@@ -643,7 +919,7 @@ namespace ClinicDoctor.Data.SqlClient
 			col1.AllowDBNull = true;		
 			DataColumn col2 = dataTable.Columns.Add("Note", typeof(System.String));
 			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("Status", typeof(System.String));
+			DataColumn col3 = dataTable.Columns.Add("StatusId", typeof(System.Int32));
 			col3.AllowDBNull = true;		
 			DataColumn col4 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
 			col4.AllowDBNull = true;		
@@ -659,7 +935,7 @@ namespace ClinicDoctor.Data.SqlClient
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("Title", "Title");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
-			bulkCopy.ColumnMappings.Add("Status", "Status");
+			bulkCopy.ColumnMappings.Add("StatusId", "StatusId");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
 			bulkCopy.ColumnMappings.Add("CreateDate", "CreateDate");
@@ -682,7 +958,7 @@ namespace ClinicDoctor.Data.SqlClient
 					row["Note"] = entity.Note;
 							
 				
-					row["Status"] = entity.Status;
+					row["StatusId"] = entity.StatusId.HasValue ? (object) entity.StatusId  : System.DBNull.Value;
 							
 				
 					row["IsDisabled"] = entity.IsDisabled.HasValue ? (object) entity.IsDisabled  : System.DBNull.Value;
@@ -737,7 +1013,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int32, 4);
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
-			database.AddInParameter(commandWrapper, "@Status", DbType.String, entity.Status );
+			database.AddInParameter(commandWrapper, "@StatusId", DbType.Int32, (entity.StatusId.HasValue ? (object) entity.StatusId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, (entity.IsDisabled.HasValue ? (object) entity.IsDisabled  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, (entity.CreateDate.HasValue ? (object) entity.CreateDate  : System.DBNull.Value));
@@ -794,7 +1070,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int32, entity.Id );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
-			database.AddInParameter(commandWrapper, "@Status", DbType.String, entity.Status );
+			database.AddInParameter(commandWrapper, "@StatusId", DbType.Int32, (entity.StatusId.HasValue ? (object) entity.StatusId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, (entity.IsDisabled.HasValue ? (object) entity.IsDisabled : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, (entity.CreateDate.HasValue ? (object) entity.CreateDate : System.DBNull.Value) );

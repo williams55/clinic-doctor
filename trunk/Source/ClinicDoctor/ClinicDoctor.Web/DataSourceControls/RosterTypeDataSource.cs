@@ -160,6 +160,8 @@ namespace ClinicDoctor.Web.Data
 			count = 0;
 			
 			System.Int32 _id;
+			System.Boolean? _isDisabled_nullable;
+			System.Boolean? _isBooked_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -192,6 +194,24 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
+				case RosterTypeSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RosterTypeProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RosterTypeSelectMethod.GetByIsBooked:
+					_isBooked_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsBooked"], typeof(System.Boolean?));
+					results = RosterTypeProvider.GetByIsBooked(GetTransactionManager(), _isBooked_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RosterTypeSelectMethod.GetByIsBookedIsDisabled:
+					_isBooked_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsBooked"], typeof(System.Boolean?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RosterTypeProvider.GetByIsBookedIsDisabled(GetTransactionManager(), _isBooked_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RosterTypeSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RosterTypeProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
 				// FK
 				// M:M
 				// Custom
@@ -369,6 +389,22 @@ namespace ClinicDoctor.Web.Data
 		/// Represents the Find method.
 		/// </summary>
 		Find,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsBooked method.
+		/// </summary>
+		GetByIsBooked,
+		/// <summary>
+		/// Represents the GetByIsBookedIsDisabled method.
+		/// </summary>
+		GetByIsBookedIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
 		/// <summary>
 		/// Represents the GetById method.
 		/// </summary>

@@ -16,9 +16,10 @@
 				</td>
 			</tr>
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataStatus" runat="server" Text="Status:" AssociatedControlID="dataStatus" /></td>
+        <td class="literal"><asp:Label ID="lbldataStatusId" runat="server" Text="Status Id:" AssociatedControlID="dataStatusId" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataStatus" Text='<%# Bind("Status") %>' MaxLength="100"></asp:TextBox>
+					<data:EntityDropDownList runat="server" ID="dataStatusId" DataSourceID="StatusIdStatusDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("StatusId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:StatusDataSource ID="StatusIdStatusDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>

@@ -160,6 +160,7 @@ namespace ClinicDoctor.Web.Data
 			count = 0;
 			
 			System.Int32 _id;
+			System.Boolean? _isDisabled_nullable;
 			System.Int32? _roleId_nullable;
 			System.Int32? _staffId_nullable;
 
@@ -194,15 +195,45 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				// FK
+				case StaffRolesSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffRolesProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffRolesSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffRolesProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
 				case StaffRolesSelectMethod.GetByRoleId:
 					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
 					results = StaffRolesProvider.GetByRoleId(GetTransactionManager(), _roleId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffRolesSelectMethod.GetByRoleIdIsDisabled:
+					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffRolesProvider.GetByRoleIdIsDisabled(GetTransactionManager(), _roleId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case StaffRolesSelectMethod.GetByStaffId:
 					_staffId_nullable = (System.Int32?) EntityUtil.ChangeType(values["StaffId"], typeof(System.Int32?));
 					results = StaffRolesProvider.GetByStaffId(GetTransactionManager(), _staffId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
+				case StaffRolesSelectMethod.GetByStaffIdIsDisabled:
+					_staffId_nullable = (System.Int32?) EntityUtil.ChangeType(values["StaffId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffRolesProvider.GetByStaffIdIsDisabled(GetTransactionManager(), _staffId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffRolesSelectMethod.GetByStaffIdRoleId:
+					_staffId_nullable = (System.Int32?) EntityUtil.ChangeType(values["StaffId"], typeof(System.Int32?));
+					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
+					results = StaffRolesProvider.GetByStaffIdRoleId(GetTransactionManager(), _staffId_nullable, _roleId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffRolesSelectMethod.GetByStaffIdRoleIdIsDisabled:
+					_staffId_nullable = (System.Int32?) EntityUtil.ChangeType(values["StaffId"], typeof(System.Int32?));
+					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffRolesProvider.GetByStaffIdRoleIdIsDisabled(GetTransactionManager(), _staffId_nullable, _roleId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				// FK
 				// M:M
 				// Custom
 				default:
@@ -380,17 +411,41 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
+		/// Represents the GetByIdIsDisabled method.
 		/// </summary>
-		GetById,
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
 		/// <summary>
 		/// Represents the GetByRoleId method.
 		/// </summary>
 		GetByRoleId,
 		/// <summary>
+		/// Represents the GetByRoleIdIsDisabled method.
+		/// </summary>
+		GetByRoleIdIsDisabled,
+		/// <summary>
 		/// Represents the GetByStaffId method.
 		/// </summary>
-		GetByStaffId
+		GetByStaffId,
+		/// <summary>
+		/// Represents the GetByStaffIdIsDisabled method.
+		/// </summary>
+		GetByStaffIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByStaffIdRoleId method.
+		/// </summary>
+		GetByStaffIdRoleId,
+		/// <summary>
+		/// Represents the GetByStaffIdRoleIdIsDisabled method.
+		/// </summary>
+		GetByStaffIdRoleIdIsDisabled,
+		/// <summary>
+		/// Represents the GetById method.
+		/// </summary>
+		GetById
 	}
 	
 	#endregion StaffRolesSelectMethod

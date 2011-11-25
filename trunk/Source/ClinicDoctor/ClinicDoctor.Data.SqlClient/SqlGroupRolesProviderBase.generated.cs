@@ -515,19 +515,22 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion	
 		
 		#region Get By Foreign Key Functions
+	#endregion
+	
+		#region Get By Index Functions
 
 		#region GetByGroupId
+					
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Group key.
-		///		FK_GroupRoles_Group Description: 
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId index.
 		/// </summary>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 		/// <param name="_groupId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
 		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
@@ -539,11 +542,11 @@ namespace ClinicDoctor.Data.SqlClient
 				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, _groupId);
 			
 			IDataReader reader = null;
-			TList<GroupRoles> rows = new TList<GroupRoles>();
+			TList<GroupRoles> tmp = new TList<GroupRoles>();
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupId", rows)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupId", tmp)); 
 
 				if (transactionManager != null)
 				{
@@ -552,10 +555,10 @@ namespace ClinicDoctor.Data.SqlClient
 				else
 				{
 					reader = Utility.ExecuteReader(database, commandWrapper);
-				}
-			
-				//Create Collection
-				Fill(reader, rows, start, pageLength);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
 				count = -1;
 				if(reader.NextResult())
 				{
@@ -566,32 +569,386 @@ namespace ClinicDoctor.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupId", rows)); 
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupId", tmp));
 			}
-			finally
+			finally 
 			{
 				if (reader != null) 
 					reader.Close();
 					
 				commandWrapper = null;
 			}
-			return rows;
-		}	
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
 		#endregion
-	
 
-		#region GetByRoleId
+
+		#region GetByGroupIdIsDisabled
+					
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_GroupRoles_Role key.
-		///		FK_GroupRoles_Role Description: 
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_IsDisabled index.
 		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<GroupRoles> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int32? _groupId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.GroupRoles_GetByGroupIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, _groupId);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<GroupRoles> tmp = new TList<GroupRoles>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByGroupIdRoleId
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<GroupRoles> GetByGroupIdRoleId(TransactionManager transactionManager, System.Int32? _groupId, System.Int32? _roleId, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.GroupRoles_GetByGroupIdRoleId", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, _groupId);
+				database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, _roleId);
+			
+			IDataReader reader = null;
+			TList<GroupRoles> tmp = new TList<GroupRoles>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupIdRoleId", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupIdRoleId", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByGroupIdRoleIdIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_GroupId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<GroupRoles> GetByGroupIdRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _groupId, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.GroupRoles_GetByGroupIdRoleIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, _groupId);
+				database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, _roleId);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<GroupRoles> tmp = new TList<GroupRoles>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupIdRoleIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupIdRoleIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIdIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<GroupRoles> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.GroupRoles_GetByIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<GroupRoles> tmp = new TList<GroupRoles>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<GroupRoles> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.GroupRoles_GetByIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<GroupRoles> tmp = new TList<GroupRoles>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByRoleId
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId index.
+		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 		/// <param name="_roleId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
 		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.GroupRoles objects.</returns>
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
@@ -603,11 +960,11 @@ namespace ClinicDoctor.Data.SqlClient
 				database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, _roleId);
 			
 			IDataReader reader = null;
-			TList<GroupRoles> rows = new TList<GroupRoles>();
+			TList<GroupRoles> tmp = new TList<GroupRoles>();
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByRoleId", rows)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByRoleId", tmp)); 
 
 				if (transactionManager != null)
 				{
@@ -616,10 +973,10 @@ namespace ClinicDoctor.Data.SqlClient
 				else
 				{
 					reader = Utility.ExecuteReader(database, commandWrapper);
-				}
-			
-				//Create Collection
-				Fill(reader, rows, start, pageLength);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
 				count = -1;
 				if(reader.NextResult())
 				{
@@ -630,22 +987,93 @@ namespace ClinicDoctor.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByRoleId", rows)); 
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByRoleId", tmp));
 			}
-			finally
+			finally 
 			{
 				if (reader != null) 
 					reader.Close();
 					
 				commandWrapper = null;
 			}
-			return rows;
-		}	
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
 		#endregion
-	
-	#endregion
-	
-		#region Get By Index Functions
+
+
+		#region GetByRoleIdIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_GroupRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;GroupRoles&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<GroupRoles> GetByRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.GroupRoles_GetByRoleIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, _roleId);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<GroupRoles> tmp = new TList<GroupRoles>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByRoleIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByRoleIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
 
 		#region GetById
 					

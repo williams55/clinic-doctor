@@ -1,8 +1,9 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{727845F6-932D-47CC-9957-E7BE626A461E}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -114,7 +115,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ClinicDoctor.Data\ClinicDoctor.Data.csproj">
       <Project>{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}</Project>
-      <Name>ClinicDoctor.Data</Name>
+      <Name>"ClinicDoctor.Data"</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

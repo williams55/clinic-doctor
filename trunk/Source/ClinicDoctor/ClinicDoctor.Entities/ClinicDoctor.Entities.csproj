@@ -126,7 +126,7 @@
 	</ItemGroup>
 	
 		
-	<!-- Custom code folder: D:\GoogleCode\ClinicDoctor\ClinicDoctor.Entities\App_Code -->
+	<!-- Custom code folder: D:\GoogleCode\Clinic-Doctor\source\ClinicDoctor.Entities\App_Code -->
 	<ItemGroup>	
 		<Folder Include="App_Code\" />
         <Compile Include="App_Code\**\*.cs">

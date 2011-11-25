@@ -176,6 +176,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int32, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
@@ -201,6 +202,12 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@Id", 
 						clause.Trim().Remove(0,2).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("title ") || clause.Trim().StartsWith("title="))
+				{
+					database.SetParameterValue(commandWrapper, "@Title", 
+						clause.Trim().Remove(0,5).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("isbooked ") || clause.Trim().StartsWith("isbooked="))
@@ -519,6 +526,282 @@ namespace ClinicDoctor.Data.SqlClient
 	
 		#region Get By Index Functions
 
+		#region GetByIdIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<RosterType> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RosterType_GetByIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<RosterType> tmp = new TList<RosterType>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIsBooked
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isBooked"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<RosterType> GetByIsBooked(TransactionManager transactionManager, System.Boolean? _isBooked, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RosterType_GetByIsBooked", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, _isBooked);
+			
+			IDataReader reader = null;
+			TList<RosterType> tmp = new TList<RosterType>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIsBooked", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIsBooked", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIsBookedIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isBooked"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<RosterType> GetByIsBookedIsDisabled(TransactionManager transactionManager, System.Boolean? _isBooked, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RosterType_GetByIsBookedIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, _isBooked);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<RosterType> tmp = new TList<RosterType>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIsBookedIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIsBookedIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<RosterType> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RosterType_GetByIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<RosterType> tmp = new TList<RosterType>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
 		#region GetById
 					
 		/// <summary>
@@ -632,22 +915,25 @@ namespace ClinicDoctor.Data.SqlClient
 			DataTable dataTable = new DataTable();
 			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int32));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("IsBooked", typeof(System.Boolean));
+			DataColumn col1 = dataTable.Columns.Add("Title", typeof(System.String));
 			col1.AllowDBNull = true;		
-			DataColumn col2 = dataTable.Columns.Add("Note", typeof(System.String));
+			DataColumn col2 = dataTable.Columns.Add("IsBooked", typeof(System.Boolean));
 			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col3 = dataTable.Columns.Add("Note", typeof(System.String));
 			col3.AllowDBNull = true;		
-			DataColumn col4 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			DataColumn col4 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
 			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			DataColumn col5 = dataTable.Columns.Add("CreateUser", typeof(System.String));
 			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			DataColumn col6 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			DataColumn col7 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
 			col7.AllowDBNull = true;		
+			DataColumn col8 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col8.AllowDBNull = true;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
+			bulkCopy.ColumnMappings.Add("Title", "Title");
 			bulkCopy.ColumnMappings.Add("IsBooked", "IsBooked");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
@@ -664,6 +950,9 @@ namespace ClinicDoctor.Data.SqlClient
 				DataRow row = dataTable.NewRow();
 				
 					row["Id"] = entity.Id;
+							
+				
+					row["Title"] = entity.Title;
 							
 				
 					row["IsBooked"] = entity.IsBooked.HasValue ? (object) entity.IsBooked  : System.DBNull.Value;
@@ -722,6 +1011,7 @@ namespace ClinicDoctor.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RosterType_Insert", _useStoredProcedure);
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int32, 4);
+			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, (entity.IsBooked.HasValue ? (object) entity.IsBooked  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, (entity.IsDisabled.HasValue ? (object) entity.IsDisabled  : System.DBNull.Value));
@@ -778,6 +1068,7 @@ namespace ClinicDoctor.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RosterType_Update", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int32, entity.Id );
+			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, (entity.IsBooked.HasValue ? (object) entity.IsBooked : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, (entity.IsDisabled.HasValue ? (object) entity.IsDisabled : System.DBNull.Value) );

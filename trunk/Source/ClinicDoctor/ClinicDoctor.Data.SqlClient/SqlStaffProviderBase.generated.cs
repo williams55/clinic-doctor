@@ -592,19 +592,22 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion	
 		
 		#region Get By Foreign Key Functions
+	#endregion
+	
+		#region Get By Index Functions
 
 		#region GetByGroupId
+					
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Staff_Group key.
-		///		FK_Staff_Group Description: 
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
 		/// </summary>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 		/// <param name="_groupId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
 		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Staff objects.</returns>
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
@@ -616,11 +619,11 @@ namespace ClinicDoctor.Data.SqlClient
 				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, _groupId);
 			
 			IDataReader reader = null;
-			TList<Staff> rows = new TList<Staff>();
+			TList<Staff> tmp = new TList<Staff>();
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupId", rows)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupId", tmp)); 
 
 				if (transactionManager != null)
 				{
@@ -629,10 +632,10 @@ namespace ClinicDoctor.Data.SqlClient
 				else
 				{
 					reader = Utility.ExecuteReader(database, commandWrapper);
-				}
-			
-				//Create Collection
-				Fill(reader, rows, start, pageLength);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
 				count = -1;
 				if(reader.NextResult())
 				{
@@ -643,22 +646,671 @@ namespace ClinicDoctor.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupId", rows)); 
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupId", tmp));
 			}
-			finally
+			finally 
 			{
 				if (reader != null) 
 					reader.Close();
 					
 				commandWrapper = null;
 			}
-			return rows;
-		}	
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
 		#endregion
-	
-	#endregion
-	
-		#region Get By Index Functions
+
+
+		#region GetByGroupIdIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Staff> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByGroupIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, _groupId);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Staff> tmp = new TList<Staff>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByGroupIdIsFemale
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Staff> GetByGroupIdIsFemale(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isFemale, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByGroupIdIsFemale", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, _groupId);
+				database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, _isFemale);
+			
+			IDataReader reader = null;
+			TList<Staff> tmp = new TList<Staff>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupIdIsFemale", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupIdIsFemale", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByGroupIdIsFemaleIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Staff> GetByGroupIdIsFemaleIsDisabled(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByGroupIdIsFemaleIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, _groupId);
+				database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, _isFemale);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Staff> tmp = new TList<Staff>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupIdIsFemaleIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupIdIsFemaleIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIdIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Staff> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByIdIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Staff> tmp = new TList<Staff>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIdIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Staff> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Staff> tmp = new TList<Staff>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIsFemale
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Staff> GetByIsFemale(TransactionManager transactionManager, System.Boolean? _isFemale, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByIsFemale", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, _isFemale);
+			
+			IDataReader reader = null;
+			TList<Staff> tmp = new TList<Staff>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIsFemale", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIsFemale", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByIsFemaleIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Staff> GetByIsFemaleIsDisabled(TransactionManager transactionManager, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByIsFemaleIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, _isFemale);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Staff> tmp = new TList<Staff>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByIsFemaleIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByIsFemaleIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			return tmp;
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByUserName
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userName"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override ClinicDoctor.Entities.Staff GetByUserName(TransactionManager transactionManager, System.String _userName, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByUserName", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@UserName", DbType.String, _userName);
+			
+			IDataReader reader = null;
+			TList<Staff> tmp = new TList<Staff>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByUserName", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByUserName", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			if (tmp.Count == 1)
+			{
+				return tmp[0];
+			}
+			else if (tmp.Count == 0)
+			{
+				return null;
+			}
+			else
+			{
+				throw new DataException("Cannot find the unique instance of the class.");
+			}
+			
+			//return rows;
+		}
+		
+		#endregion
+
+
+		#region GetByUserNameIsDisabled
+					
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userName"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query.</param>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		/// <remarks></remarks>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override ClinicDoctor.Entities.Staff GetByUserNameIsDisabled(TransactionManager transactionManager, System.String _userName, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByUserNameIsDisabled", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@UserName", DbType.String, _userName);
+				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
+			
+			IDataReader reader = null;
+			TList<Staff> tmp = new TList<Staff>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByUserNameIsDisabled", tmp)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}		
+		
+				//Create collection and fill
+				Fill(reader, tmp, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByUserNameIsDisabled", tmp));
+			}
+			finally 
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			
+			if (tmp.Count == 1)
+			{
+				return tmp[0];
+			}
+			else if (tmp.Count == 0)
+			{
+				return null;
+			}
+			else
+			{
+				throw new DataException("Cannot find the unique instance of the class.");
+			}
+			
+			//return rows;
+		}
+		
+		#endregion
+
 
 		#region GetById
 					

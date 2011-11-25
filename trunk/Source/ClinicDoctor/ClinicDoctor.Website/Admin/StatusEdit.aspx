@@ -93,6 +93,57 @@
 		</data:AppointmentDataSource>		
 		
 		<br />
+		<data:EntityGridView ID="GridViewRoom2" runat="server"
+			AutoGenerateColumns="False"	
+			OnSelectedIndexChanged="GridViewRoom2_SelectedIndexChanged"			 			 
+			DataSourceID="RoomDataSource2"
+			DataKeyNames="Id"
+			AllowMultiColumnSorting="false"
+			DefaultSortColumnName="" 
+			DefaultSortDirection="Ascending"	
+			ExcelExportFileName="Export_Room.xls"  		
+			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
+			>
+			<Columns>
+				<asp:CommandField ShowSelectButton="True" />
+				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]" />				
+				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
+				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
+				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
+				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
+				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />				
+				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
+			</Columns>
+			<EmptyDataTemplate>
+				<b>No Room Found! </b>
+				<asp:HyperLink runat="server" ID="hypRoom" NavigateUrl="~/admin/RoomEdit.aspx">Add New</asp:HyperLink>
+			</EmptyDataTemplate>
+		</data:EntityGridView>					
+		
+		<data:RoomDataSource ID="RoomDataSource2" runat="server" SelectMethod="Find"
+			EnableDeepLoad="True"
+			>
+			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
+	            <Types>
+					<data:RoomProperty Name="Status"/> 
+					<%--<data:RoomProperty Name="DoctorRoomCollection" />--%>
+					<%--<data:RoomProperty Name="AppointmentCollection" />--%>
+					<%--<data:RoomProperty Name="RoomFuncCollection" />--%>
+				</Types>
+			</DeepLoadProperties>
+			
+		    <Parameters>
+				<data:SqlParameter Name="Parameters">
+					<Filters>
+						<data:RoomFilter  Column="StatusId" QueryStringField="Id" /> 
+					</Filters>
+				</data:SqlParameter>
+				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
+		    </Parameters>
+		</data:RoomDataSource>		
+		
+		<br />
 		
 
 </asp:Content>

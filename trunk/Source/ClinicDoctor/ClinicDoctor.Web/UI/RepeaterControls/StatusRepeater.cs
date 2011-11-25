@@ -368,6 +368,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.Note; }
 		}
         /// <summary>
+        /// Gets the StatusType
+        /// </summary>
+        /// <value>The StatusType.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String StatusType
+		{
+			get { return _entity.StatusType; }
+		}
+        /// <summary>
         /// Gets the IsDisabled
         /// </summary>
         /// <value>The IsDisabled.</value>

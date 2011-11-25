@@ -159,9 +159,10 @@ namespace ClinicDoctor.Web.Data
 			GroupRoles item;
 			count = 0;
 			
-			System.Int32 _id;
 			System.Int32? _groupId_nullable;
+			System.Boolean? _isDisabled_nullable;
 			System.Int32? _roleId_nullable;
+			System.Int32 _id;
 
 			switch ( SelectMethod )
 			{
@@ -194,15 +195,45 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				// FK
 				case GroupRolesSelectMethod.GetByGroupId:
 					_groupId_nullable = (System.Int32?) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int32?));
 					results = GroupRolesProvider.GetByGroupId(GetTransactionManager(), _groupId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case GroupRolesSelectMethod.GetByGroupIdIsDisabled:
+					_groupId_nullable = (System.Int32?) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = GroupRolesProvider.GetByGroupIdIsDisabled(GetTransactionManager(), _groupId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case GroupRolesSelectMethod.GetByGroupIdRoleId:
+					_groupId_nullable = (System.Int32?) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int32?));
+					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
+					results = GroupRolesProvider.GetByGroupIdRoleId(GetTransactionManager(), _groupId_nullable, _roleId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case GroupRolesSelectMethod.GetByGroupIdRoleIdIsDisabled:
+					_groupId_nullable = (System.Int32?) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int32?));
+					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = GroupRolesProvider.GetByGroupIdRoleIdIsDisabled(GetTransactionManager(), _groupId_nullable, _roleId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case GroupRolesSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = GroupRolesProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case GroupRolesSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = GroupRolesProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case GroupRolesSelectMethod.GetByRoleId:
 					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
 					results = GroupRolesProvider.GetByRoleId(GetTransactionManager(), _roleId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
+				case GroupRolesSelectMethod.GetByRoleIdIsDisabled:
+					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = GroupRolesProvider.GetByRoleIdIsDisabled(GetTransactionManager(), _roleId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				// FK
 				// M:M
 				// Custom
 				default:
@@ -380,17 +411,41 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
-		/// </summary>
-		GetById,
-		/// <summary>
 		/// Represents the GetByGroupId method.
 		/// </summary>
 		GetByGroupId,
 		/// <summary>
+		/// Represents the GetByGroupIdIsDisabled method.
+		/// </summary>
+		GetByGroupIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByGroupIdRoleId method.
+		/// </summary>
+		GetByGroupIdRoleId,
+		/// <summary>
+		/// Represents the GetByGroupIdRoleIdIsDisabled method.
+		/// </summary>
+		GetByGroupIdRoleIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
+		/// <summary>
 		/// Represents the GetByRoleId method.
 		/// </summary>
-		GetByRoleId
+		GetByRoleId,
+		/// <summary>
+		/// Represents the GetByRoleIdIsDisabled method.
+		/// </summary>
+		GetByRoleIdIsDisabled,
+		/// <summary>
+		/// Represents the GetById method.
+		/// </summary>
+		GetById
 	}
 	
 	#endregion GroupRolesSelectMethod

@@ -160,6 +160,7 @@ namespace ClinicDoctor.Web.Data
 			count = 0;
 			
 			System.Int32 _id;
+			System.Boolean? _isDisabled_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -192,6 +193,15 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
+				case RoleSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RoleProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RoleSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RoleProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
 				// FK
 				// M:M
 				// Custom
@@ -369,6 +379,14 @@ namespace ClinicDoctor.Web.Data
 		/// Represents the Find method.
 		/// </summary>
 		Find,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
 		/// <summary>
 		/// Represents the GetById method.
 		/// </summary>

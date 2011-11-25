@@ -58,91 +58,6 @@ namespace ClinicDoctor.Data.Bases
 		#endregion Delete Methods
 		
 		#region Get By Foreign Key Functions
-	
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Staff_Group key.
-		///		FK_Staff_Group Description: 
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Staff objects.</returns>
-		public TList<Staff> GetByGroupId(System.Int32 _groupId)
-		{
-			int count = -1;
-			return GetByGroupId(_groupId, 0,int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Staff_Group key.
-		///		FK_Staff_Group Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Staff objects.</returns>
-		/// <remarks></remarks>
-		public TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId)
-		{
-			int count = -1;
-			return GetByGroupId(transactionManager, _groupId, 0, int.MaxValue, out count);
-		}
-		
-			/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Staff_Group key.
-		///		FK_Staff_Group Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		///  <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Staff objects.</returns>
-		public TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByGroupId(transactionManager, _groupId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Staff_Group key.
-		///		fkStaffGroup Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_groupId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Staff objects.</returns>
-		public TList<Staff> GetByGroupId(System.Int32 _groupId, int start, int pageLength)
-		{
-			int count =  -1;
-			return GetByGroupId(null, _groupId, start, pageLength,out count);	
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Staff_Group key.
-		///		fkStaffGroup Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_groupId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Staff objects.</returns>
-		public TList<Staff> GetByGroupId(System.Int32 _groupId, int start, int pageLength,out int count)
-		{
-			return GetByGroupId(null, _groupId, start, pageLength, out count);	
-		}
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Staff_Group key.
-		///		FK_Staff_Group Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Staff objects.</returns>
-		public abstract TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId, int start, int pageLength, out int count);
-		
 		#endregion
 
 		#region Get By Index Functions
@@ -160,6 +75,838 @@ namespace ClinicDoctor.Data.Bases
 			return GetById(transactionManager, key.Id, start, pageLength);
 		}
 		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_GroupId index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupId(System.Int32 _groupId)
+		{
+			int count = -1;
+			return GetByGroupId(null,_groupId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupId(System.Int32 _groupId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupId(null, _groupId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId)
+		{
+			int count = -1;
+			return GetByGroupId(transactionManager, _groupId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupId(transactionManager, _groupId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupId(System.Int32 _groupId, int start, int pageLength, out int count)
+		{
+			return GetByGroupId(null, _groupId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public abstract TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsDisabled(System.Int32 _groupId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByGroupIdIsDisabled(null,_groupId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsDisabled(System.Int32 _groupId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdIsDisabled(null, _groupId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByGroupIdIsDisabled(transactionManager, _groupId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdIsDisabled(transactionManager, _groupId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsDisabled(System.Int32 _groupId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByGroupIdIsDisabled(null, _groupId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public abstract TList<Staff> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_GroupId_IsFemale index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemale(System.Int32 _groupId, System.Boolean? _isFemale)
+		{
+			int count = -1;
+			return GetByGroupIdIsFemale(null,_groupId, _isFemale, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemale(System.Int32 _groupId, System.Boolean? _isFemale, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdIsFemale(null, _groupId, _isFemale, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemale(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isFemale)
+		{
+			int count = -1;
+			return GetByGroupIdIsFemale(transactionManager, _groupId, _isFemale, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemale(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isFemale, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdIsFemale(transactionManager, _groupId, _isFemale, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemale(System.Int32 _groupId, System.Boolean? _isFemale, int start, int pageLength, out int count)
+		{
+			return GetByGroupIdIsFemale(null, _groupId, _isFemale, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public abstract TList<Staff> GetByGroupIdIsFemale(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isFemale, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_GroupId_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(System.Int32 _groupId, System.Boolean? _isFemale, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByGroupIdIsFemaleIsDisabled(null,_groupId, _isFemale, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(System.Int32 _groupId, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdIsFemaleIsDisabled(null, _groupId, _isFemale, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isFemale, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByGroupIdIsFemaleIsDisabled(transactionManager, _groupId, _isFemale, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByGroupIdIsFemaleIsDisabled(transactionManager, _groupId, _isFemale, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(System.Int32 _groupId, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByGroupIdIsFemaleIsDisabled(null, _groupId, _isFemale, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_groupId"></param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public abstract TList<Staff> GetByGroupIdIsFemaleIsDisabled(TransactionManager transactionManager, System.Int32 _groupId, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null,_id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public abstract TList<Staff> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsDisabled(System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(null,_isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public abstract TList<Staff> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_IsFemale index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemale(System.Boolean? _isFemale)
+		{
+			int count = -1;
+			return GetByIsFemale(null,_isFemale, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemale(System.Boolean? _isFemale, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsFemale(null, _isFemale, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemale(TransactionManager transactionManager, System.Boolean? _isFemale)
+		{
+			int count = -1;
+			return GetByIsFemale(transactionManager, _isFemale, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemale(TransactionManager transactionManager, System.Boolean? _isFemale, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsFemale(transactionManager, _isFemale, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemale(System.Boolean? _isFemale, int start, int pageLength, out int count)
+		{
+			return GetByIsFemale(null, _isFemale, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public abstract TList<Staff> GetByIsFemale(TransactionManager transactionManager, System.Boolean? _isFemale, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemaleIsDisabled(System.Boolean? _isFemale, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsFemaleIsDisabled(null,_isFemale, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemaleIsDisabled(System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsFemaleIsDisabled(null, _isFemale, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemaleIsDisabled(TransactionManager transactionManager, System.Boolean? _isFemale, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsFemaleIsDisabled(transactionManager, _isFemale, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemaleIsDisabled(TransactionManager transactionManager, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsFemaleIsDisabled(transactionManager, _isFemale, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public TList<Staff> GetByIsFemaleIsDisabled(System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsFemaleIsDisabled(null, _isFemale, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_IsFemale_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isFemale"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
+		public abstract TList<Staff> GetByIsFemaleIsDisabled(TransactionManager transactionManager, System.Boolean? _isFemale, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_UserName index.
+		/// </summary>
+		/// <param name="_userName"></param>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserName(System.String _userName)
+		{
+			int count = -1;
+			return GetByUserName(null,_userName, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName index.
+		/// </summary>
+		/// <param name="_userName"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserName(System.String _userName, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByUserName(null, _userName, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userName"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserName(TransactionManager transactionManager, System.String _userName)
+		{
+			int count = -1;
+			return GetByUserName(transactionManager, _userName, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userName"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserName(TransactionManager transactionManager, System.String _userName, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByUserName(transactionManager, _userName, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName index.
+		/// </summary>
+		/// <param name="_userName"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserName(System.String _userName, int start, int pageLength, out int count)
+		{
+			return GetByUserName(null, _userName, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userName"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public abstract ClinicDoctor.Entities.Staff GetByUserName(TransactionManager transactionManager, System.String _userName, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Staff_UserName_IsDisabled index.
+		/// </summary>
+		/// <param name="_userName"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserNameIsDisabled(System.String _userName, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByUserNameIsDisabled(null,_userName, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName_IsDisabled index.
+		/// </summary>
+		/// <param name="_userName"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserNameIsDisabled(System.String _userName, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByUserNameIsDisabled(null, _userName, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userName"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserNameIsDisabled(TransactionManager transactionManager, System.String _userName, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByUserNameIsDisabled(transactionManager, _userName, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userName"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserNameIsDisabled(TransactionManager transactionManager, System.String _userName, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByUserNameIsDisabled(transactionManager, _userName, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName_IsDisabled index.
+		/// </summary>
+		/// <param name="_userName"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public ClinicDoctor.Entities.Staff GetByUserNameIsDisabled(System.String _userName, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByUserNameIsDisabled(null, _userName, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Staff_UserName_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userName"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Staff"/> class.</returns>
+		public abstract ClinicDoctor.Entities.Staff GetByUserNameIsDisabled(TransactionManager transactionManager, System.String _userName, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key PK_Staff index.
 		/// </summary>

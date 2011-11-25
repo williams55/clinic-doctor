@@ -159,9 +159,10 @@ namespace ClinicDoctor.Web.Data
 			NurseAppointment item;
 			count = 0;
 			
-			System.Int32 _id;
 			System.Int32? _appointmentId_nullable;
+			System.Boolean? _isDisabled_nullable;
 			System.Int32? _nurseId_nullable;
+			System.Int32 _id;
 
 			switch ( SelectMethod )
 			{
@@ -194,15 +195,45 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				// FK
 				case NurseAppointmentSelectMethod.GetByAppointmentId:
 					_appointmentId_nullable = (System.Int32?) EntityUtil.ChangeType(values["AppointmentId"], typeof(System.Int32?));
 					results = NurseAppointmentProvider.GetByAppointmentId(GetTransactionManager(), _appointmentId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case NurseAppointmentSelectMethod.GetByAppointmentIdIsDisabled:
+					_appointmentId_nullable = (System.Int32?) EntityUtil.ChangeType(values["AppointmentId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = NurseAppointmentProvider.GetByAppointmentIdIsDisabled(GetTransactionManager(), _appointmentId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case NurseAppointmentSelectMethod.GetByAppointmentIdNurseId:
+					_appointmentId_nullable = (System.Int32?) EntityUtil.ChangeType(values["AppointmentId"], typeof(System.Int32?));
+					_nurseId_nullable = (System.Int32?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int32?));
+					results = NurseAppointmentProvider.GetByAppointmentIdNurseId(GetTransactionManager(), _appointmentId_nullable, _nurseId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case NurseAppointmentSelectMethod.GetByAppointmentIdNurseIdIsDisabled:
+					_appointmentId_nullable = (System.Int32?) EntityUtil.ChangeType(values["AppointmentId"], typeof(System.Int32?));
+					_nurseId_nullable = (System.Int32?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = NurseAppointmentProvider.GetByAppointmentIdNurseIdIsDisabled(GetTransactionManager(), _appointmentId_nullable, _nurseId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case NurseAppointmentSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = NurseAppointmentProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case NurseAppointmentSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = NurseAppointmentProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case NurseAppointmentSelectMethod.GetByNurseId:
 					_nurseId_nullable = (System.Int32?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int32?));
 					results = NurseAppointmentProvider.GetByNurseId(GetTransactionManager(), _nurseId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
+				case NurseAppointmentSelectMethod.GetByNurseIdIsDisabled:
+					_nurseId_nullable = (System.Int32?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = NurseAppointmentProvider.GetByNurseIdIsDisabled(GetTransactionManager(), _nurseId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				// FK
 				// M:M
 				// Custom
 				default:
@@ -380,17 +411,41 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
-		/// </summary>
-		GetById,
-		/// <summary>
 		/// Represents the GetByAppointmentId method.
 		/// </summary>
 		GetByAppointmentId,
 		/// <summary>
+		/// Represents the GetByAppointmentIdIsDisabled method.
+		/// </summary>
+		GetByAppointmentIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByAppointmentIdNurseId method.
+		/// </summary>
+		GetByAppointmentIdNurseId,
+		/// <summary>
+		/// Represents the GetByAppointmentIdNurseIdIsDisabled method.
+		/// </summary>
+		GetByAppointmentIdNurseIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
+		/// <summary>
 		/// Represents the GetByNurseId method.
 		/// </summary>
-		GetByNurseId
+		GetByNurseId,
+		/// <summary>
+		/// Represents the GetByNurseIdIsDisabled method.
+		/// </summary>
+		GetByNurseIdIsDisabled,
+		/// <summary>
+		/// Represents the GetById method.
+		/// </summary>
+		GetById
 	}
 	
 	#endregion NurseAppointmentSelectMethod
