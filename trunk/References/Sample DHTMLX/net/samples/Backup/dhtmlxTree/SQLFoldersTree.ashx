@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="SQLFoldersTree.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxTree.SQLFoldersTree" %>

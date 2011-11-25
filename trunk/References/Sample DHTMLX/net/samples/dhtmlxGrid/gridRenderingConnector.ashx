@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="gridRenderingConnector.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxGrid.gridRenderingConnector" %>

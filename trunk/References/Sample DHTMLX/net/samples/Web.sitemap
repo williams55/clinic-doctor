@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode url="Default.aspx" title="Home"  description="">
+      <siteMapNode title="Combo-connectors">
+        <siteMapNode title="Basic initialization" url="~/dhtmlxCombo/01_basic.aspx" description="Demonstrates dhtmlxComboConnector initizlization"></siteMapNode>
+        <siteMapNode title="Initialization by sql " url="~/dhtmlxCombo/02_sql.aspx" description="Demonstrates dhtmlxComboConnector initialization from sql statement"></siteMapNode>
+      </siteMapNode>
+      <siteMapNode title="dhtmlxGrid connectors">
+        <siteMapNode title="Plain initialization and dynamic data load" url="~/dhtmlxGrid/01_basic.aspx" description="Demonstrates simple way of dhtmlxGrid initialization by dhtmlxGridConnector" />
+        <siteMapNode title="Using uncustomized filtering, sorting and insert/update/delete" url="~/dhtmlxGrid/01_basic_init.aspx" description="Demonstrates grid initialization and insert/update/delete operations" />
+        <siteMapNode title="Implementing own insert logic by using BeforeInsert event" url="~/dhtmlxGrid/01a_sql_basic.aspx" description="Demonstrates dhtmlxGridConnector's initialization from SQL and adding additional steps for INSERT operation" />
+        <siteMapNode title="All-in-once update" url="~/dhtmlxGrid/02_all_at_once.aspx" description="Demonstrates how to disable auto-update/delete and apply changes by certain event" />
+        <siteMapNode title="Custom rendering" url="~/dhtmlxGrid/02_rendering.aspx" description="Demonstrates how to customize grid rows by using ItemPrerender event" />
+        <siteMapNode title="Server-side data validation" url="~/dhtmlxGrid/03_validation.aspx" description="Demonstrates how to use server-data validation before update" />
+        <siteMapNode title="Using update triggers" url="~/dhtmlxGrid/04_active_fields.aspx" description="Demonstrates how to specify grid columns, changing of which will trigger update" />
+        <siteMapNode title="Implementing own delete logic by using CustomSQL" url="~/dhtmlxGrid/04_custom_sql.aspx" description="Demonstrates how to replace build-in actons SQLs with your own" />
+        <siteMapNode title="Combobox in grid header" url="~/dhtmlxGrid/05a_select_filter.aspx" description="Demonstrates usage of dhtmlxOptionsConnector in conjunction with grid filter" />
+        <siteMapNode title="Combobox in grid cells" url="~/dhtmlxGrid/06a_combo.aspx" description="Demonstrates how to insert explicit (hardcoded) combobox options into grid cell" />
+        <siteMapNode title="Client-side validation" url="~/dhtmlxGrid/06_basic_validation_with_marks.aspx" description="Demonstrates client-side validation" />
+        <siteMapNode title="Errors handling and Security" url="~/dhtmlxGrid/08_errors_handling.aspx" description="Demonstrates how to deny particular data actions and catch errors using dhtmlxGridConnector" />
+        <siteMapNode title="Grid header rendering" url="~/dhtmlxGrid/10_config.aspx" description="Demonstrates how to inject own xml into dhtmlxGridConnector's response" />
+      </siteMapNode>
+      <siteMapNode title="dhtmlxTreeGrid connectors (Requires PRO version of dhtmlx components)">
+        <siteMapNode title="Initialization" url="~/dhtmlxTreeGrid/01_basic.aspx" description="Demonstrates dhtmlxTreeGridConnector initialization" />
+        <siteMapNode title="Dynamic loading" url="~/dhtmlxTreeGrid/02_dynamic_loading.aspx" description="Demonstrates dynamic children load using dhtmlxTreeGridConnector" />
+        <siteMapNode title="Initialization from SQL" url="~/dhtmlxTreeGrid/03_sql_config.aspx" description="Demonstrates how to initialize dhtmlxTreeGridConnector by SQL statement" />
+        <siteMapNode title="Rows customization" url="~/dhtmlxTreeGrid/04_custom_styles.aspx" description="Demonstrates how to attach icons to the rows during ItemPrerender event" />
+      </siteMapNode>
+      <siteMapNode title="dhtmlxTree connectors">
+        <siteMapNode title="Initialization" url="~/dhtmlxTree/01_basic.aspx" description="Demonstrates simple dhtmlxTreeConnector initialization" />
+        <siteMapNode title="Dynamic loading" url="~/dhtmlxTree/02_dynamic_loading.aspx" description="Demonstrates how to enable and utilize dhtmlxTreeConnector dynamic loading" />
+        <siteMapNode title="Initialization from SQL" url="~/dhtmlxTree/03_sql_config.aspx" description="Demonstrates dhtmlxTreeConnector initialization from SQL statement" />
+        <siteMapNode title="Nodes customization" url="~/dhtmlxTree/04_custom_styles.aspx" description="Demonstrates how to customize tree nodes from dhtmlxTreeConnector using ItemPrerender event" />
+        <siteMapNode title="Update" url="~/dhtmlxTree/05_save.aspx" description="Demonstrates how to save changed made in tree using dhtmlxTreeConnector" />
+        <siteMapNode title="Server-side validation" url="~/dhtmlxTree/06_validation.aspx" description="Demonstrates how to use validation for tree update operations" />
+      </siteMapNode>
+      <siteMapNode title="dhtmlxScheduler connectors">
+        <siteMapNode title="Initialization" url="~/dhtmlxScheduler/01_basic.aspx" description="Demonstrates how to initialize dhtmlxSchedulerConnector and attach it to dhtmlxScheduler" />
+      </siteMapNode>
+      <siteMapNode title="Common topics">
+        <siteMapNode title="Injecting additional rule or field into data request" url="~/common/customFields.aspx" description="Demonstrates how to dynamically add or modify fields in DataRequest" />
+        <siteMapNode title="Logging" url="~/common/logging.aspx" description="Demonstrates how to enable connector activity logging and attach listener to Log.Listeners collection" />
+        <siteMapNode title="Using connector without generic handler" url="~/common/manualConnector.aspx" description="Demonstrates how to use dhtmlxTreeConnector away from Generic Handler (ashx)" />
+        <siteMapNode title="Custom actions usage" url="~/common/customActions.aspx" description="Demonstrated how to pass additional commands or data from server to the client to be handled by dhtmlxDataProcessor" />
+      </siteMapNode>
+    </siteMapNode>
+</siteMap>

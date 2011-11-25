@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="SQLConfiguredFolders.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxTreeGrid.SQLConfiguredFolders" %>

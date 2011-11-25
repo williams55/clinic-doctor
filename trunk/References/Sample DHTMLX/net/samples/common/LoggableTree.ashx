@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="LoggableTree.ashx.cs" Class="dhtmlxConnector.Net_Samples.common.LoggableTree" %>

@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="gridBasicSQLConnector.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxGrid.gridBasicSQLConnector" %>

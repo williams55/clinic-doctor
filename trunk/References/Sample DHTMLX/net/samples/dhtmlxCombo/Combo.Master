@@ -1,0 +1,26 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Sample.master" %>
+
+<asp:Content ContentPlaceHolderID="head" ID="HeadContent" runat="server">
+	<title>Filtering and Autocomplete mode</title>
+	<script type="text/javascript">
+	    window.dhx_globalImgPath = "<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>imgs/";
+	</script>
+	<%--<link rel="STYLESHEET" type="text/css" 
+	       href="<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxCombo/codebase/dhtmlxcombo.css" />
+	<script src="<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxCombo/codebase/dhtmlxcommon.js"></script>
+	<script src="<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxCombo/codebase/dhtmlxcombo.js"></script>--%>
+</asp:Content>
+
+<asp:Content ContentPlaceHolderID="SampleContent" ID="Main" runat="server">
+	<div class="SampleTitle">Combobox behavior:</div>
+	<div id="combo_zone4" style="width:200px; height:30px;"></div>
+    <hr/>
+    <div class="SampleTitle">Suggest behavior:</div>
+	<div id="combo_zone5" style="width:200px; height:30px;"></div>
+    <hr/>
+    <div class="SampleTitle">Suggets behavior with dynamic loading:</div>
+	<div id="combo_zone6" style="width:200px; height:30px;"></div>
+    <asp:ContentPlaceHolder ID="ComboContentPlaceholder" runat="server">
+    
+    </asp:ContentPlaceHolder>
+</asp:Content>

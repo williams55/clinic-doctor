@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="UpdatableTree.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxTree.UpdatableTree2" %>

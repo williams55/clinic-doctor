@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="congifConnector.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxGrid.configConnector" %>

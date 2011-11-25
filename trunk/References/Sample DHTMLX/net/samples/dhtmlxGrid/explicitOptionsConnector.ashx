@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="explicitOptionsConnector.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxGrid.explicitOptionsConnector" %>

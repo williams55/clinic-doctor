@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="gridOptionsConnector.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxGrid.gridOptionsConnector" %>

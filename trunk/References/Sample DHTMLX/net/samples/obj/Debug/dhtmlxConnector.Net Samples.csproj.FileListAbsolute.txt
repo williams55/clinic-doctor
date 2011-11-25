@@ -1,0 +1,10 @@
+D:\My Projects\dhtmlxConnector.net release\samples\obj\Debug\ResolveAssemblyReference.cache
+D:\My Projects\dhtmlxConnector.net release\samples\bin\dhtmlxConnector.Net Samples.dll
+D:\My Projects\dhtmlxConnector.net release\samples\bin\dhtmlxConnector.Net Samples.pdb
+D:\My Projects\dhtmlxConnector.net release\samples\obj\Debug\dhtmlxConnector.Net Samples.dll
+D:\My Projects\dhtmlxConnector.net release\samples\obj\Debug\dhtmlxConnector.Net Samples.pdb
+D:\Work\ClinicDoctor\Source Sample\net\samples\bin\dhtmlxConnector.Net Samples.dll
+D:\Work\ClinicDoctor\Source Sample\net\samples\bin\dhtmlxConnector.Net Samples.pdb
+D:\Work\ClinicDoctor\Source Sample\net\samples\obj\Debug\ResolveAssemblyReference.cache
+D:\Work\ClinicDoctor\Source Sample\net\samples\obj\Debug\dhtmlxConnector.Net Samples.dll
+D:\Work\ClinicDoctor\Source Sample\net\samples\obj\Debug\dhtmlxConnector.Net Samples.pdb

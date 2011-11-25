@@ -1,0 +1,25 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Sample.master" %>
+
+<asp:Content ContentPlaceHolderID="head" ID="HeadContent" runat="server">
+    <title>Tree Connector</title>
+<%--    <link rel='STYLESHEET' type='text/css' 
+           href='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxTree/codebase/dhtmlxtree.css'>
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxTree/codebase/dhtmlxcommon.js'></script>
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxTree/codebase/dhtmlxTree.js'></script>	
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxDataProcessor/codebase/dhtmlxDataProcessor.js'></script>		
+    <script src='<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>dhtmlxDataProcessor/codebase/connector.js'></script>	--%>
+	<script>
+	    window.dhx_globalImgPath = "<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>imgs/";
+	</script>
+</asp:Content>
+
+<asp:Content ContentPlaceHolderID="SampleContent" runat="server" ID="TreeContent" runat="server">
+    <div id="treeboxbox_tree" style="width:300; height:218;background-color:#f5f5f5;border :1px solid Silver; "></div>   
+    <script type="text/javascript" charset="utf-8">
+	    tree=new dhtmlXTreeObject("treeboxbox_tree","100%","100%",0);
+	    tree.setImagePath('<%= System.Configuration.ConfigurationManager.AppSettings["srcRoot"] %>imgs/csh_winstyle/');
+    </script>
+    <asp:ContentPlaceHolder ID="TreeContentPlaceholder" runat="server">
+    
+    </asp:ContentPlaceHolder>
+</asp:Content>

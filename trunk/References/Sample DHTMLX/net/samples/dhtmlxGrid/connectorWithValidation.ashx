@@ -1,0 +1,1 @@
+﻿<%@ WebHandler Language="C#" CodeBehind="connectorWithValidation.ashx.cs" Class="dhtmlxConnector.Net_Samples.dhtmlxGrid.connectorWithValidation" %>
