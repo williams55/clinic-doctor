@@ -159,9 +159,10 @@ namespace ClinicDoctor.Web.Data
 			DoctorRoom item;
 			count = 0;
 			
-			System.Int32 _id;
-			System.Int32? _roomId_nullable;
 			System.Int32? _doctorId_nullable;
+			System.Boolean? _isDisabled_nullable;
+			System.Int32? _roomId_nullable;
+			System.Int32 _id;
 
 			switch ( SelectMethod )
 			{
@@ -194,15 +195,45 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				// FK
-				case DoctorRoomSelectMethod.GetByRoomId:
-					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
-					results = DoctorRoomProvider.GetByRoomId(GetTransactionManager(), _roomId_nullable, this.StartIndex, this.PageSize, out count);
-					break;
 				case DoctorRoomSelectMethod.GetByDoctorId:
 					_doctorId_nullable = (System.Int32?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int32?));
 					results = DoctorRoomProvider.GetByDoctorId(GetTransactionManager(), _doctorId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
+				case DoctorRoomSelectMethod.GetByDoctorIdIsDisabled:
+					_doctorId_nullable = (System.Int32?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRoomProvider.GetByDoctorIdIsDisabled(GetTransactionManager(), _doctorId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRoomSelectMethod.GetByDoctorIdRoomId:
+					_doctorId_nullable = (System.Int32?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int32?));
+					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
+					results = DoctorRoomProvider.GetByDoctorIdRoomId(GetTransactionManager(), _doctorId_nullable, _roomId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRoomSelectMethod.GetByDoctorIdRoomIdIsDisabled:
+					_doctorId_nullable = (System.Int32?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int32?));
+					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRoomProvider.GetByDoctorIdRoomIdIsDisabled(GetTransactionManager(), _doctorId_nullable, _roomId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRoomSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRoomProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRoomSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRoomProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRoomSelectMethod.GetByRoomId:
+					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
+					results = DoctorRoomProvider.GetByRoomId(GetTransactionManager(), _roomId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRoomSelectMethod.GetByRoomIdIsDisabled:
+					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = DoctorRoomProvider.GetByRoomIdIsDisabled(GetTransactionManager(), _roomId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				// FK
 				// M:M
 				// Custom
 				default:
@@ -380,17 +411,41 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
+		/// Represents the GetByDoctorId method.
 		/// </summary>
-		GetById,
+		GetByDoctorId,
+		/// <summary>
+		/// Represents the GetByDoctorIdIsDisabled method.
+		/// </summary>
+		GetByDoctorIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByDoctorIdRoomId method.
+		/// </summary>
+		GetByDoctorIdRoomId,
+		/// <summary>
+		/// Represents the GetByDoctorIdRoomIdIsDisabled method.
+		/// </summary>
+		GetByDoctorIdRoomIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
 		/// <summary>
 		/// Represents the GetByRoomId method.
 		/// </summary>
 		GetByRoomId,
 		/// <summary>
-		/// Represents the GetByDoctorId method.
+		/// Represents the GetByRoomIdIsDisabled method.
 		/// </summary>
-		GetByDoctorId
+		GetByRoomIdIsDisabled,
+		/// <summary>
+		/// Represents the GetById method.
+		/// </summary>
+		GetById
 	}
 	
 	#endregion DoctorRoomSelectMethod

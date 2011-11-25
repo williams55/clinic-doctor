@@ -160,6 +160,7 @@ namespace ClinicDoctor.Web.Data
 			count = 0;
 			
 			System.Int32 _id;
+			System.Boolean? _isDisabled_nullable;
 			System.Int32? _rosterTypeId_nullable;
 
 			switch ( SelectMethod )
@@ -193,11 +194,25 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				// FK
+				case RosterSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RosterProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RosterSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RosterProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
 				case RosterSelectMethod.GetByRosterTypeId:
 					_rosterTypeId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int32?));
 					results = RosterProvider.GetByRosterTypeId(GetTransactionManager(), _rosterTypeId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
+				case RosterSelectMethod.GetByRosterTypeIdIsDisabled:
+					_rosterTypeId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = RosterProvider.GetByRosterTypeIdIsDisabled(GetTransactionManager(), _rosterTypeId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				// FK
 				// M:M
 				// Custom
 				default:
@@ -375,13 +390,25 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
+		/// Represents the GetByIdIsDisabled method.
 		/// </summary>
-		GetById,
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
 		/// <summary>
 		/// Represents the GetByRosterTypeId method.
 		/// </summary>
-		GetByRosterTypeId
+		GetByRosterTypeId,
+		/// <summary>
+		/// Represents the GetByRosterTypeIdIsDisabled method.
+		/// </summary>
+		GetByRosterTypeIdIsDisabled,
+		/// <summary>
+		/// Represents the GetById method.
+		/// </summary>
+		GetById
 	}
 	
 	#endregion RosterSelectMethod

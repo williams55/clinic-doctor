@@ -6,7 +6,7 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataRosterTypeId" runat="server" Text="Roster Type Id:" AssociatedControlID="dataRosterTypeId" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataRosterTypeId" DataSourceID="RosterTypeIdRosterTypeDataSource" DataTextField="IsBooked" DataValueField="Id" SelectedValue='<%# Bind("RosterTypeId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:EntityDropDownList runat="server" ID="dataRosterTypeId" DataSourceID="RosterTypeIdRosterTypeDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("RosterTypeId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
 					<data:RosterTypeDataSource ID="RosterTypeIdRosterTypeDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>

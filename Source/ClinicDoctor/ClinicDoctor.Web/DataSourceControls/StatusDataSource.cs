@@ -160,6 +160,8 @@ namespace ClinicDoctor.Web.Data
 			count = 0;
 			
 			System.Int32 _id;
+			System.Boolean? _isDisabled_nullable;
+			System.String _statusType_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -192,6 +194,24 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
+				case StatusSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StatusProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StatusSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StatusProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StatusSelectMethod.GetByStatusType:
+					_statusType_nullable = (System.String) EntityUtil.ChangeType(values["StatusType"], typeof(System.String));
+					results = StatusProvider.GetByStatusType(GetTransactionManager(), _statusType_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StatusSelectMethod.GetByStatusTypeIsDisabled:
+					_statusType_nullable = (System.String) EntityUtil.ChangeType(values["StatusType"], typeof(System.String));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StatusProvider.GetByStatusTypeIsDisabled(GetTransactionManager(), _statusType_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
 				// FK
 				// M:M
 				// Custom
@@ -369,6 +389,22 @@ namespace ClinicDoctor.Web.Data
 		/// Represents the Find method.
 		/// </summary>
 		Find,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
+		/// <summary>
+		/// Represents the GetByStatusType method.
+		/// </summary>
+		GetByStatusType,
+		/// <summary>
+		/// Represents the GetByStatusTypeIsDisabled method.
+		/// </summary>
+		GetByStatusTypeIsDisabled,
 		/// <summary>
 		/// Represents the GetById method.
 		/// </summary>

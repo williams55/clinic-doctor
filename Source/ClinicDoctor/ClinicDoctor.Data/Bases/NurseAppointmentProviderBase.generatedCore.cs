@@ -58,176 +58,6 @@ namespace ClinicDoctor.Data.Bases
 		#endregion Delete Methods
 		
 		#region Get By Foreign Key Functions
-	
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Appointment key.
-		///		FK_NurseAppointment_Appointment Description: 
-		/// </summary>
-		/// <param name="_appointmentId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public TList<NurseAppointment> GetByAppointmentId(System.Int32? _appointmentId)
-		{
-			int count = -1;
-			return GetByAppointmentId(_appointmentId, 0,int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Appointment key.
-		///		FK_NurseAppointment_Appointment Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_appointmentId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		/// <remarks></remarks>
-		public TList<NurseAppointment> GetByAppointmentId(TransactionManager transactionManager, System.Int32? _appointmentId)
-		{
-			int count = -1;
-			return GetByAppointmentId(transactionManager, _appointmentId, 0, int.MaxValue, out count);
-		}
-		
-			/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Appointment key.
-		///		FK_NurseAppointment_Appointment Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_appointmentId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		///  <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public TList<NurseAppointment> GetByAppointmentId(TransactionManager transactionManager, System.Int32? _appointmentId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByAppointmentId(transactionManager, _appointmentId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Appointment key.
-		///		fkNurseAppointmentAppointment Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_appointmentId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public TList<NurseAppointment> GetByAppointmentId(System.Int32? _appointmentId, int start, int pageLength)
-		{
-			int count =  -1;
-			return GetByAppointmentId(null, _appointmentId, start, pageLength,out count);	
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Appointment key.
-		///		fkNurseAppointmentAppointment Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_appointmentId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public TList<NurseAppointment> GetByAppointmentId(System.Int32? _appointmentId, int start, int pageLength,out int count)
-		{
-			return GetByAppointmentId(null, _appointmentId, start, pageLength, out count);	
-		}
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Appointment key.
-		///		FK_NurseAppointment_Appointment Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_appointmentId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public abstract TList<NurseAppointment> GetByAppointmentId(TransactionManager transactionManager, System.Int32? _appointmentId, int start, int pageLength, out int count);
-		
-	
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Staff key.
-		///		FK_NurseAppointment_Staff Description: 
-		/// </summary>
-		/// <param name="_nurseId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public TList<NurseAppointment> GetByNurseId(System.Int32? _nurseId)
-		{
-			int count = -1;
-			return GetByNurseId(_nurseId, 0,int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Staff key.
-		///		FK_NurseAppointment_Staff Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_nurseId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		/// <remarks></remarks>
-		public TList<NurseAppointment> GetByNurseId(TransactionManager transactionManager, System.Int32? _nurseId)
-		{
-			int count = -1;
-			return GetByNurseId(transactionManager, _nurseId, 0, int.MaxValue, out count);
-		}
-		
-			/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Staff key.
-		///		FK_NurseAppointment_Staff Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_nurseId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		///  <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public TList<NurseAppointment> GetByNurseId(TransactionManager transactionManager, System.Int32? _nurseId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByNurseId(transactionManager, _nurseId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Staff key.
-		///		fkNurseAppointmentStaff Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_nurseId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public TList<NurseAppointment> GetByNurseId(System.Int32? _nurseId, int start, int pageLength)
-		{
-			int count =  -1;
-			return GetByNurseId(null, _nurseId, start, pageLength,out count);	
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Staff key.
-		///		fkNurseAppointmentStaff Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_nurseId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public TList<NurseAppointment> GetByNurseId(System.Int32? _nurseId, int start, int pageLength,out int count)
-		{
-			return GetByNurseId(null, _nurseId, start, pageLength, out count);	
-		}
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_NurseAppointment_Staff key.
-		///		FK_NurseAppointment_Staff Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_nurseId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.NurseAppointment objects.</returns>
-		public abstract TList<NurseAppointment> GetByNurseId(TransactionManager transactionManager, System.Int32? _nurseId, int start, int pageLength, out int count);
-		
 		#endregion
 
 		#region Get By Index Functions
@@ -245,6 +75,674 @@ namespace ClinicDoctor.Data.Bases
 			return GetById(transactionManager, key.Id, start, pageLength);
 		}
 		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_NurseAppointment_AppointmentId index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentId(System.Int32? _appointmentId)
+		{
+			int count = -1;
+			return GetByAppointmentId(null,_appointmentId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentId(System.Int32? _appointmentId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByAppointmentId(null, _appointmentId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentId(TransactionManager transactionManager, System.Int32? _appointmentId)
+		{
+			int count = -1;
+			return GetByAppointmentId(transactionManager, _appointmentId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentId(TransactionManager transactionManager, System.Int32? _appointmentId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByAppointmentId(transactionManager, _appointmentId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentId(System.Int32? _appointmentId, int start, int pageLength, out int count)
+		{
+			return GetByAppointmentId(null, _appointmentId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public abstract TList<NurseAppointment> GetByAppointmentId(TransactionManager transactionManager, System.Int32? _appointmentId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_NurseAppointment_AppointmentId_IsDisabled index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdIsDisabled(System.Int32? _appointmentId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByAppointmentIdIsDisabled(null,_appointmentId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_IsDisabled index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdIsDisabled(System.Int32? _appointmentId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByAppointmentIdIsDisabled(null, _appointmentId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdIsDisabled(TransactionManager transactionManager, System.Int32? _appointmentId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByAppointmentIdIsDisabled(transactionManager, _appointmentId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdIsDisabled(TransactionManager transactionManager, System.Int32? _appointmentId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByAppointmentIdIsDisabled(transactionManager, _appointmentId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_IsDisabled index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdIsDisabled(System.Int32? _appointmentId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByAppointmentIdIsDisabled(null, _appointmentId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public abstract TList<NurseAppointment> GetByAppointmentIdIsDisabled(TransactionManager transactionManager, System.Int32? _appointmentId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_NurseAppointment_AppointmentId_NurseId index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseId(System.Int32? _appointmentId, System.Int32? _nurseId)
+		{
+			int count = -1;
+			return GetByAppointmentIdNurseId(null,_appointmentId, _nurseId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseId(System.Int32? _appointmentId, System.Int32? _nurseId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByAppointmentIdNurseId(null, _appointmentId, _nurseId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseId(TransactionManager transactionManager, System.Int32? _appointmentId, System.Int32? _nurseId)
+		{
+			int count = -1;
+			return GetByAppointmentIdNurseId(transactionManager, _appointmentId, _nurseId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseId(TransactionManager transactionManager, System.Int32? _appointmentId, System.Int32? _nurseId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByAppointmentIdNurseId(transactionManager, _appointmentId, _nurseId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseId(System.Int32? _appointmentId, System.Int32? _nurseId, int start, int pageLength, out int count)
+		{
+			return GetByAppointmentIdNurseId(null, _appointmentId, _nurseId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public abstract TList<NurseAppointment> GetByAppointmentIdNurseId(TransactionManager transactionManager, System.Int32? _appointmentId, System.Int32? _nurseId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_NurseAppointment_AppointmentId_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseIdIsDisabled(System.Int32? _appointmentId, System.Int32? _nurseId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByAppointmentIdNurseIdIsDisabled(null,_appointmentId, _nurseId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseIdIsDisabled(System.Int32? _appointmentId, System.Int32? _nurseId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByAppointmentIdNurseIdIsDisabled(null, _appointmentId, _nurseId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseIdIsDisabled(TransactionManager transactionManager, System.Int32? _appointmentId, System.Int32? _nurseId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByAppointmentIdNurseIdIsDisabled(transactionManager, _appointmentId, _nurseId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseIdIsDisabled(TransactionManager transactionManager, System.Int32? _appointmentId, System.Int32? _nurseId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByAppointmentIdNurseIdIsDisabled(transactionManager, _appointmentId, _nurseId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByAppointmentIdNurseIdIsDisabled(System.Int32? _appointmentId, System.Int32? _nurseId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByAppointmentIdNurseIdIsDisabled(null, _appointmentId, _nurseId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_AppointmentId_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public abstract TList<NurseAppointment> GetByAppointmentIdNurseIdIsDisabled(TransactionManager transactionManager, System.Int32? _appointmentId, System.Int32? _nurseId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_NurseAppointment_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null,_id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public abstract TList<NurseAppointment> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_NurseAppointment_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIsDisabled(System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(null,_isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public abstract TList<NurseAppointment> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_NurseAppointment_NurseId index.
+		/// </summary>
+		/// <param name="_nurseId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseId(System.Int32? _nurseId)
+		{
+			int count = -1;
+			return GetByNurseId(null,_nurseId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId index.
+		/// </summary>
+		/// <param name="_nurseId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseId(System.Int32? _nurseId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByNurseId(null, _nurseId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseId(TransactionManager transactionManager, System.Int32? _nurseId)
+		{
+			int count = -1;
+			return GetByNurseId(transactionManager, _nurseId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseId(TransactionManager transactionManager, System.Int32? _nurseId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByNurseId(transactionManager, _nurseId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId index.
+		/// </summary>
+		/// <param name="_nurseId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseId(System.Int32? _nurseId, int start, int pageLength, out int count)
+		{
+			return GetByNurseId(null, _nurseId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public abstract TList<NurseAppointment> GetByNurseId(TransactionManager transactionManager, System.Int32? _nurseId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_NurseAppointment_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseIdIsDisabled(System.Int32? _nurseId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByNurseIdIsDisabled(null,_nurseId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseIdIsDisabled(System.Int32? _nurseId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByNurseIdIsDisabled(null, _nurseId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseIdIsDisabled(TransactionManager transactionManager, System.Int32? _nurseId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByNurseIdIsDisabled(transactionManager, _nurseId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseIdIsDisabled(TransactionManager transactionManager, System.Int32? _nurseId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByNurseIdIsDisabled(transactionManager, _nurseId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public TList<NurseAppointment> GetByNurseIdIsDisabled(System.Int32? _nurseId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByNurseIdIsDisabled(null, _nurseId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_NurseAppointment_NurseId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;NurseAppointment&gt;"/> class.</returns>
+		public abstract TList<NurseAppointment> GetByNurseIdIsDisabled(TransactionManager transactionManager, System.Int32? _nurseId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key PK_NurseAppointment index.
 		/// </summary>

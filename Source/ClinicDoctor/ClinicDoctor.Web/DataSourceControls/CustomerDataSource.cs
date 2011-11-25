@@ -160,6 +160,8 @@ namespace ClinicDoctor.Web.Data
 			count = 0;
 			
 			System.Int32 _id;
+			System.Boolean? _isDisabled_nullable;
+			System.Boolean? _isFemale_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -192,6 +194,24 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
+				case CustomerSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = CustomerProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case CustomerSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = CustomerProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case CustomerSelectMethod.GetByIsFemale:
+					_isFemale_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsFemale"], typeof(System.Boolean?));
+					results = CustomerProvider.GetByIsFemale(GetTransactionManager(), _isFemale_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case CustomerSelectMethod.GetByIsFemaleIsDisabled:
+					_isFemale_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsFemale"], typeof(System.Boolean?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = CustomerProvider.GetByIsFemaleIsDisabled(GetTransactionManager(), _isFemale_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
 				// FK
 				// M:M
 				// Custom
@@ -369,6 +389,22 @@ namespace ClinicDoctor.Web.Data
 		/// Represents the Find method.
 		/// </summary>
 		Find,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsFemale method.
+		/// </summary>
+		GetByIsFemale,
+		/// <summary>
+		/// Represents the GetByIsFemaleIsDisabled method.
+		/// </summary>
+		GetByIsFemaleIsDisabled,
 		/// <summary>
 		/// Represents the GetById method.
 		/// </summary>

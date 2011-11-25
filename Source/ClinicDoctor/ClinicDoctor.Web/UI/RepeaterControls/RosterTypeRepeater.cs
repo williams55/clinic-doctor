@@ -341,6 +341,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.Id; }
 		}
         /// <summary>
+        /// Gets the Title
+        /// </summary>
+        /// <value>The Title.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String Title
+		{
+			get { return _entity.Title; }
+		}
+        /// <summary>
         /// Gets the IsBooked
         /// </summary>
         /// <value>The IsBooked.</value>

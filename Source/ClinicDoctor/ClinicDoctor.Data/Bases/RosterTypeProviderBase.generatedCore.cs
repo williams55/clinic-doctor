@@ -76,6 +76,334 @@ namespace ClinicDoctor.Data.Bases
 		}
 		
 		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_RosterType_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null,_id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public abstract TList<RosterType> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_RosterType_IsBooked index.
+		/// </summary>
+		/// <param name="_isBooked"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBooked(System.Boolean? _isBooked)
+		{
+			int count = -1;
+			return GetByIsBooked(null,_isBooked, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked index.
+		/// </summary>
+		/// <param name="_isBooked"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBooked(System.Boolean? _isBooked, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsBooked(null, _isBooked, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isBooked"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBooked(TransactionManager transactionManager, System.Boolean? _isBooked)
+		{
+			int count = -1;
+			return GetByIsBooked(transactionManager, _isBooked, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isBooked"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBooked(TransactionManager transactionManager, System.Boolean? _isBooked, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsBooked(transactionManager, _isBooked, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked index.
+		/// </summary>
+		/// <param name="_isBooked"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBooked(System.Boolean? _isBooked, int start, int pageLength, out int count)
+		{
+			return GetByIsBooked(null, _isBooked, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isBooked"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public abstract TList<RosterType> GetByIsBooked(TransactionManager transactionManager, System.Boolean? _isBooked, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_RosterType_IsBooked_IsDisabled index.
+		/// </summary>
+		/// <param name="_isBooked"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBookedIsDisabled(System.Boolean? _isBooked, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsBookedIsDisabled(null,_isBooked, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked_IsDisabled index.
+		/// </summary>
+		/// <param name="_isBooked"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBookedIsDisabled(System.Boolean? _isBooked, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsBookedIsDisabled(null, _isBooked, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isBooked"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBookedIsDisabled(TransactionManager transactionManager, System.Boolean? _isBooked, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsBookedIsDisabled(transactionManager, _isBooked, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isBooked"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBookedIsDisabled(TransactionManager transactionManager, System.Boolean? _isBooked, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsBookedIsDisabled(transactionManager, _isBooked, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked_IsDisabled index.
+		/// </summary>
+		/// <param name="_isBooked"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsBookedIsDisabled(System.Boolean? _isBooked, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsBookedIsDisabled(null, _isBooked, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsBooked_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isBooked"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public abstract TList<RosterType> GetByIsBookedIsDisabled(TransactionManager transactionManager, System.Boolean? _isBooked, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_RosterType_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsDisabled(System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(null,_isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public TList<RosterType> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_RosterType_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;RosterType&gt;"/> class.</returns>
+		public abstract TList<RosterType> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key PK_RosterType index.
 		/// </summary>
 		/// <param name="_id"></param>
@@ -220,6 +548,7 @@ namespace ClinicDoctor.Data.Bases
 				{
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int32)reader[((int)RosterTypeColumn.Id - 1)];
+					c.Title = (reader.IsDBNull(((int)RosterTypeColumn.Title - 1)))?null:(System.String)reader[((int)RosterTypeColumn.Title - 1)];
 					c.IsBooked = (reader.IsDBNull(((int)RosterTypeColumn.IsBooked - 1)))?null:(System.Boolean?)reader[((int)RosterTypeColumn.IsBooked - 1)];
 					c.Note = (reader.IsDBNull(((int)RosterTypeColumn.Note - 1)))?null:(System.String)reader[((int)RosterTypeColumn.Note - 1)];
 					c.IsDisabled = (reader.IsDBNull(((int)RosterTypeColumn.IsDisabled - 1)))?null:(System.Boolean?)reader[((int)RosterTypeColumn.IsDisabled - 1)];
@@ -245,6 +574,7 @@ namespace ClinicDoctor.Data.Bases
 			if (!reader.Read()) return;
 			
 			entity.Id = (System.Int32)reader[((int)RosterTypeColumn.Id - 1)];
+			entity.Title = (reader.IsDBNull(((int)RosterTypeColumn.Title - 1)))?null:(System.String)reader[((int)RosterTypeColumn.Title - 1)];
 			entity.IsBooked = (reader.IsDBNull(((int)RosterTypeColumn.IsBooked - 1)))?null:(System.Boolean?)reader[((int)RosterTypeColumn.IsBooked - 1)];
 			entity.Note = (reader.IsDBNull(((int)RosterTypeColumn.Note - 1)))?null:(System.String)reader[((int)RosterTypeColumn.Note - 1)];
 			entity.IsDisabled = (reader.IsDBNull(((int)RosterTypeColumn.IsDisabled - 1)))?null:(System.Boolean?)reader[((int)RosterTypeColumn.IsDisabled - 1)];
@@ -265,6 +595,7 @@ namespace ClinicDoctor.Data.Bases
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
 			entity.Id = (System.Int32)dataRow["Id"];
+			entity.Title = Convert.IsDBNull(dataRow["Title"]) ? null : (System.String)dataRow["Title"];
 			entity.IsBooked = Convert.IsDBNull(dataRow["IsBooked"]) ? null : (System.Boolean?)dataRow["IsBooked"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.IsDisabled = Convert.IsDBNull(dataRow["IsDisabled"]) ? null : (System.Boolean?)dataRow["IsDisabled"];

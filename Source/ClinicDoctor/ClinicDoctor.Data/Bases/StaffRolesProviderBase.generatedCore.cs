@@ -58,176 +58,6 @@ namespace ClinicDoctor.Data.Bases
 		#endregion Delete Methods
 		
 		#region Get By Foreign Key Functions
-	
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Role key.
-		///		FK_StaffRoles_Role Description: 
-		/// </summary>
-		/// <param name="_roleId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public TList<StaffRoles> GetByRoleId(System.Int32? _roleId)
-		{
-			int count = -1;
-			return GetByRoleId(_roleId, 0,int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Role key.
-		///		FK_StaffRoles_Role Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_roleId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		/// <remarks></remarks>
-		public TList<StaffRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId)
-		{
-			int count = -1;
-			return GetByRoleId(transactionManager, _roleId, 0, int.MaxValue, out count);
-		}
-		
-			/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Role key.
-		///		FK_StaffRoles_Role Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_roleId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		///  <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public TList<StaffRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByRoleId(transactionManager, _roleId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Role key.
-		///		fkStaffRolesRole Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_roleId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public TList<StaffRoles> GetByRoleId(System.Int32? _roleId, int start, int pageLength)
-		{
-			int count =  -1;
-			return GetByRoleId(null, _roleId, start, pageLength,out count);	
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Role key.
-		///		fkStaffRolesRole Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_roleId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public TList<StaffRoles> GetByRoleId(System.Int32? _roleId, int start, int pageLength,out int count)
-		{
-			return GetByRoleId(null, _roleId, start, pageLength, out count);	
-		}
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Role key.
-		///		FK_StaffRoles_Role Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_roleId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public abstract TList<StaffRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength, out int count);
-		
-	
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Staff key.
-		///		FK_StaffRoles_Staff Description: 
-		/// </summary>
-		/// <param name="_staffId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public TList<StaffRoles> GetByStaffId(System.Int32? _staffId)
-		{
-			int count = -1;
-			return GetByStaffId(_staffId, 0,int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Staff key.
-		///		FK_StaffRoles_Staff Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_staffId"></param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		/// <remarks></remarks>
-		public TList<StaffRoles> GetByStaffId(TransactionManager transactionManager, System.Int32? _staffId)
-		{
-			int count = -1;
-			return GetByStaffId(transactionManager, _staffId, 0, int.MaxValue, out count);
-		}
-		
-			/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Staff key.
-		///		FK_StaffRoles_Staff Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_staffId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		///  <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public TList<StaffRoles> GetByStaffId(TransactionManager transactionManager, System.Int32? _staffId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByStaffId(transactionManager, _staffId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Staff key.
-		///		fkStaffRolesStaff Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_staffId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public TList<StaffRoles> GetByStaffId(System.Int32? _staffId, int start, int pageLength)
-		{
-			int count =  -1;
-			return GetByStaffId(null, _staffId, start, pageLength,out count);	
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Staff key.
-		///		fkStaffRolesStaff Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_staffId"></param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public TList<StaffRoles> GetByStaffId(System.Int32? _staffId, int start, int pageLength,out int count)
-		{
-			return GetByStaffId(null, _staffId, start, pageLength, out count);	
-		}
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_StaffRoles_Staff key.
-		///		FK_StaffRoles_Staff Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_staffId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns a typed collection of ClinicDoctor.Entities.StaffRoles objects.</returns>
-		public abstract TList<StaffRoles> GetByStaffId(TransactionManager transactionManager, System.Int32? _staffId, int start, int pageLength, out int count);
-		
 		#endregion
 
 		#region Get By Index Functions
@@ -245,6 +75,674 @@ namespace ClinicDoctor.Data.Bases
 			return GetById(transactionManager, key.Id, start, pageLength);
 		}
 		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_StaffRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null,_id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIdIsDisabled(System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_Id_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_id"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public abstract TList<StaffRoles> GetByIdIsDisabled(TransactionManager transactionManager, System.Int32 _id, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_StaffRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIsDisabled(System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(null,_isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByIsDisabled(transactionManager, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByIsDisabled(System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByIsDisabled(null, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public abstract TList<StaffRoles> GetByIsDisabled(TransactionManager transactionManager, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_StaffRoles_RoleId index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleId(System.Int32? _roleId)
+		{
+			int count = -1;
+			return GetByRoleId(null,_roleId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleId(System.Int32? _roleId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByRoleId(null, _roleId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId)
+		{
+			int count = -1;
+			return GetByRoleId(transactionManager, _roleId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByRoleId(transactionManager, _roleId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleId(System.Int32? _roleId, int start, int pageLength, out int count)
+		{
+			return GetByRoleId(null, _roleId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public abstract TList<StaffRoles> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_StaffRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleIdIsDisabled(System.Int32? _roleId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByRoleIdIsDisabled(null,_roleId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleIdIsDisabled(System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByRoleIdIsDisabled(null, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _roleId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByRoleIdIsDisabled(transactionManager, _roleId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByRoleIdIsDisabled(transactionManager, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByRoleIdIsDisabled(System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByRoleIdIsDisabled(null, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public abstract TList<StaffRoles> GetByRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_StaffRoles_StaffId index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffId(System.Int32? _staffId)
+		{
+			int count = -1;
+			return GetByStaffId(null,_staffId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffId(System.Int32? _staffId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByStaffId(null, _staffId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffId(TransactionManager transactionManager, System.Int32? _staffId)
+		{
+			int count = -1;
+			return GetByStaffId(transactionManager, _staffId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffId(TransactionManager transactionManager, System.Int32? _staffId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByStaffId(transactionManager, _staffId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffId(System.Int32? _staffId, int start, int pageLength, out int count)
+		{
+			return GetByStaffId(null, _staffId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public abstract TList<StaffRoles> GetByStaffId(TransactionManager transactionManager, System.Int32? _staffId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_StaffRoles_StaffId_IsDisabled index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdIsDisabled(System.Int32? _staffId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByStaffIdIsDisabled(null,_staffId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_IsDisabled index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdIsDisabled(System.Int32? _staffId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByStaffIdIsDisabled(null, _staffId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdIsDisabled(TransactionManager transactionManager, System.Int32? _staffId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByStaffIdIsDisabled(transactionManager, _staffId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdIsDisabled(TransactionManager transactionManager, System.Int32? _staffId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByStaffIdIsDisabled(transactionManager, _staffId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_IsDisabled index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdIsDisabled(System.Int32? _staffId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByStaffIdIsDisabled(null, _staffId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public abstract TList<StaffRoles> GetByStaffIdIsDisabled(TransactionManager transactionManager, System.Int32? _staffId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_StaffRoles_StaffId_RoleId index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleId(System.Int32? _staffId, System.Int32? _roleId)
+		{
+			int count = -1;
+			return GetByStaffIdRoleId(null,_staffId, _roleId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleId(System.Int32? _staffId, System.Int32? _roleId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByStaffIdRoleId(null, _staffId, _roleId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleId(TransactionManager transactionManager, System.Int32? _staffId, System.Int32? _roleId)
+		{
+			int count = -1;
+			return GetByStaffIdRoleId(transactionManager, _staffId, _roleId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleId(TransactionManager transactionManager, System.Int32? _staffId, System.Int32? _roleId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByStaffIdRoleId(transactionManager, _staffId, _roleId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleId(System.Int32? _staffId, System.Int32? _roleId, int start, int pageLength, out int count)
+		{
+			return GetByStaffIdRoleId(null, _staffId, _roleId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public abstract TList<StaffRoles> GetByStaffIdRoleId(TransactionManager transactionManager, System.Int32? _staffId, System.Int32? _roleId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_StaffRoles_StaffId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleIdIsDisabled(System.Int32? _staffId, System.Int32? _roleId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByStaffIdRoleIdIsDisabled(null,_staffId, _roleId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleIdIsDisabled(System.Int32? _staffId, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByStaffIdRoleIdIsDisabled(null, _staffId, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _staffId, System.Int32? _roleId, System.Boolean? _isDisabled)
+		{
+			int count = -1;
+			return GetByStaffIdRoleIdIsDisabled(transactionManager, _staffId, _roleId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _staffId, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByStaffIdRoleIdIsDisabled(transactionManager, _staffId, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public TList<StaffRoles> GetByStaffIdRoleIdIsDisabled(System.Int32? _staffId, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByStaffIdRoleIdIsDisabled(null, _staffId, _roleId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_StaffRoles_StaffId_RoleId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_staffId"></param>
+		/// <param name="_roleId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;StaffRoles&gt;"/> class.</returns>
+		public abstract TList<StaffRoles> GetByStaffIdRoleIdIsDisabled(TransactionManager transactionManager, System.Int32? _staffId, System.Int32? _roleId, System.Boolean? _isDisabled, int start, int pageLength, out int count);
+						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key PK_StaffRoles index.
 		/// </summary>

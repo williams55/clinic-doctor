@@ -27,6 +27,11 @@ public partial class StatusEdit : System.Web.UI.Page
 		string urlParams = string.Format("Id={0}", GridViewAppointment1.SelectedDataKey.Values[0]);
 		Response.Redirect("AppointmentEdit.aspx?" + urlParams, true);		
 	}	
+	protected void GridViewRoom2_SelectedIndexChanged(object sender, EventArgs e)
+	{
+		string urlParams = string.Format("Id={0}", GridViewRoom2.SelectedDataKey.Values[0]);
+		Response.Redirect("RoomEdit.aspx?" + urlParams, true);		
+	}	
 }
 
 

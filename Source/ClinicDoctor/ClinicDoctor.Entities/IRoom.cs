@@ -30,9 +30,9 @@ namespace ClinicDoctor.Entities
 		System.String  Note  { get; set; }
 		
 		/// <summary>
-		/// Status : 
+		/// StatusId : 
 		/// </summary>
-		System.String  Status  { get; set; }
+		System.Int32?  StatusId  { get; set; }
 		
 		/// <summary>
 		/// IsDisabled : 

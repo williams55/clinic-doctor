@@ -84,14 +84,15 @@ namespace ClinicDoctor.Entities
 		///<param name="_title"></param>
 		///<param name="_colorCode"></param>
 		///<param name="_note"></param>
+		///<param name="_statusType"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public StatusBase(System.String _title, System.String _colorCode, System.String _note, 
-			System.Boolean? _isDisabled, System.String _createUser, System.DateTime? _createDate, System.String _updateUser, 
-			System.DateTime? _updateDate)
+			System.String _statusType, System.Boolean? _isDisabled, System.String _createUser, System.DateTime? _createDate, 
+			System.String _updateUser, System.DateTime? _updateDate)
 		{
 			this.entityData = new StatusEntityData();
 			this.backupData = null;
@@ -99,6 +100,7 @@ namespace ClinicDoctor.Entities
 			this.Title = _title;
 			this.ColorCode = _colorCode;
 			this.Note = _note;
+			this.StatusType = _statusType;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -112,19 +114,21 @@ namespace ClinicDoctor.Entities
 		///<param name="_title"></param>
 		///<param name="_colorCode"></param>
 		///<param name="_note"></param>
+		///<param name="_statusType"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public static Status CreateStatus(System.String _title, System.String _colorCode, System.String _note, 
-			System.Boolean? _isDisabled, System.String _createUser, System.DateTime? _createDate, System.String _updateUser, 
-			System.DateTime? _updateDate)
+			System.String _statusType, System.Boolean? _isDisabled, System.String _createUser, System.DateTime? _createDate, 
+			System.String _updateUser, System.DateTime? _updateDate)
 		{
 			Status newStatus = new Status();
 			newStatus.Title = _title;
 			newStatus.ColorCode = _colorCode;
 			newStatus.Note = _note;
+			newStatus.StatusType = _statusType;
 			newStatus.IsDisabled = _isDisabled;
 			newStatus.CreateUser = _createUser;
 			newStatus.CreateDate = _createDate;
@@ -276,6 +280,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(StatusColumn.Note, this.entityData.Note);
 				OnPropertyChanged("Note");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the StatusType property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 50)]
+		public virtual System.String StatusType
+		{
+			get
+			{
+				return this.entityData.StatusType; 
+			}
+			
+			set
+			{
+				if (this.entityData.StatusType == value)
+					return;
+					
+				OnColumnChanging(StatusColumn.StatusType, this.entityData.StatusType);
+				this.entityData.StatusType = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(StatusColumn.StatusType, this.entityData.StatusType);
+				OnPropertyChanged("StatusType");
 			}
 		}
 		
@@ -478,6 +517,17 @@ namespace ClinicDoctor.Entities
 			get { return entityData.AppointmentCollection; }
 			set { entityData.AppointmentCollection = value; }	
 		}
+	
+		/// <summary>
+		///	Holds a collection of Room objects
+		///	which are related to this object through the relation FK_Room_Status
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<Room> RoomCollection
+		{
+			get { return entityData.RoomCollection; }
+			set { entityData.RoomCollection = value; }	
+		}
 		#endregion Children Collections
 		
 		#endregion
@@ -496,6 +546,8 @@ namespace ClinicDoctor.Entities
 				new CommonRules.MaxLengthRuleArgs("ColorCode", "Color Code", 10));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("StatusType", "Status Type", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -521,7 +573,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Title", "ColorCode", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Title", "ColorCode", "Note", "StatusType", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -673,6 +725,7 @@ namespace ClinicDoctor.Entities
 				copy.Title = this.Title;
 				copy.ColorCode = this.ColorCode;
 				copy.Note = this.Note;
+				copy.StatusType = this.StatusType;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
@@ -682,6 +735,7 @@ namespace ClinicDoctor.Entities
 		
 			//deep copy nested objects
 			copy.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
+			copy.RoomCollection = (TList<Room>) MakeCopyOf(this.RoomCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
 			return copy;
@@ -820,6 +874,8 @@ namespace ClinicDoctor.Entities
 					return entityData.ColorCode != _originalData.ColorCode;
 					case StatusColumn.Note:
 					return entityData.Note != _originalData.Note;
+					case StatusColumn.StatusType:
+					return entityData.StatusType != _originalData.StatusType;
 					case StatusColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case StatusColumn.CreateUser:
@@ -861,6 +917,7 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.Title != _originalData.Title;
 			result = result || entityData.ColorCode != _originalData.ColorCode;
 			result = result || entityData.Note != _originalData.Note;
+			result = result || entityData.StatusType != _originalData.StatusType;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -879,6 +936,7 @@ namespace ClinicDoctor.Entities
 				_originalData.Title,
 				_originalData.ColorCode,
 				_originalData.Note,
+				_originalData.StatusType,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -917,6 +975,7 @@ namespace ClinicDoctor.Entities
 					((this.Title == null) ? string.Empty : this.Title.ToString()).GetHashCode() ^ 
 					((this.ColorCode == null) ? string.Empty : this.ColorCode.ToString()).GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
+					((this.StatusType == null) ? string.Empty : this.StatusType.ToString()).GetHashCode() ^ 
 					((this.IsDisabled == null) ? string.Empty : this.IsDisabled.ToString()).GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					((this.CreateDate == null) ? string.Empty : this.CreateDate.ToString()).GetHashCode() ^ 
@@ -980,6 +1039,15 @@ namespace ClinicDoctor.Entities
 					equal = false;
 			}
 			else if (Object1.Note == null ^ Object2.Note == null )
+			{
+				equal = false;
+			}
+			if ( Object1.StatusType != null && Object2.StatusType != null )
+			{
+				if (Object1.StatusType != Object2.StatusType)
+					equal = false;
+			}
+			else if (Object1.StatusType == null ^ Object2.StatusType == null )
 			{
 				equal = false;
 			}
@@ -1092,6 +1160,12 @@ namespace ClinicDoctor.Entities
             	
             	case StatusColumn.Note:
             		return this.Note.CompareTo(rhs.Note);
+            		
+            		                 
+            	
+            	
+            	case StatusColumn.StatusType:
+            		return this.StatusType.CompareTo(rhs.StatusType);
             		
             		                 
             	
@@ -1258,11 +1332,12 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{10}{9}- Id: {0}{9}- Title: {1}{9}- ColorCode: {2}{9}- Note: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
+				"{11}{10}- Id: {0}{10}- Title: {1}{10}- ColorCode: {2}{10}- Note: {3}{10}- StatusType: {4}{10}- IsDisabled: {5}{10}- CreateUser: {6}{10}- CreateDate: {7}{10}- UpdateUser: {8}{10}- UpdateDate: {9}{10}{12}", 
 				this.Id,
 				(this.Title == null) ? string.Empty : this.Title.ToString(),
 				(this.ColorCode == null) ? string.Empty : this.ColorCode.ToString(),
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
+				(this.StatusType == null) ? string.Empty : this.StatusType.ToString(),
 				(this.IsDisabled == null) ? string.Empty : this.IsDisabled.ToString(),
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				(this.CreateDate == null) ? string.Empty : this.CreateDate.ToString(),
@@ -1316,6 +1391,11 @@ namespace ClinicDoctor.Entities
 		/// Note : 
 		/// </summary>
 		public System.String		  Note = null;
+		
+		/// <summary>
+		/// StatusType : 
+		/// </summary>
+		public System.String		  StatusType = null;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1375,6 +1455,31 @@ namespace ClinicDoctor.Entities
 		
 		#endregion
 
+		#region RoomCollection
+		
+		private TList<Room> _roomStatusId;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _roomStatusId
+		/// </summary>
+		
+		public TList<Room> RoomCollection
+		{
+			get
+			{
+				if (_roomStatusId == null)
+				{
+				_roomStatusId = new TList<Room>();
+				}
+	
+				return _roomStatusId;
+			}
+			set { _roomStatusId = value; }
+		}
+		
+		#endregion
+
 		#endregion Data Properties
 		
 		#region Clone Method
@@ -1392,6 +1497,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Title = this.Title;
 			_tmp.ColorCode = this.ColorCode;
 			_tmp.Note = this.Note;
+			_tmp.StatusType = this.StatusType;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1405,6 +1511,8 @@ namespace ClinicDoctor.Entities
 			//deep copy nested objects
 			if (this._appointmentStatusId != null)
 				_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection); 
+			if (this._roomStatusId != null)
+				_tmp.RoomCollection = (TList<Room>) MakeCopyOf(this.RoomCollection); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -1429,6 +1537,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Title = this.Title;
 			_tmp.ColorCode = this.ColorCode;
 			_tmp.Note = this.Note;
+			_tmp.StatusType = this.StatusType;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1441,6 +1550,7 @@ namespace ClinicDoctor.Entities
 			#region Child Collections
 			//deep copy nested objects
 			_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
+			_tmp.RoomCollection = (TList<Room>) MakeCopyOf(this.RoomCollection, existingCopies); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -1834,35 +1944,41 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
 		Note = 4,
 		/// <summary>
+		/// StatusType : 
+		/// </summary>
+		[EnumTextValue("StatusType")]
+		[ColumnEnum("StatusType", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		StatusType = 5,
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, true)]
-		IsDisabled = 5,
+		IsDisabled = 6,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 6,
+		CreateUser = 7,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		CreateDate = 7,
+		CreateDate = 8,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 8,
+		UpdateUser = 9,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		UpdateDate = 9
+		UpdateDate = 10
 	}//End enum
 
 	#endregion StatusColumn Enum

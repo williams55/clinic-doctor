@@ -159,8 +159,9 @@ namespace ClinicDoctor.Web.Data
 			Content item;
 			count = 0;
 			
-			System.Int32 _id;
 			System.Int32? _funcId_nullable;
+			System.Boolean? _isDisabled_nullable;
+			System.Int32 _id;
 
 			switch ( SelectMethod )
 			{
@@ -193,11 +194,25 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				// FK
 				case ContentSelectMethod.GetByFuncId:
 					_funcId_nullable = (System.Int32?) EntityUtil.ChangeType(values["FuncId"], typeof(System.Int32?));
 					results = ContentProvider.GetByFuncId(GetTransactionManager(), _funcId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
+				case ContentSelectMethod.GetByFuncIdIsDisabled:
+					_funcId_nullable = (System.Int32?) EntityUtil.ChangeType(values["FuncId"], typeof(System.Int32?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = ContentProvider.GetByFuncIdIsDisabled(GetTransactionManager(), _funcId_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case ContentSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = ContentProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case ContentSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = ContentProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				// FK
 				// M:M
 				// Custom
 				default:
@@ -375,13 +390,25 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
-		/// </summary>
-		GetById,
-		/// <summary>
 		/// Represents the GetByFuncId method.
 		/// </summary>
-		GetByFuncId
+		GetByFuncId,
+		/// <summary>
+		/// Represents the GetByFuncIdIsDisabled method.
+		/// </summary>
+		GetByFuncIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
+		/// <summary>
+		/// Represents the GetById method.
+		/// </summary>
+		GetById
 	}
 	
 	#endregion ContentSelectMethod

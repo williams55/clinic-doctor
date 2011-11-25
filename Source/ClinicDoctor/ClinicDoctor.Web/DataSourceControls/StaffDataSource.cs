@@ -159,8 +159,11 @@ namespace ClinicDoctor.Web.Data
 			Staff item;
 			count = 0;
 			
-			System.Int32 _id;
 			System.Int32 _groupId;
+			System.Boolean? _isDisabled_nullable;
+			System.Boolean? _isFemale_nullable;
+			System.Int32 _id;
+			System.String _userName_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -193,11 +196,60 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				// FK
 				case StaffSelectMethod.GetByGroupId:
 					_groupId = ( values["GroupId"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int32)) : (int)0;
 					results = StaffProvider.GetByGroupId(GetTransactionManager(), _groupId, this.StartIndex, this.PageSize, out count);
 					break;
+				case StaffSelectMethod.GetByGroupIdIsDisabled:
+					_groupId = ( values["GroupId"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffProvider.GetByGroupIdIsDisabled(GetTransactionManager(), _groupId, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffSelectMethod.GetByGroupIdIsFemale:
+					_groupId = ( values["GroupId"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int32)) : (int)0;
+					_isFemale_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsFemale"], typeof(System.Boolean?));
+					results = StaffProvider.GetByGroupIdIsFemale(GetTransactionManager(), _groupId, _isFemale_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffSelectMethod.GetByGroupIdIsFemaleIsDisabled:
+					_groupId = ( values["GroupId"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int32)) : (int)0;
+					_isFemale_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsFemale"], typeof(System.Boolean?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffProvider.GetByGroupIdIsFemaleIsDisabled(GetTransactionManager(), _groupId, _isFemale_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffSelectMethod.GetByIdIsDisabled:
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffSelectMethod.GetByIsDisabled:
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffSelectMethod.GetByIsFemale:
+					_isFemale_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsFemale"], typeof(System.Boolean?));
+					results = StaffProvider.GetByIsFemale(GetTransactionManager(), _isFemale_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffSelectMethod.GetByIsFemaleIsDisabled:
+					_isFemale_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsFemale"], typeof(System.Boolean?));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					results = StaffProvider.GetByIsFemaleIsDisabled(GetTransactionManager(), _isFemale_nullable, _isDisabled_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case StaffSelectMethod.GetByUserName:
+					_userName_nullable = (System.String) EntityUtil.ChangeType(values["UserName"], typeof(System.String));
+					item = StaffProvider.GetByUserName(GetTransactionManager(), _userName_nullable);
+					results = new TList<Staff>();
+					if ( item != null ) results.Add(item);
+					count = results.Count;
+					break;
+				case StaffSelectMethod.GetByUserNameIsDisabled:
+					_userName_nullable = (System.String) EntityUtil.ChangeType(values["UserName"], typeof(System.String));
+					_isDisabled_nullable = (System.Boolean?) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean?));
+					item = StaffProvider.GetByUserNameIsDisabled(GetTransactionManager(), _userName_nullable, _isDisabled_nullable);
+					results = new TList<Staff>();
+					if ( item != null ) results.Add(item);
+					count = results.Count;
+					break;
+				// FK
 				// M:M
 				// Custom
 				default:
@@ -375,13 +427,49 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
-		/// </summary>
-		GetById,
-		/// <summary>
 		/// Represents the GetByGroupId method.
 		/// </summary>
-		GetByGroupId
+		GetByGroupId,
+		/// <summary>
+		/// Represents the GetByGroupIdIsDisabled method.
+		/// </summary>
+		GetByGroupIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByGroupIdIsFemale method.
+		/// </summary>
+		GetByGroupIdIsFemale,
+		/// <summary>
+		/// Represents the GetByGroupIdIsFemaleIsDisabled method.
+		/// </summary>
+		GetByGroupIdIsFemaleIsDisabled,
+		/// <summary>
+		/// Represents the GetByIdIsDisabled method.
+		/// </summary>
+		GetByIdIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsDisabled method.
+		/// </summary>
+		GetByIsDisabled,
+		/// <summary>
+		/// Represents the GetByIsFemale method.
+		/// </summary>
+		GetByIsFemale,
+		/// <summary>
+		/// Represents the GetByIsFemaleIsDisabled method.
+		/// </summary>
+		GetByIsFemaleIsDisabled,
+		/// <summary>
+		/// Represents the GetByUserName method.
+		/// </summary>
+		GetByUserName,
+		/// <summary>
+		/// Represents the GetByUserNameIsDisabled method.
+		/// </summary>
+		GetByUserNameIsDisabled,
+		/// <summary>
+		/// Represents the GetById method.
+		/// </summary>
+		GetById
 	}
 	
 	#endregion StaffSelectMethod

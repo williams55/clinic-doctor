@@ -120,7 +120,7 @@
 	</ItemGroup>
 	
 		
-	<!-- Custom code folder: D:\GoogleCode\ClinicDoctor\ClinicDoctor.Web\App_Code -->
+	<!-- Custom code folder: D:\GoogleCode\Clinic-Doctor\source\ClinicDoctor.Web\App_Code -->
 	<ItemGroup>	
 		<Folder Include="App_Code\" />
         <Compile Include="App_Code\**\*.cs">
