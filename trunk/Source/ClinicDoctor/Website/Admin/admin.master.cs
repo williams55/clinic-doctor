@@ -9,30 +9,27 @@ public partial class Admin_admin : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        //if (Session["adminname"] == null)
-        //    Response.Redirect("AdminLogin.aspx", true);
-        //ECISaiGon.Entities.User obj = (ECISaiGon.Entities.User)Session["adminname"];
-        //obj = DataRepository.UserProvider.GetByUserId(obj.UserId);
-        //hpl_EditProfile.Text = obj.DisplayName;
-        //hpl_EditProfile.NavigateUrl = "EditUser.aspx?uid=" + obj.UserId;
-        //lbl_Name.Text = obj.DisplayName;
 
-        //if (!IsPostBack)
-        //{
-        //    var httpCookie = Request.Cookies["LoginUser"];
-        //    var conCookie = Request.Cookies["ConnectionString"];
-        //    if (httpCookie != null && conCookie !=null)
-        //    {
-        //        WebUser id = DataRepository.WebUserProvider.GetByUserId(httpCookie.Value);
-        //        lbl_Server.Text = conCookie.Value;
-        //        lbl_Name.Text = id.Name;
-        //        hpl_EditProfile.Text = id.Name;
-        //    }
-        //    else
-        //    {
-        //        FormsAuthentication.RedirectToLoginPage();
-        //    }
-        //}
+        if (!IsPostBack)
+        {
+
+            string authUserName;
+            authUserName = Context.User.Identity.Name.Split('\\')[1];
+            //lbl_User.Text = authUserName;
+            WebUser objUser = DataRepository.WebUserProvider.GetByUserId(authUserName);
+            if (objUser == null)
+            {
+                lbl_User.Text = "Welcome, " + authUserName;
+                if (Session["Redirect"] == null)
+                    Response.Redirect("AccessDenied.aspx", true);
+                else
+                    Session["Redirect"] = null;
+            }
+            else
+            {
+                lbl_User.Text = "Welcome, " + objUser.Fullname;
+            }
+        }
     }
     protected void btnLogOut_Click(object sender, EventArgs eventArgs)
     {
