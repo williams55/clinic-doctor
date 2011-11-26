@@ -37,7 +37,7 @@ public partial class Admin_Customer : System.Web.UI.Page
         {
 
             TList<Appointment> listAppointment = DataRepository.AppointmentProvider.GetByCustomerId((int.Parse(ID)));
-            if (Appointment.Count > 0)
+            if (listAppointment.Count > 0)
             {
                 Response.Write(@"<script language='javascript'>alert('Vui lòng xóa tất cả chi tiết.')</script>");
 
