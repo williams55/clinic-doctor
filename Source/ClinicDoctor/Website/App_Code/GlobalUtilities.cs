@@ -3,8 +3,8 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Reflection;
 using System.Xml;
-using Pharmacy.Data.SqlClient;
-using Pharmacy.Entities;
+using ClinicDoctor.Data.SqlClient;
+using ClinicDoctor.Entities;
 
 namespace Arch
 {
