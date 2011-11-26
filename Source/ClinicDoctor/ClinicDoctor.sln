@@ -28,7 +28,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ClinicDoctor.Website", "Cli
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "2005"
+		VWDPort = "11623"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTiers", "NetTiers", "{F3A10C8D-3227-449F-A2CB-014DE2D7F415}"
@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTiers", "NetTiers", "{F3
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Website", "Website\", "{B8D1C50F-01B3-458B-9E0B-8E6D0D6B1A9F}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFramework = "2.0"
+		TargetFramework = "3.5"
 		ProjectReferences = "{47FE3BE8-3E46-47CA-8494-473755867DD0}|ClinicDoctor.Web.dll;{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}|ClinicDoctor.Data.dll;{20E43088-4618-4F4A-B8AD-FC31B50D94CD}|ClinicDoctor.Entities.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Website"
 		Debug.AspNetCompiler.PhysicalPath = "Website\"
@@ -54,7 +54,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Website", "Website\", "{B8D
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "4102"
+		VWDPort = "11625"
 	EndProjectSection
 EndProject
 Global
