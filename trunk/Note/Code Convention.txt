@@ -1,0 +1,8 @@
+﻿
+	- Tên public: KyTuDauVietHoa
+	- Tên private: kyTuDauKoVietHoa
+	- Tên control: Label -> lbl[tên biến], Textbox -> txt, DropDownList -> ddl, Button -> cmd
+	- Tên hàm: KyTuDauVietHoa
+	- Tên biến trong hàm: kyTuDauKoVietHoa
+	- Tên biến: Đặt tên chức năng trước. Ví dụ rAbc: r -> Roster
+	
