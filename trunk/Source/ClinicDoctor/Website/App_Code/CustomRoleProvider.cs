@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
-using Pharmacy.Data;
-using Pharmacy.Entities;
+using ClinicDoctor.Data;
+using ClinicDoctor.Entities;
 
 /// <summary>
 /// Summary description for CustomRoleProvider
@@ -57,8 +57,9 @@ public class CustomRoleProvider :RoleProvider
 
     public override string[] GetRolesForUser(string username)
     {
-        WebUser id = DataRepository.WebUserProvider.GetByUserId(username);
-        return id.Roles.Split(' ');
+        //StaffRoles id = DataRepository.StaffRolesProvider.get(username);
+        //return id.Roles.Split(' ');
+  
     }
 
     public override string[] GetUsersInRole(string roleName)
