@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  
+    <siteMapNode url="" title="Admin"  description="">
+        <siteMapNode url="~/Admin/Default.aspx" title="Admin"  description="Admin" />  
+	<siteMapNode url="~/Admin/Appointment.aspx" title="Appointment"  description="" />
+	<siteMapNode url="~/Admin/Content.aspx" title="Content"  description="" />
+	<siteMapNode url="~/Admin/Customer.aspx" title="Customer"  description="" />
+	<siteMapNode url="~/Admin/DoctorFunc.aspx" title="Doctor Func"  description="" />
+	<siteMapNode url="~/Admin/DoctorRoom.aspx" title="Doctor Room"  description="" />
+	<siteMapNode url="~/Admin/DoctorRoster.aspx" title="Doctor Roster"  description="" />
+	<siteMapNode url="~/Admin/Functionality.aspx" title="Functionality"  description="" />
+	<siteMapNode url="~/Admin/Group.aspx" title="Group"  description="" />
+	<siteMapNode url="~/Admin/Room.aspx" title="Room"  description="" />
+	<siteMapNode url="~/Admin/RoomFunc.aspx" title="Room Func"  description="" />
+	<siteMapNode url="~/Admin/RosterType.aspx" title="Roster Type"  description="" />
+	<siteMapNode url="~/Admin/Staff.aspx" title="Staff"  description="" />
+	<siteMapNode url="~/Admin/Status.aspx" title="Status"  description="" />
+        </siteMapNode>              
+</siteMap>
