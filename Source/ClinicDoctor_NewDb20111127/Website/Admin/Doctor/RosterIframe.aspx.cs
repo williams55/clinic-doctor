@@ -12,8 +12,8 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
     public static string GetData()
     {
         Staff obj = DataRepository.StaffProvider.GetByUserNameIsDisabled(HttpContext.Current.User.Identity.Name, false);
-        if (obj == null)
-            return string.Empty;
+        //if (obj == null)
+        //    return string.Empty;
 
         //return obj.Address;
         //return @"[" +
