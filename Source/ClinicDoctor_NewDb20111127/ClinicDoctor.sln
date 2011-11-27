@@ -1,0 +1,111 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicDoctor.Entities", "ClinicDoctor.Entities\ClinicDoctor.Entities.csproj", "{20E43088-4618-4F4A-B8AD-FC31B50D94CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicDoctor.Settings", "ClinicDoctor.Settings\ClinicDoctor.Settings.csproj", "{727845F6-932D-47CC-9957-E7BE626A461E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicDoctor.Data", "ClinicDoctor.Data\ClinicDoctor.Data.csproj", "{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicDoctor.Data.SqlClient", "ClinicDoctor.Data.SqlClient\ClinicDoctor.Data.SqlClient.csproj", "{8996A7B4-57D3-440B-A545-A701844B8C4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicDoctor.Web", "ClinicDoctor.Web\ClinicDoctor.Web.csproj", "{47FE3BE8-3E46-47CA-8494-473755867DD0}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ClinicDoctor.Website", "ClinicDoctor.Website\", "{1DCAB031-308A-4581-AFA8-BD29F45A1357}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = "Svn"
+		SccAuxPath = "Svn"
+		SccLocalPath = "Svn"
+		SccProvider = "RocketSvnScc"
+		TargetFramework = "3.5"
+		ProjectReferences = "{20E43088-4618-4F4A-B8AD-FC31B50D94CD}|ClinicDoctor.Entities.dll;{727845F6-932D-47CC-9957-E7BE626A461E}|ClinicDoctor.Settings.dll;{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}|ClinicDoctor.Data.dll;{8996A7B4-57D3-440B-A545-A701844B8C4A}|ClinicDoctor.Data.SqlClient.dll;{47FE3BE8-3E46-47CA-8494-473755867DD0}|ClinicDoctor.Web.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/ClinicDoctor.Website"
+		Debug.AspNetCompiler.PhysicalPath = "ClinicDoctor.Website\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\ClinicDoctor.Website\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/ClinicDoctor.Website"
+		Release.AspNetCompiler.PhysicalPath = "ClinicDoctor.Website\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\ClinicDoctor.Website\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "2005"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTiers", "NetTiers", "{F3A10C8D-3227-449F-A2CB-014DE2D7F415}"
+	ProjectSection(SolutionItems) = preProject
+		AssemblyInfo.cs = AssemblyInfo.cs
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Website", "Website\", "{24790DB2-820A-4C86-B88C-DD798D87D3C7}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFramework = "3.5"
+		ProjectReferences = "{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}|ClinicDoctor.Data.dll;{8996A7B4-57D3-440B-A545-A701844B8C4A}|ClinicDoctor.Data.SqlClient.dll;{20E43088-4618-4F4A-B8AD-FC31B50D94CD}|ClinicDoctor.Entities.dll;{727845F6-932D-47CC-9957-E7BE626A461E}|ClinicDoctor.Settings.dll;{47FE3BE8-3E46-47CA-8494-473755867DD0}|ClinicDoctor.Web.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/Website"
+		Debug.AspNetCompiler.PhysicalPath = "Website\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Website\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/Website"
+		Release.AspNetCompiler.PhysicalPath = "Website\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Website\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "11625"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20E43088-4618-4F4A-B8AD-FC31B50D94CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20E43088-4618-4F4A-B8AD-FC31B50D94CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20E43088-4618-4F4A-B8AD-FC31B50D94CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20E43088-4618-4F4A-B8AD-FC31B50D94CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{727845F6-932D-47CC-9957-E7BE626A461E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{727845F6-932D-47CC-9957-E7BE626A461E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{727845F6-932D-47CC-9957-E7BE626A461E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{727845F6-932D-47CC-9957-E7BE626A461E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8996A7B4-57D3-440B-A545-A701844B8C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8996A7B4-57D3-440B-A545-A701844B8C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8996A7B4-57D3-440B-A545-A701844B8C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8996A7B4-57D3-440B-A545-A701844B8C4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47FE3BE8-3E46-47CA-8494-473755867DD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47FE3BE8-3E46-47CA-8494-473755867DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47FE3BE8-3E46-47CA-8494-473755867DD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47FE3BE8-3E46-47CA-8494-473755867DD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DCAB031-308A-4581-AFA8-BD29F45A1357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DCAB031-308A-4581-AFA8-BD29F45A1357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DCAB031-308A-4581-AFA8-BD29F45A1357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DCAB031-308A-4581-AFA8-BD29F45A1357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24790DB2-820A-4C86-B88C-DD798D87D3C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24790DB2-820A-4C86-B88C-DD798D87D3C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24790DB2-820A-4C86-B88C-DD798D87D3C7}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{24790DB2-820A-4C86-B88C-DD798D87D3C7}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{727845F6-932D-47CC-9957-E7BE626A461E} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
+		{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
+		{8996A7B4-57D3-440B-A545-A701844B8C4A} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
+		{47FE3BE8-3E46-47CA-8494-473755867DD0} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
+		{1DCAB031-308A-4581-AFA8-BD29F45A1357} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
+		{20E43088-4618-4F4A-B8AD-FC31B50D94CD} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
+		{24790DB2-820A-4C86-B88C-DD798D87D3C7} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
+	EndGlobalSection
+EndGlobal

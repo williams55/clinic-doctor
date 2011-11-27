@@ -1,0 +1,13 @@
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\ClinicDoctor.Entities.dll
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\ClinicDoctor.Entities.pdb
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\ClinicDoctor.Entities.xml
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Cryptography.dll
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.dll
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\obj\Debug\ResolveAssemblyReference.cache
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\obj\Debug\ClinicDoctor.Entities.dll
+F:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor\ClinicDoctor.Entities\obj\Debug\ClinicDoctor.Entities.pdb
