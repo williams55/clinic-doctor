@@ -4,17 +4,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/jquery-1.4.2.min.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/json2.js") %>" type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/dhtmlxscheduler.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/ext/dhtmlxscheduler_minical.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/ext/dhtmlxscheduler_editors.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/ext/dhtmlxscheduler_multiselect.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/dhtmlxscheduler.css") %>"
         type="text/css" media="screen" title="no title" charset="utf-8" />
     <style type="text/css" media="screen">
@@ -26,6 +33,7 @@
             overflow: hidden;
         }
     </style>
+
     <script type="text/javascript" charset="utf-8">
         function init() {
             scheduler.config.xml_date = "%Y-%m-%d %H:%i";
@@ -41,31 +49,21 @@
             var weekday;
             $.ajax({
                 type: "POST",
-                url: "Roster.ashx/GetData",
+                url: "RosterIframe.aspx/GetData",
                 data: "{}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function (msg) {
-                    alert(msg);
-                    //                    weekday = JSON.stringify(abc);
-                    //                    alert($.parseJSON(JSON.stringify(msg.d)));
-                    //                    var abc = $.parseJSON(JSON.stringify(msg.d));
-                    //                    weekday = eval(msg.d);
-                    //                    alert(weekday);
-                    //                    scheduler.config.lightbox.sections = [
-                    //			    { name: "description", height: 50, map_to: "text", type: "textarea", focus: true },
-                    //			    { name: "weekday", height: 22, map_to: "user_id", type: "multiselect", options: weekday, vertical: "false" },
-                    //			    { name: "location", height: 43, type: "textarea", map_to: "details" },
-                    //			    { name: "time", height: 72, type: "time", map_to: "auto" }
-                    //		    ]
-
-                    //                    scheduler.init('scheduler_here', new Date(), "week");
-                    //                    $.each(abc, function (i, abc) {
-                    //                        alert(msg.d.serializeArray());
-                    //                    });
-                    //                    weekday.push(abc[i]);
+                success: function(msg) {
+                    weekday = eval(msg.d);
+                    scheduler.config.lightbox.sections = [
+			            { name: "description", height: 50, map_to: "text", type: "textarea", focus: true },
+			            { name: "weekday", height: 22, map_to: "user_id", type: "multiselect", options: weekday, vertical: "false" },
+			            { name: "location", height: 43, type: "textarea", map_to: "details" },
+			            { name: "time", height: 72, type: "time", map_to: "auto" }
+		            ];
+                    scheduler.init('scheduler_here', new Date(), "week");
                 },
-                error: function () { alert("ppp"); }
+                error: function(msg1) { alert(msg1); }
             });
 
             //            var weekday = [
@@ -81,7 +79,7 @@
 
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             init();
         });
 
@@ -93,13 +91,14 @@
                     position: "dhx_minical_icon",
                     date: scheduler._date,
                     navigation: true,
-                    handler: function (date, calendar) {
+                    handler: function(date, calendar) {
                         scheduler.setCurrentView(date);
                         scheduler.destroyCalendar()
                     }
                 });
         }
     </script>
+
 </head>
 <body>
     <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 100%;'>
