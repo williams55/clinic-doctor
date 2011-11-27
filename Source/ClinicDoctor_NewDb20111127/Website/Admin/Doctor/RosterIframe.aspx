@@ -8,8 +8,6 @@
     <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/jquery-1.4.2.min.js") %>"
         type="text/javascript"></script>
 
-    <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/json2.js") %>" type="text/javascript"></script>
-
     <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/dhtmlxscheduler.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
@@ -22,8 +20,15 @@
     <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/ext/dhtmlxscheduler_multiselect.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
+    <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/dhtmlxcombo/dhtmlxcommon.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/dhtmlxcombo/dhtmlxcombo.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/dhtmlxscheduler.css") %>"
         type="text/css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/dhtmlxcombo/dhtmlxcombo.css") %>">
     <style type="text/css" media="screen">
         html, body
         {
@@ -43,10 +48,12 @@
             scheduler.config.details_on_create = true;
             scheduler.config.details_on_dblclick = true;
 
+            scheduler.locale.labels.section_rosterType = "Type";
+            scheduler.locale.labels.section_repeat = "Is repeated";
             scheduler.locale.labels.section_weekday = "Weekday";
 
             // Load data
-            var weekday;
+            var weekday = <%=Constants.Weekdays %>;
             $.ajax({
                 type: "POST",
                 url: "RosterIframe.aspx/GetData",
@@ -54,29 +61,18 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function(msg) {
-                    weekday = eval(msg.d);
+                    var rosterType = eval(msg.d);
+                    
                     scheduler.config.lightbox.sections = [
 			            { name: "description", height: 50, map_to: "text", type: "textarea", focus: true },
-			            { name: "weekday", height: 22, map_to: "user_id", type: "multiselect", options: weekday, vertical: "false" },
-			            { name: "location", height: 43, type: "textarea", map_to: "details" },
+				        { name: "rosterType", height: 70, options: rosterType, map_to:"combo_select", type:"combo", image_path: "http://www.dhtmlx.com/docs/products/dhtmlxcombo/codebase/imgs/", filtering: true, cache: false },
+                        { name: "repeat", height: 22, type: "checkbox", checked_value: "true", unchecked_value: "false" },
+			            { name: "weekday", height: 22, map_to: "weekday", type: "multiselect", options: weekday, vertical: "false" },
 			            { name: "time", height: 72, type: "time", map_to: "auto" }
 		            ];
                     scheduler.init('scheduler_here', new Date(), "week");
-                },
-                error: function(msg1) { alert(msg1); }
+                }
             });
-
-            //            var weekday = [
-            //                { key: 'Sun', label: 'Sunday' },
-            //                { key: 'Mon', label: 'Monday' },
-            //                { key: 'Tue', label: 'Tuesday' },
-            //                { key: 'Wed', label: 'Wednesday' },
-            //                { key: 'Thu', label: 'Thursday' },
-            //                { key: 'Fri', label: 'Friday' },
-            //                { key: 'Sat', label: 'Saturday' }
-            //            ];
-            //            alert(scheduler.locale.date.day_full.length);
-
         }
 
         $(document).ready(function() {
