@@ -29,4 +29,19 @@ public static class EntitiesUtilities
             return string.Empty;
         }
     }
+
+    // Seperate username and domain
+    public static string GetAuthName()
+    {
+        try
+        {
+            string authUserName;
+            authUserName = HttpContext.Current.User.Identity.Name.Split('\\')[1];
+            return authUserName;
+        }
+        catch
+        {
+            return string.Empty;
+        }
+    }
 }

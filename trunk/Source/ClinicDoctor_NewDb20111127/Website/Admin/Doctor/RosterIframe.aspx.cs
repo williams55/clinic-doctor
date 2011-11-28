@@ -19,10 +19,21 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             result = string.Empty;
             foreach (RosterType item in lst)
             {
-                result += @"{""key"" : """ + item.Id + @"""" + "," + @"""value"" : """ + ((item.Note == null) ? "" : item.Note) + @"""" + "},";
+                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + ((item.Note == null) ? "" : item.Note) + @"'" + "},";
             }
             result = "[" + result.Substring(0, result.Length - 1) + "]";
         }
+
+        return result;
+    }
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string SaveEvent(string RosterType, string StartTime, string EndTime, string Note, string RepeatRoster, string Weekday)
+    {
+        string username = EntitiesUtilities.GetAuthName();
+
+        string result = username + "-" + RosterType + "-" + StartTime + "-" + EndTime + "-" + Note + "-" + RepeatRoster + "-" + Weekday;
 
         return result;
     }
