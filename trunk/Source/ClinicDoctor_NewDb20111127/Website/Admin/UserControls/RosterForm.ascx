@@ -3,16 +3,29 @@
     .schedulerForm
     {
         position: absolute;
-        top: 100px;
-        left: 200px;
         z-index: 10001;
         display: none;
         font-family: Arial, Sans-Serif;
         font-size: 13px;
         background-color: #d6e5f4;
         padding: 10px;
+        visibility: visible;
+        height: 214px;
+        top: 42px;
+        left: 309px;
     }
-    .schedulerForm input[type="text"], #RosterForm textarea
+    .schedulerForm div
+    {
+        padding: 3px;
+    }
+    .schedulerForm div.title
+    {
+        font-family: Arial, Sans-Serif;
+        font-size: 16px;
+        font-weight: bold;
+        padding-bottom: 10px;
+    }
+    .schedulerForm input[type="text"], .schedulerForm textarea
     {
         font-family: Arial, Sans-Serif;
         font-size: 13px;
@@ -47,16 +60,25 @@
         });
     });
 </script>
-<div style="visibility: visible; height: 214px; top: 42px; left: 309px;" id="RosterForm">
-    <label for="txtName">
-        Name</label>
-    <input id="Text16" type="text" />
-    <label for="txtEmail">
-        Email</label>
-    <input id="Text17" type="text" />
-    <label for="txtWebsite">
-        Website</label>
-    <input id="Text18" type="text" />
-    <label for="txtComment">
-        Comment</label>
-    <textarea id="Textarea6" rows="4" cols="30"></textarea></div>
+<div id="RosterForm" class="schedulerForm">
+    <div class="title" id="lblTitle">
+        New event</div>
+    <div>
+        <label for="cboRosterType">
+            Roster Type</label>
+        <select id="cboRosterType">
+            <option value="1">1</option>
+        </select></div>
+    <div>
+        <label for="txtEmail">
+            Email</label>
+        <input id="Text17" type="text" /></div>
+    <div>
+        <label for="txtWebsite">
+            Website</label>
+        <input id="Text18" type="text" /></div>
+    <div>
+        <label for="txtComment">
+            Comment</label>
+        <textarea id="Textarea6" rows="4" cols="30"></textarea></div>
+</div>
