@@ -1,17 +1,23 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="RosterIframe.aspx.cs" Inherits="Admin_Doctor_RosterIframe" %>
 
-<%@ Register Src="~/Admin/UserControls/RosterForm.ascx" TagName="RegisterRoster"
-    TagPrefix="Scheduler" %>
+<%@ Register Src="~/Admin/Doctor/RosterForm.ascx" TagName="RegisterRoster" TagPrefix="Scheduler" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/jquery-1.4.2.min.js") %>"
+
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/jquery-1.4.2.min.js") %>"
         type="text/javascript"></script>
-    <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/json2.js") %>" type="text/javascript"></script>
-    <script src="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/dhtmlxscheduler.js") %>"
+
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/json2.js") %>"
+        type="text/javascript"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.js") %>"
         type="text/javascript" charset="utf-8"></script>
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/myscript/codebase/dhtmlxscheduler.css") %>"
+
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.css") %>"
+        type="text/css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/myscript/css/scheduler.css") %>"
         type="text/css" media="screen" title="no title" charset="utf-8" />
     <style type="text/css" media="screen">
         html, body
@@ -22,18 +28,56 @@
             overflow: hidden;
         }
     </style>
-    <script src="GRNEditt.js" type="text/javascript"></script>
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-            // Load weekday
-            var weekday = <%=Constants.Weekdays %>;
 
-            initSchedule(weekday);
-        });
+    <script type="text/javascript" charset="utf-8">
+        // Load weekday
+        var weekday = <%=Constants.Weekdays %>;
+        var html = function (id) { return document.getElementById(id); }; //just a helper
+
     </script>
+
+    <script src="GRNEditt.js" type="text/javascript"></script>
+
 </head>
 <body>
-    <Scheduler:RegisterRoster ID="scheduler" runat="server" />
+    <div id="RosterForm" class="schedulerForm">
+        <table cellpadding="3" width="100%">
+            <tr>
+                <td colspan="2" class="title">
+                    New event
+                </td>
+            </tr>
+            <tr>
+                <td class="header" width="80">
+                    Roster Type
+                </td>
+                <td>
+                    <select id="cboRosterType">
+                    </select><span id="loadingRosterType" class="loading"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Is repeat
+                </td>
+                <td>
+                    <input id="chkRepeat" type="checkbox" /></span>
+                </td>
+            </tr>
+            <tr id="divWeekday">
+                <td class="header">
+                    Weekday
+                </td>
+                <td id="spanWeekday">
+                    
+                </td>
+            </tr>
+        </table>
+        <div>
+            <label for="txtComment">
+                Comment</label>
+            <textarea id="Textarea6" rows="4" cols="30"></textarea></div>
+    </div>
     <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 100%;'>
         <div class="dhx_cal_navline">
             <div class="dhx_cal_prev_button">
