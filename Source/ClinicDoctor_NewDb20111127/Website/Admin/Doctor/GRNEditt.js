@@ -95,6 +95,8 @@ var html = function (id) { return document.getElementById(id); }; //just a helpe
 scheduler.showLightbox = function (id) {
     var ev = scheduler.getEvent(id);
     scheduler.startLightbox(id, html("RosterForm"));
+
+
 }
 
 function save_form() {

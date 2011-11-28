@@ -21,23 +21,6 @@
             height: 100%;
             overflow: hidden;
         }
-        #myForm
-        {
-            position: absolute;
-            top: 100px;
-            left: 200px;
-            z-index: 10001;
-            display: none;
-            background-color: white;
-            border: 2px outset gray;
-            padding: 20px;
-            font-family: Tahoma;
-            font-size: 10pt;
-        }
-        #myForm label
-        {
-            width: 200px;
-        }
     </style>
     <script src="GRNEditt.js" type="text/javascript"></script>
     <script type="text/javascript" charset="utf-8">
