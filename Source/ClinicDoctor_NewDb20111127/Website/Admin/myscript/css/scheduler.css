@@ -1,0 +1,67 @@
+﻿.schedulerForm
+{
+    position: absolute;
+    z-index: 10001;
+    display: none;
+    font-family: Arial, Sans-Serif;
+    font-size: 13px;
+    background-color: #d6e5f4;
+    padding: 10px;
+    visibility: visible;
+    height: 400px;
+    width: 450px;
+    top: 22px;
+    left: 0px;
+}
+.schedulerForm table tr td
+{
+    padding: 5px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+}
+.schedulerForm table tr td.header
+{
+    font-weight: bold;
+}
+.schedulerForm table tr td.title
+{
+    font-family: Arial, Sans-Serif;
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+.schedulerForm input[type="text"], .schedulerForm textarea
+{
+    font-family: Arial, Sans-Serif;
+    font-size: 13px;
+    margin-bottom: 5px;
+    display: block;
+    padding: 4px;
+    border: solid 1px #85b1de;
+    width: 300px;
+    background-color: #EDF2F7;
+}
+.schedulerForm input[type="text"].activeField, #RosterForm textarea.activeField
+{
+    background-image: none;
+    background-color: #ffffff;
+    border: solid 1px #33677F;
+}
+.schedulerForm input[type="text"].idle, #RosterForm textarea.idle
+{
+    border: solid 1px #85b1de;
+    background-color: #eeeeee;
+    background-repeat: repeat-x;
+    background-position: top;
+}
+
+.schedulerForm .loading
+{
+    background: url(../images/loading_bar.gif) top left no-repeat;
+    padding-left: 65px;
+}
+
+.clear
+{
+    clear:both;
+}
