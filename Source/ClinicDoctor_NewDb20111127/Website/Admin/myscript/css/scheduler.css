@@ -4,7 +4,6 @@
     z-index: 10001;
     display: none;
     font-family: Arial, Sans-Serif;
-    font-size: 13px;
     background-color: #d6e5f4;
     padding: 10px;
     visibility: visible;
@@ -12,6 +11,7 @@
     width: 450px;
     top: 22px;
     left: 0px;
+    border: 2px solid #3380CB;
 }
 .schedulerForm table tr td
 {
@@ -26,14 +26,12 @@
 .schedulerForm table tr td.title
 {
     font-family: Arial, Sans-Serif;
-    font-size: 16px;
     font-weight: bold;
     padding-bottom: 10px;
 }
 .schedulerForm input[type="text"], .schedulerForm textarea
 {
     font-family: Arial, Sans-Serif;
-    font-size: 13px;
     margin-bottom: 5px;
     display: block;
     padding: 4px;
@@ -63,5 +61,17 @@
 
 .clear
 {
-    clear:both;
+    clear: both;
+}
+
+.schedulerForm input[type="text"].datePicker
+{
+    width: 80px;
+    float: left;
+    height:11px;
+}
+.schedulerForm select
+{
+    float: left;
+    margin-right: 10px;
 }
