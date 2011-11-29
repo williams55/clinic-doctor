@@ -7,7 +7,7 @@ function show_minical() {
             position: "dhx_minical_icon",
             date: scheduler._date,
             navigation: true,
-            handler: function(date, calendar) {
+            handler: function (date, calendar) {
                 scheduler.setCurrentView(date);
                 scheduler.destroyCalendar()
             }
@@ -90,13 +90,14 @@ function initSchedule(weekday) {
     //    });
 }
 
-scheduler.showLightbox = function(id) {
+scheduler.showLightbox = function (id) {
     initForm();
 
     var ev = scheduler.getEvent(id);
     scheduler.startLightbox(id, html("RosterForm"));
 
     loadRosterType();
+    loadHour();
 }
 
 function save_form() {
@@ -113,15 +114,15 @@ function loadRosterType() {
     // Load data
     $.ajax({
         type: "POST",
-        url: "RosterIframe.aspx/GetData",
+        url: "RosterIframe.aspx/GetRosterType",
         data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function(msg) {
+        success: function (msg) {
             var rosterType = eval(msg.d);
             $("#cboRosterType").find("option").remove();
 
-            $.each(rosterType, function(i, item) {
+            $.each(rosterType, function (i, item) {
                 $("#cboRosterType").append('<option value="' + item.key + '">' + item.label + '</option>');
             });
 
@@ -131,11 +132,35 @@ function loadRosterType() {
     });
 }
 
-function initForm() {
-    $("#cboRosterType").attr("style", "display: none");
-    $("#loadingRosterType").attr("style", "display: block");
+function loadHour() {
+    $.ajax({
+        type: "POST",
+        url: "RosterIframe.aspx/GetTime",
+        data: "{}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            var arr = eval(msg.d);
+            $("#cboFromHour").find("option").remove();
 
-    $("#divWeekday").attr("style", "display: none");
+            $.each(arr, function (i, item) {
+                $("#cboFromHour").append('<option value="' + item.key + '">' + item.label + '</option>');
+            });
+
+            $("#cboFromHour").fadeIn();
+            $("#loadingFromHour").fadeOut();
+        }
+    });
+}
+
+function initForm() {
+    $("#cboRosterType").hide();
+    $("#loadingRosterType").show();
+
+    $("#divWeekday").hide();
+
+    $("#cboFromHour").hide();
+    $("#loadingFromHour").show();
 }
 
 //function SaveRoster(event_object) {
@@ -154,19 +179,31 @@ function initForm() {
 //    });
 //}
 
-$(document).ready(function() {
+$(document).ready(function () {
     $("input, textarea").addClass("idle");
-    $("input, textarea").focus(function() {
+    $("input, textarea").focus(function () {
         $(this).addClass("activeField").removeClass("idle");
-    }).blur(function() {
+    }).blur(function () {
         $(this).removeClass("activeField").addClass("idle");
     });
     initSchedule(weekday);
 
-    $("#chkRepeat").click(function() {
+    $(".datePicker").datepicker({
+        showOn: "button",
+        buttonImage: "../resources/scripts/codebase/imgs/calendar.gif",
+        buttonImageOnly: true, changeMonth: true,
+        changeYear: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        dateFormat: "dd/mm/yy",
+        minDate: new Date(),
+        maxDate: "+1M"
+    });
+
+    $("#chkRepeat").click(function () {
         $('#divWeekday').toggle($(this).attr('checked'));
         $("#spanWeekday").find("span").remove();
-        $.each(weekday, function(i, item) {
+        $.each(weekday, function (i, item) {
             $("#spanWeekday").append('<span style="float:left; padding-right:5px; width:95px;"><input type="checkbox" id="chk' + item.key + '" /> ' + item.label + '</span>');
         });
     });
