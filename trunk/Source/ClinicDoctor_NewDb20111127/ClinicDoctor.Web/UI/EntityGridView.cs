@@ -1,19 +1,15 @@
 ﻿#region Using directives
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Web.UI;
 using System.IO;
 using System.Web.UI.WebControls;
-using System.Data;
-using ClinicDoctor;
-using ClinicDoctor.Entities;
+using Pharmacy.Entities;
 
 #endregion
 
-namespace ClinicDoctor.Web.UI
+namespace Pharmacy.Web.UI
 {
     /// <summary>
     /// Inherits all features of instinct GridView Control, also provides multi-sort, control of page size, export data to excel, etc.
@@ -525,25 +521,27 @@ namespace ClinicDoctor.Web.UI
             {
                 cboPageSize.Items.FindByText(this.PageSize.ToString()).Selected = true;
             }
-
             pagerRow = dgItem;
+            if (string.IsNullOrEmpty(PagerStyle.CssClass))
+                PagerStyle.CssClass = "pagination";
+            pagerRow.ApplyStyle(this.PagerStyle);
             pagerCell = ((TableCell)(pagerRow.Controls[0]));
             TableRow pagerTableRow = ((Table)pagerCell.Controls[0]).Rows[0];
             TableCell cell = new TableCell();
             cell.Text = string.Format("{0}: ", ShowPageText );
             cell.Wrap = false;
-            cell.ApplyStyle(this.PagerStyle);
+            //cell.ApplyStyle(this.PagerStyle);
             pagerTableRow.Cells.AddAt(0, cell);
 
             cell = new TableCell();
             cell.Text = string.Format("&nbsp; ({1}: {0})", RecordsCount, TotalRecordsText);
             cell.Wrap = false;
-            cell.ApplyStyle(this.PagerStyle);
+            //cell.ApplyStyle(this.PagerStyle);
             pagerTableRow.Cells.Add(cell);
 
             cell = new TableCell();
             cell.Width = Unit.Percentage(100);
-            cell.ApplyStyle(this.PagerStyle);
+            //cell.ApplyStyle(this.PagerStyle);
             pagerTableRow.Cells.Add(cell);
 
             if (AllowExportToExcel) 
@@ -551,21 +549,21 @@ namespace ClinicDoctor.Web.UI
             	cell = new TableCell();
             	cell.Controls.Add(ExcelButton());
                 cell.Wrap = false;
-                cell.ApplyStyle(this.PagerStyle);
+                //cell.ApplyStyle(this.PagerStyle);
             	pagerTableRow.Cells.Add(cell);
             }
 
             cell = new TableCell();
             cell.Text = string.Format("{0}: ", RecordsPerPageText);
             cell.Wrap = false;
-            cell.ApplyStyle(this.PagerStyle);
+            //cell.ApplyStyle(this.PagerStyle);
             cell.HorizontalAlign = HorizontalAlign.Right;
             pagerTableRow.Cells.Add(cell);
 
             cell = new TableCell();
             cell.Controls.Add(cboPageSize);
             cell.HorizontalAlign = HorizontalAlign.Right;
-            cell.ApplyStyle(this.PagerStyle);
+            //cell.ApplyStyle(this.PagerStyle);
             pagerTableRow.Cells.Add(cell);
         }
 
