@@ -36,32 +36,36 @@ function initSchedule(weekday) {
         end_date: "29-11-2011 11:30:00",
         text: "Some",
         isnew: "false",
-        readonly: true
+        readonly: true,
+        color: "#ccc"
     });
 
     scheduler.addEvent({
         start_date: "30-11-2011 04:15:00",
         end_date: "30-11-2011 05:30:00",
         text: "Some1",
-        isnew: "false"
+        isnew: "false",
+        color: "#ff0000"
     });
 
     scheduler.addEvent({
         start_date: "1-12-2011 04:15:00",
         end_date: "1-12-2011 05:30:00",
         text: "Some2",
-        isnew: "false"
+        isnew: "false",
+        color: "#ff0000"
     });
 
     scheduler.addEvent({
         start_date: "1-12-2011 06:15:00",
         end_date: "1-12-2011 07:30:00",
         text: "Some3",
-        isnew: "false"
+        isnew: "false",
+        color: "#ff0000"
     });
 
     // When event changed, check and update
-    scheduler.attachEvent("onBeforeEventChanged", function (event_object, native_event, is_new) {
+    scheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new) {
         // If update roster
         if (is_new == false) {
             var evs = scheduler.getEvents(event_object.start_date, event_object.end_date);
@@ -76,95 +80,11 @@ function initSchedule(weekday) {
             }
         }
 
+        // Thuc hien luu cap nhat
+        alert(event_object.isnew);
+
         return true;
     });
-    
-    // When change view, disabled some days past
-    //    scheduler.attachEvent("onViewChange", function (mode, date) {
-    //        var beginDate = new Date(date.getFullYear(), date.getMonth(), 1);
-    //        var currentDate = new Date();
-    //        var itemDate = beginDate;
-
-    //        while (1 == 1) {
-    //            if (itemDate <= currentDate) {
-
-    //                if (beginDate.getMonth() < itemDate.getMonth())
-    //                    break;
-
-    //                scheduler.blockTime(new Date(itemDate), "fullday");
-    //                itemDate = new Date(itemDate.getFullYear(), itemDate.getMonth(), itemDate.setDate() + 1);
-    //            }
-    //            else {
-    //                break;
-    //            }
-    //        }
-    //    });
-    //    
-    //    scheduler.locale.labels.section_rosterType = "Type";
-    //    scheduler.locale.labels.section_repeat = "Is repeated";
-    //    scheduler.locale.labels.section_weekday = "Weekday";
-
-    //    // When click save button
-    //    scheduler.attachEvent("onEventSave", function (id, data, is_new_event) {
-    //        // If user do not choose Roster Type
-    //        if (isNaN(data.RosterType) == true) {
-    //            alert("You must choose Roster Type.");
-    //            return false;
-    //        }
-
-    //        // If user wanna repeat Roster
-    //        if (data.RepeatRoster == "true") {
-    //            if (confirm("Do you want to repeat Roster in this month?") == false)
-    //                return false;
-    //            if (data.Weekday == "") {
-    //                alert("You must choose weekday for repeating.");
-    //                return false;
-    //            }
-    //        }
-
-    //        return true;
-    //    });
-
-    //    // After added event
-    //    scheduler.attachEvent("onEventAdded", function (event_id, event_object) {
-    //        SaveRoster(event_object);
-    //    });
-
-    //    // Before lightbox is loaded
-    //    scheduler.attachEvent("onBeforeLightbox", function (event_id) {
-    //        //any custom logic here
-    //        var ev = scheduler.getEvent(event_id);
-    //        alert(ev.RosterType);
-    //        ev.Note = "fhaskj";
-    //        return true;
-    //    });
-
-    //    // Load data
-    //    $.ajax({
-    //        type: "POST",
-    //        url: "RosterIframe.aspx/GetData",
-    //        data: "{}",
-    //        contentType: "application/json; charset=utf-8",
-    //        dataType: "json",
-    //        success: function (msg) {
-    //            var rosterType = eval(msg.d);
-
-    //            // Set default
-    //            scheduler.attachEvent("onEventCreated", function (id) {
-    //                if (rosterType.length > 0)
-    //                    scheduler.getEvent(id).RosterType = rosterType[0].key;
-    //            });
-
-    //            scheduler.config.lightbox.sections = [
-    //			            { name: "description", height: 50, map_to: "Note", type: "textarea", focus: true },
-    //				        { name: "rosterType", height: 22, options: rosterType, map_to: "RosterType", type: "radio", vertical: false },
-    //                        { name: "repeat", height: 22, map_to: "RepeatRoster", type: "checkbox", checked_value: "true", unchecked_value: "false" },
-    //			            { name: "weekday", height: 22, map_to: "Weekday", type: "multiselect", options: weekday, vertical: "false" },
-    //			            { name: "time", height: 72, type: "time", map_to: "auto" }
-    //		            ];
-    //            scheduler.init('scheduler_here', new Date(), "week");
-    //        }
-    //    });
 }
 
 scheduler.showLightbox = function (id) {
