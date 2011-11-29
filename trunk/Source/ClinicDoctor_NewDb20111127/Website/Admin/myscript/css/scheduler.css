@@ -7,8 +7,8 @@
     background-color: #d6e5f4;
     padding: 10px;
     visibility: visible;
-    height: 400px;
-    width: 450px;
+    min-height: 200px;
+    width: 320px;
     top: 22px;
     left: 0px;
     border: 2px solid #3380CB;
@@ -27,6 +27,7 @@
 {
     font-family: Arial, Sans-Serif;
     font-weight: bold;
+    font-size:16px;
     padding-bottom: 10px;
 }
 .schedulerForm input[type="text"], .schedulerForm textarea
