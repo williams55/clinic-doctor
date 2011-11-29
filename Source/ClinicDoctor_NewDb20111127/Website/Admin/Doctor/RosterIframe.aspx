@@ -14,9 +14,13 @@
         type="text/javascript"></script>
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.datepicker.js") %>"
         type="text/javascript"></script>
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/date.format.js") %>"
+        type="text/javascript"></script>
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/json2.js") %>"
         type="text/javascript"></script>
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_readonly.js") %>"
         type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.css") %>"
         type="text/css" media="screen" title="no title" charset="utf-8" />
@@ -35,6 +39,7 @@
     <script type="text/javascript" charset="utf-8">
         // Load weekday
         var weekday = <%=Constants.Weekdays %>;
+        var stepTime = <%=ClinicDoctor.Settings.BusinessLayer.ServiceFacade.SettingsHelper.MinuteStep %>;
         var html = function (id) { return document.getElementById(id); }; //just a helper
 
     </script>
@@ -42,6 +47,7 @@
 </head>
 <body>
     <div id="RosterForm" class="schedulerForm">
+        <input type="hidden" id="hdId" value="" />
         <table cellpadding="3" width="100%">
             <tr>
                 <td colspan="2" class="title">
@@ -79,14 +85,27 @@
                 <td>
                     <select id="cboFromHour">
                     </select><span id="loadingFromHour" class="loading"></span>
-                    <input type="text" id="txtFromDate" class="datePicker" />
+                    <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    To
+                </td>
+                <td>
+                    <select id="cboToHour">
+                    </select><span id="loadingToHour" class="loading"></span>
+                    <input type="text" id="txtToDate" class="datePicker" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td class="header" colspan="2">
+                    <input type="submit" value="Save" id="btnSave" style="float: left;" />
+                    <input type="submit" value="Cancel" id="btnCancel" style="float: left;" />
+                    <input type="submit" value="Delete" id="btnDelete" style="float: right;" />
                 </td>
             </tr>
         </table>
-        <div>
-            <label for="txtComment">
-                Comment</label>
-            <textarea id="Textarea6" rows="4" cols="30"></textarea></div>
     </div>
     <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 100%;'>
         <div class="dhx_cal_navline">

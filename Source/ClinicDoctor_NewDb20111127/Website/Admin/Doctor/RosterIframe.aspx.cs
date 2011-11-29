@@ -32,10 +32,6 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetTime()
     {
-        ServiceFacade.SettingsHelper.MinuteStep = 15;
-        ServiceFacade.SettingsHelper.MaxMinute = 60;
-        ServiceFacade.SettingsHelper.MaxHour = 24;
-
         int step = ServiceFacade.SettingsHelper.MinuteStep;
         int minute = ServiceFacade.SettingsHelper.MaxMinute;
         int hour = ServiceFacade.SettingsHelper.MaxHour;
