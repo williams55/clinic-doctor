@@ -12,6 +12,8 @@
         type="text/javascript"></script>
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.widget.js") %>"
         type="text/javascript"></script>
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.dialog.js") %>"
+        type="text/javascript"></script>
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.datepicker.js") %>"
         type="text/javascript"></script>
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/date.format.js") %>"
@@ -19,6 +21,8 @@
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/json2.js") %>"
         type="text/javascript"></script>
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_minical.js") %>"
         type="text/javascript" charset="utf-8"></script>
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_readonly.js") %>"
         type="text/javascript" charset="utf-8"></script>
@@ -48,10 +52,12 @@
 <body>
     <div id="RosterForm" class="schedulerForm">
         <input type="hidden" id="hdId" value="" />
-        <table cellpadding="3" width="100%">
+        <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
+            <span class="loading"></span>
+        </div>
+        <table cellpadding="3" width="100%" id="tblContent">
             <tr>
-                <td colspan="2" class="title">
-                    New event
+                <td colspan="2" class="title" id="tdTitle">
                 </td>
             </tr>
             <tr>
@@ -63,12 +69,14 @@
                     </select><span id="loadingRosterType" class="loading"></span>
                 </td>
             </tr>
-            <tr>
+            <tr id="trRepeat">
                 <td class="header">
                     Is repeat
                 </td>
                 <td>
-                    <input id="chkRepeat" type="checkbox" />
+                    <input id="chkRepeat" type="checkbox" value="repeated" checked="checked" style="float: left;" />
+                    <span id="spanMonth">
+                        <input type="text" id="txtMonth" readonly="readonly" /></span>
                 </td>
             </tr>
             <tr id="divWeekday">
@@ -84,8 +92,8 @@
                 </td>
                 <td>
                     <select id="cboFromHour">
-                    </select><span id="loadingFromHour" class="loading"></span>
-                    <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" />
+                    </select><span id="loadingFromHour" class="loading"></span> <span id="spanFromDate">
+                        <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" /></span>
                 </td>
             </tr>
             <tr>
@@ -94,8 +102,16 @@
                 </td>
                 <td>
                     <select id="cboToHour">
-                    </select><span id="loadingToHour" class="loading"></span>
-                    <input type="text" id="txtToDate" class="datePicker" readonly="readonly" />
+                    </select><span id="loadingToHour" class="loading"></span> <span id="spanToDate">
+                        <input type="text" id="txtToDate" class="datePicker" readonly="readonly" /></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Note
+                </td>
+                <td>
+                    <textarea id="txtNote" cols="10" rows="3" style="width: 100%;"></textarea>
                 </td>
             </tr>
             <tr>

@@ -107,5 +107,63 @@ namespace ClinicDoctor.Settings.BusinessLayer
             }
         }
         #endregion
+
+        #region "Status"
+        public string CompleteColor
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<string>("COMPLETE_COLOR", out result))
+                {
+                    throw new ApplicationException("Setting COMPLETE_COLOR was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<string>("COMPLETE_COLOR", value);
+            }
+        }
+
+        public string UncompleteColor
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<string>("UNCOMPLETE_COLOR", out result))
+                {
+                    throw new ApplicationException("Setting UNCOMPLETE_COLOR was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<string>("UNCOMPLETE_COLOR", value);
+            }
+        }
+        #endregion
+
+        #region "Prefix"
+        public string RosterPrefix
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<string>("ROSTER_PREFIX", out result))
+                {
+                    throw new ApplicationException("Setting ROSTER_PREFIX was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<string>("ROSTER_PREFIX", value);
+            }
+        }
+        #endregion
     }
 }
