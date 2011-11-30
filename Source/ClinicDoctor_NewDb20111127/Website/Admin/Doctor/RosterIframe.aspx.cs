@@ -95,7 +95,8 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 
             if (RepeatRoster == "true")
             {
-
+                RosterType refObj = DataRepository.RosterTypeProvider.GetByIdIsDisabled(Convert.ToInt64(RosterType), false);
+                
             }
             else
             {
@@ -111,7 +112,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 {
                     newObj.Id = Perfix + String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
                 }
-                ServiceFacade.SettingsHelper.UncompleteColor = "#A8D4FF";
+
                 newObj.DoctorId = obj.Id;
                 newObj.RosterTypeId = Convert.ToInt64(RosterType);
                 newObj.StartTime = Convert.ToDateTime(StartTime, new CultureInfo("vi-VN"));
@@ -125,14 +126,18 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                     + @"{id: '" + newObj.Id + @"',"
                     + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                     + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"text: 'Title: " + refObj.Note + @"<br />Note: " + newObj.Note + @"',"
-                    + @"DoctorId: '" + newObj.DoctorId + @"',"
-                    + @"RosterTypeId: '" + newObj.DoctorId + @"',"
-                    + @"note: '" + newObj.Note + @"',"
-                    + @"color: '" + ServiceFacade.SettingsHelper.UncompleteColor + @"',"
-                    + @"isnew: 'true'"
-                    + @"}"
-                    + @"] }]";
+                    + @"text: 'Title: " + refObj.Note + @"<br />";
+
+                if (!string.IsNullOrEmpty(newObj.Note))
+                    result += @"Note: " + newObj.Note;
+
+                result += @"',DoctorId: '" + newObj.DoctorId + @"',"
+                   + @"RosterTypeId: '" + newObj.DoctorId + @"',"
+                   + @"note: '" + newObj.Note + @"',"
+                   + @"color: '" + ServiceFacade.SettingsHelper.UncompleteColor + @"',"
+                   + @"isnew: 'true'"
+                   + @"}"
+                   + @"] }]";
             }
 
         }
@@ -183,6 +188,8 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             // Cho nay se ve sua lai database, them index cho GetByDoctorId va Disabled
             // Lam them cai neu Note ma rong thi ko hien thi
             TList<DoctorRoster> lstObj = DataRepository.DoctorRosterProvider.GetByIsDisabled(false);
+            ServiceFacade.SettingsHelper.UncompleteColor = "#A8D4FF";
+            ServiceFacade.SettingsHelper.CompleteColor = "#BBBBBB";
 
             string color = string.Empty;
             foreach (DoctorRoster item in lstObj)
@@ -193,10 +200,15 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                     result += @"{id: '" + item.Id + @"',"
                         + @"start_date: '" + item.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                         + @"end_date: '" + item.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                        + @"text: 'Title: " + itemRef.Note + @"<br />Note: " + item.Note + @"',"
-                        + @"DoctorId: '" + item.DoctorId + @"',"
-                        + @"RosterTypeId: '" + item.DoctorId + @"',"
-                        + @"note: '" + item.Note + @"',";
+                        + @"text: 'Title: " + itemRef.Note + @"<br />";
+
+                    if (!string.IsNullOrEmpty(item.Note))
+                        result += @"Note: " + item.Note;
+
+                    result += @"',DoctorId: '" + item.DoctorId + @"',"
+                     + @"RosterTypeId: '" + item.DoctorId + @"',"
+                     + @"note: '" + item.Note + @"',";
+
                     if (item.StartTime <= DateTime.Now)
                     {
                         result += @"color: '" + ServiceFacade.SettingsHelper.CompleteColor + @"',";
@@ -214,6 +226,10 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 result = @"[{ 'result': 'true', 'message': '', 'data': "
                     + "[" + result.Substring(0, result.Length - 1) + "]"
                     + @" }]";
+            }
+            else
+            {
+                result = @"[{ 'result': 'true', 'message': '' }]";
             }
         }
         catch (Exception ex)
