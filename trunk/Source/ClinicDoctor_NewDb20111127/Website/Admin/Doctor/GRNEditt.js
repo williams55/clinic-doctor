@@ -7,7 +7,7 @@ function show_minical() {
             position: "dhx_minical_icon",
             date: scheduler._date,
             navigation: true,
-            handler: function (date, calendar) {
+            handler: function(date, calendar) {
                 scheduler.setCurrentView(date);
                 scheduler.destroyCalendar()
             }
@@ -19,7 +19,7 @@ function show_minical() {
 function initSchedule(weekday) {
     var _date = new Date();
     var _mode = "week";
-        
+
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
@@ -35,7 +35,7 @@ function initSchedule(weekday) {
     scheduler.attachEvent("onClick", block_readonly)
 
     // When event changed, check and update
-    scheduler.attachEvent("onBeforeEventChanged", function (event_object, native_event, is_new) {
+    scheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new) {
         var evs = scheduler.getEvents(event_object.start_date, event_object.end_date);
         if (evs && evs.length > 1) {
             alert("You can not create roster on another existed roster.");
@@ -57,7 +57,7 @@ function initSchedule(weekday) {
     });
 
     // When view changed, reload roster
-    scheduler.attachEvent("onViewChange", function (mode, date) {
+    scheduler.attachEvent("onViewChange", function(mode, date) {
         //any custom logic here
         LoadRoster(mode, date);
     });
@@ -66,7 +66,7 @@ function initSchedule(weekday) {
     LoadRoster(_mode, _date);
 }
 
-scheduler.showLightbox = function (id) {
+scheduler.showLightbox = function(id) {
     initForm();
 
     var ev = scheduler.getEvent(id);
@@ -95,6 +95,9 @@ scheduler.showLightbox = function (id) {
     $("#hdId").val(id);
     $("#txtFromDate").datepicker("setDate", ev.start_date);
     $("#txtToDate").datepicker("setDate", ev.end_date);
+    var _currentMonth = new Date();
+    var _nextMonth = new Date(_currentMonth.getFullYear(), _currentMonth.getMonth() + 1, 1);
+    $("#txtMonth").datepicker("setDate", _nextMonth);
 }
 
 function LoadRoster(mode, date) {
@@ -105,22 +108,24 @@ function LoadRoster(mode, date) {
         data: requestdata,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function (response) {
+        success: function(response) {
             var obj = eval(response.d)[0];
 
             if (obj.result == "true") {
                 var evs = obj.data;
-                addRoster(evs);
+                if (evs) {
+                    addRoster(evs);
+                }
                 scheduler.endLightbox(false, html("RosterForm"));
             }
             else {
                 alert(obj.message);
             }
         },
-        fail: function () {
+        fail: function() {
             alert("Unknow error!");
         },
-        complete: function () {
+        complete: function() {
         }
     });
 }
@@ -133,21 +138,21 @@ function loadRosterType() {
         data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function (msg) {
+        success: function(msg) {
             var rosterType = eval(msg.d);
             $("#cboRosterType").find("option").remove();
 
-            $.each(rosterType, function (i, item) {
+            $.each(rosterType, function(i, item) {
                 $("#cboRosterType").append('<option value="' + item.key + '">' + item.label + '</option>');
             });
 
             $("#cboRosterType").fadeIn();
             $("#cboRosterType").focus();
         },
-        fail: function () {
+        fail: function() {
             alert("Cannot load Roster Type data!");
         },
-        complete: function () {
+        complete: function() {
             $("#loadingRosterType").fadeOut();
         }
     });
@@ -160,13 +165,13 @@ function loadHour(ev) {
         data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function (msg) {
+        success: function(msg) {
             var arr = eval(msg.d);
             $("#cboFromHour").find("option").remove();
 
             var startTime = ev.start_date.format("HH:MM");
             var endTime = ev.end_date.format("HH:MM");
-            $.each(arr, function (i, item) {
+            $.each(arr, function(i, item) {
                 $("#cboFromHour").append('<option value="' + item.key + '">' + item.label + '</option>');
                 $("#cboToHour").append('<option value="' + item.key + '">' + item.label + '</option>');
             });
@@ -179,10 +184,10 @@ function loadHour(ev) {
             $("#cboToHour").fadeIn();
             $("#loadingToHour").fadeOut();
         },
-        fail: function () {
+        fail: function() {
             alert("Cannot load Hour data!");
         },
-        complete: function () {
+        complete: function() {
             $("#loadingFromHour").fadeOut();
             $("#loadingToHour").fadeOut();
         }
@@ -216,6 +221,22 @@ function initForm() {
 }
 
 function SaveRoster() {
+    // Validate date time
+    if ($("#chkRepeat").attr("checked")) {
+         if ($("#cboFromHour").val() >= $("#cboToHour").val()) {
+            alert("From time must be less than to time");
+            return;
+        } 
+   }
+    else {
+        var _validateFromTime = $("#txtFromDate").datepicker("getDate").format("yyyy/mm/dd ") + $("#cboFromHour").val();
+        var _validateToTime = $("#txtToDate").datepicker("getDate").format("yyyy/mm/dd ") + $("#cboToHour").val();
+        if (_validateFromTime >= _validateToTime) {
+            alert("From date, time must be less than to date, time");
+            return;
+        } 
+    }
+
     var ev = scheduler.getEvent($("#hdId").val());
     var _rosterType = $("#cboRosterType").val();
     var _fromTime = $("#txtFromDate").val() + " " + $("#cboFromHour").val();
@@ -233,9 +254,14 @@ function SaveRoster() {
 
         if ($("#chkRepeat").attr("checked")) {
             var allVals = [];
-            $("input[type=checkbox]:checked", "#spanWeekday").each(function () {
+            $("input[type=checkbox]:checked", "#spanWeekday").each(function() {
                 allVals.push($(this).val());
             });
+
+            if (allVals.length == 0) {
+                alert("You have to choose a weekday at least.");
+                return;
+            }
 
             _repeat = 'true';
             _weekday = allVals.join(";");
@@ -252,7 +278,7 @@ function SaveRoster() {
             data: requestdata,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: function (response) {
+            success: function(response) {
                 var obj = eval(response.d)[0];
 
                 if (obj.result == "true") {
@@ -264,10 +290,10 @@ function SaveRoster() {
                     alert(obj.message);
                 }
             },
-            fail: function () {
+            fail: function() {
                 alert("Unknow error!");
             },
-            complete: function () {
+            complete: function() {
                 disableAllElements($("#tblContent"), true)
                 $("#dialog-modal").hide();
             }
@@ -276,7 +302,7 @@ function SaveRoster() {
 }
 
 function addRoster(evs) {
-    $.each(evs, function (i, item) {
+    $.each(evs, function(i, item) {
         scheduler.addEvent(item);
     });
 }
@@ -293,11 +319,11 @@ function DeleteRoster() {
     scheduler.endLightbox(false, html("RosterForm"));
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     $("input, textarea").addClass("idle");
-    $("input, textarea").focus(function () {
+    $("input, textarea").focus(function() {
         $(this).addClass("activeField").removeClass("idle");
-    }).blur(function () {
+    }).blur(function() {
         $(this).removeClass("activeField").addClass("idle");
     });
     initSchedule(weekday);
@@ -305,30 +331,28 @@ $(document).ready(function () {
     $(".datePicker").datepicker({
         showOn: "button",
         buttonImage: "../resources/scripts/codebase/imgs/calendar.gif",
-        defaultDate: new Date(),
         buttonImageOnly: true, changeMonth: true,
         changeYear: true,
         showOtherMonths: true,
         selectOtherMonths: true,
         dateFormat: "dd/mm/yy",
-        minDate: "+1D",
-        maxDate: "+1D +1M"
+        minDate: "+1D"
     });
 
+    var _currentMonth = new Date();
+    var _nextMonth = new Date(_currentMonth.getFullYear(), _currentMonth.getMonth() + 1, 1);
     $("#txtMonth").datepicker({
         showOn: "button",
         buttonImage: "../resources/scripts/codebase/imgs/calendar.gif",
-        defaultDate: new Date(),
         buttonImageOnly: true, changeMonth: true,
         changeYear: true,
         showOtherMonths: true,
         selectOtherMonths: true,
         dateFormat: "mm/yy",
-        minDate: "+1D",
-        maxDate: "+1D +1M"
+        minDate: _nextMonth
     });
 
-    $("#chkRepeat").click(function () {
+    $("#chkRepeat").click(function() {
         $('#divWeekday').toggle($(this).attr('checked'));
         $('#spanMonth').toggle($(this).attr('checked'));
 
@@ -336,25 +360,25 @@ $(document).ready(function () {
         $('#spanToDate').toggle(!$(this).attr('checked'));
 
         $("#spanWeekday").find("span").remove();
-        $.each(weekday, function (i, item) {
+        $.each(weekday, function(i, item) {
             $("#spanWeekday").append('<span style="float:left; padding-right:5px; width:95px;"><input type="checkbox" value=' + item.key
             + ' id="chk' + item.key + '" /> ' + item.label + '</span>');
         });
     });
 
-    $("#btnSave").click(function () {
+    $("#btnSave").click(function() {
         SaveRoster();
     });
 
-    $("#btnCancel").click(function () {
+    $("#btnCancel").click(function() {
         CancelRoster();
     });
 
-    $("#btnDelete").click(function () {
+    $("#btnDelete").click(function() {
         DeleteRoster();
     });
 
-    $("#btnDelete").keydown(function (e) {
+    $("#btnDelete").keydown(function(e) {
         var key;
 
         if (window.event)
