@@ -48,5 +48,64 @@ namespace ClinicDoctor.Settings.BusinessLayer
                 ServiceFacade.SettingsService.SaveSetting<DateTime>("INITIAL_DATE", value);
             }
         }
+
+        #region "Setting time"
+        // Minute Step
+        public int MinuteStep
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<int>("MINUTE_STEP", out result))
+                {
+                    throw new ApplicationException("Setting MINUTE_STEP was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<int>("MINUTE_STEP", value);
+            }
+        }
+
+        // Max Minute
+        public int MaxMinute
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<int>("MAX_MINUTE", out result))
+                {
+                    throw new ApplicationException("Setting MAX_MINUTE was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<int>("MAX_MINUTE", value);
+            }
+        }
+
+        // Max Hour
+        public int MaxHour
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<int>("MAX_HOUR", out result))
+                {
+                    throw new ApplicationException("Setting MAX_HOUR was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<int>("MAX_HOUR", value);
+            }
+        }
+        #endregion
     }
 }
