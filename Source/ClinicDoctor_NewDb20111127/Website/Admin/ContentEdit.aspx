@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#"  MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="ContentEdit.aspx.cs" Inherits="ContentEdit" Title="Content Edit" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="ContentEdit.aspx.cs" Inherits="ContentEdit" Title="Content Edit" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Content - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -52,10 +52,12 @@
 				<data:HyperLinkField HeaderText="Content Id" DataNavigateUrlFormatString="ContentEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ContentIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
+				<data:HyperLinkField HeaderText="Nurse Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="NurseIdSource" DataTextField="FirstName" />
 				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
 				<asp:BoundField DataField="StartTime" HeaderText="Start Time" SortExpression="[StartTime]" />				
 				<asp:BoundField DataField="EndTime" HeaderText="End Time" SortExpression="[EndTime]" />				
+				<asp:BoundField DataField="IsComplete" HeaderText="Is Complete" SortExpression="[IsComplete]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
 				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
@@ -78,7 +80,6 @@
 					<data:AppointmentProperty Name="Room"/> 
 					<data:AppointmentProperty Name="Staff"/> 
 					<data:AppointmentProperty Name="Status"/> 
-					<%--<data:AppointmentProperty Name="NurseAppointmentCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
 			

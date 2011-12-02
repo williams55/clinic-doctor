@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#"  MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="RoomFuncEdit.aspx.cs" Inherits="RoomFuncEdit" Title="RoomFunc Edit" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="RoomFuncEdit.aspx.cs" Inherits="RoomFuncEdit" Title="RoomFunc Edit" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Room Func - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">

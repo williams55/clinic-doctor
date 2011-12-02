@@ -22,34 +22,29 @@ public partial class StaffEdit : System.Web.UI.Page
 		FormUtil.RedirectAfterCancel(FormView1, "Staff.aspx");
 		FormUtil.SetDefaultMode(FormView1, "Id");
 	}
-	protected void GridViewNurseAppointment1_SelectedIndexChanged(object sender, EventArgs e)
+	protected void GridViewDoctorRoom1_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		string urlParams = string.Format("Id={0}", GridViewNurseAppointment1.SelectedDataKey.Values[0]);
-		Response.Redirect("NurseAppointmentEdit.aspx?" + urlParams, true);		
-	}	
-	protected void GridViewDoctorRoom2_SelectedIndexChanged(object sender, EventArgs e)
-	{
-		string urlParams = string.Format("Id={0}", GridViewDoctorRoom2.SelectedDataKey.Values[0]);
+		string urlParams = string.Format("Id={0}", GridViewDoctorRoom1.SelectedDataKey.Values[0]);
 		Response.Redirect("DoctorRoomEdit.aspx?" + urlParams, true);		
 	}	
-	protected void GridViewDoctorRoster3_SelectedIndexChanged(object sender, EventArgs e)
+	protected void GridViewAppointment2_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		string urlParams = string.Format("Id={0}", GridViewDoctorRoster3.SelectedDataKey.Values[0]);
-		Response.Redirect("DoctorRosterEdit.aspx?" + urlParams, true);		
-	}	
-	protected void GridViewAppointment4_SelectedIndexChanged(object sender, EventArgs e)
-	{
-		string urlParams = string.Format("Id={0}", GridViewAppointment4.SelectedDataKey.Values[0]);
+		string urlParams = string.Format("Id={0}", GridViewAppointment2.SelectedDataKey.Values[0]);
 		Response.Redirect("AppointmentEdit.aspx?" + urlParams, true);		
 	}	
-	protected void GridViewStaffRoles5_SelectedIndexChanged(object sender, EventArgs e)
+	protected void GridViewAppointment3_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		string urlParams = string.Format("Id={0}", GridViewStaffRoles5.SelectedDataKey.Values[0]);
-		Response.Redirect("StaffRolesEdit.aspx?" + urlParams, true);		
+		string urlParams = string.Format("Id={0}", GridViewAppointment3.SelectedDataKey.Values[0]);
+		Response.Redirect("AppointmentEdit.aspx?" + urlParams, true);		
 	}	
-	protected void GridViewDoctorFunc6_SelectedIndexChanged(object sender, EventArgs e)
+	protected void GridViewDoctorRoster4_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		string urlParams = string.Format("Id={0}", GridViewDoctorFunc6.SelectedDataKey.Values[0]);
+		string urlParams = string.Format("Id={0}", GridViewDoctorRoster4.SelectedDataKey.Values[0]);
+		Response.Redirect("DoctorRosterEdit.aspx?" + urlParams, true);		
+	}	
+	protected void GridViewDoctorFunc5_SelectedIndexChanged(object sender, EventArgs e)
+	{
+		string urlParams = string.Format("Id={0}", GridViewDoctorFunc5.SelectedDataKey.Values[0]);
 		Response.Redirect("DoctorFuncEdit.aspx?" + urlParams, true);		
 	}
     protected void FormView1_Load(object sender, EventArgs e)
@@ -57,7 +52,10 @@ public partial class StaffEdit : System.Web.UI.Page
         if (FormView1.CurrentMode == FormViewMode.Insert)
         {
             HiddenField tbCreateDate = (HiddenField)FormView1.Row.FindControl("HDcreatedate");
+            HiddenField tbUpdateDate = (HiddenField)FormView1.Row.FindControl("HDUpdateDate");
             tbCreateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+            tbUpdateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+
         }
         else
         {

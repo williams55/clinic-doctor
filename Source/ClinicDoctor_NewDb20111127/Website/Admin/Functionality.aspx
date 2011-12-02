@@ -1,5 +1,5 @@
 ﻿
-<%@ Page Language="C#"  MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="Functionality.aspx.cs" Inherits="Admin_Functionality" Title="Functionality List" %>
+<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="Functionality.aspx.cs" Inherits="Admin_Functionality" Title="Functionality List" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Functionality List</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -16,7 +16,7 @@
 				ExcelExportFileName="Export_Functionality.xls"  		
 			>
 			<Columns>
-				<asp:CommandField ShowSelectButton="True"  />				
+				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />

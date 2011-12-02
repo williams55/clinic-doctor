@@ -1,10 +1,8 @@
-﻿<%@ Page Language="C#"  MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="StatusEdit.aspx.cs" Inherits="StatusEdit" Title="Status Edit" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="StatusEdit.aspx.cs" Inherits="StatusEdit" Title="Status Edit" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">
-    Status - Add/Edit</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Status - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" 
-            DataSourceID="StatusDataSource" onload="FormView1_Load">
+		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="StatusDataSource">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/StatusFields.ascx" />
@@ -46,8 +44,7 @@
 			DefaultSortColumnName="" 
 			DefaultSortDirection="Ascending"	
 			ExcelExportFileName="Export_Appointment.xls"  		
-			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>' 
-            onload="GridViewAppointment1_Load" onrowcommand="GridViewAppointment1_RowCommand"	
+			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
@@ -55,10 +52,12 @@
 				<data:HyperLinkField HeaderText="Content Id" DataNavigateUrlFormatString="ContentEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ContentIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
+				<data:HyperLinkField HeaderText="Nurse Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="NurseIdSource" DataTextField="FirstName" />
 				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
 				<asp:BoundField DataField="StartTime" HeaderText="Start Time" SortExpression="[StartTime]" />				
 				<asp:BoundField DataField="EndTime" HeaderText="End Time" SortExpression="[EndTime]" />				
+				<asp:BoundField DataField="IsComplete" HeaderText="Is Complete" SortExpression="[IsComplete]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
 				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
@@ -67,8 +66,7 @@
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No Appointment Found! </b>
-				<asp:HyperLink runat="server" ID="hypAppointment" NavigateUrl="~/admin/AppointmentEdit.aspx">Add 
-                New</asp:HyperLink>
+				<asp:HyperLink runat="server" ID="hypAppointment" NavigateUrl="~/admin/AppointmentEdit.aspx">Add New</asp:HyperLink>
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		
@@ -82,7 +80,6 @@
 					<data:AppointmentProperty Name="Room"/> 
 					<data:AppointmentProperty Name="Staff"/> 
 					<data:AppointmentProperty Name="Status"/> 
-					<%--<data:AppointmentProperty Name="NurseAppointmentCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
 			

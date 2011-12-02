@@ -16,7 +16,7 @@
 				ExcelExportFileName="Export_Content.xls"  		
 			>
 			<Columns>
-				<asp:CommandField ShowSelectButton="True"  />				
+				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
 				<data:HyperLinkField HeaderText="Func Id" DataNavigateUrlFormatString="FunctionalityEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="FuncIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
