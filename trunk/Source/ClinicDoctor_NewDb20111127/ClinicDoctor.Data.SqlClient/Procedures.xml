@@ -3245,6 +3245,43 @@
 			]]></body>
 			
 		</procedure>
+		<procedure owner="dbo" name="DoctorRoster_GetByDoctorIdIsDisabled" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the DoctorRoster table through an index
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SELECT
+					[Id],
+					[DoctorId],
+					[RosterTypeId],
+					[StartTime],
+					[EndTime],
+					[Note],
+					[IsComplete],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[DoctorRoster]
+				WHERE
+					[DoctorId] = @DoctorId
+					AND [IsDisabled] = @IsDisabled
+				SELECT @@ROWCOUNT
+					
+			]]></body>
+			
+		</procedure>
 		<procedure owner="dbo" name="DoctorRoster_GetByDoctorIdRosterTypeId" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
