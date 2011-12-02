@@ -48,18 +48,31 @@ function initSchedule(weekday) {
                 alert("You can not change roster to passed or current date.");
                 return false;
             }
-
-            // Update data
-            alert(event_object.isnew);
         }
 
         return true;
     });
 
+    // Save roster when resized or moved
+    scheduler.attachEvent("onEventChanged", function(event_id, event_object) {
+        //any custom logic here
+        var _id = event_object.id;
+        var _rosterType = event_object.RosterTypeId;
+        var _fromTime = event_object.start_date;
+        var _toTime = event_object.end_date;
+        var _note = event_object.note;
+    
+        // Update roster
+        $("#dialog-modal").show();
+        disableAllElements($("#tblContent"), false)
+
+        UpdateRoster(_id, _rosterType, _fromTime, _toTime, _note);
+    });
+    
     // When view changed, reload roster
     scheduler.attachEvent("onViewChange", function(mode, date) {
         //any custom logic here
-        LoadRoster(mode, date);
+//        LoadRoster(mode, date);
     });
 
     // Load roster
@@ -82,22 +95,27 @@ scheduler.showLightbox = function(id) {
         return false;
     }
 
-    if (ev.isnew == "false") {
-        $("#trRepeat").hide();
-        $("#tdTitle").text("Edit roster");
-    }
+    setTime(ev);
 
-    scheduler.startLightbox(id, html("RosterForm"));
-
-    loadRosterType();
-    loadHour(ev);
-
+    // Set init value
     $("#hdId").val(id);
     $("#txtFromDate").datepicker("setDate", ev.start_date);
     $("#txtToDate").datepicker("setDate", ev.end_date);
     var _currentMonth = new Date();
     var _nextMonth = new Date(_currentMonth.getFullYear(), _currentMonth.getMonth() + 1, 1);
     $("#txtMonth").datepicker("setDate", _nextMonth);
+    $("#txtNote").val(ev.note);
+
+    if (ev.isnew == "false") {
+        $("#trRepeat").hide();
+        $("#tdTitle").text("Edit roster");
+
+        if (ev.RosterTypeId) {
+            $("#cboRosterType").val(ev.RosterTypeId);
+        }
+    }
+
+    scheduler.startLightbox(id, html("RosterForm"));
 }
 
 function LoadRoster(mode, date) {
@@ -116,7 +134,6 @@ function LoadRoster(mode, date) {
                 if (evs) {
                     addRoster(evs);
                 }
-                scheduler.endLightbox(false, html("RosterForm"));
             }
             else {
                 alert(obj.message);
@@ -146,19 +163,27 @@ function loadRosterType() {
                 $("#cboRosterType").append('<option value="' + item.key + '">' + item.label + '</option>');
             });
 
-            $("#cboRosterType").fadeIn();
+//            $("#cboRosterType").fadeIn();
             $("#cboRosterType").focus();
         },
         fail: function() {
-            alert("Cannot load Roster Type data!");
+            alert("Cannot load Roster Type data. Please try again or contact Administrator.");
+            scheduler.endLightbox(false, html("RosterForm"));
         },
         complete: function() {
-            $("#loadingRosterType").fadeOut();
+//            $("#loadingRosterType").fadeOut();
         }
     });
 }
 
-function loadHour(ev) {
+function setTime(ev) {
+    var startTime = ev.start_date.format("HH:MM");
+    var endTime = ev.end_date.format("HH:MM");
+    $("#cboFromHour").val(startTime + ":00");
+    $("#cboToHour").val(endTime + ":00");
+}
+
+function loadHour() {
     $.ajax({
         type: "POST",
         url: "RosterIframe.aspx/GetTime",
@@ -170,27 +195,23 @@ function loadHour(ev) {
             $("#cboFromHour").find("option").remove();
             $("#cboToHour").find("option").remove();
 
-            var startTime = ev.start_date.format("HH:MM");
-            var endTime = ev.end_date.format("HH:MM");
             $.each(arr, function(i, item) {
                 $("#cboFromHour").append('<option value="' + item.key + '">' + item.label + '</option>');
                 $("#cboToHour").append('<option value="' + item.key + '">' + item.label + '</option>');
             });
 
-            $("#cboFromHour").val(startTime + ":00");
-            $("#cboToHour").val(endTime + ":00");
-
-            $("#cboFromHour").fadeIn();
-            $("#loadingFromHour").fadeOut();
-            $("#cboToHour").fadeIn();
-            $("#loadingToHour").fadeOut();
+//            $("#cboFromHour").fadeIn();
+//            $("#loadingFromHour").fadeOut();
+//            $("#cboToHour").fadeIn();
+//            $("#loadingToHour").fadeOut();
         },
         fail: function() {
-            alert("Cannot load Hour data!");
+            alert("Cannot load Hour data. Please try again or contact Administrator.");
+            scheduler.endLightbox(false, html("RosterForm"));
         },
         complete: function() {
-            $("#loadingFromHour").fadeOut();
-            $("#loadingToHour").fadeOut();
+//            $("#loadingFromHour").fadeOut();
+//            $("#loadingToHour").fadeOut();
         }
     });
 }
@@ -198,19 +219,27 @@ function loadHour(ev) {
 function initForm() {
     $("#dialog-modal").hide();
 
-    $("#cboRosterType").hide();
-    $("#loadingRosterType").show();
+    //    $("#cboRosterType").hide();
+    //    $("#loadingRosterType").show();
+    $("#cboRosterType").show();
+    $("#loadingRosterType").hide();
 
     $("#divWeekday").hide();
     $("#spanMonth").hide();
 
-    $("#cboFromHour").hide();
-    $("#loadingFromHour").show();
+    $("#cboFromHour").show();
+    $("#loadingFromHour").hide();
     $('#spanFromDate').show();
+    //    $("#cboFromHour").hide();
+    //    $("#loadingFromHour").show();
+    //    $('#spanFromDate').show();
 
-    $("#cboToHour").hide();
-    $("#loadingToHour").show();
+    $("#cboToHour").show();
+    $("#loadingToHour").hide();
     $('#spanToDate').show();
+    //    $("#cboToHour").hide();
+    //    $("#loadingToHour").show();
+    //    $('#spanToDate').show();
 
     $("#trRepeat").show();
 
@@ -240,14 +269,19 @@ function SaveRoster() {
         } 
     }
 
-    var ev = scheduler.getEvent($("#hdId").val());
+    var _id = $("#hdId").val();
+    var ev = scheduler.getEvent(_id);
     var _rosterType = $("#cboRosterType").val();
     var _fromTime = $("#txtFromDate").val() + " " + $("#cboFromHour").val();
     var _toTime = $("#txtToDate").val() + " " + $("#cboToHour").val();
     var _note = $("#txtNote").val();
-
+    
     if (ev.isnew == "false") {
         // Update roster
+        $("#dialog-modal").show();
+        disableAllElements($("#tblContent"), false)
+
+        UpdateRoster(_id, _rosterType, _fromTime, _toTime, _note);
     }
     else {
         // Add new roster
@@ -303,6 +337,36 @@ function SaveRoster() {
     }
 }
 
+function UpdateRoster(_id, _rosterType, _fromTime, _toTime, _note) {
+    var requestdata = JSON.stringify({ Id: _id, RosterType: _rosterType, StartTime: _fromTime, EndTime: _toTime, Note: _note });
+    $.ajax({
+        type: "POST",
+        url: "RosterIframe.aspx/UpdateEvent",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(response) {
+            var obj = eval(response.d)[0];
+            if (obj.result == "true") {
+                var evs = obj.data;
+                scheduler.deleteEvent(_id)
+                addRoster(evs);
+                scheduler.endLightbox(false, html("RosterForm"));
+            }
+            else {
+                alert(obj.message);
+            }
+        },
+        fail: function() {
+            alert("Unknow error!");
+        },
+        complete: function() {
+            disableAllElements($("#tblContent"), true)
+            $("#dialog-modal").hide();
+        }
+    });
+}
+
 function addRoster(evs) {
     $.each(evs, function(i, item) {
         scheduler.addEvent(item);
@@ -322,6 +386,9 @@ function DeleteRoster() {
 }
 
 $(document).ready(function() {
+    loadRosterType();
+    loadHour();
+
     $("input, textarea").addClass("idle");
     $("input, textarea").focus(function() {
         $(this).addClass("activeField").removeClass("idle");
