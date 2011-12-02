@@ -1,0 +1,16 @@
+﻿using Arch.Xml;
+
+/// <summary>
+/// Summary description for ServerController
+/// </summary>
+public class ServerController : XmlSerializer
+{
+    protected ServerController()
+    {
+        
+    }
+    public override object Deserialize(string filename)
+    {
+        return base.Deserialize(filename);
+    }
+}

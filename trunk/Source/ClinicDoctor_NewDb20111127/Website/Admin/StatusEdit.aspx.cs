@@ -26,30 +26,7 @@ public partial class StatusEdit : System.Web.UI.Page
 	{
 		string urlParams = string.Format("Id={0}", GridViewAppointment1.SelectedDataKey.Values[0]);
 		Response.Redirect("AppointmentEdit.aspx?" + urlParams, true);		
-	}
-    protected void GridViewAppointment1_Load(object sender, EventArgs e)
-    {
-        
-
-    }
-    protected void GridViewAppointment1_RowCommand(object sender, GridViewCommandEventArgs e)
-    {
-
-    }
-    protected void FormView1_Load(object sender, EventArgs e)
-    {
-        if (FormView1.CurrentMode == FormViewMode.Insert)
-        {
-            HiddenField tbCreateDate = (HiddenField)FormView1.Row.FindControl("HDcreatedate");
-            tbCreateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
-        }
-        else
-        {
-            HiddenField tbUpdateDate = (HiddenField)FormView1.Row.FindControl("HDUpdateDate");
-            tbUpdateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
-        }
-
-    }
+	}	
 }
 
 

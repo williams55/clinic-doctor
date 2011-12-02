@@ -32,7 +32,10 @@ public partial class CustomerEdit : System.Web.UI.Page
         if (FormView1.CurrentMode == FormViewMode.Insert)
         {
             HiddenField tbCreateDate = (HiddenField)FormView1.Row.FindControl("HDcreatedate");
+            HiddenField tbUpdateDate = (HiddenField)FormView1.Row.FindControl("HDUpdateDate");
             tbCreateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+            tbUpdateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+
         }
         else
         {

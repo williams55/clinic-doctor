@@ -37,59 +37,10 @@
 		
 		<br />
 
-		<data:EntityGridView ID="GridViewNurseAppointment1" runat="server"
+		<data:EntityGridView ID="GridViewDoctorRoom1" runat="server"
 			AutoGenerateColumns="False"	
-			OnSelectedIndexChanged="GridViewNurseAppointment1_SelectedIndexChanged"			 			 
-			DataSourceID="NurseAppointmentDataSource1"
-			DataKeyNames="Id"
-			AllowMultiColumnSorting="false"
-			DefaultSortColumnName="" 
-			DefaultSortDirection="Ascending"	
-			ExcelExportFileName="Export_NurseAppointment.xls"  		
-			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
-			>
-			<Columns>
-				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Appointment Id" DataNavigateUrlFormatString="AppointmentEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="AppointmentIdSource" DataTextField="Note" />
-				<data:HyperLinkField HeaderText="Nurse Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="NurseIdSource" DataTextField="FirstName" />
-				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
-				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
-				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
-				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />				
-				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
-			</Columns>
-			<EmptyDataTemplate>
-				<b>No Nurse Appointment Found! </b>
-				<asp:HyperLink runat="server" ID="hypNurseAppointment" NavigateUrl="~/admin/NurseAppointmentEdit.aspx">Add 
-                New</asp:HyperLink>
-			</EmptyDataTemplate>
-		</data:EntityGridView>					
-		
-		<data:NurseAppointmentDataSource ID="NurseAppointmentDataSource1" runat="server" SelectMethod="Find"
-			EnableDeepLoad="True"
-			>
-			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
-	            <Types>
-					<data:NurseAppointmentProperty Name="Appointment"/> 
-					<data:NurseAppointmentProperty Name="Staff"/> 
-				</Types>
-			</DeepLoadProperties>
-			
-		    <Parameters>
-				<data:SqlParameter Name="Parameters">
-					<Filters>
-						<data:NurseAppointmentFilter  Column="NurseId" QueryStringField="Id" /> 
-					</Filters>
-				</data:SqlParameter>
-				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
-		    </Parameters>
-		</data:NurseAppointmentDataSource>		
-		
-		<br />
-		<data:EntityGridView ID="GridViewDoctorRoom2" runat="server"
-			AutoGenerateColumns="False"	
-			OnSelectedIndexChanged="GridViewDoctorRoom2_SelectedIndexChanged"			 			 
-			DataSourceID="DoctorRoomDataSource2"
+			OnSelectedIndexChanged="GridViewDoctorRoom1_SelectedIndexChanged"			 			 
+			DataSourceID="DoctorRoomDataSource1"
 			DataKeyNames="Id"
 			AllowMultiColumnSorting="false"
 			DefaultSortColumnName="" 
@@ -115,7 +66,7 @@
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		
-		<data:DoctorRoomDataSource ID="DoctorRoomDataSource2" runat="server" SelectMethod="Find"
+		<data:DoctorRoomDataSource ID="DoctorRoomDataSource1" runat="server" SelectMethod="Find"
 			EnableDeepLoad="True"
 			>
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
@@ -136,10 +87,130 @@
 		</data:DoctorRoomDataSource>		
 		
 		<br />
-		<data:EntityGridView ID="GridViewDoctorRoster3" runat="server"
+		<data:EntityGridView ID="GridViewAppointment2" runat="server"
 			AutoGenerateColumns="False"	
-			OnSelectedIndexChanged="GridViewDoctorRoster3_SelectedIndexChanged"			 			 
-			DataSourceID="DoctorRosterDataSource3"
+			OnSelectedIndexChanged="GridViewAppointment2_SelectedIndexChanged"			 			 
+			DataSourceID="AppointmentDataSource2"
+			DataKeyNames="Id"
+			AllowMultiColumnSorting="false"
+			DefaultSortColumnName="" 
+			DefaultSortDirection="Ascending"	
+			ExcelExportFileName="Export_Appointment.xls"  		
+			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
+			>
+			<Columns>
+				<asp:CommandField ShowSelectButton="True" />
+				<data:HyperLinkField HeaderText="Customer Id" DataNavigateUrlFormatString="CustomerEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="CustomerIdSource" DataTextField="FirstName" />
+				<data:HyperLinkField HeaderText="Content Id" DataNavigateUrlFormatString="ContentEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ContentIdSource" DataTextField="Title" />
+				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
+				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
+				<data:HyperLinkField HeaderText="Nurse Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="NurseIdSource" DataTextField="FirstName" />
+				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
+				<asp:BoundField DataField="StartTime" HeaderText="Start Time" SortExpression="[StartTime]" />				
+				<asp:BoundField DataField="EndTime" HeaderText="End Time" SortExpression="[EndTime]" />				
+				<asp:BoundField DataField="IsComplete" HeaderText="Is Complete" SortExpression="[IsComplete]" />				
+				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
+				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
+				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
+				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />				
+				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
+			</Columns>
+			<EmptyDataTemplate>
+				<b>No Appointment Found! </b>
+				<asp:HyperLink runat="server" ID="hypAppointment" NavigateUrl="~/admin/AppointmentEdit.aspx">Add 
+                New</asp:HyperLink>
+			</EmptyDataTemplate>
+		</data:EntityGridView>					
+		
+		<data:AppointmentDataSource ID="AppointmentDataSource2" runat="server" SelectMethod="Find"
+			EnableDeepLoad="True"
+			>
+			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
+	            <Types>
+					<data:AppointmentProperty Name="Content"/> 
+					<data:AppointmentProperty Name="Customer"/> 
+					<data:AppointmentProperty Name="Room"/> 
+					<data:AppointmentProperty Name="Staff"/> 
+					<data:AppointmentProperty Name="Status"/> 
+				</Types>
+			</DeepLoadProperties>
+			
+		    <Parameters>
+				<data:SqlParameter Name="Parameters">
+					<Filters>
+						<data:AppointmentFilter  Column="NurseId" QueryStringField="Id" /> 
+					</Filters>
+				</data:SqlParameter>
+				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
+		    </Parameters>
+		</data:AppointmentDataSource>		
+		
+		<br />
+		<data:EntityGridView ID="GridViewAppointment3" runat="server"
+			AutoGenerateColumns="False"	
+			OnSelectedIndexChanged="GridViewAppointment3_SelectedIndexChanged"			 			 
+			DataSourceID="AppointmentDataSource3"
+			DataKeyNames="Id"
+			AllowMultiColumnSorting="false"
+			DefaultSortColumnName="" 
+			DefaultSortDirection="Ascending"	
+			ExcelExportFileName="Export_Appointment.xls"  		
+			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
+			>
+			<Columns>
+				<asp:CommandField ShowSelectButton="True" />
+				<data:HyperLinkField HeaderText="Customer Id" DataNavigateUrlFormatString="CustomerEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="CustomerIdSource" DataTextField="FirstName" />
+				<data:HyperLinkField HeaderText="Content Id" DataNavigateUrlFormatString="ContentEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ContentIdSource" DataTextField="Title" />
+				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
+				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
+				<data:HyperLinkField HeaderText="Nurse Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="NurseIdSource" DataTextField="FirstName" />
+				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
+				<asp:BoundField DataField="StartTime" HeaderText="Start Time" SortExpression="[StartTime]" />				
+				<asp:BoundField DataField="EndTime" HeaderText="End Time" SortExpression="[EndTime]" />				
+				<asp:BoundField DataField="IsComplete" HeaderText="Is Complete" SortExpression="[IsComplete]" />				
+				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
+				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
+				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
+				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />				
+				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
+			</Columns>
+			<EmptyDataTemplate>
+				<b>No Appointment Found! </b>
+				<asp:HyperLink runat="server" ID="hypAppointment" NavigateUrl="~/admin/AppointmentEdit.aspx">Add 
+                New</asp:HyperLink>
+			</EmptyDataTemplate>
+		</data:EntityGridView>					
+		
+		<data:AppointmentDataSource ID="AppointmentDataSource3" runat="server" SelectMethod="Find"
+			EnableDeepLoad="True"
+			>
+			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
+	            <Types>
+					<data:AppointmentProperty Name="Content"/> 
+					<data:AppointmentProperty Name="Customer"/> 
+					<data:AppointmentProperty Name="Room"/> 
+					<data:AppointmentProperty Name="Staff"/> 
+					<data:AppointmentProperty Name="Status"/> 
+				</Types>
+			</DeepLoadProperties>
+			
+		    <Parameters>
+				<data:SqlParameter Name="Parameters">
+					<Filters>
+						<data:AppointmentFilter  Column="DoctorId" QueryStringField="Id" /> 
+					</Filters>
+				</data:SqlParameter>
+				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
+		    </Parameters>
+		</data:AppointmentDataSource>		
+		
+		<br />
+		<data:EntityGridView ID="GridViewDoctorRoster4" runat="server"
+			AutoGenerateColumns="False"	
+			OnSelectedIndexChanged="GridViewDoctorRoster4_SelectedIndexChanged"			 			 
+			DataSourceID="DoctorRosterDataSource4"
 			DataKeyNames="Id"
 			AllowMultiColumnSorting="false"
 			DefaultSortColumnName="" 
@@ -150,10 +221,11 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
-				<data:HyperLinkField HeaderText="Roster Id" DataNavigateUrlFormatString="RosterEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RosterIdSource" DataTextField="Note" />
+				<data:HyperLinkField HeaderText="Roster Type Id" DataNavigateUrlFormatString="RosterTypeEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RosterTypeIdSource" DataTextField="IsBooked" />
 				<asp:BoundField DataField="StartTime" HeaderText="Start Time" SortExpression="[StartTime]" />				
 				<asp:BoundField DataField="EndTime" HeaderText="End Time" SortExpression="[EndTime]" />				
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
+				<asp:BoundField DataField="IsComplete" HeaderText="Is Complete" SortExpression="[IsComplete]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
 				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
@@ -167,12 +239,12 @@
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		
-		<data:DoctorRosterDataSource ID="DoctorRosterDataSource3" runat="server" SelectMethod="Find"
+		<data:DoctorRosterDataSource ID="DoctorRosterDataSource4" runat="server" SelectMethod="Find"
 			EnableDeepLoad="True"
 			>
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
-					<data:DoctorRosterProperty Name="Roster"/> 
+					<data:DoctorRosterProperty Name="RosterType"/> 
 					<data:DoctorRosterProperty Name="Staff"/> 
 				</Types>
 			</DeepLoadProperties>
@@ -188,118 +260,10 @@
 		</data:DoctorRosterDataSource>		
 		
 		<br />
-		<data:EntityGridView ID="GridViewAppointment4" runat="server"
+		<data:EntityGridView ID="GridViewDoctorFunc5" runat="server"
 			AutoGenerateColumns="False"	
-			OnSelectedIndexChanged="GridViewAppointment4_SelectedIndexChanged"			 			 
-			DataSourceID="AppointmentDataSource4"
-			DataKeyNames="Id"
-			AllowMultiColumnSorting="false"
-			DefaultSortColumnName="" 
-			DefaultSortDirection="Ascending"	
-			ExcelExportFileName="Export_Appointment.xls"  		
-			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
-			>
-			<Columns>
-				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Customer Id" DataNavigateUrlFormatString="CustomerEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="CustomerIdSource" DataTextField="FirstName" />
-				<data:HyperLinkField HeaderText="Content Id" DataNavigateUrlFormatString="ContentEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ContentIdSource" DataTextField="Title" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
-				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
-				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
-				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
-				<asp:BoundField DataField="StartTime" HeaderText="Start Time" SortExpression="[StartTime]" />				
-				<asp:BoundField DataField="EndTime" HeaderText="End Time" SortExpression="[EndTime]" />				
-				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
-				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
-				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
-				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />				
-				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
-			</Columns>
-			<EmptyDataTemplate>
-				<b>No Appointment Found! </b>
-				<asp:HyperLink runat="server" ID="hypAppointment" NavigateUrl="~/admin/AppointmentEdit.aspx">Add 
-                New</asp:HyperLink>
-			</EmptyDataTemplate>
-		</data:EntityGridView>					
-		
-		<data:AppointmentDataSource ID="AppointmentDataSource4" runat="server" SelectMethod="Find"
-			EnableDeepLoad="True"
-			>
-			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
-	            <Types>
-					<data:AppointmentProperty Name="Content"/> 
-					<data:AppointmentProperty Name="Customer"/> 
-					<data:AppointmentProperty Name="Room"/> 
-					<data:AppointmentProperty Name="Staff"/> 
-					<data:AppointmentProperty Name="Status"/> 
-					<%--<data:AppointmentProperty Name="NurseAppointmentCollection" />--%>
-				</Types>
-			</DeepLoadProperties>
-			
-		    <Parameters>
-				<data:SqlParameter Name="Parameters">
-					<Filters>
-						<data:AppointmentFilter  Column="DoctorId" QueryStringField="Id" /> 
-					</Filters>
-				</data:SqlParameter>
-				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
-		    </Parameters>
-		</data:AppointmentDataSource>		
-		
-		<br />
-		<data:EntityGridView ID="GridViewStaffRoles5" runat="server"
-			AutoGenerateColumns="False"	
-			OnSelectedIndexChanged="GridViewStaffRoles5_SelectedIndexChanged"			 			 
-			DataSourceID="StaffRolesDataSource5"
-			DataKeyNames="Id"
-			AllowMultiColumnSorting="false"
-			DefaultSortColumnName="" 
-			DefaultSortDirection="Ascending"	
-			ExcelExportFileName="Export_StaffRoles.xls"  		
-			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
-			>
-			<Columns>
-				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Staff Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StaffIdSource" DataTextField="FirstName" />
-				<data:HyperLinkField HeaderText="Role Id" DataNavigateUrlFormatString="RoleEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoleIdSource" DataTextField="Title" />
-				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
-				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
-				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
-				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />				
-				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
-			</Columns>
-			<EmptyDataTemplate>
-				<b>No Staff Roles Found! </b>
-				<asp:HyperLink runat="server" ID="hypStaffRoles" NavigateUrl="~/admin/StaffRolesEdit.aspx">Add 
-                New</asp:HyperLink>
-			</EmptyDataTemplate>
-		</data:EntityGridView>					
-		
-		<data:StaffRolesDataSource ID="StaffRolesDataSource5" runat="server" SelectMethod="Find"
-			EnableDeepLoad="True"
-			>
-			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
-	            <Types>
-					<data:StaffRolesProperty Name="Role"/> 
-					<data:StaffRolesProperty Name="Staff"/> 
-				</Types>
-			</DeepLoadProperties>
-			
-		    <Parameters>
-				<data:SqlParameter Name="Parameters">
-					<Filters>
-						<data:StaffRolesFilter  Column="StaffId" QueryStringField="Id" /> 
-					</Filters>
-				</data:SqlParameter>
-				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
-		    </Parameters>
-		</data:StaffRolesDataSource>		
-		
-		<br />
-		<data:EntityGridView ID="GridViewDoctorFunc6" runat="server"
-			AutoGenerateColumns="False"	
-			OnSelectedIndexChanged="GridViewDoctorFunc6_SelectedIndexChanged"			 			 
-			DataSourceID="DoctorFuncDataSource6"
+			OnSelectedIndexChanged="GridViewDoctorFunc5_SelectedIndexChanged"			 			 
+			DataSourceID="DoctorFuncDataSource5"
 			DataKeyNames="Id"
 			AllowMultiColumnSorting="false"
 			DefaultSortColumnName="" 
@@ -324,7 +288,7 @@
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		
-		<data:DoctorFuncDataSource ID="DoctorFuncDataSource6" runat="server" SelectMethod="Find"
+		<data:DoctorFuncDataSource ID="DoctorFuncDataSource5" runat="server" SelectMethod="Find"
 			EnableDeepLoad="True"
 			>
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">

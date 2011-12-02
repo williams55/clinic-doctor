@@ -62,7 +62,7 @@
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataBirthdate" Text='<%# Bind("Birthdate", "{0:d}") %>'
-                        MaxLength="10" CssClass="text-input datepicker"></asp:TextBox>
+                        MaxLength="10" CssClass="datepicker text-input "></asp:TextBox>
                 </td>
             </tr>
             <tr>

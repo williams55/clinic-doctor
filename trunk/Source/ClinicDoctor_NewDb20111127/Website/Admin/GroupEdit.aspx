@@ -63,6 +63,7 @@
 				<asp:BoundField DataField="IsFemale" HeaderText="Is Female" SortExpression="[IsFemale]" />				
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]" />				
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
+				<asp:BoundField DataField="Roles" HeaderText="Roles" SortExpression="[Roles]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
 				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
@@ -82,11 +83,10 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:StaffProperty Name="Group"/> 
-					<%--<data:StaffProperty Name="NurseAppointmentCollection" />--%>
 					<%--<data:StaffProperty Name="DoctorRoomCollection" />--%>
+					<%--<data:StaffProperty Name="AppointmentCollectionGetByNurseId" />--%>
+					<%--<data:StaffProperty Name="AppointmentCollectionGetByDoctorId" />--%>
 					<%--<data:StaffProperty Name="DoctorRosterCollection" />--%>
-					<%--<data:StaffProperty Name="AppointmentCollection" />--%>
-					<%--<data:StaffProperty Name="StaffRolesCollection" />--%>
 					<%--<data:StaffProperty Name="DoctorFuncCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
@@ -100,55 +100,6 @@
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
 		    </Parameters>
 		</data:StaffDataSource>		
-		
-		<br />
-		<data:EntityGridView ID="GridViewGroupRoles2" runat="server"
-			AutoGenerateColumns="False"	
-			OnSelectedIndexChanged="GridViewGroupRoles2_SelectedIndexChanged"			 			 
-			DataSourceID="GroupRolesDataSource2"
-			DataKeyNames="Id"
-			AllowMultiColumnSorting="false"
-			DefaultSortColumnName="" 
-			DefaultSortDirection="Ascending"	
-			ExcelExportFileName="Export_GroupRoles.xls"  		
-			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
-			>
-			<Columns>
-				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Group Id" DataNavigateUrlFormatString="GroupEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="GroupIdSource" DataTextField="Title" />
-				<data:HyperLinkField HeaderText="Role Id" DataNavigateUrlFormatString="RoleEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoleIdSource" DataTextField="Title" />
-				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
-				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
-				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
-				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />				
-				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
-			</Columns>
-			<EmptyDataTemplate>
-				<b>No Group Roles Found! </b>
-				<asp:HyperLink runat="server" ID="hypGroupRoles" NavigateUrl="~/admin/GroupRolesEdit.aspx">Add 
-                New</asp:HyperLink>
-			</EmptyDataTemplate>
-		</data:EntityGridView>					
-		
-		<data:GroupRolesDataSource ID="GroupRolesDataSource2" runat="server" SelectMethod="Find"
-			EnableDeepLoad="True"
-			>
-			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
-	            <Types>
-					<data:GroupRolesProperty Name="Group"/> 
-					<data:GroupRolesProperty Name="Role"/> 
-				</Types>
-			</DeepLoadProperties>
-			
-		    <Parameters>
-				<data:SqlParameter Name="Parameters">
-					<Filters>
-						<data:GroupRolesFilter  Column="GroupId" QueryStringField="Id" /> 
-					</Filters>
-				</data:SqlParameter>
-				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
-		    </Parameters>
-		</data:GroupRolesDataSource>		
 		
 		<br />
 		

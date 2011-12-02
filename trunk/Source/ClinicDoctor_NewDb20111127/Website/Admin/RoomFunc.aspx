@@ -1,5 +1,5 @@
 ﻿
-<%@ Page Language="C#"  MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="RoomFunc.aspx.cs" Inherits="Admin_RoomFunc" Title="RoomFunc List" %>
+<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="RoomFunc.aspx.cs" Inherits="Admin_RoomFunc" Title="RoomFunc List" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Room Func List</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -16,7 +16,7 @@
 				ExcelExportFileName="Export_RoomFunc.xls"  		
 			>
 			<Columns>
-				<asp:CommandField ShowSelectButton="True"  />				
+				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Func Id" DataNavigateUrlFormatString="FunctionalityEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="FuncIdSource" DataTextField="Title" />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
