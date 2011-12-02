@@ -168,6 +168,7 @@ function loadHour(ev) {
         success: function(msg) {
             var arr = eval(msg.d);
             $("#cboFromHour").find("option").remove();
+            $("#cboToHour").find("option").remove();
 
             var startTime = ev.start_date.format("HH:MM");
             var endTime = ev.end_date.format("HH:MM");
@@ -218,6 +219,8 @@ function initForm() {
     $("#hdId").val("");
     $("#tdTitle").text("New roster");
     $("#txtNote").val("");
+
+    disableAllElements($("#tblContent"), true)
 }
 
 function SaveRoster() {
@@ -280,7 +283,6 @@ function SaveRoster() {
             contentType: "application/json; charset=utf-8",
             success: function(response) {
                 var obj = eval(response.d)[0];
-
                 if (obj.result == "true") {
                     var evs = obj.data;
                     addRoster(evs);
@@ -335,7 +337,6 @@ $(document).ready(function() {
         changeYear: true,
         showOtherMonths: true,
         selectOtherMonths: true,
-        dateFormat: "dd/mm/yy",
         minDate: "+1D"
     });
 
@@ -361,7 +362,7 @@ $(document).ready(function() {
 
         $("#spanWeekday").find("span").remove();
         $.each(weekday, function(i, item) {
-            $("#spanWeekday").append('<span style="float:left; padding-right:5px; width:95px;"><input type="checkbox" value=' + item.key
+        $("#spanWeekday").append('<span style="float:left; padding-right:5px; width:95px;"><input type="checkbox" value=' + item.label
             + ' id="chk' + item.key + '" /> ' + item.label + '</span>');
         });
     });

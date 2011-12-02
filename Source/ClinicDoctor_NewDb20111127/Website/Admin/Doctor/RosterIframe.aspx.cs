@@ -83,8 +83,11 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
          */
 
         string result = string.Empty;
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
+            tm.BeginTransaction();
+
             string username = EntitiesUtilities.GetAuthName();
             Staff obj = DataRepository.StaffProvider.GetByUserNameIsDisabled(username, false);
             if (obj == null)
@@ -93,19 +96,116 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 return result;
             }
 
+            // Repeat roster
             if (RepeatRoster == "true")
             {
-                RosterType refObj = DataRepository.RosterTypeProvider.GetByIdIsDisabled(Convert.ToInt64(RosterType), false);
-                
+                // Get RoosterType
+                RosterType refObj = DataRepository.RosterTypeProvider.GetByIdIsDisabled(tm, Convert.ToInt64(RosterType), false);
+
+                // Convert Month to right format
+                //DateTime month = Convert.ToDateTime(Month, new CultureInfo("vi-VN"));
+                DateTime month = Convert.ToDateTime(Month);
+                DateTime item = new DateTime(month.Year, month.Month, 1);
+
+                // Get start time and end time
+                //DateTime dtStart = Convert.ToDateTime(StartTime, new CultureInfo("vi-VN"));
+                //DateTime dtEnd = Convert.ToDateTime(EndTime, new CultureInfo("vi-VN"));
+                DateTime dtStart = Convert.ToDateTime(StartTime);
+                DateTime dtEnd = Convert.ToDateTime(EndTime);
+
+                // Get auto increasement id
+                string Perfix = "R" + ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
+                int Count = 0;
+                string strNumber = "000";
+                TList<DoctorRoster> objPo = DataRepository.DoctorRosterProvider.GetPaged(tm, "Id like '" + Perfix + "' + '%'", "Id desc", 0, 1, out Count);
+                if (Count == 0)
+                    strNumber = "000";
+                else
+                {
+                    strNumber = String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)));
+                }
+
+                // Variable for result
+                result = string.Empty;
+
+                // Variable for error message if there is conflict roster
+                string errorMessage = string.Empty;
+
+                while (month.Month == item.Month)
+                {
+                    if (Weekday.Contains(item.DayOfWeek.ToString()))
+                    {
+                        DoctorRoster newObj = new DoctorRoster();
+                        strNumber = String.Format("{0:000}", int.Parse(strNumber) + 1);
+
+                        newObj.Id = Perfix + strNumber;
+
+                        newObj.DoctorId = obj.Id;
+                        newObj.RosterTypeId = Convert.ToInt64(RosterType);
+                        newObj.StartTime = Convert.ToDateTime(item.ToString("MM/dd/yyyy ") + dtStart.ToString("HH:mm:00"));
+                        newObj.EndTime = Convert.ToDateTime(item.ToString("MM/dd/yyyy ") + dtEnd.ToString("HH:mm:00"));
+                        newObj.Note = Note;
+                        newObj.CreateUser = username;
+                        newObj.UpdateUser = username;
+
+                        // Check roster before insert new roster
+                        string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", obj.Id.ToString(), newObj.EndTime, newObj.StartTime);
+                        TList<DoctorRoster> lstRoster = DataRepository.DoctorRosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
+                        // If there is no roster -> insert new roster
+                        if (Count == 0)
+                        {
+                            // If roster is created in a passed or current day
+                            if (Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy")) >= Convert.ToDateTime(newObj.StartTime.ToString("MM/dd/yyyy")))
+                            {
+                                tm.Rollback();
+                                result = @"[{ 'result': 'false', 'message': 'You can not change roster to passed or current date.', 'data': [] }]";
+                                goto StepResult;
+                            }
+
+                            DataRepository.DoctorRosterProvider.Insert(tm, newObj);
+                        }
+                        else
+                        {
+                            errorMessage += newObj.StartTime.DayOfWeek.ToString() + " " + newObj.StartTime.ToString("dd MMM yyyy");
+                        }
+
+                        result += @"{id: '" + newObj.Id + @"',"
+                            + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
+                            + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
+                            + @"text: 'Title: " + refObj.Note + @"<br />";
+
+                        if (!string.IsNullOrEmpty(newObj.Note))
+                            result += @"Note: " + newObj.Note;
+
+                        result += @"',DoctorId: '" + newObj.DoctorId + @"',"
+                           + @"RosterTypeId: '" + newObj.DoctorId + @"',"
+                           + @"note: '" + newObj.Note + @"',"
+                           + @"color: '" + ServiceFacade.SettingsHelper.UncompleteColor + @"',"
+                           + @"isnew: 'true'"
+                           + @"},";
+                    }
+                    item = item.AddDays(1);
+                }
+
+                if (errorMessage.Length > 0)
+                {
+                    tm.Rollback();
+                    result = @"[{ 'result': 'false', 'message': 'There are some rosters conflicted: " + errorMessage + "', 'data': [] }]";
+                    goto StepResult;
+                }
+                else
+                {
+                    result = @"[{ 'result': 'true', 'message': '', 'data': [" + result.Substring(0, result.Length - 1) + @"] }]";
+                }
             }
             else
             {
-                RosterType refObj = DataRepository.RosterTypeProvider.GetByIdIsDisabled(Convert.ToInt64(RosterType), false);
+                RosterType refObj = DataRepository.RosterTypeProvider.GetByIdIsDisabled(tm, Convert.ToInt64(RosterType), false);
                 DoctorRoster newObj = new DoctorRoster();
 
                 string Perfix = "R" + ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
                 int Count = 0;
-                TList<DoctorRoster> objPo = DataRepository.DoctorRosterProvider.GetPaged("Id like '" + Perfix + "' + '%'", "Id desc", 0, 1, out Count);
+                TList<DoctorRoster> objPo = DataRepository.DoctorRosterProvider.GetPaged(tm, "Id like '" + Perfix + "' + '%'", "Id desc", 0, 1, out Count);
                 if (Count == 0)
                     newObj.Id = Perfix + "001";
                 else
@@ -115,40 +215,71 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 
                 newObj.DoctorId = obj.Id;
                 newObj.RosterTypeId = Convert.ToInt64(RosterType);
-                newObj.StartTime = Convert.ToDateTime(StartTime, new CultureInfo("vi-VN"));
-                newObj.EndTime = Convert.ToDateTime(EndTime, new CultureInfo("vi-VN"));
+                newObj.StartTime = Convert.ToDateTime(StartTime);
+                newObj.EndTime = Convert.ToDateTime(EndTime);
+                //newObj.StartTime = Convert.ToDateTime(StartTime, new CultureInfo("vi-VN"));
+                //newObj.EndTime = Convert.ToDateTime(EndTime, new CultureInfo("vi-VN"));
                 newObj.Note = Note;
                 newObj.CreateUser = username;
                 newObj.UpdateUser = username;
-                DataRepository.DoctorRosterProvider.Insert(newObj);
 
-                result = @"[{ 'result': 'true', 'message': '', 'data': ["
-                    + @"{id: '" + newObj.Id + @"',"
-                    + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"text: 'Title: " + refObj.Note + @"<br />";
+                // Check roster before insert new roster
+                string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", obj.Id.ToString(), newObj.EndTime, newObj.StartTime);
+                TList<DoctorRoster> lstRoster = DataRepository.DoctorRosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
+                // If there is no roster -> insert new roster
+                if (Count == 0)
+                {
+                    // If roster is created in a passed or current day
+                    if (Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd")) >= Convert.ToDateTime(newObj.StartTime.ToString("yyyy/MM/dd")))
+                    {
+                        tm.Rollback();
+                        result = @"[{ 'result': 'false', 'message': 'You can not create roster to passed or current date.', 'data': [] }]";
+                        goto StepResult;
+                    }
+                    else
+                    {
+                        DataRepository.DoctorRosterProvider.Insert(tm, newObj);
 
-                if (!string.IsNullOrEmpty(newObj.Note))
-                    result += @"Note: " + newObj.Note;
+                        result = @"[{ 'result': 'true', 'message': '', 'data': ["
+                            + @"{id: '" + newObj.Id + @"',"
+                            + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
+                            + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
+                            + @"text: 'Title: " + refObj.Note + @"<br />";
 
-                result += @"',DoctorId: '" + newObj.DoctorId + @"',"
-                   + @"RosterTypeId: '" + newObj.DoctorId + @"',"
-                   + @"note: '" + newObj.Note + @"',"
-                   + @"color: '" + ServiceFacade.SettingsHelper.UncompleteColor + @"',"
-                   + @"isnew: 'true'"
-                   + @"}"
-                   + @"] }]";
+                        if (!string.IsNullOrEmpty(newObj.Note))
+                            result += @"Note: " + newObj.Note;
+
+                        result += @"',DoctorId: '" + newObj.DoctorId + @"',"
+                           + @"RosterTypeId: '" + newObj.DoctorId + @"',"
+                           + @"note: '" + newObj.Note + @"',"
+                           + @"color: '" + ServiceFacade.SettingsHelper.UncompleteColor + @"',"
+                           + @"isnew: 'true'"
+                           + @"}"
+                           + @"] }]";
+                    }
+                }
+                else
+                {
+                    tm.Rollback();
+                    result = @"[{ 'result': 'false', 'message': 'There is roster conflicted: From " 
+                        + newObj.StartTime.DayOfWeek.ToString() + " " + newObj.StartTime.ToString("dd MMM yyyy HH:mm") + " to  "
+                        + newObj.EndTime.DayOfWeek.ToString() + " " + newObj.EndTime.ToString("dd MMM yyyy HH:mm") + "', 'data': [] }]";
+                    goto StepResult;
+                }
             }
+            tm.Commit();
 
         }
         catch (Exception ex)
         {
             //Write log cho nay
+            tm.Rollback();
 
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': '[]' }]";
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
             return result;
         }
 
+    StepResult:
         return result;
     }
 

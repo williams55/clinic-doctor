@@ -331,6 +331,91 @@ namespace ClinicDoctor.Data.Bases
 		public abstract TList<DoctorRoster> GetByDoctorIdIsCompleteIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count);
 						
 		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoster_DoctorId_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoster&gt;"/> class.</returns>
+		public TList<DoctorRoster> GetByDoctorIdIsDisabled(System.Int64 _doctorId, System.Boolean _isDisabled)
+		{
+			int count = -1;
+			return GetByDoctorIdIsDisabled(null,_doctorId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoster_DoctorId_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoster&gt;"/> class.</returns>
+		public TList<DoctorRoster> GetByDoctorIdIsDisabled(System.Int64 _doctorId, System.Boolean _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorIdIsDisabled(null, _doctorId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoster_DoctorId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoster&gt;"/> class.</returns>
+		public TList<DoctorRoster> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Boolean _isDisabled)
+		{
+			int count = -1;
+			return GetByDoctorIdIsDisabled(transactionManager, _doctorId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoster_DoctorId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoster&gt;"/> class.</returns>
+		public TList<DoctorRoster> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Boolean _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorIdIsDisabled(transactionManager, _doctorId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoster_DoctorId_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoster&gt;"/> class.</returns>
+		public TList<DoctorRoster> GetByDoctorIdIsDisabled(System.Int64 _doctorId, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByDoctorIdIsDisabled(null, _doctorId, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoster_DoctorId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoster&gt;"/> class.</returns>
+		public abstract TList<DoctorRoster> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Boolean _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoster_DoctorId_RosterTypeId index.
 		/// </summary>
 		/// <param name="_doctorId"></param>
