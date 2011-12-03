@@ -6,26 +6,43 @@
 <head runat="server">
     <title></title>
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/css/ui-lightness/jquery-ui-1.7.3.custom.css") %>" />
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/jquery-1.6.2.min.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.core.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.widget.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.dialog.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.datepicker.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/date.format.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/json2.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_timeline.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_treetimeline.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_minical.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_readonly.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.css") %>"
         type="text/css" media="screen" title="no title" charset="utf-8" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/myscript/css/scheduler.css") %>"
@@ -39,7 +56,16 @@
             overflow: hidden;
             font-size: 13px;
         }
+        .one_line
+        {
+            white-space: nowrap;
+            overflow: hidden;
+            padding-top: 5px;
+            padding-left: 5px;
+            text-align: left !important;
+        }
     </style>
+
     <script type="text/javascript" charset="utf-8">
         // Load weekday
         var weekday = <%=Constants.Weekdays %>;
@@ -47,7 +73,9 @@
         var html = function (id) { return document.getElementById(id); }; //just a helper
 
     </script>
+
     <script src="GRNEditt.js" type="text/javascript"></script>
+
 </head>
 <body>
     <div id="RosterForm" class="schedulerForm">
@@ -58,6 +86,26 @@
         <table cellpadding="3" width="100%" id="tblContent">
             <tr>
                 <td colspan="2" class="title" id="tdTitle">
+                </td>
+            </tr>
+            <tr>
+                <td class="header" width="80">
+                    Group
+                </td>
+                <td>
+                    <select id="cboGroup">
+                        <option value="-1" class="default">All</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="header" width="80">
+                    Staff
+                </td>
+                <td>
+                    <select id="cboStaff">
+                    </select><span id="loadingStaff" class="loading"></span>
+                    <input type="hidden" id="hdStaff" />
                 </td>
             </tr>
             <tr>
@@ -138,6 +186,8 @@
             <div class="dhx_cal_tab" name="day_tab" style="right: 204px;">
             </div>
             <div class="dhx_cal_tab" name="week_tab" style="right: 140px;">
+            </div>
+            <div class="dhx_cal_tab" name="timeline_tab" style="right: 280px;">
             </div>
             <div class="dhx_cal_tab" name="month_tab" style="right: 76px;">
             </div>

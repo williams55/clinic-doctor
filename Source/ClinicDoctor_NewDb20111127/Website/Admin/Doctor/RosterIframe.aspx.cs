@@ -6,64 +6,15 @@ using ClinicDoctor.Data;
 using ClinicDoctor.Entities;
 using ClinicDoctor.Settings.BusinessLayer;
 using System.Globalization;
+using System.Data;
+using System.Data.SqlClient;
 
 public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 {
+    #region "Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetRosterType()
-    {
-        TList<RosterType> lst = DataRepository.RosterTypeProvider.GetByIsDisabled(false);
-
-        string result = "[]";
-        if (lst.Count > 0)
-        {
-            result = string.Empty;
-            foreach (RosterType item in lst)
-            {
-                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + ((item.Note == null) ? "" : item.Note) + @"'" + "},";
-            }
-            result = "[" + result.Substring(0, result.Length - 1) + "]";
-        }
-
-        return result;
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetTime()
-    {
-        int step = ServiceFacade.SettingsHelper.MinuteStep;
-        int minute = ServiceFacade.SettingsHelper.MaxMinute;
-        int hour = ServiceFacade.SettingsHelper.MaxHour;
-
-        TList<RosterType> lst = DataRepository.RosterTypeProvider.GetByIsDisabled(false);
-
-        string result = string.Empty;
-        int m = 0;
-        string key = string.Empty;
-        string label = string.Empty;
-
-        for (int h = 0; h < hour; h++)
-        {
-            m = 0;
-            while (m < minute)
-            {
-                key = h.ToString("00") + ":" + m.ToString("00") + ":00";
-                label = h.ToString("00") + ":" + m.ToString("00");
-                result += @"{'key' : '" + key + @"'" + "," + @"'label' : '" + label + @"'" + "},";
-                m += step;
-            }
-        }
-        if (result.Length > 1)
-            result = "[" + result.Substring(0, result.Length - 1) + "]";
-
-        return result;
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string SaveEvent(string RosterType, string StartTime, string EndTime, string Note, string RepeatRoster, string Weekday, string Month)
+    public static string SaveEvent(string StaffId, string RosterType, string StartTime, string EndTime, string Note, string RepeatRoster, string Weekday, string Month)
     {
         /* Return Structure
          * { result: true [success], false [fail],
@@ -83,16 +34,24 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
          */
 
         string result = string.Empty;
+
+        // Check StaffId
+        if (StaffId == null)
+        {
+            result = @"[{ 'result': 'false', 'message': 'You must choose staff.', 'data': [] }]";
+            return result;
+        }
+
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
             tm.BeginTransaction();
 
             string username = EntitiesUtilities.GetAuthName();
-            Staff obj = DataRepository.StaffProvider.GetByUserNameIsDisabled(username, false);
+            Staff obj = DataRepository.StaffProvider.GetByIdIsDisabled(tm, Convert.ToInt64(StaffId), false);
             if (obj == null)
             {
-                result = @"[{ 'result': 'false', 'message': 'Doctor is not exist.', 'data': '[]' }]";
+                result = @"[{ 'result': 'false', 'message': 'Staff is not exist.', 'data': '[]' }]";
                 return result;
             }
 
@@ -142,8 +101,8 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 
                         newObj.DoctorId = obj.Id;
                         newObj.RosterTypeId = Convert.ToInt64(RosterType);
-                        newObj.StartTime = Convert.ToDateTime(item.ToString("MM/dd/yyyy ") + dtStart.ToString("HH:mm:00"));
-                        newObj.EndTime = Convert.ToDateTime(item.ToString("MM/dd/yyyy ") + dtEnd.ToString("HH:mm:00"));
+                        newObj.StartTime = Convert.ToDateTime(item.ToString("dd/MM/yyyy ") + dtStart.ToString("HH:mm:00"));
+                        newObj.EndTime = Convert.ToDateTime(item.ToString("dd/MM/yyyy ") + dtEnd.ToString("HH:mm:00"));
                         newObj.Note = Note;
                         newObj.CreateUser = username;
                         newObj.UpdateUser = username;
@@ -178,6 +137,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                         result += @"{id: '" + newObj.Id + @"',"
                             + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                             + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
+                            + @"section_id: '" + newObj.DoctorId + @"',"
                             + @"text: '" + refObj.Note + @"<br />";
 
                         if (!string.IsNullOrEmpty(newObj.Note))
@@ -221,8 +181,8 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 
                 newObj.DoctorId = obj.Id;
                 newObj.RosterTypeId = Convert.ToInt64(RosterType);
-                newObj.StartTime = Convert.ToDateTime(StartTime);
-                newObj.EndTime = Convert.ToDateTime(EndTime);
+                newObj.StartTime = Convert.ToDateTime(StartTime, new CultureInfo("en-US"));
+                newObj.EndTime = Convert.ToDateTime(EndTime, new CultureInfo("en-US"));
                 //newObj.StartTime = Convert.ToDateTime(StartTime, new CultureInfo("vi-VN"));
                 //newObj.EndTime = Convert.ToDateTime(EndTime, new CultureInfo("vi-VN"));
                 newObj.Note = Note;
@@ -264,6 +224,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                     + @"{id: '" + newObj.Id + @"',"
                     + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                     + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
+                    + @"section_id: '" + newObj.DoctorId + @"',"
                     + @"text: '" + refObj.Note + @"<br />";
 
                 if (!string.IsNullOrEmpty(newObj.Note))
@@ -295,9 +256,16 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateEvent(string Id, string RosterType, string StartTime, string EndTime, string Note)
+    public static string UpdateEvent(string Id, string StaffId, string RosterType, string StartTime, string EndTime, string Note)
     {
         string result = string.Empty;
+
+        // Check StaffId
+        if (StaffId == null) {
+            result = @"[{ 'result': 'false', 'message': 'You must choose staff.', 'data': [] }]";
+            return result;
+        }
+
         int Count = 0;
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
@@ -305,10 +273,10 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             tm.BeginTransaction();
 
             string username = EntitiesUtilities.GetAuthName();
-            Staff obj = DataRepository.StaffProvider.GetByUserNameIsDisabled(username, false);
+            Staff obj = DataRepository.StaffProvider.GetByIdIsDisabled(tm, Convert.ToInt64(StaffId), false);
             if (obj == null)
             {
-                result = @"[{ 'result': 'false', 'message': 'Doctor is not exist.', 'data': [] }]";
+                result = @"[{ 'result': 'false', 'message': 'Staff is not exist.', 'data': [] }]";
                 return result;
             }
 
@@ -321,8 +289,8 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             }
 
             dr.RosterTypeId = Convert.ToInt64(RosterType);
-            dr.StartTime = Convert.ToDateTime(StartTime);
-            dr.EndTime = Convert.ToDateTime(EndTime);
+            dr.StartTime = Convert.ToDateTime(StartTime, new CultureInfo("en-US"));
+            dr.EndTime = Convert.ToDateTime(EndTime, new CultureInfo("en-US"));
             dr.Note = Note;
             dr.UpdateUser = username;
             dr.UpdateDate = DateTime.Now;
@@ -362,6 +330,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 + @"{id: '" + dr.Id + @"',"
                 + @"start_date: '" + dr.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                 + @"end_date: '" + dr.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
+                + @"section_id: '" + dr.DoctorId + @"',"
                 + @"text: '" + refObj.Note + @"<br />";
 
             if (!string.IsNullOrEmpty(dr.Note))
@@ -437,6 +406,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                     result += @"{id: '" + item.Id + @"',"
                         + @"start_date: '" + item.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                         + @"end_date: '" + item.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
+                        + @"section_id: '" + item.DoctorId + @"',"
                         + @"text: '" + itemRef.Note + @"<br />";
 
                     if (!string.IsNullOrEmpty(item.Note))
@@ -480,6 +450,293 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
         return result;
     }
 
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string DeleteEvent(string Id)
+    {
+        string result = string.Empty;
+
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        try
+        {
+            tm.BeginTransaction();
+
+            string username = EntitiesUtilities.GetAuthName();
+
+            DoctorRoster dr = DataRepository.DoctorRosterProvider.GetByIdIsCompleteIsDisabled(Id, false, false);
+            if (dr == null)
+            {
+                result = @"[{ 'result': 'false', 'message': 'There is no roster to delete or roster is expired.', 'data': [] }]";
+                return result;
+            }
+
+            dr.IsDisabled = true;
+            dr.UpdateUser = username;
+            dr.UpdateDate = DateTime.Now;
+
+            DataRepository.DoctorRosterProvider.Save(tm, dr);
+
+            result = @"[{ 'result': 'true', 'message': '', 'data': [] }]";
+            tm.Commit();
+        }
+        catch (Exception ex)
+        {
+            //Write log cho nay
+            tm.Rollback();
+
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            return result;
+        }
+
+    StepResult:
+        return result;
+    }
+    #endregion
+
     #region "Function"
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetRosterType()
+    {
+        TList<RosterType> lst = DataRepository.RosterTypeProvider.GetByIsDisabled(false);
+
+        string result = "[]";
+        if (lst.Count > 0)
+        {
+            result = string.Empty;
+            foreach (RosterType item in lst)
+            {
+                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + ((item.Note == null) ? "" : item.Note) + @"'" + "},";
+            }
+            result = "[" + result.Substring(0, result.Length - 1) + "]";
+        }
+
+        return result;
+    }
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetTime()
+    {
+        int step = ServiceFacade.SettingsHelper.MinuteStep;
+        int minute = ServiceFacade.SettingsHelper.MaxMinute;
+        int hour = ServiceFacade.SettingsHelper.MaxHour;
+
+        TList<RosterType> lst = DataRepository.RosterTypeProvider.GetByIsDisabled(false);
+
+        string result = string.Empty;
+        int m = 0;
+        string key = string.Empty;
+        string label = string.Empty;
+
+        for (int h = 0; h < hour; h++)
+        {
+            m = 0;
+            while (m < minute)
+            {
+                key = h.ToString("00") + ":" + m.ToString("00") + ":00";
+                label = h.ToString("00") + ":" + m.ToString("00");
+                result += @"{'key' : '" + key + @"'" + "," + @"'label' : '" + label + @"'" + "},";
+                m += step;
+            }
+        }
+        if (result.Length > 1)
+            result = "[" + result.Substring(0, result.Length - 1) + "]";
+
+        return result;
+    }
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetDoctorTree()
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data:  [{
+         *          key: name of roles,
+         *          label: name of roles,
+         *          open: true, [priority for Doctor]
+         *          children:  [{
+         *                      key: Staff Id,
+         *                      label: Staff Name
+         *                      }, {}, {}]
+         *          }, {}, {}]
+         *  }]
+         */
+        string result = string.Empty;
+
+        try
+        {
+            // Get all roles
+            CustomRoleProvider crp = new CustomRoleProvider();
+            string[] arr = crp.GetAllRoles();
+
+            // If there is no roles, return empty data
+            if (arr == null || arr.Length == 0)
+            {
+                result = @"[{ 'result': 'false', 'message': 'There is no group. Please contact Administrator.', 'data': [] }]";
+                goto StepResult;
+            }
+
+            // Get all available staffs
+            TList<Staff> lstStaff = DataRepository.StaffProvider.GetByIsDisabled(false);
+            bool hasItem = false;
+            lstStaff.Sort("LastName ASC");
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                result += @"{'key' : '" + arr[i] + @"'" + "," + @"'label' : '" + arr[i] + @"', open: true, children: [";
+                hasItem = false;
+
+                // Get staff by role then remove it from list
+                for (int j = 0; j < lstStaff.Count; j++)
+                {
+                    if (lstStaff[j].Roles.ToLower().Contains(arr[i].ToLower()))
+                    {
+                        result += @"{'key' : '" + lstStaff[j].Id.ToString() + @"'" + "," + @"'label' : '"
+                            + lstStaff[j].FirstName.ToString() + " " + lstStaff[j].LastName.ToString() + @"'" + "},";
+                        lstStaff.RemoveAt(j);
+                        j--;
+                        hasItem = true;
+                    }
+                }
+
+                //DataSet ds = new DataSet();
+                //SqlCommand cmd = new SqlCommand();
+                //cmd.CommandText = "GetStaffBySingleRoleByIsDisabled";
+                //cmd.CommandType = CommandType.StoredProcedure;
+                //cmd.Parameters.Add(new SqlParameter("@SingleRole", arr[i]));
+                //cmd.Parameters.Add(new SqlParameter("@IsDisabled", false));
+                //cmd.CommandTimeout = 0;
+
+                //ds = DataRepository.Provider.ExecuteDataSet(cmd);
+                //DataTable objTable = ds.Tables[0];
+
+                //foreach (DataRow dr in objTable.Rows)
+                //{
+                //    result += @"{'key' : '" + dr["Id"].ToString() + @"'" + "," + @"'label' : '"
+                //        + dr["FirstName"].ToString() + " " + dr["LastName"].ToString() + @"'" + "},";
+                //}
+
+                if (hasItem)
+                    result = result.Substring(0, result.Length - 1);
+                result += @"]},";
+
+                if (lstStaff.Count == 0)
+                    break;
+            }
+            if (result.Length > 1)
+                result = result.Substring(0, result.Length - 1);
+
+            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
+            goto StepResult;
+        }
+        catch (Exception ex)
+        {
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            goto StepResult;
+        }
+    StepResult:
+        return result;
+    }
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetRoles()
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data:  [{
+         *          key: name of roles,
+         *          label: name of roles,
+         *          }, {}, {}]
+         *  }]
+         */
+        string result = string.Empty;
+
+        try
+        {
+            // Get all roles
+            CustomRoleProvider crp = new CustomRoleProvider();
+            string[] arr = crp.GetAllRoles();
+
+            // If there is no roles, return empty data
+            if (arr == null || arr.Length == 0)
+            {
+                result = @"[{ 'result': 'false', 'message': 'There is no group. Please contact Administrator.', 'data': [] }]";
+                goto StepResult;
+            }
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                result += @"{'key' : '" + arr[i] + @"'" + "," + @"'label' : '" + arr[i] + @"'},";
+            }
+
+            if (result.Length > 1)
+                result = result.Substring(0, result.Length - 1);
+
+            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
+            goto StepResult;
+        }
+        catch (Exception ex)
+        {
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            goto StepResult;
+        }
+    StepResult:
+        return result;
+    }
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetStaffs(string Role)
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data:  [{
+         *          key: name of staff,
+         *          label: name of staff,
+         *          }, {}, {}]
+         *  }]
+         */
+        string result = string.Empty;
+
+        try
+        {
+            // Get staff by role
+            DataSet ds = new DataSet();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "GetStaffBySingleRoleByIsDisabled";
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@SingleRole", Role));
+            cmd.Parameters.Add(new SqlParameter("@IsDisabled", false));
+            cmd.CommandTimeout = 0;
+
+            ds = DataRepository.Provider.ExecuteDataSet(cmd);
+            DataTable objTable = ds.Tables[0];
+
+            foreach (DataRow dr in objTable.Rows)
+            {
+                result += @"{'key' : '" + dr["Id"].ToString() + @"'" + "," + @"'label' : '"
+                    + dr["FirstName"].ToString() + " " + dr["LastName"].ToString() + @"'" + "},";
+            }
+
+            if (result.Length > 1)
+                result = result.Substring(0, result.Length - 1);
+
+            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
+            goto StepResult;
+        }
+        catch (Exception ex)
+        {
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            goto StepResult;
+        }
+    StepResult:
+        return result;
+    }
     #endregion
 }
