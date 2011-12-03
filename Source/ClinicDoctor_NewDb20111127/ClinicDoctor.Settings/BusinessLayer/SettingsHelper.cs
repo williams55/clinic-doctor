@@ -164,6 +164,22 @@ namespace ClinicDoctor.Settings.BusinessLayer
                 ServiceFacade.SettingsService.SaveSetting<string>("ROSTER_PREFIX", value);
             }
         }
+
+        public string AppointmentPrefix
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<string>("AppointmentPrefix", out result))
+                {
+                    throw new ApplicationException("Setting AppointmentPrefix was not found.");
+                }
+
+                return result;
+            }
+            set { ServiceFacade.SettingsService.SaveSetting<string>("AppointmentPrefix", value); }
+        }
         #endregion
+
     }
 }
