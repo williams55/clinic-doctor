@@ -181,5 +181,25 @@ namespace ClinicDoctor.Settings.BusinessLayer
         }
         #endregion
 
+        #region "Roles"
+        // Roles: Admin;Manager;Doctor;Receptionist;Nurse
+        public string Roles
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<string>("ROLES", out result))
+                {
+                    throw new ApplicationException("Setting ROLES was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<string>("ROLES", value);
+            }
+        }
+        #endregion
     }
 }
