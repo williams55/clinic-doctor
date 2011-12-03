@@ -52,7 +52,9 @@ public class CustomRoleProvider :RoleProvider
 
     public override string[] GetAllRoles()
     {
-        throw new NotImplementedException();
+        string roles = ClinicDoctor.Settings.BusinessLayer.ServiceFacade.SettingsHelper.Roles;
+        return roles.Split(';');
+        //throw new NotImplementedException();
     }
 
     public override string[] GetRolesForUser(string username)
