@@ -1,8 +1,10 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="RoomFuncEdit.aspx.cs" Inherits="RoomFuncEdit" Title="RoomFunc Edit" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Room Func - Add/Edit</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">
+    Room Func - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="RoomFuncDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" 
+            DataSourceID="RoomFuncDataSource" onload="FormView1_Load">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/RoomFuncFields.ascx" />

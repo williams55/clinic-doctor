@@ -1,8 +1,10 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="DoctorRoomEdit.aspx.cs" Inherits="DoctorRoomEdit" Title="DoctorRoom Edit" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Doctor Room - Add/Edit</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">
+    Doctor Room - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="DoctorRoomDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" 
+            DataSourceID="DoctorRoomDataSource" onload="FormView1_Load">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/DoctorRoomFields.ascx" />

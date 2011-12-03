@@ -11,6 +11,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using ClinicDoctor.Web.UI;
+using ClinicDoctor.Entities;
+using ClinicDoctor.Data;
 #endregion
 
 public partial class Admin_RosterType : System.Web.UI.Page
@@ -27,7 +29,28 @@ public partial class Admin_RosterType : System.Web.UI.Page
 		string urlParams = string.Format("Id={0}", GridView1.SelectedDataKey.Values[0]);
 		Response.Redirect("RosterTypeEdit.aspx?" + urlParams, true);
 	}
-	
+
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        string ID = e.CommandArgument.ToString().Trim();
+        if (e.CommandName == "CustomDelete")
+        {
+
+            TList<DoctorRoster> listDoctorRoster = DataRepository.DoctorRosterProvider.GetByRosterTypeId((Int32.Parse(ID)));
+            if (listDoctorRoster.Count > 0)
+            {
+                Response.Write(@"<script language='javascript'>alert('Vui lòng xóa tất cả chi tiết.')</script>");
+
+            }
+            else
+            {
+                RosterType objRosterType= new RosterType();
+                objRosterType.Id= Int32.Parse(ID);
+                DataRepository.RosterTypeProvider.Delete(objRosterType);
+            }
+            GridView1.DataBind();
+        }
+    }
 }
 
 

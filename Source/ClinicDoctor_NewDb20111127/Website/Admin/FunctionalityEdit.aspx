@@ -1,8 +1,10 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="FunctionalityEdit.aspx.cs" Inherits="FunctionalityEdit" Title="Functionality Edit" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Functionality - Add/Edit</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">
+    Functionality - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="FunctionalityDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" 
+            DataSourceID="FunctionalityDataSource" onload="FormView1_Load">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/FunctionalityFields.ascx" />
@@ -58,7 +60,8 @@
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No Doctor Func Found! </b>
-				<asp:HyperLink runat="server" ID="hypDoctorFunc" NavigateUrl="~/admin/DoctorFuncEdit.aspx">Add New</asp:HyperLink>
+				<asp:HyperLink runat="server" ID="hypDoctorFunc" NavigateUrl="~/admin/DoctorFuncEdit.aspx">Add 
+                New</asp:HyperLink>
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		
@@ -107,7 +110,8 @@
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No Content Found! </b>
-				<asp:HyperLink runat="server" ID="hypContent" NavigateUrl="~/admin/ContentEdit.aspx">Add New</asp:HyperLink>
+				<asp:HyperLink runat="server" ID="hypContent" NavigateUrl="~/admin/ContentEdit.aspx">Add 
+                New</asp:HyperLink>
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		
@@ -155,7 +159,8 @@
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No Room Func Found! </b>
-				<asp:HyperLink runat="server" ID="hypRoomFunc" NavigateUrl="~/admin/RoomFuncEdit.aspx">Add New</asp:HyperLink>
+				<asp:HyperLink runat="server" ID="hypRoomFunc" NavigateUrl="~/admin/RoomFuncEdit.aspx">Add 
+                New</asp:HyperLink>
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		

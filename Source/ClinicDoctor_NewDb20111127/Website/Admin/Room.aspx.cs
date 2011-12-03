@@ -12,7 +12,8 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using ClinicDoctor.Web.UI;
 #endregion
-
+using ClinicDoctor.Entities;
+using ClinicDoctor.Data;
 public partial class Admin_Room : System.Web.UI.Page
 {	
     protected void Page_Load(object sender, EventArgs e)
@@ -27,7 +28,30 @@ public partial class Admin_Room : System.Web.UI.Page
 		string urlParams = string.Format("Id={0}", GridView1.SelectedDataKey.Values[0]);
 		Response.Redirect("RoomEdit.aspx?" + urlParams, true);
 	}
-	
+
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+         string ID = e.CommandArgument.ToString().Trim();
+        if (e.CommandName == "CustomDelete")
+        {
+
+            TList<DoctorRoom> listDoctorRoom = DataRepository.DoctorRoomProvider.GetByRoomId((int.Parse(ID)));
+            TList<RoomFunc> listRoomFunc = DataRepository.RoomFuncProvider.GetByRoomId((int.Parse(ID)));
+            TList<Appointment> listAppointment = DataRepository.AppointmentProvider.GetByRoomId((int.Parse(ID)));
+            if (listDoctorRoom.Count > 0 || listRoomFunc.Count > 0 || listAppointment.Count>0)
+            {
+                Response.Write(@"<script language='javascript'>alert('Vui lòng xóa tất cả chi tiết.')</script>");
+
+            }
+            else
+            {
+                Room objRoom = new Room();
+                objRoom.Id = int.Parse(ID);
+                DataRepository.RoomProvider.Delete(objRoom);
+            }
+            GridView1.DataBind();
+        }
+    }
 }
 
 
