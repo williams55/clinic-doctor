@@ -1,8 +1,10 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="RosterTypeEdit.aspx.cs" Inherits="RosterTypeEdit" Title="RosterType Edit" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Roster Type - Add/Edit</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">
+    Roster Type - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="RosterTypeDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" 
+            DataSourceID="RosterTypeDataSource" onload="FormView1_Load">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/RosterTypeFields.ascx" />
@@ -62,7 +64,8 @@
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No Doctor Roster Found! </b>
-				<asp:HyperLink runat="server" ID="hypDoctorRoster" NavigateUrl="~/admin/DoctorRosterEdit.aspx">Add New</asp:HyperLink>
+				<asp:HyperLink runat="server" ID="hypDoctorRoster" NavigateUrl="~/admin/DoctorRosterEdit.aspx">Add 
+                New</asp:HyperLink>
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		

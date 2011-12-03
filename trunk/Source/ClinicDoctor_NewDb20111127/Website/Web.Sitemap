@@ -46,7 +46,9 @@
         </siteMapNode>
         
         <siteMapNode title="Doctor" roles="*">
-            <siteMapNode url="~/Admin/Doctor/Roster.aspx" title="Manage Roster"  description="" />
+          <siteMapNode url="~/Admin/Doctor/Roster.aspx" title="Manage Roster"  description="" />
+          <siteMapNode url="~/Admin/RosterType.aspx" title="Manage Roster Type"  description="" />
+          <siteMapNode url="~/Admin/RosterTypeEdit.aspx" title="Add New Roster Type"  description="" />
         </siteMapNode>
 
     </siteMapNode>

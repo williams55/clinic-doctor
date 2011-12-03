@@ -22,6 +22,22 @@ public partial class RoomFuncEdit : System.Web.UI.Page
 		FormUtil.RedirectAfterCancel(FormView1, "RoomFunc.aspx");
 		FormUtil.SetDefaultMode(FormView1, "Id");
 	}
+    protected void FormView1_Load(object sender, EventArgs e)
+    {
+        if (FormView1.CurrentMode == FormViewMode.Insert)
+        {
+            HiddenField tbCreateDate = (HiddenField)FormView1.Row.FindControl("HDcreatedate");
+            HiddenField tbUpdateDate = (HiddenField)FormView1.Row.FindControl("HDUpdateDate");
+            tbCreateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+            tbUpdateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+
+        }
+        else
+        {
+            HiddenField tbUpdateDate = (HiddenField)FormView1.Row.FindControl("HDUpdateDate");
+            tbUpdateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+        }
+    }
 }
 
 
