@@ -30,6 +30,7 @@ public partial class Admin_admin : System.Web.UI.MasterPage
                 lbl_Name.Text = objUser.FirstName;
                 
             }
+
         }
     }
     protected void btnLogOut_Click(object sender, EventArgs eventArgs)
