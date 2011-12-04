@@ -1,8 +1,10 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="ContentEdit.aspx.cs" Inherits="ContentEdit" Title="Content Edit" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Content - Add/Edit</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">
+    Content - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="ContentDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" 
+            DataSourceID="ContentDataSource" onload="FormView1_Load">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/ContentFields.ascx" />
@@ -66,7 +68,8 @@
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No Appointment Found! </b>
-				<asp:HyperLink runat="server" ID="hypAppointment" NavigateUrl="~/admin/AppointmentEdit.aspx">Add New</asp:HyperLink>
+				<asp:HyperLink runat="server" ID="hypAppointment" NavigateUrl="~/admin/AppointmentEdit.aspx">Add 
+                New</asp:HyperLink>
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		

@@ -12,7 +12,7 @@
         DefaultSortColumnName="" DefaultSortDirection="Ascending" 
         ExcelExportFileName="Export_Group.xls" onrowcommand="GridView1_RowCommand">
         <Columns>
-            <asp:CommandField ShowSelectButton="True" ShowEditButton="True" />
+            <asp:CommandField ShowSelectButton="True"  />
             <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]" />
             <data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />
             <asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />
