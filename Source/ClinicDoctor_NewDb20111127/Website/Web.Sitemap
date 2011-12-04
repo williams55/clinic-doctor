@@ -12,7 +12,7 @@
       <siteMapNode url="~/Admin/Staff/Functionality.aspx" title="Manage Functionality"  description="" />
       <siteMapNode url="~/Admin/Staff/FunctionalityEdit.aspx" title="Add New Functionality"  description="" />
 
-     
+
     </siteMapNode>
     <siteMapNode title="Customer" roles="Admin,Manager,Receptionist">
       <siteMapNode url="~/Admin/Customer/Customer.aspx" title="Manage Customer"  description="" />
