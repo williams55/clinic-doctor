@@ -622,9 +622,6 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 if (hasItem)
                     result = result.Substring(0, result.Length - 1);
                 result += @"]},";
-
-                if (lstStaff.Count == 0)
-                    break;
             }
             if (result.Length > 1)
                 result = result.Substring(0, result.Length - 1);
