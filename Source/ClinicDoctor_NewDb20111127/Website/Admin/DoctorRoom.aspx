@@ -7,10 +7,11 @@
     <data:GridViewSearchPanel ID="GridViewSearchPanel1" runat="server" GridViewControlID="GridView1"
         PersistenceMethod="Session" />
     <br />
-    <data:EntityGridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
+    <data:EntityGridView ID="GridView1" runat="server" 
+    AutoGenerateColumns="False" OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
         DataSourceID="DoctorRoomDataSource" DataKeyNames="Id" AllowMultiColumnSorting="false"
         DefaultSortColumnName="" DefaultSortDirection="Ascending" 
-        ExcelExportFileName="Export_DoctorRoom.xls" onrowcommand="GridView1_RowCommand">
+    ExcelExportFileName="Export_DoctorRoom.xls" onrowcommand="GridView1_RowCommand">
         <Columns>
             <asp:CommandField ShowSelectButton="True" />
             <data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}"

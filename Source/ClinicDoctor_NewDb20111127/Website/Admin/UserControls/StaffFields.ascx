@@ -1,26 +1,27 @@
 ﻿<%@ Control Language="C#" ClassName="StaffFields" %>
 <asp:FormView ID="FormView1" runat="server">
     <ItemTemplate>
-        <table border="0" cellpadding="3" cellspacing="1">
+        
+        <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
+                
                 <td class="literal">
                     <asp:Label ID="lbldataFirstName" runat="server" Text="First Name:" AssociatedControlID="dataFirstName" />
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataFirstName" Text='<%# Bind("FirstName") %>' MaxLength="200"
-                        CssClass="text-input"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataFirstName"
+                        CssClass="text-input" Width="250px"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataFirstName"
                             runat="server" Display="Dynamic" ControlToValidate="dataFirstName" ErrorMessage="Required"></asp:RequiredFieldValidator>
                 </td>
-            </tr>
-            <tr>
                 <td class="literal">
-                    <asp:Label ID="lbldataLastName" runat="server" Text="Last Name:" AssociatedControlID="dataLastName" />
+                    <asp:Label ID="Label2" runat="server" Text="Last Name:" AssociatedControlID="dataLastName" />
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataLastName" Text='<%# Bind("LastName") %>' MaxLength="200"
-                        CssClass="text-input"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataLastName"
+                        CssClass="text-input" Width="250px"></asp:TextBox><asp:RequiredFieldValidator ID="RequiredFieldValidator2"
                             runat="server" Display="Dynamic" ControlToValidate="dataLastName" ErrorMessage="Required"></asp:RequiredFieldValidator>
                 </td>
+                
             </tr>
             <tr>
                 <td class="literal">
@@ -28,21 +29,18 @@
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataShortName" Text='<%# Bind("ShortName") %>' MaxLength="50"
-                        CssClass="text-input"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataShortName"
+                        CssClass="text-input" Width="250px"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataShortName"
                             runat="server" Display="Dynamic" ControlToValidate="dataShortName" ErrorMessage="Required"></asp:RequiredFieldValidator>
                 </td>
-            </tr>
-              <tr>
-                <td class="literal">
-                    <asp:Label ID="lbldataIsFemale" runat="server" Text="Is Female:" AssociatedControlID="dataIsFemale" />
+                 <td class="literal">
+                    <asp:Label ID="lbldataUserName" runat="server" Text="User Name:" AssociatedControlID="dataUserName" />
                 </td>
                 <td>
-                    <asp:RadioButtonList runat="server" ID="dataIsFemale" SelectedValue='<%# Bind("IsFemale") %>'
-                        RepeatDirection="Horizontal">
-                        <asp:ListItem Value="True" Text="Yes" Selected="True"></asp:ListItem>
-                        <asp:ListItem Value="False" Text="No" ></asp:ListItem>
-                    </asp:RadioButtonList>
+                    <asp:TextBox runat="server" ID="dataUserName" Text='<%# Bind("UserName") %>' MaxLength="200"
+                        CssClass="text-input" Width="250px"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataUserName"
+                            runat="server" Display="Dynamic" ControlToValidate="dataUserName" ErrorMessage="Required"></asp:RequiredFieldValidator>
                 </td>
+              
             </tr>
             <tr>
                 <td class="literal">
@@ -51,36 +49,35 @@
                 <td>
                     <data:EntityDropDownList runat="server" ID="dataGroupId" DataSourceID="GroupIdGroupDataSource"
                         DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("GroupId") %>'
-                        AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+                        AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" Width="250px" />
                     <data:GroupDataSource ID="GroupIdGroupDataSource" runat="server" SelectMethod="GetAll" />
                 </td>
-            </tr>
-            <tr>
-                <td class="literal">
-                    <asp:Label ID="lbldataUserName" runat="server" Text="User Name:" AssociatedControlID="dataUserName" />
+                 <td class="literal">
+                    <asp:Label ID="lbldataIsFemale" runat="server" Text="Sex:" AssociatedControlID="dataIsFemale" />
                 </td>
                 <td>
-                    <asp:TextBox runat="server" ID="dataUserName" Text='<%# Bind("UserName") %>' MaxLength="200"
-                        CssClass="text-input"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataUserName"
-                            runat="server" Display="Dynamic" ControlToValidate="dataUserName" ErrorMessage="Required"></asp:RequiredFieldValidator>
+                    <asp:RadioButtonList runat="server" ID="dataIsFemale" SelectedValue='<%# Bind("IsFemale") %>'
+                        RepeatDirection="Horizontal">
+                        <asp:ListItem Value="True" Text="Female" Selected="True"></asp:ListItem>
+                        <asp:ListItem Value="False" Text="Male"></asp:ListItem>
+                    </asp:RadioButtonList>
                 </td>
             </tr>
             <tr>
-                <td class="literal">
-                    <asp:Label ID="lbldataAddress" runat="server" Text="Address:" AssociatedControlID="dataAddress" />
+              <td class="literal">
+                    <asp:Label ID="lbldataBirthdate" runat="server" Text="Birthdate:" AssociatedControlID="dataBirthdate" />
                 </td>
                 <td>
-                    <asp:TextBox runat="server" ID="dataAddress" Text='<%# Bind("Address") %>' TextMode="MultiLine"
-                        Width="250px" Rows="5" CssClass="text-input"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="dataBirthdate" Text='<%# Bind("Birthdate", "{0:d}") %>'
+                        MaxLength="10" CssClass="text-input datepicker" Width="250px"></asp:TextBox>
                 </td>
-            </tr>
-            <tr>
+               
                 <td class="literal">
                     <asp:Label ID="lbldataHomePhone" runat="server" Text="Home Phone:" AssociatedControlID="dataHomePhone" />
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataHomePhone" Text='<%# Bind("HomePhone") %>' MaxLength="20"
-                        CssClass="text-input"></asp:TextBox>
+                        CssClass="text-input" Width="250px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -89,36 +86,33 @@
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataWorkPhone" Text='<%# Bind("WorkPhone") %>' MaxLength="20"
-                        CssClass="text-input"></asp:TextBox>
+                        CssClass="text-input" Width="250px"></asp:TextBox>
                 </td>
-            </tr>
-            <tr>
+                
                 <td class="literal">
                     <asp:Label ID="lbldataCellPhone" runat="server" Text="Cell Phone:" AssociatedControlID="dataCellPhone" />
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataCellPhone" Text='<%# Bind("CellPhone") %>' MaxLength="20"
-                        CssClass="text-input"></asp:TextBox>
+                        CssClass="text-input" Width="250px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td class="literal">
-                    <asp:Label ID="lbldataBirthdate" runat="server" Text="Birthdate:" AssociatedControlID="dataBirthdate" />
+               <td class="literal">
+                    <asp:Label ID="lbldataAddress" runat="server" Text="Address:" AssociatedControlID="dataAddress" />
                 </td>
                 <td>
-                    <asp:TextBox runat="server" ID="dataBirthdate" Text='<%# Bind("Birthdate", "{0:d}") %>'
-                        MaxLength="10" CssClass="text-input datepicker"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="dataAddress" Text='<%# Bind("Address") %>' TextMode="MultiLine"
+                        Width="250px" Rows="2" CssClass="text-input"></asp:TextBox>
                 </td>
-            </tr>
-           
-            <tr>
                 <td class="literal">
                     <asp:Label ID="lbldataTitle" runat="server" Text="Title:" AssociatedControlID="dataTitle" />
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataTitle" Text='<%# Bind("Title") %>' MaxLength="10"
-                        CssClass="text-input"></asp:TextBox>
+                        CssClass="text-input" Width="250px"></asp:TextBox>
                 </td>
+                
             </tr>
             <tr>
                 <td class="literal">
@@ -126,65 +120,54 @@
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataNote" Text='<%# Bind("Note") %>' TextMode="MultiLine"
-                        Width="250px" Rows="5" CssClass="text-input"></asp:TextBox>
+                        Width="250px" Rows="2" CssClass="text-input"></asp:TextBox>
                 </td>
-            </tr>
-            <tr>
                 <td class="literal">
                     <asp:Label ID="lbldataRoles" runat="server" Text="Roles:" AssociatedControlID="dataRoles" />
                 </td>
                 <td>
-                    <asp:TextBox runat="server" ID="dataRoles" Text='<%# Bind("Roles") %>' MaxLength="200"
-                        CssClass="text-input"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataRoles"
-                            runat="server" Display="Dynamic" ControlToValidate="dataRoles" ErrorMessage="Required"></asp:RequiredFieldValidator>
+                   <%--  <asp:TextBox runat="server" ID="dataRoles" Text='<%# Bind("Roles") %>' MaxLength="200"
+                        CssClass="text-input" Width="250px"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataRoles"
+                            runat="server" Display="Dynamic" ControlToValidate="dataRoles" ErrorMessage="Required"></asp:RequiredFieldValidator> --%>
+                            
+                   <asp:CheckBoxList runat="server" ID="dataRoles" RepeatDirection="Horizontal"  ></asp:CheckBoxList>
                 </td>
             </tr>
-          
             <tr>
                 <td class="literal">
                     <asp:Label ID="lbldataCreateUser" runat="server" Text="Create User:" AssociatedControlID="dataCreateUser" />
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataCreateUser" Text='<%# Bind("CreateUser") %>'
-                        MaxLength="200" CssClass="text-input"></asp:TextBox>
+                        MaxLength="200" CssClass="text-input" Width="250px"></asp:TextBox>
                 </td>
-            </tr>
-            <%--	<tr>
-        <td class="literal"><asp:Label ID="lbldataCreateDate" runat="server" Text="Create Date:" AssociatedControlID="dataCreateDate" /></td>
-        <td>
-					<asp:TextBox runat="server" ID="dataCreateDate" Text='<%# Bind("CreateDate", "{0:d}") %>' MaxLength="10"></asp:TextBox><asp:ImageButton ID="cal_dataCreateDate" runat="server" SkinID="CalendarImageButton" OnClientClick="javascript:showCalendarControl(this.previousSibling);return false;" /><asp:RequiredFieldValidator ID="ReqVal_dataCreateDate" runat="server" Display="Dynamic" ControlToValidate="dataCreateDate" ErrorMessage="Required"></asp:RequiredFieldValidator>
-				</td>
-			</tr>--%>
-            <tr>
                 <td class="literal">
                     <asp:Label ID="lbldataUpdateUser" runat="server" Text="Update User:" AssociatedControlID="dataUpdateUser" />
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataUpdateUser" Text='<%# Bind("UpdateUser") %>'
-                        MaxLength="200" CssClass="text-input"></asp:TextBox>
+                        MaxLength="200" CssClass="text-input" Width="250px"></asp:TextBox>
                 </td>
             </tr>
-             <tr>
+            <tr>
                 <td class="literal">
                     <asp:Label ID="lbldataIsDisabled" runat="server" Text="Is Disabled:" AssociatedControlID="dataIsDisabled" />
                 </td>
                 <td>
                     <asp:RadioButtonList runat="server" ID="dataIsDisabled" SelectedValue='<%# Bind("IsDisabled") %>'
                         RepeatDirection="Horizontal">
-                        <asp:ListItem Value="True" Text="Yes" ></asp:ListItem>
+                        <asp:ListItem Value="True" Text="Yes"></asp:ListItem>
                         <asp:ListItem Value="False" Text="No" Selected="True"></asp:ListItem>
-                        
                     </asp:RadioButtonList>
                 </td>
+                <td>
+                </td>
+                <td>
+                </td>
             </tr>
-            <%--<tr>
-        <td class="literal"><asp:Label ID="lbldataUpdateDate" runat="server" Text="Update Date:" AssociatedControlID="dataUpdateDate" /></td>
-        <td>
-					<asp:TextBox runat="server" ID="dataUpdateDate" Text='<%# Bind("UpdateDate", "{0:d}") %>' MaxLength="10"></asp:TextBox><asp:ImageButton ID="cal_dataUpdateDate" runat="server" SkinID="CalendarImageButton" OnClientClick="javascript:showCalendarControl(this.previousSibling);return false;" /><asp:RequiredFieldValidator ID="ReqVal_dataUpdateDate" runat="server" Display="Dynamic" ControlToValidate="dataUpdateDate" ErrorMessage="Required"></asp:RequiredFieldValidator>
-				</td>
-			</tr>--%>
         </table>
         <asp:HiddenField runat="server" ID="HDcreatedate" Value='<%# Bind("CreateDate", "{0:d}") %>' />
         <asp:HiddenField runat="server" ID="HDUpdateDate" Value='<%# Bind("UpdateDate", "{0:d}") %>' />
+        <asp:HiddenField runat="server" ID="hdRoles" Value='<%# Bind("Roles") %>' />        
     </ItemTemplate>
 </asp:FormView>
