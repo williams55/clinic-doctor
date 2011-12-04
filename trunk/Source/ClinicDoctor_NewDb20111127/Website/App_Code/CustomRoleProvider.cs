@@ -82,6 +82,7 @@ public class CustomRoleProvider :RoleProvider
 
     public override bool IsUserInRole(string username, string roleName)
     {
+        int abc = 0;
         throw new NotImplementedException();
     }
 
