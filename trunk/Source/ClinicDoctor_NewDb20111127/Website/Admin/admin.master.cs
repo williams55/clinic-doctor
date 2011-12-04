@@ -10,31 +10,33 @@ public partial class Admin_admin : System.Web.UI.MasterPage
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        //if (!IsPostBack)
-        //{
+        if (!IsPostBack)
+        {
 
-        //    string authUserName;
-        //    authUserName = Context.User.Identity.Name.Split('\\')[1];
-        //    //lbl_User.Text = authUserName;
-        //    WebUser objUser = DataRepository.WebUserProvider.GetByUserId(authUserName);
-        //    if (objUser == null)
-        //    {
-        //        lbl_User.Text = "Welcome, " + authUserName;
-        //        if (Session["Redirect"] == null)
-        //            Response.Redirect("AccessDenied.aspx", true);
-        //        else
-        //            Session["Redirect"] = null;
-        //    }
-        //    else
-        //    {
-        //        lbl_User.Text = "Welcome, " + objUser.Fullname;
-        //    }
-        //}
+            string authUserName;
+            authUserName = Context.User.Identity.Name.Split('\\')[1];
+            //lbl_User.Text = authUserName;
+            Staff objUser = DataRepository.StaffProvider.GetByUserName(authUserName);
+            if (objUser == null)
+            {
+                lbl_Name.Text = authUserName;
+                if (Session["Redirect"] == null)
+                    Response.Redirect("AccessDenied.aspx", true);
+                else
+                    Session["Redirect"] = null;
+            }
+            else
+            {
+                lbl_Name.Text = objUser.FirstName;
+                
+            }
+        }
     }
     protected void btnLogOut_Click(object sender, EventArgs eventArgs)
     {
         Response.Cookies["LoginUser"].Expires = DateTime.Now.AddDays(-30);
         FormsAuthentication.RedirectToLoginPage();
+       
     }
     protected override void OnInit(EventArgs e)
     {

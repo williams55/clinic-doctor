@@ -4,7 +4,10 @@
     Staff - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" 
-            DataSourceID="StaffDataSource" onload="FormView1_Load">
+            DataSourceID="StaffDataSource" onload="FormView1_Load" 
+            onitemcommand="FormView1_ItemCommand" 
+            onitemupdating="FormView1_ItemUpdating" ondatabinding="FormView1_DataBinding" 
+            ondatabound="FormView1_DataBound" onitemcreated="FormView1_ItemCreated">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/StaffFields.ascx" />

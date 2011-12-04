@@ -96,7 +96,7 @@
                 <ul id="main-nav">
                     <!-- Accordion Menu -->
                     <!-- Add the class "current" to current menu item -->
-                    <asp:Repeater ID="Repeater1" DataSourceID="SiteMapDataSource1" EnableViewState="false"
+                    <asp:Repeater ID="Repeater1" DataSourceID="SiteMapDataSource2" EnableViewState="false"
                         runat="server">
                         <ItemTemplate>
                             <li><a href='<%#Eval("url") %>' class="nav-top-item">
@@ -117,6 +117,8 @@
                         </ItemTemplate>
                     </asp:Repeater>
                     <asp:SiteMapDataSource ID="SiteMapDataSource1" ShowStartingNode="false" runat="server" />
+                    <asp:SiteMapDataSource ID="SiteMapDataSource2" ShowStartingNode="false" runat="server" />
+                    
                     <%--<li><a href="google.com" class="nav-top-item">Admin</a> </li>--%>
                     <%--<li><a href="#" class="nav-top-item">Drug Dispo </a></li>
                     <li><a href="#" class="nav-top-item">Exchange Rate</a> </li>
