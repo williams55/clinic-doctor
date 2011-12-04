@@ -29,18 +29,26 @@ public partial class RosterTypeEdit : System.Web.UI.Page
     }
     protected void FormView1_Load(object sender, EventArgs e)
     {
+        string userName = Session["UserName"].ToString();
         if (FormView1.CurrentMode == FormViewMode.Insert)
         {
-            HiddenField tbCreateDate = (HiddenField)FormView1.Row.FindControl("HDcreatedate");
-            HiddenField tbUpdateDate = (HiddenField)FormView1.Row.FindControl("HDUpdateDate");
-            tbCreateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
-            tbUpdateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+            HiddenField hdCreateDate = (HiddenField)FormView1.Row.FindControl("HDcreatedate");
+            HiddenField hdUpdateDate = (HiddenField)FormView1.Row.FindControl("HDUpdateDate");
+            HiddenField hdCreateUser = (HiddenField)FormView1.Row.FindControl("hdcreateUser");
+            HiddenField hdUpdateUser = (HiddenField)FormView1.Row.FindControl("hdUpdateUser");
+            hdCreateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+            hdUpdateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+            hdCreateUser.Value = userName;
+            hdUpdateUser.Value = userName;
 
         }
         else
         {
-            HiddenField tbUpdateDate = (HiddenField)FormView1.Row.FindControl("HDUpdateDate");
-            tbUpdateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+            HiddenField hdUpdateDate = (HiddenField)FormView1.Row.FindControl("HDUpdateDate");
+            hdUpdateDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+            HiddenField hdUpdateUser = (HiddenField)FormView1.Row.FindControl("hdUpdateUser");
+            hdUpdateUser.Value = userName;
+
         }
     }
 }

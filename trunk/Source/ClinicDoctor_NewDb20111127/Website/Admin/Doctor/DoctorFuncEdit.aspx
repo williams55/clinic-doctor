@@ -1,19 +1,21 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="AppointmentEdit.aspx.cs" Inherits="AppointmentEdit" Title="Appointment Edit" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="DoctorFuncEdit.aspx.cs" Inherits="DoctorFuncEdit" Title="DoctorFunc Edit" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Appointment - Add/Edit</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">
+    Doctor Func - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="AppointmentDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" 
+            DataSourceID="DoctorFuncDataSource" onload="FormView1_Load">
 		
 			<EditItemTemplatePaths>
-				<data:TemplatePath Path="~/Admin/UserControls/AppointmentFields.ascx" />
+				<data:TemplatePath Path="~/Admin/UserControls/DoctorFuncFields.ascx" />
 			</EditItemTemplatePaths>
 		
 			<InsertItemTemplatePaths>
-				<data:TemplatePath Path="~/Admin/UserControls/AppointmentFields.ascx" />
+				<data:TemplatePath Path="~/Admin/UserControls/DoctorFuncFields.ascx" />
 			</InsertItemTemplatePaths>
 		
 			<EmptyDataTemplate>
-				<b>Appointment not found!</b>
+				<b>DoctorFunc not found!</b>
 			</EmptyDataTemplate>
 			
 			<FooterTemplate>
@@ -24,14 +26,14 @@
 
 		</data:MultiFormView>
 		
-		<data:AppointmentDataSource ID="AppointmentDataSource" runat="server"
+		<data:DoctorFuncDataSource ID="DoctorFuncDataSource" runat="server"
 			SelectMethod="GetById"
 		>
 			<Parameters>
 				<asp:QueryStringParameter Name="Id" QueryStringField="Id" Type="String" />
 
 			</Parameters>
-		</data:AppointmentDataSource>
+		</data:DoctorFuncDataSource>
 		
 		<br />
 

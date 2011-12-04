@@ -28,6 +28,7 @@ public partial class Admin_admin : System.Web.UI.MasterPage
             else
             {
                 lbl_Name.Text = objUser.FirstName;
+                Session["UserName"] = authUserName;
                 
             }
 
