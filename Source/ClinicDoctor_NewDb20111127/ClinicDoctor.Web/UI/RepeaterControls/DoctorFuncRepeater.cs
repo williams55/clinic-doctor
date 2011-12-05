@@ -341,13 +341,22 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.Id; }
 		}
         /// <summary>
-        /// Gets the DoctorId
+        /// Gets the DoctorUserName
         /// </summary>
-        /// <value>The DoctorId.</value>
+        /// <value>The DoctorUserName.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int64 DoctorId
+		public System.String DoctorUserName
 		{
-			get { return _entity.DoctorId; }
+			get { return _entity.DoctorUserName; }
+		}
+        /// <summary>
+        /// Gets the DoctorShortName
+        /// </summary>
+        /// <value>The DoctorShortName.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String DoctorShortName
+		{
+			get { return _entity.DoctorShortName; }
 		}
         /// <summary>
         /// Gets the FuncId
@@ -357,6 +366,15 @@ namespace ClinicDoctor.Web.UI
 		public System.Int64 FuncId
 		{
 			get { return _entity.FuncId; }
+		}
+        /// <summary>
+        /// Gets the FuncTitle
+        /// </summary>
+        /// <value>The FuncTitle.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String FuncTitle
+		{
+			get { return _entity.FuncTitle; }
 		}
         /// <summary>
         /// Gets the IsDisabled

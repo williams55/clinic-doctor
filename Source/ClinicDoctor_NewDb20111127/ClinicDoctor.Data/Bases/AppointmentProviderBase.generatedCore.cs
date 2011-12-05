@@ -404,466 +404,6 @@ namespace ClinicDoctor.Data.Bases
 		public abstract TList<Appointment> GetByCustomerIdContentId(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, int start, int pageLength, out int count);
 						
 		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(null,_customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(null, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(transactionManager, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(transactionManager, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, int start, int pageLength, out int count)
-		{
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(null, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, start, pageLength, out count);
-		}
-		
-				
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public abstract ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, int start, int pageLength, out int count);
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(null,_customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(null, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(transactionManager, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(transactionManager, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, int start, int pageLength, out int count)
-		{
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(null, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, start, pageLength, out count);
-		}
-		
-				
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public abstract ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, int start, int pageLength, out int count);
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete_IsDisabled index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="_isDisabled"></param>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(null,_customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete_IsDisabled index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(null, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="_isDisabled"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(transactionManager, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(transactionManager, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete_IsDisabled index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count)
-		{
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(null, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isComplete, _isDisabled, start, pageLength, out count);
-		}
-		
-				
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsComplete_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isComplete"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Appointment"/> class.</returns>
-		public abstract ClinicDoctor.Entities.Appointment GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count);
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsDisabled index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(null,_customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsDisabled index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(null, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(transactionManager, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(transactionManager, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsDisabled index.
-		/// </summary>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isDisabled, int start, int pageLength, out int count)
-		{
-			return GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(null, _customerId, _contentId, _doctorId, _roomId, _nurseId, _statusId, _isDisabled, start, pageLength, out count);
-		}
-		
-				
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_CustomerId_ContentId_DoctorId_RoomId_NurseId_StatusId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_customerId"></param>
-		/// <param name="_contentId"></param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_statusId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Int64? _doctorId, System.Int64? _roomId, System.Int64? _nurseId, System.Int64? _statusId, System.Boolean _isDisabled, int start, int pageLength, out int count);
-						
-		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Appointment_CustomerId_ContentId_IsComplete index.
 		/// </summary>
 		/// <param name="_customerId"></param>
@@ -1137,168 +677,532 @@ namespace ClinicDoctor.Data.Bases
 		public abstract TList<Appointment> GetByCustomerIdIsDisabled(TransactionManager transactionManager, System.Int64 _customerId, System.Boolean _isDisabled, int start, int pageLength, out int count);
 						
 		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Appointment_DoctorId index.
+		/// 	Gets rows from the datasource based on the primary key IX_Appointment_DoctorUsername index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUsername"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorId(System.Int64? _doctorId)
+		public TList<Appointment> GetByDoctorUsername(System.String _doctorUsername)
 		{
 			int count = -1;
-			return GetByDoctorId(null,_doctorId, 0, int.MaxValue, out count);
+			return GetByDoctorUsername(null,_doctorUsername, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUsername"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorId(System.Int64? _doctorId, int start, int pageLength)
+		public TList<Appointment> GetByDoctorUsername(System.String _doctorUsername, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByDoctorId(null, _doctorId, start, pageLength, out count);
+			return GetByDoctorUsername(null, _doctorUsername, start, pageLength, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUsername"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorId(TransactionManager transactionManager, System.Int64? _doctorId)
+		public TList<Appointment> GetByDoctorUsername(TransactionManager transactionManager, System.String _doctorUsername)
 		{
 			int count = -1;
-			return GetByDoctorId(transactionManager, _doctorId, 0, int.MaxValue, out count);
+			return GetByDoctorUsername(transactionManager, _doctorUsername, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUsername"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorId(TransactionManager transactionManager, System.Int64? _doctorId, int start, int pageLength)
+		public TList<Appointment> GetByDoctorUsername(TransactionManager transactionManager, System.String _doctorUsername, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByDoctorId(transactionManager, _doctorId, start, pageLength, out count);
+			return GetByDoctorUsername(transactionManager, _doctorUsername, start, pageLength, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUsername"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorId(System.Int64? _doctorId, int start, int pageLength, out int count)
+		public TList<Appointment> GetByDoctorUsername(System.String _doctorUsername, int start, int pageLength, out int count)
 		{
-			return GetByDoctorId(null, _doctorId, start, pageLength, out count);
+			return GetByDoctorUsername(null, _doctorUsername, start, pageLength, out count);
 		}
 		
 				
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUsername"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByDoctorId(TransactionManager transactionManager, System.Int64? _doctorId, int start, int pageLength, out int count);
+		public abstract TList<Appointment> GetByDoctorUsername(TransactionManager transactionManager, System.String _doctorUsername, int start, int pageLength, out int count);
 						
 		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Appointment_DoctorId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the primary key IX_Appointment_DoctorUsername_IsComplete_IsDisabled index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isComplete"></param>
 		/// <param name="_isDisabled"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorIdIsDisabled(System.Int64? _doctorId, System.Boolean _isDisabled)
+		public TList<Appointment> GetByDoctorUsernameIsCompleteIsDisabled(System.String _doctorUsername, System.Boolean _isComplete, System.Boolean _isDisabled)
 		{
 			int count = -1;
-			return GetByDoctorIdIsDisabled(null,_doctorId, _isDisabled, 0, int.MaxValue, out count);
+			return GetByDoctorUsernameIsCompleteIsDisabled(null,_doctorUsername, _isComplete, _isDisabled, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsComplete_IsDisabled index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorIdIsDisabled(System.Int64? _doctorId, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByDoctorIdIsDisabled(null, _doctorId, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64? _doctorId, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByDoctorIdIsDisabled(transactionManager, _doctorId, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isComplete"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64? _doctorId, System.Boolean _isDisabled, int start, int pageLength)
+		public TList<Appointment> GetByDoctorUsernameIsCompleteIsDisabled(System.String _doctorUsername, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByDoctorIdIsDisabled(transactionManager, _doctorId, _isDisabled, start, pageLength, out count);
+			return GetByDoctorUsernameIsCompleteIsDisabled(null, _doctorUsername, _isComplete, _isDisabled, start, pageLength, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsComplete_IsDisabled index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameIsCompleteIsDisabled(TransactionManager transactionManager, System.String _doctorUsername, System.Boolean _isComplete, System.Boolean _isDisabled)
+		{
+			int count = -1;
+			return GetByDoctorUsernameIsCompleteIsDisabled(transactionManager, _doctorUsername, _isComplete, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsComplete_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameIsCompleteIsDisabled(TransactionManager transactionManager, System.String _doctorUsername, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUsernameIsCompleteIsDisabled(transactionManager, _doctorUsername, _isComplete, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsComplete_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isComplete"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByDoctorIdIsDisabled(System.Int64? _doctorId, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public TList<Appointment> GetByDoctorUsernameIsCompleteIsDisabled(System.String _doctorUsername, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
-			return GetByDoctorIdIsDisabled(null, _doctorId, _isDisabled, start, pageLength, out count);
+			return GetByDoctorUsernameIsCompleteIsDisabled(null, _doctorUsername, _isComplete, _isDisabled, start, pageLength, out count);
 		}
 		
 				
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsComplete_IsDisabled index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isComplete"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64? _doctorId, System.Boolean _isDisabled, int start, int pageLength, out int count);
+		public abstract TList<Appointment> GetByDoctorUsernameIsCompleteIsDisabled(TransactionManager transactionManager, System.String _doctorUsername, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Appointment_DoctorUsername_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameIsDisabled(System.String _doctorUsername, System.Boolean _isDisabled)
+		{
+			int count = -1;
+			return GetByDoctorUsernameIsDisabled(null,_doctorUsername, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameIsDisabled(System.String _doctorUsername, System.Boolean _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUsernameIsDisabled(null, _doctorUsername, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameIsDisabled(TransactionManager transactionManager, System.String _doctorUsername, System.Boolean _isDisabled)
+		{
+			int count = -1;
+			return GetByDoctorUsernameIsDisabled(transactionManager, _doctorUsername, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameIsDisabled(TransactionManager transactionManager, System.String _doctorUsername, System.Boolean _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUsernameIsDisabled(transactionManager, _doctorUsername, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameIsDisabled(System.String _doctorUsername, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByDoctorUsernameIsDisabled(null, _doctorUsername, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public abstract TList<Appointment> GetByDoctorUsernameIsDisabled(TransactionManager transactionManager, System.String _doctorUsername, System.Boolean _isDisabled, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Appointment_DoctorUsername_StatusId index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusId(System.String _doctorUsername, System.Int64? _statusId)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusId(null,_doctorUsername, _statusId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusId(System.String _doctorUsername, System.Int64? _statusId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusId(null, _doctorUsername, _statusId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusId(TransactionManager transactionManager, System.String _doctorUsername, System.Int64? _statusId)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusId(transactionManager, _doctorUsername, _statusId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusId(TransactionManager transactionManager, System.String _doctorUsername, System.Int64? _statusId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusId(transactionManager, _doctorUsername, _statusId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusId(System.String _doctorUsername, System.Int64? _statusId, int start, int pageLength, out int count)
+		{
+			return GetByDoctorUsernameStatusId(null, _doctorUsername, _statusId, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public abstract TList<Appointment> GetByDoctorUsernameStatusId(TransactionManager transactionManager, System.String _doctorUsername, System.Int64? _statusId, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Appointment_DoctorUsername_StatusId_IsComplete index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsComplete(System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusIdIsComplete(null,_doctorUsername, _statusId, _isComplete, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsComplete(System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusIdIsComplete(null, _doctorUsername, _statusId, _isComplete, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsComplete(TransactionManager transactionManager, System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusIdIsComplete(transactionManager, _doctorUsername, _statusId, _isComplete, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsComplete(TransactionManager transactionManager, System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusIdIsComplete(transactionManager, _doctorUsername, _statusId, _isComplete, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsComplete(System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, int start, int pageLength, out int count)
+		{
+			return GetByDoctorUsernameStatusIdIsComplete(null, _doctorUsername, _statusId, _isComplete, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public abstract TList<Appointment> GetByDoctorUsernameStatusIdIsComplete(TransactionManager transactionManager, System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, int start, int pageLength, out int count);
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the primary key IX_Appointment_DoctorUsername_StatusId_IsComplete_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="_isDisabled"></param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsCompleteIsDisabled(System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusIdIsCompleteIsDisabled(null,_doctorUsername, _statusId, _isComplete, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsCompleteIsDisabled(System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusIdIsCompleteIsDisabled(null, _doctorUsername, _statusId, _isComplete, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusIdIsCompleteIsDisabled(transactionManager, _doctorUsername, _statusId, _isComplete, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUsernameStatusIdIsCompleteIsDisabled(transactionManager, _doctorUsername, _statusId, _isComplete, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public TList<Appointment> GetByDoctorUsernameStatusIdIsCompleteIsDisabled(System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		{
+			return GetByDoctorUsernameStatusIdIsCompleteIsDisabled(null, _doctorUsername, _statusId, _isComplete, _isDisabled, start, pageLength, out count);
+		}
+		
+				
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_Appointment_DoctorUsername_StatusId_IsComplete_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUsername"></param>
+		/// <param name="_statusId"></param>
+		/// <param name="_isComplete"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
+		public abstract TList<Appointment> GetByDoctorUsernameStatusIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _doctorUsername, System.Int64? _statusId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count);
 						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Appointment_Id_IsDisabled index.
@@ -1463,170 +1367,6 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
 		public abstract TList<Appointment> GetByIsDisabled(TransactionManager transactionManager, System.Boolean _isDisabled, int start, int pageLength, out int count);
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Appointment_NurseId index.
-		/// </summary>
-		/// <param name="_nurseId"></param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseId(System.Int64? _nurseId)
-		{
-			int count = -1;
-			return GetByNurseId(null,_nurseId, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId index.
-		/// </summary>
-		/// <param name="_nurseId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseId(System.Int64? _nurseId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByNurseId(null, _nurseId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_nurseId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseId(TransactionManager transactionManager, System.Int64? _nurseId)
-		{
-			int count = -1;
-			return GetByNurseId(transactionManager, _nurseId, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_nurseId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseId(TransactionManager transactionManager, System.Int64? _nurseId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByNurseId(transactionManager, _nurseId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId index.
-		/// </summary>
-		/// <param name="_nurseId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseId(System.Int64? _nurseId, int start, int pageLength, out int count)
-		{
-			return GetByNurseId(null, _nurseId, start, pageLength, out count);
-		}
-		
-				
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_nurseId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByNurseId(TransactionManager transactionManager, System.Int64? _nurseId, int start, int pageLength, out int count);
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Appointment_NurseId_IsDisabled index.
-		/// </summary>
-		/// <param name="_nurseId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseIdIsDisabled(System.Int64? _nurseId, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByNurseIdIsDisabled(null,_nurseId, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId_IsDisabled index.
-		/// </summary>
-		/// <param name="_nurseId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseIdIsDisabled(System.Int64? _nurseId, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByNurseIdIsDisabled(null, _nurseId, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseIdIsDisabled(TransactionManager transactionManager, System.Int64? _nurseId, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByNurseIdIsDisabled(transactionManager, _nurseId, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseIdIsDisabled(TransactionManager transactionManager, System.Int64? _nurseId, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByNurseIdIsDisabled(transactionManager, _nurseId, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId_IsDisabled index.
-		/// </summary>
-		/// <param name="_nurseId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByNurseIdIsDisabled(System.Int64? _nurseId, System.Boolean _isDisabled, int start, int pageLength, out int count)
-		{
-			return GetByNurseIdIsDisabled(null, _nurseId, _isDisabled, start, pageLength, out count);
-		}
-		
-				
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Appointment_NurseId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_nurseId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByNurseIdIsDisabled(TransactionManager transactionManager, System.Int64? _nurseId, System.Boolean _isDisabled, int start, int pageLength, out int count);
 						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Appointment_RoomId index.
@@ -2103,11 +1843,17 @@ namespace ClinicDoctor.Data.Bases
 					c.Id = (System.String)reader[((int)AppointmentColumn.Id - 1)];
 					c.OriginalId = c.Id;
 					c.CustomerId = (System.Int64)reader[((int)AppointmentColumn.CustomerId - 1)];
+					c.CustomerName = (reader.IsDBNull(((int)AppointmentColumn.CustomerName - 1)))?null:(System.String)reader[((int)AppointmentColumn.CustomerName - 1)];
 					c.ContentId = (System.Int64)reader[((int)AppointmentColumn.ContentId - 1)];
-					c.DoctorId = (reader.IsDBNull(((int)AppointmentColumn.DoctorId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.DoctorId - 1)];
+					c.ContentTitle = (reader.IsDBNull(((int)AppointmentColumn.ContentTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.ContentTitle - 1)];
+					c.DoctorUsername = (reader.IsDBNull(((int)AppointmentColumn.DoctorUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorUsername - 1)];
+					c.DoctorShortName = (reader.IsDBNull(((int)AppointmentColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorShortName - 1)];
 					c.RoomId = (reader.IsDBNull(((int)AppointmentColumn.RoomId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.RoomId - 1)];
-					c.NurseId = (reader.IsDBNull(((int)AppointmentColumn.NurseId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.NurseId - 1)];
+					c.RoomTitle = (reader.IsDBNull(((int)AppointmentColumn.RoomTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.RoomTitle - 1)];
+					c.NurseUsername = (reader.IsDBNull(((int)AppointmentColumn.NurseUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.NurseUsername - 1)];
+					c.NurseShortName = (reader.IsDBNull(((int)AppointmentColumn.NurseShortName - 1)))?null:(System.String)reader[((int)AppointmentColumn.NurseShortName - 1)];
 					c.StatusId = (reader.IsDBNull(((int)AppointmentColumn.StatusId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.StatusId - 1)];
+					c.StatusTitle = (reader.IsDBNull(((int)AppointmentColumn.StatusTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.StatusTitle - 1)];
 					c.Note = (reader.IsDBNull(((int)AppointmentColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentColumn.Note - 1)];
 					c.StartTime = (reader.IsDBNull(((int)AppointmentColumn.StartTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.StartTime - 1)];
 					c.EndTime = (reader.IsDBNull(((int)AppointmentColumn.EndTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.EndTime - 1)];
@@ -2137,11 +1883,17 @@ namespace ClinicDoctor.Data.Bases
 			entity.Id = (System.String)reader[((int)AppointmentColumn.Id - 1)];
 			entity.OriginalId = (System.String)reader["Id"];
 			entity.CustomerId = (System.Int64)reader[((int)AppointmentColumn.CustomerId - 1)];
+			entity.CustomerName = (reader.IsDBNull(((int)AppointmentColumn.CustomerName - 1)))?null:(System.String)reader[((int)AppointmentColumn.CustomerName - 1)];
 			entity.ContentId = (System.Int64)reader[((int)AppointmentColumn.ContentId - 1)];
-			entity.DoctorId = (reader.IsDBNull(((int)AppointmentColumn.DoctorId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.DoctorId - 1)];
+			entity.ContentTitle = (reader.IsDBNull(((int)AppointmentColumn.ContentTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.ContentTitle - 1)];
+			entity.DoctorUsername = (reader.IsDBNull(((int)AppointmentColumn.DoctorUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorUsername - 1)];
+			entity.DoctorShortName = (reader.IsDBNull(((int)AppointmentColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorShortName - 1)];
 			entity.RoomId = (reader.IsDBNull(((int)AppointmentColumn.RoomId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.RoomId - 1)];
-			entity.NurseId = (reader.IsDBNull(((int)AppointmentColumn.NurseId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.NurseId - 1)];
+			entity.RoomTitle = (reader.IsDBNull(((int)AppointmentColumn.RoomTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.RoomTitle - 1)];
+			entity.NurseUsername = (reader.IsDBNull(((int)AppointmentColumn.NurseUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.NurseUsername - 1)];
+			entity.NurseShortName = (reader.IsDBNull(((int)AppointmentColumn.NurseShortName - 1)))?null:(System.String)reader[((int)AppointmentColumn.NurseShortName - 1)];
 			entity.StatusId = (reader.IsDBNull(((int)AppointmentColumn.StatusId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.StatusId - 1)];
+			entity.StatusTitle = (reader.IsDBNull(((int)AppointmentColumn.StatusTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.StatusTitle - 1)];
 			entity.Note = (reader.IsDBNull(((int)AppointmentColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentColumn.Note - 1)];
 			entity.StartTime = (reader.IsDBNull(((int)AppointmentColumn.StartTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.StartTime - 1)];
 			entity.EndTime = (reader.IsDBNull(((int)AppointmentColumn.EndTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.EndTime - 1)];
@@ -2166,11 +1918,17 @@ namespace ClinicDoctor.Data.Bases
 			entity.Id = (System.String)dataRow["Id"];
 			entity.OriginalId = (System.String)dataRow["Id"];
 			entity.CustomerId = (System.Int64)dataRow["CustomerId"];
+			entity.CustomerName = Convert.IsDBNull(dataRow["CustomerName"]) ? null : (System.String)dataRow["CustomerName"];
 			entity.ContentId = (System.Int64)dataRow["ContentId"];
-			entity.DoctorId = Convert.IsDBNull(dataRow["DoctorId"]) ? null : (System.Int64?)dataRow["DoctorId"];
+			entity.ContentTitle = Convert.IsDBNull(dataRow["ContentTitle"]) ? null : (System.String)dataRow["ContentTitle"];
+			entity.DoctorUsername = Convert.IsDBNull(dataRow["DoctorUsername"]) ? null : (System.String)dataRow["DoctorUsername"];
+			entity.DoctorShortName = Convert.IsDBNull(dataRow["DoctorShortName"]) ? null : (System.String)dataRow["DoctorShortName"];
 			entity.RoomId = Convert.IsDBNull(dataRow["RoomId"]) ? null : (System.Int64?)dataRow["RoomId"];
-			entity.NurseId = Convert.IsDBNull(dataRow["NurseId"]) ? null : (System.Int64?)dataRow["NurseId"];
+			entity.RoomTitle = Convert.IsDBNull(dataRow["RoomTitle"]) ? null : (System.String)dataRow["RoomTitle"];
+			entity.NurseUsername = Convert.IsDBNull(dataRow["NurseUsername"]) ? null : (System.String)dataRow["NurseUsername"];
+			entity.NurseShortName = Convert.IsDBNull(dataRow["NurseShortName"]) ? null : (System.String)dataRow["NurseShortName"];
 			entity.StatusId = Convert.IsDBNull(dataRow["StatusId"]) ? null : (System.Int64?)dataRow["StatusId"];
+			entity.StatusTitle = Convert.IsDBNull(dataRow["StatusTitle"]) ? null : (System.String)dataRow["StatusTitle"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.StartTime = Convert.IsDBNull(dataRow["StartTime"]) ? null : (System.DateTime?)dataRow["StartTime"];
 			entity.EndTime = Convert.IsDBNull(dataRow["EndTime"]) ? null : (System.DateTime?)dataRow["EndTime"];
@@ -2283,58 +2041,6 @@ namespace ClinicDoctor.Data.Bases
 			}
 			#endregion RoomIdSource
 
-			#region DoctorIdSource	
-			if (CanDeepLoad(entity, "Staff|DoctorIdSource", deepLoadType, innerList) 
-				&& entity.DoctorIdSource == null)
-			{
-				object[] pkItems = new object[1];
-				pkItems[0] = (entity.DoctorId ?? (long)0);
-				Staff tmpEntity = EntityManager.LocateEntity<Staff>(EntityLocator.ConstructKeyFromPkItems(typeof(Staff), pkItems), DataRepository.Provider.EnableEntityTracking);
-				if (tmpEntity != null)
-					entity.DoctorIdSource = tmpEntity;
-				else
-					entity.DoctorIdSource = DataRepository.StaffProvider.GetById(transactionManager, (entity.DoctorId ?? (long)0));		
-				
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'DoctorIdSource' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-				
-				if (deep && entity.DoctorIdSource != null)
-				{
-					innerList.SkipChildren = true;
-					DataRepository.StaffProvider.DeepLoad(transactionManager, entity.DoctorIdSource, deep, deepLoadType, childTypes, innerList);
-					innerList.SkipChildren = false;
-				}
-					
-			}
-			#endregion DoctorIdSource
-
-			#region NurseIdSource	
-			if (CanDeepLoad(entity, "Staff|NurseIdSource", deepLoadType, innerList) 
-				&& entity.NurseIdSource == null)
-			{
-				object[] pkItems = new object[1];
-				pkItems[0] = (entity.NurseId ?? (long)0);
-				Staff tmpEntity = EntityManager.LocateEntity<Staff>(EntityLocator.ConstructKeyFromPkItems(typeof(Staff), pkItems), DataRepository.Provider.EnableEntityTracking);
-				if (tmpEntity != null)
-					entity.NurseIdSource = tmpEntity;
-				else
-					entity.NurseIdSource = DataRepository.StaffProvider.GetById(transactionManager, (entity.NurseId ?? (long)0));		
-				
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'NurseIdSource' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-				
-				if (deep && entity.NurseIdSource != null)
-				{
-					innerList.SkipChildren = true;
-					DataRepository.StaffProvider.DeepLoad(transactionManager, entity.NurseIdSource, deep, deepLoadType, childTypes, innerList);
-					innerList.SkipChildren = false;
-				}
-					
-			}
-			#endregion NurseIdSource
-
 			#region StatusIdSource	
 			if (CanDeepLoad(entity, "Status|StatusIdSource", deepLoadType, innerList) 
 				&& entity.StatusIdSource == null)
@@ -2421,24 +2127,6 @@ namespace ClinicDoctor.Data.Bases
 			}
 			#endregion 
 			
-			#region DoctorIdSource
-			if (CanDeepSave(entity, "Staff|DoctorIdSource", deepSaveType, innerList) 
-				&& entity.DoctorIdSource != null)
-			{
-				DataRepository.StaffProvider.Save(transactionManager, entity.DoctorIdSource);
-				entity.DoctorId = entity.DoctorIdSource.Id;
-			}
-			#endregion 
-			
-			#region NurseIdSource
-			if (CanDeepSave(entity, "Staff|NurseIdSource", deepSaveType, innerList) 
-				&& entity.NurseIdSource != null)
-			{
-				DataRepository.StaffProvider.Save(transactionManager, entity.NurseIdSource);
-				entity.NurseId = entity.NurseIdSource.Id;
-			}
-			#endregion 
-			
 			#region StatusIdSource
 			if (CanDeepSave(entity, "Status|StatusIdSource", deepSaveType, innerList) 
 				&& entity.StatusIdSource != null)
@@ -2499,12 +2187,6 @@ namespace ClinicDoctor.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Room))]
 		Room,
-			
-		///<summary>
-		/// Composite Property for <c>Staff</c> at DoctorIdSource
-		///</summary>
-		[ChildEntityType(typeof(Staff))]
-		Staff,
 			
 		///<summary>
 		/// Composite Property for <c>Status</c> at StatusIdSource

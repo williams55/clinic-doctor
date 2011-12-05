@@ -82,18 +82,20 @@ namespace ClinicDoctor.Entities
 		/// Creates a new <see cref="GroupBase"/> instance.
 		///</summary>
 		///<param name="_title"></param>
+		///<param name="_colorCode"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public GroupBase(System.String _title, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public GroupBase(System.String _title, System.String _colorCode, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new GroupEntityData();
 			this.backupData = null;
 
 			this.Title = _title;
+			this.ColorCode = _colorCode;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -105,16 +107,18 @@ namespace ClinicDoctor.Entities
 		/// A simple factory method to create a new <see cref="Group"/> instance.
 		///</summary>
 		///<param name="_title"></param>
+		///<param name="_colorCode"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Group CreateGroup(System.String _title, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public static Group CreateGroup(System.String _title, System.String _colorCode, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			Group newGroup = new Group();
 			newGroup.Title = _title;
+			newGroup.ColorCode = _colorCode;
 			newGroup.IsDisabled = _isDisabled;
 			newGroup.CreateUser = _createUser;
 			newGroup.CreateDate = _createDate;
@@ -197,6 +201,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(GroupColumn.Title, this.entityData.Title);
 				OnPropertyChanged("Title");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the ColorCode property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 10)]
+		public virtual System.String ColorCode
+		{
+			get
+			{
+				return this.entityData.ColorCode; 
+			}
+			
+			set
+			{
+				if (this.entityData.ColorCode == value)
+					return;
+					
+				OnColumnChanging(GroupColumn.ColorCode, this.entityData.ColorCode);
+				this.entityData.ColorCode = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(GroupColumn.ColorCode, this.entityData.ColorCode);
+				OnPropertyChanged("ColorCode");
 			}
 		}
 		
@@ -410,6 +449,8 @@ namespace ClinicDoctor.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("ColorCode", "Color Code", 10));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("UpdateUser", "Update User", 200));
@@ -434,7 +475,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Title", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Title", "ColorCode", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -584,6 +625,7 @@ namespace ClinicDoctor.Entities
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
 				copy.Title = this.Title;
+				copy.ColorCode = this.ColorCode;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
@@ -727,6 +769,8 @@ namespace ClinicDoctor.Entities
 					return entityData.Id != _originalData.Id;
 					case GroupColumn.Title:
 					return entityData.Title != _originalData.Title;
+					case GroupColumn.ColorCode:
+					return entityData.ColorCode != _originalData.ColorCode;
 					case GroupColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case GroupColumn.CreateUser:
@@ -766,6 +810,7 @@ namespace ClinicDoctor.Entities
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.Title != _originalData.Title;
+			result = result || entityData.ColorCode != _originalData.ColorCode;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -782,6 +827,7 @@ namespace ClinicDoctor.Entities
 			if (_originalData != null)
 				return CreateGroup(
 				_originalData.Title,
+				_originalData.ColorCode,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -818,6 +864,7 @@ namespace ClinicDoctor.Entities
         {
 			return this.Id.GetHashCode() ^ 
 					this.Title.GetHashCode() ^ 
+					((this.ColorCode == null) ? string.Empty : this.ColorCode.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
@@ -859,6 +906,15 @@ namespace ClinicDoctor.Entities
 				equal = false;
 			if (Object1.Title != Object2.Title)
 				equal = false;
+			if ( Object1.ColorCode != null && Object2.ColorCode != null )
+			{
+				if (Object1.ColorCode != Object2.ColorCode)
+					equal = false;
+			}
+			else if (Object1.ColorCode == null ^ Object2.ColorCode == null )
+			{
+				equal = false;
+			}
 			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
 			if ( Object1.CreateUser != null && Object2.CreateUser != null )
@@ -935,6 +991,12 @@ namespace ClinicDoctor.Entities
             	
             	case GroupColumn.Title:
             		return this.Title.CompareTo(rhs.Title);
+            		
+            		                 
+            	
+            	
+            	case GroupColumn.ColorCode:
+            		return this.ColorCode.CompareTo(rhs.ColorCode);
             		
             		                 
             	
@@ -1101,9 +1163,10 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{8}{7}- Id: {0}{7}- Title: {1}{7}- IsDisabled: {2}{7}- CreateUser: {3}{7}- CreateDate: {4}{7}- UpdateUser: {5}{7}- UpdateDate: {6}{7}{9}", 
+				"{9}{8}- Id: {0}{8}- Title: {1}{8}- ColorCode: {2}{8}- IsDisabled: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
 				this.Id,
 				this.Title,
+				(this.ColorCode == null) ? string.Empty : this.ColorCode.ToString(),
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
@@ -1147,6 +1210,11 @@ namespace ClinicDoctor.Entities
 		/// Title : 
 		/// </summary>
 		public System.String		  Title = string.Empty;
+		
+		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		public System.String		  ColorCode = null;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1221,6 +1289,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.Title = this.Title;
+			_tmp.ColorCode = this.ColorCode;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1256,6 +1325,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.Title = this.Title;
+			_tmp.ColorCode = this.ColorCode;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1649,35 +1719,41 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
 		Title = 2,
 		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		[EnumTextValue("ColorCode")]
+		[ColumnEnum("ColorCode", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
+		ColorCode = 3,
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 3,
+		IsDisabled = 4,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 4,
+		CreateUser = 5,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 5,
+		CreateDate = 6,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 6,
+		UpdateUser = 7,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 7
+		UpdateDate = 8
 	}//End enum
 
 	#endregion GroupColumn Enum

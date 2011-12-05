@@ -83,21 +83,23 @@ namespace ClinicDoctor.Entities
 		///</summary>
 		///<param name="_title"></param>
 		///<param name="_funcId"></param>
+		///<param name="_funcTitle"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public ContentBase(System.String _title, System.Int64 _funcId, System.String _note, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public ContentBase(System.String _title, System.Int64 _funcId, System.String _funcTitle, 
+			System.String _note, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new ContentEntityData();
 			this.backupData = null;
 
 			this.Title = _title;
 			this.FuncId = _funcId;
+			this.FuncTitle = _funcTitle;
 			this.Note = _note;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
@@ -111,19 +113,21 @@ namespace ClinicDoctor.Entities
 		///</summary>
 		///<param name="_title"></param>
 		///<param name="_funcId"></param>
+		///<param name="_funcTitle"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Content CreateContent(System.String _title, System.Int64 _funcId, System.String _note, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public static Content CreateContent(System.String _title, System.Int64 _funcId, System.String _funcTitle, 
+			System.String _note, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			Content newContent = new Content();
 			newContent.Title = _title;
 			newContent.FuncId = _funcId;
+			newContent.FuncTitle = _funcTitle;
 			newContent.Note = _note;
 			newContent.IsDisabled = _isDisabled;
 			newContent.CreateUser = _createUser;
@@ -242,6 +246,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(ContentColumn.FuncId, this.entityData.FuncId);
 				OnPropertyChanged("FuncId");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the FuncTitle property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 200)]
+		public virtual System.String FuncTitle
+		{
+			get
+			{
+				return this.entityData.FuncTitle; 
+			}
+			
+			set
+			{
+				if (this.entityData.FuncTitle == value)
+					return;
+					
+				OnColumnChanging(ContentColumn.FuncTitle, this.entityData.FuncTitle);
+				this.entityData.FuncTitle = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(ContentColumn.FuncTitle, this.entityData.FuncTitle);
+				OnPropertyChanged("FuncTitle");
 			}
 		}
 		
@@ -501,6 +540,8 @@ namespace ClinicDoctor.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("FuncTitle", "Func Title", 200));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
@@ -527,7 +568,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Title", "FuncId", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Title", "FuncId", "FuncTitle", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -678,6 +719,7 @@ namespace ClinicDoctor.Entities
 				copy.Id = this.Id;
 				copy.Title = this.Title;
 				copy.FuncId = this.FuncId;
+				copy.FuncTitle = this.FuncTitle;
 				copy.Note = this.Note;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -828,6 +870,8 @@ namespace ClinicDoctor.Entities
 					return entityData.Title != _originalData.Title;
 					case ContentColumn.FuncId:
 					return entityData.FuncId != _originalData.FuncId;
+					case ContentColumn.FuncTitle:
+					return entityData.FuncTitle != _originalData.FuncTitle;
 					case ContentColumn.Note:
 					return entityData.Note != _originalData.Note;
 					case ContentColumn.IsDisabled:
@@ -870,6 +914,7 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.Title != _originalData.Title;
 			result = result || entityData.FuncId != _originalData.FuncId;
+			result = result || entityData.FuncTitle != _originalData.FuncTitle;
 			result = result || entityData.Note != _originalData.Note;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
@@ -888,6 +933,7 @@ namespace ClinicDoctor.Entities
 				return CreateContent(
 				_originalData.Title,
 				_originalData.FuncId,
+				_originalData.FuncTitle,
 				_originalData.Note,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
@@ -926,6 +972,7 @@ namespace ClinicDoctor.Entities
 			return this.Id.GetHashCode() ^ 
 					this.Title.GetHashCode() ^ 
 					this.FuncId.GetHashCode() ^ 
+					((this.FuncTitle == null) ? string.Empty : this.FuncTitle.ToString()).GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -970,6 +1017,15 @@ namespace ClinicDoctor.Entities
 				equal = false;
 			if (Object1.FuncId != Object2.FuncId)
 				equal = false;
+			if ( Object1.FuncTitle != null && Object2.FuncTitle != null )
+			{
+				if (Object1.FuncTitle != Object2.FuncTitle)
+					equal = false;
+			}
+			else if (Object1.FuncTitle == null ^ Object2.FuncTitle == null )
+			{
+				equal = false;
+			}
 			if ( Object1.Note != null && Object2.Note != null )
 			{
 				if (Object1.Note != Object2.Note)
@@ -1061,6 +1117,12 @@ namespace ClinicDoctor.Entities
             	
             	case ContentColumn.FuncId:
             		return this.FuncId.CompareTo(rhs.FuncId);
+            		
+            		                 
+            	
+            	
+            	case ContentColumn.FuncTitle:
+            		return this.FuncTitle.CompareTo(rhs.FuncTitle);
             		
             		                 
             	
@@ -1233,10 +1295,11 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{10}{9}- Id: {0}{9}- Title: {1}{9}- FuncId: {2}{9}- Note: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
+				"{11}{10}- Id: {0}{10}- Title: {1}{10}- FuncId: {2}{10}- FuncTitle: {3}{10}- Note: {4}{10}- IsDisabled: {5}{10}- CreateUser: {6}{10}- CreateDate: {7}{10}- UpdateUser: {8}{10}- UpdateDate: {9}{10}{12}", 
 				this.Id,
 				this.Title,
 				this.FuncId,
+				(this.FuncTitle == null) ? string.Empty : this.FuncTitle.ToString(),
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -1286,6 +1349,11 @@ namespace ClinicDoctor.Entities
 		/// FuncId : 
 		/// </summary>
 		public System.Int64		  FuncId = (long)0;
+		
+		/// <summary>
+		/// FuncTitle : 
+		/// </summary>
+		public System.String		  FuncTitle = null;
 		
 		/// <summary>
 		/// Note : 
@@ -1379,6 +1447,7 @@ namespace ClinicDoctor.Entities
 			
 			_tmp.Title = this.Title;
 			_tmp.FuncId = this.FuncId;
+			_tmp.FuncTitle = this.FuncTitle;
 			_tmp.Note = this.Note;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1418,6 +1487,7 @@ namespace ClinicDoctor.Entities
 			
 			_tmp.Title = this.Title;
 			_tmp.FuncId = this.FuncId;
+			_tmp.FuncTitle = this.FuncTitle;
 			_tmp.Note = this.Note;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1822,41 +1892,47 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("FuncId", typeof(System.Int64), System.Data.DbType.Int64, false, false, false)]
 		FuncId = 3,
 		/// <summary>
+		/// FuncTitle : 
+		/// </summary>
+		[EnumTextValue("FuncTitle")]
+		[ColumnEnum("FuncTitle", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
+		FuncTitle = 4,
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 4,
+		Note = 5,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 5,
+		IsDisabled = 6,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 6,
+		CreateUser = 7,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 7,
+		CreateDate = 8,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 8,
+		UpdateUser = 9,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 9
+		UpdateDate = 10
 	}//End enum
 
 	#endregion ContentColumn Enum

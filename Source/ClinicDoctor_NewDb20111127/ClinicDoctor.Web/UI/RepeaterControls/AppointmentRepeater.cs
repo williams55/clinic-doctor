@@ -350,6 +350,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.CustomerId; }
 		}
         /// <summary>
+        /// Gets the CustomerName
+        /// </summary>
+        /// <value>The CustomerName.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String CustomerName
+		{
+			get { return _entity.CustomerName; }
+		}
+        /// <summary>
         /// Gets the ContentId
         /// </summary>
         /// <value>The ContentId.</value>
@@ -359,13 +368,31 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.ContentId; }
 		}
         /// <summary>
-        /// Gets the DoctorId
+        /// Gets the ContentTitle
         /// </summary>
-        /// <value>The DoctorId.</value>
+        /// <value>The ContentTitle.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int64? DoctorId
+		public System.String ContentTitle
 		{
-			get { return _entity.DoctorId; }
+			get { return _entity.ContentTitle; }
+		}
+        /// <summary>
+        /// Gets the DoctorUsername
+        /// </summary>
+        /// <value>The DoctorUsername.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String DoctorUsername
+		{
+			get { return _entity.DoctorUsername; }
+		}
+        /// <summary>
+        /// Gets the DoctorShortName
+        /// </summary>
+        /// <value>The DoctorShortName.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String DoctorShortName
+		{
+			get { return _entity.DoctorShortName; }
 		}
         /// <summary>
         /// Gets the RoomId
@@ -377,13 +404,31 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.RoomId; }
 		}
         /// <summary>
-        /// Gets the NurseId
+        /// Gets the RoomTitle
         /// </summary>
-        /// <value>The NurseId.</value>
+        /// <value>The RoomTitle.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int64? NurseId
+		public System.String RoomTitle
 		{
-			get { return _entity.NurseId; }
+			get { return _entity.RoomTitle; }
+		}
+        /// <summary>
+        /// Gets the NurseUsername
+        /// </summary>
+        /// <value>The NurseUsername.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String NurseUsername
+		{
+			get { return _entity.NurseUsername; }
+		}
+        /// <summary>
+        /// Gets the NurseShortName
+        /// </summary>
+        /// <value>The NurseShortName.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String NurseShortName
+		{
+			get { return _entity.NurseShortName; }
 		}
         /// <summary>
         /// Gets the StatusId
@@ -393,6 +438,15 @@ namespace ClinicDoctor.Web.UI
 		public System.Int64? StatusId
 		{
 			get { return _entity.StatusId; }
+		}
+        /// <summary>
+        /// Gets the StatusTitle
+        /// </summary>
+        /// <value>The StatusTitle.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String StatusTitle
+		{
+			get { return _entity.StatusTitle; }
 		}
         /// <summary>
         /// Gets the Note

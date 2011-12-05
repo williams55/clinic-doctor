@@ -159,7 +159,7 @@ namespace ClinicDoctor.Web.Data
 			DoctorFunc item;
 			count = 0;
 			
-			System.Int64 _doctorId;
+			System.String _doctorUserName_nullable;
 			System.Int64 _funcId;
 			System.Boolean _isDisabled;
 			System.Int64 _id;
@@ -195,31 +195,25 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				case DoctorFuncSelectMethod.GetByDoctorId:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
-					results = DoctorFuncProvider.GetByDoctorId(GetTransactionManager(), _doctorId, this.StartIndex, this.PageSize, out count);
+				case DoctorFuncSelectMethod.GetByDoctorUserName:
+					_doctorUserName_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String));
+					results = DoctorFuncProvider.GetByDoctorUserName(GetTransactionManager(), _doctorUserName_nullable, this.StartIndex, this.PageSize, out count);
 					break;
-				case DoctorFuncSelectMethod.GetByDoctorIdFuncId:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
+				case DoctorFuncSelectMethod.GetByDoctorUserNameFuncId:
+					_doctorUserName_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String));
 					_funcId = ( values["FuncId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["FuncId"], typeof(System.Int64)) : (long)0;
-					item = DoctorFuncProvider.GetByDoctorIdFuncId(GetTransactionManager(), _doctorId, _funcId);
-					results = new TList<DoctorFunc>();
-					if ( item != null ) results.Add(item);
-					count = results.Count;
+					results = DoctorFuncProvider.GetByDoctorUserNameFuncId(GetTransactionManager(), _doctorUserName_nullable, _funcId, this.StartIndex, this.PageSize, out count);
 					break;
-				case DoctorFuncSelectMethod.GetByDoctorIdFuncIdIsDisabled:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
+				case DoctorFuncSelectMethod.GetByDoctorUserNameFuncIdIsDisabled:
+					_doctorUserName_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String));
 					_funcId = ( values["FuncId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["FuncId"], typeof(System.Int64)) : (long)0;
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					item = DoctorFuncProvider.GetByDoctorIdFuncIdIsDisabled(GetTransactionManager(), _doctorId, _funcId, _isDisabled);
-					results = new TList<DoctorFunc>();
-					if ( item != null ) results.Add(item);
-					count = results.Count;
+					results = DoctorFuncProvider.GetByDoctorUserNameFuncIdIsDisabled(GetTransactionManager(), _doctorUserName_nullable, _funcId, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
-				case DoctorFuncSelectMethod.GetByDoctorIdIsDisabled:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
+				case DoctorFuncSelectMethod.GetByDoctorUserNameIsDisabled:
+					_doctorUserName_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String));
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = DoctorFuncProvider.GetByDoctorIdIsDisabled(GetTransactionManager(), _doctorId, _isDisabled, this.StartIndex, this.PageSize, out count);
+					results = DoctorFuncProvider.GetByDoctorUserNameIsDisabled(GetTransactionManager(), _doctorUserName_nullable, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
 				case DoctorFuncSelectMethod.GetByFuncId:
 					_funcId = ( values["FuncId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["FuncId"], typeof(System.Int64)) : (long)0;
@@ -420,21 +414,21 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetByDoctorId method.
+		/// Represents the GetByDoctorUserName method.
 		/// </summary>
-		GetByDoctorId,
+		GetByDoctorUserName,
 		/// <summary>
-		/// Represents the GetByDoctorIdFuncId method.
+		/// Represents the GetByDoctorUserNameFuncId method.
 		/// </summary>
-		GetByDoctorIdFuncId,
+		GetByDoctorUserNameFuncId,
 		/// <summary>
-		/// Represents the GetByDoctorIdFuncIdIsDisabled method.
+		/// Represents the GetByDoctorUserNameFuncIdIsDisabled method.
 		/// </summary>
-		GetByDoctorIdFuncIdIsDisabled,
+		GetByDoctorUserNameFuncIdIsDisabled,
 		/// <summary>
-		/// Represents the GetByDoctorIdIsDisabled method.
+		/// Represents the GetByDoctorUserNameIsDisabled method.
 		/// </summary>
-		GetByDoctorIdIsDisabled,
+		GetByDoctorUserNameIsDisabled,
 		/// <summary>
 		/// Represents the GetByFuncId method.
 		/// </summary>

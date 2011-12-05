@@ -341,13 +341,22 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.Id; }
 		}
         /// <summary>
-        /// Gets the DoctorId
+        /// Gets the DoctorUserName
         /// </summary>
-        /// <value>The DoctorId.</value>
+        /// <value>The DoctorUserName.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int64 DoctorId
+		public System.String DoctorUserName
 		{
-			get { return _entity.DoctorId; }
+			get { return _entity.DoctorUserName; }
+		}
+        /// <summary>
+        /// Gets the DoctorShortName
+        /// </summary>
+        /// <value>The DoctorShortName.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String DoctorShortName
+		{
+			get { return _entity.DoctorShortName; }
 		}
         /// <summary>
         /// Gets the RoomId
@@ -357,6 +366,15 @@ namespace ClinicDoctor.Web.UI
 		public System.Int64 RoomId
 		{
 			get { return _entity.RoomId; }
+		}
+        /// <summary>
+        /// Gets the RoomTitle
+        /// </summary>
+        /// <value>The RoomTitle.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String RoomTitle
+		{
+			get { return _entity.RoomTitle; }
 		}
         /// <summary>
         /// Gets the PriorityIndex

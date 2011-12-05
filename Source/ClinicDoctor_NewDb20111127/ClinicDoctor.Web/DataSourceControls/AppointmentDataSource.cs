@@ -162,12 +162,11 @@ namespace ClinicDoctor.Web.Data
 			System.Int64 _contentId;
 			System.Boolean _isDisabled;
 			System.Int64 _customerId;
-			System.Int64? _doctorId_nullable;
-			System.Int64? _roomId_nullable;
-			System.Int64? _nurseId_nullable;
-			System.Int64? _statusId_nullable;
 			System.Boolean _isComplete;
+			System.String _doctorUsername_nullable;
+			System.Int64? _statusId_nullable;
 			System.String _id;
+			System.Int64? _roomId_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -218,55 +217,6 @@ namespace ClinicDoctor.Web.Data
 					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
 					results = AppointmentProvider.GetByCustomerIdContentId(GetTransactionManager(), _customerId, _contentId, this.StartIndex, this.PageSize, out count);
 					break;
-				case AppointmentSelectMethod.GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId:
-					_customerId = ( values["CustomerId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["CustomerId"], typeof(System.Int64)) : (long)0;
-					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
-					_doctorId_nullable = (System.Int64?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64?));
-					_roomId_nullable = (System.Int64?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int64?));
-					_nurseId_nullable = (System.Int64?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int64?));
-					_statusId_nullable = (System.Int64?) EntityUtil.ChangeType(values["StatusId"], typeof(System.Int64?));
-					item = AppointmentProvider.GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId(GetTransactionManager(), _customerId, _contentId, _doctorId_nullable, _roomId_nullable, _nurseId_nullable, _statusId_nullable);
-					results = new TList<Appointment>();
-					if ( item != null ) results.Add(item);
-					count = results.Count;
-					break;
-				case AppointmentSelectMethod.GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete:
-					_customerId = ( values["CustomerId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["CustomerId"], typeof(System.Int64)) : (long)0;
-					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
-					_doctorId_nullable = (System.Int64?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64?));
-					_roomId_nullable = (System.Int64?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int64?));
-					_nurseId_nullable = (System.Int64?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int64?));
-					_statusId_nullable = (System.Int64?) EntityUtil.ChangeType(values["StatusId"], typeof(System.Int64?));
-					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
-					item = AppointmentProvider.GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete(GetTransactionManager(), _customerId, _contentId, _doctorId_nullable, _roomId_nullable, _nurseId_nullable, _statusId_nullable, _isComplete);
-					results = new TList<Appointment>();
-					if ( item != null ) results.Add(item);
-					count = results.Count;
-					break;
-				case AppointmentSelectMethod.GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled:
-					_customerId = ( values["CustomerId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["CustomerId"], typeof(System.Int64)) : (long)0;
-					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
-					_doctorId_nullable = (System.Int64?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64?));
-					_roomId_nullable = (System.Int64?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int64?));
-					_nurseId_nullable = (System.Int64?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int64?));
-					_statusId_nullable = (System.Int64?) EntityUtil.ChangeType(values["StatusId"], typeof(System.Int64?));
-					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
-					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					item = AppointmentProvider.GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled(GetTransactionManager(), _customerId, _contentId, _doctorId_nullable, _roomId_nullable, _nurseId_nullable, _statusId_nullable, _isComplete, _isDisabled);
-					results = new TList<Appointment>();
-					if ( item != null ) results.Add(item);
-					count = results.Count;
-					break;
-				case AppointmentSelectMethod.GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled:
-					_customerId = ( values["CustomerId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["CustomerId"], typeof(System.Int64)) : (long)0;
-					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
-					_doctorId_nullable = (System.Int64?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64?));
-					_roomId_nullable = (System.Int64?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int64?));
-					_nurseId_nullable = (System.Int64?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int64?));
-					_statusId_nullable = (System.Int64?) EntityUtil.ChangeType(values["StatusId"], typeof(System.Int64?));
-					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = AppointmentProvider.GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled(GetTransactionManager(), _customerId, _contentId, _doctorId_nullable, _roomId_nullable, _nurseId_nullable, _statusId_nullable, _isDisabled, this.StartIndex, this.PageSize, out count);
-					break;
 				case AppointmentSelectMethod.GetByCustomerIdContentIdIsComplete:
 					_customerId = ( values["CustomerId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["CustomerId"], typeof(System.Int64)) : (long)0;
 					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
@@ -285,14 +235,38 @@ namespace ClinicDoctor.Web.Data
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
 					results = AppointmentProvider.GetByCustomerIdIsDisabled(GetTransactionManager(), _customerId, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
-				case AppointmentSelectMethod.GetByDoctorId:
-					_doctorId_nullable = (System.Int64?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64?));
-					results = AppointmentProvider.GetByDoctorId(GetTransactionManager(), _doctorId_nullable, this.StartIndex, this.PageSize, out count);
+				case AppointmentSelectMethod.GetByDoctorUsername:
+					_doctorUsername_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUsername"], typeof(System.String));
+					results = AppointmentProvider.GetByDoctorUsername(GetTransactionManager(), _doctorUsername_nullable, this.StartIndex, this.PageSize, out count);
 					break;
-				case AppointmentSelectMethod.GetByDoctorIdIsDisabled:
-					_doctorId_nullable = (System.Int64?) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64?));
+				case AppointmentSelectMethod.GetByDoctorUsernameIsCompleteIsDisabled:
+					_doctorUsername_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUsername"], typeof(System.String));
+					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = AppointmentProvider.GetByDoctorIdIsDisabled(GetTransactionManager(), _doctorId_nullable, _isDisabled, this.StartIndex, this.PageSize, out count);
+					results = AppointmentProvider.GetByDoctorUsernameIsCompleteIsDisabled(GetTransactionManager(), _doctorUsername_nullable, _isComplete, _isDisabled, this.StartIndex, this.PageSize, out count);
+					break;
+				case AppointmentSelectMethod.GetByDoctorUsernameIsDisabled:
+					_doctorUsername_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUsername"], typeof(System.String));
+					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
+					results = AppointmentProvider.GetByDoctorUsernameIsDisabled(GetTransactionManager(), _doctorUsername_nullable, _isDisabled, this.StartIndex, this.PageSize, out count);
+					break;
+				case AppointmentSelectMethod.GetByDoctorUsernameStatusId:
+					_doctorUsername_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUsername"], typeof(System.String));
+					_statusId_nullable = (System.Int64?) EntityUtil.ChangeType(values["StatusId"], typeof(System.Int64?));
+					results = AppointmentProvider.GetByDoctorUsernameStatusId(GetTransactionManager(), _doctorUsername_nullable, _statusId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case AppointmentSelectMethod.GetByDoctorUsernameStatusIdIsComplete:
+					_doctorUsername_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUsername"], typeof(System.String));
+					_statusId_nullable = (System.Int64?) EntityUtil.ChangeType(values["StatusId"], typeof(System.Int64?));
+					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
+					results = AppointmentProvider.GetByDoctorUsernameStatusIdIsComplete(GetTransactionManager(), _doctorUsername_nullable, _statusId_nullable, _isComplete, this.StartIndex, this.PageSize, out count);
+					break;
+				case AppointmentSelectMethod.GetByDoctorUsernameStatusIdIsCompleteIsDisabled:
+					_doctorUsername_nullable = (System.String) EntityUtil.ChangeType(values["DoctorUsername"], typeof(System.String));
+					_statusId_nullable = (System.Int64?) EntityUtil.ChangeType(values["StatusId"], typeof(System.Int64?));
+					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
+					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
+					results = AppointmentProvider.GetByDoctorUsernameStatusIdIsCompleteIsDisabled(GetTransactionManager(), _doctorUsername_nullable, _statusId_nullable, _isComplete, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
 				case AppointmentSelectMethod.GetByIdIsDisabled:
 					_id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
@@ -305,15 +279,6 @@ namespace ClinicDoctor.Web.Data
 				case AppointmentSelectMethod.GetByIsDisabled:
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
 					results = AppointmentProvider.GetByIsDisabled(GetTransactionManager(), _isDisabled, this.StartIndex, this.PageSize, out count);
-					break;
-				case AppointmentSelectMethod.GetByNurseId:
-					_nurseId_nullable = (System.Int64?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int64?));
-					results = AppointmentProvider.GetByNurseId(GetTransactionManager(), _nurseId_nullable, this.StartIndex, this.PageSize, out count);
-					break;
-				case AppointmentSelectMethod.GetByNurseIdIsDisabled:
-					_nurseId_nullable = (System.Int64?) EntityUtil.ChangeType(values["NurseId"], typeof(System.Int64?));
-					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = AppointmentProvider.GetByNurseIdIsDisabled(GetTransactionManager(), _nurseId_nullable, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
 				case AppointmentSelectMethod.GetByRoomId:
 					_roomId_nullable = (System.Int64?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int64?));
@@ -527,22 +492,6 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		GetByCustomerIdContentId,
 		/// <summary>
-		/// Represents the GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId method.
-		/// </summary>
-		GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId,
-		/// <summary>
-		/// Represents the GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete method.
-		/// </summary>
-		GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete,
-		/// <summary>
-		/// Represents the GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled method.
-		/// </summary>
-		GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled,
-		/// <summary>
-		/// Represents the GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled method.
-		/// </summary>
-		GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled,
-		/// <summary>
 		/// Represents the GetByCustomerIdContentIdIsComplete method.
 		/// </summary>
 		GetByCustomerIdContentIdIsComplete,
@@ -555,13 +504,29 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		GetByCustomerIdIsDisabled,
 		/// <summary>
-		/// Represents the GetByDoctorId method.
+		/// Represents the GetByDoctorUsername method.
 		/// </summary>
-		GetByDoctorId,
+		GetByDoctorUsername,
 		/// <summary>
-		/// Represents the GetByDoctorIdIsDisabled method.
+		/// Represents the GetByDoctorUsernameIsCompleteIsDisabled method.
 		/// </summary>
-		GetByDoctorIdIsDisabled,
+		GetByDoctorUsernameIsCompleteIsDisabled,
+		/// <summary>
+		/// Represents the GetByDoctorUsernameIsDisabled method.
+		/// </summary>
+		GetByDoctorUsernameIsDisabled,
+		/// <summary>
+		/// Represents the GetByDoctorUsernameStatusId method.
+		/// </summary>
+		GetByDoctorUsernameStatusId,
+		/// <summary>
+		/// Represents the GetByDoctorUsernameStatusIdIsComplete method.
+		/// </summary>
+		GetByDoctorUsernameStatusIdIsComplete,
+		/// <summary>
+		/// Represents the GetByDoctorUsernameStatusIdIsCompleteIsDisabled method.
+		/// </summary>
+		GetByDoctorUsernameStatusIdIsCompleteIsDisabled,
 		/// <summary>
 		/// Represents the GetByIdIsDisabled method.
 		/// </summary>
@@ -570,14 +535,6 @@ namespace ClinicDoctor.Web.Data
 		/// Represents the GetByIsDisabled method.
 		/// </summary>
 		GetByIsDisabled,
-		/// <summary>
-		/// Represents the GetByNurseId method.
-		/// </summary>
-		GetByNurseId,
-		/// <summary>
-		/// Represents the GetByNurseIdIsDisabled method.
-		/// </summary>
-		GetByNurseIdIsDisabled,
 		/// <summary>
 		/// Represents the GetByRoomId method.
 		/// </summary>

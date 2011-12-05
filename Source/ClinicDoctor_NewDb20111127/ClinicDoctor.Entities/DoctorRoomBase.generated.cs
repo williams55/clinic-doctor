@@ -81,23 +81,27 @@ namespace ClinicDoctor.Entities
 		///<summary>
 		/// Creates a new <see cref="DoctorRoomBase"/> instance.
 		///</summary>
-		///<param name="_doctorId"></param>
+		///<param name="_doctorUserName"></param>
+		///<param name="_doctorShortName"></param>
 		///<param name="_roomId"></param>
+		///<param name="_roomTitle"></param>
 		///<param name="_priorityIndex"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public DoctorRoomBase(System.Int64 _doctorId, System.Int64 _roomId, System.Int32 _priorityIndex, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public DoctorRoomBase(System.String _doctorUserName, System.String _doctorShortName, 
+			System.Int64 _roomId, System.String _roomTitle, System.Int32 _priorityIndex, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new DoctorRoomEntityData();
 			this.backupData = null;
 
-			this.DoctorId = _doctorId;
+			this.DoctorUserName = _doctorUserName;
+			this.DoctorShortName = _doctorShortName;
 			this.RoomId = _roomId;
+			this.RoomTitle = _roomTitle;
 			this.PriorityIndex = _priorityIndex;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
@@ -109,21 +113,25 @@ namespace ClinicDoctor.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="DoctorRoom"/> instance.
 		///</summary>
-		///<param name="_doctorId"></param>
+		///<param name="_doctorUserName"></param>
+		///<param name="_doctorShortName"></param>
 		///<param name="_roomId"></param>
+		///<param name="_roomTitle"></param>
 		///<param name="_priorityIndex"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static DoctorRoom CreateDoctorRoom(System.Int64 _doctorId, System.Int64 _roomId, System.Int32 _priorityIndex, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public static DoctorRoom CreateDoctorRoom(System.String _doctorUserName, System.String _doctorShortName, 
+			System.Int64 _roomId, System.String _roomTitle, System.Int32 _priorityIndex, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			DoctorRoom newDoctorRoom = new DoctorRoom();
-			newDoctorRoom.DoctorId = _doctorId;
+			newDoctorRoom.DoctorUserName = _doctorUserName;
+			newDoctorRoom.DoctorShortName = _doctorShortName;
 			newDoctorRoom.RoomId = _roomId;
+			newDoctorRoom.RoomTitle = _roomTitle;
 			newDoctorRoom.PriorityIndex = _priorityIndex;
 			newDoctorRoom.IsDisabled = _isDisabled;
 			newDoctorRoom.CreateUser = _createUser;
@@ -175,37 +183,73 @@ namespace ClinicDoctor.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or sets the DoctorId property. 
+		/// 	Gets or sets the DoctorUserName property. 
 		///		
 		/// </summary>
-		/// <value>This type is bigint.</value>
+		/// <value>This type is nvarchar.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, false, 200)]
+		public virtual System.String DoctorUserName
+		{
+			get
+			{
+				return this.entityData.DoctorUserName; 
+			}
+			
+			set
+			{
+				if (this.entityData.DoctorUserName == value)
+					return;
+					
+				OnColumnChanging(DoctorRoomColumn.DoctorUserName, this.entityData.DoctorUserName);
+				this.entityData.DoctorUserName = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(DoctorRoomColumn.DoctorUserName, this.entityData.DoctorUserName);
+				OnPropertyChanged("DoctorUserName");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the DoctorShortName property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false)]
-		public virtual System.Int64 DoctorId
+		[DataObjectField(false, false, true, 50)]
+		public virtual System.String DoctorShortName
 		{
 			get
 			{
-				return this.entityData.DoctorId; 
+				return this.entityData.DoctorShortName; 
 			}
 			
 			set
 			{
-				if (this.entityData.DoctorId == value)
+				if (this.entityData.DoctorShortName == value)
 					return;
 					
-				OnColumnChanging(DoctorRoomColumn.DoctorId, this.entityData.DoctorId);
-				this.entityData.DoctorId = value;
+				OnColumnChanging(DoctorRoomColumn.DoctorShortName, this.entityData.DoctorShortName);
+				this.entityData.DoctorShortName = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
-				OnColumnChanged(DoctorRoomColumn.DoctorId, this.entityData.DoctorId);
-				OnPropertyChanged("DoctorId");
+				OnColumnChanged(DoctorRoomColumn.DoctorShortName, this.entityData.DoctorShortName);
+				OnPropertyChanged("DoctorShortName");
 			}
 		}
 		
@@ -241,6 +285,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(DoctorRoomColumn.RoomId, this.entityData.RoomId);
 				OnPropertyChanged("RoomId");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the RoomTitle property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 200)]
+		public virtual System.String RoomTitle
+		{
+			get
+			{
+				return this.entityData.RoomTitle; 
+			}
+			
+			set
+			{
+				if (this.entityData.RoomTitle == value)
+					return;
+					
+				OnColumnChanging(DoctorRoomColumn.RoomTitle, this.entityData.RoomTitle);
+				this.entityData.RoomTitle = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(DoctorRoomColumn.RoomTitle, this.entityData.RoomTitle);
+				OnPropertyChanged("RoomTitle");
 			}
 		}
 		
@@ -469,17 +548,6 @@ namespace ClinicDoctor.Entities
             get { return entityData.RoomIdSource; }
             set { entityData.RoomIdSource = value; }
       	}
-		/// <summary>
-		/// Gets or sets the source <see cref="Staff"/>.
-		/// </summary>
-		/// <value>The source Staff for DoctorId.</value>
-        [XmlIgnore()]
-		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual Staff DoctorIdSource
-      	{
-            get { return entityData.DoctorIdSource; }
-            set { entityData.DoctorIdSource = value; }
-      	}
 		#endregion
 		
 		#region Children Collections
@@ -495,6 +563,14 @@ namespace ClinicDoctor.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
+			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("DoctorUserName", "Doctor User Name"));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("DoctorUserName", "Doctor User Name", 200));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("DoctorShortName", "Doctor Short Name", 50));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("RoomTitle", "Room Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -520,7 +596,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "DoctorId", "RoomId", "PriorityIndex", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "DoctorUserName", "DoctorShortName", "RoomId", "RoomTitle", "PriorityIndex", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -669,8 +745,10 @@ namespace ClinicDoctor.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
-				copy.DoctorId = this.DoctorId;
+				copy.DoctorUserName = this.DoctorUserName;
+				copy.DoctorShortName = this.DoctorShortName;
 				copy.RoomId = this.RoomId;
+				copy.RoomTitle = this.RoomTitle;
 				copy.PriorityIndex = this.PriorityIndex;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -682,10 +760,6 @@ namespace ClinicDoctor.Entities
 				copy.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				copy.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
-			if (this.DoctorIdSource != null && existingCopies.Contains(this.DoctorIdSource))
-				copy.DoctorIdSource = existingCopies[this.DoctorIdSource] as Staff;
-			else
-				copy.DoctorIdSource = MakeCopyOf(this.DoctorIdSource, existingCopies) as Staff;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -819,10 +893,14 @@ namespace ClinicDoctor.Entities
 			{
 					case DoctorRoomColumn.Id:
 					return entityData.Id != _originalData.Id;
-					case DoctorRoomColumn.DoctorId:
-					return entityData.DoctorId != _originalData.DoctorId;
+					case DoctorRoomColumn.DoctorUserName:
+					return entityData.DoctorUserName != _originalData.DoctorUserName;
+					case DoctorRoomColumn.DoctorShortName:
+					return entityData.DoctorShortName != _originalData.DoctorShortName;
 					case DoctorRoomColumn.RoomId:
 					return entityData.RoomId != _originalData.RoomId;
+					case DoctorRoomColumn.RoomTitle:
+					return entityData.RoomTitle != _originalData.RoomTitle;
 					case DoctorRoomColumn.PriorityIndex:
 					return entityData.PriorityIndex != _originalData.PriorityIndex;
 					case DoctorRoomColumn.IsDisabled:
@@ -863,8 +941,10 @@ namespace ClinicDoctor.Entities
 		{
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
-			result = result || entityData.DoctorId != _originalData.DoctorId;
+			result = result || entityData.DoctorUserName != _originalData.DoctorUserName;
+			result = result || entityData.DoctorShortName != _originalData.DoctorShortName;
 			result = result || entityData.RoomId != _originalData.RoomId;
+			result = result || entityData.RoomTitle != _originalData.RoomTitle;
 			result = result || entityData.PriorityIndex != _originalData.PriorityIndex;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
@@ -881,8 +961,10 @@ namespace ClinicDoctor.Entities
 		{
 			if (_originalData != null)
 				return CreateDoctorRoom(
-				_originalData.DoctorId,
+				_originalData.DoctorUserName,
+				_originalData.DoctorShortName,
 				_originalData.RoomId,
+				_originalData.RoomTitle,
 				_originalData.PriorityIndex,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
@@ -919,8 +1001,10 @@ namespace ClinicDoctor.Entities
         public override int GetHashCode()
         {
 			return this.Id.GetHashCode() ^ 
-					this.DoctorId.GetHashCode() ^ 
+					this.DoctorUserName.GetHashCode() ^ 
+					((this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString()).GetHashCode() ^ 
 					this.RoomId.GetHashCode() ^ 
+					((this.RoomTitle == null) ? string.Empty : this.RoomTitle.ToString()).GetHashCode() ^ 
 					this.PriorityIndex.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -961,10 +1045,28 @@ namespace ClinicDoctor.Entities
 			bool equal = true;
 			if (Object1.Id != Object2.Id)
 				equal = false;
-			if (Object1.DoctorId != Object2.DoctorId)
+			if (Object1.DoctorUserName != Object2.DoctorUserName)
 				equal = false;
+			if ( Object1.DoctorShortName != null && Object2.DoctorShortName != null )
+			{
+				if (Object1.DoctorShortName != Object2.DoctorShortName)
+					equal = false;
+			}
+			else if (Object1.DoctorShortName == null ^ Object2.DoctorShortName == null )
+			{
+				equal = false;
+			}
 			if (Object1.RoomId != Object2.RoomId)
 				equal = false;
+			if ( Object1.RoomTitle != null && Object2.RoomTitle != null )
+			{
+				if (Object1.RoomTitle != Object2.RoomTitle)
+					equal = false;
+			}
+			else if (Object1.RoomTitle == null ^ Object2.RoomTitle == null )
+			{
+				equal = false;
+			}
 			if (Object1.PriorityIndex != Object2.PriorityIndex)
 				equal = false;
 			if (Object1.IsDisabled != Object2.IsDisabled)
@@ -1041,14 +1143,26 @@ namespace ClinicDoctor.Entities
             		                 
             	
             	
-            	case DoctorRoomColumn.DoctorId:
-            		return this.DoctorId.CompareTo(rhs.DoctorId);
+            	case DoctorRoomColumn.DoctorUserName:
+            		return this.DoctorUserName.CompareTo(rhs.DoctorUserName);
+            		
+            		                 
+            	
+            	
+            	case DoctorRoomColumn.DoctorShortName:
+            		return this.DoctorShortName.CompareTo(rhs.DoctorShortName);
             		
             		                 
             	
             	
             	case DoctorRoomColumn.RoomId:
             		return this.RoomId.CompareTo(rhs.RoomId);
+            		
+            		                 
+            	
+            	
+            	case DoctorRoomColumn.RoomTitle:
+            		return this.RoomTitle.CompareTo(rhs.RoomTitle);
             		
             		                 
             	
@@ -1221,10 +1335,12 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{10}{9}- Id: {0}{9}- DoctorId: {1}{9}- RoomId: {2}{9}- PriorityIndex: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
+				"{12}{11}- Id: {0}{11}- DoctorUserName: {1}{11}- DoctorShortName: {2}{11}- RoomId: {3}{11}- RoomTitle: {4}{11}- PriorityIndex: {5}{11}- IsDisabled: {6}{11}- CreateUser: {7}{11}- CreateDate: {8}{11}- UpdateUser: {9}{11}- UpdateDate: {10}{11}{13}", 
 				this.Id,
-				this.DoctorId,
+				this.DoctorUserName,
+				(this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString(),
 				this.RoomId,
+				(this.RoomTitle == null) ? string.Empty : this.RoomTitle.ToString(),
 				this.PriorityIndex,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -1266,14 +1382,24 @@ namespace ClinicDoctor.Entities
 		
 		
 		/// <summary>
-		/// DoctorId : 
+		/// DoctorUserName : 
 		/// </summary>
-		public System.Int64		  DoctorId = (long)0;
+		public System.String		  DoctorUserName = string.Empty;
+		
+		/// <summary>
+		/// DoctorShortName : 
+		/// </summary>
+		public System.String		  DoctorShortName = null;
 		
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
 		public System.Int64		  RoomId = (long)0;
+		
+		/// <summary>
+		/// RoomTitle : 
+		/// </summary>
+		public System.String		  RoomTitle = null;
 		
 		/// <summary>
 		/// PriorityIndex : 
@@ -1321,19 +1447,6 @@ namespace ClinicDoctor.Entities
             get { return this._roomIdSource; }
             set { this._roomIdSource = value; }
       	}
-		private Staff _doctorIdSource = null;
-		
-		/// <summary>
-		/// Gets or sets the source <see cref="Staff"/>.
-		/// </summary>
-		/// <value>The source Staff for DoctorId.</value>
-		[XmlIgnore()]
-		[Browsable(false)]
-		public virtual Staff DoctorIdSource
-      	{
-            get { return this._doctorIdSource; }
-            set { this._doctorIdSource = value; }
-      	}
 		#endregion
 		#endregion Variable Declarations
 	
@@ -1353,8 +1466,10 @@ namespace ClinicDoctor.Entities
 						
 			_tmp.Id = this.Id;
 			
-			_tmp.DoctorId = this.DoctorId;
+			_tmp.DoctorUserName = this.DoctorUserName;
+			_tmp.DoctorShortName = this.DoctorShortName;
 			_tmp.RoomId = this.RoomId;
+			_tmp.RoomTitle = this.RoomTitle;
 			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1365,8 +1480,6 @@ namespace ClinicDoctor.Entities
 			#region Source Parent Composite Entities
 			if (this.RoomIdSource != null)
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource) as Room;
-			if (this.DoctorIdSource != null)
-				_tmp.DoctorIdSource = MakeCopyOf(this.DoctorIdSource) as Staff;
 			#endregion
 		
 			#region Child Collections
@@ -1391,8 +1504,10 @@ namespace ClinicDoctor.Entities
 						
 			_tmp.Id = this.Id;
 			
-			_tmp.DoctorId = this.DoctorId;
+			_tmp.DoctorUserName = this.DoctorUserName;
+			_tmp.DoctorShortName = this.DoctorShortName;
 			_tmp.RoomId = this.RoomId;
+			_tmp.RoomTitle = this.RoomTitle;
 			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1405,10 +1520,6 @@ namespace ClinicDoctor.Entities
 				_tmp.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
-			if (this.DoctorIdSource != null && existingCopies.Contains(this.DoctorIdSource))
-				_tmp.DoctorIdSource = existingCopies[this.DoctorIdSource] as Staff;
-			else
-				_tmp.DoctorIdSource = MakeCopyOf(this.DoctorIdSource, existingCopies) as Staff;
 			#endregion
 		
 			#region Child Collections
@@ -1787,53 +1898,65 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("Id", typeof(System.Int64), System.Data.DbType.Int64, true, true, false)]
 		Id = 1,
 		/// <summary>
-		/// DoctorId : 
+		/// DoctorUserName : 
 		/// </summary>
-		[EnumTextValue("DoctorId")]
-		[ColumnEnum("DoctorId", typeof(System.Int64), System.Data.DbType.Int64, false, false, false)]
-		DoctorId = 2,
+		[EnumTextValue("DoctorUserName")]
+		[ColumnEnum("DoctorUserName", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
+		DoctorUserName = 2,
+		/// <summary>
+		/// DoctorShortName : 
+		/// </summary>
+		[EnumTextValue("DoctorShortName")]
+		[ColumnEnum("DoctorShortName", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		DoctorShortName = 3,
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
 		[EnumTextValue("RoomId")]
 		[ColumnEnum("RoomId", typeof(System.Int64), System.Data.DbType.Int64, false, false, false)]
-		RoomId = 3,
+		RoomId = 4,
+		/// <summary>
+		/// RoomTitle : 
+		/// </summary>
+		[EnumTextValue("RoomTitle")]
+		[ColumnEnum("RoomTitle", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
+		RoomTitle = 5,
 		/// <summary>
 		/// PriorityIndex : 
 		/// </summary>
 		[EnumTextValue("PriorityIndex")]
 		[ColumnEnum("PriorityIndex", typeof(System.Int32), System.Data.DbType.Int32, false, false, false)]
-		PriorityIndex = 4,
+		PriorityIndex = 6,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 5,
+		IsDisabled = 7,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 6,
+		CreateUser = 8,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 7,
+		CreateDate = 9,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 8,
+		UpdateUser = 10,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 9
+		UpdateDate = 11
 	}//End enum
 
 	#endregion DoctorRoomColumn Enum

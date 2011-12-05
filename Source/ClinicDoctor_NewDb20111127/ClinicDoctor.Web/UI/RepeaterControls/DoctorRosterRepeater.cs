@@ -341,13 +341,22 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.Id; }
 		}
         /// <summary>
-        /// Gets the DoctorId
+        /// Gets the DoctorUserName
         /// </summary>
-        /// <value>The DoctorId.</value>
+        /// <value>The DoctorUserName.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int64 DoctorId
+		public System.String DoctorUserName
 		{
-			get { return _entity.DoctorId; }
+			get { return _entity.DoctorUserName; }
+		}
+        /// <summary>
+        /// Gets the DoctorShortName
+        /// </summary>
+        /// <value>The DoctorShortName.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String DoctorShortName
+		{
+			get { return _entity.DoctorShortName; }
 		}
         /// <summary>
         /// Gets the RosterTypeId
@@ -357,6 +366,24 @@ namespace ClinicDoctor.Web.UI
 		public System.Int64 RosterTypeId
 		{
 			get { return _entity.RosterTypeId; }
+		}
+        /// <summary>
+        /// Gets the RosterTypeTitle
+        /// </summary>
+        /// <value>The RosterTypeTitle.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String RosterTypeTitle
+		{
+			get { return _entity.RosterTypeTitle; }
+		}
+        /// <summary>
+        /// Gets the IsBooked
+        /// </summary>
+        /// <value>The IsBooked.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.Boolean? IsBooked
+		{
+			get { return _entity.IsBooked; }
 		}
         /// <summary>
         /// Gets the StartTime

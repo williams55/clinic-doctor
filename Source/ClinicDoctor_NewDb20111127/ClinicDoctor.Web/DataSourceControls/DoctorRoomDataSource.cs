@@ -159,7 +159,7 @@ namespace ClinicDoctor.Web.Data
 			DoctorRoom item;
 			count = 0;
 			
-			System.Int64 _doctorId;
+			System.String _doctorUserName;
 			System.Boolean _isDisabled;
 			System.Int64 _roomId;
 			System.Int64 _id;
@@ -195,25 +195,25 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				case DoctorRoomSelectMethod.GetByDoctorId:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
-					results = DoctorRoomProvider.GetByDoctorId(GetTransactionManager(), _doctorId, this.StartIndex, this.PageSize, out count);
+				case DoctorRoomSelectMethod.GetByDoctorUserName:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
+					results = DoctorRoomProvider.GetByDoctorUserName(GetTransactionManager(), _doctorUserName, this.StartIndex, this.PageSize, out count);
 					break;
-				case DoctorRoomSelectMethod.GetByDoctorIdIsDisabled:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
+				case DoctorRoomSelectMethod.GetByDoctorUserNameIsDisabled:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = DoctorRoomProvider.GetByDoctorIdIsDisabled(GetTransactionManager(), _doctorId, _isDisabled, this.StartIndex, this.PageSize, out count);
+					results = DoctorRoomProvider.GetByDoctorUserNameIsDisabled(GetTransactionManager(), _doctorUserName, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
-				case DoctorRoomSelectMethod.GetByDoctorIdRoomId:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
+				case DoctorRoomSelectMethod.GetByDoctorUserNameRoomId:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
 					_roomId = ( values["RoomId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int64)) : (long)0;
-					results = DoctorRoomProvider.GetByDoctorIdRoomId(GetTransactionManager(), _doctorId, _roomId, this.StartIndex, this.PageSize, out count);
+					results = DoctorRoomProvider.GetByDoctorUserNameRoomId(GetTransactionManager(), _doctorUserName, _roomId, this.StartIndex, this.PageSize, out count);
 					break;
-				case DoctorRoomSelectMethod.GetByDoctorIdRoomIdIsDisabled:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
+				case DoctorRoomSelectMethod.GetByDoctorUserNameRoomIdIsDisabled:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
 					_roomId = ( values["RoomId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int64)) : (long)0;
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = DoctorRoomProvider.GetByDoctorIdRoomIdIsDisabled(GetTransactionManager(), _doctorId, _roomId, _isDisabled, this.StartIndex, this.PageSize, out count);
+					results = DoctorRoomProvider.GetByDoctorUserNameRoomIdIsDisabled(GetTransactionManager(), _doctorUserName, _roomId, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
 				case DoctorRoomSelectMethod.GetByIdIsDisabled:
 					_id = ( values["Id"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["Id"], typeof(System.Int64)) : (long)0;
@@ -414,21 +414,21 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetByDoctorId method.
+		/// Represents the GetByDoctorUserName method.
 		/// </summary>
-		GetByDoctorId,
+		GetByDoctorUserName,
 		/// <summary>
-		/// Represents the GetByDoctorIdIsDisabled method.
+		/// Represents the GetByDoctorUserNameIsDisabled method.
 		/// </summary>
-		GetByDoctorIdIsDisabled,
+		GetByDoctorUserNameIsDisabled,
 		/// <summary>
-		/// Represents the GetByDoctorIdRoomId method.
+		/// Represents the GetByDoctorUserNameRoomId method.
 		/// </summary>
-		GetByDoctorIdRoomId,
+		GetByDoctorUserNameRoomId,
 		/// <summary>
-		/// Represents the GetByDoctorIdRoomIdIsDisabled method.
+		/// Represents the GetByDoctorUserNameRoomIdIsDisabled method.
 		/// </summary>
-		GetByDoctorIdRoomIdIsDisabled,
+		GetByDoctorUserNameRoomIdIsDisabled,
 		/// <summary>
 		/// Represents the GetByIdIsDisabled method.
 		/// </summary>

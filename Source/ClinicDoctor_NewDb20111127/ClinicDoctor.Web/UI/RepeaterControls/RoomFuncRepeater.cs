@@ -350,6 +350,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.RoomId; }
 		}
         /// <summary>
+        /// Gets the RoomTitle
+        /// </summary>
+        /// <value>The RoomTitle.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String RoomTitle
+		{
+			get { return _entity.RoomTitle; }
+		}
+        /// <summary>
         /// Gets the FuncId
         /// </summary>
         /// <value>The FuncId.</value>
@@ -357,6 +366,15 @@ namespace ClinicDoctor.Web.UI
 		public System.Int64 FuncId
 		{
 			get { return _entity.FuncId; }
+		}
+        /// <summary>
+        /// Gets the FuncTitle
+        /// </summary>
+        /// <value>The FuncTitle.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String FuncTitle
+		{
+			get { return _entity.FuncTitle; }
 		}
         /// <summary>
         /// Gets the IsDisabled

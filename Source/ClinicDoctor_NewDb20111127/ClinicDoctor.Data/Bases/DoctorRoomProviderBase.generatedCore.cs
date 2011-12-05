@@ -76,319 +76,319 @@ namespace ClinicDoctor.Data.Bases
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoom_DoctorId index.
+		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoom_DoctorUserName index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorId(System.Int64 _doctorId)
+		public TList<DoctorRoom> GetByDoctorUserName(System.String _doctorUserName)
 		{
 			int count = -1;
-			return GetByDoctorId(null,_doctorId, 0, int.MaxValue, out count);
+			return GetByDoctorUserName(null,_doctorUserName, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorId(System.Int64 _doctorId, int start, int pageLength)
+		public TList<DoctorRoom> GetByDoctorUserName(System.String _doctorUserName, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByDoctorId(null, _doctorId, start, pageLength, out count);
+			return GetByDoctorUserName(null, _doctorUserName, start, pageLength, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorId(TransactionManager transactionManager, System.Int64 _doctorId)
+		public TList<DoctorRoom> GetByDoctorUserName(TransactionManager transactionManager, System.String _doctorUserName)
 		{
 			int count = -1;
-			return GetByDoctorId(transactionManager, _doctorId, 0, int.MaxValue, out count);
+			return GetByDoctorUserName(transactionManager, _doctorUserName, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorId(TransactionManager transactionManager, System.Int64 _doctorId, int start, int pageLength)
+		public TList<DoctorRoom> GetByDoctorUserName(TransactionManager transactionManager, System.String _doctorUserName, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByDoctorId(transactionManager, _doctorId, start, pageLength, out count);
+			return GetByDoctorUserName(transactionManager, _doctorUserName, start, pageLength, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorId(System.Int64 _doctorId, int start, int pageLength, out int count)
+		public TList<DoctorRoom> GetByDoctorUserName(System.String _doctorUserName, int start, int pageLength, out int count)
 		{
-			return GetByDoctorId(null, _doctorId, start, pageLength, out count);
+			return GetByDoctorUserName(null, _doctorUserName, start, pageLength, out count);
 		}
 		
 				
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public abstract TList<DoctorRoom> GetByDoctorId(TransactionManager transactionManager, System.Int64 _doctorId, int start, int pageLength, out int count);
+		public abstract TList<DoctorRoom> GetByDoctorUserName(TransactionManager transactionManager, System.String _doctorUserName, int start, int pageLength, out int count);
 						
 		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoom_DoctorId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoom_DoctorUserName_IsDisabled index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_isDisabled"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdIsDisabled(System.Int64 _doctorId, System.Boolean _isDisabled)
+		public TList<DoctorRoom> GetByDoctorUserNameIsDisabled(System.String _doctorUserName, System.Boolean _isDisabled)
 		{
 			int count = -1;
-			return GetByDoctorIdIsDisabled(null,_doctorId, _isDisabled, 0, int.MaxValue, out count);
+			return GetByDoctorUserNameIsDisabled(null,_doctorUserName, _isDisabled, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_IsDisabled index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdIsDisabled(System.Int64 _doctorId, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByDoctorIdIsDisabled(null, _doctorId, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByDoctorIdIsDisabled(transactionManager, _doctorId, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Boolean _isDisabled, int start, int pageLength)
+		public TList<DoctorRoom> GetByDoctorUserNameIsDisabled(System.String _doctorUserName, System.Boolean _isDisabled, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByDoctorIdIsDisabled(transactionManager, _doctorId, _isDisabled, start, pageLength, out count);
+			return GetByDoctorUserNameIsDisabled(null, _doctorUserName, _isDisabled, start, pageLength, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_IsDisabled index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUserName"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
+		public TList<DoctorRoom> GetByDoctorUserNameIsDisabled(TransactionManager transactionManager, System.String _doctorUserName, System.Boolean _isDisabled)
+		{
+			int count = -1;
+			return GetByDoctorUserNameIsDisabled(transactionManager, _doctorUserName, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUserName"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
+		public TList<DoctorRoom> GetByDoctorUserNameIsDisabled(TransactionManager transactionManager, System.String _doctorUserName, System.Boolean _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUserNameIsDisabled(transactionManager, _doctorUserName, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdIsDisabled(System.Int64 _doctorId, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public TList<DoctorRoom> GetByDoctorUserNameIsDisabled(System.String _doctorUserName, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
-			return GetByDoctorIdIsDisabled(null, _doctorId, _isDisabled, start, pageLength, out count);
+			return GetByDoctorUserNameIsDisabled(null, _doctorUserName, _isDisabled, start, pageLength, out count);
 		}
 		
 				
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_IsDisabled index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public abstract TList<DoctorRoom> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Boolean _isDisabled, int start, int pageLength, out int count);
+		public abstract TList<DoctorRoom> GetByDoctorUserNameIsDisabled(TransactionManager transactionManager, System.String _doctorUserName, System.Boolean _isDisabled, int start, int pageLength, out int count);
 						
 		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoom_DoctorId_RoomId index.
+		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoom_DoctorUserName_RoomId index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomId(System.Int64 _doctorId, System.Int64 _roomId)
+		public TList<DoctorRoom> GetByDoctorUserNameRoomId(System.String _doctorUserName, System.Int64 _roomId)
 		{
 			int count = -1;
-			return GetByDoctorIdRoomId(null,_doctorId, _roomId, 0, int.MaxValue, out count);
+			return GetByDoctorUserNameRoomId(null,_doctorUserName, _roomId, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomId(System.Int64 _doctorId, System.Int64 _roomId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByDoctorIdRoomId(null, _doctorId, _roomId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomId(TransactionManager transactionManager, System.Int64 _doctorId, System.Int64 _roomId)
-		{
-			int count = -1;
-			return GetByDoctorIdRoomId(transactionManager, _doctorId, _roomId, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomId(TransactionManager transactionManager, System.Int64 _doctorId, System.Int64 _roomId, int start, int pageLength)
+		public TList<DoctorRoom> GetByDoctorUserNameRoomId(System.String _doctorUserName, System.Int64 _roomId, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByDoctorIdRoomId(transactionManager, _doctorId, _roomId, start, pageLength, out count);
+			return GetByDoctorUserNameRoomId(null, _doctorUserName, _roomId, start, pageLength, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUserName"></param>
+		/// <param name="_roomId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
+		public TList<DoctorRoom> GetByDoctorUserNameRoomId(TransactionManager transactionManager, System.String _doctorUserName, System.Int64 _roomId)
+		{
+			int count = -1;
+			return GetByDoctorUserNameRoomId(transactionManager, _doctorUserName, _roomId, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUserName"></param>
+		/// <param name="_roomId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
+		public TList<DoctorRoom> GetByDoctorUserNameRoomId(TransactionManager transactionManager, System.String _doctorUserName, System.Int64 _roomId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUserNameRoomId(transactionManager, _doctorUserName, _roomId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId index.
+		/// </summary>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomId(System.Int64 _doctorId, System.Int64 _roomId, int start, int pageLength, out int count)
+		public TList<DoctorRoom> GetByDoctorUserNameRoomId(System.String _doctorUserName, System.Int64 _roomId, int start, int pageLength, out int count)
 		{
-			return GetByDoctorIdRoomId(null, _doctorId, _roomId, start, pageLength, out count);
+			return GetByDoctorUserNameRoomId(null, _doctorUserName, _roomId, start, pageLength, out count);
 		}
 		
 				
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public abstract TList<DoctorRoom> GetByDoctorIdRoomId(TransactionManager transactionManager, System.Int64 _doctorId, System.Int64 _roomId, int start, int pageLength, out int count);
+		public abstract TList<DoctorRoom> GetByDoctorUserNameRoomId(TransactionManager transactionManager, System.String _doctorUserName, System.Int64 _roomId, int start, int pageLength, out int count);
 						
 		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoom_DoctorId_RoomId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoom_DoctorUserName_RoomId_IsDisabled index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <param name="_isDisabled"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomIdIsDisabled(System.Int64 _doctorId, System.Int64 _roomId, System.Boolean _isDisabled)
+		public TList<DoctorRoom> GetByDoctorUserNameRoomIdIsDisabled(System.String _doctorUserName, System.Int64 _roomId, System.Boolean _isDisabled)
 		{
 			int count = -1;
-			return GetByDoctorIdRoomIdIsDisabled(null,_doctorId, _roomId, _isDisabled, 0, int.MaxValue, out count);
+			return GetByDoctorUserNameRoomIdIsDisabled(null,_doctorUserName, _roomId, _isDisabled, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId_IsDisabled index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomIdIsDisabled(System.Int64 _doctorId, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByDoctorIdRoomIdIsDisabled(null, _doctorId, _roomId, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
-		/// <param name="_roomId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Int64 _roomId, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByDoctorIdRoomIdIsDisabled(transactionManager, _doctorId, _roomId, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength)
+		public TList<DoctorRoom> GetByDoctorUserNameRoomIdIsDisabled(System.String _doctorUserName, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByDoctorIdRoomIdIsDisabled(transactionManager, _doctorId, _roomId, _isDisabled, start, pageLength, out count);
+			return GetByDoctorUserNameRoomIdIsDisabled(null, _doctorUserName, _roomId, _isDisabled, start, pageLength, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId_IsDisabled index.
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUserName"></param>
+		/// <param name="_roomId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
+		public TList<DoctorRoom> GetByDoctorUserNameRoomIdIsDisabled(TransactionManager transactionManager, System.String _doctorUserName, System.Int64 _roomId, System.Boolean _isDisabled)
+		{
+			int count = -1;
+			return GetByDoctorUserNameRoomIdIsDisabled(transactionManager, _doctorUserName, _roomId, _isDisabled, 0, int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId_IsDisabled index.
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorUserName"></param>
+		/// <param name="_roomId"></param>
+		/// <param name="_isDisabled"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
+		public TList<DoctorRoom> GetByDoctorUserNameRoomIdIsDisabled(TransactionManager transactionManager, System.String _doctorUserName, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByDoctorUserNameRoomIdIsDisabled(transactionManager, _doctorUserName, _roomId, _isDisabled, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId_IsDisabled index.
+		/// </summary>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
@@ -396,24 +396,24 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public TList<DoctorRoom> GetByDoctorIdRoomIdIsDisabled(System.Int64 _doctorId, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public TList<DoctorRoom> GetByDoctorUserNameRoomIdIsDisabled(System.String _doctorUserName, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
-			return GetByDoctorIdRoomIdIsDisabled(null, _doctorId, _roomId, _isDisabled, start, pageLength, out count);
+			return GetByDoctorUserNameRoomIdIsDisabled(null, _doctorUserName, _roomId, _isDisabled, start, pageLength, out count);
 		}
 		
 				
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId_IsDisabled index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;DoctorRoom&gt;"/> class.</returns>
-		public abstract TList<DoctorRoom> GetByDoctorIdRoomIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength, out int count);
+		public abstract TList<DoctorRoom> GetByDoctorUserNameRoomIdIsDisabled(TransactionManager transactionManager, System.String _doctorUserName, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength, out int count);
 						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_DoctorRoom_Id_IsDisabled index.
@@ -888,8 +888,10 @@ namespace ClinicDoctor.Data.Bases
 				{
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)DoctorRoomColumn.Id - 1)];
-					c.DoctorId = (System.Int64)reader[((int)DoctorRoomColumn.DoctorId - 1)];
+					c.DoctorUserName = (System.String)reader[((int)DoctorRoomColumn.DoctorUserName - 1)];
+					c.DoctorShortName = (reader.IsDBNull(((int)DoctorRoomColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.DoctorShortName - 1)];
 					c.RoomId = (System.Int64)reader[((int)DoctorRoomColumn.RoomId - 1)];
+					c.RoomTitle = (reader.IsDBNull(((int)DoctorRoomColumn.RoomTitle - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.RoomTitle - 1)];
 					c.PriorityIndex = (System.Int32)reader[((int)DoctorRoomColumn.PriorityIndex - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)DoctorRoomColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)DoctorRoomColumn.CreateUser - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.CreateUser - 1)];
@@ -914,8 +916,10 @@ namespace ClinicDoctor.Data.Bases
 			if (!reader.Read()) return;
 			
 			entity.Id = (System.Int64)reader[((int)DoctorRoomColumn.Id - 1)];
-			entity.DoctorId = (System.Int64)reader[((int)DoctorRoomColumn.DoctorId - 1)];
+			entity.DoctorUserName = (System.String)reader[((int)DoctorRoomColumn.DoctorUserName - 1)];
+			entity.DoctorShortName = (reader.IsDBNull(((int)DoctorRoomColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.DoctorShortName - 1)];
 			entity.RoomId = (System.Int64)reader[((int)DoctorRoomColumn.RoomId - 1)];
+			entity.RoomTitle = (reader.IsDBNull(((int)DoctorRoomColumn.RoomTitle - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.RoomTitle - 1)];
 			entity.PriorityIndex = (System.Int32)reader[((int)DoctorRoomColumn.PriorityIndex - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)DoctorRoomColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)DoctorRoomColumn.CreateUser - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.CreateUser - 1)];
@@ -935,8 +939,10 @@ namespace ClinicDoctor.Data.Bases
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
 			entity.Id = (System.Int64)dataRow["Id"];
-			entity.DoctorId = (System.Int64)dataRow["DoctorId"];
+			entity.DoctorUserName = (System.String)dataRow["DoctorUserName"];
+			entity.DoctorShortName = Convert.IsDBNull(dataRow["DoctorShortName"]) ? null : (System.String)dataRow["DoctorShortName"];
 			entity.RoomId = (System.Int64)dataRow["RoomId"];
+			entity.RoomTitle = Convert.IsDBNull(dataRow["RoomTitle"]) ? null : (System.String)dataRow["RoomTitle"];
 			entity.PriorityIndex = (System.Int32)dataRow["PriorityIndex"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
@@ -993,32 +999,6 @@ namespace ClinicDoctor.Data.Bases
 					
 			}
 			#endregion RoomIdSource
-
-			#region DoctorIdSource	
-			if (CanDeepLoad(entity, "Staff|DoctorIdSource", deepLoadType, innerList) 
-				&& entity.DoctorIdSource == null)
-			{
-				object[] pkItems = new object[1];
-				pkItems[0] = entity.DoctorId;
-				Staff tmpEntity = EntityManager.LocateEntity<Staff>(EntityLocator.ConstructKeyFromPkItems(typeof(Staff), pkItems), DataRepository.Provider.EnableEntityTracking);
-				if (tmpEntity != null)
-					entity.DoctorIdSource = tmpEntity;
-				else
-					entity.DoctorIdSource = DataRepository.StaffProvider.GetById(transactionManager, entity.DoctorId);		
-				
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'DoctorIdSource' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-				
-				if (deep && entity.DoctorIdSource != null)
-				{
-					innerList.SkipChildren = true;
-					DataRepository.StaffProvider.DeepLoad(transactionManager, entity.DoctorIdSource, deep, deepLoadType, childTypes, innerList);
-					innerList.SkipChildren = false;
-				}
-					
-			}
-			#endregion DoctorIdSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -1061,15 +1041,6 @@ namespace ClinicDoctor.Data.Bases
 				entity.RoomId = entity.RoomIdSource.Id;
 			}
 			#endregion 
-			
-			#region DoctorIdSource
-			if (CanDeepSave(entity, "Staff|DoctorIdSource", deepSaveType, innerList) 
-				&& entity.DoctorIdSource != null)
-			{
-				DataRepository.StaffProvider.Save(transactionManager, entity.DoctorIdSource);
-				entity.DoctorId = entity.DoctorIdSource.Id;
-			}
-			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -1110,12 +1081,6 @@ namespace ClinicDoctor.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Room))]
 		Room,
-			
-		///<summary>
-		/// Composite Property for <c>Staff</c> at DoctorIdSource
-		///</summary>
-		[ChildEntityType(typeof(Staff))]
-		Staff,
 		}
 	
 	#endregion DoctorRoomChildEntityTypes

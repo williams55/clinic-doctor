@@ -25,14 +25,29 @@ namespace ClinicDoctor.Entities
 		
 		
 		/// <summary>
-		/// DoctorId : 
+		/// DoctorUserName : 
 		/// </summary>
-		System.Int64  DoctorId  { get; set; }
+		System.String  DoctorUserName  { get; set; }
+		
+		/// <summary>
+		/// DoctorShortName : 
+		/// </summary>
+		System.String  DoctorShortName  { get; set; }
 		
 		/// <summary>
 		/// RosterTypeId : 
 		/// </summary>
 		System.Int64  RosterTypeId  { get; set; }
+		
+		/// <summary>
+		/// RosterTypeTitle : 
+		/// </summary>
+		System.String  RosterTypeTitle  { get; set; }
+		
+		/// <summary>
+		/// IsBooked : 
+		/// </summary>
+		System.Boolean?  IsBooked  { get; set; }
 		
 		/// <summary>
 		/// StartTime : 

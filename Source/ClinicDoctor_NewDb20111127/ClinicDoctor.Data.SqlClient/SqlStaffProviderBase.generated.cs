@@ -1534,7 +1534,7 @@ namespace ClinicDoctor.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_Insert", _useStoredProcedure);
 			
-			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
+			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
 			database.AddInParameter(commandWrapper, "@FirstName", DbType.String, entity.FirstName );
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@ShortName", DbType.String, entity.ShortName );
@@ -1569,9 +1569,8 @@ namespace ClinicDoctor.Data.SqlClient
 				results = Utility.ExecuteNonQuery(database,commandWrapper);
 			}
 					
-			object _id = database.GetParameterValue(commandWrapper, "@Id");
-			entity.Id = (System.Int64)_id;
 			
+			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 	
@@ -1603,6 +1602,7 @@ namespace ClinicDoctor.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_Update", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
+			database.AddInParameter(commandWrapper, "@OriginalId", DbType.Int64, entity.OriginalId);
 			database.AddInParameter(commandWrapper, "@FirstName", DbType.String, entity.FirstName );
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@ShortName", DbType.String, entity.ShortName );
@@ -1641,6 +1641,7 @@ namespace ClinicDoctor.Data.SqlClient
 			if (DataRepository.Provider.EnableEntityTracking)
 				EntityManager.StopTracking(entity.EntityTrackingKey);
 			
+			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 			

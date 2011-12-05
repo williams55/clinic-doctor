@@ -30,6 +30,11 @@ namespace ClinicDoctor.Entities
 		System.Int64  FuncId  { get; set; }
 		
 		/// <summary>
+		/// FuncTitle : 
+		/// </summary>
+		System.String  FuncTitle  { get; set; }
+		
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		System.String  Note  { get; set; }
