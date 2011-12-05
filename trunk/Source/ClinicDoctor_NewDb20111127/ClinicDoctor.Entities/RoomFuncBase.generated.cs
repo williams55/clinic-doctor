@@ -82,20 +82,25 @@ namespace ClinicDoctor.Entities
 		/// Creates a new <see cref="RoomFuncBase"/> instance.
 		///</summary>
 		///<param name="_roomId"></param>
+		///<param name="_roomTitle"></param>
 		///<param name="_funcId"></param>
+		///<param name="_funcTitle"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public RoomFuncBase(System.Int64 _roomId, System.Int64 _funcId, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public RoomFuncBase(System.Int64 _roomId, System.String _roomTitle, System.Int64 _funcId, 
+			System.String _funcTitle, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new RoomFuncEntityData();
 			this.backupData = null;
 
 			this.RoomId = _roomId;
+			this.RoomTitle = _roomTitle;
 			this.FuncId = _funcId;
+			this.FuncTitle = _funcTitle;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -107,18 +112,23 @@ namespace ClinicDoctor.Entities
 		/// A simple factory method to create a new <see cref="RoomFunc"/> instance.
 		///</summary>
 		///<param name="_roomId"></param>
+		///<param name="_roomTitle"></param>
 		///<param name="_funcId"></param>
+		///<param name="_funcTitle"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static RoomFunc CreateRoomFunc(System.Int64 _roomId, System.Int64 _funcId, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public static RoomFunc CreateRoomFunc(System.Int64 _roomId, System.String _roomTitle, System.Int64 _funcId, 
+			System.String _funcTitle, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			RoomFunc newRoomFunc = new RoomFunc();
 			newRoomFunc.RoomId = _roomId;
+			newRoomFunc.RoomTitle = _roomTitle;
 			newRoomFunc.FuncId = _funcId;
+			newRoomFunc.FuncTitle = _funcTitle;
 			newRoomFunc.IsDisabled = _isDisabled;
 			newRoomFunc.CreateUser = _createUser;
 			newRoomFunc.CreateDate = _createDate;
@@ -204,6 +214,42 @@ namespace ClinicDoctor.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or sets the RoomTitle property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can not be set to null. 
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, false, 200)]
+		public virtual System.String RoomTitle
+		{
+			get
+			{
+				return this.entityData.RoomTitle; 
+			}
+			
+			set
+			{
+				if (this.entityData.RoomTitle == value)
+					return;
+					
+				OnColumnChanging(RoomFuncColumn.RoomTitle, this.entityData.RoomTitle);
+				this.entityData.RoomTitle = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(RoomFuncColumn.RoomTitle, this.entityData.RoomTitle);
+				OnPropertyChanged("RoomTitle");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or sets the FuncId property. 
 		///		
 		/// </summary>
@@ -235,6 +281,42 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(RoomFuncColumn.FuncId, this.entityData.FuncId);
 				OnPropertyChanged("FuncId");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the FuncTitle property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can not be set to null. 
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, false, 200)]
+		public virtual System.String FuncTitle
+		{
+			get
+			{
+				return this.entityData.FuncTitle; 
+			}
+			
+			set
+			{
+				if (this.entityData.FuncTitle == value)
+					return;
+					
+				OnColumnChanging(RoomFuncColumn.FuncTitle, this.entityData.FuncTitle);
+				this.entityData.FuncTitle = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(RoomFuncColumn.FuncTitle, this.entityData.FuncTitle);
+				OnPropertyChanged("FuncTitle");
 			}
 		}
 		
@@ -454,6 +536,14 @@ namespace ClinicDoctor.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
+			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("RoomTitle", "Room Title"));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("RoomTitle", "Room Title", 200));
+			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("FuncTitle", "Func Title"));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("FuncTitle", "Func Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -479,7 +569,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "RoomId", "FuncId", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "RoomId", "RoomTitle", "FuncId", "FuncTitle", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -629,7 +719,9 @@ namespace ClinicDoctor.Entities
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
 				copy.RoomId = this.RoomId;
+				copy.RoomTitle = this.RoomTitle;
 				copy.FuncId = this.FuncId;
+				copy.FuncTitle = this.FuncTitle;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
@@ -779,8 +871,12 @@ namespace ClinicDoctor.Entities
 					return entityData.Id != _originalData.Id;
 					case RoomFuncColumn.RoomId:
 					return entityData.RoomId != _originalData.RoomId;
+					case RoomFuncColumn.RoomTitle:
+					return entityData.RoomTitle != _originalData.RoomTitle;
 					case RoomFuncColumn.FuncId:
 					return entityData.FuncId != _originalData.FuncId;
+					case RoomFuncColumn.FuncTitle:
+					return entityData.FuncTitle != _originalData.FuncTitle;
 					case RoomFuncColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case RoomFuncColumn.CreateUser:
@@ -820,7 +916,9 @@ namespace ClinicDoctor.Entities
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.RoomId != _originalData.RoomId;
+			result = result || entityData.RoomTitle != _originalData.RoomTitle;
 			result = result || entityData.FuncId != _originalData.FuncId;
+			result = result || entityData.FuncTitle != _originalData.FuncTitle;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -837,7 +935,9 @@ namespace ClinicDoctor.Entities
 			if (_originalData != null)
 				return CreateRoomFunc(
 				_originalData.RoomId,
+				_originalData.RoomTitle,
 				_originalData.FuncId,
+				_originalData.FuncTitle,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -874,7 +974,9 @@ namespace ClinicDoctor.Entities
         {
 			return this.Id.GetHashCode() ^ 
 					this.RoomId.GetHashCode() ^ 
+					this.RoomTitle.GetHashCode() ^ 
 					this.FuncId.GetHashCode() ^ 
+					this.FuncTitle.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
@@ -916,7 +1018,11 @@ namespace ClinicDoctor.Entities
 				equal = false;
 			if (Object1.RoomId != Object2.RoomId)
 				equal = false;
+			if (Object1.RoomTitle != Object2.RoomTitle)
+				equal = false;
 			if (Object1.FuncId != Object2.FuncId)
+				equal = false;
+			if (Object1.FuncTitle != Object2.FuncTitle)
 				equal = false;
 			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
@@ -998,8 +1104,20 @@ namespace ClinicDoctor.Entities
             		                 
             	
             	
+            	case RoomFuncColumn.RoomTitle:
+            		return this.RoomTitle.CompareTo(rhs.RoomTitle);
+            		
+            		                 
+            	
+            	
             	case RoomFuncColumn.FuncId:
             		return this.FuncId.CompareTo(rhs.FuncId);
+            		
+            		                 
+            	
+            	
+            	case RoomFuncColumn.FuncTitle:
+            		return this.FuncTitle.CompareTo(rhs.FuncTitle);
             		
             		                 
             	
@@ -1166,10 +1284,12 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{9}{8}- Id: {0}{8}- RoomId: {1}{8}- FuncId: {2}{8}- IsDisabled: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
+				"{11}{10}- Id: {0}{10}- RoomId: {1}{10}- RoomTitle: {2}{10}- FuncId: {3}{10}- FuncTitle: {4}{10}- IsDisabled: {5}{10}- CreateUser: {6}{10}- CreateDate: {7}{10}- UpdateUser: {8}{10}- UpdateDate: {9}{10}{12}", 
 				this.Id,
 				this.RoomId,
+				this.RoomTitle,
 				this.FuncId,
+				this.FuncTitle,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
@@ -1215,9 +1335,19 @@ namespace ClinicDoctor.Entities
 		public System.Int64		  RoomId = (long)0;
 		
 		/// <summary>
+		/// RoomTitle : 
+		/// </summary>
+		public System.String		  RoomTitle = string.Empty;
+		
+		/// <summary>
 		/// FuncId : 
 		/// </summary>
 		public System.Int64		  FuncId = (long)0;
+		
+		/// <summary>
+		/// FuncTitle : 
+		/// </summary>
+		public System.String		  FuncTitle = string.Empty;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1293,7 +1423,9 @@ namespace ClinicDoctor.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.RoomId = this.RoomId;
+			_tmp.RoomTitle = this.RoomTitle;
 			_tmp.FuncId = this.FuncId;
+			_tmp.FuncTitle = this.FuncTitle;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1330,7 +1462,9 @@ namespace ClinicDoctor.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.RoomId = this.RoomId;
+			_tmp.RoomTitle = this.RoomTitle;
 			_tmp.FuncId = this.FuncId;
+			_tmp.FuncTitle = this.FuncTitle;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1730,41 +1864,53 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("RoomId", typeof(System.Int64), System.Data.DbType.Int64, false, false, false)]
 		RoomId = 2,
 		/// <summary>
+		/// RoomTitle : 
+		/// </summary>
+		[EnumTextValue("RoomTitle")]
+		[ColumnEnum("RoomTitle", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
+		RoomTitle = 3,
+		/// <summary>
 		/// FuncId : 
 		/// </summary>
 		[EnumTextValue("FuncId")]
 		[ColumnEnum("FuncId", typeof(System.Int64), System.Data.DbType.Int64, false, false, false)]
-		FuncId = 3,
+		FuncId = 4,
+		/// <summary>
+		/// FuncTitle : 
+		/// </summary>
+		[EnumTextValue("FuncTitle")]
+		[ColumnEnum("FuncTitle", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
+		FuncTitle = 5,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 4,
+		IsDisabled = 6,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 5,
+		CreateUser = 7,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 6,
+		CreateDate = 8,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 7,
+		UpdateUser = 9,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 8
+		UpdateDate = 10
 	}//End enum
 
 	#endregion RoomFuncColumn Enum

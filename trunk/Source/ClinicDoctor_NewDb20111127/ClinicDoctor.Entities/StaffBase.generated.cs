@@ -81,6 +81,7 @@ namespace ClinicDoctor.Entities
 		///<summary>
 		/// Creates a new <see cref="StaffBase"/> instance.
 		///</summary>
+		///<param name="_id"></param>
 		///<param name="_firstName"></param>
 		///<param name="_lastName"></param>
 		///<param name="_shortName"></param>
@@ -100,15 +101,16 @@ namespace ClinicDoctor.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public StaffBase(System.String _firstName, System.String _lastName, System.String _shortName, 
-			System.Int64 _groupId, System.String _userName, System.String _address, System.String _homePhone, System.String _workPhone, 
-			System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, System.String _title, 
-			System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+		public StaffBase(System.Int64 _id, System.String _firstName, System.String _lastName, 
+			System.String _shortName, System.Int64 _groupId, System.String _userName, System.String _address, System.String _homePhone, 
+			System.String _workPhone, System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, 
+			System.String _title, System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new StaffEntityData();
 			this.backupData = null;
 
+			this.Id = _id;
 			this.FirstName = _firstName;
 			this.LastName = _lastName;
 			this.ShortName = _shortName;
@@ -133,6 +135,7 @@ namespace ClinicDoctor.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="Staff"/> instance.
 		///</summary>
+		///<param name="_id"></param>
 		///<param name="_firstName"></param>
 		///<param name="_lastName"></param>
 		///<param name="_shortName"></param>
@@ -152,13 +155,14 @@ namespace ClinicDoctor.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Staff CreateStaff(System.String _firstName, System.String _lastName, System.String _shortName, 
-			System.Int64 _groupId, System.String _userName, System.String _address, System.String _homePhone, System.String _workPhone, 
-			System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, System.String _title, 
-			System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+		public static Staff CreateStaff(System.Int64 _id, System.String _firstName, System.String _lastName, 
+			System.String _shortName, System.Int64 _groupId, System.String _userName, System.String _address, System.String _homePhone, 
+			System.String _workPhone, System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, 
+			System.String _title, System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			Staff newStaff = new Staff();
+			newStaff.Id = _id;
 			newStaff.FirstName = _firstName;
 			newStaff.LastName = _lastName;
 			newStaff.ShortName = _shortName;
@@ -198,8 +202,8 @@ namespace ClinicDoctor.Entities
 
 
 
-		[ReadOnlyAttribute(false)/*, XmlIgnoreAttribute()*/, DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, true, false)]
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(true, false, false)]
 		public virtual System.Int64 Id
 		{
 			get
@@ -220,6 +224,19 @@ namespace ClinicDoctor.Entities
 				OnColumnChanged(StaffColumn.Id, this.entityData.Id);
 				OnPropertyChanged("Id");
 			}
+		}
+		
+		/// <summary>
+		/// 	Get the original value of the Id property.
+		///		
+		/// </summary>
+		/// <remarks>This is the original value of the Id property.</remarks>
+		/// <value>This type is bigint</value>
+		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
+		public  virtual System.Int64 OriginalId
+		{
+			get { return this.entityData.OriginalId; }
+			set { this.entityData.OriginalId = value; }
 		}
 		
 		/// <summary>
@@ -912,61 +929,6 @@ namespace ClinicDoctor.Entities
 		#endregion
 		
 		#region Children Collections
-	
-		/// <summary>
-		///	Holds a collection of DoctorRoom objects
-		///	which are related to this object through the relation FK_DoctorRoom_Staff
-		/// </summary>	
-		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual TList<DoctorRoom> DoctorRoomCollection
-		{
-			get { return entityData.DoctorRoomCollection; }
-			set { entityData.DoctorRoomCollection = value; }	
-		}
-	
-		/// <summary>
-		///	Holds a collection of Appointment objects
-		///	which are related to this object through the relation FK_Appointment_Staff1
-		/// </summary>	
-		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual TList<Appointment> AppointmentCollectionGetByNurseId
-		{
-			get { return entityData.AppointmentCollectionGetByNurseId; }
-			set { entityData.AppointmentCollectionGetByNurseId = value; }	
-		}
-	
-		/// <summary>
-		///	Holds a collection of Appointment objects
-		///	which are related to this object through the relation FK_Appointment_Staff
-		/// </summary>	
-		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual TList<Appointment> AppointmentCollectionGetByDoctorId
-		{
-			get { return entityData.AppointmentCollectionGetByDoctorId; }
-			set { entityData.AppointmentCollectionGetByDoctorId = value; }	
-		}
-	
-		/// <summary>
-		///	Holds a collection of DoctorRoster objects
-		///	which are related to this object through the relation FK_DoctorRoster_Staff
-		/// </summary>	
-		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual TList<DoctorRoster> DoctorRosterCollection
-		{
-			get { return entityData.DoctorRosterCollection; }
-			set { entityData.DoctorRosterCollection = value; }	
-		}
-	
-		/// <summary>
-		///	Holds a collection of DoctorFunc objects
-		///	which are related to this object through the relation FK_DoctorFunc_Staff
-		/// </summary>	
-		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual TList<DoctorFunc> DoctorFuncCollection
-		{
-			get { return entityData.DoctorFuncCollection; }
-			set { entityData.DoctorFuncCollection = value; }	
-		}
 		#endregion Children Collections
 		
 		#endregion
@@ -1185,6 +1147,7 @@ namespace ClinicDoctor.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
+					copy.OriginalId = this.OriginalId;
 				copy.FirstName = this.FirstName;
 				copy.LastName = this.LastName;
 				copy.ShortName = this.ShortName;
@@ -1210,12 +1173,6 @@ namespace ClinicDoctor.Entities
 			else
 				copy.GroupIdSource = MakeCopyOf(this.GroupIdSource, existingCopies) as Group;
 		
-			//deep copy nested objects
-			copy.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection, existingCopies); 
-			copy.AppointmentCollectionGetByNurseId = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByNurseId, existingCopies); 
-			copy.AppointmentCollectionGetByDoctorId = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByDoctorId, existingCopies); 
-			copy.DoctorRosterCollection = (TList<DoctorRoster>) MakeCopyOf(this.DoctorRosterCollection, existingCopies); 
-			copy.DoctorFuncCollection = (TList<DoctorFunc>) MakeCopyOf(this.DoctorFuncCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
 			return copy;
@@ -1443,6 +1400,7 @@ namespace ClinicDoctor.Entities
 		{
 			if (_originalData != null)
 				return CreateStaff(
+				_originalData.Id,
 				_originalData.FirstName,
 				_originalData.LastName,
 				_originalData.ShortName,
@@ -1992,6 +1950,11 @@ namespace ClinicDoctor.Entities
 		/// <remarks>Member of the primary key of the underlying table "Staff"</remarks>
 		public System.Int64 Id;
 			
+		/// <summary>
+		/// keep a copy of the original so it can be used for editable primary keys.
+		/// </summary>
+		public System.Int64 OriginalId;
+		
 		#endregion
 		
 		#region Non Primary key(s)
@@ -2113,131 +2076,6 @@ namespace ClinicDoctor.Entities
 	
 		#region Data Properties
 
-		#region DoctorRoomCollection
-		
-		private TList<DoctorRoom> _doctorRoomDoctorId;
-		
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorRoomDoctorId
-		/// </summary>
-		
-		public TList<DoctorRoom> DoctorRoomCollection
-		{
-			get
-			{
-				if (_doctorRoomDoctorId == null)
-				{
-				_doctorRoomDoctorId = new TList<DoctorRoom>();
-				}
-	
-				return _doctorRoomDoctorId;
-			}
-			set { _doctorRoomDoctorId = value; }
-		}
-		
-		#endregion
-
-		#region AppointmentCollectionGetByNurseId
-		
-		private TList<Appointment> _appointmentNurseIdGetByNurseId;
-		
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentNurseIdGetByNurseId
-		/// </summary>
-		
-		public TList<Appointment> AppointmentCollectionGetByNurseId
-		{
-			get
-			{
-				if (_appointmentNurseIdGetByNurseId == null)
-				{
-				_appointmentNurseIdGetByNurseId = new TList<Appointment>();
-				}
-	
-				return _appointmentNurseIdGetByNurseId;
-			}
-			set { _appointmentNurseIdGetByNurseId = value; }
-		}
-		
-		#endregion
-
-		#region AppointmentCollectionGetByDoctorId
-		
-		private TList<Appointment> _appointmentNurseIdGetByDoctorId;
-		
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentNurseIdGetByDoctorId
-		/// </summary>
-		
-		public TList<Appointment> AppointmentCollectionGetByDoctorId
-		{
-			get
-			{
-				if (_appointmentNurseIdGetByDoctorId == null)
-				{
-				_appointmentNurseIdGetByDoctorId = new TList<Appointment>();
-				}
-	
-				return _appointmentNurseIdGetByDoctorId;
-			}
-			set { _appointmentNurseIdGetByDoctorId = value; }
-		}
-		
-		#endregion
-
-		#region DoctorRosterCollection
-		
-		private TList<DoctorRoster> _doctorRosterDoctorId;
-		
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorRosterDoctorId
-		/// </summary>
-		
-		public TList<DoctorRoster> DoctorRosterCollection
-		{
-			get
-			{
-				if (_doctorRosterDoctorId == null)
-				{
-				_doctorRosterDoctorId = new TList<DoctorRoster>();
-				}
-	
-				return _doctorRosterDoctorId;
-			}
-			set { _doctorRosterDoctorId = value; }
-		}
-		
-		#endregion
-
-		#region DoctorFuncCollection
-		
-		private TList<DoctorFunc> _doctorFuncDoctorId;
-		
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorFuncDoctorId
-		/// </summary>
-		
-		public TList<DoctorFunc> DoctorFuncCollection
-		{
-			get
-			{
-				if (_doctorFuncDoctorId == null)
-				{
-				_doctorFuncDoctorId = new TList<DoctorFunc>();
-				}
-	
-				return _doctorFuncDoctorId;
-			}
-			set { _doctorFuncDoctorId = value; }
-		}
-		
-		#endregion
-
 		#endregion Data Properties
 		
 		#region Clone Method
@@ -2251,6 +2089,7 @@ namespace ClinicDoctor.Entities
 			StaffEntityData _tmp = new StaffEntityData();
 						
 			_tmp.Id = this.Id;
+			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.FirstName = this.FirstName;
 			_tmp.LastName = this.LastName;
@@ -2278,17 +2117,6 @@ namespace ClinicDoctor.Entities
 			#endregion
 		
 			#region Child Collections
-			//deep copy nested objects
-			if (this._doctorRoomDoctorId != null)
-				_tmp.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection); 
-			if (this._appointmentNurseIdGetByNurseId != null)
-				_tmp.AppointmentCollectionGetByNurseId = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByNurseId); 
-			if (this._appointmentNurseIdGetByDoctorId != null)
-				_tmp.AppointmentCollectionGetByDoctorId = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByDoctorId); 
-			if (this._doctorRosterDoctorId != null)
-				_tmp.DoctorRosterCollection = (TList<DoctorRoster>) MakeCopyOf(this.DoctorRosterCollection); 
-			if (this._doctorFuncDoctorId != null)
-				_tmp.DoctorFuncCollection = (TList<DoctorFunc>) MakeCopyOf(this.DoctorFuncCollection); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -2309,6 +2137,7 @@ namespace ClinicDoctor.Entities
 			StaffEntityData _tmp = new StaffEntityData();
 						
 			_tmp.Id = this.Id;
+			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.FirstName = this.FirstName;
 			_tmp.LastName = this.LastName;
@@ -2338,12 +2167,6 @@ namespace ClinicDoctor.Entities
 			#endregion
 		
 			#region Child Collections
-			//deep copy nested objects
-			_tmp.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection, existingCopies); 
-			_tmp.AppointmentCollectionGetByNurseId = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByNurseId, existingCopies); 
-			_tmp.AppointmentCollectionGetByDoctorId = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByDoctorId, existingCopies); 
-			_tmp.DoctorRosterCollection = (TList<DoctorRoster>) MakeCopyOf(this.DoctorRosterCollection, existingCopies); 
-			_tmp.DoctorFuncCollection = (TList<DoctorFunc>) MakeCopyOf(this.DoctorFuncCollection, existingCopies); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -2716,7 +2539,7 @@ namespace ClinicDoctor.Entities
 		/// Id : 
 		/// </summary>
 		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.Int64), System.Data.DbType.Int64, true, true, false)]
+		[ColumnEnum("Id", typeof(System.Int64), System.Data.DbType.Int64, true, false, false)]
 		Id = 1,
 		/// <summary>
 		/// FirstName : 

@@ -20,6 +20,11 @@ namespace ClinicDoctor.Entities
 		
 		
 		/// <summary>
+		/// Title : 
+		/// </summary>
+		System.String  Title  { get; set; }
+		
+		/// <summary>
 		/// IsBooked : 
 		/// </summary>
 		System.Boolean  IsBooked  { get; set; }

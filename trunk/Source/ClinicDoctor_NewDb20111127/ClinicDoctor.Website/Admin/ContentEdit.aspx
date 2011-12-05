@@ -49,11 +49,17 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Customer Id" DataNavigateUrlFormatString="CustomerEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="CustomerIdSource" DataTextField="FirstName" />
+				<asp:BoundField DataField="CustomerName" HeaderText="Customer Name" SortExpression="[CustomerName]" />				
 				<data:HyperLinkField HeaderText="Content Id" DataNavigateUrlFormatString="ContentEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ContentIdSource" DataTextField="Title" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
+				<asp:BoundField DataField="ContentTitle" HeaderText="Content Title" SortExpression="[ContentTitle]" />				
+				<asp:BoundField DataField="DoctorUsername" HeaderText="Doctor Username" SortExpression="[DoctorUsername]" />				
+				<asp:BoundField DataField="DoctorShortName" HeaderText="Doctor Short Name" SortExpression="[DoctorShortName]" />				
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
-				<data:HyperLinkField HeaderText="Nurse Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="NurseIdSource" DataTextField="FirstName" />
+				<asp:BoundField DataField="RoomTitle" HeaderText="Room Title" SortExpression="[RoomTitle]" />				
+				<asp:BoundField DataField="NurseUsername" HeaderText="Nurse Username" SortExpression="[NurseUsername]" />				
+				<asp:BoundField DataField="NurseShortName" HeaderText="Nurse Short Name" SortExpression="[NurseShortName]" />				
 				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="StatusTitle" HeaderText="Status Title" SortExpression="[StatusTitle]" />				
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
 				<asp:BoundField DataField="StartTime" HeaderText="Start Time" SortExpression="[StartTime]" />				
 				<asp:BoundField DataField="EndTime" HeaderText="End Time" SortExpression="[EndTime]" />				
@@ -78,7 +84,6 @@
 					<data:AppointmentProperty Name="Content"/> 
 					<data:AppointmentProperty Name="Customer"/> 
 					<data:AppointmentProperty Name="Room"/> 
-					<data:AppointmentProperty Name="Staff"/> 
 					<data:AppointmentProperty Name="Status"/> 
 				</Types>
 			</DeepLoadProperties>

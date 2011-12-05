@@ -17,6 +17,12 @@
 				</td>
 			</tr>
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataCustomerName" runat="server" Text="Customer Name:" AssociatedControlID="dataCustomerName" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataCustomerName" Text='<%# Bind("CustomerName") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataContentId" runat="server" Text="Content Id:" AssociatedControlID="dataContentId" /></td>
         <td>
 					<data:EntityDropDownList runat="server" ID="dataContentId" DataSourceID="ContentIdContentDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("ContentId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
@@ -24,10 +30,21 @@
 				</td>
 			</tr>
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataDoctorId" runat="server" Text="Doctor Id:" AssociatedControlID="dataDoctorId" /></td>
+        <td class="literal"><asp:Label ID="lbldataContentTitle" runat="server" Text="Content Title:" AssociatedControlID="dataContentTitle" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataDoctorId" DataSourceID="DoctorIdStaffDataSource" DataTextField="FirstName" DataValueField="Id" SelectedValue='<%# Bind("DoctorId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
-					<data:StaffDataSource ID="DoctorIdStaffDataSource" runat="server" SelectMethod="GetAll"  />
+					<asp:TextBox runat="server" ID="dataContentTitle" Text='<%# Bind("ContentTitle") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataDoctorUsername" runat="server" Text="Doctor Username:" AssociatedControlID="dataDoctorUsername" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataDoctorUsername" Text='<%# Bind("DoctorUsername") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataDoctorShortName" runat="server" Text="Doctor Short Name:" AssociatedControlID="dataDoctorShortName" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataDoctorShortName" Text='<%# Bind("DoctorShortName") %>' MaxLength="50"></asp:TextBox>
 				</td>
 			</tr>
 			<tr>
@@ -38,10 +55,21 @@
 				</td>
 			</tr>
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataNurseId" runat="server" Text="Nurse Id:" AssociatedControlID="dataNurseId" /></td>
+        <td class="literal"><asp:Label ID="lbldataRoomTitle" runat="server" Text="Room Title:" AssociatedControlID="dataRoomTitle" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataNurseId" DataSourceID="NurseIdStaffDataSource" DataTextField="FirstName" DataValueField="Id" SelectedValue='<%# Bind("NurseId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
-					<data:StaffDataSource ID="NurseIdStaffDataSource" runat="server" SelectMethod="GetAll"  />
+					<asp:TextBox runat="server" ID="dataRoomTitle" Text='<%# Bind("RoomTitle") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataNurseUsername" runat="server" Text="Nurse Username:" AssociatedControlID="dataNurseUsername" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataNurseUsername" Text='<%# Bind("NurseUsername") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataNurseShortName" runat="server" Text="Nurse Short Name:" AssociatedControlID="dataNurseShortName" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataNurseShortName" Text='<%# Bind("NurseShortName") %>' MaxLength="50"></asp:TextBox>
 				</td>
 			</tr>
 			<tr>
@@ -49,6 +77,12 @@
         <td>
 					<data:EntityDropDownList runat="server" ID="dataStatusId" DataSourceID="StatusIdStatusDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("StatusId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
 					<data:StatusDataSource ID="StatusIdStatusDataSource" runat="server" SelectMethod="GetAll"  />
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataStatusTitle" runat="server" Text="Status Title:" AssociatedControlID="dataStatusTitle" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataStatusTitle" Text='<%# Bind("StatusTitle") %>' MaxLength="200"></asp:TextBox>
 				</td>
 			</tr>
 			<tr>

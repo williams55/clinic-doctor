@@ -159,7 +159,7 @@ namespace ClinicDoctor.Web.Data
 			DoctorRoster item;
 			count = 0;
 			
-			System.Int64 _doctorId;
+			System.String _doctorUserName;
 			System.Boolean _isComplete;
 			System.Boolean _isDisabled;
 			System.Int64 _rosterTypeId;
@@ -196,43 +196,49 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				case DoctorRosterSelectMethod.GetByDoctorId:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
-					results = DoctorRosterProvider.GetByDoctorId(GetTransactionManager(), _doctorId, this.StartIndex, this.PageSize, out count);
+				case DoctorRosterSelectMethod.GetByDoctorUserName:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
+					results = DoctorRosterProvider.GetByDoctorUserName(GetTransactionManager(), _doctorUserName, this.StartIndex, this.PageSize, out count);
 					break;
-				case DoctorRosterSelectMethod.GetByDoctorIdIsComplete:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
+				case DoctorRosterSelectMethod.GetByDoctorUserNameIsComplete:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
 					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
-					results = DoctorRosterProvider.GetByDoctorIdIsComplete(GetTransactionManager(), _doctorId, _isComplete, this.StartIndex, this.PageSize, out count);
+					results = DoctorRosterProvider.GetByDoctorUserNameIsComplete(GetTransactionManager(), _doctorUserName, _isComplete, this.StartIndex, this.PageSize, out count);
 					break;
-				case DoctorRosterSelectMethod.GetByDoctorIdIsCompleteIsDisabled:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
-					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
-					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = DoctorRosterProvider.GetByDoctorIdIsCompleteIsDisabled(GetTransactionManager(), _doctorId, _isComplete, _isDisabled, this.StartIndex, this.PageSize, out count);
-					break;
-				case DoctorRosterSelectMethod.GetByDoctorIdIsDisabled:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
-					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = DoctorRosterProvider.GetByDoctorIdIsDisabled(GetTransactionManager(), _doctorId, _isDisabled, this.StartIndex, this.PageSize, out count);
-					break;
-				case DoctorRosterSelectMethod.GetByDoctorIdRosterTypeId:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
-					_rosterTypeId = ( values["RosterTypeId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int64)) : (long)0;
-					results = DoctorRosterProvider.GetByDoctorIdRosterTypeId(GetTransactionManager(), _doctorId, _rosterTypeId, this.StartIndex, this.PageSize, out count);
-					break;
-				case DoctorRosterSelectMethod.GetByDoctorIdRosterTypeIdIsComplete:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
-					_rosterTypeId = ( values["RosterTypeId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int64)) : (long)0;
-					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
-					results = DoctorRosterProvider.GetByDoctorIdRosterTypeIdIsComplete(GetTransactionManager(), _doctorId, _rosterTypeId, _isComplete, this.StartIndex, this.PageSize, out count);
-					break;
-				case DoctorRosterSelectMethod.GetByDoctorIdRosterTypeIdIsCompleteIsDisabled:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["DoctorId"], typeof(System.Int64)) : (long)0;
-					_rosterTypeId = ( values["RosterTypeId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int64)) : (long)0;
+				case DoctorRosterSelectMethod.GetByDoctorUserNameIsCompleteIsDisabled:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
 					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = DoctorRosterProvider.GetByDoctorIdRosterTypeIdIsCompleteIsDisabled(GetTransactionManager(), _doctorId, _rosterTypeId, _isComplete, _isDisabled, this.StartIndex, this.PageSize, out count);
+					results = DoctorRosterProvider.GetByDoctorUserNameIsCompleteIsDisabled(GetTransactionManager(), _doctorUserName, _isComplete, _isDisabled, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByDoctorUserNameIsDisabled:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
+					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
+					results = DoctorRosterProvider.GetByDoctorUserNameIsDisabled(GetTransactionManager(), _doctorUserName, _isDisabled, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByDoctorUserNameRosterTypeId:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
+					_rosterTypeId = ( values["RosterTypeId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int64)) : (long)0;
+					results = DoctorRosterProvider.GetByDoctorUserNameRosterTypeId(GetTransactionManager(), _doctorUserName, _rosterTypeId, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByDoctorUserNameRosterTypeIdIsComplete:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
+					_rosterTypeId = ( values["RosterTypeId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int64)) : (long)0;
+					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
+					results = DoctorRosterProvider.GetByDoctorUserNameRosterTypeIdIsComplete(GetTransactionManager(), _doctorUserName, _rosterTypeId, _isComplete, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByDoctorUserNameRosterTypeIdIsCompleteIsDisabled:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
+					_rosterTypeId = ( values["RosterTypeId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int64)) : (long)0;
+					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
+					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
+					results = DoctorRosterProvider.GetByDoctorUserNameRosterTypeIdIsCompleteIsDisabled(GetTransactionManager(), _doctorUserName, _rosterTypeId, _isComplete, _isDisabled, this.StartIndex, this.PageSize, out count);
+					break;
+				case DoctorRosterSelectMethod.GetByDoctorUserNameRosterTypeIdIsDisabled:
+					_doctorUserName = ( values["DoctorUserName"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorUserName"], typeof(System.String)) : string.Empty;
+					_rosterTypeId = ( values["RosterTypeId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int64)) : (long)0;
+					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
+					results = DoctorRosterProvider.GetByDoctorUserNameRosterTypeIdIsDisabled(GetTransactionManager(), _doctorUserName, _rosterTypeId, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
 				case DoctorRosterSelectMethod.GetByIdIsComplete:
 					_id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
@@ -456,33 +462,37 @@ namespace ClinicDoctor.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetByDoctorId method.
+		/// Represents the GetByDoctorUserName method.
 		/// </summary>
-		GetByDoctorId,
+		GetByDoctorUserName,
 		/// <summary>
-		/// Represents the GetByDoctorIdIsComplete method.
+		/// Represents the GetByDoctorUserNameIsComplete method.
 		/// </summary>
-		GetByDoctorIdIsComplete,
+		GetByDoctorUserNameIsComplete,
 		/// <summary>
-		/// Represents the GetByDoctorIdIsCompleteIsDisabled method.
+		/// Represents the GetByDoctorUserNameIsCompleteIsDisabled method.
 		/// </summary>
-		GetByDoctorIdIsCompleteIsDisabled,
+		GetByDoctorUserNameIsCompleteIsDisabled,
 		/// <summary>
-		/// Represents the GetByDoctorIdIsDisabled method.
+		/// Represents the GetByDoctorUserNameIsDisabled method.
 		/// </summary>
-		GetByDoctorIdIsDisabled,
+		GetByDoctorUserNameIsDisabled,
 		/// <summary>
-		/// Represents the GetByDoctorIdRosterTypeId method.
+		/// Represents the GetByDoctorUserNameRosterTypeId method.
 		/// </summary>
-		GetByDoctorIdRosterTypeId,
+		GetByDoctorUserNameRosterTypeId,
 		/// <summary>
-		/// Represents the GetByDoctorIdRosterTypeIdIsComplete method.
+		/// Represents the GetByDoctorUserNameRosterTypeIdIsComplete method.
 		/// </summary>
-		GetByDoctorIdRosterTypeIdIsComplete,
+		GetByDoctorUserNameRosterTypeIdIsComplete,
 		/// <summary>
-		/// Represents the GetByDoctorIdRosterTypeIdIsCompleteIsDisabled method.
+		/// Represents the GetByDoctorUserNameRosterTypeIdIsCompleteIsDisabled method.
 		/// </summary>
-		GetByDoctorIdRosterTypeIdIsCompleteIsDisabled,
+		GetByDoctorUserNameRosterTypeIdIsCompleteIsDisabled,
+		/// <summary>
+		/// Represents the GetByDoctorUserNameRosterTypeIdIsDisabled method.
+		/// </summary>
+		GetByDoctorUserNameRosterTypeIdIsDisabled,
 		/// <summary>
 		/// Represents the GetByIdIsComplete method.
 		/// </summary>

@@ -17,6 +17,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
+				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
 				<asp:BoundField DataField="FirstName" HeaderText="First Name" SortExpression="[FirstName]"  />
 				<asp:BoundField DataField="LastName" HeaderText="Last Name" SortExpression="[LastName]"  />
 				<asp:BoundField DataField="ShortName" HeaderText="Short Name" SortExpression="[ShortName]"  />
@@ -52,11 +53,6 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:StaffProperty Name="Group"/> 
-					<%--<data:StaffProperty Name="DoctorRoomCollection" />--%>
-					<%--<data:StaffProperty Name="AppointmentCollectionGetByNurseId" />--%>
-					<%--<data:StaffProperty Name="AppointmentCollectionGetByDoctorId" />--%>
-					<%--<data:StaffProperty Name="DoctorRosterCollection" />--%>
-					<%--<data:StaffProperty Name="DoctorFuncCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
 			<Parameters>

@@ -967,6 +967,7 @@ namespace ClinicDoctor.Data.Bases
 				{
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)StaffColumn.Id - 1)];
+					c.OriginalId = c.Id;
 					c.FirstName = (System.String)reader[((int)StaffColumn.FirstName - 1)];
 					c.LastName = (System.String)reader[((int)StaffColumn.LastName - 1)];
 					c.ShortName = (System.String)reader[((int)StaffColumn.ShortName - 1)];
@@ -1004,6 +1005,7 @@ namespace ClinicDoctor.Data.Bases
 			if (!reader.Read()) return;
 			
 			entity.Id = (System.Int64)reader[((int)StaffColumn.Id - 1)];
+			entity.OriginalId = (System.Int64)reader["Id"];
 			entity.FirstName = (System.String)reader[((int)StaffColumn.FirstName - 1)];
 			entity.LastName = (System.String)reader[((int)StaffColumn.LastName - 1)];
 			entity.ShortName = (System.String)reader[((int)StaffColumn.ShortName - 1)];
@@ -1036,6 +1038,7 @@ namespace ClinicDoctor.Data.Bases
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
 			entity.Id = (System.Int64)dataRow["Id"];
+			entity.OriginalId = (System.Int64)dataRow["Id"];
 			entity.FirstName = (System.String)dataRow["FirstName"];
 			entity.LastName = (System.String)dataRow["LastName"];
 			entity.ShortName = (System.String)dataRow["ShortName"];
@@ -1108,112 +1111,6 @@ namespace ClinicDoctor.Data.Bases
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
-			// Deep load child collections  - Call GetById methods when available
-			
-			#region DoctorRoomCollection
-			//Relationship Type One : Many
-			if (CanDeepLoad(entity, "List<DoctorRoom>|DoctorRoomCollection", deepLoadType, innerList)) 
-			{
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'DoctorRoomCollection' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-
-				entity.DoctorRoomCollection = DataRepository.DoctorRoomProvider.GetByDoctorId(transactionManager, entity.Id);
-
-				if (deep && entity.DoctorRoomCollection.Count > 0)
-				{
-					deepHandles.Add("DoctorRoomCollection",
-						new KeyValuePair<Delegate, object>((DeepLoadHandle<DoctorRoom>) DataRepository.DoctorRoomProvider.DeepLoad,
-						new object[] { transactionManager, entity.DoctorRoomCollection, deep, deepLoadType, childTypes, innerList }
-					));
-				}
-			}		
-			#endregion 
-			
-			
-			#region AppointmentCollectionGetByNurseId
-			//Relationship Type One : Many
-			if (CanDeepLoad(entity, "List<Appointment>|AppointmentCollectionGetByNurseId", deepLoadType, innerList)) 
-			{
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'AppointmentCollectionGetByNurseId' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-
-				entity.AppointmentCollectionGetByNurseId = DataRepository.AppointmentProvider.GetByNurseId(transactionManager, entity.Id);
-
-				if (deep && entity.AppointmentCollectionGetByNurseId.Count > 0)
-				{
-					deepHandles.Add("AppointmentCollectionGetByNurseId",
-						new KeyValuePair<Delegate, object>((DeepLoadHandle<Appointment>) DataRepository.AppointmentProvider.DeepLoad,
-						new object[] { transactionManager, entity.AppointmentCollectionGetByNurseId, deep, deepLoadType, childTypes, innerList }
-					));
-				}
-			}		
-			#endregion 
-			
-			
-			#region AppointmentCollectionGetByDoctorId
-			//Relationship Type One : Many
-			if (CanDeepLoad(entity, "List<Appointment>|AppointmentCollectionGetByDoctorId", deepLoadType, innerList)) 
-			{
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'AppointmentCollectionGetByDoctorId' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-
-				entity.AppointmentCollectionGetByDoctorId = DataRepository.AppointmentProvider.GetByDoctorId(transactionManager, entity.Id);
-
-				if (deep && entity.AppointmentCollectionGetByDoctorId.Count > 0)
-				{
-					deepHandles.Add("AppointmentCollectionGetByDoctorId",
-						new KeyValuePair<Delegate, object>((DeepLoadHandle<Appointment>) DataRepository.AppointmentProvider.DeepLoad,
-						new object[] { transactionManager, entity.AppointmentCollectionGetByDoctorId, deep, deepLoadType, childTypes, innerList }
-					));
-				}
-			}		
-			#endregion 
-			
-			
-			#region DoctorRosterCollection
-			//Relationship Type One : Many
-			if (CanDeepLoad(entity, "List<DoctorRoster>|DoctorRosterCollection", deepLoadType, innerList)) 
-			{
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'DoctorRosterCollection' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-
-				entity.DoctorRosterCollection = DataRepository.DoctorRosterProvider.GetByDoctorId(transactionManager, entity.Id);
-
-				if (deep && entity.DoctorRosterCollection.Count > 0)
-				{
-					deepHandles.Add("DoctorRosterCollection",
-						new KeyValuePair<Delegate, object>((DeepLoadHandle<DoctorRoster>) DataRepository.DoctorRosterProvider.DeepLoad,
-						new object[] { transactionManager, entity.DoctorRosterCollection, deep, deepLoadType, childTypes, innerList }
-					));
-				}
-			}		
-			#endregion 
-			
-			
-			#region DoctorFuncCollection
-			//Relationship Type One : Many
-			if (CanDeepLoad(entity, "List<DoctorFunc>|DoctorFuncCollection", deepLoadType, innerList)) 
-			{
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'DoctorFuncCollection' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-
-				entity.DoctorFuncCollection = DataRepository.DoctorFuncProvider.GetByDoctorId(transactionManager, entity.Id);
-
-				if (deep && entity.DoctorFuncCollection.Count > 0)
-				{
-					deepHandles.Add("DoctorFuncCollection",
-						new KeyValuePair<Delegate, object>((DeepLoadHandle<DoctorFunc>) DataRepository.DoctorFuncProvider.DeepLoad,
-						new object[] { transactionManager, entity.DoctorFuncCollection, deep, deepLoadType, childTypes, innerList }
-					));
-				}
-			}		
-			#endregion 
-			
 			
 			//Fire all DeepLoad Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
@@ -1261,156 +1158,6 @@ namespace ClinicDoctor.Data.Bases
 			
 			//used to hold DeepSave method delegates and fire after all the local children have been saved.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
-	
-			#region List<DoctorRoom>
-				if (CanDeepSave(entity.DoctorRoomCollection, "List<DoctorRoom>|DoctorRoomCollection", deepSaveType, innerList)) 
-				{	
-					// update each child parent id with the real parent id (mostly used on insert)
-					foreach(DoctorRoom child in entity.DoctorRoomCollection)
-					{
-						if(child.DoctorIdSource != null)
-						{
-							child.DoctorId = child.DoctorIdSource.Id;
-						}
-						else
-						{
-							child.DoctorId = entity.Id;
-						}
-
-					}
-
-					if (entity.DoctorRoomCollection.Count > 0 || entity.DoctorRoomCollection.DeletedItems.Count > 0)
-					{
-						//DataRepository.DoctorRoomProvider.Save(transactionManager, entity.DoctorRoomCollection);
-						
-						deepHandles.Add("DoctorRoomCollection",
-						new KeyValuePair<Delegate, object>((DeepSaveHandle< DoctorRoom >) DataRepository.DoctorRoomProvider.DeepSave,
-							new object[] { transactionManager, entity.DoctorRoomCollection, deepSaveType, childTypes, innerList }
-						));
-					}
-				} 
-			#endregion 
-				
-	
-			#region List<Appointment>
-				if (CanDeepSave(entity.AppointmentCollectionGetByNurseId, "List<Appointment>|AppointmentCollectionGetByNurseId", deepSaveType, innerList)) 
-				{	
-					// update each child parent id with the real parent id (mostly used on insert)
-					foreach(Appointment child in entity.AppointmentCollectionGetByNurseId)
-					{
-						if(child.NurseIdSource != null)
-						{
-							child.NurseId = child.NurseIdSource.Id;
-						}
-						else
-						{
-							child.NurseId = entity.Id;
-						}
-
-					}
-
-					if (entity.AppointmentCollectionGetByNurseId.Count > 0 || entity.AppointmentCollectionGetByNurseId.DeletedItems.Count > 0)
-					{
-						//DataRepository.AppointmentProvider.Save(transactionManager, entity.AppointmentCollectionGetByNurseId);
-						
-						deepHandles.Add("AppointmentCollectionGetByNurseId",
-						new KeyValuePair<Delegate, object>((DeepSaveHandle< Appointment >) DataRepository.AppointmentProvider.DeepSave,
-							new object[] { transactionManager, entity.AppointmentCollectionGetByNurseId, deepSaveType, childTypes, innerList }
-						));
-					}
-				} 
-			#endregion 
-				
-	
-			#region List<Appointment>
-				if (CanDeepSave(entity.AppointmentCollectionGetByDoctorId, "List<Appointment>|AppointmentCollectionGetByDoctorId", deepSaveType, innerList)) 
-				{	
-					// update each child parent id with the real parent id (mostly used on insert)
-					foreach(Appointment child in entity.AppointmentCollectionGetByDoctorId)
-					{
-						if(child.DoctorIdSource != null)
-						{
-							child.DoctorId = child.DoctorIdSource.Id;
-						}
-						else
-						{
-							child.DoctorId = entity.Id;
-						}
-
-					}
-
-					if (entity.AppointmentCollectionGetByDoctorId.Count > 0 || entity.AppointmentCollectionGetByDoctorId.DeletedItems.Count > 0)
-					{
-						//DataRepository.AppointmentProvider.Save(transactionManager, entity.AppointmentCollectionGetByDoctorId);
-						
-						deepHandles.Add("AppointmentCollectionGetByDoctorId",
-						new KeyValuePair<Delegate, object>((DeepSaveHandle< Appointment >) DataRepository.AppointmentProvider.DeepSave,
-							new object[] { transactionManager, entity.AppointmentCollectionGetByDoctorId, deepSaveType, childTypes, innerList }
-						));
-					}
-				} 
-			#endregion 
-				
-	
-			#region List<DoctorRoster>
-				if (CanDeepSave(entity.DoctorRosterCollection, "List<DoctorRoster>|DoctorRosterCollection", deepSaveType, innerList)) 
-				{	
-					// update each child parent id with the real parent id (mostly used on insert)
-					foreach(DoctorRoster child in entity.DoctorRosterCollection)
-					{
-						if(child.DoctorIdSource != null)
-						{
-							child.DoctorId = child.DoctorIdSource.Id;
-						}
-						else
-						{
-							child.DoctorId = entity.Id;
-						}
-
-					}
-
-					if (entity.DoctorRosterCollection.Count > 0 || entity.DoctorRosterCollection.DeletedItems.Count > 0)
-					{
-						//DataRepository.DoctorRosterProvider.Save(transactionManager, entity.DoctorRosterCollection);
-						
-						deepHandles.Add("DoctorRosterCollection",
-						new KeyValuePair<Delegate, object>((DeepSaveHandle< DoctorRoster >) DataRepository.DoctorRosterProvider.DeepSave,
-							new object[] { transactionManager, entity.DoctorRosterCollection, deepSaveType, childTypes, innerList }
-						));
-					}
-				} 
-			#endregion 
-				
-	
-			#region List<DoctorFunc>
-				if (CanDeepSave(entity.DoctorFuncCollection, "List<DoctorFunc>|DoctorFuncCollection", deepSaveType, innerList)) 
-				{	
-					// update each child parent id with the real parent id (mostly used on insert)
-					foreach(DoctorFunc child in entity.DoctorFuncCollection)
-					{
-						if(child.DoctorIdSource != null)
-						{
-							child.DoctorId = child.DoctorIdSource.Id;
-						}
-						else
-						{
-							child.DoctorId = entity.Id;
-						}
-
-					}
-
-					if (entity.DoctorFuncCollection.Count > 0 || entity.DoctorFuncCollection.DeletedItems.Count > 0)
-					{
-						//DataRepository.DoctorFuncProvider.Save(transactionManager, entity.DoctorFuncCollection);
-						
-						deepHandles.Add("DoctorFuncCollection",
-						new KeyValuePair<Delegate, object>((DeepSaveHandle< DoctorFunc >) DataRepository.DoctorFuncProvider.DeepSave,
-							new object[] { transactionManager, entity.DoctorFuncCollection, deepSaveType, childTypes, innerList }
-						));
-					}
-				} 
-			#endregion 
-				
 			//Fire all DeepSave Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
 		    {
@@ -1443,37 +1190,7 @@ namespace ClinicDoctor.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Group))]
 		Group,
-	
-		///<summary>
-		/// Collection of <c>Staff</c> as OneToMany for DoctorRoomCollection
-		///</summary>
-		[ChildEntityType(typeof(TList<DoctorRoom>))]
-		DoctorRoomCollection,
-
-		///<summary>
-		/// Collection of <c>Staff</c> as OneToMany for AppointmentCollection
-		///</summary>
-		[ChildEntityType(typeof(TList<Appointment>))]
-		AppointmentCollectionGetByNurseId,
-
-		///<summary>
-		/// Collection of <c>Staff</c> as OneToMany for AppointmentCollection
-		///</summary>
-		[ChildEntityType(typeof(TList<Appointment>))]
-		AppointmentCollectionGetByDoctorId,
-
-		///<summary>
-		/// Collection of <c>Staff</c> as OneToMany for DoctorRosterCollection
-		///</summary>
-		[ChildEntityType(typeof(TList<DoctorRoster>))]
-		DoctorRosterCollection,
-
-		///<summary>
-		/// Collection of <c>Staff</c> as OneToMany for DoctorFuncCollection
-		///</summary>
-		[ChildEntityType(typeof(TList<DoctorFunc>))]
-		DoctorFuncCollection,
-	}
+		}
 	
 	#endregion StaffChildEntityTypes
 	

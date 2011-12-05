@@ -10,17 +10,34 @@
 				</td>
 			</tr>
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataDoctorId" runat="server" Text="Doctor Id:" AssociatedControlID="dataDoctorId" /></td>
+        <td class="literal"><asp:Label ID="lbldataDoctorUserName" runat="server" Text="Doctor User Name:" AssociatedControlID="dataDoctorUserName" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataDoctorId" DataSourceID="DoctorIdStaffDataSource" DataTextField="FirstName" DataValueField="Id" SelectedValue='<%# Bind("DoctorId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
-					<data:StaffDataSource ID="DoctorIdStaffDataSource" runat="server" SelectMethod="GetAll"  />
+					<asp:TextBox runat="server" ID="dataDoctorUserName" Text='<%# Bind("DoctorUserName") %>' MaxLength="200"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataDoctorUserName" runat="server" Display="Dynamic" ControlToValidate="dataDoctorUserName" ErrorMessage="Required"></asp:RequiredFieldValidator>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataDoctorShortName" runat="server" Text="Doctor Short Name:" AssociatedControlID="dataDoctorShortName" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataDoctorShortName" Text='<%# Bind("DoctorShortName") %>' MaxLength="50"></asp:TextBox>
 				</td>
 			</tr>
 			<tr>
         <td class="literal"><asp:Label ID="lbldataRosterTypeId" runat="server" Text="Roster Type Id:" AssociatedControlID="dataRosterTypeId" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataRosterTypeId" DataSourceID="RosterTypeIdRosterTypeDataSource" DataTextField="IsBooked" DataValueField="Id" SelectedValue='<%# Bind("RosterTypeId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:EntityDropDownList runat="server" ID="dataRosterTypeId" DataSourceID="RosterTypeIdRosterTypeDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("RosterTypeId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
 					<data:RosterTypeDataSource ID="RosterTypeIdRosterTypeDataSource" runat="server" SelectMethod="GetAll"  />
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataRosterTypeTitle" runat="server" Text="Roster Type Title:" AssociatedControlID="dataRosterTypeTitle" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataRosterTypeTitle" Text='<%# Bind("RosterTypeTitle") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataIsBooked" runat="server" Text="Is Booked:" AssociatedControlID="dataIsBooked" /></td>
+        <td>
+					<asp:RadioButtonList runat="server" ID="dataIsBooked" SelectedValue='<%# Bind("IsBooked") %>' RepeatDirection="Horizontal"><asp:ListItem Value="True" Text="Yes" Selected="True"></asp:ListItem><asp:ListItem Value="False" Text="No"></asp:ListItem><asp:ListItem Value="" Text="Pick ..." Enabled="False"></asp:ListItem></asp:RadioButtonList>
 				</td>
 			</tr>
 			<tr>

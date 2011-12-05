@@ -20,14 +20,24 @@ namespace ClinicDoctor.Entities
 		
 		
 		/// <summary>
-		/// DoctorId : 
+		/// DoctorUserName : 
 		/// </summary>
-		System.Int64  DoctorId  { get; set; }
+		System.String  DoctorUserName  { get; set; }
+		
+		/// <summary>
+		/// DoctorShortName : 
+		/// </summary>
+		System.String  DoctorShortName  { get; set; }
 		
 		/// <summary>
 		/// FuncId : 
 		/// </summary>
 		System.Int64  FuncId  { get; set; }
+		
+		/// <summary>
+		/// FuncTitle : 
+		/// </summary>
+		System.String  FuncTitle  { get; set; }
 		
 		/// <summary>
 		/// IsDisabled : 

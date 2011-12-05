@@ -19,6 +19,7 @@
 				SELECT
 					[Id],
 					[Title],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -87,7 +88,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[ColorCode], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Group] O,
 				    #PageIndex PageIndex
@@ -122,6 +123,7 @@
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -133,6 +135,7 @@
 				INSERT INTO [dbo].[Group]
 					(
 					[Title]
+					,[ColorCode]
 					,[IsDisabled]
 					,[CreateUser]
 					,[CreateDate]
@@ -142,6 +145,7 @@
 				VALUES
 					(
 					@Title
+					,@ColorCode
 					,@IsDisabled
 					,@CreateUser
 					,@CreateDate
@@ -167,6 +171,7 @@
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -181,6 +186,7 @@
 					[dbo].[Group]
 				SET
 					[Title] = @Title
+					,[ColorCode] = @ColorCode
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
 					,[CreateDate] = @CreateDate
@@ -227,6 +233,7 @@
 				SELECT
 					[Id],
 					[Title],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -258,6 +265,7 @@
 				SELECT
 					[Id],
 					[Title],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -288,6 +296,7 @@
 				SELECT
 					[Id],
 					[Title],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -315,6 +324,7 @@
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
@@ -328,6 +338,7 @@
     SELECT
 	  [Id]
 	, [Title]
+	, [ColorCode]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -338,6 +349,7 @@
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
 	AND ([Title] = @Title OR @Title IS NULL)
+	AND ([ColorCode] = @ColorCode OR @ColorCode IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
 	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
@@ -350,6 +362,7 @@
     SELECT
 	  [Id]
 	, [Title]
+	, [ColorCode]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -360,6 +373,7 @@
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
 	OR ([Title] = @Title AND @Title is not null)
+	OR ([ColorCode] = @ColorCode AND @ColorCode is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
 	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
@@ -399,7 +413,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[ColorCode], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Group] O,
 				    #PageIndex PageIndex
@@ -548,7 +562,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
@@ -573,7 +587,8 @@
 				
 				INSERT INTO [dbo].[Staff]
 					(
-					[FirstName]
+					[Id]
+					,[FirstName]
 					,[LastName]
 					,[ShortName]
 					,[GroupId]
@@ -595,7 +610,8 @@
 					)
 				VALUES
 					(
-					@FirstName
+					@Id
+					,@FirstName
 					,@LastName
 					,@ShortName
 					,@GroupId
@@ -616,8 +632,6 @@
 					,@UpdateDate
 					)
 				
-				-- Get the identity value
-				SET @Id = SCOPE_IDENTITY()
 									
 							
 			]]></body>
@@ -633,6 +647,7 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@OriginalId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
@@ -660,7 +675,8 @@
 				UPDATE
 					[dbo].[Staff]
 				SET
-					[FirstName] = @FirstName
+					[Id] = @Id
+					,[FirstName] = @FirstName
 					,[LastName] = @LastName
 					,[ShortName] = @ShortName
 					,[GroupId] = @GroupId
@@ -680,7 +696,7 @@
 					,[UpdateUser] = @UpdateUser
 					,[UpdateDate] = @UpdateDate
 				WHERE
-[Id] = @Id 
+[Id] = @OriginalId 
 				
 			]]></body>
 		</procedure>
@@ -2349,6 +2365,7 @@
 				
 				SELECT
 					[Id],
+					[Title],
 					[IsBooked],
 					[Note],
 					[IsDisabled],
@@ -2419,7 +2436,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[IsBooked], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[IsBooked], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[RosterType] O,
 				    #PageIndex PageIndex
@@ -2453,6 +2470,7 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsBooked" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
@@ -2465,7 +2483,8 @@
 				
 				INSERT INTO [dbo].[RosterType]
 					(
-					[IsBooked]
+					[Title]
+					,[IsBooked]
 					,[Note]
 					,[IsDisabled]
 					,[CreateUser]
@@ -2475,7 +2494,8 @@
 					)
 				VALUES
 					(
-					@IsBooked
+					@Title
+					,@IsBooked
 					,@Note
 					,@IsDisabled
 					,@CreateUser
@@ -2501,6 +2521,7 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsBooked" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
@@ -2516,7 +2537,8 @@
 				UPDATE
 					[dbo].[RosterType]
 				SET
-					[IsBooked] = @IsBooked
+					[Title] = @Title
+					,[IsBooked] = @IsBooked
 					,[Note] = @Note
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
@@ -2563,6 +2585,7 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
+					[Title],
 					[IsBooked],
 					[Note],
 					[IsDisabled],
@@ -2597,6 +2620,7 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
+					[Title],
 					[IsBooked],
 					[Note],
 					[IsDisabled],
@@ -2631,6 +2655,7 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
+					[Title],
 					[IsBooked],
 					[Note],
 					[IsDisabled],
@@ -2663,6 +2688,7 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
+					[Title],
 					[IsBooked],
 					[Note],
 					[IsDisabled],
@@ -2695,6 +2721,7 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
+					[Title],
 					[IsBooked],
 					[Note],
 					[IsDisabled],
@@ -2727,6 +2754,7 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
+					[Title],
 					[IsBooked],
 					[Note],
 					[IsDisabled],
@@ -2758,6 +2786,7 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
+					[Title],
 					[IsBooked],
 					[Note],
 					[IsDisabled],
@@ -2786,6 +2815,7 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@IsBooked" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
@@ -2800,6 +2830,7 @@
   BEGIN
     SELECT
 	  [Id]
+	, [Title]
 	, [IsBooked]
 	, [Note]
 	, [IsDisabled]
@@ -2811,6 +2842,7 @@
 	[dbo].[RosterType]
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
+	AND ([Title] = @Title OR @Title IS NULL)
 	AND ([IsBooked] = @IsBooked OR @IsBooked IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
@@ -2824,6 +2856,7 @@
   BEGIN
     SELECT
 	  [Id]
+	, [Title]
 	, [IsBooked]
 	, [Note]
 	, [IsDisabled]
@@ -2835,6 +2868,7 @@
 	[dbo].[RosterType]
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
+	OR ([Title] = @Title AND @Title is not null)
 	OR ([IsBooked] = @IsBooked AND @IsBooked is not null)
 	OR ([Note] = @Note AND @Note is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
@@ -2876,7 +2910,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[IsBooked], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[IsBooked], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[RosterType] O,
 				    #PageIndex PageIndex
@@ -2910,8 +2944,11 @@
 				
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -2984,7 +3021,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorId], O.[RosterTypeId], O.[StartTime], O.[EndTime], O.[Note], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[RosterTypeId], O.[RosterTypeTitle], O.[IsBooked], O.[StartTime], O.[EndTime], O.[Note], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorRoster] O,
 				    #PageIndex PageIndex
@@ -3018,8 +3055,11 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@RosterTypeTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@IsBooked" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@StartTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@EndTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
@@ -3035,8 +3075,11 @@
 				INSERT INTO [dbo].[DoctorRoster]
 					(
 					[Id]
-					,[DoctorId]
+					,[DoctorUserName]
+					,[DoctorShortName]
 					,[RosterTypeId]
+					,[RosterTypeTitle]
+					,[IsBooked]
 					,[StartTime]
 					,[EndTime]
 					,[Note]
@@ -3050,8 +3093,11 @@
 				VALUES
 					(
 					@Id
-					,@DoctorId
+					,@DoctorUserName
+					,@DoctorShortName
 					,@RosterTypeId
+					,@RosterTypeTitle
+					,@IsBooked
 					,@StartTime
 					,@EndTime
 					,@Note
@@ -3079,8 +3125,11 @@
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@OriginalId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@RosterTypeTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@IsBooked" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@StartTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@EndTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
@@ -3099,8 +3148,11 @@
 					[dbo].[DoctorRoster]
 				SET
 					[Id] = @Id
-					,[DoctorId] = @DoctorId
+					,[DoctorUserName] = @DoctorUserName
+					,[DoctorShortName] = @DoctorShortName
 					,[RosterTypeId] = @RosterTypeId
+					,[RosterTypeTitle] = @RosterTypeTitle
+					,[IsBooked] = @IsBooked
 					,[StartTime] = @StartTime
 					,[EndTime] = @EndTime
 					,[Note] = @Note
@@ -3134,7 +3186,7 @@
 					
 			]]></body>
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoster_GetByDoctorId" >
+		<procedure owner="dbo" name="DoctorRoster_GetByDoctorUserName" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -3144,13 +3196,16 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3163,13 +3218,13 @@
 				FROM
 					[dbo].[DoctorRoster]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoster_GetByDoctorIdIsComplete" >
+		<procedure owner="dbo" name="DoctorRoster_GetByDoctorUserNameIsComplete" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -3179,14 +3234,17 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3199,14 +3257,14 @@
 				FROM
 					[dbo].[DoctorRoster]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [IsComplete] = @IsComplete
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoster_GetByDoctorIdIsCompleteIsDisabled" >
+		<procedure owner="dbo" name="DoctorRoster_GetByDoctorUserNameIsCompleteIsDisabled" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -3216,15 +3274,18 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3237,7 +3298,7 @@
 				FROM
 					[dbo].[DoctorRoster]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [IsComplete] = @IsComplete
 					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
@@ -3245,7 +3306,7 @@
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoster_GetByDoctorIdIsDisabled" >
+		<procedure owner="dbo" name="DoctorRoster_GetByDoctorUserNameIsDisabled" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -3255,14 +3316,17 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3275,14 +3339,14 @@
 				FROM
 					[dbo].[DoctorRoster]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoster_GetByDoctorIdRosterTypeId" >
+		<procedure owner="dbo" name="DoctorRoster_GetByDoctorUserNameRosterTypeId" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -3292,14 +3356,17 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3312,14 +3379,14 @@
 				FROM
 					[dbo].[DoctorRoster]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [RosterTypeId] = @RosterTypeId
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoster_GetByDoctorIdRosterTypeIdIsComplete" >
+		<procedure owner="dbo" name="DoctorRoster_GetByDoctorUserNameRosterTypeIdIsComplete" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -3329,15 +3396,18 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3350,7 +3420,7 @@
 				FROM
 					[dbo].[DoctorRoster]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [RosterTypeId] = @RosterTypeId
 					AND [IsComplete] = @IsComplete
 				SELECT @@ROWCOUNT
@@ -3358,7 +3428,7 @@
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoster_GetByDoctorIdRosterTypeIdIsCompleteIsDisabled" >
+		<procedure owner="dbo" name="DoctorRoster_GetByDoctorUserNameRosterTypeIdIsCompleteIsDisabled" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -3368,7 +3438,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
@@ -3376,8 +3446,11 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3390,9 +3463,51 @@
 				FROM
 					[dbo].[DoctorRoster]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [RosterTypeId] = @RosterTypeId
 					AND [IsComplete] = @IsComplete
+					AND [IsDisabled] = @IsDisabled
+				SELECT @@ROWCOUNT
+					
+			]]></body>
+			
+		</procedure>
+		<procedure owner="dbo" name="DoctorRoster_GetByDoctorUserNameRosterTypeIdIsDisabled" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the DoctorRoster table through an index
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SELECT
+					[Id],
+					[DoctorUserName],
+					[DoctorShortName],
+					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
+					[StartTime],
+					[EndTime],
+					[Note],
+					[IsComplete],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[DoctorRoster]
+				WHERE
+					[DoctorUserName] = @DoctorUserName
+					AND [RosterTypeId] = @RosterTypeId
 					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
 					
@@ -3415,8 +3530,11 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3453,8 +3571,11 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3491,8 +3612,11 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3527,8 +3651,11 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3562,8 +3689,11 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3598,8 +3728,11 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3636,8 +3769,11 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3673,8 +3809,11 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RosterTypeId],
+					[RosterTypeTitle],
+					[IsBooked],
 					[StartTime],
 					[EndTime],
 					[Note],
@@ -3705,8 +3844,11 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@RosterTypeTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@IsBooked" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@StartTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
 				<parameter name="@EndTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
@@ -3723,8 +3865,11 @@
   BEGIN
     SELECT
 	  [Id]
-	, [DoctorId]
+	, [DoctorUserName]
+	, [DoctorShortName]
 	, [RosterTypeId]
+	, [RosterTypeTitle]
+	, [IsBooked]
 	, [StartTime]
 	, [EndTime]
 	, [Note]
@@ -3738,8 +3883,11 @@
 	[dbo].[DoctorRoster]
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
-	AND ([DoctorId] = @DoctorId OR @DoctorId IS NULL)
+	AND ([DoctorUserName] = @DoctorUserName OR @DoctorUserName IS NULL)
+	AND ([DoctorShortName] = @DoctorShortName OR @DoctorShortName IS NULL)
 	AND ([RosterTypeId] = @RosterTypeId OR @RosterTypeId IS NULL)
+	AND ([RosterTypeTitle] = @RosterTypeTitle OR @RosterTypeTitle IS NULL)
+	AND ([IsBooked] = @IsBooked OR @IsBooked IS NULL)
 	AND ([StartTime] = @StartTime OR @StartTime IS NULL)
 	AND ([EndTime] = @EndTime OR @EndTime IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
@@ -3755,8 +3903,11 @@
   BEGIN
     SELECT
 	  [Id]
-	, [DoctorId]
+	, [DoctorUserName]
+	, [DoctorShortName]
 	, [RosterTypeId]
+	, [RosterTypeTitle]
+	, [IsBooked]
 	, [StartTime]
 	, [EndTime]
 	, [Note]
@@ -3770,8 +3921,11 @@
 	[dbo].[DoctorRoster]
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
-	OR ([DoctorId] = @DoctorId AND @DoctorId is not null)
+	OR ([DoctorUserName] = @DoctorUserName AND @DoctorUserName is not null)
+	OR ([DoctorShortName] = @DoctorShortName AND @DoctorShortName is not null)
 	OR ([RosterTypeId] = @RosterTypeId AND @RosterTypeId is not null)
+	OR ([RosterTypeTitle] = @RosterTypeTitle AND @RosterTypeTitle is not null)
+	OR ([IsBooked] = @IsBooked AND @IsBooked is not null)
 	OR ([StartTime] = @StartTime AND @StartTime is not null)
 	OR ([EndTime] = @EndTime AND @EndTime is not null)
 	OR ([Note] = @Note AND @Note is not null)
@@ -3815,7 +3969,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorId], O.[RosterTypeId], O.[StartTime], O.[EndTime], O.[Note], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[RosterTypeId], O.[RosterTypeTitle], O.[IsBooked], O.[StartTime], O.[EndTime], O.[Note], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorRoster] O,
 				    #PageIndex PageIndex
@@ -3849,8 +4003,10 @@
 				
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -3920,7 +4076,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorId], O.[RoomId], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[RoomId], O.[RoomTitle], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorRoom] O,
 				    #PageIndex PageIndex
@@ -3954,8 +4110,10 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -3967,8 +4125,10 @@
 				
 				INSERT INTO [dbo].[DoctorRoom]
 					(
-					[DoctorId]
+					[DoctorUserName]
+					,[DoctorShortName]
 					,[RoomId]
+					,[RoomTitle]
 					,[PriorityIndex]
 					,[IsDisabled]
 					,[CreateUser]
@@ -3978,8 +4138,10 @@
 					)
 				VALUES
 					(
-					@DoctorId
+					@DoctorUserName
+					,@DoctorShortName
 					,@RoomId
+					,@RoomTitle
 					,@PriorityIndex
 					,@IsDisabled
 					,@CreateUser
@@ -4005,8 +4167,10 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -4021,8 +4185,10 @@
 				UPDATE
 					[dbo].[DoctorRoom]
 				SET
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
+					,[DoctorShortName] = @DoctorShortName
 					,[RoomId] = @RoomId
+					,[RoomTitle] = @RoomTitle
 					,[PriorityIndex] = @PriorityIndex
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
@@ -4053,7 +4219,7 @@
 					
 			]]></body>
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoom_GetByDoctorId" >
+		<procedure owner="dbo" name="DoctorRoom_GetByDoctorUserName" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -4063,13 +4229,15 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -4079,13 +4247,13 @@
 				FROM
 					[dbo].[DoctorRoom]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoom_GetByDoctorIdIsDisabled" >
+		<procedure owner="dbo" name="DoctorRoom_GetByDoctorUserNameIsDisabled" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -4095,14 +4263,16 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -4112,14 +4282,14 @@
 				FROM
 					[dbo].[DoctorRoom]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoom_GetByDoctorIdRoomId" >
+		<procedure owner="dbo" name="DoctorRoom_GetByDoctorUserNameRoomId" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -4129,14 +4299,16 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -4146,14 +4318,14 @@
 				FROM
 					[dbo].[DoctorRoom]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [RoomId] = @RoomId
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorRoom_GetByDoctorIdRoomIdIsDisabled" >
+		<procedure owner="dbo" name="DoctorRoom_GetByDoctorUserNameRoomIdIsDisabled" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -4163,15 +4335,17 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -4181,7 +4355,7 @@
 				FROM
 					[dbo].[DoctorRoom]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [RoomId] = @RoomId
 					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
@@ -4205,8 +4379,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -4238,8 +4414,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -4270,8 +4448,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -4303,8 +4483,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -4336,8 +4518,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[RoomId],
+					[RoomTitle],
 					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
@@ -4365,8 +4549,10 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
@@ -4380,8 +4566,10 @@
   BEGIN
     SELECT
 	  [Id]
-	, [DoctorId]
+	, [DoctorUserName]
+	, [DoctorShortName]
 	, [RoomId]
+	, [RoomTitle]
 	, [PriorityIndex]
 	, [IsDisabled]
 	, [CreateUser]
@@ -4392,8 +4580,10 @@
 	[dbo].[DoctorRoom]
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
-	AND ([DoctorId] = @DoctorId OR @DoctorId IS NULL)
+	AND ([DoctorUserName] = @DoctorUserName OR @DoctorUserName IS NULL)
+	AND ([DoctorShortName] = @DoctorShortName OR @DoctorShortName IS NULL)
 	AND ([RoomId] = @RoomId OR @RoomId IS NULL)
+	AND ([RoomTitle] = @RoomTitle OR @RoomTitle IS NULL)
 	AND ([PriorityIndex] = @PriorityIndex OR @PriorityIndex IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
@@ -4406,8 +4596,10 @@
   BEGIN
     SELECT
 	  [Id]
-	, [DoctorId]
+	, [DoctorUserName]
+	, [DoctorShortName]
 	, [RoomId]
+	, [RoomTitle]
 	, [PriorityIndex]
 	, [IsDisabled]
 	, [CreateUser]
@@ -4418,8 +4610,10 @@
 	[dbo].[DoctorRoom]
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
-	OR ([DoctorId] = @DoctorId AND @DoctorId is not null)
+	OR ([DoctorUserName] = @DoctorUserName AND @DoctorUserName is not null)
+	OR ([DoctorShortName] = @DoctorShortName AND @DoctorShortName is not null)
 	OR ([RoomId] = @RoomId AND @RoomId is not null)
+	OR ([RoomTitle] = @RoomTitle AND @RoomTitle is not null)
 	OR ([PriorityIndex] = @PriorityIndex AND @PriorityIndex is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
@@ -4460,7 +4654,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorId], O.[RoomId], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[RoomId], O.[RoomTitle], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorRoom] O,
 				    #PageIndex PageIndex
@@ -4939,6 +5133,7 @@
 					[Id],
 					[Title],
 					[FuncId],
+					[FuncTitle],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5008,7 +5203,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[FuncId], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[FuncId], O.[FuncTitle], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Content] O,
 				    #PageIndex PageIndex
@@ -5044,6 +5239,7 @@
 				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -5057,6 +5253,7 @@
 					(
 					[Title]
 					,[FuncId]
+					,[FuncTitle]
 					,[Note]
 					,[IsDisabled]
 					,[CreateUser]
@@ -5068,6 +5265,7 @@
 					(
 					@Title
 					,@FuncId
+					,@FuncTitle
 					,@Note
 					,@IsDisabled
 					,@CreateUser
@@ -5095,6 +5293,7 @@
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -5111,6 +5310,7 @@
 				SET
 					[Title] = @Title
 					,[FuncId] = @FuncId
+					,[FuncTitle] = @FuncTitle
 					,[Note] = @Note
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
@@ -5158,6 +5358,7 @@
 					[Id],
 					[Title],
 					[FuncId],
+					[FuncTitle],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5191,6 +5392,7 @@
 					[Id],
 					[Title],
 					[FuncId],
+					[FuncTitle],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5225,6 +5427,7 @@
 					[Id],
 					[Title],
 					[FuncId],
+					[FuncTitle],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5258,6 +5461,7 @@
 					[Id],
 					[Title],
 					[FuncId],
+					[FuncTitle],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5290,6 +5494,7 @@
 					[Id],
 					[Title],
 					[FuncId],
+					[FuncTitle],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5319,6 +5524,7 @@
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
@@ -5334,6 +5540,7 @@
 	  [Id]
 	, [Title]
 	, [FuncId]
+	, [FuncTitle]
 	, [Note]
 	, [IsDisabled]
 	, [CreateUser]
@@ -5346,6 +5553,7 @@
 	 ([Id] = @Id OR @Id IS NULL)
 	AND ([Title] = @Title OR @Title IS NULL)
 	AND ([FuncId] = @FuncId OR @FuncId IS NULL)
+	AND ([FuncTitle] = @FuncTitle OR @FuncTitle IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
@@ -5360,6 +5568,7 @@
 	  [Id]
 	, [Title]
 	, [FuncId]
+	, [FuncTitle]
 	, [Note]
 	, [IsDisabled]
 	, [CreateUser]
@@ -5372,6 +5581,7 @@
 	 ([Id] = @Id AND @Id is not null)
 	OR ([Title] = @Title AND @Title is not null)
 	OR ([FuncId] = @FuncId AND @FuncId is not null)
+	OR ([FuncTitle] = @FuncTitle AND @FuncTitle is not null)
 	OR ([Note] = @Note AND @Note is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
@@ -5412,7 +5622,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[FuncId], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[FuncId], O.[FuncTitle], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Content] O,
 				    #PageIndex PageIndex
@@ -5447,7 +5657,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5516,7 +5728,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[RoomId], O.[FuncId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[RoomId], O.[RoomTitle], O.[FuncId], O.[FuncTitle], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[RoomFunc] O,
 				    #PageIndex PageIndex
@@ -5551,7 +5763,9 @@
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -5563,7 +5777,9 @@
 				INSERT INTO [dbo].[RoomFunc]
 					(
 					[RoomId]
+					,[RoomTitle]
 					,[FuncId]
+					,[FuncTitle]
 					,[IsDisabled]
 					,[CreateUser]
 					,[CreateDate]
@@ -5573,7 +5789,9 @@
 				VALUES
 					(
 					@RoomId
+					,@RoomTitle
 					,@FuncId
+					,@FuncTitle
 					,@IsDisabled
 					,@CreateUser
 					,@CreateDate
@@ -5599,7 +5817,9 @@
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -5614,7 +5834,9 @@
 					[dbo].[RoomFunc]
 				SET
 					[RoomId] = @RoomId
+					,[RoomTitle] = @RoomTitle
 					,[FuncId] = @FuncId
+					,[FuncTitle] = @FuncTitle
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
 					,[CreateDate] = @CreateDate
@@ -5660,7 +5882,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5692,7 +5916,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5725,7 +5951,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5757,7 +5985,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5788,7 +6018,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5820,7 +6052,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5854,7 +6088,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5888,7 +6124,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5920,7 +6158,9 @@
 				SELECT
 					[Id],
 					[RoomId],
+					[RoomTitle],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -5948,7 +6188,9 @@
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
@@ -5962,7 +6204,9 @@
     SELECT
 	  [Id]
 	, [RoomId]
+	, [RoomTitle]
 	, [FuncId]
+	, [FuncTitle]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -5973,7 +6217,9 @@
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
 	AND ([RoomId] = @RoomId OR @RoomId IS NULL)
+	AND ([RoomTitle] = @RoomTitle OR @RoomTitle IS NULL)
 	AND ([FuncId] = @FuncId OR @FuncId IS NULL)
+	AND ([FuncTitle] = @FuncTitle OR @FuncTitle IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
 	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
@@ -5986,7 +6232,9 @@
     SELECT
 	  [Id]
 	, [RoomId]
+	, [RoomTitle]
 	, [FuncId]
+	, [FuncTitle]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -5997,7 +6245,9 @@
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
 	OR ([RoomId] = @RoomId AND @RoomId is not null)
+	OR ([RoomTitle] = @RoomTitle AND @RoomTitle is not null)
 	OR ([FuncId] = @FuncId AND @FuncId is not null)
+	OR ([FuncTitle] = @FuncTitle AND @FuncTitle is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
 	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
@@ -6037,7 +6287,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[RoomId], O.[FuncId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[RoomId], O.[RoomTitle], O.[FuncId], O.[FuncTitle], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[RoomFunc] O,
 				    #PageIndex PageIndex
@@ -6692,8 +6942,10 @@
 				
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -6762,7 +7014,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorId], O.[FuncId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[FuncId], O.[FuncTitle], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorFunc] O,
 				    #PageIndex PageIndex
@@ -6796,8 +7048,10 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -6808,8 +7062,10 @@
 				
 				INSERT INTO [dbo].[DoctorFunc]
 					(
-					[DoctorId]
+					[DoctorUserName]
+					,[DoctorShortName]
 					,[FuncId]
+					,[FuncTitle]
 					,[IsDisabled]
 					,[CreateUser]
 					,[CreateDate]
@@ -6818,8 +7074,10 @@
 					)
 				VALUES
 					(
-					@DoctorId
+					@DoctorUserName
+					,@DoctorShortName
 					,@FuncId
+					,@FuncTitle
 					,@IsDisabled
 					,@CreateUser
 					,@CreateDate
@@ -6844,8 +7102,10 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -6859,8 +7119,10 @@
 				UPDATE
 					[dbo].[DoctorFunc]
 				SET
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
+					,[DoctorShortName] = @DoctorShortName
 					,[FuncId] = @FuncId
+					,[FuncTitle] = @FuncTitle
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
 					,[CreateDate] = @CreateDate
@@ -6890,7 +7152,7 @@
 					
 			]]></body>
 		</procedure>
-		<procedure owner="dbo" name="DoctorFunc_GetByDoctorId" >
+		<procedure owner="dbo" name="DoctorFunc_GetByDoctorUserName" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -6900,13 +7162,15 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -6915,13 +7179,13 @@
 				FROM
 					[dbo].[DoctorFunc]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorFunc_GetByDoctorIdFuncId" >
+		<procedure owner="dbo" name="DoctorFunc_GetByDoctorUserNameFuncId" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -6931,14 +7195,16 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -6947,14 +7213,14 @@
 				FROM
 					[dbo].[DoctorFunc]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [FuncId] = @FuncId
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorFunc_GetByDoctorIdFuncIdIsDisabled" >
+		<procedure owner="dbo" name="DoctorFunc_GetByDoctorUserNameFuncIdIsDisabled" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -6964,15 +7230,17 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -6981,7 +7249,7 @@
 				FROM
 					[dbo].[DoctorFunc]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [FuncId] = @FuncId
 					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
@@ -6989,7 +7257,7 @@
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="DoctorFunc_GetByDoctorIdIsDisabled" >
+		<procedure owner="dbo" name="DoctorFunc_GetByDoctorUserNameIsDisabled" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -6999,14 +7267,16 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7015,7 +7285,7 @@
 				FROM
 					[dbo].[DoctorFunc]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUserName] = @DoctorUserName
 					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
 					
@@ -7037,8 +7307,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7069,8 +7341,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7102,8 +7376,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7134,8 +7410,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7165,8 +7443,10 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[DoctorId],
+					[DoctorUserName],
+					[DoctorShortName],
 					[FuncId],
+					[FuncTitle],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7193,8 +7473,10 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
@@ -7207,8 +7489,10 @@
   BEGIN
     SELECT
 	  [Id]
-	, [DoctorId]
+	, [DoctorUserName]
+	, [DoctorShortName]
 	, [FuncId]
+	, [FuncTitle]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -7218,8 +7502,10 @@
 	[dbo].[DoctorFunc]
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
-	AND ([DoctorId] = @DoctorId OR @DoctorId IS NULL)
+	AND ([DoctorUserName] = @DoctorUserName OR @DoctorUserName IS NULL)
+	AND ([DoctorShortName] = @DoctorShortName OR @DoctorShortName IS NULL)
 	AND ([FuncId] = @FuncId OR @FuncId IS NULL)
+	AND ([FuncTitle] = @FuncTitle OR @FuncTitle IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
 	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
@@ -7231,8 +7517,10 @@
   BEGIN
     SELECT
 	  [Id]
-	, [DoctorId]
+	, [DoctorUserName]
+	, [DoctorShortName]
 	, [FuncId]
+	, [FuncTitle]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -7242,8 +7530,10 @@
 	[dbo].[DoctorFunc]
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
-	OR ([DoctorId] = @DoctorId AND @DoctorId is not null)
+	OR ([DoctorUserName] = @DoctorUserName AND @DoctorUserName is not null)
+	OR ([DoctorShortName] = @DoctorShortName AND @DoctorShortName is not null)
 	OR ([FuncId] = @FuncId AND @FuncId is not null)
+	OR ([FuncTitle] = @FuncTitle AND @FuncTitle is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
 	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
@@ -7283,7 +7573,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorId], O.[FuncId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[FuncId], O.[FuncTitle], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorFunc] O,
 				    #PageIndex PageIndex
@@ -7318,11 +7608,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -7395,7 +7691,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[CustomerId], O.[ContentId], O.[DoctorId], O.[RoomId], O.[NurseId], O.[StatusId], O.[Note], O.[StartTime], O.[EndTime], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[CustomerId], O.[CustomerName], O.[ContentId], O.[ContentTitle], O.[DoctorUsername], O.[DoctorShortName], O.[RoomId], O.[RoomTitle], O.[NurseUsername], O.[NurseShortName], O.[StatusId], O.[StatusTitle], O.[Note], O.[StartTime], O.[EndTime], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Appointment] O,
 				    #PageIndex PageIndex
@@ -7430,11 +7726,17 @@
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@CustomerName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@ContentTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@NurseId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@NurseUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@NurseShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@StatusTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@StartTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@EndTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -7451,11 +7753,17 @@
 					(
 					[Id]
 					,[CustomerId]
+					,[CustomerName]
 					,[ContentId]
-					,[DoctorId]
+					,[ContentTitle]
+					,[DoctorUsername]
+					,[DoctorShortName]
 					,[RoomId]
-					,[NurseId]
+					,[RoomTitle]
+					,[NurseUsername]
+					,[NurseShortName]
 					,[StatusId]
+					,[StatusTitle]
 					,[Note]
 					,[StartTime]
 					,[EndTime]
@@ -7470,11 +7778,17 @@
 					(
 					@Id
 					,@CustomerId
+					,@CustomerName
 					,@ContentId
-					,@DoctorId
+					,@ContentTitle
+					,@DoctorUsername
+					,@DoctorShortName
 					,@RoomId
-					,@NurseId
+					,@RoomTitle
+					,@NurseUsername
+					,@NurseShortName
 					,@StatusId
+					,@StatusTitle
 					,@Note
 					,@StartTime
 					,@EndTime
@@ -7503,11 +7817,17 @@
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@OriginalId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@CustomerName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@ContentTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@NurseId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@NurseUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@NurseShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@StatusTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@StartTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@EndTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -7527,11 +7847,17 @@
 				SET
 					[Id] = @Id
 					,[CustomerId] = @CustomerId
+					,[CustomerName] = @CustomerName
 					,[ContentId] = @ContentId
-					,[DoctorId] = @DoctorId
+					,[ContentTitle] = @ContentTitle
+					,[DoctorUsername] = @DoctorUsername
+					,[DoctorShortName] = @DoctorShortName
 					,[RoomId] = @RoomId
-					,[NurseId] = @NurseId
+					,[RoomTitle] = @RoomTitle
+					,[NurseUsername] = @NurseUsername
+					,[NurseShortName] = @NurseShortName
 					,[StatusId] = @StatusId
+					,[StatusTitle] = @StatusTitle
 					,[Note] = @Note
 					,[StartTime] = @StartTime
 					,[EndTime] = @EndTime
@@ -7581,11 +7907,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -7621,11 +7953,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -7661,11 +7999,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -7701,11 +8045,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -7720,210 +8070,6 @@
 				WHERE
 					[CustomerId] = @CustomerId
 					AND [ContentId] = @ContentId
-				SELECT @@ROWCOUNT
-					
-			]]></body>
-			
-		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusId" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the Appointment table through an index
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@NurseId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SELECT
-					[Id],
-					[CustomerId],
-					[ContentId],
-					[DoctorId],
-					[RoomId],
-					[NurseId],
-					[StatusId],
-					[Note],
-					[StartTime],
-					[EndTime],
-					[IsComplete],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[Appointment]
-				WHERE
-					[CustomerId] = @CustomerId
-					AND [ContentId] = @ContentId
-					AND [DoctorId] = @DoctorId
-					AND [RoomId] = @RoomId
-					AND [NurseId] = @NurseId
-					AND [StatusId] = @StatusId
-				SELECT @@ROWCOUNT
-					
-			]]></body>
-			
-		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsComplete" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the Appointment table through an index
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@NurseId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SELECT
-					[Id],
-					[CustomerId],
-					[ContentId],
-					[DoctorId],
-					[RoomId],
-					[NurseId],
-					[StatusId],
-					[Note],
-					[StartTime],
-					[EndTime],
-					[IsComplete],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[Appointment]
-				WHERE
-					[CustomerId] = @CustomerId
-					AND [ContentId] = @ContentId
-					AND [DoctorId] = @DoctorId
-					AND [RoomId] = @RoomId
-					AND [NurseId] = @NurseId
-					AND [StatusId] = @StatusId
-					AND [IsComplete] = @IsComplete
-				SELECT @@ROWCOUNT
-					
-			]]></body>
-			
-		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsCompleteIsDisabled" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the Appointment table through an index
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@NurseId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SELECT
-					[Id],
-					[CustomerId],
-					[ContentId],
-					[DoctorId],
-					[RoomId],
-					[NurseId],
-					[StatusId],
-					[Note],
-					[StartTime],
-					[EndTime],
-					[IsComplete],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[Appointment]
-				WHERE
-					[CustomerId] = @CustomerId
-					AND [ContentId] = @ContentId
-					AND [DoctorId] = @DoctorId
-					AND [RoomId] = @RoomId
-					AND [NurseId] = @NurseId
-					AND [StatusId] = @StatusId
-					AND [IsComplete] = @IsComplete
-					AND [IsDisabled] = @IsDisabled
-				SELECT @@ROWCOUNT
-					
-			]]></body>
-			
-		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByCustomerIdContentIdDoctorIdRoomIdNurseIdStatusIdIsDisabled" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the Appointment table through an index
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@NurseId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SELECT
-					[Id],
-					[CustomerId],
-					[ContentId],
-					[DoctorId],
-					[RoomId],
-					[NurseId],
-					[StatusId],
-					[Note],
-					[StartTime],
-					[EndTime],
-					[IsComplete],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[Appointment]
-				WHERE
-					[CustomerId] = @CustomerId
-					AND [ContentId] = @ContentId
-					AND [DoctorId] = @DoctorId
-					AND [RoomId] = @RoomId
-					AND [NurseId] = @NurseId
-					AND [StatusId] = @StatusId
-					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
 					
 			]]></body>
@@ -7947,11 +8093,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -7991,11 +8143,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8034,11 +8192,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8058,7 +8222,7 @@
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByDoctorId" >
+		<procedure owner="dbo" name="Appointment_GetByDoctorUsername" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -8068,17 +8232,23 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8091,13 +8261,13 @@
 				FROM
 					[dbo].[Appointment]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUsername] = @DoctorUsername
 				SELECT @@ROWCOUNT
 					
 			]]></body>
 			
 		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByDoctorIdIsDisabled" >
+		<procedure owner="dbo" name="Appointment_GetByDoctorUsernameIsCompleteIsDisabled" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -8107,18 +8277,25 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8131,7 +8308,202 @@
 				FROM
 					[dbo].[Appointment]
 				WHERE
-					[DoctorId] = @DoctorId
+					[DoctorUsername] = @DoctorUsername
+					AND [IsComplete] = @IsComplete
+					AND [IsDisabled] = @IsDisabled
+				SELECT @@ROWCOUNT
+					
+			]]></body>
+			
+		</procedure>
+		<procedure owner="dbo" name="Appointment_GetByDoctorUsernameIsDisabled" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the Appointment table through an index
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SELECT
+					[Id],
+					[CustomerId],
+					[CustomerName],
+					[ContentId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
+					[RoomId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
+					[StatusId],
+					[StatusTitle],
+					[Note],
+					[StartTime],
+					[EndTime],
+					[IsComplete],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[Appointment]
+				WHERE
+					[DoctorUsername] = @DoctorUsername
+					AND [IsDisabled] = @IsDisabled
+				SELECT @@ROWCOUNT
+					
+			]]></body>
+			
+		</procedure>
+		<procedure owner="dbo" name="Appointment_GetByDoctorUsernameStatusId" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the Appointment table through an index
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SELECT
+					[Id],
+					[CustomerId],
+					[CustomerName],
+					[ContentId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
+					[RoomId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
+					[StatusId],
+					[StatusTitle],
+					[Note],
+					[StartTime],
+					[EndTime],
+					[IsComplete],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[Appointment]
+				WHERE
+					[DoctorUsername] = @DoctorUsername
+					AND [StatusId] = @StatusId
+				SELECT @@ROWCOUNT
+					
+			]]></body>
+			
+		</procedure>
+		<procedure owner="dbo" name="Appointment_GetByDoctorUsernameStatusIdIsComplete" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the Appointment table through an index
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SELECT
+					[Id],
+					[CustomerId],
+					[CustomerName],
+					[ContentId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
+					[RoomId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
+					[StatusId],
+					[StatusTitle],
+					[Note],
+					[StartTime],
+					[EndTime],
+					[IsComplete],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[Appointment]
+				WHERE
+					[DoctorUsername] = @DoctorUsername
+					AND [StatusId] = @StatusId
+					AND [IsComplete] = @IsComplete
+				SELECT @@ROWCOUNT
+					
+			]]></body>
+			
+		</procedure>
+		<procedure owner="dbo" name="Appointment_GetByDoctorUsernameStatusIdIsCompleteIsDisabled" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the Appointment table through an index
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SELECT
+					[Id],
+					[CustomerId],
+					[CustomerName],
+					[ContentId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
+					[RoomId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
+					[StatusId],
+					[StatusTitle],
+					[Note],
+					[StartTime],
+					[EndTime],
+					[IsComplete],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[Appointment]
+				WHERE
+					[DoctorUsername] = @DoctorUsername
+					AND [StatusId] = @StatusId
+					AND [IsComplete] = @IsComplete
 					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
 					
@@ -8155,11 +8527,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8195,11 +8573,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8213,86 +8597,6 @@
 					[dbo].[Appointment]
 				WHERE
 					[IsDisabled] = @IsDisabled
-				SELECT @@ROWCOUNT
-					
-			]]></body>
-			
-		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByNurseId" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the Appointment table through an index
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@NurseId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SELECT
-					[Id],
-					[CustomerId],
-					[ContentId],
-					[DoctorId],
-					[RoomId],
-					[NurseId],
-					[StatusId],
-					[Note],
-					[StartTime],
-					[EndTime],
-					[IsComplete],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[Appointment]
-				WHERE
-					[NurseId] = @NurseId
-				SELECT @@ROWCOUNT
-					
-			]]></body>
-			
-		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByNurseIdIsDisabled" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the Appointment table through an index
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@NurseId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SELECT
-					[Id],
-					[CustomerId],
-					[ContentId],
-					[DoctorId],
-					[RoomId],
-					[NurseId],
-					[StatusId],
-					[Note],
-					[StartTime],
-					[EndTime],
-					[IsComplete],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[Appointment]
-				WHERE
-					[NurseId] = @NurseId
-					AND [IsDisabled] = @IsDisabled
 				SELECT @@ROWCOUNT
 					
 			]]></body>
@@ -8314,11 +8618,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8354,11 +8664,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8394,11 +8710,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8434,11 +8756,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8474,11 +8802,17 @@
 				SELECT
 					[Id],
 					[CustomerId],
+					[CustomerName],
 					[ContentId],
-					[DoctorId],
+					[ContentTitle],
+					[DoctorUsername],
+					[DoctorShortName],
 					[RoomId],
-					[NurseId],
+					[RoomTitle],
+					[NurseUsername],
+					[NurseShortName],
 					[StatusId],
+					[StatusTitle],
 					[Note],
 					[StartTime],
 					[EndTime],
@@ -8510,11 +8844,17 @@
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@CustomerName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
-				<parameter name="@DoctorId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@ContentTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
-				<parameter name="@NurseId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@NurseUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@NurseShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@StatusId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@StatusTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@StartTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
 				<parameter name="@EndTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
@@ -8532,11 +8872,17 @@
     SELECT
 	  [Id]
 	, [CustomerId]
+	, [CustomerName]
 	, [ContentId]
-	, [DoctorId]
+	, [ContentTitle]
+	, [DoctorUsername]
+	, [DoctorShortName]
 	, [RoomId]
-	, [NurseId]
+	, [RoomTitle]
+	, [NurseUsername]
+	, [NurseShortName]
 	, [StatusId]
+	, [StatusTitle]
 	, [Note]
 	, [StartTime]
 	, [EndTime]
@@ -8551,11 +8897,17 @@
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
 	AND ([CustomerId] = @CustomerId OR @CustomerId IS NULL)
+	AND ([CustomerName] = @CustomerName OR @CustomerName IS NULL)
 	AND ([ContentId] = @ContentId OR @ContentId IS NULL)
-	AND ([DoctorId] = @DoctorId OR @DoctorId IS NULL)
+	AND ([ContentTitle] = @ContentTitle OR @ContentTitle IS NULL)
+	AND ([DoctorUsername] = @DoctorUsername OR @DoctorUsername IS NULL)
+	AND ([DoctorShortName] = @DoctorShortName OR @DoctorShortName IS NULL)
 	AND ([RoomId] = @RoomId OR @RoomId IS NULL)
-	AND ([NurseId] = @NurseId OR @NurseId IS NULL)
+	AND ([RoomTitle] = @RoomTitle OR @RoomTitle IS NULL)
+	AND ([NurseUsername] = @NurseUsername OR @NurseUsername IS NULL)
+	AND ([NurseShortName] = @NurseShortName OR @NurseShortName IS NULL)
 	AND ([StatusId] = @StatusId OR @StatusId IS NULL)
+	AND ([StatusTitle] = @StatusTitle OR @StatusTitle IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
 	AND ([StartTime] = @StartTime OR @StartTime IS NULL)
 	AND ([EndTime] = @EndTime OR @EndTime IS NULL)
@@ -8572,11 +8924,17 @@
     SELECT
 	  [Id]
 	, [CustomerId]
+	, [CustomerName]
 	, [ContentId]
-	, [DoctorId]
+	, [ContentTitle]
+	, [DoctorUsername]
+	, [DoctorShortName]
 	, [RoomId]
-	, [NurseId]
+	, [RoomTitle]
+	, [NurseUsername]
+	, [NurseShortName]
 	, [StatusId]
+	, [StatusTitle]
 	, [Note]
 	, [StartTime]
 	, [EndTime]
@@ -8591,11 +8949,17 @@
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
 	OR ([CustomerId] = @CustomerId AND @CustomerId is not null)
+	OR ([CustomerName] = @CustomerName AND @CustomerName is not null)
 	OR ([ContentId] = @ContentId AND @ContentId is not null)
-	OR ([DoctorId] = @DoctorId AND @DoctorId is not null)
+	OR ([ContentTitle] = @ContentTitle AND @ContentTitle is not null)
+	OR ([DoctorUsername] = @DoctorUsername AND @DoctorUsername is not null)
+	OR ([DoctorShortName] = @DoctorShortName AND @DoctorShortName is not null)
 	OR ([RoomId] = @RoomId AND @RoomId is not null)
-	OR ([NurseId] = @NurseId AND @NurseId is not null)
+	OR ([RoomTitle] = @RoomTitle AND @RoomTitle is not null)
+	OR ([NurseUsername] = @NurseUsername AND @NurseUsername is not null)
+	OR ([NurseShortName] = @NurseShortName AND @NurseShortName is not null)
 	OR ([StatusId] = @StatusId AND @StatusId is not null)
+	OR ([StatusTitle] = @StatusTitle AND @StatusTitle is not null)
 	OR ([Note] = @Note AND @Note is not null)
 	OR ([StartTime] = @StartTime AND @StartTime is not null)
 	OR ([EndTime] = @EndTime AND @EndTime is not null)
@@ -8639,7 +9003,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[CustomerId], O.[ContentId], O.[DoctorId], O.[RoomId], O.[NurseId], O.[StatusId], O.[Note], O.[StartTime], O.[EndTime], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[CustomerId], O.[CustomerName], O.[ContentId], O.[ContentTitle], O.[DoctorUsername], O.[DoctorShortName], O.[RoomId], O.[RoomTitle], O.[NurseUsername], O.[NurseShortName], O.[StatusId], O.[StatusTitle], O.[Note], O.[StartTime], O.[EndTime], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Appointment] O,
 				    #PageIndex PageIndex

@@ -176,6 +176,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
@@ -201,6 +202,12 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@Id", 
 						clause.Trim().Remove(0,2).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("title ") || clause.Trim().StartsWith("title="))
+				{
+					database.SetParameterValue(commandWrapper, "@Title", 
+						clause.Trim().Remove(0,5).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("isbooked ") || clause.Trim().StartsWith("isbooked="))
@@ -1083,22 +1090,25 @@ namespace ClinicDoctor.Data.SqlClient
 			DataTable dataTable = new DataTable();
 			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int64));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("IsBooked", typeof(System.Boolean));
+			DataColumn col1 = dataTable.Columns.Add("Title", typeof(System.String));
 			col1.AllowDBNull = false;		
-			DataColumn col2 = dataTable.Columns.Add("Note", typeof(System.String));
-			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col3.AllowDBNull = false;		
-			DataColumn col4 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col5.AllowDBNull = false;		
-			DataColumn col6 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col7.AllowDBNull = false;		
+			DataColumn col2 = dataTable.Columns.Add("IsBooked", typeof(System.Boolean));
+			col2.AllowDBNull = false;		
+			DataColumn col3 = dataTable.Columns.Add("Note", typeof(System.String));
+			col3.AllowDBNull = true;		
+			DataColumn col4 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col4.AllowDBNull = false;		
+			DataColumn col5 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col5.AllowDBNull = true;		
+			DataColumn col6 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col6.AllowDBNull = false;		
+			DataColumn col7 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col7.AllowDBNull = true;		
+			DataColumn col8 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col8.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
+			bulkCopy.ColumnMappings.Add("Title", "Title");
 			bulkCopy.ColumnMappings.Add("IsBooked", "IsBooked");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
@@ -1115,6 +1125,9 @@ namespace ClinicDoctor.Data.SqlClient
 				DataRow row = dataTable.NewRow();
 				
 					row["Id"] = entity.Id;
+							
+				
+					row["Title"] = entity.Title;
 							
 				
 					row["IsBooked"] = entity.IsBooked;
@@ -1173,6 +1186,7 @@ namespace ClinicDoctor.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RosterType_Insert", _useStoredProcedure);
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
+			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, entity.IsBooked );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
@@ -1229,6 +1243,7 @@ namespace ClinicDoctor.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RosterType_Update", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
+			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, entity.IsBooked );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );

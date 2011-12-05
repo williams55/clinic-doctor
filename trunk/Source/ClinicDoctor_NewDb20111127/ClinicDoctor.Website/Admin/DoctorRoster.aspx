@@ -18,8 +18,11 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
 				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
-				<data:HyperLinkField HeaderText="Roster Type Id" DataNavigateUrlFormatString="RosterTypeEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RosterTypeIdSource" DataTextField="IsBooked" />
+				<asp:BoundField DataField="DoctorUserName" HeaderText="Doctor User Name" SortExpression="[DoctorUserName]"  />
+				<asp:BoundField DataField="DoctorShortName" HeaderText="Doctor Short Name" SortExpression="[DoctorShortName]"  />
+				<data:HyperLinkField HeaderText="Roster Type Id" DataNavigateUrlFormatString="RosterTypeEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RosterTypeIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="RosterTypeTitle" HeaderText="Roster Type Title" SortExpression="[RosterTypeTitle]"  />
+				<data:BoundRadioButtonField DataField="IsBooked" HeaderText="Is Booked" SortExpression="[IsBooked]"  />
 				<asp:BoundField DataField="StartTime" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Start Time" SortExpression="[StartTime]"  />
 				<asp:BoundField DataField="EndTime" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="End Time" SortExpression="[EndTime]"  />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
@@ -45,7 +48,6 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:DoctorRosterProperty Name="RosterType"/> 
-					<data:DoctorRosterProperty Name="Staff"/> 
 				</Types>
 			</DeepLoadProperties>
 			<Parameters>

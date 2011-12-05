@@ -176,8 +176,10 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@DoctorId", DbType.Int64, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RoomId", DbType.Int64, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@RoomTitle", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@PriorityIndex", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -204,16 +206,28 @@ namespace ClinicDoctor.Data.SqlClient
 						clause.Trim().Remove(0,2).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
-				if (clause.Trim().StartsWith("doctorid ") || clause.Trim().StartsWith("doctorid="))
+				if (clause.Trim().StartsWith("doctorusername ") || clause.Trim().StartsWith("doctorusername="))
 				{
-					database.SetParameterValue(commandWrapper, "@DoctorId", 
-						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					database.SetParameterValue(commandWrapper, "@DoctorUserName", 
+						clause.Trim().Remove(0,14).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("doctorshortname ") || clause.Trim().StartsWith("doctorshortname="))
+				{
+					database.SetParameterValue(commandWrapper, "@DoctorShortName", 
+						clause.Trim().Remove(0,15).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("roomid ") || clause.Trim().StartsWith("roomid="))
 				{
 					database.SetParameterValue(commandWrapper, "@RoomId", 
 						clause.Trim().Remove(0,6).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("roomtitle ") || clause.Trim().StartsWith("roomtitle="))
+				{
+					database.SetParameterValue(commandWrapper, "@RoomTitle", 
+						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("priorityindex ") || clause.Trim().StartsWith("priorityindex="))
@@ -526,13 +540,13 @@ namespace ClinicDoctor.Data.SqlClient
 	
 		#region Get By Index Functions
 
-		#region GetByDoctorId
+		#region GetByDoctorUserName
 					
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">out parameter to get total records for query.</param>
@@ -541,19 +555,19 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<DoctorRoom> GetByDoctorId(TransactionManager transactionManager, System.Int64 _doctorId, int start, int pageLength, out int count)
+		public override TList<DoctorRoom> GetByDoctorUserName(TransactionManager transactionManager, System.String _doctorUserName, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_GetByDoctorId", _useStoredProcedure);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_GetByDoctorUserName", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@DoctorId", DbType.Int64, _doctorId);
+				database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, _doctorUserName);
 			
 			IDataReader reader = null;
 			TList<DoctorRoom> tmp = new TList<DoctorRoom>();
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByDoctorId", tmp)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByDoctorUserName", tmp)); 
 
 				if (transactionManager != null)
 				{
@@ -576,7 +590,7 @@ namespace ClinicDoctor.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByDoctorId", tmp));
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByDoctorUserName", tmp));
 			}
 			finally 
 			{
@@ -594,13 +608,13 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion
 
 
-		#region GetByDoctorIdIsDisabled
+		#region GetByDoctorUserNameIsDisabled
 					
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_IsDisabled index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
@@ -610,12 +624,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<DoctorRoom> GetByDoctorIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public override TList<DoctorRoom> GetByDoctorUserNameIsDisabled(TransactionManager transactionManager, System.String _doctorUserName, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_GetByDoctorIdIsDisabled", _useStoredProcedure);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_GetByDoctorUserNameIsDisabled", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@DoctorId", DbType.Int64, _doctorId);
+				database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, _doctorUserName);
 				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
 			
 			IDataReader reader = null;
@@ -623,7 +637,7 @@ namespace ClinicDoctor.Data.SqlClient
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByDoctorIdIsDisabled", tmp)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByDoctorUserNameIsDisabled", tmp)); 
 
 				if (transactionManager != null)
 				{
@@ -646,7 +660,7 @@ namespace ClinicDoctor.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByDoctorIdIsDisabled", tmp));
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByDoctorUserNameIsDisabled", tmp));
 			}
 			finally 
 			{
@@ -664,13 +678,13 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion
 
 
-		#region GetByDoctorIdRoomId
+		#region GetByDoctorUserNameRoomId
 					
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
@@ -680,12 +694,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<DoctorRoom> GetByDoctorIdRoomId(TransactionManager transactionManager, System.Int64 _doctorId, System.Int64 _roomId, int start, int pageLength, out int count)
+		public override TList<DoctorRoom> GetByDoctorUserNameRoomId(TransactionManager transactionManager, System.String _doctorUserName, System.Int64 _roomId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_GetByDoctorIdRoomId", _useStoredProcedure);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_GetByDoctorUserNameRoomId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@DoctorId", DbType.Int64, _doctorId);
+				database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, _doctorUserName);
 				database.AddInParameter(commandWrapper, "@RoomId", DbType.Int64, _roomId);
 			
 			IDataReader reader = null;
@@ -693,7 +707,7 @@ namespace ClinicDoctor.Data.SqlClient
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByDoctorIdRoomId", tmp)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByDoctorUserNameRoomId", tmp)); 
 
 				if (transactionManager != null)
 				{
@@ -716,7 +730,7 @@ namespace ClinicDoctor.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByDoctorIdRoomId", tmp));
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByDoctorUserNameRoomId", tmp));
 			}
 			finally 
 			{
@@ -734,13 +748,13 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion
 
 
-		#region GetByDoctorIdRoomIdIsDisabled
+		#region GetByDoctorUserNameRoomIdIsDisabled
 					
 		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorId_RoomId_IsDisabled index.
+		/// 	Gets rows from the datasource based on the IX_DoctorRoom_DoctorUserName_RoomId_IsDisabled index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_doctorUserName"></param>
 		/// <param name="_roomId"></param>
 		/// <param name="_isDisabled"></param>
 		/// <param name="start">Row number at which to start reading.</param>
@@ -751,12 +765,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<DoctorRoom> GetByDoctorIdRoomIdIsDisabled(TransactionManager transactionManager, System.Int64 _doctorId, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public override TList<DoctorRoom> GetByDoctorUserNameRoomIdIsDisabled(TransactionManager transactionManager, System.String _doctorUserName, System.Int64 _roomId, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_GetByDoctorIdRoomIdIsDisabled", _useStoredProcedure);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_GetByDoctorUserNameRoomIdIsDisabled", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@DoctorId", DbType.Int64, _doctorId);
+				database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, _doctorUserName);
 				database.AddInParameter(commandWrapper, "@RoomId", DbType.Int64, _roomId);
 				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
 			
@@ -765,7 +779,7 @@ namespace ClinicDoctor.Data.SqlClient
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByDoctorIdRoomIdIsDisabled", tmp)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByDoctorUserNameRoomIdIsDisabled", tmp)); 
 
 				if (transactionManager != null)
 				{
@@ -788,7 +802,7 @@ namespace ClinicDoctor.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByDoctorIdRoomIdIsDisabled", tmp));
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByDoctorUserNameRoomIdIsDisabled", tmp));
 			}
 			finally 
 			{
@@ -1206,26 +1220,32 @@ namespace ClinicDoctor.Data.SqlClient
 			DataTable dataTable = new DataTable();
 			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int64));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("DoctorId", typeof(System.Int64));
+			DataColumn col1 = dataTable.Columns.Add("DoctorUserName", typeof(System.String));
 			col1.AllowDBNull = false;		
-			DataColumn col2 = dataTable.Columns.Add("RoomId", typeof(System.Int64));
-			col2.AllowDBNull = false;		
-			DataColumn col3 = dataTable.Columns.Add("PriorityIndex", typeof(System.Int32));
+			DataColumn col2 = dataTable.Columns.Add("DoctorShortName", typeof(System.String));
+			col2.AllowDBNull = true;		
+			DataColumn col3 = dataTable.Columns.Add("RoomId", typeof(System.Int64));
 			col3.AllowDBNull = false;		
-			DataColumn col4 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col4.AllowDBNull = false;		
-			DataColumn col5 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			DataColumn col4 = dataTable.Columns.Add("RoomTitle", typeof(System.String));
+			col4.AllowDBNull = true;		
+			DataColumn col5 = dataTable.Columns.Add("PriorityIndex", typeof(System.Int32));
+			col5.AllowDBNull = false;		
+			DataColumn col6 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
 			col6.AllowDBNull = false;		
-			DataColumn col7 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			DataColumn col7 = dataTable.Columns.Add("CreateUser", typeof(System.String));
 			col7.AllowDBNull = true;		
-			DataColumn col8 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			DataColumn col8 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
 			col8.AllowDBNull = false;		
+			DataColumn col9 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col9.AllowDBNull = true;		
+			DataColumn col10 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col10.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
-			bulkCopy.ColumnMappings.Add("DoctorId", "DoctorId");
+			bulkCopy.ColumnMappings.Add("DoctorUserName", "DoctorUserName");
+			bulkCopy.ColumnMappings.Add("DoctorShortName", "DoctorShortName");
 			bulkCopy.ColumnMappings.Add("RoomId", "RoomId");
+			bulkCopy.ColumnMappings.Add("RoomTitle", "RoomTitle");
 			bulkCopy.ColumnMappings.Add("PriorityIndex", "PriorityIndex");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
@@ -1243,10 +1263,16 @@ namespace ClinicDoctor.Data.SqlClient
 					row["Id"] = entity.Id;
 							
 				
-					row["DoctorId"] = entity.DoctorId;
+					row["DoctorUserName"] = entity.DoctorUserName;
+							
+				
+					row["DoctorShortName"] = entity.DoctorShortName;
 							
 				
 					row["RoomId"] = entity.RoomId;
+							
+				
+					row["RoomTitle"] = entity.RoomTitle;
 							
 				
 					row["PriorityIndex"] = entity.PriorityIndex;
@@ -1302,8 +1328,10 @@ namespace ClinicDoctor.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_Insert", _useStoredProcedure);
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
-			database.AddInParameter(commandWrapper, "@DoctorId", DbType.Int64, entity.DoctorId );
+			database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, entity.DoctorUserName );
+			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
 			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int64, entity.RoomId );
+			database.AddInParameter(commandWrapper, "@RoomTitle", DbType.String, entity.RoomTitle );
 			database.AddInParameter(commandWrapper, "@PriorityIndex", DbType.Int32, entity.PriorityIndex );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -1359,8 +1387,10 @@ namespace ClinicDoctor.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_Update", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
-			database.AddInParameter(commandWrapper, "@DoctorId", DbType.Int64, entity.DoctorId );
+			database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, entity.DoctorUserName );
+			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
 			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int64, entity.RoomId );
+			database.AddInParameter(commandWrapper, "@RoomTitle", DbType.String, entity.RoomTitle );
 			database.AddInParameter(commandWrapper, "@PriorityIndex", DbType.Int32, entity.PriorityIndex );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );

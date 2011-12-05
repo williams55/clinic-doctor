@@ -25,9 +25,19 @@ namespace ClinicDoctor.Entities
 		System.Int64  RoomId  { get; set; }
 		
 		/// <summary>
+		/// RoomTitle : 
+		/// </summary>
+		System.String  RoomTitle  { get; set; }
+		
+		/// <summary>
 		/// FuncId : 
 		/// </summary>
 		System.Int64  FuncId  { get; set; }
+		
+		/// <summary>
+		/// FuncTitle : 
+		/// </summary>
+		System.String  FuncTitle  { get; set; }
 		
 		/// <summary>
 		/// IsDisabled : 

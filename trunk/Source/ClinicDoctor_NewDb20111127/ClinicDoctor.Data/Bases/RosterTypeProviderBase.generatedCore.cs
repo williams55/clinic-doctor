@@ -724,6 +724,7 @@ namespace ClinicDoctor.Data.Bases
 				{
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)RosterTypeColumn.Id - 1)];
+					c.Title = (System.String)reader[((int)RosterTypeColumn.Title - 1)];
 					c.IsBooked = (System.Boolean)reader[((int)RosterTypeColumn.IsBooked - 1)];
 					c.Note = (reader.IsDBNull(((int)RosterTypeColumn.Note - 1)))?null:(System.String)reader[((int)RosterTypeColumn.Note - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)RosterTypeColumn.IsDisabled - 1)];
@@ -749,6 +750,7 @@ namespace ClinicDoctor.Data.Bases
 			if (!reader.Read()) return;
 			
 			entity.Id = (System.Int64)reader[((int)RosterTypeColumn.Id - 1)];
+			entity.Title = (System.String)reader[((int)RosterTypeColumn.Title - 1)];
 			entity.IsBooked = (System.Boolean)reader[((int)RosterTypeColumn.IsBooked - 1)];
 			entity.Note = (reader.IsDBNull(((int)RosterTypeColumn.Note - 1)))?null:(System.String)reader[((int)RosterTypeColumn.Note - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)RosterTypeColumn.IsDisabled - 1)];
@@ -769,6 +771,7 @@ namespace ClinicDoctor.Data.Bases
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
 			entity.Id = (System.Int64)dataRow["Id"];
+			entity.Title = (System.String)dataRow["Title"];
 			entity.IsBooked = (System.Boolean)dataRow["IsBooked"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];

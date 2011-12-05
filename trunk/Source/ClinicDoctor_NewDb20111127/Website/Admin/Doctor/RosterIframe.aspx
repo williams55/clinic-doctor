@@ -183,8 +183,6 @@
             </div>
             <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="show_minical()">
                 &nbsp;</div>
-            <div class="dhx_cal_tab" name="day_tab" style="right: 204px;">
-            </div>
             <div class="dhx_cal_tab" name="week_tab" style="right: 140px;">
             </div>
             <div class="dhx_cal_tab" name="timeline_tab" style="right: 280px;">

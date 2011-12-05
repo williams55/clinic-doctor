@@ -889,7 +889,9 @@ namespace ClinicDoctor.Data.Bases
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)RoomFuncColumn.Id - 1)];
 					c.RoomId = (System.Int64)reader[((int)RoomFuncColumn.RoomId - 1)];
+					c.RoomTitle = (System.String)reader[((int)RoomFuncColumn.RoomTitle - 1)];
 					c.FuncId = (System.Int64)reader[((int)RoomFuncColumn.FuncId - 1)];
+					c.FuncTitle = (System.String)reader[((int)RoomFuncColumn.FuncTitle - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)RoomFuncColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)RoomFuncColumn.CreateUser - 1)))?null:(System.String)reader[((int)RoomFuncColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)RoomFuncColumn.CreateDate - 1)];
@@ -914,7 +916,9 @@ namespace ClinicDoctor.Data.Bases
 			
 			entity.Id = (System.Int64)reader[((int)RoomFuncColumn.Id - 1)];
 			entity.RoomId = (System.Int64)reader[((int)RoomFuncColumn.RoomId - 1)];
+			entity.RoomTitle = (System.String)reader[((int)RoomFuncColumn.RoomTitle - 1)];
 			entity.FuncId = (System.Int64)reader[((int)RoomFuncColumn.FuncId - 1)];
+			entity.FuncTitle = (System.String)reader[((int)RoomFuncColumn.FuncTitle - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)RoomFuncColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)RoomFuncColumn.CreateUser - 1)))?null:(System.String)reader[((int)RoomFuncColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)RoomFuncColumn.CreateDate - 1)];
@@ -934,7 +938,9 @@ namespace ClinicDoctor.Data.Bases
 			
 			entity.Id = (System.Int64)dataRow["Id"];
 			entity.RoomId = (System.Int64)dataRow["RoomId"];
+			entity.RoomTitle = (System.String)dataRow["RoomTitle"];
 			entity.FuncId = (System.Int64)dataRow["FuncId"];
+			entity.FuncTitle = (System.String)dataRow["FuncTitle"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];

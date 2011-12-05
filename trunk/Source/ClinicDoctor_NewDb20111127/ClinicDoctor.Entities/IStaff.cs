@@ -17,6 +17,11 @@ namespace ClinicDoctor.Entities
 		/// <remarks>Member of the primary key of the underlying table "Staff"</remarks>
 		System.Int64 Id { get; set; }
 				
+		/// <summary>
+		/// keep a copy of the original so it can be used for editable primary keys.
+		/// </summary>
+		System.Int64 OriginalId { get; set; }
+			
 		
 		
 		/// <summary>
@@ -121,41 +126,6 @@ namespace ClinicDoctor.Entities
 		System.Object Clone();
 		
 		#region Data Properties
-
-
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorRoomDoctorId
-		/// </summary>	
-		TList<DoctorRoom> DoctorRoomCollection {  get;  set;}	
-
-
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentNurseIdGetByNurseId
-		/// </summary>	
-		TList<Appointment> AppointmentCollectionGetByNurseId {  get;  set;}	
-
-
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentNurseIdGetByDoctorId
-		/// </summary>	
-		TList<Appointment> AppointmentCollectionGetByDoctorId {  get;  set;}	
-
-
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorRosterDoctorId
-		/// </summary>	
-		TList<DoctorRoster> DoctorRosterCollection {  get;  set;}	
-
-
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorFuncDoctorId
-		/// </summary>	
-		TList<DoctorFunc> DoctorFuncCollection {  get;  set;}	
 
 		#endregion Data Properties
 

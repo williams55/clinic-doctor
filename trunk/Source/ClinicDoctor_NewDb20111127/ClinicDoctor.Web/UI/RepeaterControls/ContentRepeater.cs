@@ -359,6 +359,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.FuncId; }
 		}
         /// <summary>
+        /// Gets the FuncTitle
+        /// </summary>
+        /// <value>The FuncTitle.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String FuncTitle
+		{
+			get { return _entity.FuncTitle; }
+		}
+        /// <summary>
         /// Gets the Note
         /// </summary>
         /// <value>The Note.</value>

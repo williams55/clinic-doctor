@@ -30,14 +30,29 @@ namespace ClinicDoctor.Entities
 		System.Int64  CustomerId  { get; set; }
 		
 		/// <summary>
+		/// CustomerName : 
+		/// </summary>
+		System.String  CustomerName  { get; set; }
+		
+		/// <summary>
 		/// ContentId : 
 		/// </summary>
 		System.Int64  ContentId  { get; set; }
 		
 		/// <summary>
-		/// DoctorId : 
+		/// ContentTitle : 
 		/// </summary>
-		System.Int64?  DoctorId  { get; set; }
+		System.String  ContentTitle  { get; set; }
+		
+		/// <summary>
+		/// DoctorUsername : 
+		/// </summary>
+		System.String  DoctorUsername  { get; set; }
+		
+		/// <summary>
+		/// DoctorShortName : 
+		/// </summary>
+		System.String  DoctorShortName  { get; set; }
 		
 		/// <summary>
 		/// RoomId : 
@@ -45,14 +60,29 @@ namespace ClinicDoctor.Entities
 		System.Int64?  RoomId  { get; set; }
 		
 		/// <summary>
-		/// NurseId : 
+		/// RoomTitle : 
 		/// </summary>
-		System.Int64?  NurseId  { get; set; }
+		System.String  RoomTitle  { get; set; }
+		
+		/// <summary>
+		/// NurseUsername : 
+		/// </summary>
+		System.String  NurseUsername  { get; set; }
+		
+		/// <summary>
+		/// NurseShortName : 
+		/// </summary>
+		System.String  NurseShortName  { get; set; }
 		
 		/// <summary>
 		/// StatusId : 
 		/// </summary>
 		System.Int64?  StatusId  { get; set; }
+		
+		/// <summary>
+		/// StatusTitle : 
+		/// </summary>
+		System.String  StatusTitle  { get; set; }
 		
 		/// <summary>
 		/// Note : 

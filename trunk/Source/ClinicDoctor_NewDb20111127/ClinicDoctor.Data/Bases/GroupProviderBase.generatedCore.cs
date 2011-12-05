@@ -385,6 +385,7 @@ namespace ClinicDoctor.Data.Bases
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)GroupColumn.Id - 1)];
 					c.Title = (System.String)reader[((int)GroupColumn.Title - 1)];
+					c.ColorCode = (reader.IsDBNull(((int)GroupColumn.ColorCode - 1)))?null:(System.String)reader[((int)GroupColumn.ColorCode - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)GroupColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)GroupColumn.CreateUser - 1)))?null:(System.String)reader[((int)GroupColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)GroupColumn.CreateDate - 1)];
@@ -409,6 +410,7 @@ namespace ClinicDoctor.Data.Bases
 			
 			entity.Id = (System.Int64)reader[((int)GroupColumn.Id - 1)];
 			entity.Title = (System.String)reader[((int)GroupColumn.Title - 1)];
+			entity.ColorCode = (reader.IsDBNull(((int)GroupColumn.ColorCode - 1)))?null:(System.String)reader[((int)GroupColumn.ColorCode - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)GroupColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)GroupColumn.CreateUser - 1)))?null:(System.String)reader[((int)GroupColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)GroupColumn.CreateDate - 1)];
@@ -428,6 +430,7 @@ namespace ClinicDoctor.Data.Bases
 			
 			entity.Id = (System.Int64)dataRow["Id"];
 			entity.Title = (System.String)dataRow["Title"];
+			entity.ColorCode = Convert.IsDBNull(dataRow["ColorCode"]) ? null : (System.String)dataRow["ColorCode"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];

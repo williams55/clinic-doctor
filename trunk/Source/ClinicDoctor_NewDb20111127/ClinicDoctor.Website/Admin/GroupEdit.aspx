@@ -80,11 +80,6 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:StaffProperty Name="Group"/> 
-					<%--<data:StaffProperty Name="DoctorRoomCollection" />--%>
-					<%--<data:StaffProperty Name="AppointmentCollectionGetByNurseId" />--%>
-					<%--<data:StaffProperty Name="AppointmentCollectionGetByDoctorId" />--%>
-					<%--<data:StaffProperty Name="DoctorRosterCollection" />--%>
-					<%--<data:StaffProperty Name="DoctorFuncCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
 			
