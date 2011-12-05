@@ -62,13 +62,10 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 RosterType refObj = DataRepository.RosterTypeProvider.GetByIdIsDisabled(tm, Convert.ToInt64(RosterType), false);
 
                 // Convert Month to right format
-                //DateTime month = Convert.ToDateTime(Month, new CultureInfo("vi-VN"));
                 DateTime month = Convert.ToDateTime(Month);
                 DateTime item = new DateTime(month.Year, month.Month, 1);
 
                 // Get start time and end time
-                //DateTime dtStart = Convert.ToDateTime(StartTime, new CultureInfo("vi-VN"));
-                //DateTime dtEnd = Convert.ToDateTime(EndTime, new CultureInfo("vi-VN"));
                 DateTime dtStart = Convert.ToDateTime(StartTime);
                 DateTime dtEnd = Convert.ToDateTime(EndTime);
 
@@ -99,8 +96,10 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 
                         newObj.Id = Perfix + strNumber;
 
-                        newObj.DoctorId = obj.Id;
+                        newObj.DoctorUserName = obj.UserName;
+                        newObj.DoctorShortName = obj.ShortName;
                         newObj.RosterTypeId = Convert.ToInt64(RosterType);
+                        newObj.RosterTypeTitle = Convert.ToInt64(RosterType);
                         newObj.StartTime = Convert.ToDateTime(item.ToString("dd/MM/yyyy ") + dtStart.ToString("HH:mm:00"));
                         newObj.EndTime = Convert.ToDateTime(item.ToString("dd/MM/yyyy ") + dtEnd.ToString("HH:mm:00"));
                         newObj.Note = Note;
@@ -506,7 +505,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             result = string.Empty;
             foreach (RosterType item in lst)
             {
-                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + ((item.Note == null) ? "" : item.Note) + @"'" + "},";
+                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + ((item.Title == null) ? "" : item.Title) + @"'" + "},";
             }
             result = "[" + result.Substring(0, result.Length - 1) + "]";
         }
