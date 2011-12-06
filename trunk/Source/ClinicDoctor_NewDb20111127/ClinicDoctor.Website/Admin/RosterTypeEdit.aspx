@@ -48,10 +48,11 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
-				<asp:BoundField DataField="DoctorUserName" HeaderText="Doctor User Name" SortExpression="[DoctorUserName]" />				
+				<data:HyperLinkField HeaderText="Doctor User Name" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}" DataNavigateUrlFields="UserName" DataContainer="DoctorUserNameSource" DataTextField="FirstName" />
 				<asp:BoundField DataField="DoctorShortName" HeaderText="Doctor Short Name" SortExpression="[DoctorShortName]" />				
 				<data:HyperLinkField HeaderText="Roster Type Id" DataNavigateUrlFormatString="RosterTypeEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RosterTypeIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="RosterTypeTitle" HeaderText="Roster Type Title" SortExpression="[RosterTypeTitle]" />				
+				<asp:BoundField DataField="ColorCode" HeaderText="Color Code" SortExpression="[ColorCode]" />				
 				<asp:BoundField DataField="IsBooked" HeaderText="Is Booked" SortExpression="[IsBooked]" />				
 				<asp:BoundField DataField="StartTime" HeaderText="Start Time" SortExpression="[StartTime]" />				
 				<asp:BoundField DataField="EndTime" HeaderText="End Time" SortExpression="[EndTime]" />				
@@ -75,6 +76,7 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:DoctorRosterProperty Name="RosterType"/> 
+					<data:DoctorRosterProperty Name="Staff"/> 
 				</Types>
 			</DeepLoadProperties>
 			

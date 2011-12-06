@@ -22,17 +22,18 @@
 				<asp:BoundField DataField="CustomerName" HeaderText="Customer Name" SortExpression="[CustomerName]"  />
 				<data:HyperLinkField HeaderText="Content Id" DataNavigateUrlFormatString="ContentEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ContentIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="ContentTitle" HeaderText="Content Title" SortExpression="[ContentTitle]"  />
-				<asp:BoundField DataField="DoctorUsername" HeaderText="Doctor Username" SortExpression="[DoctorUsername]"  />
+				<data:HyperLinkField HeaderText="Doctor Username" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}" DataNavigateUrlFields="UserName" DataContainer="DoctorUsernameSource" DataTextField="FirstName" />
 				<asp:BoundField DataField="DoctorShortName" HeaderText="Doctor Short Name" SortExpression="[DoctorShortName]"  />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="RoomTitle" HeaderText="Room Title" SortExpression="[RoomTitle]"  />
-				<asp:BoundField DataField="NurseUsername" HeaderText="Nurse Username" SortExpression="[NurseUsername]"  />
+				<data:HyperLinkField HeaderText="Nurse Username" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}" DataNavigateUrlFields="UserName" DataContainer="NurseUsernameSource" DataTextField="FirstName" />
 				<asp:BoundField DataField="NurseShortName" HeaderText="Nurse Short Name" SortExpression="[NurseShortName]"  />
 				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="StatusTitle" HeaderText="Status Title" SortExpression="[StatusTitle]"  />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
 				<asp:BoundField DataField="StartTime" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Start Time" SortExpression="[StartTime]"  />
 				<asp:BoundField DataField="EndTime" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="End Time" SortExpression="[EndTime]"  />
+				<asp:BoundField DataField="ColorCode" HeaderText="Color Code" SortExpression="[ColorCode]"  />
 				<data:BoundRadioButtonField DataField="IsComplete" HeaderText="Is Complete" SortExpression="[IsComplete]"  />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]"  />
@@ -57,6 +58,7 @@
 					<data:AppointmentProperty Name="Content"/> 
 					<data:AppointmentProperty Name="Customer"/> 
 					<data:AppointmentProperty Name="Room"/> 
+					<data:AppointmentProperty Name="Staff"/> 
 					<data:AppointmentProperty Name="Status"/> 
 				</Types>
 			</DeepLoadProperties>

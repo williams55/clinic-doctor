@@ -21,7 +21,6 @@
 				<asp:BoundField DataField="FirstName" HeaderText="First Name" SortExpression="[FirstName]"  />
 				<asp:BoundField DataField="LastName" HeaderText="Last Name" SortExpression="[LastName]"  />
 				<asp:BoundField DataField="ShortName" HeaderText="Short Name" SortExpression="[ShortName]"  />
-				<data:HyperLinkField HeaderText="Group Id" DataNavigateUrlFormatString="GroupEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="GroupIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="UserName" HeaderText="User Name" SortExpression="[UserName]"  />
 				<asp:BoundField DataField="Address" HeaderText="Address" SortExpression="[Address]"  />
 				<asp:BoundField DataField="HomePhone" HeaderText="Home Phone" SortExpression="[HomePhone]"  />
@@ -48,13 +47,7 @@
 			SelectMethod="GetPaged"
 			EnablePaging="True"
 			EnableSorting="True"
-			EnableDeepLoad="True"
-			>
-			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
-	            <Types>
-					<data:StaffProperty Name="Group"/> 
-				</Types>
-			</DeepLoadProperties>
+		>
 			<Parameters>
 				<data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
