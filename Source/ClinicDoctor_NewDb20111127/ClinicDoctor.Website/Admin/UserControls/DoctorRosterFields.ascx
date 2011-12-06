@@ -12,7 +12,8 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataDoctorUserName" runat="server" Text="Doctor User Name:" AssociatedControlID="dataDoctorUserName" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataDoctorUserName" Text='<%# Bind("DoctorUserName") %>' MaxLength="200"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataDoctorUserName" runat="server" Display="Dynamic" ControlToValidate="dataDoctorUserName" ErrorMessage="Required"></asp:RequiredFieldValidator>
+					<data:EntityDropDownList runat="server" ID="dataDoctorUserName" DataSourceID="DoctorUserNameStaffDataSource" DataTextField="FirstName" DataValueField="UserName" SelectedValue='<%# Bind("DoctorUserName") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:StaffDataSource ID="DoctorUserNameStaffDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>
@@ -32,6 +33,12 @@
         <td class="literal"><asp:Label ID="lbldataRosterTypeTitle" runat="server" Text="Roster Type Title:" AssociatedControlID="dataRosterTypeTitle" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataRosterTypeTitle" Text='<%# Bind("RosterTypeTitle") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataColorCode" runat="server" Text="Color Code:" AssociatedControlID="dataColorCode" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataColorCode" Text='<%# Bind("ColorCode") %>' MaxLength="10"></asp:TextBox>
 				</td>
 			</tr>
 			<tr>

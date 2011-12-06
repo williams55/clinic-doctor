@@ -377,6 +377,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.RosterTypeTitle; }
 		}
         /// <summary>
+        /// Gets the ColorCode
+        /// </summary>
+        /// <value>The ColorCode.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String ColorCode
+		{
+			get { return _entity.ColorCode; }
+		}
+        /// <summary>
         /// Gets the IsBooked
         /// </summary>
         /// <value>The IsBooked.</value>

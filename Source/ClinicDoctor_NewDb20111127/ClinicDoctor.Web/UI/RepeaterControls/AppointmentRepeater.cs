@@ -476,6 +476,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.EndTime; }
 		}
         /// <summary>
+        /// Gets the ColorCode
+        /// </summary>
+        /// <value>The ColorCode.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String ColorCode
+		{
+			get { return _entity.ColorCode; }
+		}
+        /// <summary>
         /// Gets the IsComplete
         /// </summary>
         /// <value>The IsComplete.</value>
