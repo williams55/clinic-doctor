@@ -45,6 +45,11 @@ namespace ClinicDoctor.Entities
 		System.String  RosterTypeTitle  { get; set; }
 		
 		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		System.String  ColorCode  { get; set; }
+		
+		/// <summary>
 		/// IsBooked : 
 		/// </summary>
 		System.Boolean?  IsBooked  { get; set; }

@@ -40,11 +40,6 @@ namespace ClinicDoctor.Entities
 		System.String  ShortName  { get; set; }
 		
 		/// <summary>
-		/// GroupId : 
-		/// </summary>
-		System.Int64  GroupId  { get; set; }
-		
-		/// <summary>
 		/// UserName : 
 		/// </summary>
 		System.String  UserName  { get; set; }
@@ -126,6 +121,41 @@ namespace ClinicDoctor.Entities
 		System.Object Clone();
 		
 		#region Data Properties
+
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _doctorRoomDoctorUserName
+		/// </summary>	
+		TList<DoctorRoom> DoctorRoomCollection {  get;  set;}	
+
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _appointmentNurseUsernameGetByNurseUsername
+		/// </summary>	
+		TList<Appointment> AppointmentCollectionGetByNurseUsername {  get;  set;}	
+
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _appointmentNurseUsernameGetByDoctorUsername
+		/// </summary>	
+		TList<Appointment> AppointmentCollectionGetByDoctorUsername {  get;  set;}	
+
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _doctorRosterDoctorUserName
+		/// </summary>	
+		TList<DoctorRoster> DoctorRosterCollection {  get;  set;}	
+
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _doctorFuncDoctorUserName
+		/// </summary>	
+		TList<DoctorFunc> DoctorFuncCollection {  get;  set;}	
 
 		#endregion Data Properties
 

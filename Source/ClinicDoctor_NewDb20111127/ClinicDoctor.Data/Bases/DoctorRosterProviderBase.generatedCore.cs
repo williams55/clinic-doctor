@@ -1524,6 +1524,7 @@ namespace ClinicDoctor.Data.Bases
 					c.DoctorShortName = (reader.IsDBNull(((int)DoctorRosterColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.DoctorShortName - 1)];
 					c.RosterTypeId = (System.Int64)reader[((int)DoctorRosterColumn.RosterTypeId - 1)];
 					c.RosterTypeTitle = (reader.IsDBNull(((int)DoctorRosterColumn.RosterTypeTitle - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.RosterTypeTitle - 1)];
+					c.ColorCode = (reader.IsDBNull(((int)DoctorRosterColumn.ColorCode - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.ColorCode - 1)];
 					c.IsBooked = (reader.IsDBNull(((int)DoctorRosterColumn.IsBooked - 1)))?null:(System.Boolean?)reader[((int)DoctorRosterColumn.IsBooked - 1)];
 					c.StartTime = (System.DateTime)reader[((int)DoctorRosterColumn.StartTime - 1)];
 					c.EndTime = (System.DateTime)reader[((int)DoctorRosterColumn.EndTime - 1)];
@@ -1557,6 +1558,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.DoctorShortName = (reader.IsDBNull(((int)DoctorRosterColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.DoctorShortName - 1)];
 			entity.RosterTypeId = (System.Int64)reader[((int)DoctorRosterColumn.RosterTypeId - 1)];
 			entity.RosterTypeTitle = (reader.IsDBNull(((int)DoctorRosterColumn.RosterTypeTitle - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.RosterTypeTitle - 1)];
+			entity.ColorCode = (reader.IsDBNull(((int)DoctorRosterColumn.ColorCode - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.ColorCode - 1)];
 			entity.IsBooked = (reader.IsDBNull(((int)DoctorRosterColumn.IsBooked - 1)))?null:(System.Boolean?)reader[((int)DoctorRosterColumn.IsBooked - 1)];
 			entity.StartTime = (System.DateTime)reader[((int)DoctorRosterColumn.StartTime - 1)];
 			entity.EndTime = (System.DateTime)reader[((int)DoctorRosterColumn.EndTime - 1)];
@@ -1585,6 +1587,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.DoctorShortName = Convert.IsDBNull(dataRow["DoctorShortName"]) ? null : (System.String)dataRow["DoctorShortName"];
 			entity.RosterTypeId = (System.Int64)dataRow["RosterTypeId"];
 			entity.RosterTypeTitle = Convert.IsDBNull(dataRow["RosterTypeTitle"]) ? null : (System.String)dataRow["RosterTypeTitle"];
+			entity.ColorCode = Convert.IsDBNull(dataRow["ColorCode"]) ? null : (System.String)dataRow["ColorCode"];
 			entity.IsBooked = Convert.IsDBNull(dataRow["IsBooked"]) ? null : (System.Boolean?)dataRow["IsBooked"];
 			entity.StartTime = (System.DateTime)dataRow["StartTime"];
 			entity.EndTime = (System.DateTime)dataRow["EndTime"];
@@ -1645,6 +1648,32 @@ namespace ClinicDoctor.Data.Bases
 					
 			}
 			#endregion RosterTypeIdSource
+
+			#region DoctorUserNameSource	
+			if (CanDeepLoad(entity, "Staff|DoctorUserNameSource", deepLoadType, innerList) 
+				&& entity.DoctorUserNameSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = entity.DoctorUserName;
+				Staff tmpEntity = EntityManager.LocateEntity<Staff>(EntityLocator.ConstructKeyFromPkItems(typeof(Staff), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.DoctorUserNameSource = tmpEntity;
+				else
+					entity.DoctorUserNameSource = DataRepository.StaffProvider.GetByUserName(transactionManager, entity.DoctorUserName);		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'DoctorUserNameSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.DoctorUserNameSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.StaffProvider.DeepLoad(transactionManager, entity.DoctorUserNameSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion DoctorUserNameSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -1687,6 +1716,15 @@ namespace ClinicDoctor.Data.Bases
 				entity.RosterTypeId = entity.RosterTypeIdSource.Id;
 			}
 			#endregion 
+			
+			#region DoctorUserNameSource
+			if (CanDeepSave(entity, "Staff|DoctorUserNameSource", deepSaveType, innerList) 
+				&& entity.DoctorUserNameSource != null)
+			{
+				DataRepository.StaffProvider.Save(transactionManager, entity.DoctorUserNameSource);
+				entity.DoctorUserName = entity.DoctorUserNameSource.UserName;
+			}
+			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -1727,6 +1765,12 @@ namespace ClinicDoctor.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(RosterType))]
 		RosterType,
+			
+		///<summary>
+		/// Composite Property for <c>Staff</c> at DoctorUserNameSource
+		///</summary>
+		[ChildEntityType(typeof(Staff))]
+		Staff,
 		}
 	
 	#endregion DoctorRosterChildEntityTypes

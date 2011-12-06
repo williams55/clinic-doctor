@@ -58,6 +58,91 @@ namespace ClinicDoctor.Data.Bases
 		#endregion Delete Methods
 		
 		#region Get By Foreign Key Functions
+	
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Staff1 key.
+		///		FK_Appointment_Staff1 Description: 
+		/// </summary>
+		/// <param name="_nurseUsername"></param>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Appointment objects.</returns>
+		public TList<Appointment> GetByNurseUsername(System.String _nurseUsername)
+		{
+			int count = -1;
+			return GetByNurseUsername(_nurseUsername, 0,int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Staff1 key.
+		///		FK_Appointment_Staff1 Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseUsername"></param>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Appointment objects.</returns>
+		/// <remarks></remarks>
+		public TList<Appointment> GetByNurseUsername(TransactionManager transactionManager, System.String _nurseUsername)
+		{
+			int count = -1;
+			return GetByNurseUsername(transactionManager, _nurseUsername, 0, int.MaxValue, out count);
+		}
+		
+			/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Staff1 key.
+		///		FK_Appointment_Staff1 Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseUsername"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		///  <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Appointment objects.</returns>
+		public TList<Appointment> GetByNurseUsername(TransactionManager transactionManager, System.String _nurseUsername, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByNurseUsername(transactionManager, _nurseUsername, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Staff1 key.
+		///		fkAppointmentStaff1 Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_nurseUsername"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Appointment objects.</returns>
+		public TList<Appointment> GetByNurseUsername(System.String _nurseUsername, int start, int pageLength)
+		{
+			int count =  -1;
+			return GetByNurseUsername(null, _nurseUsername, start, pageLength,out count);	
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Staff1 key.
+		///		fkAppointmentStaff1 Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_nurseUsername"></param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Appointment objects.</returns>
+		public TList<Appointment> GetByNurseUsername(System.String _nurseUsername, int start, int pageLength,out int count)
+		{
+			return GetByNurseUsername(null, _nurseUsername, start, pageLength, out count);	
+		}
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Staff1 key.
+		///		FK_Appointment_Staff1 Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseUsername"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Appointment objects.</returns>
+		public abstract TList<Appointment> GetByNurseUsername(TransactionManager transactionManager, System.String _nurseUsername, int start, int pageLength, out int count);
+		
 		#endregion
 
 		#region Get By Index Functions
@@ -1857,6 +1942,7 @@ namespace ClinicDoctor.Data.Bases
 					c.Note = (reader.IsDBNull(((int)AppointmentColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentColumn.Note - 1)];
 					c.StartTime = (reader.IsDBNull(((int)AppointmentColumn.StartTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.StartTime - 1)];
 					c.EndTime = (reader.IsDBNull(((int)AppointmentColumn.EndTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.EndTime - 1)];
+					c.ColorCode = (System.String)reader[((int)AppointmentColumn.ColorCode - 1)];
 					c.IsComplete = (System.Boolean)reader[((int)AppointmentColumn.IsComplete - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)AppointmentColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)AppointmentColumn.CreateUser - 1)))?null:(System.String)reader[((int)AppointmentColumn.CreateUser - 1)];
@@ -1897,6 +1983,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.Note = (reader.IsDBNull(((int)AppointmentColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentColumn.Note - 1)];
 			entity.StartTime = (reader.IsDBNull(((int)AppointmentColumn.StartTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.StartTime - 1)];
 			entity.EndTime = (reader.IsDBNull(((int)AppointmentColumn.EndTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.EndTime - 1)];
+			entity.ColorCode = (System.String)reader[((int)AppointmentColumn.ColorCode - 1)];
 			entity.IsComplete = (System.Boolean)reader[((int)AppointmentColumn.IsComplete - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)AppointmentColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)AppointmentColumn.CreateUser - 1)))?null:(System.String)reader[((int)AppointmentColumn.CreateUser - 1)];
@@ -1932,6 +2019,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.StartTime = Convert.IsDBNull(dataRow["StartTime"]) ? null : (System.DateTime?)dataRow["StartTime"];
 			entity.EndTime = Convert.IsDBNull(dataRow["EndTime"]) ? null : (System.DateTime?)dataRow["EndTime"];
+			entity.ColorCode = (System.String)dataRow["ColorCode"];
 			entity.IsComplete = (System.Boolean)dataRow["IsComplete"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
@@ -2041,6 +2129,58 @@ namespace ClinicDoctor.Data.Bases
 			}
 			#endregion RoomIdSource
 
+			#region DoctorUsernameSource	
+			if (CanDeepLoad(entity, "Staff|DoctorUsernameSource", deepLoadType, innerList) 
+				&& entity.DoctorUsernameSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = (entity.DoctorUsername ?? string.Empty);
+				Staff tmpEntity = EntityManager.LocateEntity<Staff>(EntityLocator.ConstructKeyFromPkItems(typeof(Staff), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.DoctorUsernameSource = tmpEntity;
+				else
+					entity.DoctorUsernameSource = DataRepository.StaffProvider.GetByUserName(transactionManager, (entity.DoctorUsername ?? string.Empty));		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'DoctorUsernameSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.DoctorUsernameSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.StaffProvider.DeepLoad(transactionManager, entity.DoctorUsernameSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion DoctorUsernameSource
+
+			#region NurseUsernameSource	
+			if (CanDeepLoad(entity, "Staff|NurseUsernameSource", deepLoadType, innerList) 
+				&& entity.NurseUsernameSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = (entity.NurseUsername ?? string.Empty);
+				Staff tmpEntity = EntityManager.LocateEntity<Staff>(EntityLocator.ConstructKeyFromPkItems(typeof(Staff), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.NurseUsernameSource = tmpEntity;
+				else
+					entity.NurseUsernameSource = DataRepository.StaffProvider.GetByUserName(transactionManager, (entity.NurseUsername ?? string.Empty));		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'NurseUsernameSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.NurseUsernameSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.StaffProvider.DeepLoad(transactionManager, entity.NurseUsernameSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion NurseUsernameSource
+
 			#region StatusIdSource	
 			if (CanDeepLoad(entity, "Status|StatusIdSource", deepLoadType, innerList) 
 				&& entity.StatusIdSource == null)
@@ -2127,6 +2267,24 @@ namespace ClinicDoctor.Data.Bases
 			}
 			#endregion 
 			
+			#region DoctorUsernameSource
+			if (CanDeepSave(entity, "Staff|DoctorUsernameSource", deepSaveType, innerList) 
+				&& entity.DoctorUsernameSource != null)
+			{
+				DataRepository.StaffProvider.Save(transactionManager, entity.DoctorUsernameSource);
+				entity.DoctorUsername = entity.DoctorUsernameSource.UserName;
+			}
+			#endregion 
+			
+			#region NurseUsernameSource
+			if (CanDeepSave(entity, "Staff|NurseUsernameSource", deepSaveType, innerList) 
+				&& entity.NurseUsernameSource != null)
+			{
+				DataRepository.StaffProvider.Save(transactionManager, entity.NurseUsernameSource);
+				entity.NurseUsername = entity.NurseUsernameSource.UserName;
+			}
+			#endregion 
+			
 			#region StatusIdSource
 			if (CanDeepSave(entity, "Status|StatusIdSource", deepSaveType, innerList) 
 				&& entity.StatusIdSource != null)
@@ -2187,6 +2345,12 @@ namespace ClinicDoctor.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Room))]
 		Room,
+			
+		///<summary>
+		/// Composite Property for <c>Staff</c> at DoctorUsernameSource
+		///</summary>
+		[ChildEntityType(typeof(Staff))]
+		Staff,
 			
 		///<summary>
 		/// Composite Property for <c>Status</c> at StatusIdSource

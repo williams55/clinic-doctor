@@ -100,6 +100,11 @@ namespace ClinicDoctor.Entities
 		System.DateTime?  EndTime  { get; set; }
 		
 		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		System.String  ColorCode  { get; set; }
+		
+		/// <summary>
 		/// IsComplete : 
 		/// </summary>
 		System.Boolean  IsComplete  { get; set; }

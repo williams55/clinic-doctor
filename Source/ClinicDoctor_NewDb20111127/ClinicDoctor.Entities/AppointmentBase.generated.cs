@@ -97,6 +97,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_note"></param>
 		///<param name="_startTime"></param>
 		///<param name="_endTime"></param>
+		///<param name="_colorCode"></param>
 		///<param name="_isComplete"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
@@ -107,8 +108,8 @@ namespace ClinicDoctor.Entities
 			System.Int64 _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
 			System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, System.String _nurseShortName, 
 			System.Int64? _statusId, System.String _statusTitle, System.String _note, System.DateTime? _startTime, 
-			System.DateTime? _endTime, System.Boolean _isComplete, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.DateTime? _endTime, System.String _colorCode, System.Boolean _isComplete, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new AppointmentEntityData();
 			this.backupData = null;
@@ -129,6 +130,7 @@ namespace ClinicDoctor.Entities
 			this.Note = _note;
 			this.StartTime = _startTime;
 			this.EndTime = _endTime;
+			this.ColorCode = _colorCode;
 			this.IsComplete = _isComplete;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
@@ -156,6 +158,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_note"></param>
 		///<param name="_startTime"></param>
 		///<param name="_endTime"></param>
+		///<param name="_colorCode"></param>
 		///<param name="_isComplete"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
@@ -166,8 +169,8 @@ namespace ClinicDoctor.Entities
 			System.Int64 _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
 			System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, System.String _nurseShortName, 
 			System.Int64? _statusId, System.String _statusTitle, System.String _note, System.DateTime? _startTime, 
-			System.DateTime? _endTime, System.Boolean _isComplete, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.DateTime? _endTime, System.String _colorCode, System.Boolean _isComplete, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			Appointment newAppointment = new Appointment();
 			newAppointment.Id = _id;
@@ -186,6 +189,7 @@ namespace ClinicDoctor.Entities
 			newAppointment.Note = _note;
 			newAppointment.StartTime = _startTime;
 			newAppointment.EndTime = _endTime;
+			newAppointment.ColorCode = _colorCode;
 			newAppointment.IsComplete = _isComplete;
 			newAppointment.IsDisabled = _isDisabled;
 			newAppointment.CreateUser = _createUser;
@@ -784,6 +788,42 @@ namespace ClinicDoctor.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or sets the ColorCode property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can not be set to null. 
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, false, 10)]
+		public virtual System.String ColorCode
+		{
+			get
+			{
+				return this.entityData.ColorCode; 
+			}
+			
+			set
+			{
+				if (this.entityData.ColorCode == value)
+					return;
+					
+				OnColumnChanging(AppointmentColumn.ColorCode, this.entityData.ColorCode);
+				this.entityData.ColorCode = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(AppointmentColumn.ColorCode, this.entityData.ColorCode);
+				OnPropertyChanged("ColorCode");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or sets the IsComplete property. 
 		///		
 		/// </summary>
@@ -1031,6 +1071,28 @@ namespace ClinicDoctor.Entities
             set { entityData.RoomIdSource = value; }
       	}
 		/// <summary>
+		/// Gets or sets the source <see cref="Staff"/>.
+		/// </summary>
+		/// <value>The source Staff for DoctorUsername.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Staff DoctorUsernameSource
+      	{
+            get { return entityData.DoctorUsernameSource; }
+            set { entityData.DoctorUsernameSource = value; }
+      	}
+		/// <summary>
+		/// Gets or sets the source <see cref="Staff"/>.
+		/// </summary>
+		/// <value>The source Staff for NurseUsername.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Staff NurseUsernameSource
+      	{
+            get { return entityData.NurseUsernameSource; }
+            set { entityData.NurseUsernameSource = value; }
+      	}
+		/// <summary>
 		/// Gets or sets the source <see cref="Status"/>.
 		/// </summary>
 		/// <value>The source Status for StatusId.</value>
@@ -1078,6 +1140,10 @@ namespace ClinicDoctor.Entities
 				new CommonRules.MaxLengthRuleArgs("StatusTitle", "Status Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
+			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("ColorCode", "Color Code"));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("ColorCode", "Color Code", 10));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -1103,7 +1169,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "CustomerId", "CustomerName", "ContentId", "ContentTitle", "DoctorUsername", "DoctorShortName", "RoomId", "RoomTitle", "NurseUsername", "NurseShortName", "StatusId", "StatusTitle", "Note", "StartTime", "EndTime", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "CustomerId", "CustomerName", "ContentId", "ContentTitle", "DoctorUsername", "DoctorShortName", "RoomId", "RoomTitle", "NurseUsername", "NurseShortName", "StatusId", "StatusTitle", "Note", "StartTime", "EndTime", "ColorCode", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1268,6 +1334,7 @@ namespace ClinicDoctor.Entities
 				copy.Note = this.Note;
 				copy.StartTime = this.StartTime;
 				copy.EndTime = this.EndTime;
+				copy.ColorCode = this.ColorCode;
 				copy.IsComplete = this.IsComplete;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -1287,6 +1354,14 @@ namespace ClinicDoctor.Entities
 				copy.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				copy.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
+			if (this.DoctorUsernameSource != null && existingCopies.Contains(this.DoctorUsernameSource))
+				copy.DoctorUsernameSource = existingCopies[this.DoctorUsernameSource] as Staff;
+			else
+				copy.DoctorUsernameSource = MakeCopyOf(this.DoctorUsernameSource, existingCopies) as Staff;
+			if (this.NurseUsernameSource != null && existingCopies.Contains(this.NurseUsernameSource))
+				copy.NurseUsernameSource = existingCopies[this.NurseUsernameSource] as Staff;
+			else
+				copy.NurseUsernameSource = MakeCopyOf(this.NurseUsernameSource, existingCopies) as Staff;
 			if (this.StatusIdSource != null && existingCopies.Contains(this.StatusIdSource))
 				copy.StatusIdSource = existingCopies[this.StatusIdSource] as Status;
 			else
@@ -1454,6 +1529,8 @@ namespace ClinicDoctor.Entities
 					return entityData.StartTime != _originalData.StartTime;
 					case AppointmentColumn.EndTime:
 					return entityData.EndTime != _originalData.EndTime;
+					case AppointmentColumn.ColorCode:
+					return entityData.ColorCode != _originalData.ColorCode;
 					case AppointmentColumn.IsComplete:
 					return entityData.IsComplete != _originalData.IsComplete;
 					case AppointmentColumn.IsDisabled:
@@ -1509,6 +1586,7 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.Note != _originalData.Note;
 			result = result || entityData.StartTime != _originalData.StartTime;
 			result = result || entityData.EndTime != _originalData.EndTime;
+			result = result || entityData.ColorCode != _originalData.ColorCode;
 			result = result || entityData.IsComplete != _originalData.IsComplete;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
@@ -1541,6 +1619,7 @@ namespace ClinicDoctor.Entities
 				_originalData.Note,
 				_originalData.StartTime,
 				_originalData.EndTime,
+				_originalData.ColorCode,
 				_originalData.IsComplete,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
@@ -1592,6 +1671,7 @@ namespace ClinicDoctor.Entities
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
 					((this.StartTime == null) ? string.Empty : this.StartTime.ToString()).GetHashCode() ^ 
 					((this.EndTime == null) ? string.Empty : this.EndTime.ToString()).GetHashCode() ^ 
+					this.ColorCode.GetHashCode() ^ 
 					this.IsComplete.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -1753,6 +1833,8 @@ namespace ClinicDoctor.Entities
 			{
 				equal = false;
 			}
+			if (Object1.ColorCode != Object2.ColorCode)
+				equal = false;
 			if (Object1.IsComplete != Object2.IsComplete)
 				equal = false;
 			if (Object1.IsDisabled != Object2.IsDisabled)
@@ -1915,6 +1997,12 @@ namespace ClinicDoctor.Entities
             	
             	case AppointmentColumn.EndTime:
             		return this.EndTime.Value.CompareTo(rhs.EndTime.Value);
+            		
+            		                 
+            	
+            	
+            	case AppointmentColumn.ColorCode:
+            		return this.ColorCode.CompareTo(rhs.ColorCode);
             		
             		                 
             	
@@ -2087,7 +2175,7 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{23}{22}- Id: {0}{22}- CustomerId: {1}{22}- CustomerName: {2}{22}- ContentId: {3}{22}- ContentTitle: {4}{22}- DoctorUsername: {5}{22}- DoctorShortName: {6}{22}- RoomId: {7}{22}- RoomTitle: {8}{22}- NurseUsername: {9}{22}- NurseShortName: {10}{22}- StatusId: {11}{22}- StatusTitle: {12}{22}- Note: {13}{22}- StartTime: {14}{22}- EndTime: {15}{22}- IsComplete: {16}{22}- IsDisabled: {17}{22}- CreateUser: {18}{22}- CreateDate: {19}{22}- UpdateUser: {20}{22}- UpdateDate: {21}{22}{24}", 
+				"{24}{23}- Id: {0}{23}- CustomerId: {1}{23}- CustomerName: {2}{23}- ContentId: {3}{23}- ContentTitle: {4}{23}- DoctorUsername: {5}{23}- DoctorShortName: {6}{23}- RoomId: {7}{23}- RoomTitle: {8}{23}- NurseUsername: {9}{23}- NurseShortName: {10}{23}- StatusId: {11}{23}- StatusTitle: {12}{23}- Note: {13}{23}- StartTime: {14}{23}- EndTime: {15}{23}- ColorCode: {16}{23}- IsComplete: {17}{23}- IsDisabled: {18}{23}- CreateUser: {19}{23}- CreateDate: {20}{23}- UpdateUser: {21}{23}- UpdateDate: {22}{23}{25}", 
 				this.Id,
 				this.CustomerId,
 				(this.CustomerName == null) ? string.Empty : this.CustomerName.ToString(),
@@ -2104,6 +2192,7 @@ namespace ClinicDoctor.Entities
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
 				(this.StartTime == null) ? string.Empty : this.StartTime.ToString(),
 				(this.EndTime == null) ? string.Empty : this.EndTime.ToString(),
+				this.ColorCode,
 				this.IsComplete,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -2225,6 +2314,11 @@ namespace ClinicDoctor.Entities
 		public System.DateTime?		  EndTime = null;
 		
 		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		public System.String		  ColorCode = string.Empty;
+		
+		/// <summary>
 		/// IsComplete : 
 		/// </summary>
 		public System.Boolean		  IsComplete = false;
@@ -2296,6 +2390,32 @@ namespace ClinicDoctor.Entities
             get { return this._roomIdSource; }
             set { this._roomIdSource = value; }
       	}
+		private Staff _doctorUsernameSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Staff"/>.
+		/// </summary>
+		/// <value>The source Staff for DoctorUsername.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Staff DoctorUsernameSource
+      	{
+            get { return this._doctorUsernameSource; }
+            set { this._doctorUsernameSource = value; }
+      	}
+		private Staff _nurseUsernameSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Staff"/>.
+		/// </summary>
+		/// <value>The source Staff for NurseUsername.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Staff NurseUsernameSource
+      	{
+            get { return this._nurseUsernameSource; }
+            set { this._nurseUsernameSource = value; }
+      	}
 		private Status _statusIdSource = null;
 		
 		/// <summary>
@@ -2344,6 +2464,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Note = this.Note;
 			_tmp.StartTime = this.StartTime;
 			_tmp.EndTime = this.EndTime;
+			_tmp.ColorCode = this.ColorCode;
 			_tmp.IsComplete = this.IsComplete;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -2358,6 +2479,10 @@ namespace ClinicDoctor.Entities
 				_tmp.CustomerIdSource = MakeCopyOf(this.CustomerIdSource) as Customer;
 			if (this.RoomIdSource != null)
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource) as Room;
+			if (this.DoctorUsernameSource != null)
+				_tmp.DoctorUsernameSource = MakeCopyOf(this.DoctorUsernameSource) as Staff;
+			if (this.NurseUsernameSource != null)
+				_tmp.NurseUsernameSource = MakeCopyOf(this.NurseUsernameSource) as Staff;
 			if (this.StatusIdSource != null)
 				_tmp.StatusIdSource = MakeCopyOf(this.StatusIdSource) as Status;
 			#endregion
@@ -2400,6 +2525,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Note = this.Note;
 			_tmp.StartTime = this.StartTime;
 			_tmp.EndTime = this.EndTime;
+			_tmp.ColorCode = this.ColorCode;
 			_tmp.IsComplete = this.IsComplete;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -2420,6 +2546,14 @@ namespace ClinicDoctor.Entities
 				_tmp.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
+			if (this.DoctorUsernameSource != null && existingCopies.Contains(this.DoctorUsernameSource))
+				_tmp.DoctorUsernameSource = existingCopies[this.DoctorUsernameSource] as Staff;
+			else
+				_tmp.DoctorUsernameSource = MakeCopyOf(this.DoctorUsernameSource, existingCopies) as Staff;
+			if (this.NurseUsernameSource != null && existingCopies.Contains(this.NurseUsernameSource))
+				_tmp.NurseUsernameSource = existingCopies[this.NurseUsernameSource] as Staff;
+			else
+				_tmp.NurseUsernameSource = MakeCopyOf(this.NurseUsernameSource, existingCopies) as Staff;
 			if (this.StatusIdSource != null && existingCopies.Contains(this.StatusIdSource))
 				_tmp.StatusIdSource = existingCopies[this.StatusIdSource] as Status;
 			else
@@ -2892,41 +3026,47 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("EndTime", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
 		EndTime = 16,
 		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		[EnumTextValue("ColorCode")]
+		[ColumnEnum("ColorCode", typeof(System.String), System.Data.DbType.String, false, false, false, 10)]
+		ColorCode = 17,
+		/// <summary>
 		/// IsComplete : 
 		/// </summary>
 		[EnumTextValue("IsComplete")]
 		[ColumnEnum("IsComplete", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsComplete = 17,
+		IsComplete = 18,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 18,
+		IsDisabled = 19,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 19,
+		CreateUser = 20,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 20,
+		CreateDate = 21,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 21,
+		UpdateUser = 22,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 22
+		UpdateDate = 23
 	}//End enum
 
 	#endregion AppointmentColumn Enum
