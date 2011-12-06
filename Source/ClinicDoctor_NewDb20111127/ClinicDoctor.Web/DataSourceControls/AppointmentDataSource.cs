@@ -167,6 +167,7 @@ namespace ClinicDoctor.Web.Data
 			System.Int64? _statusId_nullable;
 			System.String _id;
 			System.Int64? _roomId_nullable;
+			System.String _nurseUsername_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -299,6 +300,10 @@ namespace ClinicDoctor.Web.Data
 					results = AppointmentProvider.GetByStatusIdIsDisabled(GetTransactionManager(), _statusId_nullable, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
 				// FK
+				case AppointmentSelectMethod.GetByNurseUsername:
+					_nurseUsername_nullable = (System.String) EntityUtil.ChangeType(values["NurseUsername"], typeof(System.String));
+					results = AppointmentProvider.GetByNurseUsername(GetTransactionManager(), _nurseUsername_nullable, this.StartIndex, this.PageSize, out count);
+					break;
 				// M:M
 				// Custom
 				default:
@@ -554,7 +559,11 @@ namespace ClinicDoctor.Web.Data
 		/// <summary>
 		/// Represents the GetById method.
 		/// </summary>
-		GetById
+		GetById,
+		/// <summary>
+		/// Represents the GetByNurseUsername method.
+		/// </summary>
+		GetByNurseUsername
 	}
 	
 	#endregion AppointmentSelectMethod

@@ -159,10 +159,9 @@ namespace ClinicDoctor.Web.Data
 			Staff item;
 			count = 0;
 			
-			System.Int64 _groupId;
+			System.Int64 _id;
 			System.Boolean _isDisabled;
 			System.Boolean _isFemale;
-			System.Int64 _id;
 			System.String _userName;
 
 			switch ( SelectMethod )
@@ -196,21 +195,6 @@ namespace ClinicDoctor.Web.Data
 					count = results.Count;
 					break;
 				// IX
-				case StaffSelectMethod.GetByGroupId:
-					_groupId = ( values["GroupId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int64)) : (long)0;
-					results = StaffProvider.GetByGroupId(GetTransactionManager(), _groupId, this.StartIndex, this.PageSize, out count);
-					break;
-				case StaffSelectMethod.GetByGroupIdIsDisabled:
-					_groupId = ( values["GroupId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int64)) : (long)0;
-					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = StaffProvider.GetByGroupIdIsDisabled(GetTransactionManager(), _groupId, _isDisabled, this.StartIndex, this.PageSize, out count);
-					break;
-				case StaffSelectMethod.GetByGroupIdIsFemaleIsDisabled:
-					_groupId = ( values["GroupId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int64)) : (long)0;
-					_isFemale = ( values["IsFemale"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsFemale"], typeof(System.Boolean)) : false;
-					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = StaffProvider.GetByGroupIdIsFemaleIsDisabled(GetTransactionManager(), _groupId, _isFemale, _isDisabled, this.StartIndex, this.PageSize, out count);
-					break;
 				case StaffSelectMethod.GetByIdIsDisabled:
 					_id = ( values["Id"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["Id"], typeof(System.Int64)) : (long)0;
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
@@ -424,18 +408,6 @@ namespace ClinicDoctor.Web.Data
 		/// Represents the Find method.
 		/// </summary>
 		Find,
-		/// <summary>
-		/// Represents the GetByGroupId method.
-		/// </summary>
-		GetByGroupId,
-		/// <summary>
-		/// Represents the GetByGroupIdIsDisabled method.
-		/// </summary>
-		GetByGroupIdIsDisabled,
-		/// <summary>
-		/// Represents the GetByGroupIdIsFemaleIsDisabled method.
-		/// </summary>
-		GetByGroupIdIsFemaleIsDisabled,
 		/// <summary>
 		/// Represents the GetByIdIsDisabled method.
 		/// </summary>
