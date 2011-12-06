@@ -76,7 +76,7 @@
             </tr>
             <tr>
                 <td class="header" width="80">
-                    Group
+                    Doctor
                 </td>
                 <td>
                     <select id="cboStaff" style="width: 200px;">

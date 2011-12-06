@@ -385,7 +385,7 @@ function SaveRoster() {
 
             _repeat = 'true';
             _weekday = allVals.join(";");
-            _month = $("#txtMonth").val();
+            _month = $("#txtMonth").datepicker("getDate");
         }
 
         $("#dialog-modal").show();

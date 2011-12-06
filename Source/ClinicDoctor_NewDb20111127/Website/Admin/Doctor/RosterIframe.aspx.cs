@@ -124,7 +124,8 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                         }
 
                         // If roster is created in a passed or current day
-                        if (Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy")) >= Convert.ToDateTime(newObj.StartTime.ToString("MM/dd/yyyy")))
+                        DateTime dtNow = DateTime.Now;
+                        if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(newObj.StartTime.Year, newObj.StartTime.Month, newObj.StartTime.Day))
                         {
                             tm.Rollback();
                             result = @"[{ 'result': 'false', 'message': 'You can not change roster to passed or current date.', 'data': [] }]";
@@ -211,7 +212,8 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 }
 
                 // If roster is created in a passed or current day
-                if (Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd")) >= Convert.ToDateTime(newObj.StartTime.ToString("yyyy/MM/dd")))
+                DateTime dtNow = DateTime.Now;
+                if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(newObj.StartTime.Year, newObj.StartTime.Month, newObj.StartTime.Day))
                 {
                     tm.Rollback();
                     result = @"[{ 'result': 'false', 'message': 'You can not change roster to passed or current date.', 'data': [] }]";
