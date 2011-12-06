@@ -6,7 +6,8 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataDoctorUserName" runat="server" Text="Doctor User Name:" AssociatedControlID="dataDoctorUserName" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataDoctorUserName" Text='<%# Bind("DoctorUserName") %>' MaxLength="200"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataDoctorUserName" runat="server" Display="Dynamic" ControlToValidate="dataDoctorUserName" ErrorMessage="Required"></asp:RequiredFieldValidator>
+					<data:EntityDropDownList runat="server" ID="dataDoctorUserName" DataSourceID="DoctorUserNameStaffDataSource" DataTextField="FirstName" DataValueField="UserName" SelectedValue='<%# Bind("DoctorUserName") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:StaffDataSource ID="DoctorUserNameStaffDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>

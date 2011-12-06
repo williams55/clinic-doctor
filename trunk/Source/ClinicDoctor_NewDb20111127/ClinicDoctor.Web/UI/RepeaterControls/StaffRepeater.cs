@@ -368,15 +368,6 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.ShortName; }
 		}
         /// <summary>
-        /// Gets the GroupId
-        /// </summary>
-        /// <value>The GroupId.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.Int64 GroupId
-		{
-			get { return _entity.GroupId; }
-		}
-        /// <summary>
         /// Gets the UserName
         /// </summary>
         /// <value>The UserName.</value>

@@ -38,7 +38,8 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataDoctorUsername" runat="server" Text="Doctor Username:" AssociatedControlID="dataDoctorUsername" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataDoctorUsername" Text='<%# Bind("DoctorUsername") %>' MaxLength="200"></asp:TextBox>
+					<data:EntityDropDownList runat="server" ID="dataDoctorUsername" DataSourceID="DoctorUsernameStaffDataSource" DataTextField="FirstName" DataValueField="UserName" SelectedValue='<%# Bind("DoctorUsername") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:StaffDataSource ID="DoctorUsernameStaffDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>
@@ -63,7 +64,8 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataNurseUsername" runat="server" Text="Nurse Username:" AssociatedControlID="dataNurseUsername" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataNurseUsername" Text='<%# Bind("NurseUsername") %>' MaxLength="200"></asp:TextBox>
+					<data:EntityDropDownList runat="server" ID="dataNurseUsername" DataSourceID="NurseUsernameStaffDataSource" DataTextField="FirstName" DataValueField="UserName" SelectedValue='<%# Bind("NurseUsername") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:StaffDataSource ID="NurseUsernameStaffDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>
@@ -101,6 +103,12 @@
         <td class="literal"><asp:Label ID="lbldataEndTime" runat="server" Text="End Time:" AssociatedControlID="dataEndTime" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataEndTime" Text='<%# Bind("EndTime", "{0:d}") %>' MaxLength="10"></asp:TextBox><asp:ImageButton ID="cal_dataEndTime" runat="server" SkinID="CalendarImageButton" OnClientClick="javascript:showCalendarControl(this.previousSibling);return false;" />
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataColorCode" runat="server" Text="Color Code:" AssociatedControlID="dataColorCode" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataColorCode" Text='<%# Bind("ColorCode") %>' MaxLength="10"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataColorCode" runat="server" Display="Dynamic" ControlToValidate="dataColorCode" ErrorMessage="Required"></asp:RequiredFieldValidator>
 				</td>
 			</tr>
 			<tr>

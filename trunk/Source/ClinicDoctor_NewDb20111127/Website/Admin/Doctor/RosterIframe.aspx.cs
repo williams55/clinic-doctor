@@ -145,7 +145,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                             + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                             + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                             + @"section_id: '" + newObj.DoctorUserName + @"',"
-                            + @"text: '" + newObj.RosterTypeTitle + @"<br />";
+                            + @"text: '" + newObj.RosterTypeTitle + @"<br />Doctor: " + newObj.DoctorUserName + @"<br />";
 
                         if (!string.IsNullOrEmpty(newObj.Note))
                             result += newObj.Note;
@@ -238,7 +238,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                     + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                     + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                     + @"section_id: '" + newObj.DoctorUserName + @"',"
-                    + @"text: '" + newObj.RosterTypeTitle + @"<br />";
+                    + @"text: '" + newObj.RosterTypeTitle + @"<br />Doctor: " + newObj.DoctorUserName + @"<br />";
 
                 if (!string.IsNullOrEmpty(newObj.Note))
                     result += newObj.Note;
@@ -390,7 +390,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 + @"start_date: '" + dr.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                 + @"end_date: '" + dr.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                 + @"section_id: '" + dr.DoctorUserName + @"',"
-                + @"text: '" + dr.RosterTypeTitle + @"<br />";
+                + @"text: '" + dr.RosterTypeTitle + @"<br />Doctor: " + dr.DoctorUserName + @"<br />";
 
             if (!string.IsNullOrEmpty(dr.Note))
                 result += dr.Note;
@@ -463,7 +463,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                     + @"start_date: '" + item.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                     + @"end_date: '" + item.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                     + @"section_id: '" + item.DoctorUserName + @"',"
-                    + @"text: '" + item.RosterTypeTitle + @"<br />";
+                    + @"text: '" + item.RosterTypeTitle + @"<br />Doctor: " + item.DoctorUserName + @"<br />";
 
                 if (!string.IsNullOrEmpty(item.Note))
                     result += item.Note;

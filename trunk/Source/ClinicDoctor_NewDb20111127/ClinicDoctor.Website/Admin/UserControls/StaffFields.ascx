@@ -28,13 +28,6 @@
 				</td>
 			</tr>
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataGroupId" runat="server" Text="Group Id:" AssociatedControlID="dataGroupId" /></td>
-        <td>
-					<data:EntityDropDownList runat="server" ID="dataGroupId" DataSourceID="GroupIdGroupDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("GroupId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
-					<data:GroupDataSource ID="GroupIdGroupDataSource" runat="server" SelectMethod="GetAll"  />
-				</td>
-			</tr>
-			<tr>
         <td class="literal"><asp:Label ID="lbldataUserName" runat="server" Text="User Name:" AssociatedControlID="dataUserName" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataUserName" Text='<%# Bind("UserName") %>' MaxLength="200"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataUserName" runat="server" Display="Dynamic" ControlToValidate="dataUserName" ErrorMessage="Required"></asp:RequiredFieldValidator>
