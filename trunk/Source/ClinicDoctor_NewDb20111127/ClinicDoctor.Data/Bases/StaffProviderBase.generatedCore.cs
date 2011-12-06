@@ -76,261 +76,6 @@ namespace ClinicDoctor.Data.Bases
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Staff_GroupId index.
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupId(System.Int64 _groupId)
-		{
-			int count = -1;
-			return GetByGroupId(null,_groupId, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupId(System.Int64 _groupId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByGroupId(null, _groupId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int64 _groupId)
-		{
-			int count = -1;
-			return GetByGroupId(transactionManager, _groupId, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int64 _groupId, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByGroupId(transactionManager, _groupId, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupId(System.Int64 _groupId, int start, int pageLength, out int count)
-		{
-			return GetByGroupId(null, _groupId, start, pageLength, out count);
-		}
-		
-				
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public abstract TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int64 _groupId, int start, int pageLength, out int count);
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Staff_GroupId_IsDisabled index.
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsDisabled(System.Int64 _groupId, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByGroupIdIsDisabled(null,_groupId, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsDisabled(System.Int64 _groupId, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByGroupIdIsDisabled(null, _groupId, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int64 _groupId, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByGroupIdIsDisabled(transactionManager, _groupId, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int64 _groupId, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByGroupIdIsDisabled(transactionManager, _groupId, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsDisabled(System.Int64 _groupId, System.Boolean _isDisabled, int start, int pageLength, out int count)
-		{
-			return GetByGroupIdIsDisabled(null, _groupId, _isDisabled, start, pageLength, out count);
-		}
-		
-				
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public abstract TList<Staff> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int64 _groupId, System.Boolean _isDisabled, int start, int pageLength, out int count);
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the primary key IX_Staff_GroupId_IsFemale_IsDisabled index.
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <param name="_isFemale"></param>
-		/// <param name="_isDisabled"></param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(System.Int64 _groupId, System.Boolean _isFemale, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByGroupIdIsFemaleIsDisabled(null,_groupId, _isFemale, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <param name="_isFemale"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(System.Int64 _groupId, System.Boolean _isFemale, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByGroupIdIsFemaleIsDisabled(null, _groupId, _isFemale, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="_isFemale"></param>
-		/// <param name="_isDisabled"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(TransactionManager transactionManager, System.Int64 _groupId, System.Boolean _isFemale, System.Boolean _isDisabled)
-		{
-			int count = -1;
-			return GetByGroupIdIsFemaleIsDisabled(transactionManager, _groupId, _isFemale, _isDisabled, 0, int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="_isFemale"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(TransactionManager transactionManager, System.Int64 _groupId, System.Boolean _isFemale, System.Boolean _isDisabled, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByGroupIdIsFemaleIsDisabled(transactionManager, _groupId, _isFemale, _isDisabled, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
-		/// </summary>
-		/// <param name="_groupId"></param>
-		/// <param name="_isFemale"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public TList<Staff> GetByGroupIdIsFemaleIsDisabled(System.Int64 _groupId, System.Boolean _isFemale, System.Boolean _isDisabled, int start, int pageLength, out int count)
-		{
-			return GetByGroupIdIsFemaleIsDisabled(null, _groupId, _isFemale, _isDisabled, start, pageLength, out count);
-		}
-		
-				
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="_isFemale"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		public abstract TList<Staff> GetByGroupIdIsFemaleIsDisabled(TransactionManager transactionManager, System.Int64 _groupId, System.Boolean _isFemale, System.Boolean _isDisabled, int start, int pageLength, out int count);
-						
-		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Staff_Id_IsDisabled index.
 		/// </summary>
 		/// <param name="_id"></param>
@@ -971,7 +716,6 @@ namespace ClinicDoctor.Data.Bases
 					c.FirstName = (System.String)reader[((int)StaffColumn.FirstName - 1)];
 					c.LastName = (System.String)reader[((int)StaffColumn.LastName - 1)];
 					c.ShortName = (System.String)reader[((int)StaffColumn.ShortName - 1)];
-					c.GroupId = (System.Int64)reader[((int)StaffColumn.GroupId - 1)];
 					c.UserName = (System.String)reader[((int)StaffColumn.UserName - 1)];
 					c.Address = (reader.IsDBNull(((int)StaffColumn.Address - 1)))?null:(System.String)reader[((int)StaffColumn.Address - 1)];
 					c.HomePhone = (reader.IsDBNull(((int)StaffColumn.HomePhone - 1)))?null:(System.String)reader[((int)StaffColumn.HomePhone - 1)];
@@ -1009,7 +753,6 @@ namespace ClinicDoctor.Data.Bases
 			entity.FirstName = (System.String)reader[((int)StaffColumn.FirstName - 1)];
 			entity.LastName = (System.String)reader[((int)StaffColumn.LastName - 1)];
 			entity.ShortName = (System.String)reader[((int)StaffColumn.ShortName - 1)];
-			entity.GroupId = (System.Int64)reader[((int)StaffColumn.GroupId - 1)];
 			entity.UserName = (System.String)reader[((int)StaffColumn.UserName - 1)];
 			entity.Address = (reader.IsDBNull(((int)StaffColumn.Address - 1)))?null:(System.String)reader[((int)StaffColumn.Address - 1)];
 			entity.HomePhone = (reader.IsDBNull(((int)StaffColumn.HomePhone - 1)))?null:(System.String)reader[((int)StaffColumn.HomePhone - 1)];
@@ -1042,7 +785,6 @@ namespace ClinicDoctor.Data.Bases
 			entity.FirstName = (System.String)dataRow["FirstName"];
 			entity.LastName = (System.String)dataRow["LastName"];
 			entity.ShortName = (System.String)dataRow["ShortName"];
-			entity.GroupId = (System.Int64)dataRow["GroupId"];
 			entity.UserName = (System.String)dataRow["UserName"];
 			entity.Address = Convert.IsDBNull(dataRow["Address"]) ? null : (System.String)dataRow["Address"];
 			entity.HomePhone = Convert.IsDBNull(dataRow["HomePhone"]) ? null : (System.String)dataRow["HomePhone"];
@@ -1082,35 +824,115 @@ namespace ClinicDoctor.Data.Bases
 		{
 			if(entity == null)
 				return;
-
-			#region GroupIdSource	
-			if (CanDeepLoad(entity, "Group|GroupIdSource", deepLoadType, innerList) 
-				&& entity.GroupIdSource == null)
-			{
-				object[] pkItems = new object[1];
-				pkItems[0] = entity.GroupId;
-				Group tmpEntity = EntityManager.LocateEntity<Group>(EntityLocator.ConstructKeyFromPkItems(typeof(Group), pkItems), DataRepository.Provider.EnableEntityTracking);
-				if (tmpEntity != null)
-					entity.GroupIdSource = tmpEntity;
-				else
-					entity.GroupIdSource = DataRepository.GroupProvider.GetById(transactionManager, entity.GroupId);		
-				
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'GroupIdSource' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-				
-				if (deep && entity.GroupIdSource != null)
-				{
-					innerList.SkipChildren = true;
-					DataRepository.GroupProvider.DeepLoad(transactionManager, entity.GroupIdSource, deep, deepLoadType, childTypes, innerList);
-					innerList.SkipChildren = false;
-				}
-					
-			}
-			#endregion GroupIdSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
+			// Deep load child collections  - Call GetById methods when available
+			
+			#region DoctorRoomCollection
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<DoctorRoom>|DoctorRoomCollection", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'DoctorRoomCollection' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.DoctorRoomCollection = DataRepository.DoctorRoomProvider.GetByDoctorUserName(transactionManager, entity.UserName);
+
+				if (deep && entity.DoctorRoomCollection.Count > 0)
+				{
+					deepHandles.Add("DoctorRoomCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<DoctorRoom>) DataRepository.DoctorRoomProvider.DeepLoad,
+						new object[] { transactionManager, entity.DoctorRoomCollection, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
+			
+			#region AppointmentCollectionGetByNurseUsername
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<Appointment>|AppointmentCollectionGetByNurseUsername", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'AppointmentCollectionGetByNurseUsername' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.AppointmentCollectionGetByNurseUsername = DataRepository.AppointmentProvider.GetByNurseUsername(transactionManager, entity.UserName);
+
+				if (deep && entity.AppointmentCollectionGetByNurseUsername.Count > 0)
+				{
+					deepHandles.Add("AppointmentCollectionGetByNurseUsername",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<Appointment>) DataRepository.AppointmentProvider.DeepLoad,
+						new object[] { transactionManager, entity.AppointmentCollectionGetByNurseUsername, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
+			
+			#region AppointmentCollectionGetByDoctorUsername
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<Appointment>|AppointmentCollectionGetByDoctorUsername", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'AppointmentCollectionGetByDoctorUsername' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.AppointmentCollectionGetByDoctorUsername = DataRepository.AppointmentProvider.GetByDoctorUsername(transactionManager, entity.UserName);
+
+				if (deep && entity.AppointmentCollectionGetByDoctorUsername.Count > 0)
+				{
+					deepHandles.Add("AppointmentCollectionGetByDoctorUsername",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<Appointment>) DataRepository.AppointmentProvider.DeepLoad,
+						new object[] { transactionManager, entity.AppointmentCollectionGetByDoctorUsername, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
+			
+			#region DoctorRosterCollection
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<DoctorRoster>|DoctorRosterCollection", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'DoctorRosterCollection' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.DoctorRosterCollection = DataRepository.DoctorRosterProvider.GetByDoctorUserName(transactionManager, entity.UserName);
+
+				if (deep && entity.DoctorRosterCollection.Count > 0)
+				{
+					deepHandles.Add("DoctorRosterCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<DoctorRoster>) DataRepository.DoctorRosterProvider.DeepLoad,
+						new object[] { transactionManager, entity.DoctorRosterCollection, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
+			
+			#region DoctorFuncCollection
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<DoctorFunc>|DoctorFuncCollection", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'DoctorFuncCollection' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.DoctorFuncCollection = DataRepository.DoctorFuncProvider.GetByDoctorUserName(transactionManager, entity.UserName);
+
+				if (deep && entity.DoctorFuncCollection.Count > 0)
+				{
+					deepHandles.Add("DoctorFuncCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<DoctorFunc>) DataRepository.DoctorFuncProvider.DeepLoad,
+						new object[] { transactionManager, entity.DoctorFuncCollection, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
 			
 			//Fire all DeepLoad Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
@@ -1141,15 +963,6 @@ namespace ClinicDoctor.Data.Bases
 			#region Composite Parent Properties
 			//Save Source Composite Properties, however, don't call deep save on them.  
 			//So they only get saved a single level deep.
-			
-			#region GroupIdSource
-			if (CanDeepSave(entity, "Group|GroupIdSource", deepSaveType, innerList) 
-				&& entity.GroupIdSource != null)
-			{
-				DataRepository.GroupProvider.Save(transactionManager, entity.GroupIdSource);
-				entity.GroupId = entity.GroupIdSource.Id;
-			}
-			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -1158,6 +971,156 @@ namespace ClinicDoctor.Data.Bases
 			
 			//used to hold DeepSave method delegates and fire after all the local children have been saved.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
+	
+			#region List<DoctorRoom>
+				if (CanDeepSave(entity.DoctorRoomCollection, "List<DoctorRoom>|DoctorRoomCollection", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(DoctorRoom child in entity.DoctorRoomCollection)
+					{
+						if(child.DoctorUserNameSource != null)
+						{
+							child.DoctorUserName = child.DoctorUserNameSource.UserName;
+						}
+						else
+						{
+							child.DoctorUserName = entity.UserName;
+						}
+
+					}
+
+					if (entity.DoctorRoomCollection.Count > 0 || entity.DoctorRoomCollection.DeletedItems.Count > 0)
+					{
+						//DataRepository.DoctorRoomProvider.Save(transactionManager, entity.DoctorRoomCollection);
+						
+						deepHandles.Add("DoctorRoomCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< DoctorRoom >) DataRepository.DoctorRoomProvider.DeepSave,
+							new object[] { transactionManager, entity.DoctorRoomCollection, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
+	
+			#region List<Appointment>
+				if (CanDeepSave(entity.AppointmentCollectionGetByNurseUsername, "List<Appointment>|AppointmentCollectionGetByNurseUsername", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(Appointment child in entity.AppointmentCollectionGetByNurseUsername)
+					{
+						if(child.NurseUsernameSource != null)
+						{
+							child.NurseUsername = child.NurseUsernameSource.UserName;
+						}
+						else
+						{
+							child.NurseUsername = entity.UserName;
+						}
+
+					}
+
+					if (entity.AppointmentCollectionGetByNurseUsername.Count > 0 || entity.AppointmentCollectionGetByNurseUsername.DeletedItems.Count > 0)
+					{
+						//DataRepository.AppointmentProvider.Save(transactionManager, entity.AppointmentCollectionGetByNurseUsername);
+						
+						deepHandles.Add("AppointmentCollectionGetByNurseUsername",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< Appointment >) DataRepository.AppointmentProvider.DeepSave,
+							new object[] { transactionManager, entity.AppointmentCollectionGetByNurseUsername, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
+	
+			#region List<Appointment>
+				if (CanDeepSave(entity.AppointmentCollectionGetByDoctorUsername, "List<Appointment>|AppointmentCollectionGetByDoctorUsername", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(Appointment child in entity.AppointmentCollectionGetByDoctorUsername)
+					{
+						if(child.DoctorUsernameSource != null)
+						{
+							child.DoctorUsername = child.DoctorUsernameSource.UserName;
+						}
+						else
+						{
+							child.DoctorUsername = entity.UserName;
+						}
+
+					}
+
+					if (entity.AppointmentCollectionGetByDoctorUsername.Count > 0 || entity.AppointmentCollectionGetByDoctorUsername.DeletedItems.Count > 0)
+					{
+						//DataRepository.AppointmentProvider.Save(transactionManager, entity.AppointmentCollectionGetByDoctorUsername);
+						
+						deepHandles.Add("AppointmentCollectionGetByDoctorUsername",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< Appointment >) DataRepository.AppointmentProvider.DeepSave,
+							new object[] { transactionManager, entity.AppointmentCollectionGetByDoctorUsername, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
+	
+			#region List<DoctorRoster>
+				if (CanDeepSave(entity.DoctorRosterCollection, "List<DoctorRoster>|DoctorRosterCollection", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(DoctorRoster child in entity.DoctorRosterCollection)
+					{
+						if(child.DoctorUserNameSource != null)
+						{
+							child.DoctorUserName = child.DoctorUserNameSource.UserName;
+						}
+						else
+						{
+							child.DoctorUserName = entity.UserName;
+						}
+
+					}
+
+					if (entity.DoctorRosterCollection.Count > 0 || entity.DoctorRosterCollection.DeletedItems.Count > 0)
+					{
+						//DataRepository.DoctorRosterProvider.Save(transactionManager, entity.DoctorRosterCollection);
+						
+						deepHandles.Add("DoctorRosterCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< DoctorRoster >) DataRepository.DoctorRosterProvider.DeepSave,
+							new object[] { transactionManager, entity.DoctorRosterCollection, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
+	
+			#region List<DoctorFunc>
+				if (CanDeepSave(entity.DoctorFuncCollection, "List<DoctorFunc>|DoctorFuncCollection", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(DoctorFunc child in entity.DoctorFuncCollection)
+					{
+						if(child.DoctorUserNameSource != null)
+						{
+							child.DoctorUserName = child.DoctorUserNameSource.UserName;
+						}
+						else
+						{
+							child.DoctorUserName = entity.UserName;
+						}
+
+					}
+
+					if (entity.DoctorFuncCollection.Count > 0 || entity.DoctorFuncCollection.DeletedItems.Count > 0)
+					{
+						//DataRepository.DoctorFuncProvider.Save(transactionManager, entity.DoctorFuncCollection);
+						
+						deepHandles.Add("DoctorFuncCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< DoctorFunc >) DataRepository.DoctorFuncProvider.DeepSave,
+							new object[] { transactionManager, entity.DoctorFuncCollection, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
 			//Fire all DeepSave Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
 		    {
@@ -1184,13 +1147,37 @@ namespace ClinicDoctor.Data.Bases
 	///</summary>
 	public enum StaffChildEntityTypes
 	{
-		
+
 		///<summary>
-		/// Composite Property for <c>Group</c> at GroupIdSource
+		/// Collection of <c>Staff</c> as OneToMany for DoctorRoomCollection
 		///</summary>
-		[ChildEntityType(typeof(Group))]
-		Group,
-		}
+		[ChildEntityType(typeof(TList<DoctorRoom>))]
+		DoctorRoomCollection,
+
+		///<summary>
+		/// Collection of <c>Staff</c> as OneToMany for AppointmentCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<Appointment>))]
+		AppointmentCollectionGetByNurseUsername,
+
+		///<summary>
+		/// Collection of <c>Staff</c> as OneToMany for AppointmentCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<Appointment>))]
+		AppointmentCollectionGetByDoctorUsername,
+
+		///<summary>
+		/// Collection of <c>Staff</c> as OneToMany for DoctorRosterCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<DoctorRoster>))]
+		DoctorRosterCollection,
+
+		///<summary>
+		/// Collection of <c>Staff</c> as OneToMany for DoctorFuncCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<DoctorFunc>))]
+		DoctorFuncCollection,
+	}
 	
 	#endregion StaffChildEntityTypes
 	

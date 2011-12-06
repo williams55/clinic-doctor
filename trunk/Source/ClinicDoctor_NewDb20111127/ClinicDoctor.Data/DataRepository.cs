@@ -418,40 +418,6 @@ namespace ClinicDoctor.Data
 
 		#region Static properties
 		
-		#region GroupProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Group"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static GroupProviderBase GroupProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.GroupProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region StaffProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Staff"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static StaffProviderBase StaffProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.StaffProvider;
-			}
-		}
-		
-		#endregion
-		
 		#region RoomProvider
 
 		///<summary>
@@ -469,18 +435,35 @@ namespace ClinicDoctor.Data
 		
 		#endregion
 		
-		#region FunctionalityProvider
+		#region AppointmentProvider
 
 		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Functionality"/> business entity.
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Appointment"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
-		public static FunctionalityProviderBase FunctionalityProvider
+		public static AppointmentProviderBase AppointmentProvider
 		{
 			get 
 			{
 				LoadProviders();
-				return _provider.FunctionalityProvider;
+				return _provider.AppointmentProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region RoomFuncProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="RoomFunc"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static RoomFuncProviderBase RoomFuncProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.RoomFuncProvider;
 			}
 		}
 		
@@ -503,6 +486,40 @@ namespace ClinicDoctor.Data
 		
 		#endregion
 		
+		#region StaffProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Staff"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static StaffProviderBase StaffProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.StaffProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region FunctionalityProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Functionality"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static FunctionalityProviderBase FunctionalityProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.FunctionalityProvider;
+			}
+		}
+		
+		#endregion
+		
 		#region DoctorRosterProvider
 
 		///<summary>
@@ -520,40 +537,6 @@ namespace ClinicDoctor.Data
 		
 		#endregion
 		
-		#region DoctorRoomProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="DoctorRoom"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static DoctorRoomProviderBase DoctorRoomProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.DoctorRoomProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region StatusProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Status"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static StatusProviderBase StatusProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.StatusProvider;
-			}
-		}
-		
-		#endregion
-		
 		#region ContentProvider
 
 		///<summary>
@@ -566,23 +549,6 @@ namespace ClinicDoctor.Data
 			{
 				LoadProviders();
 				return _provider.ContentProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region RoomFuncProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="RoomFunc"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static RoomFuncProviderBase RoomFuncProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.RoomFuncProvider;
 			}
 		}
 		
@@ -622,18 +588,35 @@ namespace ClinicDoctor.Data
 		
 		#endregion
 		
-		#region AppointmentProvider
+		#region DoctorRoomProvider
 
 		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Appointment"/> business entity.
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="DoctorRoom"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
-		public static AppointmentProviderBase AppointmentProvider
+		public static DoctorRoomProviderBase DoctorRoomProvider
 		{
 			get 
 			{
 				LoadProviders();
-				return _provider.AppointmentProvider;
+				return _provider.DoctorRoomProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region StatusProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Status"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static StatusProviderBase StatusProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.StatusProvider;
 			}
 		}
 		
@@ -644,142 +627,6 @@ namespace ClinicDoctor.Data
 	}
 	
 	#region Query/Filters
-		
-	#region GroupFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Group"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class GroupFilters : GroupFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the GroupFilters class.
-		/// </summary>
-		public GroupFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the GroupFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public GroupFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the GroupFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public GroupFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion GroupFilters
-	
-	#region GroupQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="GroupParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Group"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class GroupQuery : GroupParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the GroupQuery class.
-		/// </summary>
-		public GroupQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the GroupQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public GroupQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the GroupQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public GroupQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion GroupQuery
-		
-	#region StaffFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Staff"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class StaffFilters : StaffFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the StaffFilters class.
-		/// </summary>
-		public StaffFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the StaffFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public StaffFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the StaffFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public StaffFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion StaffFilters
-	
-	#region StaffQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="StaffParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Staff"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class StaffQuery : StaffParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the StaffQuery class.
-		/// </summary>
-		public StaffQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the StaffQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public StaffQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the StaffQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public StaffQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion StaffQuery
 		
 	#region RoomFilters
 	
@@ -849,73 +696,141 @@ namespace ClinicDoctor.Data
 
 	#endregion RoomQuery
 		
-	#region FunctionalityFilters
+	#region AppointmentFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Functionality"/> object.
+	/// that is used exclusively with a <see cref="Appointment"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class FunctionalityFilters : FunctionalityFilterBuilder
+	public class AppointmentFilters : AppointmentFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the FunctionalityFilters class.
+		/// Initializes a new instance of the AppointmentFilters class.
 		/// </summary>
-		public FunctionalityFilters() : base() { }
+		public AppointmentFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the FunctionalityFilters class.
+		/// Initializes a new instance of the AppointmentFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public FunctionalityFilters(bool ignoreCase) : base(ignoreCase) { }
+		public AppointmentFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the FunctionalityFilters class.
+		/// Initializes a new instance of the AppointmentFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public FunctionalityFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public AppointmentFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion FunctionalityFilters
+	#endregion AppointmentFilters
 	
-	#region FunctionalityQuery
+	#region AppointmentQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="FunctionalityParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Functionality"/> object.
+	/// A strongly-typed instance of the <see cref="AppointmentParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Appointment"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class FunctionalityQuery : FunctionalityParameterBuilder
+	public class AppointmentQuery : AppointmentParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the FunctionalityQuery class.
+		/// Initializes a new instance of the AppointmentQuery class.
 		/// </summary>
-		public FunctionalityQuery() : base() { }
+		public AppointmentQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the FunctionalityQuery class.
+		/// Initializes a new instance of the AppointmentQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public FunctionalityQuery(bool ignoreCase) : base(ignoreCase) { }
+		public AppointmentQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the FunctionalityQuery class.
+		/// Initializes a new instance of the AppointmentQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public FunctionalityQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public AppointmentQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion FunctionalityQuery
+	#endregion AppointmentQuery
+		
+	#region RoomFuncFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="RoomFunc"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class RoomFuncFilters : RoomFuncFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the RoomFuncFilters class.
+		/// </summary>
+		public RoomFuncFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the RoomFuncFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public RoomFuncFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the RoomFuncFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public RoomFuncFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion RoomFuncFilters
+	
+	#region RoomFuncQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="RoomFuncParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="RoomFunc"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class RoomFuncQuery : RoomFuncParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the RoomFuncQuery class.
+		/// </summary>
+		public RoomFuncQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the RoomFuncQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public RoomFuncQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the RoomFuncQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public RoomFuncQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion RoomFuncQuery
 		
 	#region RosterTypeFilters
 	
@@ -985,6 +900,142 @@ namespace ClinicDoctor.Data
 
 	#endregion RosterTypeQuery
 		
+	#region StaffFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="Staff"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class StaffFilters : StaffFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the StaffFilters class.
+		/// </summary>
+		public StaffFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the StaffFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public StaffFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the StaffFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public StaffFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion StaffFilters
+	
+	#region StaffQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="StaffParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Staff"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class StaffQuery : StaffParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the StaffQuery class.
+		/// </summary>
+		public StaffQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the StaffQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public StaffQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the StaffQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public StaffQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion StaffQuery
+		
+	#region FunctionalityFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="Functionality"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class FunctionalityFilters : FunctionalityFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the FunctionalityFilters class.
+		/// </summary>
+		public FunctionalityFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the FunctionalityFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public FunctionalityFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the FunctionalityFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public FunctionalityFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion FunctionalityFilters
+	
+	#region FunctionalityQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="FunctionalityParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Functionality"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class FunctionalityQuery : FunctionalityParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the FunctionalityQuery class.
+		/// </summary>
+		public FunctionalityQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the FunctionalityQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public FunctionalityQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the FunctionalityQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public FunctionalityQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion FunctionalityQuery
+		
 	#region DoctorRosterFilters
 	
 	/// <summary>
@@ -1053,142 +1104,6 @@ namespace ClinicDoctor.Data
 
 	#endregion DoctorRosterQuery
 		
-	#region DoctorRoomFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="DoctorRoom"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class DoctorRoomFilters : DoctorRoomFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorRoomFilters class.
-		/// </summary>
-		public DoctorRoomFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorRoomFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public DoctorRoomFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorRoomFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public DoctorRoomFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion DoctorRoomFilters
-	
-	#region DoctorRoomQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="DoctorRoomParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="DoctorRoom"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class DoctorRoomQuery : DoctorRoomParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorRoomQuery class.
-		/// </summary>
-		public DoctorRoomQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorRoomQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public DoctorRoomQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorRoomQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public DoctorRoomQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion DoctorRoomQuery
-		
-	#region StatusFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Status"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class StatusFilters : StatusFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the StatusFilters class.
-		/// </summary>
-		public StatusFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the StatusFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public StatusFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the StatusFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public StatusFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion StatusFilters
-	
-	#region StatusQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="StatusParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Status"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class StatusQuery : StatusParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the StatusQuery class.
-		/// </summary>
-		public StatusQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the StatusQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public StatusQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the StatusQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public StatusQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion StatusQuery
-		
 	#region ContentFilters
 	
 	/// <summary>
@@ -1256,74 +1171,6 @@ namespace ClinicDoctor.Data
 	}
 
 	#endregion ContentQuery
-		
-	#region RoomFuncFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="RoomFunc"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class RoomFuncFilters : RoomFuncFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the RoomFuncFilters class.
-		/// </summary>
-		public RoomFuncFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoomFuncFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoomFuncFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoomFuncFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoomFuncFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion RoomFuncFilters
-	
-	#region RoomFuncQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="RoomFuncParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="RoomFunc"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class RoomFuncQuery : RoomFuncParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the RoomFuncQuery class.
-		/// </summary>
-		public RoomFuncQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoomFuncQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoomFuncQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoomFuncQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoomFuncQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion RoomFuncQuery
 		
 	#region CustomerFilters
 	
@@ -1461,73 +1308,141 @@ namespace ClinicDoctor.Data
 
 	#endregion DoctorFuncQuery
 		
-	#region AppointmentFilters
+	#region DoctorRoomFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Appointment"/> object.
+	/// that is used exclusively with a <see cref="DoctorRoom"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class AppointmentFilters : AppointmentFilterBuilder
+	public class DoctorRoomFilters : DoctorRoomFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentFilters class.
+		/// Initializes a new instance of the DoctorRoomFilters class.
 		/// </summary>
-		public AppointmentFilters() : base() { }
+		public DoctorRoomFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentFilters class.
+		/// Initializes a new instance of the DoctorRoomFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentFilters(bool ignoreCase) : base(ignoreCase) { }
+		public DoctorRoomFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentFilters class.
+		/// Initializes a new instance of the DoctorRoomFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public DoctorRoomFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion AppointmentFilters
+	#endregion DoctorRoomFilters
 	
-	#region AppointmentQuery
+	#region DoctorRoomQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="AppointmentParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Appointment"/> object.
+	/// A strongly-typed instance of the <see cref="DoctorRoomParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="DoctorRoom"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class AppointmentQuery : AppointmentParameterBuilder
+	public class DoctorRoomQuery : DoctorRoomParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentQuery class.
+		/// Initializes a new instance of the DoctorRoomQuery class.
 		/// </summary>
-		public AppointmentQuery() : base() { }
+		public DoctorRoomQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentQuery class.
+		/// Initializes a new instance of the DoctorRoomQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentQuery(bool ignoreCase) : base(ignoreCase) { }
+		public DoctorRoomQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentQuery class.
+		/// Initializes a new instance of the DoctorRoomQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public DoctorRoomQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion AppointmentQuery
+	#endregion DoctorRoomQuery
+		
+	#region StatusFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="Status"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class StatusFilters : StatusFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the StatusFilters class.
+		/// </summary>
+		public StatusFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the StatusFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public StatusFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the StatusFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public StatusFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion StatusFilters
+	
+	#region StatusQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="StatusParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Status"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class StatusQuery : StatusParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the StatusQuery class.
+		/// </summary>
+		public StatusQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the StatusQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public StatusQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the StatusQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public StatusQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion StatusQuery
 	#endregion
 
 	

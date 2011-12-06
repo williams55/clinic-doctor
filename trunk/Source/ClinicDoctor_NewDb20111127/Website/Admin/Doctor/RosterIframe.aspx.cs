@@ -699,7 +699,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             // If there is no roles, return empty data
             if (lstDoctorFunc.Count == 0)
             {
-                result = @"[{ 'result': 'false', 'message': 'There is no group or no doctor. Please contact Administrator.', 'data': [] }]";
+                result = @"[{ 'result': 'true', 'message': 'There is no group or no doctor. Please contact Administrator.', 'data': [] }]";
                 goto StepResult;
             }
 

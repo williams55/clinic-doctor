@@ -508,6 +508,17 @@ namespace ClinicDoctor.Entities
             get { return entityData.FuncIdSource; }
             set { entityData.FuncIdSource = value; }
       	}
+		/// <summary>
+		/// Gets or sets the source <see cref="Staff"/>.
+		/// </summary>
+		/// <value>The source Staff for DoctorUserName.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Staff DoctorUserNameSource
+      	{
+            get { return entityData.DoctorUserNameSource; }
+            set { entityData.DoctorUserNameSource = value; }
+      	}
 		#endregion
 		
 		#region Children Collections
@@ -717,6 +728,10 @@ namespace ClinicDoctor.Entities
 				copy.FuncIdSource = existingCopies[this.FuncIdSource] as Functionality;
 			else
 				copy.FuncIdSource = MakeCopyOf(this.FuncIdSource, existingCopies) as Functionality;
+			if (this.DoctorUserNameSource != null && existingCopies.Contains(this.DoctorUserNameSource))
+				copy.DoctorUserNameSource = existingCopies[this.DoctorUserNameSource] as Staff;
+			else
+				copy.DoctorUserNameSource = MakeCopyOf(this.DoctorUserNameSource, existingCopies) as Staff;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -1392,6 +1407,19 @@ namespace ClinicDoctor.Entities
             get { return this._funcIdSource; }
             set { this._funcIdSource = value; }
       	}
+		private Staff _doctorUserNameSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Staff"/>.
+		/// </summary>
+		/// <value>The source Staff for DoctorUserName.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Staff DoctorUserNameSource
+      	{
+            get { return this._doctorUserNameSource; }
+            set { this._doctorUserNameSource = value; }
+      	}
 		#endregion
 		#endregion Variable Declarations
 	
@@ -1424,6 +1452,8 @@ namespace ClinicDoctor.Entities
 			#region Source Parent Composite Entities
 			if (this.FuncIdSource != null)
 				_tmp.FuncIdSource = MakeCopyOf(this.FuncIdSource) as Functionality;
+			if (this.DoctorUserNameSource != null)
+				_tmp.DoctorUserNameSource = MakeCopyOf(this.DoctorUserNameSource) as Staff;
 			#endregion
 		
 			#region Child Collections
@@ -1463,6 +1493,10 @@ namespace ClinicDoctor.Entities
 				_tmp.FuncIdSource = existingCopies[this.FuncIdSource] as Functionality;
 			else
 				_tmp.FuncIdSource = MakeCopyOf(this.FuncIdSource, existingCopies) as Functionality;
+			if (this.DoctorUserNameSource != null && existingCopies.Contains(this.DoctorUserNameSource))
+				_tmp.DoctorUserNameSource = existingCopies[this.DoctorUserNameSource] as Staff;
+			else
+				_tmp.DoctorUserNameSource = MakeCopyOf(this.DoctorUserNameSource, existingCopies) as Staff;
 			#endregion
 		
 			#region Child Collections

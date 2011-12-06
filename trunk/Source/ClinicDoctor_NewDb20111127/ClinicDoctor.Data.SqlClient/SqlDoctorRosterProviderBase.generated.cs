@@ -180,6 +180,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RosterTypeId", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RosterTypeTitle", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, DBNull.Value);
@@ -232,6 +233,12 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@RosterTypeTitle", 
 						clause.Trim().Remove(0,15).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("colorcode ") || clause.Trim().StartsWith("colorcode="))
+				{
+					database.SetParameterValue(commandWrapper, "@ColorCode", 
+						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("isbooked ") || clause.Trim().StartsWith("isbooked="))
@@ -1780,32 +1787,35 @@ namespace ClinicDoctor.Data.SqlClient
 			col3.AllowDBNull = false;		
 			DataColumn col4 = dataTable.Columns.Add("RosterTypeTitle", typeof(System.String));
 			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("IsBooked", typeof(System.Boolean));
+			DataColumn col5 = dataTable.Columns.Add("ColorCode", typeof(System.String));
 			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("StartTime", typeof(System.DateTime));
-			col6.AllowDBNull = false;		
-			DataColumn col7 = dataTable.Columns.Add("EndTime", typeof(System.DateTime));
+			DataColumn col6 = dataTable.Columns.Add("IsBooked", typeof(System.Boolean));
+			col6.AllowDBNull = true;		
+			DataColumn col7 = dataTable.Columns.Add("StartTime", typeof(System.DateTime));
 			col7.AllowDBNull = false;		
-			DataColumn col8 = dataTable.Columns.Add("Note", typeof(System.String));
-			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
-			col9.AllowDBNull = false;		
-			DataColumn col10 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col8 = dataTable.Columns.Add("EndTime", typeof(System.DateTime));
+			col8.AllowDBNull = false;		
+			DataColumn col9 = dataTable.Columns.Add("Note", typeof(System.String));
+			col9.AllowDBNull = true;		
+			DataColumn col10 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
 			col10.AllowDBNull = false;		
-			DataColumn col11 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col11.AllowDBNull = true;		
-			DataColumn col12 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col12.AllowDBNull = false;		
-			DataColumn col13 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col13.AllowDBNull = true;		
-			DataColumn col14 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col14.AllowDBNull = false;		
+			DataColumn col11 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col11.AllowDBNull = false;		
+			DataColumn col12 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col12.AllowDBNull = true;		
+			DataColumn col13 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col13.AllowDBNull = false;		
+			DataColumn col14 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col14.AllowDBNull = true;		
+			DataColumn col15 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col15.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("DoctorUserName", "DoctorUserName");
 			bulkCopy.ColumnMappings.Add("DoctorShortName", "DoctorShortName");
 			bulkCopy.ColumnMappings.Add("RosterTypeId", "RosterTypeId");
 			bulkCopy.ColumnMappings.Add("RosterTypeTitle", "RosterTypeTitle");
+			bulkCopy.ColumnMappings.Add("ColorCode", "ColorCode");
 			bulkCopy.ColumnMappings.Add("IsBooked", "IsBooked");
 			bulkCopy.ColumnMappings.Add("StartTime", "StartTime");
 			bulkCopy.ColumnMappings.Add("EndTime", "EndTime");
@@ -1837,6 +1847,9 @@ namespace ClinicDoctor.Data.SqlClient
 							
 				
 					row["RosterTypeTitle"] = entity.RosterTypeTitle;
+							
+				
+					row["ColorCode"] = entity.ColorCode;
 							
 				
 					row["IsBooked"] = entity.IsBooked.HasValue ? (object) entity.IsBooked  : System.DBNull.Value;
@@ -1908,6 +1921,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
 			database.AddInParameter(commandWrapper, "@RosterTypeId", DbType.Int64, entity.RosterTypeId );
 			database.AddInParameter(commandWrapper, "@RosterTypeTitle", DbType.String, entity.RosterTypeTitle );
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, (entity.IsBooked.HasValue ? (object) entity.IsBooked  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, entity.StartTime );
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, entity.EndTime );
@@ -1971,6 +1985,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
 			database.AddInParameter(commandWrapper, "@RosterTypeId", DbType.Int64, entity.RosterTypeId );
 			database.AddInParameter(commandWrapper, "@RosterTypeTitle", DbType.String, entity.RosterTypeTitle );
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@IsBooked", DbType.Boolean, (entity.IsBooked.HasValue ? (object) entity.IsBooked : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, entity.StartTime );
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, entity.EndTime );

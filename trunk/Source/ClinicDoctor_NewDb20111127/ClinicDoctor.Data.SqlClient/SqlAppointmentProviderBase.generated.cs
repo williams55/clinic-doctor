@@ -191,6 +191,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsComplete", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -305,6 +306,12 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@EndTime", 
 						clause.Trim().Remove(0,7).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("colorcode ") || clause.Trim().StartsWith("colorcode="))
+				{
+					database.SetParameterValue(commandWrapper, "@ColorCode", 
+						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("iscomplete ") || clause.Trim().StartsWith("iscomplete="))
@@ -613,6 +620,70 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion	
 		
 		#region Get By Foreign Key Functions
+
+		#region GetByNurseUsername
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Staff1 key.
+		///		FK_Appointment_Staff1 Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_nurseUsername"></param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Appointment objects.</returns>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Appointment> GetByNurseUsername(TransactionManager transactionManager, System.String _nurseUsername, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByNurseUsername", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@NurseUsername", DbType.String, _nurseUsername);
+			
+			IDataReader reader = null;
+			TList<Appointment> rows = new TList<Appointment>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByNurseUsername", rows)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}
+			
+				//Create Collection
+				Fill(reader, rows, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByNurseUsername", rows)); 
+			}
+			finally
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			return rows;
+		}	
+		#endregion
+	
 	#endregion
 	
 		#region Get By Index Functions
@@ -2103,18 +2174,20 @@ namespace ClinicDoctor.Data.SqlClient
 			col14.AllowDBNull = true;		
 			DataColumn col15 = dataTable.Columns.Add("EndTime", typeof(System.DateTime));
 			col15.AllowDBNull = true;		
-			DataColumn col16 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
+			DataColumn col16 = dataTable.Columns.Add("ColorCode", typeof(System.String));
 			col16.AllowDBNull = false;		
-			DataColumn col17 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col17 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
 			col17.AllowDBNull = false;		
-			DataColumn col18 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col18.AllowDBNull = true;		
-			DataColumn col19 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col19.AllowDBNull = false;		
-			DataColumn col20 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col20.AllowDBNull = true;		
-			DataColumn col21 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col21.AllowDBNull = false;		
+			DataColumn col18 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col18.AllowDBNull = false;		
+			DataColumn col19 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col19.AllowDBNull = true;		
+			DataColumn col20 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col20.AllowDBNull = false;		
+			DataColumn col21 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col21.AllowDBNull = true;		
+			DataColumn col22 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col22.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("CustomerId", "CustomerId");
@@ -2132,6 +2205,7 @@ namespace ClinicDoctor.Data.SqlClient
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("StartTime", "StartTime");
 			bulkCopy.ColumnMappings.Add("EndTime", "EndTime");
+			bulkCopy.ColumnMappings.Add("ColorCode", "ColorCode");
 			bulkCopy.ColumnMappings.Add("IsComplete", "IsComplete");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
@@ -2192,6 +2266,9 @@ namespace ClinicDoctor.Data.SqlClient
 							
 				
 					row["EndTime"] = entity.EndTime.HasValue ? (object) entity.EndTime  : System.DBNull.Value;
+							
+				
+					row["ColorCode"] = entity.ColorCode;
 							
 				
 					row["IsComplete"] = entity.IsComplete;
@@ -2262,6 +2339,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, (entity.StartTime.HasValue ? (object) entity.StartTime  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, (entity.EndTime.HasValue ? (object) entity.EndTime  : System.DBNull.Value));
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@IsComplete", DbType.Boolean, entity.IsComplete );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -2332,6 +2410,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, (entity.StartTime.HasValue ? (object) entity.StartTime : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, (entity.EndTime.HasValue ? (object) entity.EndTime : System.DBNull.Value) );
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@IsComplete", DbType.Boolean, entity.IsComplete );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );

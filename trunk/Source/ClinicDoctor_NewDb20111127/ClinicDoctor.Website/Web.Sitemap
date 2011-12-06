@@ -10,7 +10,6 @@
 	<siteMapNode url="~/Admin/DoctorRoom.aspx" title="Doctor Room"  description="" />
 	<siteMapNode url="~/Admin/DoctorRoster.aspx" title="Doctor Roster"  description="" />
 	<siteMapNode url="~/Admin/Functionality.aspx" title="Functionality"  description="" />
-	<siteMapNode url="~/Admin/Group.aspx" title="Group"  description="" />
 	<siteMapNode url="~/Admin/Room.aspx" title="Room"  description="" />
 	<siteMapNode url="~/Admin/RoomFunc.aspx" title="Room Func"  description="" />
 	<siteMapNode url="~/Admin/RosterType.aspx" title="Roster Type"  description="" />

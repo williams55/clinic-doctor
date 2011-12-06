@@ -999,6 +999,32 @@ namespace ClinicDoctor.Data.Bases
 					
 			}
 			#endregion RoomIdSource
+
+			#region DoctorUserNameSource	
+			if (CanDeepLoad(entity, "Staff|DoctorUserNameSource", deepLoadType, innerList) 
+				&& entity.DoctorUserNameSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = entity.DoctorUserName;
+				Staff tmpEntity = EntityManager.LocateEntity<Staff>(EntityLocator.ConstructKeyFromPkItems(typeof(Staff), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.DoctorUserNameSource = tmpEntity;
+				else
+					entity.DoctorUserNameSource = DataRepository.StaffProvider.GetByUserName(transactionManager, entity.DoctorUserName);		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'DoctorUserNameSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.DoctorUserNameSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.StaffProvider.DeepLoad(transactionManager, entity.DoctorUserNameSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion DoctorUserNameSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -1041,6 +1067,15 @@ namespace ClinicDoctor.Data.Bases
 				entity.RoomId = entity.RoomIdSource.Id;
 			}
 			#endregion 
+			
+			#region DoctorUserNameSource
+			if (CanDeepSave(entity, "Staff|DoctorUserNameSource", deepSaveType, innerList) 
+				&& entity.DoctorUserNameSource != null)
+			{
+				DataRepository.StaffProvider.Save(transactionManager, entity.DoctorUserNameSource);
+				entity.DoctorUserName = entity.DoctorUserNameSource.UserName;
+			}
+			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -1081,6 +1116,12 @@ namespace ClinicDoctor.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Room))]
 		Room,
+			
+		///<summary>
+		/// Composite Property for <c>Staff</c> at DoctorUserNameSource
+		///</summary>
+		[ChildEntityType(typeof(Staff))]
+		Staff,
 		}
 	
 	#endregion DoctorRoomChildEntityTypes

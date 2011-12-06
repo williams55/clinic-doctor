@@ -1,4 +1,8 @@
-﻿// Load calendar for Schedule
+﻿var blHour = false;
+var blStaff = false;
+var blRosterType = false;
+
+// Load calendar for Schedule
 function show_minical() {
     if (scheduler.isCalendarVisible())
         scheduler.destroyCalendar();
@@ -65,16 +69,6 @@ function initSchedule(weekday) {
 
                     // When event changed, check and update
                     scheduler.attachEvent("onBeforeEventChanged", function (event_object, native_event, is_new) {
-                        //                        var evs = scheduler.getEvents(event_object.start_date, event_object.end_date);
-                        //                        if (evs) {
-                        //                            $.each(evs, function(i, item) {
-                        //                                if (item.section_id == event_object.section_id && item.id != event_object.id) {
-                        //                                    alert("You can not create roster on another existed roster.");
-                        //                                    return false;
-                        //                                }
-                        //                            });
-                        //                        }
-
                         // If update roster
                         if (is_new == false) {
                             if (event_object.start_date <= new Date()) {
@@ -107,12 +101,6 @@ function initSchedule(weekday) {
                         UpdateRoster(requestdata, 'UpdateEventMove', _id);
                     });
 
-                    // When view changed, reload roster
-                    //    scheduler.attachEvent("onViewChange", function(mode, date) {
-                    //any custom logic here
-                    //        LoadRoster(mode, date);
-                    //    });
-
                     // Load roster
                     LoadRoster(_mode, _date);
                 }
@@ -129,7 +117,13 @@ function initSchedule(weekday) {
     });
 }
 
-scheduler.showLightbox = function (id) {
+scheduler.showLightbox = function(id) {
+    if (!blHour || !blStaff || !blRosterType) {
+        scheduler.deleteEvent(id);
+        alert("Loading data is not complete. Please wait for a few moment.");
+        return false;
+    }
+    
     initForm();
 
     var ev = scheduler.getEvent(id);
@@ -219,6 +213,7 @@ function loadRosterType() {
             $.each(rosterType, function(i, item) {
                 $("#cboRosterType").append('<option value="' + item.key + '">' + item.label + '</option>');
             });
+            blRosterType = true;
         },
         fail: function() {
             alert("Cannot load Roster Type data. Please try again or contact Administrator.");
@@ -252,6 +247,8 @@ function loadHour() {
                 $("#cboFromHour").append('<option value="' + item.key + '">' + item.label + '</option>');
                 $("#cboToHour").append('<option value="' + item.key + '">' + item.label + '</option>');
             });
+
+            blHour = true;
         },
         fail: function() {
             alert("Cannot load Hour data. Please try again or contact Administrator.");
@@ -284,6 +281,7 @@ function loadStaff() {
             else {
                 alert(obj.message);
             }
+            blStaff = true;
         },
         fail: function() {
             alert("Cannot load Doctor data. Please try again or contact Administrator.");

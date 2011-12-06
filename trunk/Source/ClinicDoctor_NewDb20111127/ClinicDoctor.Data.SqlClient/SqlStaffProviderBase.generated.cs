@@ -179,7 +179,6 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@FirstName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@LastName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@ShortName", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@GroupId", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@UserName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Address", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@HomePhone", DbType.String, DBNull.Value);
@@ -231,12 +230,6 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@ShortName", 
 						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
-					continue;
-				}
-				if (clause.Trim().StartsWith("groupid ") || clause.Trim().StartsWith("groupid="))
-				{
-					database.SetParameterValue(commandWrapper, "@GroupId", 
-						clause.Trim().Remove(0,7).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("username ") || clause.Trim().StartsWith("username="))
@@ -602,216 +595,6 @@ namespace ClinicDoctor.Data.SqlClient
 	#endregion
 	
 		#region Get By Index Functions
-
-		#region GetByGroupId
-					
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query.</param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		/// <remarks></remarks>
-        /// <exception cref="System.Exception">The command could not be executed.</exception>
-        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
-        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Staff> GetByGroupId(TransactionManager transactionManager, System.Int64 _groupId, int start, int pageLength, out int count)
-		{
-			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByGroupId", _useStoredProcedure);
-			
-				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int64, _groupId);
-			
-			IDataReader reader = null;
-			TList<Staff> tmp = new TList<Staff>();
-			try
-			{
-				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupId", tmp)); 
-
-				if (transactionManager != null)
-				{
-					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
-				}
-				else
-				{
-					reader = Utility.ExecuteReader(database, commandWrapper);
-				}		
-		
-				//Create collection and fill
-				Fill(reader, tmp, start, pageLength);
-				count = -1;
-				if(reader.NextResult())
-				{
-					if(reader.Read())
-					{
-						count = reader.GetInt32(0);
-					}
-				}
-				
-				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupId", tmp));
-			}
-			finally 
-			{
-				if (reader != null) 
-					reader.Close();
-					
-				commandWrapper = null;
-			}
-			
-			return tmp;
-			
-			//return rows;
-		}
-		
-		#endregion
-
-
-		#region GetByGroupIdIsDisabled
-					
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query.</param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		/// <remarks></remarks>
-        /// <exception cref="System.Exception">The command could not be executed.</exception>
-        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
-        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Staff> GetByGroupIdIsDisabled(TransactionManager transactionManager, System.Int64 _groupId, System.Boolean _isDisabled, int start, int pageLength, out int count)
-		{
-			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByGroupIdIsDisabled", _useStoredProcedure);
-			
-				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int64, _groupId);
-				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
-			
-			IDataReader reader = null;
-			TList<Staff> tmp = new TList<Staff>();
-			try
-			{
-				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupIdIsDisabled", tmp)); 
-
-				if (transactionManager != null)
-				{
-					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
-				}
-				else
-				{
-					reader = Utility.ExecuteReader(database, commandWrapper);
-				}		
-		
-				//Create collection and fill
-				Fill(reader, tmp, start, pageLength);
-				count = -1;
-				if(reader.NextResult())
-				{
-					if(reader.Read())
-					{
-						count = reader.GetInt32(0);
-					}
-				}
-				
-				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupIdIsDisabled", tmp));
-			}
-			finally 
-			{
-				if (reader != null) 
-					reader.Close();
-					
-				commandWrapper = null;
-			}
-			
-			return tmp;
-			
-			//return rows;
-		}
-		
-		#endregion
-
-
-		#region GetByGroupIdIsFemaleIsDisabled
-					
-		/// <summary>
-		/// 	Gets rows from the datasource based on the IX_Staff_GroupId_IsFemale_IsDisabled index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_groupId"></param>
-		/// <param name="_isFemale"></param>
-		/// <param name="_isDisabled"></param>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query.</param>
-		/// <returns>Returns an instance of the <see cref="TList&lt;Staff&gt;"/> class.</returns>
-		/// <remarks></remarks>
-        /// <exception cref="System.Exception">The command could not be executed.</exception>
-        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
-        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Staff> GetByGroupIdIsFemaleIsDisabled(TransactionManager transactionManager, System.Int64 _groupId, System.Boolean _isFemale, System.Boolean _isDisabled, int start, int pageLength, out int count)
-		{
-			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Staff_GetByGroupIdIsFemaleIsDisabled", _useStoredProcedure);
-			
-				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int64, _groupId);
-				database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, _isFemale);
-				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
-			
-			IDataReader reader = null;
-			TList<Staff> tmp = new TList<Staff>();
-			try
-			{
-				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByGroupIdIsFemaleIsDisabled", tmp)); 
-
-				if (transactionManager != null)
-				{
-					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
-				}
-				else
-				{
-					reader = Utility.ExecuteReader(database, commandWrapper);
-				}		
-		
-				//Create collection and fill
-				Fill(reader, tmp, start, pageLength);
-				count = -1;
-				if(reader.NextResult())
-				{
-					if(reader.Read())
-					{
-						count = reader.GetInt32(0);
-					}
-				}
-				
-				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByGroupIdIsFemaleIsDisabled", tmp));
-			}
-			finally 
-			{
-				if (reader != null) 
-					reader.Close();
-					
-				commandWrapper = null;
-			}
-			
-			return tmp;
-			
-			//return rows;
-		}
-		
-		#endregion
-
 
 		#region GetByIdIsDisabled
 					
@@ -1379,44 +1162,41 @@ namespace ClinicDoctor.Data.SqlClient
 			col2.AllowDBNull = false;		
 			DataColumn col3 = dataTable.Columns.Add("ShortName", typeof(System.String));
 			col3.AllowDBNull = false;		
-			DataColumn col4 = dataTable.Columns.Add("GroupId", typeof(System.Int64));
+			DataColumn col4 = dataTable.Columns.Add("UserName", typeof(System.String));
 			col4.AllowDBNull = false;		
-			DataColumn col5 = dataTable.Columns.Add("UserName", typeof(System.String));
-			col5.AllowDBNull = false;		
-			DataColumn col6 = dataTable.Columns.Add("Address", typeof(System.String));
+			DataColumn col5 = dataTable.Columns.Add("Address", typeof(System.String));
+			col5.AllowDBNull = true;		
+			DataColumn col6 = dataTable.Columns.Add("HomePhone", typeof(System.String));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("HomePhone", typeof(System.String));
+			DataColumn col7 = dataTable.Columns.Add("WorkPhone", typeof(System.String));
 			col7.AllowDBNull = true;		
-			DataColumn col8 = dataTable.Columns.Add("WorkPhone", typeof(System.String));
+			DataColumn col8 = dataTable.Columns.Add("CellPhone", typeof(System.String));
 			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("CellPhone", typeof(System.String));
+			DataColumn col9 = dataTable.Columns.Add("Birthdate", typeof(System.DateTime));
 			col9.AllowDBNull = true;		
-			DataColumn col10 = dataTable.Columns.Add("Birthdate", typeof(System.DateTime));
-			col10.AllowDBNull = true;		
-			DataColumn col11 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
-			col11.AllowDBNull = false;		
-			DataColumn col12 = dataTable.Columns.Add("Title", typeof(System.String));
+			DataColumn col10 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
+			col10.AllowDBNull = false;		
+			DataColumn col11 = dataTable.Columns.Add("Title", typeof(System.String));
+			col11.AllowDBNull = true;		
+			DataColumn col12 = dataTable.Columns.Add("Note", typeof(System.String));
 			col12.AllowDBNull = true;		
-			DataColumn col13 = dataTable.Columns.Add("Note", typeof(System.String));
-			col13.AllowDBNull = true;		
-			DataColumn col14 = dataTable.Columns.Add("Roles", typeof(System.String));
+			DataColumn col13 = dataTable.Columns.Add("Roles", typeof(System.String));
+			col13.AllowDBNull = false;		
+			DataColumn col14 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
 			col14.AllowDBNull = false;		
-			DataColumn col15 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col15.AllowDBNull = false;		
-			DataColumn col16 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col16.AllowDBNull = true;		
-			DataColumn col17 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col17.AllowDBNull = false;		
-			DataColumn col18 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col18.AllowDBNull = true;		
-			DataColumn col19 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col19.AllowDBNull = false;		
+			DataColumn col15 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col15.AllowDBNull = true;		
+			DataColumn col16 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col16.AllowDBNull = false;		
+			DataColumn col17 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col17.AllowDBNull = true;		
+			DataColumn col18 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col18.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("FirstName", "FirstName");
 			bulkCopy.ColumnMappings.Add("LastName", "LastName");
 			bulkCopy.ColumnMappings.Add("ShortName", "ShortName");
-			bulkCopy.ColumnMappings.Add("GroupId", "GroupId");
 			bulkCopy.ColumnMappings.Add("UserName", "UserName");
 			bulkCopy.ColumnMappings.Add("Address", "Address");
 			bulkCopy.ColumnMappings.Add("HomePhone", "HomePhone");
@@ -1450,9 +1230,6 @@ namespace ClinicDoctor.Data.SqlClient
 							
 				
 					row["ShortName"] = entity.ShortName;
-							
-				
-					row["GroupId"] = entity.GroupId;
 							
 				
 					row["UserName"] = entity.UserName;
@@ -1538,7 +1315,6 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@FirstName", DbType.String, entity.FirstName );
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@ShortName", DbType.String, entity.ShortName );
-			database.AddInParameter(commandWrapper, "@GroupId", DbType.Int64, entity.GroupId );
 			database.AddInParameter(commandWrapper, "@UserName", DbType.String, entity.UserName );
 			database.AddInParameter(commandWrapper, "@Address", DbType.String, entity.Address );
 			database.AddInParameter(commandWrapper, "@HomePhone", DbType.String, entity.HomePhone );
@@ -1606,7 +1382,6 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@FirstName", DbType.String, entity.FirstName );
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@ShortName", DbType.String, entity.ShortName );
-			database.AddInParameter(commandWrapper, "@GroupId", DbType.Int64, entity.GroupId );
 			database.AddInParameter(commandWrapper, "@UserName", DbType.String, entity.UserName );
 			database.AddInParameter(commandWrapper, "@Address", DbType.String, entity.Address );
 			database.AddInParameter(commandWrapper, "@HomePhone", DbType.String, entity.HomePhone );

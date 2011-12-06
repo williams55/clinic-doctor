@@ -548,6 +548,17 @@ namespace ClinicDoctor.Entities
             get { return entityData.RoomIdSource; }
             set { entityData.RoomIdSource = value; }
       	}
+		/// <summary>
+		/// Gets or sets the source <see cref="Staff"/>.
+		/// </summary>
+		/// <value>The source Staff for DoctorUserName.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Staff DoctorUserNameSource
+      	{
+            get { return entityData.DoctorUserNameSource; }
+            set { entityData.DoctorUserNameSource = value; }
+      	}
 		#endregion
 		
 		#region Children Collections
@@ -760,6 +771,10 @@ namespace ClinicDoctor.Entities
 				copy.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				copy.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
+			if (this.DoctorUserNameSource != null && existingCopies.Contains(this.DoctorUserNameSource))
+				copy.DoctorUserNameSource = existingCopies[this.DoctorUserNameSource] as Staff;
+			else
+				copy.DoctorUserNameSource = MakeCopyOf(this.DoctorUserNameSource, existingCopies) as Staff;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -1447,6 +1462,19 @@ namespace ClinicDoctor.Entities
             get { return this._roomIdSource; }
             set { this._roomIdSource = value; }
       	}
+		private Staff _doctorUserNameSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Staff"/>.
+		/// </summary>
+		/// <value>The source Staff for DoctorUserName.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Staff DoctorUserNameSource
+      	{
+            get { return this._doctorUserNameSource; }
+            set { this._doctorUserNameSource = value; }
+      	}
 		#endregion
 		#endregion Variable Declarations
 	
@@ -1480,6 +1508,8 @@ namespace ClinicDoctor.Entities
 			#region Source Parent Composite Entities
 			if (this.RoomIdSource != null)
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource) as Room;
+			if (this.DoctorUserNameSource != null)
+				_tmp.DoctorUserNameSource = MakeCopyOf(this.DoctorUserNameSource) as Staff;
 			#endregion
 		
 			#region Child Collections
@@ -1520,6 +1550,10 @@ namespace ClinicDoctor.Entities
 				_tmp.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
+			if (this.DoctorUserNameSource != null && existingCopies.Contains(this.DoctorUserNameSource))
+				_tmp.DoctorUserNameSource = existingCopies[this.DoctorUserNameSource] as Staff;
+			else
+				_tmp.DoctorUserNameSource = MakeCopyOf(this.DoctorUserNameSource, existingCopies) as Staff;
 			#endregion
 		
 			#region Child Collections

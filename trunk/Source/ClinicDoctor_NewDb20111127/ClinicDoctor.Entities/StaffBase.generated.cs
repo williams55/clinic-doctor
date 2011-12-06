@@ -85,7 +85,6 @@ namespace ClinicDoctor.Entities
 		///<param name="_firstName"></param>
 		///<param name="_lastName"></param>
 		///<param name="_shortName"></param>
-		///<param name="_groupId"></param>
 		///<param name="_userName"></param>
 		///<param name="_address"></param>
 		///<param name="_homePhone"></param>
@@ -102,10 +101,10 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public StaffBase(System.Int64 _id, System.String _firstName, System.String _lastName, 
-			System.String _shortName, System.Int64 _groupId, System.String _userName, System.String _address, System.String _homePhone, 
-			System.String _workPhone, System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, 
-			System.String _title, System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.String _shortName, System.String _userName, System.String _address, System.String _homePhone, System.String _workPhone, 
+			System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, System.String _title, 
+			System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new StaffEntityData();
 			this.backupData = null;
@@ -114,7 +113,6 @@ namespace ClinicDoctor.Entities
 			this.FirstName = _firstName;
 			this.LastName = _lastName;
 			this.ShortName = _shortName;
-			this.GroupId = _groupId;
 			this.UserName = _userName;
 			this.Address = _address;
 			this.HomePhone = _homePhone;
@@ -139,7 +137,6 @@ namespace ClinicDoctor.Entities
 		///<param name="_firstName"></param>
 		///<param name="_lastName"></param>
 		///<param name="_shortName"></param>
-		///<param name="_groupId"></param>
 		///<param name="_userName"></param>
 		///<param name="_address"></param>
 		///<param name="_homePhone"></param>
@@ -156,17 +153,16 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public static Staff CreateStaff(System.Int64 _id, System.String _firstName, System.String _lastName, 
-			System.String _shortName, System.Int64 _groupId, System.String _userName, System.String _address, System.String _homePhone, 
-			System.String _workPhone, System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, 
-			System.String _title, System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.String _shortName, System.String _userName, System.String _address, System.String _homePhone, System.String _workPhone, 
+			System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, System.String _title, 
+			System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			Staff newStaff = new Staff();
 			newStaff.Id = _id;
 			newStaff.FirstName = _firstName;
 			newStaff.LastName = _lastName;
 			newStaff.ShortName = _shortName;
-			newStaff.GroupId = _groupId;
 			newStaff.UserName = _userName;
 			newStaff.Address = _address;
 			newStaff.HomePhone = _homePhone;
@@ -344,41 +340,6 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(StaffColumn.ShortName, this.entityData.ShortName);
 				OnPropertyChanged("ShortName");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or sets the GroupId property. 
-		///		
-		/// </summary>
-		/// <value>This type is bigint.</value>
-		/// <remarks>
-		/// This property can not be set to null. 
-		/// </remarks>
-
-
-
-
-		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false)]
-		public virtual System.Int64 GroupId
-		{
-			get
-			{
-				return this.entityData.GroupId; 
-			}
-			
-			set
-			{
-				if (this.entityData.GroupId == value)
-					return;
-					
-				OnColumnChanging(StaffColumn.GroupId, this.entityData.GroupId);
-				this.entityData.GroupId = value;
-				if (this.EntityState == EntityState.Unchanged)
-					this.EntityState = EntityState.Changed;
-				OnColumnChanged(StaffColumn.GroupId, this.entityData.GroupId);
-				OnPropertyChanged("GroupId");
 			}
 		}
 		
@@ -915,20 +876,64 @@ namespace ClinicDoctor.Entities
 
 		#region Source Foreign Key Property
 				
-		/// <summary>
-		/// Gets or sets the source <see cref="Group"/>.
-		/// </summary>
-		/// <value>The source Group for GroupId.</value>
-        [XmlIgnore()]
-		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual Group GroupIdSource
-      	{
-            get { return entityData.GroupIdSource; }
-            set { entityData.GroupIdSource = value; }
-      	}
 		#endregion
 		
 		#region Children Collections
+	
+		/// <summary>
+		///	Holds a collection of DoctorRoom objects
+		///	which are related to this object through the relation FK_DoctorRoom_Staff
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<DoctorRoom> DoctorRoomCollection
+		{
+			get { return entityData.DoctorRoomCollection; }
+			set { entityData.DoctorRoomCollection = value; }	
+		}
+	
+		/// <summary>
+		///	Holds a collection of Appointment objects
+		///	which are related to this object through the relation FK_Appointment_Staff1
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<Appointment> AppointmentCollectionGetByNurseUsername
+		{
+			get { return entityData.AppointmentCollectionGetByNurseUsername; }
+			set { entityData.AppointmentCollectionGetByNurseUsername = value; }	
+		}
+	
+		/// <summary>
+		///	Holds a collection of Appointment objects
+		///	which are related to this object through the relation FK_Appointment_Staff
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<Appointment> AppointmentCollectionGetByDoctorUsername
+		{
+			get { return entityData.AppointmentCollectionGetByDoctorUsername; }
+			set { entityData.AppointmentCollectionGetByDoctorUsername = value; }	
+		}
+	
+		/// <summary>
+		///	Holds a collection of DoctorRoster objects
+		///	which are related to this object through the relation FK_DoctorRoster_Staff
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<DoctorRoster> DoctorRosterCollection
+		{
+			get { return entityData.DoctorRosterCollection; }
+			set { entityData.DoctorRosterCollection = value; }	
+		}
+	
+		/// <summary>
+		///	Holds a collection of DoctorFunc objects
+		///	which are related to this object through the relation FK_DoctorFunc_Staff
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<DoctorFunc> DoctorFuncCollection
+		{
+			get { return entityData.DoctorFuncCollection; }
+			set { entityData.DoctorFuncCollection = value; }	
+		}
 		#endregion Children Collections
 		
 		#endregion
@@ -998,7 +1003,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "FirstName", "LastName", "ShortName", "GroupId", "UserName", "Address", "HomePhone", "WorkPhone", "CellPhone", "Birthdate", "IsFemale", "Title", "Note", "Roles", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "FirstName", "LastName", "ShortName", "UserName", "Address", "HomePhone", "WorkPhone", "CellPhone", "Birthdate", "IsFemale", "Title", "Note", "Roles", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1151,7 +1156,6 @@ namespace ClinicDoctor.Entities
 				copy.FirstName = this.FirstName;
 				copy.LastName = this.LastName;
 				copy.ShortName = this.ShortName;
-				copy.GroupId = this.GroupId;
 				copy.UserName = this.UserName;
 				copy.Address = this.Address;
 				copy.HomePhone = this.HomePhone;
@@ -1168,11 +1172,13 @@ namespace ClinicDoctor.Entities
 				copy.UpdateUser = this.UpdateUser;
 				copy.UpdateDate = this.UpdateDate;
 			
-			if (this.GroupIdSource != null && existingCopies.Contains(this.GroupIdSource))
-				copy.GroupIdSource = existingCopies[this.GroupIdSource] as Group;
-			else
-				copy.GroupIdSource = MakeCopyOf(this.GroupIdSource, existingCopies) as Group;
 		
+			//deep copy nested objects
+			copy.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection, existingCopies); 
+			copy.AppointmentCollectionGetByNurseUsername = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByNurseUsername, existingCopies); 
+			copy.AppointmentCollectionGetByDoctorUsername = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByDoctorUsername, existingCopies); 
+			copy.DoctorRosterCollection = (TList<DoctorRoster>) MakeCopyOf(this.DoctorRosterCollection, existingCopies); 
+			copy.DoctorFuncCollection = (TList<DoctorFunc>) MakeCopyOf(this.DoctorFuncCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
 			return copy;
@@ -1311,8 +1317,6 @@ namespace ClinicDoctor.Entities
 					return entityData.LastName != _originalData.LastName;
 					case StaffColumn.ShortName:
 					return entityData.ShortName != _originalData.ShortName;
-					case StaffColumn.GroupId:
-					return entityData.GroupId != _originalData.GroupId;
 					case StaffColumn.UserName:
 					return entityData.UserName != _originalData.UserName;
 					case StaffColumn.Address:
@@ -1374,7 +1378,6 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.FirstName != _originalData.FirstName;
 			result = result || entityData.LastName != _originalData.LastName;
 			result = result || entityData.ShortName != _originalData.ShortName;
-			result = result || entityData.GroupId != _originalData.GroupId;
 			result = result || entityData.UserName != _originalData.UserName;
 			result = result || entityData.Address != _originalData.Address;
 			result = result || entityData.HomePhone != _originalData.HomePhone;
@@ -1404,7 +1407,6 @@ namespace ClinicDoctor.Entities
 				_originalData.FirstName,
 				_originalData.LastName,
 				_originalData.ShortName,
-				_originalData.GroupId,
 				_originalData.UserName,
 				_originalData.Address,
 				_originalData.HomePhone,
@@ -1453,7 +1455,6 @@ namespace ClinicDoctor.Entities
 					this.FirstName.GetHashCode() ^ 
 					this.LastName.GetHashCode() ^ 
 					this.ShortName.GetHashCode() ^ 
-					this.GroupId.GetHashCode() ^ 
 					this.UserName.GetHashCode() ^ 
 					((this.Address == null) ? string.Empty : this.Address.ToString()).GetHashCode() ^ 
 					((this.HomePhone == null) ? string.Empty : this.HomePhone.ToString()).GetHashCode() ^ 
@@ -1508,8 +1509,6 @@ namespace ClinicDoctor.Entities
 			if (Object1.LastName != Object2.LastName)
 				equal = false;
 			if (Object1.ShortName != Object2.ShortName)
-				equal = false;
-			if (Object1.GroupId != Object2.GroupId)
 				equal = false;
 			if (Object1.UserName != Object2.UserName)
 				equal = false;
@@ -1668,12 +1667,6 @@ namespace ClinicDoctor.Entities
             	
             	case StaffColumn.ShortName:
             		return this.ShortName.CompareTo(rhs.ShortName);
-            		
-            		                 
-            	
-            	
-            	case StaffColumn.GroupId:
-            		return this.GroupId.CompareTo(rhs.GroupId);
             		
             		                 
             	
@@ -1900,12 +1893,11 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{21}{20}- Id: {0}{20}- FirstName: {1}{20}- LastName: {2}{20}- ShortName: {3}{20}- GroupId: {4}{20}- UserName: {5}{20}- Address: {6}{20}- HomePhone: {7}{20}- WorkPhone: {8}{20}- CellPhone: {9}{20}- Birthdate: {10}{20}- IsFemale: {11}{20}- Title: {12}{20}- Note: {13}{20}- Roles: {14}{20}- IsDisabled: {15}{20}- CreateUser: {16}{20}- CreateDate: {17}{20}- UpdateUser: {18}{20}- UpdateDate: {19}{20}{22}", 
+				"{20}{19}- Id: {0}{19}- FirstName: {1}{19}- LastName: {2}{19}- ShortName: {3}{19}- UserName: {4}{19}- Address: {5}{19}- HomePhone: {6}{19}- WorkPhone: {7}{19}- CellPhone: {8}{19}- Birthdate: {9}{19}- IsFemale: {10}{19}- Title: {11}{19}- Note: {12}{19}- Roles: {13}{19}- IsDisabled: {14}{19}- CreateUser: {15}{19}- CreateDate: {16}{19}- UpdateUser: {17}{19}- UpdateDate: {18}{19}{21}", 
 				this.Id,
 				this.FirstName,
 				this.LastName,
 				this.ShortName,
-				this.GroupId,
 				this.UserName,
 				(this.Address == null) ? string.Empty : this.Address.ToString(),
 				(this.HomePhone == null) ? string.Empty : this.HomePhone.ToString(),
@@ -1974,11 +1966,6 @@ namespace ClinicDoctor.Entities
 		/// ShortName : 
 		/// </summary>
 		public System.String		  ShortName = string.Empty;
-		
-		/// <summary>
-		/// GroupId : 
-		/// </summary>
-		public System.Int64		  GroupId = (long)0;
 		
 		/// <summary>
 		/// UserName : 
@@ -2058,23 +2045,135 @@ namespace ClinicDoctor.Entities
 			
 		#region Source Foreign Key Property
 				
-		private Group _groupIdSource = null;
-		
-		/// <summary>
-		/// Gets or sets the source <see cref="Group"/>.
-		/// </summary>
-		/// <value>The source Group for GroupId.</value>
-		[XmlIgnore()]
-		[Browsable(false)]
-		public virtual Group GroupIdSource
-      	{
-            get { return this._groupIdSource; }
-            set { this._groupIdSource = value; }
-      	}
 		#endregion
 		#endregion Variable Declarations
 	
 		#region Data Properties
+
+		#region DoctorRoomCollection
+		
+		private TList<DoctorRoom> _doctorRoomDoctorUserName;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _doctorRoomDoctorUserName
+		/// </summary>
+		
+		public TList<DoctorRoom> DoctorRoomCollection
+		{
+			get
+			{
+				if (_doctorRoomDoctorUserName == null)
+				{
+				_doctorRoomDoctorUserName = new TList<DoctorRoom>();
+				}
+	
+				return _doctorRoomDoctorUserName;
+			}
+			set { _doctorRoomDoctorUserName = value; }
+		}
+		
+		#endregion
+
+		#region AppointmentCollectionGetByNurseUsername
+		
+		private TList<Appointment> _appointmentNurseUsernameGetByNurseUsername;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _appointmentNurseUsernameGetByNurseUsername
+		/// </summary>
+		
+		public TList<Appointment> AppointmentCollectionGetByNurseUsername
+		{
+			get
+			{
+				if (_appointmentNurseUsernameGetByNurseUsername == null)
+				{
+				_appointmentNurseUsernameGetByNurseUsername = new TList<Appointment>();
+				}
+	
+				return _appointmentNurseUsernameGetByNurseUsername;
+			}
+			set { _appointmentNurseUsernameGetByNurseUsername = value; }
+		}
+		
+		#endregion
+
+		#region AppointmentCollectionGetByDoctorUsername
+		
+		private TList<Appointment> _appointmentNurseUsernameGetByDoctorUsername;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _appointmentNurseUsernameGetByDoctorUsername
+		/// </summary>
+		
+		public TList<Appointment> AppointmentCollectionGetByDoctorUsername
+		{
+			get
+			{
+				if (_appointmentNurseUsernameGetByDoctorUsername == null)
+				{
+				_appointmentNurseUsernameGetByDoctorUsername = new TList<Appointment>();
+				}
+	
+				return _appointmentNurseUsernameGetByDoctorUsername;
+			}
+			set { _appointmentNurseUsernameGetByDoctorUsername = value; }
+		}
+		
+		#endregion
+
+		#region DoctorRosterCollection
+		
+		private TList<DoctorRoster> _doctorRosterDoctorUserName;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _doctorRosterDoctorUserName
+		/// </summary>
+		
+		public TList<DoctorRoster> DoctorRosterCollection
+		{
+			get
+			{
+				if (_doctorRosterDoctorUserName == null)
+				{
+				_doctorRosterDoctorUserName = new TList<DoctorRoster>();
+				}
+	
+				return _doctorRosterDoctorUserName;
+			}
+			set { _doctorRosterDoctorUserName = value; }
+		}
+		
+		#endregion
+
+		#region DoctorFuncCollection
+		
+		private TList<DoctorFunc> _doctorFuncDoctorUserName;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _doctorFuncDoctorUserName
+		/// </summary>
+		
+		public TList<DoctorFunc> DoctorFuncCollection
+		{
+			get
+			{
+				if (_doctorFuncDoctorUserName == null)
+				{
+				_doctorFuncDoctorUserName = new TList<DoctorFunc>();
+				}
+	
+				return _doctorFuncDoctorUserName;
+			}
+			set { _doctorFuncDoctorUserName = value; }
+		}
+		
+		#endregion
 
 		#endregion Data Properties
 		
@@ -2094,7 +2193,6 @@ namespace ClinicDoctor.Entities
 			_tmp.FirstName = this.FirstName;
 			_tmp.LastName = this.LastName;
 			_tmp.ShortName = this.ShortName;
-			_tmp.GroupId = this.GroupId;
 			_tmp.UserName = this.UserName;
 			_tmp.Address = this.Address;
 			_tmp.HomePhone = this.HomePhone;
@@ -2112,11 +2210,20 @@ namespace ClinicDoctor.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
-			if (this.GroupIdSource != null)
-				_tmp.GroupIdSource = MakeCopyOf(this.GroupIdSource) as Group;
 			#endregion
 		
 			#region Child Collections
+			//deep copy nested objects
+			if (this._doctorRoomDoctorUserName != null)
+				_tmp.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection); 
+			if (this._appointmentNurseUsernameGetByNurseUsername != null)
+				_tmp.AppointmentCollectionGetByNurseUsername = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByNurseUsername); 
+			if (this._appointmentNurseUsernameGetByDoctorUsername != null)
+				_tmp.AppointmentCollectionGetByDoctorUsername = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByDoctorUsername); 
+			if (this._doctorRosterDoctorUserName != null)
+				_tmp.DoctorRosterCollection = (TList<DoctorRoster>) MakeCopyOf(this.DoctorRosterCollection); 
+			if (this._doctorFuncDoctorUserName != null)
+				_tmp.DoctorFuncCollection = (TList<DoctorFunc>) MakeCopyOf(this.DoctorFuncCollection); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -2142,7 +2249,6 @@ namespace ClinicDoctor.Entities
 			_tmp.FirstName = this.FirstName;
 			_tmp.LastName = this.LastName;
 			_tmp.ShortName = this.ShortName;
-			_tmp.GroupId = this.GroupId;
 			_tmp.UserName = this.UserName;
 			_tmp.Address = this.Address;
 			_tmp.HomePhone = this.HomePhone;
@@ -2160,13 +2266,15 @@ namespace ClinicDoctor.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
-			if (this.GroupIdSource != null && existingCopies.Contains(this.GroupIdSource))
-				_tmp.GroupIdSource = existingCopies[this.GroupIdSource] as Group;
-			else
-				_tmp.GroupIdSource = MakeCopyOf(this.GroupIdSource, existingCopies) as Group;
 			#endregion
 		
 			#region Child Collections
+			//deep copy nested objects
+			_tmp.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection, existingCopies); 
+			_tmp.AppointmentCollectionGetByNurseUsername = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByNurseUsername, existingCopies); 
+			_tmp.AppointmentCollectionGetByDoctorUsername = (TList<Appointment>) MakeCopyOf(this.AppointmentCollectionGetByDoctorUsername, existingCopies); 
+			_tmp.DoctorRosterCollection = (TList<DoctorRoster>) MakeCopyOf(this.DoctorRosterCollection, existingCopies); 
+			_tmp.DoctorFuncCollection = (TList<DoctorFunc>) MakeCopyOf(this.DoctorFuncCollection, existingCopies); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -2560,101 +2668,95 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("ShortName", typeof(System.String), System.Data.DbType.String, false, false, false, 50)]
 		ShortName = 4,
 		/// <summary>
-		/// GroupId : 
-		/// </summary>
-		[EnumTextValue("GroupId")]
-		[ColumnEnum("GroupId", typeof(System.Int64), System.Data.DbType.Int64, false, false, false)]
-		GroupId = 5,
-		/// <summary>
 		/// UserName : 
 		/// </summary>
 		[EnumTextValue("UserName")]
 		[ColumnEnum("UserName", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
-		UserName = 6,
+		UserName = 5,
 		/// <summary>
 		/// Address : 
 		/// </summary>
 		[EnumTextValue("Address")]
 		[ColumnEnum("Address", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Address = 7,
+		Address = 6,
 		/// <summary>
 		/// HomePhone : 
 		/// </summary>
 		[EnumTextValue("HomePhone")]
 		[ColumnEnum("HomePhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		HomePhone = 8,
+		HomePhone = 7,
 		/// <summary>
 		/// WorkPhone : 
 		/// </summary>
 		[EnumTextValue("WorkPhone")]
 		[ColumnEnum("WorkPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		WorkPhone = 9,
+		WorkPhone = 8,
 		/// <summary>
 		/// CellPhone : 
 		/// </summary>
 		[EnumTextValue("CellPhone")]
 		[ColumnEnum("CellPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		CellPhone = 10,
+		CellPhone = 9,
 		/// <summary>
 		/// Birthdate : 
 		/// </summary>
 		[EnumTextValue("Birthdate")]
 		[ColumnEnum("Birthdate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		Birthdate = 11,
+		Birthdate = 10,
 		/// <summary>
 		/// IsFemale : 
 		/// </summary>
 		[EnumTextValue("IsFemale")]
 		[ColumnEnum("IsFemale", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsFemale = 12,
+		IsFemale = 11,
 		/// <summary>
 		/// Title : 
 		/// </summary>
 		[EnumTextValue("Title")]
 		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
-		Title = 13,
+		Title = 12,
 		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 14,
+		Note = 13,
 		/// <summary>
 		/// Roles : 
 		/// </summary>
 		[EnumTextValue("Roles")]
 		[ColumnEnum("Roles", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
-		Roles = 15,
+		Roles = 14,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 16,
+		IsDisabled = 15,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 17,
+		CreateUser = 16,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 18,
+		CreateDate = 17,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 19,
+		UpdateUser = 18,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 20
+		UpdateDate = 19
 	}//End enum
 
 	#endregion StaffColumn Enum
