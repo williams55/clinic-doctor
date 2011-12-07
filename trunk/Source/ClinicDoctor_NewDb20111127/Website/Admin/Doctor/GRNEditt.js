@@ -45,12 +45,12 @@ function initSchedule(weekday) {
                     scheduler.createTimelineView({
                         section_autoheight: false,
                         name: "timeline",
-                        x_unit: "day",
-                        x_date: "%m/%d",
-                        x_step: 1,
-                        x_size: 7,
+                        x_unit: "hour",
+                        x_date: "%m/%d %H:%i",
+                        x_step: 12,
+                        x_size: 10,
                         x_start: 0,
-                        x_length: 7,
+                        x_length: 60,
                         y_unit: elements,
                         y_property: "section_id",
                         render: "tree",
@@ -99,6 +99,23 @@ function initSchedule(weekday) {
                             StartTime: _fromTime, EndTime: _toTime, Note: _note
                         });
                         UpdateRoster(requestdata, 'UpdateEventMove', _id);
+                    });
+
+                    dhtmlxEvent(document, (_isOpera ? "keypress" : "keydown"), function (e) {
+
+                        if (e.keyCode == 37) {
+                            //left
+                            scheduler.matrix.timeline.x_start -= 1;
+                            if (scheduler.matrix.timeline.x_start < 0)
+                                scheduler.matrix.timeline.x_start = 0;
+                            scheduler.callEvent("onOptionsLoad", []);
+                        } else if (e.keyCode == 39) {
+                            //right
+                            scheduler.matrix.timeline.x_start += 1;
+                            if (scheduler.matrix.timeline.x_start > 24)
+                                scheduler.matrix.timeline.x_start = 24;
+                            scheduler.callEvent("onOptionsLoad", []);
+                        }
                     });
 
                     // Load roster
