@@ -104,7 +104,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public AppointmentBase(System.String _id, System.Int64 _customerId, System.String _customerName, 
+		public AppointmentBase(System.String _id, System.String _customerId, System.String _customerName, 
 			System.Int64 _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
 			System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, System.String _nurseShortName, 
 			System.Int64? _statusId, System.String _statusTitle, System.String _note, System.DateTime? _startTime, 
@@ -165,7 +165,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Appointment CreateAppointment(System.String _id, System.Int64 _customerId, System.String _customerName, 
+		public static Appointment CreateAppointment(System.String _id, System.String _customerId, System.String _customerName, 
 			System.Int64 _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
 			System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, System.String _nurseShortName, 
 			System.Int64? _statusId, System.String _statusTitle, System.String _note, System.DateTime? _startTime, 
@@ -258,17 +258,18 @@ namespace ClinicDoctor.Entities
 		/// 	Gets or sets the CustomerId property. 
 		///		
 		/// </summary>
-		/// <value>This type is bigint.</value>
+		/// <value>This type is nvarchar.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false)]
-		public virtual System.Int64 CustomerId
+		[DataObjectField(false, false, false, 20)]
+		public virtual System.String CustomerId
 		{
 			get
 			{
@@ -1122,6 +1123,10 @@ namespace ClinicDoctor.Entities
 				new ValidationRuleArgs("Id", "Id"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
+			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("CustomerId", "Customer Id"));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("CustomerId", "Customer Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CustomerName", "Customer Name", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -2241,7 +2246,7 @@ namespace ClinicDoctor.Entities
 		/// <summary>
 		/// CustomerId : 
 		/// </summary>
-		public System.Int64		  CustomerId = (long)0;
+		public System.String		  CustomerId = string.Empty;
 		
 		/// <summary>
 		/// CustomerName : 
@@ -2939,7 +2944,7 @@ namespace ClinicDoctor.Entities
 		/// CustomerId : 
 		/// </summary>
 		[EnumTextValue("CustomerId")]
-		[ColumnEnum("CustomerId", typeof(System.Int64), System.Data.DbType.Int64, false, false, false)]
+		[ColumnEnum("CustomerId", typeof(System.String), System.Data.DbType.String, false, false, false, 20)]
 		CustomerId = 2,
 		/// <summary>
 		/// CustomerName : 

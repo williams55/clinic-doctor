@@ -176,7 +176,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@CustomerId", DbType.Int64, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@CustomerId", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CustomerName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@ContentId", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@ContentTitle", DbType.String, DBNull.Value);
@@ -841,12 +841,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByCustomerId(TransactionManager transactionManager, System.Int64 _customerId, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByCustomerId(TransactionManager transactionManager, System.String _customerId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByCustomerId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@CustomerId", DbType.Int64, _customerId);
+				database.AddInParameter(commandWrapper, "@CustomerId", DbType.String, _customerId);
 			
 			IDataReader reader = null;
 			TList<Appointment> tmp = new TList<Appointment>();
@@ -910,12 +910,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByCustomerIdContentId(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByCustomerIdContentId(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByCustomerIdContentId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@CustomerId", DbType.Int64, _customerId);
+				database.AddInParameter(commandWrapper, "@CustomerId", DbType.String, _customerId);
 				database.AddInParameter(commandWrapper, "@ContentId", DbType.Int64, _contentId);
 			
 			IDataReader reader = null;
@@ -981,12 +981,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByCustomerIdContentIdIsComplete(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Boolean _isComplete, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByCustomerIdContentIdIsComplete(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByCustomerIdContentIdIsComplete", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@CustomerId", DbType.Int64, _customerId);
+				database.AddInParameter(commandWrapper, "@CustomerId", DbType.String, _customerId);
 				database.AddInParameter(commandWrapper, "@ContentId", DbType.Int64, _contentId);
 				database.AddInParameter(commandWrapper, "@IsComplete", DbType.Boolean, _isComplete);
 			
@@ -1054,12 +1054,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(TransactionManager transactionManager, System.Int64 _customerId, System.Int64 _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByCustomerIdContentIdIsCompleteIsDisabled", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@CustomerId", DbType.Int64, _customerId);
+				database.AddInParameter(commandWrapper, "@CustomerId", DbType.String, _customerId);
 				database.AddInParameter(commandWrapper, "@ContentId", DbType.Int64, _contentId);
 				database.AddInParameter(commandWrapper, "@IsComplete", DbType.Boolean, _isComplete);
 				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
@@ -1126,12 +1126,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByCustomerIdIsDisabled(TransactionManager transactionManager, System.Int64 _customerId, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByCustomerIdIsDisabled(TransactionManager transactionManager, System.String _customerId, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByCustomerIdIsDisabled", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@CustomerId", DbType.Int64, _customerId);
+				database.AddInParameter(commandWrapper, "@CustomerId", DbType.String, _customerId);
 				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
 			
 			IDataReader reader = null;
@@ -2144,7 +2144,7 @@ namespace ClinicDoctor.Data.SqlClient
 			DataTable dataTable = new DataTable();
 			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.String));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("CustomerId", typeof(System.Int64));
+			DataColumn col1 = dataTable.Columns.Add("CustomerId", typeof(System.String));
 			col1.AllowDBNull = false;		
 			DataColumn col2 = dataTable.Columns.Add("CustomerName", typeof(System.String));
 			col2.AllowDBNull = true;		
@@ -2324,7 +2324,7 @@ namespace ClinicDoctor.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_Insert", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
-			database.AddInParameter(commandWrapper, "@CustomerId", DbType.Int64, entity.CustomerId );
+			database.AddInParameter(commandWrapper, "@CustomerId", DbType.String, entity.CustomerId );
 			database.AddInParameter(commandWrapper, "@CustomerName", DbType.String, entity.CustomerName );
 			database.AddInParameter(commandWrapper, "@ContentId", DbType.Int64, entity.ContentId );
 			database.AddInParameter(commandWrapper, "@ContentTitle", DbType.String, entity.ContentTitle );
@@ -2395,7 +2395,7 @@ namespace ClinicDoctor.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
-			database.AddInParameter(commandWrapper, "@CustomerId", DbType.Int64, entity.CustomerId );
+			database.AddInParameter(commandWrapper, "@CustomerId", DbType.String, entity.CustomerId );
 			database.AddInParameter(commandWrapper, "@CustomerName", DbType.String, entity.CustomerName );
 			database.AddInParameter(commandWrapper, "@ContentId", DbType.Int64, entity.ContentId );
 			database.AddInParameter(commandWrapper, "@ContentTitle", DbType.String, entity.ContentTitle );

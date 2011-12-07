@@ -716,7 +716,7 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@CustomerId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@CustomerName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@ContentTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -810,7 +810,7 @@
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@OriginalId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@CustomerId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@CustomerName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@ContentTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -1039,7 +1039,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@CustomerId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
@@ -1085,7 +1085,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@CustomerId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
@@ -1133,7 +1133,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@CustomerId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
@@ -1183,7 +1183,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@CustomerId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsComplete" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
@@ -1235,7 +1235,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@CustomerId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
@@ -1907,7 +1907,7 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@CustomerId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@CustomerId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@CustomerName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@ContentId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@ContentTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
@@ -6217,7 +6217,7 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] bigint 
+				    [Id] nvarchar(20) COLLATE database_default  
 				)
 				
 				-- Insert into the temp table
@@ -6276,7 +6276,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Address" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
@@ -6297,7 +6297,8 @@
 				
 				INSERT INTO [dbo].[Customer]
 					(
-					[FirstName]
+					[Id]
+					,[FirstName]
 					,[LastName]
 					,[Address]
 					,[HomePhone]
@@ -6315,7 +6316,8 @@
 					)
 				VALUES
 					(
-					@FirstName
+					@Id
+					,@FirstName
 					,@LastName
 					,@Address
 					,@HomePhone
@@ -6332,8 +6334,6 @@
 					,@UpdateDate
 					)
 				
-				-- Get the identity value
-				SET @Id = SCOPE_IDENTITY()
 									
 							
 			]]></body>
@@ -6348,7 +6348,8 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@OriginalId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Address" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
@@ -6372,7 +6373,8 @@
 				UPDATE
 					[dbo].[Customer]
 				SET
-					[FirstName] = @FirstName
+					[Id] = @Id
+					,[FirstName] = @FirstName
 					,[LastName] = @LastName
 					,[Address] = @Address
 					,[HomePhone] = @HomePhone
@@ -6388,7 +6390,7 @@
 					,[UpdateUser] = @UpdateUser
 					,[UpdateDate] = @UpdateDate
 				WHERE
-[Id] = @Id 
+[Id] = @OriginalId 
 				
 			]]></body>
 		</procedure>
@@ -6402,7 +6404,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				DELETE FROM [dbo].[Customer] WITH (ROWLOCK) 
@@ -6421,7 +6423,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
@@ -6581,7 +6583,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
@@ -6621,7 +6623,7 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
-				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@Address" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
@@ -6742,7 +6744,7 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] bigint 
+				    [Id] nvarchar(20) COLLATE database_default  
 				)
 				
 				-- Insert into the temp table

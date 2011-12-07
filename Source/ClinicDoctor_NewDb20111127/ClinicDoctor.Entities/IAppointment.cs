@@ -27,7 +27,7 @@ namespace ClinicDoctor.Entities
 		/// <summary>
 		/// CustomerId : 
 		/// </summary>
-		System.Int64  CustomerId  { get; set; }
+		System.String  CustomerId  { get; set; }
 		
 		/// <summary>
 		/// CustomerName : 

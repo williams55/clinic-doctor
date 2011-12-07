@@ -110,11 +110,11 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override bool Delete(TransactionManager transactionManager, System.Int64 _id)
+		public override bool Delete(TransactionManager transactionManager, System.String _id)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Customer_Delete", _useStoredProcedure);
-			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, _id);
+			database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
 			
 			//Provider Data Requesting Command Event
 			OnDataRequesting(new CommandEventArgs(commandWrapper, "Delete")); 
@@ -175,7 +175,7 @@ namespace ClinicDoctor.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
-		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@FirstName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@LastName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Address", DbType.String, DBNull.Value);
@@ -591,12 +591,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override ClinicDoctor.Entities.Customer GetByIdIsDisabled(TransactionManager transactionManager, System.Int64 _id, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public override ClinicDoctor.Entities.Customer GetByIdIsDisabled(TransactionManager transactionManager, System.String _id, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Customer_GetByIdIsDisabled", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@Id", DbType.Int64, _id);
+				database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
 				database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, _isDisabled);
 			
 			IDataReader reader = null;
@@ -877,12 +877,12 @@ namespace ClinicDoctor.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override ClinicDoctor.Entities.Customer GetById(TransactionManager transactionManager, System.Int64 _id, int start, int pageLength, out int count)
+		public override ClinicDoctor.Entities.Customer GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Customer_GetById", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@Id", DbType.Int64, _id);
+				database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
 			
 			IDataReader reader = null;
 			TList<Customer> tmp = new TList<Customer>();
@@ -973,7 +973,7 @@ namespace ClinicDoctor.Data.SqlClient
 			bulkCopy.DestinationTableName = "Customer";
 			
 			DataTable dataTable = new DataTable();
-			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int64));
+			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.String));
 			col0.AllowDBNull = false;		
 			DataColumn col1 = dataTable.Columns.Add("FirstName", typeof(System.String));
 			col1.AllowDBNull = false;		
@@ -1112,7 +1112,7 @@ namespace ClinicDoctor.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Customer_Insert", _useStoredProcedure);
 			
-			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
+			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@FirstName", DbType.String, entity.FirstName );
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@Address", DbType.String, entity.Address );
@@ -1143,9 +1143,8 @@ namespace ClinicDoctor.Data.SqlClient
 				results = Utility.ExecuteNonQuery(database,commandWrapper);
 			}
 					
-			object _id = database.GetParameterValue(commandWrapper, "@Id");
-			entity.Id = (System.Int64)_id;
 			
+			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 	
@@ -1176,7 +1175,8 @@ namespace ClinicDoctor.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Customer_Update", _useStoredProcedure);
 			
-			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
+			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
+			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
 			database.AddInParameter(commandWrapper, "@FirstName", DbType.String, entity.FirstName );
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@Address", DbType.String, entity.Address );
@@ -1211,6 +1211,7 @@ namespace ClinicDoctor.Data.SqlClient
 			if (DataRepository.Provider.EnableEntityTracking)
 				EntityManager.StopTracking(entity.EntityTrackingKey);
 			
+			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 			
