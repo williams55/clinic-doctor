@@ -95,7 +95,7 @@ function initSchedule(weekday) {
                         $("#dialog-modal").show();
                         disableAllElements($("#tblContent"), false)
 
-                        var requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, RosterType: _rosterType, RosterTitle: _rosterTitle,
+                        var requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle,
                             StartTime: _fromTime, EndTime: _toTime, Note: _note
                         });
                         UpdateRoster(requestdata, 'UpdateEventMove', _id);
@@ -361,7 +361,7 @@ function SaveRoster() {
         $("#dialog-modal").show();
         disableAllElements($("#tblContent"), false)
 
-        var requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, RosterType: _rosterType, RosterTitle: _rosterTitle,
+        var requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle,
             StartTime: _fromTime, EndTime: _toTime, StartDate: _fromDate, EndDate: _toDate, Note: _note
         });
         UpdateRoster(requestdata, 'UpdateEventSave', _id);
@@ -391,7 +391,7 @@ function SaveRoster() {
         $("#dialog-modal").show();
         disableAllElements($("#tblContent"), false)
 
-        var requestdata = JSON.stringify({ DoctorUsername: _doctorUserName, RosterType: _rosterType, RosterTitle: _rosterTitle, StartTime: _fromTime, EndTime: _toTime,
+        var requestdata = JSON.stringify({ DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle, StartTime: _fromTime, EndTime: _toTime,
             StartDate: _fromDate, EndDate: _toDate, Note: _note, RepeatRoster: _repeat, Weekday: _weekday, Month: _month
         });
         $.ajax({
