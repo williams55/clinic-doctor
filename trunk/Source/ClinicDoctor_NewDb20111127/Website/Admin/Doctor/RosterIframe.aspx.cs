@@ -16,7 +16,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
     #region "Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string SaveEvent(string DoctorUsername, string RosterType, string RosterTitle, string StartTime, string EndTime,
+    public static string SaveEvent(string DoctorUsername, string RosterTypeId, string RosterTitle, string StartTime, string EndTime,
         string StartDate, string EndDate, string Note, string RepeatRoster, string Weekday, string Month)
     {
         /* Return Structure
@@ -57,7 +57,15 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             if (obj == null)
             {
                 result = @"[{ 'result': 'false', 'message': 'Staff is not exist.', 'data': '[]' }]";
-                return result;
+                goto StepResult;
+            }
+
+            // Get Roster Type
+            RosterType objRt = DataRepository.RosterTypeProvider.GetByIdIsDisabled(Convert.ToInt64(RosterTypeId), false);
+            if (objRt == null)
+            {
+                result = @"[{ 'result': 'false', 'message': 'Roster Type is not exist.', 'data': '[]' }]";
+                goto StepResult;
             }
 
             // Get start time and end time
@@ -72,10 +80,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 // Convert Month to right format
                 DateTime month = Convert.ToDateTime(Month);
                 DateTime item = new DateTime(month.Year, month.Month, 1);
-
-                //DateTime dtStart = Convert.ToDateTime(StartTime);
-                //DateTime dtEnd = Convert.ToDateTime(EndTime);
-
+           
                 // Get auto increasement id
                 string Perfix = "R" + ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
                 int Count = 0;
@@ -105,11 +110,12 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 
                         newObj.DoctorUserName = obj.UserName;
                         newObj.DoctorShortName = obj.ShortName;
-                        newObj.RosterTypeId = Convert.ToInt64(RosterType);
+                        newObj.RosterTypeId = Convert.ToInt64(RosterTypeId);
                         newObj.RosterTypeTitle = RosterTitle;
                         newObj.StartTime = new DateTime(item.Year, item.Month, item.Day, intStartHour, intStartMinute, 0);
                         newObj.EndTime = new DateTime(item.Year, item.Month, item.Day, intEndHour, intEndMinute, 0);
                         newObj.Note = Note;
+                        newObj.ColorCode = (objRt.ColorCode != ""? objRt.ColorCode : ServiceFacade.SettingsHelper.UncompleteColor);
                         newObj.CreateUser = username;
                         newObj.UpdateUser = username;
 
@@ -155,7 +161,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                            + @"RosterTypeId: '" + newObj.RosterTypeId + @"',"
                            + @"RosterTypeTitle: '" + newObj.RosterTypeTitle + @"',"
                            + @"note: '" + newObj.Note + @"',"
-                           + @"color: '" + ServiceFacade.SettingsHelper.UncompleteColor + @"',"
+                           + @"color: '" + newObj.ColorCode + @"',"
                            + @"isnew: 'false'"
                            + @"},";
                     }
@@ -193,11 +199,12 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 
                 newObj.DoctorUserName = obj.UserName;
                 newObj.DoctorShortName = obj.ShortName;
-                newObj.RosterTypeId = Convert.ToInt64(RosterType);
+                newObj.RosterTypeId = Convert.ToInt64(RosterTypeId);
                 newObj.RosterTypeTitle = RosterTitle;
                 newObj.StartTime = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
                 newObj.EndTime = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
                 newObj.Note = Note;
+                newObj.ColorCode = (objRt.ColorCode != "" ? objRt.ColorCode : ServiceFacade.SettingsHelper.UncompleteColor);
                 newObj.CreateUser = username;
                 newObj.UpdateUser = username;
 
@@ -248,7 +255,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                     + @"RosterTypeId: '" + newObj.RosterTypeId + @"',"
                     + @"RosterTypeTitle: '" + newObj.RosterTypeTitle + @"',"
                     + @"note: '" + newObj.Note + @"',"
-                    + @"color: '" + ServiceFacade.SettingsHelper.UncompleteColor + @"',"
+                    + @"color: '" + newObj.ColorCode + @"',"
                     + @"isnew: 'false'"
                     + @"}"
                    + @"] }]";
@@ -262,7 +269,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             tm.Rollback();
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            return result;
+            goto StepResult;
         }
 
     StepResult:
@@ -272,7 +279,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
     #region "Update Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateEventSave(string Id, string DoctorUsername, string RosterType, string RosterTitle, string StartTime, string EndTime,
+    public static string UpdateEventSave(string Id, string DoctorUsername, string RosterTypeId, string RosterTitle, string StartTime, string EndTime,
         string StartDate, string EndDate, string Note)
     {
         try
@@ -290,7 +297,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
             dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
 
-            return UpdateEvent(Id, DoctorUsername, RosterType, RosterTitle, dtStart, dtEnd, Note);
+            return UpdateEvent(Id, DoctorUsername, RosterTypeId, RosterTitle, dtStart, dtEnd, Note);
         }
         catch (Exception ex)
         {
@@ -302,17 +309,17 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateEventMove(string Id, string DoctorUsername, string RosterType, string RosterTitle, string StartTime, string EndTime, string Note)
+    public static string UpdateEventMove(string Id, string DoctorUsername, string RosterTypeId, string RosterTitle, string StartTime, string EndTime, string Note)
     {
         // Get start date and end date
         DateTime dtStart = Convert.ToDateTime(StartTime);
         DateTime dtEnd = Convert.ToDateTime(EndTime);
 
-        return UpdateEvent(Id, DoctorUsername, RosterType, RosterTitle, dtStart, dtEnd, Note);
+        return UpdateEvent(Id, DoctorUsername, RosterTypeId, RosterTitle, dtStart, dtEnd, Note);
     }
 
     // Update roster
-    private static string UpdateEvent(string Id, string DoctorUsername, string RosterType, string RosterTitle, DateTime StartTime, DateTime EndTime, string Note)
+    private static string UpdateEvent(string Id, string DoctorUsername, string RosterTypeId, string RosterTitle, DateTime StartTime, DateTime EndTime, string Note)
     {
         string result = string.Empty;
 
@@ -334,23 +341,32 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             if (obj == null)
             {
                 result = @"[{ 'result': 'false', 'message': 'Staff is not exist.', 'data': [] }]";
-                return result;
+                goto StepResult;
             }
 
             DoctorRoster dr = DataRepository.DoctorRosterProvider.GetByIdIsCompleteIsDisabled(Id, false, false);
             if (dr == null)
             {
                 result = @"[{ 'result': 'false', 'message': 'There is no roster to update or the roster is expired.', 'data': [] }]";
-                return result;
+                goto StepResult;
+            }
+
+            // Get Roster Type
+            RosterType objRt = DataRepository.RosterTypeProvider.GetByIdIsDisabled(Convert.ToInt64(RosterTypeId), false);
+            if (objRt == null)
+            {
+                result = @"[{ 'result': 'false', 'message': 'Roster Type is not exist.', 'data': '[]' }]";
+                goto StepResult;
             }
 
             dr.DoctorUserName = obj.UserName;
             dr.DoctorShortName = obj.ShortName;
-            dr.RosterTypeId = Convert.ToInt64(RosterType);
+            dr.RosterTypeId = Convert.ToInt64(RosterTypeId);
             dr.RosterTypeTitle = RosterTitle;
             dr.StartTime = StartTime;
             dr.EndTime = EndTime;
             dr.Note = Note;
+            dr.ColorCode = (objRt.ColorCode != "" ? objRt.ColorCode : ServiceFacade.SettingsHelper.UncompleteColor);
             dr.UpdateUser = username;
             dr.UpdateDate = DateTime.Now;
 
@@ -400,7 +416,7 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                 + @"RosterTypeId: '" + dr.RosterTypeId + @"',"
                 + @"RosterTypeTitle: '" + dr.RosterTypeTitle + @"',"
                 + @"note: '" + dr.Note + @"',"
-                + @"color: '" + ServiceFacade.SettingsHelper.UncompleteColor + @"',"
+                + @"color: '" + dr.ColorCode + @"',"
                 + @"isnew: 'false'"
                 + @"}"
                 + @"] }]";
@@ -444,17 +460,20 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
          */
 
         string result = string.Empty;
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
+            tm.BeginTransaction();
+
             string username = EntitiesUtilities.GetAuthName();
             Staff obj = DataRepository.StaffProvider.GetByUserNameIsDisabled(username, false);
             if (obj == null)
             {
                 result = @"[{ 'result': 'false', 'message': 'Doctor is not exist.', 'data': '[]' }]";
-                return result;
+                goto StepResult;
             }
 
-            TList<DoctorRoster> lstObj = DataRepository.DoctorRosterProvider.GetByIsDisabled(false);
+            TList<DoctorRoster> lstObj = DataRepository.DoctorRosterProvider.GetByIsDisabled(tm, false);
 
             string color = string.Empty;
             foreach (DoctorRoster item in lstObj)
@@ -475,15 +494,16 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
                     + @"RosterTypeId: '" + item.RosterTypeId + @"',"
                     + @"note: '" + item.Note + @"',";
 
+                // If roster is passed, set color code and is completed
                 if (item.StartTime <= DateTime.Now)
                 {
-                    result += @"color: '" + ServiceFacade.SettingsHelper.CompleteColor + @"',";
+                    item.ColorCode = ServiceFacade.SettingsHelper.CompleteColor;
+                    item.IsComplete = true;
+                    DataRepository.DoctorRosterProvider.Save(tm, item);
+
                     result += @"readonly: true,";
                 }
-                else
-                {
-                    result += @"color: '" + ServiceFacade.SettingsHelper.UncompleteColor + @"',";
-                }
+                result += @"color: '" + item.ColorCode + @"',";
                 result += @"isnew: 'false'},";
             }
             if (result.Length > 1)
@@ -496,15 +516,19 @@ public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
             {
                 result = @"[{ 'result': 'true', 'message': '' }]";
             }
+
+            tm.Commit();
         }
         catch (Exception ex)
         {
             //Write log cho nay
+            tm.Rollback();
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': '[]' }]";
-            return result;
+            goto StepResult;
         }
 
+    StepResult:
         return result;
     }
 
