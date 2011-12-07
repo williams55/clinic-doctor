@@ -41,7 +41,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public bool Delete(System.Int64 _id)
+		public bool Delete(System.String _id)
 		{
 			return Delete(null, _id);
 		}
@@ -53,7 +53,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public abstract bool Delete(TransactionManager transactionManager, System.Int64 _id);		
+		public abstract bool Delete(TransactionManager transactionManager, System.String _id);		
 		
 		#endregion Delete Methods
 		
@@ -81,7 +81,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_id"></param>
 		/// <param name="_isDisabled"></param>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(System.Int64 _id, System.Boolean _isDisabled)
+		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(System.String _id, System.Boolean _isDisabled)
 		{
 			int count = -1;
 			return GetByIdIsDisabled(null,_id, _isDisabled, 0, int.MaxValue, out count);
@@ -96,7 +96,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(System.Int64 _id, System.Boolean _isDisabled, int start, int pageLength)
+		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(System.String _id, System.Boolean _isDisabled, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
@@ -110,7 +110,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_isDisabled"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(TransactionManager transactionManager, System.Int64 _id, System.Boolean _isDisabled)
+		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(TransactionManager transactionManager, System.String _id, System.Boolean _isDisabled)
 		{
 			int count = -1;
 			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, 0, int.MaxValue, out count);
@@ -126,7 +126,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(TransactionManager transactionManager, System.Int64 _id, System.Boolean _isDisabled, int start, int pageLength)
+		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(TransactionManager transactionManager, System.String _id, System.Boolean _isDisabled, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByIdIsDisabled(transactionManager, _id, _isDisabled, start, pageLength, out count);
@@ -142,7 +142,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(System.Int64 _id, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public ClinicDoctor.Entities.Customer GetByIdIsDisabled(System.String _id, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
 			return GetByIdIsDisabled(null, _id, _isDisabled, start, pageLength, out count);
 		}
@@ -158,7 +158,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public abstract ClinicDoctor.Entities.Customer GetByIdIsDisabled(TransactionManager transactionManager, System.Int64 _id, System.Boolean _isDisabled, int start, int pageLength, out int count);
+		public abstract ClinicDoctor.Entities.Customer GetByIdIsDisabled(TransactionManager transactionManager, System.String _id, System.Boolean _isDisabled, int start, int pageLength, out int count);
 						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Customer_IsDisabled index.
@@ -408,7 +408,7 @@ namespace ClinicDoctor.Data.Bases
 		/// </summary>
 		/// <param name="_id"></param>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetById(System.Int64 _id)
+		public ClinicDoctor.Entities.Customer GetById(System.String _id)
 		{
 			int count = -1;
 			return GetById(null,_id, 0, int.MaxValue, out count);
@@ -422,7 +422,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetById(System.Int64 _id, int start, int pageLength)
+		public ClinicDoctor.Entities.Customer GetById(System.String _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(null, _id, start, pageLength, out count);
@@ -435,7 +435,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_id"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetById(TransactionManager transactionManager, System.Int64 _id)
+		public ClinicDoctor.Entities.Customer GetById(TransactionManager transactionManager, System.String _id)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, 0, int.MaxValue, out count);
@@ -450,7 +450,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetById(TransactionManager transactionManager, System.Int64 _id, int start, int pageLength)
+		public ClinicDoctor.Entities.Customer GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, start, pageLength, out count);
@@ -465,7 +465,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public ClinicDoctor.Entities.Customer GetById(System.Int64 _id, int start, int pageLength, out int count)
+		public ClinicDoctor.Entities.Customer GetById(System.String _id, int start, int pageLength, out int count)
 		{
 			return GetById(null, _id, start, pageLength, out count);
 		}
@@ -480,7 +480,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="ClinicDoctor.Entities.Customer"/> class.</returns>
-		public abstract ClinicDoctor.Entities.Customer GetById(TransactionManager transactionManager, System.Int64 _id, int start, int pageLength, out int count);
+		public abstract ClinicDoctor.Entities.Customer GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count);
 						
 		#endregion "Get By Index Functions"
 	
@@ -524,7 +524,7 @@ namespace ClinicDoctor.Data.Bases
 				if (useEntityFactory)
 				{
 					key = new System.Text.StringBuilder("Customer")
-					.Append("|").Append((System.Int64)reader[((int)CustomerColumn.Id - 1)]).ToString();
+					.Append("|").Append((System.String)reader[((int)CustomerColumn.Id - 1)]).ToString();
 					c = EntityManager.LocateOrCreate<Customer>(
 					key.ToString(), // EntityTrackingKey
 					"Customer",  //Creational Type
@@ -547,7 +547,8 @@ namespace ClinicDoctor.Data.Bases
 					))
 				{
 					c.SuppressEntityEvents = true;
-					c.Id = (System.Int64)reader[((int)CustomerColumn.Id - 1)];
+					c.Id = (System.String)reader[((int)CustomerColumn.Id - 1)];
+					c.OriginalId = c.Id;
 					c.FirstName = (System.String)reader[((int)CustomerColumn.FirstName - 1)];
 					c.LastName = (System.String)reader[((int)CustomerColumn.LastName - 1)];
 					c.Address = (reader.IsDBNull(((int)CustomerColumn.Address - 1)))?null:(System.String)reader[((int)CustomerColumn.Address - 1)];
@@ -580,7 +581,8 @@ namespace ClinicDoctor.Data.Bases
 		{
 			if (!reader.Read()) return;
 			
-			entity.Id = (System.Int64)reader[((int)CustomerColumn.Id - 1)];
+			entity.Id = (System.String)reader[((int)CustomerColumn.Id - 1)];
+			entity.OriginalId = (System.String)reader["Id"];
 			entity.FirstName = (System.String)reader[((int)CustomerColumn.FirstName - 1)];
 			entity.LastName = (System.String)reader[((int)CustomerColumn.LastName - 1)];
 			entity.Address = (reader.IsDBNull(((int)CustomerColumn.Address - 1)))?null:(System.String)reader[((int)CustomerColumn.Address - 1)];
@@ -608,7 +610,8 @@ namespace ClinicDoctor.Data.Bases
 		{
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
-			entity.Id = (System.Int64)dataRow["Id"];
+			entity.Id = (System.String)dataRow["Id"];
+			entity.OriginalId = (System.String)dataRow["Id"];
 			entity.FirstName = (System.String)dataRow["FirstName"];
 			entity.LastName = (System.String)dataRow["LastName"];
 			entity.Address = Convert.IsDBNull(dataRow["Address"]) ? null : (System.String)dataRow["Address"];

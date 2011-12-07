@@ -81,6 +81,7 @@ namespace ClinicDoctor.Entities
 		///<summary>
 		/// Creates a new <see cref="CustomerBase"/> instance.
 		///</summary>
+		///<param name="_id"></param>
 		///<param name="_firstName"></param>
 		///<param name="_lastName"></param>
 		///<param name="_address"></param>
@@ -96,14 +97,16 @@ namespace ClinicDoctor.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public CustomerBase(System.String _firstName, System.String _lastName, System.String _address, 
-			System.String _homePhone, System.String _workPhone, System.String _cellPhone, System.DateTime? _birthdate, 
-			System.Boolean _isFemale, System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public CustomerBase(System.String _id, System.String _firstName, System.String _lastName, 
+			System.String _address, System.String _homePhone, System.String _workPhone, System.String _cellPhone, 
+			System.DateTime? _birthdate, System.Boolean _isFemale, System.String _title, System.String _note, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			this.entityData = new CustomerEntityData();
 			this.backupData = null;
 
+			this.Id = _id;
 			this.FirstName = _firstName;
 			this.LastName = _lastName;
 			this.Address = _address;
@@ -124,6 +127,7 @@ namespace ClinicDoctor.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="Customer"/> instance.
 		///</summary>
+		///<param name="_id"></param>
 		///<param name="_firstName"></param>
 		///<param name="_lastName"></param>
 		///<param name="_address"></param>
@@ -139,12 +143,14 @@ namespace ClinicDoctor.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Customer CreateCustomer(System.String _firstName, System.String _lastName, System.String _address, 
-			System.String _homePhone, System.String _workPhone, System.String _cellPhone, System.DateTime? _birthdate, 
-			System.Boolean _isFemale, System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public static Customer CreateCustomer(System.String _id, System.String _firstName, System.String _lastName, 
+			System.String _address, System.String _homePhone, System.String _workPhone, System.String _cellPhone, 
+			System.DateTime? _birthdate, System.Boolean _isFemale, System.String _title, System.String _note, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			Customer newCustomer = new Customer();
+			newCustomer.Id = _id;
 			newCustomer.FirstName = _firstName;
 			newCustomer.LastName = _lastName;
 			newCustomer.Address = _address;
@@ -172,17 +178,18 @@ namespace ClinicDoctor.Entities
 		/// 	Gets or sets the Id property. 
 		///		
 		/// </summary>
-		/// <value>This type is bigint.</value>
+		/// <value>This type is nvarchar.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
-		[ReadOnlyAttribute(false)/*, XmlIgnoreAttribute()*/, DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, true, false)]
-		public virtual System.Int64 Id
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(true, false, false, 20)]
+		public virtual System.String Id
 		{
 			get
 			{
@@ -202,6 +209,19 @@ namespace ClinicDoctor.Entities
 				OnColumnChanged(CustomerColumn.Id, this.entityData.Id);
 				OnPropertyChanged("Id");
 			}
+		}
+		
+		/// <summary>
+		/// 	Get the original value of the Id property.
+		///		
+		/// </summary>
+		/// <remarks>This is the original value of the Id property.</remarks>
+		/// <value>This type is nvarchar</value>
+		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
+		public  virtual System.String OriginalId
+		{
+			get { return this.entityData.OriginalId; }
+			set { this.entityData.OriginalId = value; }
 		}
 		
 		/// <summary>
@@ -764,6 +784,10 @@ namespace ClinicDoctor.Entities
 		{
 			//Validation rules based on database schema.
 			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("Id", "Id"));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
+			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("FirstName", "First Name"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("FirstName", "First Name", 200));
@@ -957,6 +981,7 @@ namespace ClinicDoctor.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
+					copy.OriginalId = this.OriginalId;
 				copy.FirstName = this.FirstName;
 				copy.LastName = this.LastName;
 				copy.Address = this.Address;
@@ -1191,6 +1216,7 @@ namespace ClinicDoctor.Entities
 		{
 			if (_originalData != null)
 				return CreateCustomer(
+				_originalData.Id,
 				_originalData.FirstName,
 				_originalData.LastName,
 				_originalData.Address,
@@ -1694,8 +1720,13 @@ namespace ClinicDoctor.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Customer"</remarks>
-		public System.Int64 Id;
+		public System.String Id;
 			
+		/// <summary>
+		/// keep a copy of the original so it can be used for editable primary keys.
+		/// </summary>
+		public System.String OriginalId;
+		
 		#endregion
 		
 		#region Non Primary key(s)
@@ -1822,6 +1853,7 @@ namespace ClinicDoctor.Entities
 			CustomerEntityData _tmp = new CustomerEntityData();
 						
 			_tmp.Id = this.Id;
+			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.FirstName = this.FirstName;
 			_tmp.LastName = this.LastName;
@@ -1866,6 +1898,7 @@ namespace ClinicDoctor.Entities
 			CustomerEntityData _tmp = new CustomerEntityData();
 						
 			_tmp.Id = this.Id;
+			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.FirstName = this.FirstName;
 			_tmp.LastName = this.LastName;
@@ -2151,7 +2184,7 @@ namespace ClinicDoctor.Entities
 		/// <summary>
 		/// Initializes a new instance of the CustomerKey class.
 		/// </summary>
-		public CustomerKey(System.Int64 _id)
+		public CustomerKey(System.String _id)
 		{
 			#region Init Properties
 
@@ -2177,12 +2210,12 @@ namespace ClinicDoctor.Entities
 		}
 		
 		// member variable for the Id property
-		private System.Int64 _id;
+		private System.String _id;
 		
 		/// <summary>
 		/// Gets or sets the Id property.
 		/// </summary>
-		public System.Int64 Id
+		public System.String Id
 		{
 			get { return _id; }
 			set
@@ -2210,7 +2243,7 @@ namespace ClinicDoctor.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["Id"], typeof(System.Int64)) : (long)0;
+				Id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
 			}
 
 			#endregion
@@ -2261,7 +2294,7 @@ namespace ClinicDoctor.Entities
 		/// Id : 
 		/// </summary>
 		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.Int64), System.Data.DbType.Int64, true, true, false)]
+		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
 		Id = 1,
 		/// <summary>
 		/// FirstName : 

@@ -15,8 +15,13 @@ namespace ClinicDoctor.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Customer"</remarks>
-		System.Int64 Id { get; set; }
+		System.String Id { get; set; }
 				
+		/// <summary>
+		/// keep a copy of the original so it can be used for editable primary keys.
+		/// </summary>
+		System.String OriginalId { get; set; }
+			
 		
 		
 		/// <summary>

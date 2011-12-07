@@ -336,7 +336,7 @@ namespace ClinicDoctor.Web.UI
         /// </summary>
         /// <value>The Id.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int64 Id
+		public System.String Id
 		{
 			get { return _entity.Id; }
 		}

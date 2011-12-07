@@ -159,7 +159,7 @@ namespace ClinicDoctor.Web.Data
 			Customer item;
 			count = 0;
 			
-			System.Int64 _id;
+			System.String _id;
 			System.Boolean _isDisabled;
 			System.Boolean _isFemale;
 
@@ -187,7 +187,7 @@ namespace ClinicDoctor.Web.Data
                     break;
 				// PK
 				case CustomerSelectMethod.GetById:
-					_id = ( values["Id"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["Id"], typeof(System.Int64)) : (long)0;
+					_id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
 					item = CustomerProvider.GetById(GetTransactionManager(), _id);
 					results = new TList<Customer>();
 					if ( item != null ) results.Add(item);
@@ -195,7 +195,7 @@ namespace ClinicDoctor.Web.Data
 					break;
 				// IX
 				case CustomerSelectMethod.GetByIdIsDisabled:
-					_id = ( values["Id"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["Id"], typeof(System.Int64)) : (long)0;
+					_id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
 					item = CustomerProvider.GetByIdIsDisabled(GetTransactionManager(), _id, _isDisabled);
 					results = new TList<Customer>();
