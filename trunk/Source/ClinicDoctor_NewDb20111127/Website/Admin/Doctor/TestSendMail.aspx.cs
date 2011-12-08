@@ -14,6 +14,16 @@ public partial class Admin_Doctor_TestSendMail : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        AppointmentCalendar obj = new AppointmentCalendar();
+        obj.AddAttendee("votienphat@gmail.com", "Chim én");
+        //obj.AddAttendee("frontdesk@parklandvn.com", "Test email");
+        obj.AddAttendee("vy.le@internationalsos.com", "Test email");
+        obj.AddAppointment();
+        obj.EmailAppointment();
+    }
+
+    public void SendMail()
+    {
         SmtpClient sc = new SmtpClient("smtp.gmail.com");
         sc.Port = 587;
         sc.Credentials = new System.Net.NetworkCredential("username", "pass");
@@ -83,12 +93,12 @@ public partial class Admin_Doctor_TestSendMail : System.Web.UI.Page
         msg.AlternateViews.Add(loCalendarView);
 
 
-        
+
         //msg.Attachments.Add(attachment);
 
         sc.Send(msg);
-    }
 
+    }
 
 
 //    [WebMethod(Description =
