@@ -9,38 +9,35 @@ using System.Text;
 using System.Web.Services;
 using DDay.iCal;
 using DDay.iCal.Serialization.iCalendar;
+using Outlook = Microsoft.Office.Interop.Outlook;
 
 public partial class Admin_Doctor_TestSendMail : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        AppointmentCalendar obj = new AppointmentCalendar();
-        obj.AddAttendee("votienphat@gmail.com", "Chim én");
-        //obj.AddAttendee("frontdesk@parklandvn.com", "Test email");
-        obj.AddAttendee("vy.le@internationalsos.com", "Test email");
-        obj.AddAppointment();
-        obj.EmailAppointment();
+        SendMail();
     }
 
     public void SendMail()
     {
         SmtpClient sc = new SmtpClient("smtp.gmail.com");
         sc.Port = 587;
-        sc.Credentials = new System.Net.NetworkCredential("username", "pass");
+        sc.Credentials = new System.Net.NetworkCredential("username", "password");
         sc.EnableSsl = true;
 
         MailMessage msg = new MailMessage();
         msg.From = new MailAddress("votienphat@gmail.com", "Đại bàng Dép Đứt");
         msg.To.Add(new MailAddress("phatvt@fpt.net", "Chim én Dép Đứt :))"));
+        msg.To.Add(new MailAddress("votienphat@gmail.com", "Chim én Dép Đứt 222 :))"));
         msg.Subject = "Sát thủ đầu mưng mủ";
         msg.Body = "Một khi đã máu thì đừng hỏi bố cháu là ai :))";
 
         iCalendar iCal = new iCalendar();
 
-        iCal.Method = "PUBLISH";
+        iCal.Method = "REQUEST";
 
-        DateTime startTime = DateTime.Now.AddHours(3);
-        DateTime endTime = startTime.AddHours(1);
+        DateTime startTime = DateTime.Now.AddMinutes(16);
+        DateTime endTime = startTime.AddMinutes(10);
 
         //Todo evt = iCal.Create<Todo>();
 
@@ -58,7 +55,7 @@ public partial class Admin_Doctor_TestSendMail : System.Web.UI.Page
         Alarm alarm = new Alarm();
         alarm.Action = AlarmAction.Display;
         alarm.Summary = "Nội dung alarm nà";
-        alarm.Trigger = new Trigger(TimeSpan.FromMinutes(-58));
+        alarm.Trigger = new Trigger(TimeSpan.FromMinutes(-14));
         evt.Alarms.Add(alarm);
 
         iCalendarSerializer serializer = new iCalendarSerializer(iCal);
@@ -101,96 +98,96 @@ public partial class Admin_Doctor_TestSendMail : System.Web.UI.Page
     }
 
 
-//    [WebMethod(Description =
-//   "Send an appointment with much details.")]
-//public void SendAppointment(string from, string to,
-//   string title, string body, DateTime startDate,
-//   double duration, string location, string organizer,
-//   bool updatePreviousEvent, string eventId,
-//   bool allDayEvent,
-//   int recurrenceDaysInterval, int recurrenceCount)
-//{
-//  iCalendar iCal = new iCalendar();
+    //    [WebMethod(Description =
+    //   "Send an appointment with much details.")]
+    //public void SendAppointment(string from, string to,
+    //   string title, string body, DateTime startDate,
+    //   double duration, string location, string organizer,
+    //   bool updatePreviousEvent, string eventId,
+    //   bool allDayEvent,
+    //   int recurrenceDaysInterval, int recurrenceCount)
+    //{
+    //  iCalendar iCal = new iCalendar();
 
-//  // outlook 2003 needs this property,
-//  //  or we'll get an error (a Lunar error!)
-//  iCal.Method = "PUBLISH";
+    //  // outlook 2003 needs this property,
+    //  //  or we'll get an error (a Lunar error!)
+    //  iCal.Method = "PUBLISH";
 
-//  // Create the event
-//  Event evt = iCal.Create();
+    //  // Create the event
+    //  Event evt = iCal.Create();
 
-//  evt.Summary = title;
+    //  evt.Summary = title;
 
-//  evt.Start = new iCalDateTime(startDate.Year,
-//    startDate.Month, startDate.Day, startDate.Hour,
-//    startDate.Minute, startDate.Second);
-//  evt.Duration = TimeSpan.FromHours(duration);
-//  evt.Description = body;
-//  evt.Location = location;
+    //  evt.Start = new iCalDateTime(startDate.Year,
+    //    startDate.Month, startDate.Day, startDate.Hour,
+    //    startDate.Minute, startDate.Second);
+    //  evt.Duration = TimeSpan.FromHours(duration);
+    //  evt.Description = body;
+    //  evt.Location = location;
 
-//  if (recurrenceDaysInterval &gt; 0)
-//  {
-//    RecurrencePattern rp = new RecurrencePattern();
-//    rp.Frequency = FrequencyType.Daily;
-//    rp.Interval = recurrenceDaysInterval; // interval of days
+    //  if (recurrenceDaysInterval &gt; 0)
+    //  {
+    //    RecurrencePattern rp = new RecurrencePattern();
+    //    rp.Frequency = FrequencyType.Daily;
+    //    rp.Interval = recurrenceDaysInterval; // interval of days
 
-//    rp.Count = recurrenceCount;
-//    evt.AddRecurrencePattern(rp);
-//  }
-//  evt.IsAllDay = allDayEvent;
+    //    rp.Count = recurrenceCount;
+    //    evt.AddRecurrencePattern(rp);
+    //  }
+    //  evt.IsAllDay = allDayEvent;
 
-//  //organizer is mandatory for outlook 2007 - think about
-//  // trowing an exception here.
-//  if (!String.IsNullOrEmpty(organizer))
-//    evt.Organizer = organizer;
+    //  //organizer is mandatory for outlook 2007 - think about
+    //  // trowing an exception here.
+    //  if (!String.IsNullOrEmpty(organizer))
+    //    evt.Organizer = organizer;
 
 
-//  if (!String.IsNullOrEmpty(eventId))
-//    evt.UID = eventId;
+    //  if (!String.IsNullOrEmpty(eventId))
+    //    evt.UID = eventId;
 
-//  //"REQUEST" will update an existing event with the same
-//  // UID (Unique ID) and a newer time stamp.
-//  if (updatePreviousEvent)
-//    iCal.Method = "REQUEST";
+    //  //"REQUEST" will update an existing event with the same
+    //  // UID (Unique ID) and a newer time stamp.
+    //  if (updatePreviousEvent)
+    //    iCal.Method = "REQUEST";
 
-//  // Save into calendar file.
-//  iCalendarSerializer serializer = new iCalendarSerializer(iCal);
-//  //serializer.Serialize(@"iCalendar.ics");
+    //  // Save into calendar file.
+    //  iCalendarSerializer serializer = new iCalendarSerializer(iCal);
+    //  //serializer.Serialize(@"iCalendar.ics");
 
-//  string icalData = serializer.SerializeToString();
+    //  string icalData = serializer.SerializeToString();
 
-//  //send the iCal data. Also sends the subject and body
-//  //on the mail.
-//  SendAppointmentFromICalWithMailTitle(from, to,
-//    icalData, title, body);
-//}
+    //  //send the iCal data. Also sends the subject and body
+    //  //on the mail.
+    //  SendAppointmentFromICalWithMailTitle(from, to,
+    //    icalData, title, body);
+    //}
 
-//    private static void sendMailMessage(MailMessage mailMessage)
-//    {
-//        string mailHost = "Ask.Someone.com";
-//        SmtpClient smtpClient = new SmtpClient(mailHost, 25);
-//        smtpClient.DeliveryMethod =
-//           SmtpDeliveryMethod.PickupDirectoryFromIis;
-//        smtpClient.Send(mailMessage);
-//    }
+    //    private static void sendMailMessage(MailMessage mailMessage)
+    //    {
+    //        string mailHost = "Ask.Someone.com";
+    //        SmtpClient smtpClient = new SmtpClient(mailHost, 25);
+    //        smtpClient.DeliveryMethod =
+    //           SmtpDeliveryMethod.PickupDirectoryFromIis;
+    //        smtpClient.Send(mailMessage);
+    //    }
 
-//    private void SendAppointmentFromICalWithMailTitle()
-//    {
+    //    private void SendAppointmentFromICalWithMailTitle()
+    //    {
 
-//        MailMessage message = initMailMessage();
-//    string iCal = initICal(parameters ...);
+    //        MailMessage message = initMailMessage();
+    //    string iCal = initICal(parameters ...);
 
-//    //Add the attachment, specify it is a calendar file.
-//System.Net.Mail.Attachment attachment =
-//System.Net.Mail.Attachment.CreateAttachmentFromString(
-//iCal, new ContentType("text/calendar"));
-//attachment.TransferEncoding = TransferEncoding.Base64;
-//attachment.Name = "EventDetails.ics"; //not visible in outlook
+    //    //Add the attachment, specify it is a calendar file.
+    //System.Net.Mail.Attachment attachment =
+    //System.Net.Mail.Attachment.CreateAttachmentFromString(
+    //iCal, new ContentType("text/calendar"));
+    //attachment.TransferEncoding = TransferEncoding.Base64;
+    //attachment.Name = "EventDetails.ics"; //not visible in outlook
 
-//message.Attachments.Add(attachment);
+    //message.Attachments.Add(attachment);
 
-//sendMailMessage(message);
+    //sendMailMessage(message);
 
-//}
+    //}
 
 }
