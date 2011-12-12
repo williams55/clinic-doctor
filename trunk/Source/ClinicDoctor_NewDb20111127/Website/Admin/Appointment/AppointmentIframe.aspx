@@ -1,37 +1,51 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AppointmentIframe.aspx.cs" Inherits="Admin_Appointment_AppointmentIframe" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AppointmentIframe.aspx.cs"
+    Inherits="Admin_Appointment_AppointmentIframe" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/css/ui-lightness/jquery-ui-1.7.3.custom.css") %>" />
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/jquery-1.6.2.min.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.core.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.widget.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.dialog.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.datepicker.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/date.format.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/json2.js") %>"
         type="text/javascript"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_timeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_treetimeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_minical.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_readonly.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_tooltip.js") %>"
         type="text/javascript" charset="utf-8"></script>
+
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.css") %>"
         type="text/css" media="screen" title="no title" charset="utf-8" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/myscript/css/scheduler.css") %>"
@@ -54,6 +68,7 @@
             text-align: left !important;
         }
     </style>
+
     <script type="text/javascript" charset="utf-8">
         // Load weekday
         var weekday = <%=Constants.Weekdays %>;
@@ -61,10 +76,12 @@
         var html = function (id) { return document.getElementById(id); }; //just a helper
 
     </script>
+
     <script src="GRNEditt.js" type="text/javascript"></script>
+
 </head>
 <body>
-    <div id="RosterForm" class="schedulerForm">
+    <div id="RosterForm" class="schedulerForm" style="width: 700px">
         <input type="hidden" id="hdId" value="" />
         <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
             <span class="loading"></span>
@@ -72,6 +89,44 @@
         <table cellpadding="3" width="100%" id="tblContent">
             <tr>
                 <td colspan="2" class="title" id="tdTitle">
+                </td>
+            </tr>
+            <tr>
+                <td class="header" width="100">
+                    Is new patient
+                </td>
+                <td>
+                    <input id="chkNewPatient" type="checkbox" value="true" checked="checked" style="float: left;" />
+                </td>
+            </tr>
+            <tr id="trNewPatient">
+                <td class="header">
+                    Patient
+                </td>
+                <td>
+                    <select style='width: 300px;' id="cboPatient">
+                    </select>
+                </td>
+            </tr>
+            <tr id="trNewPatient1">
+                <td class="header">
+                    First Name
+                </td>
+                <td>
+                    <input type="text" id="txtFirstName" style="width: 130px; float: left;" />
+                    <span style="margin-right: 10px; margin-left: 20px; float: left; font-weight: bold;">
+                        Last Name</span><input type="text" id="txtLasttName" style="width: 130px; float: left;" />
+                    <input type="text" id="txtCellPhone" style="width: 100px; float: right;" /><span
+                        style="margin-right: 10px; float: right; font-weight: bold;" class="header">Cell
+                        Phone</span>
+                </td>
+            </tr>
+            <tr id="trNewPatient2">
+                <td class="header">
+                    Address
+                </td>
+                <td id="spanWeekday">
+                    <input type="text" id="txtAddress" style="width: 100%;" maxlength="500" />
                 </td>
             </tr>
             <tr>
@@ -90,23 +145,6 @@
                 <td>
                     <select id="cboRosterType">
                     </select><span id="loadingRosterType" class="loading"></span>
-                </td>
-            </tr>
-            <tr id="trRepeat">
-                <td class="header">
-                    Is repeat
-                </td>
-                <td>
-                    <input id="chkRepeat" type="checkbox" value="repeated" checked="checked" style="float: left;" />
-                    <span id="spanMonth">
-                        <input type="text" id="txtMonth" readonly="readonly" /></span>
-                </td>
-            </tr>
-            <tr id="divWeekday">
-                <td class="header">
-                    Weekday
-                </td>
-                <td id="spanWeekday">
                 </td>
             </tr>
             <tr>
