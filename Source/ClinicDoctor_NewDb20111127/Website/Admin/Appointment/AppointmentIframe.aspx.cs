@@ -578,21 +578,53 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     #region "Function"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetRosterType()
+    public static string GetPatient()
     {
-        TList<RosterType> lst = DataRepository.RosterTypeProvider.GetByIsDisabled(false);
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data:  [{
+         *          key: name of roles,
+         *          label: name of roles,
+         *          open: true, [priority for Doctor]
+         *          children:  [{
+         *                      key: Staff Id,
+         *                      label: Staff Name,
+         *                      }, {}, {}]
+         *          }, {}, {}]
+         *  }]
+         */
+        string result = string.Empty;
 
-        string result = "[]";
-        if (lst.Count > 0)
+        try
         {
-            result = string.Empty;
-            foreach (RosterType item in lst)
-            {
-                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + ((item.Title == null) ? "" : item.Title) + @"'" + "},";
-            }
-            result = "[" + result.Substring(0, result.Length - 1) + "]";
-        }
+            
+            TList<Customer> lst = DataRepository.CustomerProvider.GetByIsDisabled(false);
 
+            // If there is no functionality, return empty data
+            if (lst.Count == 0)
+            {
+                result = @"[{ 'result': 'true', 'message': 'There is no group.', 'patientName': [], 'patientId': [] }]";
+                goto StepResult;
+            }
+
+            result = string.Empty;
+            lst.Sort("FirstName ASC");
+            foreach (Customer item in lst)
+            {
+                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + String.Format("{3} | {2}. {0} {1}", item.FirstName, item.LastName, item.Title, item.Id) + @"'" + "},";
+            }
+            result = result.Substring(0, result.Length - 1);
+
+            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
+            goto StepResult;
+        }
+        catch (Exception ex)
+        {
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            goto StepResult;
+        }
+    StepResult:
         return result;
     }
 
@@ -667,7 +699,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             foreach (Functionality objFunc in lstFunc)
             {
-                result += @"{'key' : '" + objFunc.Id + @"'" + "," + @"'label' : '" + objFunc.Title + @"', open: true, children: [";
+                result += @"{'key' : '" + objFunc.Id + @"'" + "," + @"'label' : '" + objFunc.Title + @"', open: false, children: [";
                 hasItem = false;
 
                 // Get staff by functionality then remove it from list
