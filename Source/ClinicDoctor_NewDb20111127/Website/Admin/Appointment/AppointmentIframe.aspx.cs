@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 
 public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 {
-    static string strSeperateStaff = ": ";
+    static string strSeperateStaff = " | ";
 
     #region "Roster"
     [WebMethod]
@@ -764,7 +764,53 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             lstDoctorFunc.Sort("FuncTitle ASC, DoctorShortName ASC");
             foreach (DoctorFunc objFunc in lstDoctorFunc)
             {
-                result += @"{'key' : '" + objFunc.DoctorUserName + @"'" + "," + @"'label' : '" + objFunc.FuncTitle + strSeperateStaff + objFunc.DoctorShortName + @"'},";
+                result += @"{'key' : '" + objFunc.DoctorUserName + @"'" + "," + @"'label' : '" + objFunc.DoctorShortName + @"'},";
+            }
+
+            if (result.Length > 1)
+                result = result.Substring(0, result.Length - 1);
+
+            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
+            goto StepResult;
+        }
+        catch (Exception ex)
+        {
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            goto StepResult;
+        }
+    StepResult:
+        return result;
+    }
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetContents()
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data:  [{
+         *          key: name of roles,
+         *          label: name of roles,
+         *          }, {}, {}]
+         *  }]
+         */
+        string result = string.Empty;
+
+        try
+        {
+            TList<Content> lstObj = DataRepository.ContentProvider.GetByIsDisabled(false);
+
+            if (lstObj.Count == 0)
+            {
+                result = @"[{ 'result': 'true', 'message': 'There is no content. Please contact Administrator.', 'data': [] }]";
+                goto StepResult;
+            }
+
+            lstObj.Sort("FuncTitle ASC, Title ASC");
+            foreach (Content item in lstObj)
+            {
+                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + item.FuncTitle + strSeperateStaff + item.Title + @"'},";
             }
 
             if (result.Length > 1)

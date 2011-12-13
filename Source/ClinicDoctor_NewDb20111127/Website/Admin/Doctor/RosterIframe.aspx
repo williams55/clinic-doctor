@@ -98,7 +98,7 @@
                 <td>
                     <input id="chkRepeat" type="checkbox" value="repeated" checked="checked" style="float: left;" />
                     <span id="spanMonth">
-                        <input type="text" id="txtMonth" readonly="readonly" /></span>
+                        <input type="text" id="txtMonth" readonly="readonly" style="padding: 4px 2px 4px 2px;" /></span>
                 </td>
             </tr>
             <tr id="divWeekday">
@@ -115,7 +115,7 @@
                 <td>
                     <select id="cboFromHour">
                     </select><span id="loadingFromHour" class="loading"></span> <span id="spanFromDate">
-                        <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" /></span>
+                        <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;" /></span>
                 </td>
             </tr>
             <tr>
@@ -125,7 +125,7 @@
                 <td>
                     <select id="cboToHour">
                     </select><span id="loadingToHour" class="loading"></span> <span id="spanToDate">
-                        <input type="text" id="txtToDate" class="datePicker" readonly="readonly" /></span>
+                        <input type="text" id="txtToDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;" /></span>
                 </td>
             </tr>
             <tr>

@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 
 public partial class Admin_Doctor_RosterIframe : System.Web.UI.Page
 {
-    static string strSeperateStaff = ": ";
+    static string strSeperateStaff = " | ";
 
     #region "Roster"
     [WebMethod]
