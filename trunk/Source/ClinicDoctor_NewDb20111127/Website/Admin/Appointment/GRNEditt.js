@@ -177,10 +177,6 @@ scheduler.showLightbox = function(id) {
     if (ev.isnew == "false") {
         $("#trRepeat").hide();
         $("#tdTitle").text("Edit Appointment");
-
-        if (ev.RosterTypeId) {
-            $("#cboRosterType").val(ev.RosterTypeId);
-        }
     }
 
     scheduler.startLightbox(id, html("RosterForm"));
@@ -324,6 +320,39 @@ function loadStaff() {
     });
 }
 
+function loadContent() {
+    $.ajax({
+        type: "POST",
+        url: "AppointmentIframe.aspx/GetContents",
+        data: "{}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(response) {
+            var obj = eval(response.d)[0];
+            if (obj.result == "true") {
+                var arr = eval(obj.data);
+                $("#cboContent").find("option").remove();
+
+                $.each(arr, function(i, item) {
+                    $("#cboContent").append('<option value="' + item.key + '">' + item.label + '</option>');
+                });
+
+                $("#cboContent").show();
+            }
+            else {
+                alert(obj.message);
+            }
+            blStaff = true;
+        },
+        fail: function() {
+            alert("Cannot load content data. Please try again or contact Administrator.");
+            scheduler.endLightbox(false, html("RosterForm"));
+        },
+        complete: function() {
+        }
+    });
+}
+
 function initForm() {
     $("#dialog-modal").hide();
 
@@ -374,8 +403,6 @@ function SaveRoster() {
 
     var _id = $("#hdId").val();
     var ev = scheduler.getEvent(_id);
-    var _rosterType = $("#cboRosterType").val();
-    var _rosterTitle = $("#cboRosterType option:selected").text();
     var _fromTime = $("#cboFromHour").val();
     var _toTime = $("#cboToHour").val();
     var _fromDate = $("#txtFromDate").datepicker("getDate");
@@ -531,7 +558,8 @@ $(document).ready(function() {
     loadPatient();
     loadHour();
     loadStaff();
-
+    loadContent();
+    
     $("input, textarea").addClass("idle");
     $("input, textarea").focus(function() {
         $(this).addClass("activeField").removeClass("idle");

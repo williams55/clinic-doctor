@@ -115,7 +115,7 @@
                 <td>
                     <input type="text" id="txtFirstName" style="width: 130px; float: left;" />
                     <span style="margin-right: 10px; margin-left: 20px; float: left; font-weight: bold;">
-                        Last Name</span><input type="text" id="txtLasttName" style="width: 130px; float: left;" />
+                        Last Name</span><input type="text" id="txtLastName" style="width: 130px; float: left;" />
                     <input type="text" id="txtCellPhone" style="width: 100px; float: right;" /><span
                         style="margin-right: 10px; float: right; font-weight: bold;" class="header">Cell
                         Phone</span>
@@ -131,20 +131,19 @@
             </tr>
             <tr>
                 <td class="header" width="80">
-                    Doctor
+                    Content
                 </td>
                 <td>
-                    <select id="cboStaff" style="width: 200px;">
+                    <select id="cboContent" style="width: 200px;">
                     </select>
                 </td>
             </tr>
             <tr>
-                <td class="header" width="80">
-                    Roster Type
+                <td class="header">
+                    Note
                 </td>
                 <td>
-                    <select id="cboRosterType">
-                    </select><span id="loadingRosterType" class="loading"></span>
+                    <textarea id="txtNote" cols="10" rows="3" style="width: 100%;"></textarea>
                 </td>
             </tr>
             <tr>
@@ -154,7 +153,7 @@
                 <td>
                     <select id="cboFromHour">
                     </select><span id="loadingFromHour" class="loading"></span> <span id="spanFromDate">
-                        <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" /></span>
+                        <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;" /></span>
                 </td>
             </tr>
             <tr>
@@ -164,15 +163,16 @@
                 <td>
                     <select id="cboToHour">
                     </select><span id="loadingToHour" class="loading"></span> <span id="spanToDate">
-                        <input type="text" id="txtToDate" class="datePicker" readonly="readonly" /></span>
+                        <input type="text" id="txtToDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;" /></span>
                 </td>
             </tr>
             <tr>
-                <td class="header">
-                    Note
+                <td class="header" width="80">
+                    Doctor
                 </td>
                 <td>
-                    <textarea id="txtNote" cols="10" rows="3" style="width: 100%;"></textarea>
+                    <select id="cboStaff" style="width: 200px;">
+                    </select>
                 </td>
             </tr>
             <tr>
