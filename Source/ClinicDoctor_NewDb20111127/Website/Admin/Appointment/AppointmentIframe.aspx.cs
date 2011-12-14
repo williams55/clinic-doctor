@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 {
     static string strSeperateStaff = " | ";
+    static char chrSeperateStaff = '|';
 
     #region "Roster"
     [WebMethod]
@@ -810,13 +811,121 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             lstObj.Sort("FuncTitle ASC, Title ASC");
             foreach (Content item in lstObj)
             {
-                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + item.FuncTitle + strSeperateStaff + item.Title + @"'},";
+                result += @"{'key' : '" + item.FuncId + chrSeperateStaff.ToString() + item.Id.ToString() + @"'" + "," + @"'label' : '" 
+                    + item.FuncTitle + strSeperateStaff + item.Title + @"'},";
             }
 
             if (result.Length > 1)
                 result = result.Substring(0, result.Length - 1);
 
             result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
+            goto StepResult;
+        }
+        catch (Exception ex)
+        {
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            goto StepResult;
+        }
+    StepResult:
+        return result;
+    }
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetRooms(string DoctorUserName, string FuncId)
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data:  [{
+         *          key: name of roles,
+         *          label: name of roles,
+         *          }, {}, {}]
+         *  }]
+         */
+        string result = string.Empty;
+
+        try
+        {
+            string[] arr = FuncId.Split(chrSeperateStaff);
+
+            DataSet ds = new DataSet();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "GetRoomByDoctorUserNameByIsDisabledWithOrderPriority";
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@DoctorUserName", DoctorUserName));
+            cmd.Parameters.Add(new SqlParameter("@FuncId", Convert.ToInt64(arr[0])));
+            cmd.Parameters.Add(new SqlParameter("@IsDisabled", false));
+            cmd.CommandTimeout = 0;
+
+            ds = DataRepository.Provider.ExecuteDataSet(cmd);
+            DataTable objTable = ds.Tables[0];
+
+            if (objTable.Rows.Count == 0)
+            {
+                result = @"[{ 'result': 'true', 'message': 'There is no room. Please contact Administrator.', 'data': [{'key': '-1', 'label': 'No Room'] }]";
+                goto StepResult;
+            }
+
+            foreach (DataRow dr in objTable.Rows)
+            {
+                result += @"{'key' : '" + dr["Id"].ToString() + @"'" + "," + @"'label' : '" + dr["Title"].ToString() + @"'" + "},";
+            }
+
+            if (result.Length > 1)
+                result = result.Substring(0, result.Length - 1);
+
+            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
+            goto StepResult;
+        }
+        catch (Exception ex)
+        {
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            goto StepResult;
+        }
+    StepResult:
+        return result;
+    }
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetCurrentContents(string DoctorUserName)
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data: string content id
+         *  }
+         */
+        string result = string.Empty;
+
+        try
+        {
+            TList<DoctorFunc> lstDrFu = DataRepository.DoctorFuncProvider.GetByDoctorUserNameIsDisabled(DoctorUserName, false);
+            TList<Content> lstObj = DataRepository.ContentProvider.GetByIsDisabled(false);
+
+            if (lstObj.Count == 0)
+            {
+                result = @"[{ 'result': 'true', 'message': 'There is no content. Please contact Administrator.', 'data': [] }]";
+                goto StepResult;
+            }
+
+            // Lay dong dau tien
+            lstObj.Sort("FuncTitle ASC, Title ASC");
+            foreach (Content item in lstObj)
+            {
+                foreach (DoctorFunc itemDr in lstDrFu)
+                {
+                    if (item.FuncId == itemDr.FuncId)
+                    {
+                        result = item.FuncId + chrSeperateStaff.ToString() + item.Id.ToString();
+                        goto StepString;
+                    }
+                }
+            }
+
+        StepString:
+            result = @"[{ 'result': 'true', 'message': '', 'data':['" + result + @"'] }]";
             goto StepResult;
         }
         catch (Exception ex)
