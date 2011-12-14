@@ -9,7 +9,6 @@ using System.Text;
 using System.Web.Services;
 using DDay.iCal;
 using DDay.iCal.Serialization.iCalendar;
-using Outlook = Microsoft.Office.Interop.Outlook;
 
 public partial class Admin_Doctor_TestSendMail : System.Web.UI.Page
 {

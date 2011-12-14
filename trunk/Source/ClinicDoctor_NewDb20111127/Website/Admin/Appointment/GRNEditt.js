@@ -11,7 +11,7 @@ function show_minical() {
             position: "dhx_minical_icon",
             date: scheduler._date,
             navigation: true,
-            handler: function(date, calendar) {
+            handler: function (date, calendar) {
                 scheduler.setCurrentView(date);
                 scheduler.destroyCalendar()
             }
@@ -36,7 +36,7 @@ function initSchedule(weekday) {
         data: "{}",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function(response) {
+        success: function (response) {
             var obj = eval(response.d)[0];
 
             if (obj.result == "true") {
@@ -68,7 +68,7 @@ function initSchedule(weekday) {
                     scheduler.attachEvent("onClick", block_readonly)
 
                     // When event changed, check and update
-                    scheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new) {
+                    scheduler.attachEvent("onBeforeEventChanged", function (event_object, native_event, is_new) {
                         // If update roster
                         if (is_new == false) {
                             if (event_object.start_date <= new Date()) {
@@ -81,7 +81,7 @@ function initSchedule(weekday) {
                     });
 
                     // Save roster when resized or moved
-                    scheduler.attachEvent("onEventChanged", function(event_id, event_object) {
+                    scheduler.attachEvent("onEventChanged", function (event_id, event_object) {
                         //any custom logic here
                         var _id = event_object.id;
                         var _doctorUserName = event_object.section_id;
@@ -101,7 +101,7 @@ function initSchedule(weekday) {
                         UpdateRoster(requestdata, 'UpdateEventMove', _id);
                     });
 
-                    dhtmlxEvent(document, (_isOpera ? "keypress" : "keydown"), function(e) {
+                    dhtmlxEvent(document, (_isOpera ? "keypress" : "keydown"), function (e) {
 
                         if (e.keyCode == 37) {
                             //left
@@ -126,15 +126,15 @@ function initSchedule(weekday) {
                 alert(obj.message);
             }
         },
-        fail: function() {
+        fail: function () {
             alert("Unknow error!");
         },
-        complete: function() {
+        complete: function () {
         }
     });
 }
 
-scheduler.showLightbox = function(id) {
+scheduler.showLightbox = function (id) {
     if (!blHour || !blStaff || !blPatient) {
         scheduler.deleteEvent(id);
         alert("Loading data is not complete. Please wait for a few moment.");
@@ -180,6 +180,11 @@ scheduler.showLightbox = function(id) {
     }
 
     scheduler.startLightbox(id, html("RosterForm"));
+
+    $("#trNewPatient").show();
+    $('#trNewPatient1').hide();
+    $('#trNewPatient2').hide();
+    $("#chkNewPatient").focus();
 }
 
 function LoadRoster(mode, date) {
@@ -190,7 +195,7 @@ function LoadRoster(mode, date) {
         data: requestdata,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function(response) {
+        success: function (response) {
             var obj = eval(response.d)[0];
 
             if (obj.result == "true") {
@@ -203,10 +208,10 @@ function LoadRoster(mode, date) {
                 alert(obj.message);
             }
         },
-        fail: function() {
+        fail: function () {
             alert("Unknow error!");
         },
-        complete: function() {
+        complete: function () {
         }
     });
 }
@@ -219,23 +224,23 @@ function loadPatient() {
         data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function(msg) {
+        success: function (msg) {
             var obj = eval(msg.d)[0];
             if (obj.result == "true") {
                 var arr = eval(obj.data);
                 $("#cboPatient").find("option").remove();
 
-                $.each(arr, function(i, item) {
+                $.each(arr, function (i, item) {
                     $("#cboPatient").append('<option value="' + item.id + '">' + item.label + '</option>');
                 });
             }
             blPatient = true;
         },
-        fail: function() {
+        fail: function () {
             alert("Cannot load Patients. Please try again or contact Administrator.");
             scheduler.endLightbox(false, html("RosterForm"));
         },
-        complete: function() {
+        complete: function () {
         }
     });
 }
@@ -266,23 +271,23 @@ function loadHour() {
         data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function(msg) {
+        success: function (msg) {
             var arr = eval(msg.d);
             $("#cboFromHour").find("option").remove();
             $("#cboToHour").find("option").remove();
 
-            $.each(arr, function(i, item) {
+            $.each(arr, function (i, item) {
                 $("#cboFromHour").append('<option value="' + item.key + '">' + item.label + '</option>');
                 $("#cboToHour").append('<option value="' + item.key + '">' + item.label + '</option>');
             });
 
             blHour = true;
         },
-        fail: function() {
+        fail: function () {
             alert("Cannot load Hour data. Please try again or contact Administrator.");
             scheduler.endLightbox(false, html("RosterForm"));
         },
-        complete: function() {
+        complete: function () {
         }
     });
 }
@@ -294,13 +299,13 @@ function loadStaff() {
         data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
             var obj = eval(response.d)[0];
             if (obj.result == "true") {
                 var arr = eval(obj.data);
                 $("#cboStaff").find("option").remove();
 
-                $.each(arr, function(i, item) {
+                $.each(arr, function (i, item) {
                     $("#cboStaff").append('<option value="' + item.key + '">' + item.label + '</option>');
                 });
 
@@ -311,11 +316,11 @@ function loadStaff() {
             }
             blStaff = true;
         },
-        fail: function() {
+        fail: function () {
             alert("Cannot load Doctor data. Please try again or contact Administrator.");
             scheduler.endLightbox(false, html("RosterForm"));
         },
-        complete: function() {
+        complete: function () {
         }
     });
 }
@@ -327,13 +332,13 @@ function loadContent() {
         data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
             var obj = eval(response.d)[0];
             if (obj.result == "true") {
                 var arr = eval(obj.data);
                 $("#cboContent").find("option").remove();
 
-                $.each(arr, function(i, item) {
+                $.each(arr, function (i, item) {
                     $("#cboContent").append('<option value="' + item.key + '">' + item.label + '</option>');
                 });
 
@@ -344,11 +349,11 @@ function loadContent() {
             }
             blStaff = true;
         },
-        fail: function() {
+        fail: function () {
             alert("Cannot load content data. Please try again or contact Administrator.");
             scheduler.endLightbox(false, html("RosterForm"));
         },
-        complete: function() {
+        complete: function () {
         }
     });
 }
@@ -357,21 +362,25 @@ function initForm() {
     $("#dialog-modal").hide();
 
     $("#trNewPatient").show();
-    $('#trNewPatient1').hide();
-    $('#trNewPatient2').hide();
+    $('#trNewPatient1').show();
+    $('#trNewPatient2').show();
 
     //    $("#divWeekday").hide();
     //    $("#spanMonth").hide();
 
-    //    $("#cboFromHour").show();
-    //    $("#loadingFromHour").hide();
-    //    $('#spanFromDate').show();
+    $("#cboFromHour").show();
+    $("#loadingFromHour").hide();
+    $('#spanFromDate').show();
 
-    //    $("#cboToHour").show();
-    //    $("#loadingToHour").hide();
-    //    $('#spanToDate').show();
+    $("#cboToHour").show();
+    $("#loadingToHour").hide();
+    $('#spanToDate').show();
 
-    //    $("#trRepeat").show();
+    $("#cboRoom").show();
+    $("#loadingRoom").hide();
+
+    $("#cboStaff").show();
+    $("#spanStaff").hide();
 
     // Set empty
     $("#chkNewPatient").attr("checked", false);
@@ -434,7 +443,7 @@ function SaveRoster() {
 
         if ($("#chkRepeat").attr("checked")) {
             var allVals = [];
-            $("input[type=checkbox]:checked", "#spanWeekday").each(function() {
+            $("input[type=checkbox]:checked", "#spanWeekday").each(function () {
                 allVals.push($(this).val());
             });
 
@@ -460,7 +469,7 @@ function SaveRoster() {
             data: requestdata,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: function(response) {
+            success: function (response) {
                 var obj = eval(response.d)[0];
                 if (obj.result == "true") {
                     var evs = obj.data;
@@ -471,10 +480,10 @@ function SaveRoster() {
                     alert(obj.message);
                 }
             },
-            fail: function() {
+            fail: function () {
                 alert("Unknow error!");
             },
-            complete: function() {
+            complete: function () {
                 disableAllElements($("#tblContent"), true)
                 $("#dialog-modal").hide();
             }
@@ -489,7 +498,7 @@ function UpdateRoster(requestdata, method, _id) {
         data: requestdata,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function(response) {
+        success: function (response) {
             var obj = eval(response.d)[0];
             if (obj.result == "true") {
                 var evs = obj.data;
@@ -501,10 +510,10 @@ function UpdateRoster(requestdata, method, _id) {
                 alert(obj.message);
             }
         },
-        fail: function() {
+        fail: function () {
             alert("Unknow error!");
         },
-        complete: function() {
+        complete: function () {
             disableAllElements($("#tblContent"), true)
             $("#dialog-modal").hide();
         }
@@ -512,7 +521,7 @@ function UpdateRoster(requestdata, method, _id) {
 }
 
 function addRoster(evs) {
-    $.each(evs, function(i, item) {
+    $.each(evs, function (i, item) {
         scheduler.addEvent(item);
     });
 }
@@ -534,7 +543,7 @@ function DeleteRoster() {
             data: requestdata,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: function(response) {
+            success: function (response) {
                 var obj = eval(response.d)[0];
                 if (obj.result == "true") {
                     scheduler.deleteEvent(ev.id)
@@ -544,26 +553,26 @@ function DeleteRoster() {
                     alert(obj.message);
                 }
             },
-            fail: function() {
+            fail: function () {
                 alert("Unknow error!");
             },
-            complete: function() {
+            complete: function () {
             }
         });
     }
     scheduler.endLightbox(false, html("RosterForm"));
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     loadPatient();
     loadHour();
     loadStaff();
     loadContent();
-    
+
     $("input, textarea").addClass("idle");
-    $("input, textarea").focus(function() {
+    $("input, textarea").focus(function () {
         $(this).addClass("activeField").removeClass("idle");
-    }).blur(function() {
+    }).blur(function () {
         $(this).removeClass("activeField").addClass("idle");
     });
 
@@ -592,26 +601,26 @@ $(document).ready(function() {
         minDate: _nextMonth
     });
 
-    $("#chkNewPatient").click(function() {
+    $("#chkNewPatient").click(function () {
         $('#trNewPatient1').toggle($(this).attr('checked'));
         $('#trNewPatient2').toggle($(this).attr('checked'));
 
         $('#trNewPatient').toggle(!$(this).attr('checked'));
     });
 
-    $("#btnSave").click(function() {
+    $("#btnSave").click(function () {
         SaveRoster();
     });
 
-    $("#btnCancel").click(function() {
+    $("#btnCancel").click(function () {
         CancelRoster();
     });
 
-    $("#btnDelete").click(function() {
+    $("#btnDelete").click(function () {
         DeleteRoster();
     });
 
-    $("#btnDelete").keydown(function(e) {
+    $("#btnDelete").keydown(function (e) {
         var key;
 
         if (window.event)
@@ -620,11 +629,10 @@ $(document).ready(function() {
             key = e.which;     //firefox
 
         if (key == 9) {
-            $("#cboStaff").focus();
+            $("#chkNewPatient").focus();
             return false;
         }
     });
-
 });
 
 function disableAllElements(obj, disabled) {
