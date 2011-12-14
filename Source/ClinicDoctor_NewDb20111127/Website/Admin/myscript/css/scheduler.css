@@ -16,7 +16,6 @@
 {
     padding: 5px;
     vertical-align: top;
-    border-bottom: 1px solid #ccc;
 }
 .schedulerForm table tr td.header
 {
@@ -28,6 +27,16 @@
     font-weight: bold;
     font-size:16px;
     padding-bottom: 10px;
+    color: #FF0000;
+}
+.schedulerForm table tr td.subtitle
+{
+    font-family: Arial, Sans-Serif;
+    font-weight: bold;
+    font-size:14px;
+    margin-top: 10px;
+    border-top: 2px solid #3380CB;
+    color: #3380CB;
 }
 .schedulerForm input[type="text"], .schedulerForm textarea
 {
