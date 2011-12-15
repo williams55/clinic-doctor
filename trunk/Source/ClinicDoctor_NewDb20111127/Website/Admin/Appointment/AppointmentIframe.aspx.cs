@@ -737,7 +737,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetStaffs()
+    public static string GetStaffs(string FuncId, string StartTime, string EndTime, string StartDate, string EndDate)
     {
         /* Return Structure
          * { result: true [success], false [fail],
@@ -752,22 +752,57 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
         try
         {
-            // Get all available staffs
-            TList<DoctorFunc> lstDoctorFunc = DataRepository.DoctorFuncProvider.GetByIsDisabled(false);
+            // Get start time and end time
+            int intStartHour = Convert.ToInt32(StartTime.Split(':')[0]);
+            int intStartMinute = Convert.ToInt32(StartTime.Split(':')[1]);
+            int intEndHour = Convert.ToInt32(EndTime.Split(':')[0]);
+            int intEndMinute = Convert.ToInt32(EndTime.Split(':')[1]);
 
-            // If there is no roles, return empty data
-            if (lstDoctorFunc.Count == 0)
+            // Get start date and end date
+            DateTime dtStart = Convert.ToDateTime(StartDate);
+            DateTime dtEnd = Convert.ToDateTime(EndDate);
+
+            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
+            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
+            
+            string[] arr = FuncId.Split(chrSeperateStaff);
+
+            DataSet ds = new DataSet();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "GetAvailableStaffsForAppointment";
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@FuncId", Convert.ToInt64(arr[0])));
+            cmd.Parameters.Add(new SqlParameter("@StartTime", dtStart));
+            cmd.Parameters.Add(new SqlParameter("@EndTime", dtEnd));
+            cmd.CommandTimeout = 0;
+
+            ds = DataRepository.Provider.ExecuteDataSet(cmd);
+            DataTable objTable = ds.Tables[0];
+
+            if (objTable.Rows.Count == 0)
             {
-                result = @"[{ 'result': 'true', 'message': 'There is no group or no doctor. Please contact Administrator.', 'data': [] }]";
+                result = @"[{ 'result': 'true', 'message': 'There is no doctor. Please contact Administrator.', 'data': [{'key': '-1', 'label': 'No Doctor'] }]";
                 goto StepResult;
             }
 
-            lstDoctorFunc.Sort("FuncTitle ASC, DoctorShortName ASC");
-            foreach (DoctorFunc objFunc in lstDoctorFunc)
+            foreach (DataRow dr in objTable.Rows)
             {
-                result += @"{'key' : '" + objFunc.DoctorUserName + @"'" + "," + @"'label' : '" + objFunc.DoctorShortName + @"'},";
-            }
+                result += @"{'key' : '" + dr["DoctorUserName"].ToString() + @"'" + "," + @"'label' : '" + dr["DoctorShortName"].ToString();
 
+                if (dr["IsDisabled"].ToString() == "True")
+                {
+                    result += strSeperateStaff + @"Not Available', ";
+                    result += @"'property' : 'disabled=""disabled""'";
+                }
+                else
+                {
+                    result += strSeperateStaff + @"Available', ";
+                    result += @"'property' : ''";
+                }
+
+                result += @"},";
+            }
+            
             if (result.Length > 1)
                 result = result.Substring(0, result.Length - 1);
 
