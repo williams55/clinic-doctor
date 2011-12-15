@@ -113,7 +113,6 @@
                     <select id="cboPatient" style="width: 95%;" tabindex="101">
                     </select>
                 </td>
-                </td>
                 <td>
                 </td>
                 <td>
@@ -158,7 +157,10 @@
                 </td>
                 <td>
                     <select id="cboContent" style="width: 95%;" tabindex="106">
-                    </select>
+                    </select><div id="spanContent" style="float: left;">
+                        <span class="loading"></span>
+                    </div>
+                    <input type="hidden" id="hdContent" />
                 </td>
                 <td>
                 </td>
@@ -211,7 +213,9 @@
                 </td>
                 <td>
                     <select id="cboStaff" style="width: 95%;" tabindex="112">
-                    </select><span id="spanStaff" class="loading" style="float: left;"></span>
+                    </select><div id="spanStaff" style="float: left;">
+                        <span class="loading"></span>
+                    </div>
                     <input type="hidden" id="hdStaff" />
                 </td>
                 <td class="header">
@@ -219,7 +223,10 @@
                 </td>
                 <td>
                     <select id="cboRoom" style="width: 95%;" tabindex="113">
-                    </select><span id="loadingRoom" class="loading" style="float: left;"></span>
+                    </select><div id="loadingRoom" style="float: left;">
+                        <span class="loading"></span>
+                    </div>
+                    <input type="hidden" id="hdRoom" />
                 </td>
             </tr>
             <tr>

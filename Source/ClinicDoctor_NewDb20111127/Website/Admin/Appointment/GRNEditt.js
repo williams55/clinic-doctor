@@ -169,6 +169,9 @@ scheduler.showLightbox = function(id) {
     if (ev.section_id) {
         $("#hdStaff").val(ev.section_id);
 
+        $("#spanContent").show();
+        $("#cboContent").hide();
+
         // Load current Functionality
         var requestdata = "{ 'DoctorUserName': '" + $("#hdStaff").val() + "' }";
         $.ajax({
@@ -183,11 +186,9 @@ scheduler.showLightbox = function(id) {
                 if (obj.result == "true") {
                     var evs = obj.data;
                     if (evs) {
-                        $("#cboContent").val(evs); ;
+                        $("#cboContent").val(evs);
+                        $("#cboContent").change();
                     }
-
-                    loadRooms();
-                    scheduler.startLightbox(id, html("RosterForm"));
                 }
                 else {
                     alert(obj.message);
@@ -197,6 +198,8 @@ scheduler.showLightbox = function(id) {
                 alert("Unknow error!");
             },
             complete: function() {
+                $("#cboContent").show();
+                $("#spanContent").hide();
             }
         });
     }
@@ -205,6 +208,8 @@ scheduler.showLightbox = function(id) {
         $("#trRepeat").hide();
         $("#tdTitle").text("Edit Appointment");
     }
+
+    scheduler.startLightbox(id, html("RosterForm"));
 
     $("#trNewPatient").show();
     $('#trNewPatient1').hide();
@@ -236,40 +241,6 @@ function LoadRoster(mode, date) {
             alert("Unknow error!");
         },
         complete: function() {
-        }
-    });
-}
-
-function loadRooms(DoctorUserName, FuncId) {
-    var requestdata = "{ 'DoctorUserName': '" + $("#cboStaff").val() + "', 'FuncId': '" + $("#cboContent").val() + "'}";
-    $("#cboRoom").hide();
-    $("#loadingRoom").show();
-    
-    // Load data
-    $.ajax({
-        type: "POST",
-        url: "AppointmentIframe.aspx/GetRooms",
-        data: requestdata,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(msg) {
-            var obj = eval(msg.d)[0];
-            if (obj.result == "true") {
-                var arr = eval(obj.data);
-                $("#cboRoom").find("option").remove();
-
-                $.each(arr, function(i, item) {
-                    $("#cboRoom").append('<option value="' + item.id + '">' + item.label + '</option>');
-                });
-            }
-        },
-        fail: function() {
-            alert("Cannot load Room. Please try again or contact Administrator.");
-            scheduler.endLightbox(false, html("RosterForm"));
-        },
-        complete: function() {
-            $("#cboRoom").show();
-            $("#loadingRoom").hide();
         }
     });
 }
@@ -331,39 +302,6 @@ function loadHour() {
     });
 }
 
-function loadStaff() {
-    $.ajax({
-        type: "POST",
-        url: "AppointmentIframe.aspx/GetStaffs",
-        data: "{}",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(response) {
-            var obj = eval(response.d)[0];
-            if (obj.result == "true") {
-                var arr = eval(obj.data);
-                $("#cboStaff").find("option").remove();
-
-                $.each(arr, function(i, item) {
-                    $("#cboStaff").append('<option value="' + item.key + '">' + item.label + '</option>');
-                });
-
-                $("#cboStaff").show();
-            }
-            else {
-                alert(obj.message);
-            }
-            blStaff = true;
-        },
-        fail: function() {
-            alert("Cannot load Doctor data. Please try again or contact Administrator.");
-            scheduler.endLightbox(false, html("RosterForm"));
-        },
-        complete: function() {
-        }
-    });
-}
-
 function loadContent() {
     $.ajax({
         type: "POST",
@@ -393,6 +331,85 @@ function loadContent() {
             scheduler.endLightbox(false, html("RosterForm"));
         },
         complete: function() {
+        }
+    });
+}
+
+function loadStaff() {
+    if (!$("#txtFromDate").datepicker("getDate") || !$("#txtToDate").datepicker("getDate"))
+        return;
+
+    var requestdata = JSON.stringify({ FuncId: $("#hdContent").val(), StartTime: $("#cboFromHour").val(), EndTime: $("#cboToHour").val(),
+        StartDate: $("#txtFromDate").datepicker("getDate"), EndDate: $("#txtToDate").datepicker("getDate")
+    });
+    $("#cboStaff").hide();
+    $("#spanStaff").show();
+
+    $.ajax({
+        type: "POST",
+        url: "AppointmentIframe.aspx/GetStaffs",
+        data: requestdata,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(response) {
+            var obj = eval(response.d)[0];
+            if (obj.result == "true") {
+                var arr = eval(obj.data);
+                $("#cboStaff").find("option").remove();
+
+                $.each(arr, function(i, item) {
+                    $("#cboStaff").append('<option ' + item.property + ' value="' + item.key + '">' + item.label + '</option>');
+                });
+
+                $("#cboStaff").val($("#hdStaff").val());
+                loadRooms();
+            }
+            else {
+                alert(obj.message);
+            }
+            blStaff = true;
+        },
+        fail: function() {
+            alert("Cannot load Doctor data. Please try again or contact Administrator.");
+            scheduler.endLightbox(false, html("RosterForm"));
+        },
+        complete: function() {
+            $("#cboStaff").show();
+            $("#spanStaff").hide();
+        }
+    });
+}
+
+function loadRooms() {
+    var requestdata = "{ 'DoctorUserName': '" + $("#hdStaff").val() + "', 'FuncId': '" + $("#hdContent").val() + "'}";
+    $("#cboRoom").hide();
+    $("#loadingRoom").show();
+
+    // Load data
+    $.ajax({
+        type: "POST",
+        url: "AppointmentIframe.aspx/GetRooms",
+        data: requestdata,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(msg) {
+            var obj = eval(msg.d)[0];
+            if (obj.result == "true") {
+                var arr = eval(obj.data);
+                $("#cboRoom").find("option").remove();
+
+                $.each(arr, function(i, item) {
+                    $("#cboRoom").append('<option value="' + item.id + '">' + item.label + '</option>');
+                });
+            }
+        },
+        fail: function() {
+            alert("Cannot load Room. Please try again or contact Administrator.");
+            scheduler.endLightbox(false, html("RosterForm"));
+        },
+        complete: function() {
+            $("#cboRoom").show();
+            $("#loadingRoom").hide();
         }
     });
 }
@@ -605,6 +622,73 @@ $(document).ready(function() {
         minDate: _nextMonth
     });
 
+    initEvents();
+});
+
+// Get patient info
+function GetPatientInfo(patientId, cboPatientName, cboPatientId) {
+    if (patientId) {
+        // Load patient
+        cboPatientName.setComboValue(patientId);
+        cboPatientId.setComboValue(patientId);
+    }
+    else {
+        // Tao moi patient
+    }
+}
+
+function setTime(ev) {
+    var startTime = ev.start_date.format("HH:MM");
+    var endTime = ev.end_date.format("HH:MM");
+    $("#cboFromHour").val(startTime + ":00");
+    $("#cboToHour").val(endTime + ":00");
+}
+
+function initForm() {
+    $("#dialog-modal").hide();
+
+    $("#trNewPatient").show();
+    $('#trNewPatient1').show();
+    $('#trNewPatient2').show();
+
+    $("#cboFromHour").show();
+    $("#loadingFromHour").hide();
+    $('#spanFromDate').show();
+
+    $("#cboToHour").show();
+    $("#loadingToHour").hide();
+    $('#spanToDate').show();
+
+    $("#cboContent").hide();
+    $("#spanContent").show();
+
+    $("#cboStaff").hide();
+    $("#spanStaff").show();
+
+    $("#cboRoom").hide();
+    $("#loadingRoom").show();
+
+    // Set empty
+    $("#chkNewPatient").attr("checked", false);
+    $("#hdId").val("");
+    $("#tdTitle").text("New appointment");
+    $("#txtNote").val("");
+
+    $("#chkNewPatient").focus();
+
+    disableAllElements($("#tblContent"), true)
+}
+
+function disableAllElements(obj, disabled) {
+    if (disabled) {
+        $("input, textarea, select", obj).removeAttr('disabled');
+    }
+    else {
+        $("input, textarea, select", obj).attr('disabled', true);
+    }
+}
+
+function initEvents() {
     $("#chkNewPatient").click(function() {
         $('#trNewPatient1').toggle($(this).attr('checked'));
         $('#trNewPatient2').toggle($(this).attr('checked'));
@@ -637,67 +721,18 @@ $(document).ready(function() {
             return false;
         }
     });
-});
 
-// Get patient info
-function GetPatientInfo(patientId, cboPatientName, cboPatientId) {
-    if (patientId) {
-        // Load patient
-        cboPatientName.setComboValue(patientId);
-        cboPatientId.setComboValue(patientId);
-    }
-    else {
-        // Tao moi patient
-    }
-}
+    // Call Load doctor function
+    $("#cboContent, #cboFromHour, #cboToHour, .datePicker").change(function() {
+        $("#hdContent").val($("#cboContent").val());
+        $("#cboStaff").change();
+        loadStaff();
+    });
 
-function setTime(ev) {
-    var startTime = ev.start_date.format("HH:MM");
-    var endTime = ev.end_date.format("HH:MM");
-    $("#cboFromHour").val(startTime + ":00");
-    $("#cboToHour").val(endTime + ":00");
-}
+    // Call Load doctor function
+    $("#cboStaff").change(function() {
+        $("#hdoStaff").val($(this).val());
+        loadRooms();
+    });
 
-function initForm() {
-    $("#dialog-modal").hide();
-
-    $("#trNewPatient").show();
-    $('#trNewPatient1').show();
-    $('#trNewPatient2').show();
-
-    //    $("#divWeekday").hide();
-    //    $("#spanMonth").hide();
-
-    $("#cboFromHour").show();
-    $("#loadingFromHour").hide();
-    $('#spanFromDate').show();
-
-    $("#cboToHour").show();
-    $("#loadingToHour").hide();
-    $('#spanToDate').show();
-
-    $("#cboRoom").show();
-    $("#loadingRoom").hide();
-
-    $("#cboStaff").show();
-    $("#spanStaff").hide();
-
-    // Set empty
-    $("#chkNewPatient").attr("checked", false);
-    $("#hdId").val("");
-    $("#tdTitle").text("New appointment");
-    $("#txtNote").val("");
-
-    $("#chkNewPatient").focus();
-
-    disableAllElements($("#tblContent"), true)
-}
-
-function disableAllElements(obj, disabled) {
-    if (disabled) {
-        $("input, textarea, select", obj).removeAttr('disabled');
-    }
-    else {
-        $("input, textarea, select", obj).attr('disabled', true);
-    }
 }
