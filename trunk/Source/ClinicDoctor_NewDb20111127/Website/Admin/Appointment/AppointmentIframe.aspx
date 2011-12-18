@@ -100,9 +100,15 @@
                 <td class="header">
                     Is New Patient
                 </td>
-                <td colspan="3">
+                <td>
                     <input tabindex="100" id="chkNewPatient" type="checkbox" value="true" checked="checked"
                         style="float: left;" />
+                </td>
+                <td id="idIsFemaleTitle" class="header">
+                    Is Female
+                </td>
+                <td id="idIsFemale">
+                    <input tabindex="101" id="chkIsFemale" type="checkbox" value="true" style="float: left;" />
                 </td>
             </tr>
             <tr id="trNewPatient">
@@ -110,8 +116,11 @@
                     Select Patient
                 </td>
                 <td>
-                    <select id="cboPatient" style="width: 95%;" tabindex="101">
-                    </select>
+                    <select id="cboPatient" style="width: 95%;" tabindex="102">
+                    </select><div id="loadingPatient" style="float: left;">
+                        <span class="loading"></span>
+                    </div>
+                    <input type="hidden" id="hdPatient" />
                 </td>
                 <td>
                 </td>
@@ -123,13 +132,13 @@
                     First Name
                 </td>
                 <td>
-                    <input type="text" id="txtFirstName" style="width: 100%;" maxlength="200" tabindex="102" />
+                    <input type="text" id="txtFirstName" style="width: 100%;" maxlength="200" tabindex="103" />
                 </td>
                 <td class="header">
                     Last Name
                 </td>
                 <td>
-                    <input type="text" id="txtLastName" style="width: 100%;" maxlength="200" tabindex="103" />
+                    <input type="text" id="txtLastName" style="width: 100%;" maxlength="200" tabindex="104" />
                 </td>
             </tr>
             <tr id="trNewPatient2">
@@ -137,13 +146,13 @@
                     Cell Phone
                 </td>
                 <td>
-                    <input type="text" id="txtCellPhone" style="width: 100%;" maxlength="20" tabindex="104" />
+                    <input type="text" id="txtCellPhone" style="width: 100%;" maxlength="20" tabindex="105" />
                 </td>
                 <td class="header">
                     Address
                 </td>
                 <td>
-                    <input type="text" id="txtAddress" style="width: 100%;" maxlength="500" tabindex="105" />
+                    <input type="text" id="txtAddress" style="width: 100%;" maxlength="500" tabindex="106" />
                 </td>
             </tr>
             <tr>
@@ -156,7 +165,7 @@
                     Select Content
                 </td>
                 <td>
-                    <select id="cboContent" style="width: 95%;" tabindex="106">
+                    <select id="cboContent" style="width: 95%;" tabindex="107">
                     </select><div id="spanContent" style="float: left;">
                         <span class="loading"></span>
                     </div>
@@ -172,7 +181,7 @@
                     Note
                 </td>
                 <td colspan="3">
-                    <textarea id="txtNote" cols="10" rows="2" style="width: 95%;" tabindex="107"></textarea>
+                    <textarea id="txtNote" cols="10" rows="2" style="width: 95%;" tabindex="108"></textarea>
                 </td>
             </tr>
             <tr>
@@ -185,21 +194,21 @@
                     From Time
                 </td>
                 <td width="220">
-                    <select id="cboFromHour" style="float: left;" tabindex="108">
+                    <select id="cboFromHour" style="float: left;" tabindex="109">
                     </select><span id="loadingFromHour" class="loading" style="float: left;"></span>
                     <span id="spanFromDate" style="float: left;">
                         <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;"
-                            tabindex="109" /></span>
+                            tabindex="110" /></span>
                 </td>
                 <td class="header" width="70">
                     To Time
                 </td>
                 <td>
-                    <select id="cboToHour" style="float: left;" tabindex="110">
+                    <select id="cboToHour" style="float: left;" tabindex="111">
                     </select><span id="loadingToHour" class="loading" style="float: left;"></span> <span
                         id="spanToDate" style="float: left;">
                         <input type="text" id="txtToDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;"
-                            tabindex="111" /></span>
+                            tabindex="112" /></span>
                 </td>
             </tr>
             <tr>
@@ -212,7 +221,7 @@
                     Select Doctor
                 </td>
                 <td>
-                    <select id="cboStaff" style="width: 95%;" tabindex="112">
+                    <select id="cboStaff" style="width: 95%;" tabindex="113">
                     </select><div id="spanStaff" style="float: left;">
                         <span class="loading"></span>
                     </div>
@@ -222,7 +231,7 @@
                     Room
                 </td>
                 <td>
-                    <select id="cboRoom" style="width: 95%;" tabindex="113">
+                    <select id="cboRoom" style="width: 95%;" tabindex="114">
                     </select><div id="loadingRoom" style="float: left;">
                         <span class="loading"></span>
                     </div>
@@ -231,9 +240,9 @@
             </tr>
             <tr>
                 <td class="subtitle" colspan="4">
-                    <input type="submit" value="Save" id="btnSave" style="float: left;" tabindex="114" />
-                    <input type="submit" value="Cancel" id="btnCancel" style="float: left;" tabindex="115" />
-                    <input type="submit" value="Delete" id="btnDelete" style="float: right;" tabindex="116" />
+                    <input type="submit" value="Save" id="btnSave" style="float: left;" tabindex="115" />
+                    <input type="submit" value="Cancel" id="btnCancel" style="float: left;" tabindex="116" />
+                    <input type="submit" value="Delete" id="btnDelete" style="float: right;" tabindex="117" />
                 </td>
             </tr>
         </table>

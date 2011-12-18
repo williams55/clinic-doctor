@@ -85,14 +85,15 @@ namespace ClinicDoctor.Entities
 		///<param name="_doctorShortName"></param>
 		///<param name="_funcId"></param>
 		///<param name="_funcTitle"></param>
+		///<param name="_colorCode"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public DoctorFuncBase(System.String _doctorUserName, System.String _doctorShortName, 
-			System.Int64 _funcId, System.String _funcTitle, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.Int64 _funcId, System.String _funcTitle, System.String _colorCode, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new DoctorFuncEntityData();
 			this.backupData = null;
@@ -101,6 +102,7 @@ namespace ClinicDoctor.Entities
 			this.DoctorShortName = _doctorShortName;
 			this.FuncId = _funcId;
 			this.FuncTitle = _funcTitle;
+			this.ColorCode = _colorCode;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -115,20 +117,22 @@ namespace ClinicDoctor.Entities
 		///<param name="_doctorShortName"></param>
 		///<param name="_funcId"></param>
 		///<param name="_funcTitle"></param>
+		///<param name="_colorCode"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public static DoctorFunc CreateDoctorFunc(System.String _doctorUserName, System.String _doctorShortName, 
-			System.Int64 _funcId, System.String _funcTitle, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.Int64 _funcId, System.String _funcTitle, System.String _colorCode, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			DoctorFunc newDoctorFunc = new DoctorFunc();
 			newDoctorFunc.DoctorUserName = _doctorUserName;
 			newDoctorFunc.DoctorShortName = _doctorShortName;
 			newDoctorFunc.FuncId = _funcId;
 			newDoctorFunc.FuncTitle = _funcTitle;
+			newDoctorFunc.ColorCode = _colorCode;
 			newDoctorFunc.IsDisabled = _isDisabled;
 			newDoctorFunc.CreateUser = _createUser;
 			newDoctorFunc.CreateDate = _createDate;
@@ -315,6 +319,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(DoctorFuncColumn.FuncTitle, this.entityData.FuncTitle);
 				OnPropertyChanged("FuncTitle");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the ColorCode property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 10)]
+		public virtual System.String ColorCode
+		{
+			get
+			{
+				return this.entityData.ColorCode; 
+			}
+			
+			set
+			{
+				if (this.entityData.ColorCode == value)
+					return;
+					
+				OnColumnChanging(DoctorFuncColumn.ColorCode, this.entityData.ColorCode);
+				this.entityData.ColorCode = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(DoctorFuncColumn.ColorCode, this.entityData.ColorCode);
+				OnPropertyChanged("ColorCode");
 			}
 		}
 		
@@ -541,6 +580,8 @@ namespace ClinicDoctor.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("FuncTitle", "Func Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("ColorCode", "Color Code", 10));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("UpdateUser", "Update User", 200));
@@ -565,7 +606,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "DoctorUserName", "DoctorShortName", "FuncId", "FuncTitle", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "DoctorUserName", "DoctorShortName", "FuncId", "FuncTitle", "ColorCode", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -718,6 +759,7 @@ namespace ClinicDoctor.Entities
 				copy.DoctorShortName = this.DoctorShortName;
 				copy.FuncId = this.FuncId;
 				copy.FuncTitle = this.FuncTitle;
+				copy.ColorCode = this.ColorCode;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
@@ -873,6 +915,8 @@ namespace ClinicDoctor.Entities
 					return entityData.FuncId != _originalData.FuncId;
 					case DoctorFuncColumn.FuncTitle:
 					return entityData.FuncTitle != _originalData.FuncTitle;
+					case DoctorFuncColumn.ColorCode:
+					return entityData.ColorCode != _originalData.ColorCode;
 					case DoctorFuncColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case DoctorFuncColumn.CreateUser:
@@ -915,6 +959,7 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.DoctorShortName != _originalData.DoctorShortName;
 			result = result || entityData.FuncId != _originalData.FuncId;
 			result = result || entityData.FuncTitle != _originalData.FuncTitle;
+			result = result || entityData.ColorCode != _originalData.ColorCode;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -934,6 +979,7 @@ namespace ClinicDoctor.Entities
 				_originalData.DoctorShortName,
 				_originalData.FuncId,
 				_originalData.FuncTitle,
+				_originalData.ColorCode,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -973,6 +1019,7 @@ namespace ClinicDoctor.Entities
 					((this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString()).GetHashCode() ^ 
 					this.FuncId.GetHashCode() ^ 
 					((this.FuncTitle == null) ? string.Empty : this.FuncTitle.ToString()).GetHashCode() ^ 
+					((this.ColorCode == null) ? string.Empty : this.ColorCode.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
@@ -1038,6 +1085,15 @@ namespace ClinicDoctor.Entities
 					equal = false;
 			}
 			else if (Object1.FuncTitle == null ^ Object2.FuncTitle == null )
+			{
+				equal = false;
+			}
+			if ( Object1.ColorCode != null && Object2.ColorCode != null )
+			{
+				if (Object1.ColorCode != Object2.ColorCode)
+					equal = false;
+			}
+			else if (Object1.ColorCode == null ^ Object2.ColorCode == null )
 			{
 				equal = false;
 			}
@@ -1135,6 +1191,12 @@ namespace ClinicDoctor.Entities
             	
             	case DoctorFuncColumn.FuncTitle:
             		return this.FuncTitle.CompareTo(rhs.FuncTitle);
+            		
+            		                 
+            	
+            	
+            	case DoctorFuncColumn.ColorCode:
+            		return this.ColorCode.CompareTo(rhs.ColorCode);
             		
             		                 
             	
@@ -1301,12 +1363,13 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{11}{10}- Id: {0}{10}- DoctorUserName: {1}{10}- DoctorShortName: {2}{10}- FuncId: {3}{10}- FuncTitle: {4}{10}- IsDisabled: {5}{10}- CreateUser: {6}{10}- CreateDate: {7}{10}- UpdateUser: {8}{10}- UpdateDate: {9}{10}{12}", 
+				"{12}{11}- Id: {0}{11}- DoctorUserName: {1}{11}- DoctorShortName: {2}{11}- FuncId: {3}{11}- FuncTitle: {4}{11}- ColorCode: {5}{11}- IsDisabled: {6}{11}- CreateUser: {7}{11}- CreateDate: {8}{11}- UpdateUser: {9}{11}- UpdateDate: {10}{11}{13}", 
 				this.Id,
 				(this.DoctorUserName == null) ? string.Empty : this.DoctorUserName.ToString(),
 				(this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString(),
 				this.FuncId,
 				(this.FuncTitle == null) ? string.Empty : this.FuncTitle.ToString(),
+				(this.ColorCode == null) ? string.Empty : this.ColorCode.ToString(),
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
@@ -1365,6 +1428,11 @@ namespace ClinicDoctor.Entities
 		/// FuncTitle : 
 		/// </summary>
 		public System.String		  FuncTitle = null;
+		
+		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		public System.String		  ColorCode = null;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1443,6 +1511,7 @@ namespace ClinicDoctor.Entities
 			_tmp.DoctorShortName = this.DoctorShortName;
 			_tmp.FuncId = this.FuncId;
 			_tmp.FuncTitle = this.FuncTitle;
+			_tmp.ColorCode = this.ColorCode;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1482,6 +1551,7 @@ namespace ClinicDoctor.Entities
 			_tmp.DoctorShortName = this.DoctorShortName;
 			_tmp.FuncId = this.FuncId;
 			_tmp.FuncTitle = this.FuncTitle;
+			_tmp.ColorCode = this.ColorCode;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1899,35 +1969,41 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("FuncTitle", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
 		FuncTitle = 5,
 		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		[EnumTextValue("ColorCode")]
+		[ColumnEnum("ColorCode", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
+		ColorCode = 6,
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 6,
+		IsDisabled = 7,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 7,
+		CreateUser = 8,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 8,
+		CreateDate = 9,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 9,
+		UpdateUser = 10,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 10
+		UpdateDate = 11
 	}//End enum
 
 	#endregion DoctorFuncColumn Enum

@@ -108,7 +108,7 @@ namespace ClinicDoctor.Settings.BusinessLayer
         }
         #endregion
 
-        #region "Status"
+        #region "Status, Color"
         public string CompleteColor
         {
             get
@@ -144,6 +144,24 @@ namespace ClinicDoctor.Settings.BusinessLayer
                 ServiceFacade.SettingsService.SaveSetting<string>("UNCOMPLETE_COLOR", value);
             }
         }
+
+        public string RosterInAppointmentColor
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<string>("ROSTER_IN_APPOINTMENT_COLOR", out result))
+                {
+                    throw new ApplicationException("Setting ROSTER_IN_APPOINTMENT_COLOR was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<string>("ROSTER_IN_APPOINTMENT_COLOR", value);
+            }
+        }
         #endregion
 
         #region "Prefix"
@@ -170,14 +188,29 @@ namespace ClinicDoctor.Settings.BusinessLayer
             get
             {
                 string result;
-                if (!ServiceFacade.SettingsService.TryGetSetting<string>("AppointmentPrefix", out result))
+                if (!ServiceFacade.SettingsService.TryGetSetting<string>("APPOINTMENT_PREFIX", out result))
                 {
-                    throw new ApplicationException("Setting AppointmentPrefix was not found.");
+                    throw new ApplicationException("Setting APPOINTMENT_PREFIX was not found.");
                 }
 
                 return result;
             }
-            set { ServiceFacade.SettingsService.SaveSetting<string>("AppointmentPrefix", value); }
+            set { ServiceFacade.SettingsService.SaveSetting<string>("APPOINTMENT_PREFIX", value); }
+        }
+
+        public string CustomertPrefix
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<string>("CUSTOMER_PREFIX", out result))
+                {
+                    throw new ApplicationException("Setting CUSTOMER_PREFIX was not found.");
+                }
+
+                return result;
+            }
+            set { ServiceFacade.SettingsService.SaveSetting<string>("CUSTOMER_PREFIX", value); }
         }
         #endregion
 

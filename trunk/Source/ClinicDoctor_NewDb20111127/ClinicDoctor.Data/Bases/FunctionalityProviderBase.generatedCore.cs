@@ -385,6 +385,7 @@ namespace ClinicDoctor.Data.Bases
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)FunctionalityColumn.Id - 1)];
 					c.Title = (System.String)reader[((int)FunctionalityColumn.Title - 1)];
+					c.ColorCode = (reader.IsDBNull(((int)FunctionalityColumn.ColorCode - 1)))?null:(System.String)reader[((int)FunctionalityColumn.ColorCode - 1)];
 					c.Note = (reader.IsDBNull(((int)FunctionalityColumn.Note - 1)))?null:(System.String)reader[((int)FunctionalityColumn.Note - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)FunctionalityColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)FunctionalityColumn.CreateUser - 1)))?null:(System.String)reader[((int)FunctionalityColumn.CreateUser - 1)];
@@ -410,6 +411,7 @@ namespace ClinicDoctor.Data.Bases
 			
 			entity.Id = (System.Int64)reader[((int)FunctionalityColumn.Id - 1)];
 			entity.Title = (System.String)reader[((int)FunctionalityColumn.Title - 1)];
+			entity.ColorCode = (reader.IsDBNull(((int)FunctionalityColumn.ColorCode - 1)))?null:(System.String)reader[((int)FunctionalityColumn.ColorCode - 1)];
 			entity.Note = (reader.IsDBNull(((int)FunctionalityColumn.Note - 1)))?null:(System.String)reader[((int)FunctionalityColumn.Note - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)FunctionalityColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)FunctionalityColumn.CreateUser - 1)))?null:(System.String)reader[((int)FunctionalityColumn.CreateUser - 1)];
@@ -430,6 +432,7 @@ namespace ClinicDoctor.Data.Bases
 			
 			entity.Id = (System.Int64)dataRow["Id"];
 			entity.Title = (System.String)dataRow["Title"];
+			entity.ColorCode = Convert.IsDBNull(dataRow["ColorCode"]) ? null : (System.String)dataRow["ColorCode"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];

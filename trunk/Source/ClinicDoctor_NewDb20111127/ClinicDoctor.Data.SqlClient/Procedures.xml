@@ -4126,6 +4126,7 @@
 				SELECT
 					[Id],
 					[Title],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -4195,7 +4196,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[ColorCode], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Functionality] O,
 				    #PageIndex PageIndex
@@ -4230,6 +4231,7 @@
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -4242,6 +4244,7 @@
 				INSERT INTO [dbo].[Functionality]
 					(
 					[Title]
+					,[ColorCode]
 					,[Note]
 					,[IsDisabled]
 					,[CreateUser]
@@ -4252,6 +4255,7 @@
 				VALUES
 					(
 					@Title
+					,@ColorCode
 					,@Note
 					,@IsDisabled
 					,@CreateUser
@@ -4278,6 +4282,7 @@
 			<parameters>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -4293,6 +4298,7 @@
 					[dbo].[Functionality]
 				SET
 					[Title] = @Title
+					,[ColorCode] = @ColorCode
 					,[Note] = @Note
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
@@ -4340,6 +4346,7 @@
 				SELECT
 					[Id],
 					[Title],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -4372,6 +4379,7 @@
 				SELECT
 					[Id],
 					[Title],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -4403,6 +4411,7 @@
 				SELECT
 					[Id],
 					[Title],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -4431,6 +4440,7 @@
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
@@ -4445,6 +4455,7 @@
     SELECT
 	  [Id]
 	, [Title]
+	, [ColorCode]
 	, [Note]
 	, [IsDisabled]
 	, [CreateUser]
@@ -4456,6 +4467,7 @@
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
 	AND ([Title] = @Title OR @Title IS NULL)
+	AND ([ColorCode] = @ColorCode OR @ColorCode IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
@@ -4469,6 +4481,7 @@
     SELECT
 	  [Id]
 	, [Title]
+	, [ColorCode]
 	, [Note]
 	, [IsDisabled]
 	, [CreateUser]
@@ -4480,6 +4493,7 @@
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
 	OR ([Title] = @Title AND @Title is not null)
+	OR ([ColorCode] = @ColorCode AND @ColorCode is not null)
 	OR ([Note] = @Note AND @Note is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
@@ -4520,7 +4534,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[ColorCode], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Functionality] O,
 				    #PageIndex PageIndex
@@ -5643,6 +5657,7 @@
 					[Title],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5712,7 +5727,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[FuncId], O.[FuncTitle], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[FuncId], O.[FuncTitle], O.[ColorCode], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Content] O,
 				    #PageIndex PageIndex
@@ -5749,6 +5764,7 @@
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -5763,6 +5779,7 @@
 					[Title]
 					,[FuncId]
 					,[FuncTitle]
+					,[ColorCode]
 					,[Note]
 					,[IsDisabled]
 					,[CreateUser]
@@ -5775,6 +5792,7 @@
 					@Title
 					,@FuncId
 					,@FuncTitle
+					,@ColorCode
 					,@Note
 					,@IsDisabled
 					,@CreateUser
@@ -5803,6 +5821,7 @@
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -5820,6 +5839,7 @@
 					[Title] = @Title
 					,[FuncId] = @FuncId
 					,[FuncTitle] = @FuncTitle
+					,[ColorCode] = @ColorCode
 					,[Note] = @Note
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
@@ -5868,6 +5888,7 @@
 					[Title],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5902,6 +5923,7 @@
 					[Title],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5937,6 +5959,7 @@
 					[Title],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -5971,6 +5994,7 @@
 					[Title],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -6004,6 +6028,7 @@
 					[Title],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -6034,6 +6059,7 @@
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
@@ -6050,6 +6076,7 @@
 	, [Title]
 	, [FuncId]
 	, [FuncTitle]
+	, [ColorCode]
 	, [Note]
 	, [IsDisabled]
 	, [CreateUser]
@@ -6063,6 +6090,7 @@
 	AND ([Title] = @Title OR @Title IS NULL)
 	AND ([FuncId] = @FuncId OR @FuncId IS NULL)
 	AND ([FuncTitle] = @FuncTitle OR @FuncTitle IS NULL)
+	AND ([ColorCode] = @ColorCode OR @ColorCode IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
@@ -6078,6 +6106,7 @@
 	, [Title]
 	, [FuncId]
 	, [FuncTitle]
+	, [ColorCode]
 	, [Note]
 	, [IsDisabled]
 	, [CreateUser]
@@ -6091,6 +6120,7 @@
 	OR ([Title] = @Title AND @Title is not null)
 	OR ([FuncId] = @FuncId AND @FuncId is not null)
 	OR ([FuncTitle] = @FuncTitle AND @FuncTitle is not null)
+	OR ([ColorCode] = @ColorCode AND @ColorCode is not null)
 	OR ([Note] = @Note AND @Note is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
@@ -6131,7 +6161,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[FuncId], O.[FuncTitle], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[FuncId], O.[FuncTitle], O.[ColorCode], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Content] O,
 				    #PageIndex PageIndex
@@ -6792,6 +6822,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -6860,7 +6891,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[FuncId], O.[FuncTitle], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[FuncId], O.[FuncTitle], O.[ColorCode], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorFunc] O,
 				    #PageIndex PageIndex
@@ -6898,6 +6929,7 @@
 				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -6912,6 +6944,7 @@
 					,[DoctorShortName]
 					,[FuncId]
 					,[FuncTitle]
+					,[ColorCode]
 					,[IsDisabled]
 					,[CreateUser]
 					,[CreateDate]
@@ -6924,6 +6957,7 @@
 					,@DoctorShortName
 					,@FuncId
 					,@FuncTitle
+					,@ColorCode
 					,@IsDisabled
 					,@CreateUser
 					,@CreateDate
@@ -6952,6 +6986,7 @@
 				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -6969,6 +7004,7 @@
 					,[DoctorShortName] = @DoctorShortName
 					,[FuncId] = @FuncId
 					,[FuncTitle] = @FuncTitle
+					,[ColorCode] = @ColorCode
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
 					,[CreateDate] = @CreateDate
@@ -7017,6 +7053,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7051,6 +7088,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7087,6 +7125,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7123,6 +7162,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7157,6 +7197,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7191,6 +7232,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7226,6 +7268,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7260,6 +7303,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7293,6 +7337,7 @@
 					[DoctorShortName],
 					[FuncId],
 					[FuncTitle],
+					[ColorCode],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -7323,6 +7368,7 @@
 				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@FuncId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@FuncTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
@@ -7339,6 +7385,7 @@
 	, [DoctorShortName]
 	, [FuncId]
 	, [FuncTitle]
+	, [ColorCode]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -7352,6 +7399,7 @@
 	AND ([DoctorShortName] = @DoctorShortName OR @DoctorShortName IS NULL)
 	AND ([FuncId] = @FuncId OR @FuncId IS NULL)
 	AND ([FuncTitle] = @FuncTitle OR @FuncTitle IS NULL)
+	AND ([ColorCode] = @ColorCode OR @ColorCode IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
 	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
@@ -7367,6 +7415,7 @@
 	, [DoctorShortName]
 	, [FuncId]
 	, [FuncTitle]
+	, [ColorCode]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -7380,6 +7429,7 @@
 	OR ([DoctorShortName] = @DoctorShortName AND @DoctorShortName is not null)
 	OR ([FuncId] = @FuncId AND @FuncId is not null)
 	OR ([FuncTitle] = @FuncTitle AND @FuncTitle is not null)
+	OR ([ColorCode] = @ColorCode AND @ColorCode is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
 	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
@@ -7419,7 +7469,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[FuncId], O.[FuncTitle], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[FuncId], O.[FuncTitle], O.[ColorCode], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorFunc] O,
 				    #PageIndex PageIndex

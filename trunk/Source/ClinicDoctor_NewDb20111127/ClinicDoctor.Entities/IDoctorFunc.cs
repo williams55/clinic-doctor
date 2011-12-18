@@ -40,6 +40,11 @@ namespace ClinicDoctor.Entities
 		System.String  FuncTitle  { get; set; }
 		
 		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		System.String  ColorCode  { get; set; }
+		
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		System.Boolean  IsDisabled  { get; set; }
