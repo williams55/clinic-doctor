@@ -13,15 +13,15 @@
         ExcelExportFileName="Export_RosterType.xls" onrowcommand="GridView1_RowCommand">
         <Columns>
             <asp:CommandField ShowSelectButton="True"  />
-            <data:BoundRadioButtonField DataField="IsBooked" HeaderText="Is Booked" SortExpression="[IsBooked]" />
-            <asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />
-            <data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />
-            <asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />
-            <asp:BoundField DataField="CreateDate" DataFormatString="{0:d}" HtmlEncode="False"
-                HeaderText="Create Date" SortExpression="[CreateDate]" />
-            <asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />
-            <asp:BoundField DataField="UpdateDate" DataFormatString="{0:d}" HtmlEncode="False"
-                HeaderText="Update Date" SortExpression="[UpdateDate]" />
+         	<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
+				<data:BoundRadioButtonField DataField="IsBooked" HeaderText="Is Booked" SortExpression="[IsBooked]"  />
+				<asp:BoundField DataField="ColorCode" HeaderText="Color Code" SortExpression="[ColorCode]"  />
+				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
+				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
+				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]"  />
+				<asp:BoundField DataField="CreateDate" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Create Date" SortExpression="[CreateDate]"  />
+				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]"  />
+				<asp:BoundField DataField="UpdateDate" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Update Date" SortExpression="[UpdateDate]"  />
             <asp:TemplateField>
                 <ItemTemplate>
                     <asp:ImageButton ID="btn_Delete" runat="server" CommandName="CustomDelete" CommandArgument='<%#Eval("Id") %>'
@@ -34,7 +34,7 @@
         </EmptyDataTemplate>
     </data:EntityGridView>
     <br />
-    <asp:Button runat="server" ID="btnRosterType" OnClientClick="javascript:location.href='RosterTypeEdit.aspx'; return false;"
+    <asp:Button runat="server" CssClass="button" ID="btnRosterType" OnClientClick="javascript:location.href='RosterTypeEdit.aspx'; return false;"
         Text="Add New"></asp:Button>
     <data:RosterTypeDataSource ID="RosterTypeDataSource" runat="server" SelectMethod="GetPaged"
         EnablePaging="True" EnableSorting="True">

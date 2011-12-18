@@ -38,7 +38,7 @@
         </EmptyDataTemplate>
     </data:EntityGridView>
     <br />
-    <asp:Button runat="server" ID="btnCustomer" OnClientClick="javascript:location.href='CustomerEdit.aspx'; return false;"
+    <asp:Button runat="server" CssClass="button" ID="btnCustomer" OnClientClick="javascript:location.href='CustomerEdit.aspx'; return false;"
         Text="Add New"></asp:Button>
     <data:CustomerDataSource ID="CustomerDataSource" runat="server" SelectMethod="GetPaged"
         EnablePaging="True" EnableSorting="True">
@@ -52,4 +52,5 @@
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
         </Parameters>
     </data:CustomerDataSource>
+  
 </asp:Content>

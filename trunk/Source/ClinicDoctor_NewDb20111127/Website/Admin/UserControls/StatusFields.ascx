@@ -1,5 +1,7 @@
 ﻿<%@ Control Language="C#" ClassName="StatusFields" %>
+
 <asp:FormView ID="FormView1" runat="server">
+
     <ItemTemplate>
         <table border="0" cellpadding="3" cellspacing="1">
             <tr>
@@ -17,11 +19,15 @@
                     <asp:Label ID="lbldataColorCode" runat="server" Text="Color Code:" AssociatedControlID="dataColorCode" />
                 </td>
                 <td>
+                   
                     <asp:TextBox runat="server" ID="dataColorCode" Text='<%# Bind("ColorCode") %>' MaxLength="10"
-                        CssClass="text-input" Width="250px"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataColorCode"
-                            runat="server" Display="Dynamic" ControlToValidate="dataColorCode" ErrorMessage="Required"></asp:RequiredFieldValidator>
+                        CssClass="text-input" Width="250px"></asp:TextBox>
+                    
+                   <%-- <asp:RequiredFieldValidator ID="ReqVal_dataColorCode" runat="server" Display="Dynamic"
+                        ControlToValidate="dataColorCode" ErrorMessage="Required"></asp:RequiredFieldValidator>--%>
                 </td>
             </tr>
+            
             <tr>
                 <td class="literal">
                     <asp:Label ID="lbldataNote" runat="server" Text="Note:" AssociatedControlID="dataNote" />
@@ -31,7 +37,6 @@
                         Width="250px" Rows="2" CssClass="text-input"></asp:TextBox>
                 </td>
             </tr>
-           
             <tr>
                 <td class="literal">
                     <asp:Label ID="lbldataIsDisabled" runat="server" Text="Is Disabled:" AssociatedControlID="dataIsDisabled" />

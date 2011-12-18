@@ -36,7 +36,7 @@
         </EmptyDataTemplate>
     </data:EntityGridView>
     <br />
-    <asp:Button runat="server" ID="btnRoomFunc" OnClientClick="javascript:location.href='RoomFuncEdit.aspx'; return false;"
+    <asp:Button runat="server" ID="btnRoomFunc" CssClass="button" OnClientClick="javascript:location.href='RoomFuncEdit.aspx'; return false;"
         Text="Add New"></asp:Button>
     <data:RoomFuncDataSource ID="RoomFuncDataSource" runat="server" SelectMethod="GetPaged"
         EnablePaging="True" EnableSorting="True" EnableDeepLoad="True">

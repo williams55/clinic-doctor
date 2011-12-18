@@ -1,21 +1,4 @@
-﻿<%@ Control Language="C#" ClassName="ContentFields" %>
-
-<script runat="server">
-
-
-
-    protected void dataFuncId_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        DropDownList ddlTwo = (DropDownList)FormView1.FindControl("dataFuncId");
-        if (null != ddlTwo)
-        {
-            //get the data. filter it on ddlOne.SelectedItem and bind it to ddlTwo.
-            TextBox tx = (TextBox)FormView1.FindControl("dataFuncTitle");
-            tx.Text = "sgsd";
-        }
-    }
-</script>
-
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ContentControl.ascx.cs" Inherits="Admin_UserControls_ContentControl" %>
 <asp:FormView ID="FormView1" runat="server">
     <ItemTemplate>
         <table border="0" cellpadding="3" cellspacing="1">
@@ -25,8 +8,8 @@
                 </td>
                 <td>
                     <asp:TextBox runat="server" ID="dataTitle" Text='<%# Bind("Title") %>' MaxLength="200"
-                        Width="250px" CssClass="text-input"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataTitle"
-                            runat="server" Display="Dynamic" ControlToValidate="dataTitle" ErrorMessage="Required"></asp:RequiredFieldValidator>
+                        Width="250px" CssClass="text-input"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataTitle" runat="server"
+                            Display="Dynamic" ControlToValidate="dataTitle" ErrorMessage="Required"></asp:RequiredFieldValidator>
                 </td>
             </tr>
             <tr>
@@ -37,7 +20,7 @@
                     <data:EntityDropDownList runat="server" ID="dataFuncId" DataSourceID="FuncIdFunctionalityDataSource"
                         DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("FuncId") %>'
                         AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required"
-                        Width="250px" OnSelectedIndexChanged="dataFuncId_SelectedIndexChanged" />
+                        Width="250px" ontextchanged="dataFuncId_TextChanged"  />
                     <data:FunctionalityDataSource ID="FuncIdFunctionalityDataSource" runat="server" SelectMethod="GetAll" />
                 </td>
             </tr>
@@ -46,8 +29,7 @@
                     <asp:Label ID="lbldataFuncTitle" runat="server" Text="Func Title:" AssociatedControlID="dataFuncTitle" />
                 </td>
                 <td>
-                    <asp:TextBox runat="server" ID="dataFuncTitle" Text='<%# Bind("FuncTitle") %>' MaxLength="200"
-                        CssClass="text-input" Width="250px"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="dataFuncTitle" Text='<%# Bind("FuncTitle") %>' MaxLength="200" CssClass="text-input" Width="250px"></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -66,8 +48,9 @@
                 <td>
                     <asp:RadioButtonList runat="server" ID="dataIsDisabled" SelectedValue='<%# Bind("IsDisabled") %>'
                         RepeatDirection="Horizontal">
-                        <asp:ListItem Value="True" Text="Yes"></asp:ListItem>
+                        <asp:ListItem Value="True" Text="Yes" ></asp:ListItem>
                         <asp:ListItem Value="False" Text="No" Selected="True"></asp:ListItem>
+                        
                     </asp:RadioButtonList>
                 </td>
             </tr>
@@ -78,3 +61,4 @@
         <asp:HiddenField runat="server" ID="hdUpdateUser" Value='<%# Bind("UpdateUser") %>' />
     </ItemTemplate>
 </asp:FormView>
+

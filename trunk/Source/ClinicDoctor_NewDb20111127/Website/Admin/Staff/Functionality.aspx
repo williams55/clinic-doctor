@@ -36,7 +36,7 @@
     </data:EntityGridView>
     <br />
     <asp:Button runat="server" ID="btnFunctionality" OnClientClick="javascript:location.href='FunctionalityEdit.aspx'; return false;"
-        Text="Add New"></asp:Button>
+        Text="Add New" CssClass="button"></asp:Button>
     <data:FunctionalityDataSource ID="FunctionalityDataSource" runat="server" SelectMethod="GetPaged"
         EnablePaging="True" EnableSorting="True">
         <Parameters>
