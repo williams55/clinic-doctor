@@ -892,6 +892,7 @@ namespace ClinicDoctor.Data.Bases
 					c.DoctorShortName = (reader.IsDBNull(((int)DoctorFuncColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)DoctorFuncColumn.DoctorShortName - 1)];
 					c.FuncId = (System.Int64)reader[((int)DoctorFuncColumn.FuncId - 1)];
 					c.FuncTitle = (reader.IsDBNull(((int)DoctorFuncColumn.FuncTitle - 1)))?null:(System.String)reader[((int)DoctorFuncColumn.FuncTitle - 1)];
+					c.ColorCode = (reader.IsDBNull(((int)DoctorFuncColumn.ColorCode - 1)))?null:(System.String)reader[((int)DoctorFuncColumn.ColorCode - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)DoctorFuncColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)DoctorFuncColumn.CreateUser - 1)))?null:(System.String)reader[((int)DoctorFuncColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)DoctorFuncColumn.CreateDate - 1)];
@@ -919,6 +920,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.DoctorShortName = (reader.IsDBNull(((int)DoctorFuncColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)DoctorFuncColumn.DoctorShortName - 1)];
 			entity.FuncId = (System.Int64)reader[((int)DoctorFuncColumn.FuncId - 1)];
 			entity.FuncTitle = (reader.IsDBNull(((int)DoctorFuncColumn.FuncTitle - 1)))?null:(System.String)reader[((int)DoctorFuncColumn.FuncTitle - 1)];
+			entity.ColorCode = (reader.IsDBNull(((int)DoctorFuncColumn.ColorCode - 1)))?null:(System.String)reader[((int)DoctorFuncColumn.ColorCode - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)DoctorFuncColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)DoctorFuncColumn.CreateUser - 1)))?null:(System.String)reader[((int)DoctorFuncColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)DoctorFuncColumn.CreateDate - 1)];
@@ -941,6 +943,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.DoctorShortName = Convert.IsDBNull(dataRow["DoctorShortName"]) ? null : (System.String)dataRow["DoctorShortName"];
 			entity.FuncId = (System.Int64)dataRow["FuncId"];
 			entity.FuncTitle = Convert.IsDBNull(dataRow["FuncTitle"]) ? null : (System.String)dataRow["FuncTitle"];
+			entity.ColorCode = Convert.IsDBNull(dataRow["ColorCode"]) ? null : (System.String)dataRow["ColorCode"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];

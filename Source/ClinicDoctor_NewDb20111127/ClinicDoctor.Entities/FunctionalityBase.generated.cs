@@ -82,20 +82,22 @@ namespace ClinicDoctor.Entities
 		/// Creates a new <see cref="FunctionalityBase"/> instance.
 		///</summary>
 		///<param name="_title"></param>
+		///<param name="_colorCode"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public FunctionalityBase(System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public FunctionalityBase(System.String _title, System.String _colorCode, System.String _note, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new FunctionalityEntityData();
 			this.backupData = null;
 
 			this.Title = _title;
+			this.ColorCode = _colorCode;
 			this.Note = _note;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
@@ -108,18 +110,20 @@ namespace ClinicDoctor.Entities
 		/// A simple factory method to create a new <see cref="Functionality"/> instance.
 		///</summary>
 		///<param name="_title"></param>
+		///<param name="_colorCode"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Functionality CreateFunctionality(System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public static Functionality CreateFunctionality(System.String _title, System.String _colorCode, System.String _note, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			Functionality newFunctionality = new Functionality();
 			newFunctionality.Title = _title;
+			newFunctionality.ColorCode = _colorCode;
 			newFunctionality.Note = _note;
 			newFunctionality.IsDisabled = _isDisabled;
 			newFunctionality.CreateUser = _createUser;
@@ -203,6 +207,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(FunctionalityColumn.Title, this.entityData.Title);
 				OnPropertyChanged("Title");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the ColorCode property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 10)]
+		public virtual System.String ColorCode
+		{
+			get
+			{
+				return this.entityData.ColorCode; 
+			}
+			
+			set
+			{
+				if (this.entityData.ColorCode == value)
+					return;
+					
+				OnColumnChanging(FunctionalityColumn.ColorCode, this.entityData.ColorCode);
+				this.entityData.ColorCode = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(FunctionalityColumn.ColorCode, this.entityData.ColorCode);
+				OnPropertyChanged("ColorCode");
 			}
 		}
 		
@@ -473,6 +512,8 @@ namespace ClinicDoctor.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("ColorCode", "Color Code", 10));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
@@ -499,7 +540,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Title", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Title", "ColorCode", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -649,6 +690,7 @@ namespace ClinicDoctor.Entities
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
 				copy.Title = this.Title;
+				copy.ColorCode = this.ColorCode;
 				copy.Note = this.Note;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -795,6 +837,8 @@ namespace ClinicDoctor.Entities
 					return entityData.Id != _originalData.Id;
 					case FunctionalityColumn.Title:
 					return entityData.Title != _originalData.Title;
+					case FunctionalityColumn.ColorCode:
+					return entityData.ColorCode != _originalData.ColorCode;
 					case FunctionalityColumn.Note:
 					return entityData.Note != _originalData.Note;
 					case FunctionalityColumn.IsDisabled:
@@ -836,6 +880,7 @@ namespace ClinicDoctor.Entities
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.Title != _originalData.Title;
+			result = result || entityData.ColorCode != _originalData.ColorCode;
 			result = result || entityData.Note != _originalData.Note;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
@@ -853,6 +898,7 @@ namespace ClinicDoctor.Entities
 			if (_originalData != null)
 				return CreateFunctionality(
 				_originalData.Title,
+				_originalData.ColorCode,
 				_originalData.Note,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
@@ -890,6 +936,7 @@ namespace ClinicDoctor.Entities
         {
 			return this.Id.GetHashCode() ^ 
 					this.Title.GetHashCode() ^ 
+					((this.ColorCode == null) ? string.Empty : this.ColorCode.ToString()).GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -932,6 +979,15 @@ namespace ClinicDoctor.Entities
 				equal = false;
 			if (Object1.Title != Object2.Title)
 				equal = false;
+			if ( Object1.ColorCode != null && Object2.ColorCode != null )
+			{
+				if (Object1.ColorCode != Object2.ColorCode)
+					equal = false;
+			}
+			else if (Object1.ColorCode == null ^ Object2.ColorCode == null )
+			{
+				equal = false;
+			}
 			if ( Object1.Note != null && Object2.Note != null )
 			{
 				if (Object1.Note != Object2.Note)
@@ -1017,6 +1073,12 @@ namespace ClinicDoctor.Entities
             	
             	case FunctionalityColumn.Title:
             		return this.Title.CompareTo(rhs.Title);
+            		
+            		                 
+            	
+            	
+            	case FunctionalityColumn.ColorCode:
+            		return this.ColorCode.CompareTo(rhs.ColorCode);
             		
             		                 
             	
@@ -1189,9 +1251,10 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{9}{8}- Id: {0}{8}- Title: {1}{8}- Note: {2}{8}- IsDisabled: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
+				"{10}{9}- Id: {0}{9}- Title: {1}{9}- ColorCode: {2}{9}- Note: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
 				this.Id,
 				this.Title,
+				(this.ColorCode == null) ? string.Empty : this.ColorCode.ToString(),
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -1236,6 +1299,11 @@ namespace ClinicDoctor.Entities
 		/// Title : 
 		/// </summary>
 		public System.String		  Title = string.Empty;
+		
+		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		public System.String		  ColorCode = null;
 		
 		/// <summary>
 		/// Note : 
@@ -1365,6 +1433,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.Title = this.Title;
+			_tmp.ColorCode = this.ColorCode;
 			_tmp.Note = this.Note;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1405,6 +1474,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.Title = this.Title;
+			_tmp.ColorCode = this.ColorCode;
 			_tmp.Note = this.Note;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1801,41 +1871,47 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
 		Title = 2,
 		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		[EnumTextValue("ColorCode")]
+		[ColumnEnum("ColorCode", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
+		ColorCode = 3,
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 3,
+		Note = 4,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 4,
+		IsDisabled = 5,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 5,
+		CreateUser = 6,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 6,
+		CreateDate = 7,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 7,
+		UpdateUser = 8,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 8
+		UpdateDate = 9
 	}//End enum
 
 	#endregion FunctionalityColumn Enum

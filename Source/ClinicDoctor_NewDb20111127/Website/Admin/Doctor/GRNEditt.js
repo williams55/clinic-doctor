@@ -36,7 +36,7 @@ function initSchedule(weekday) {
         data: "{}",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function (response) {
+        success: function(response) {
             var obj = eval(response.d)[0];
 
             if (obj.result == "true") {
@@ -68,7 +68,7 @@ function initSchedule(weekday) {
                     scheduler.attachEvent("onClick", block_readonly)
 
                     // When event changed, check and update
-                    scheduler.attachEvent("onBeforeEventChanged", function (event_object, native_event, is_new) {
+                    scheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new) {
                         // If update roster
                         if (is_new == false) {
                             if (event_object.start_date <= new Date()) {
@@ -81,7 +81,7 @@ function initSchedule(weekday) {
                     });
 
                     // Save roster when resized or moved
-                    scheduler.attachEvent("onEventChanged", function (event_id, event_object) {
+                    scheduler.attachEvent("onEventChanged", function(event_id, event_object) {
                         //any custom logic here
                         var _id = event_object.id;
                         var _doctorUserName = event_object.section_id;
@@ -101,7 +101,7 @@ function initSchedule(weekday) {
                         UpdateRoster(requestdata, 'UpdateEventMove', _id);
                     });
 
-                    dhtmlxEvent(document, (_isOpera ? "keypress" : "keydown"), function (e) {
+                    dhtmlxEvent(document, (_isOpera ? "keypress" : "keydown"), function(e) {
 
                         if (e.keyCode == 37) {
                             //left
@@ -126,10 +126,10 @@ function initSchedule(weekday) {
                 alert(obj.message);
             }
         },
-        fail: function () {
+        fail: function() {
             alert("Unknow error!");
         },
-        complete: function () {
+        complete: function() {
         }
     });
 }
@@ -140,7 +140,7 @@ scheduler.showLightbox = function(id) {
         alert("Loading data is not complete. Please wait for a few moment.");
         return false;
     }
-    
+
     initForm();
 
     var ev = scheduler.getEvent(id);
@@ -292,7 +292,7 @@ function loadStaff() {
                 $.each(arr, function(i, item) {
                     $("#cboStaff").append('<option value="' + item.key + '">' + item.label + '</option>');
                 });
-                
+
                 $("#cboStaff").show();
             }
             else {
@@ -335,7 +335,7 @@ function initForm() {
     $("#txtNote").val("");
 
     $("#cboStaff").focus();
-    
+
     disableAllElements($("#tblContent"), true)
 }
 
@@ -366,19 +366,20 @@ function SaveRoster() {
     var _toDate = $("#txtToDate").datepicker("getDate");
     var _note = $("#txtNote").val();
     var _doctorUserName = $("#cboStaff").val();
+    var requestdata;
 
     // Check if staff is null
     if (_doctorUserName == null) {
         alert("You must choose staff.");
         return;
     }
-    
+
     if (ev.isnew == "false") {
         // Update roster
         $("#dialog-modal").show();
         disableAllElements($("#tblContent"), false)
 
-        var requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle,
+        requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle,
             StartTime: _fromTime, EndTime: _toTime, StartDate: _fromDate, EndDate: _toDate, Note: _note
         });
         UpdateRoster(requestdata, 'UpdateEventSave', _id);
@@ -408,7 +409,7 @@ function SaveRoster() {
         $("#dialog-modal").show();
         disableAllElements($("#tblContent"), false)
 
-        var requestdata = JSON.stringify({ DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle, StartTime: _fromTime, EndTime: _toTime,
+        requestdata = JSON.stringify({ DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle, StartTime: _fromTime, EndTime: _toTime,
             StartDate: _fromDate, EndDate: _toDate, Note: _note, RepeatRoster: _repeat, Weekday: _weekday, Month: _month
         });
         $.ajax({
@@ -481,7 +482,7 @@ function CancelRoster() {
 function DeleteRoster() {
     if (!confirm("Do you want to delete this roster?"))
         return false;
-        
+
     var ev = scheduler.getEvent($("#hdId").val());
     if (ev.isnew == "false") {
         var requestdata = JSON.stringify({ Id: ev.id });
@@ -511,15 +512,15 @@ function DeleteRoster() {
     scheduler.endLightbox(false, html("RosterForm"));
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     loadRosterType();
     loadHour();
     loadStaff();
 
     $("input, textarea").addClass("idle");
-    $("input, textarea").focus(function () {
+    $("input, textarea").focus(function() {
         $(this).addClass("activeField").removeClass("idle");
-    }).blur(function () {
+    }).blur(function() {
         $(this).removeClass("activeField").addClass("idle");
     });
     initSchedule(weekday);
@@ -547,7 +548,7 @@ $(document).ready(function () {
         minDate: _nextMonth
     });
 
-    $("#chkRepeat").click(function () {
+    $("#chkRepeat").click(function() {
         $('#divWeekday').toggle($(this).attr('checked'));
         $('#spanMonth').toggle($(this).attr('checked'));
 
@@ -555,25 +556,25 @@ $(document).ready(function () {
         $('#spanToDate').toggle(!$(this).attr('checked'));
 
         $("#spanWeekday").find("span").remove();
-        $.each(weekday, function (i, item) {
+        $.each(weekday, function(i, item) {
             $("#spanWeekday").append('<span style="float:left; padding-right:5px; width:95px;"><input type="checkbox" value=' + item.label
             + ' id="chk' + item.key + '" /> ' + item.label + '</span>');
         });
     });
 
-    $("#btnSave").click(function () {
+    $("#btnSave").click(function() {
         SaveRoster();
     });
 
-    $("#btnCancel").click(function () {
+    $("#btnCancel").click(function() {
         CancelRoster();
     });
 
-    $("#btnDelete").click(function () {
+    $("#btnDelete").click(function() {
         DeleteRoster();
     });
 
-    $("#btnDelete").keydown(function (e) {
+    $("#btnDelete").keydown(function(e) {
         var key;
 
         if (window.event)

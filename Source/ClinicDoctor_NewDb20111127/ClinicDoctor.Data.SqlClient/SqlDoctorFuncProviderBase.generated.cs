@@ -180,6 +180,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@FuncId", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@FuncTitle", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, DBNull.Value);
@@ -226,6 +227,12 @@ namespace ClinicDoctor.Data.SqlClient
 				if (clause.Trim().StartsWith("functitle ") || clause.Trim().StartsWith("functitle="))
 				{
 					database.SetParameterValue(commandWrapper, "@FuncTitle", 
+						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("colorcode ") || clause.Trim().StartsWith("colorcode="))
+				{
+					database.SetParameterValue(commandWrapper, "@ColorCode", 
 						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
@@ -1221,22 +1228,25 @@ namespace ClinicDoctor.Data.SqlClient
 			col3.AllowDBNull = false;		
 			DataColumn col4 = dataTable.Columns.Add("FuncTitle", typeof(System.String));
 			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col5.AllowDBNull = false;		
-			DataColumn col6 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col7.AllowDBNull = false;		
-			DataColumn col8 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col9.AllowDBNull = false;		
+			DataColumn col5 = dataTable.Columns.Add("ColorCode", typeof(System.String));
+			col5.AllowDBNull = true;		
+			DataColumn col6 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col6.AllowDBNull = false;		
+			DataColumn col7 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col7.AllowDBNull = true;		
+			DataColumn col8 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col8.AllowDBNull = false;		
+			DataColumn col9 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col9.AllowDBNull = true;		
+			DataColumn col10 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col10.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("DoctorUserName", "DoctorUserName");
 			bulkCopy.ColumnMappings.Add("DoctorShortName", "DoctorShortName");
 			bulkCopy.ColumnMappings.Add("FuncId", "FuncId");
 			bulkCopy.ColumnMappings.Add("FuncTitle", "FuncTitle");
+			bulkCopy.ColumnMappings.Add("ColorCode", "ColorCode");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
 			bulkCopy.ColumnMappings.Add("CreateDate", "CreateDate");
@@ -1263,6 +1273,9 @@ namespace ClinicDoctor.Data.SqlClient
 							
 				
 					row["FuncTitle"] = entity.FuncTitle;
+							
+				
+					row["ColorCode"] = entity.ColorCode;
 							
 				
 					row["IsDisabled"] = entity.IsDisabled;
@@ -1319,6 +1332,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
 			database.AddInParameter(commandWrapper, "@FuncId", DbType.Int64, entity.FuncId );
 			database.AddInParameter(commandWrapper, "@FuncTitle", DbType.String, entity.FuncTitle );
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );
@@ -1377,6 +1391,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
 			database.AddInParameter(commandWrapper, "@FuncId", DbType.Int64, entity.FuncId );
 			database.AddInParameter(commandWrapper, "@FuncTitle", DbType.String, entity.FuncTitle );
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );

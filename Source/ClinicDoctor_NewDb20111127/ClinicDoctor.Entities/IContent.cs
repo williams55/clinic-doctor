@@ -35,6 +35,11 @@ namespace ClinicDoctor.Entities
 		System.String  FuncTitle  { get; set; }
 		
 		/// <summary>
+		/// ColorCode : 
+		/// </summary>
+		System.String  ColorCode  { get; set; }
+		
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		System.String  Note  { get; set; }

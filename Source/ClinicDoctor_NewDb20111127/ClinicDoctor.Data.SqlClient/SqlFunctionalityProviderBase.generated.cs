@@ -177,6 +177,7 @@ namespace ClinicDoctor.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -207,6 +208,12 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@Title", 
 						clause.Trim().Remove(0,5).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("colorcode ") || clause.Trim().StartsWith("colorcode="))
+				{
+					database.SetParameterValue(commandWrapper, "@ColorCode", 
+						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("note ") || clause.Trim().StartsWith("note="))
@@ -783,21 +790,24 @@ namespace ClinicDoctor.Data.SqlClient
 			col0.AllowDBNull = false;		
 			DataColumn col1 = dataTable.Columns.Add("Title", typeof(System.String));
 			col1.AllowDBNull = false;		
-			DataColumn col2 = dataTable.Columns.Add("Note", typeof(System.String));
+			DataColumn col2 = dataTable.Columns.Add("ColorCode", typeof(System.String));
 			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col3.AllowDBNull = false;		
-			DataColumn col4 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col5.AllowDBNull = false;		
-			DataColumn col6 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col7.AllowDBNull = false;		
+			DataColumn col3 = dataTable.Columns.Add("Note", typeof(System.String));
+			col3.AllowDBNull = true;		
+			DataColumn col4 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col4.AllowDBNull = false;		
+			DataColumn col5 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col5.AllowDBNull = true;		
+			DataColumn col6 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col6.AllowDBNull = false;		
+			DataColumn col7 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col7.AllowDBNull = true;		
+			DataColumn col8 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col8.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("Title", "Title");
+			bulkCopy.ColumnMappings.Add("ColorCode", "ColorCode");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
@@ -816,6 +826,9 @@ namespace ClinicDoctor.Data.SqlClient
 							
 				
 					row["Title"] = entity.Title;
+							
+				
+					row["ColorCode"] = entity.ColorCode;
 							
 				
 					row["Note"] = entity.Note;
@@ -872,6 +885,7 @@ namespace ClinicDoctor.Data.SqlClient
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -928,6 +942,7 @@ namespace ClinicDoctor.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );

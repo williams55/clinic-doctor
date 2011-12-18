@@ -350,6 +350,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.Title; }
 		}
         /// <summary>
+        /// Gets the ColorCode
+        /// </summary>
+        /// <value>The ColorCode.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String ColorCode
+		{
+			get { return _entity.ColorCode; }
+		}
+        /// <summary>
         /// Gets the Note
         /// </summary>
         /// <value>The Note.</value>
