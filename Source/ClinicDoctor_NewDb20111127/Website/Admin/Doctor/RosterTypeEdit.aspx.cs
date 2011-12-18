@@ -27,6 +27,7 @@ public partial class RosterTypeEdit : System.Web.UI.Page
         string urlParams = string.Format("Id={0}", GridViewDoctorRoster1.SelectedDataKey.Values[0]);
         Response.Redirect("DoctorRosterEdit.aspx?" + urlParams, true);
     }
+
     protected void FormView1_Load(object sender, EventArgs e)
     {
         string userName = Session["UserName"].ToString();

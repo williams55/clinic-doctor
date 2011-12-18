@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="FunctionalityEdit.aspx.cs" Inherits="FunctionalityEdit" Title="Functionality Edit" %>
+﻿<%@ Page Language="C#"  MasterPageFile="~/Admin/admin.master" AutoEventWireup="true"  CodeFile="FunctionalityEdit.aspx.cs" Inherits="FunctionalityEdit" Title="Functionality Edit" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">
     Functionality - Add/Edit</asp:Content>
@@ -19,9 +19,9 @@
 			</EmptyDataTemplate>
 			
 			<FooterTemplate>
-				<asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" Text="Insert" />
-				<asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update" Text="Update" />
-				<asp:Button ID="CancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel" />
+				<asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" Text="Insert"  CssClass="button" />
+				<asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update" Text="Update"  CssClass="button" />
+				<asp:Button ID="CancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Finish" CssClass="button" />
 			</FooterTemplate>
 
 		</data:MultiFormView>
@@ -50,8 +50,10 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
+				<data:HyperLinkField HeaderText="Doctor User Name" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}" DataNavigateUrlFields="UserName" DataContainer="DoctorUserNameSource" DataTextField="FirstName" />
+				<asp:BoundField DataField="DoctorShortName" HeaderText="Doctor Short Name" SortExpression="[DoctorShortName]" />				
 				<data:HyperLinkField HeaderText="Func Id" DataNavigateUrlFormatString="FunctionalityEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="FuncIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="FuncTitle" HeaderText="Func Title" SortExpression="[FuncTitle]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
 				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
@@ -101,6 +103,7 @@
 				<asp:CommandField ShowSelectButton="True" />
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]" />				
 				<data:HyperLinkField HeaderText="Func Id" DataNavigateUrlFormatString="FunctionalityEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="FuncIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="FuncTitle" HeaderText="Func Title" SortExpression="[FuncTitle]" />				
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
@@ -150,7 +153,9 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="RoomTitle" HeaderText="Room Title" SortExpression="[RoomTitle]" />				
 				<data:HyperLinkField HeaderText="Func Id" DataNavigateUrlFormatString="FunctionalityEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="FuncIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="FuncTitle" HeaderText="Func Title" SortExpression="[FuncTitle]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
 				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				

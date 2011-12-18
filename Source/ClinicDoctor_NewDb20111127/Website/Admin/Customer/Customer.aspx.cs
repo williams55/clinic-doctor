@@ -36,7 +36,7 @@ public partial class Admin_Customer : System.Web.UI.Page
         if (e.CommandName == "CustomDelete")
         {
 
-            TList<Appointment> listAppointment = DataRepository.AppointmentProvider.GetByCustomerId((int.Parse(ID)));
+            TList<Appointment> listAppointment = DataRepository.AppointmentProvider.GetByCustomerId(ID);
             if (listAppointment.Count > 0)
             {
                 Response.Write(@"<script language='javascript'>alert('Vui lòng xóa tất cả chi tiết.')</script>");
@@ -45,7 +45,7 @@ public partial class Admin_Customer : System.Web.UI.Page
             else
             {
                 Customer objCustomer = new Customer();
-                objCustomer.Id = int.Parse(ID);
+                objCustomer.Id = ID;
                 DataRepository.CustomerProvider.Delete(objCustomer);
             }
             GridView1.DataBind();

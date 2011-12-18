@@ -7,6 +7,7 @@
     <data:GridViewSearchPanel ID="GridViewSearchPanel1" runat="server" GridViewControlID="GridView1"
         PersistenceMethod="Session" />
     <br />
+   
     <data:EntityGridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
         DataSourceID="StatusDataSource" DataKeyNames="Id" AllowMultiColumnSorting="false"
         DefaultSortColumnName="" DefaultSortDirection="Ascending" 
