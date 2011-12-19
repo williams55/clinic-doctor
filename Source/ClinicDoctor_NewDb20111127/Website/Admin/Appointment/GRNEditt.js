@@ -1,6 +1,7 @@
 ﻿var blHour = false;
 var blStaff = false;
 var blPatient = false;
+var _current_id = "-1";
 
 // Load calendar for Schedule
 function show_minical() {
@@ -153,7 +154,7 @@ function initSchedule(weekday) {
     });
 }
 
-scheduler.showLightbox = function(id) {
+scheduler.showLightbox = function (id) {
     if (!blHour || !blStaff || !blPatient) {
         scheduler.deleteEvent(id);
         alert("Loading data is not complete. Please wait for a few moment.");
@@ -163,6 +164,7 @@ scheduler.showLightbox = function(id) {
     initForm();
 
     var ev = scheduler.getEvent(id);
+    _current_id = id;
 
     if (ev.start_date < new Date()) {
         if (ev.isnew == "false") {
@@ -216,7 +218,7 @@ scheduler.showLightbox = function(id) {
                 data: requestdata,
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                success: function(response) {
+                success: function (response) {
                     var obj = eval(response.d)[0];
 
                     if (obj.result == "true") {
@@ -230,10 +232,10 @@ scheduler.showLightbox = function(id) {
                         alert(obj.message);
                     }
                 },
-                fail: function() {
+                fail: function () {
                     alert("Unknow error!");
                 },
-                complete: function() {
+                complete: function () {
                     $("#cboContent").show();
                     $("#spanContent").hide();
                 }
@@ -382,7 +384,7 @@ function loadStaff() {
     if (!$("#txtFromDate").datepicker("getDate") || !$("#txtToDate").datepicker("getDate"))
         return;
 
-    var requestdata = JSON.stringify({ FuncId: $("#cboContent").val(), StartTime: $("#cboFromHour").val(), EndTime: $("#cboToHour").val(),
+    var requestdata = JSON.stringify({ AppointmentId: _current_id, FuncId: $("#cboContent").val(), StartTime: $("#cboFromHour").val(), EndTime: $("#cboToHour").val(),
         StartDate: $("#txtFromDate").datepicker("getDate"), EndDate: $("#txtToDate").datepicker("getDate")
     });
     $("#cboStaff").hide();
@@ -427,7 +429,7 @@ function loadRooms() {
     if (!$("#txtFromDate").datepicker("getDate") || !$("#txtToDate").datepicker("getDate"))
         return;
 
-    var requestdata = JSON.stringify({ DoctorUserName: $("#cboStaff").val(), FuncId: $("#cboContent").val(),
+    var requestdata = JSON.stringify({ AppointmentId: _current_id, DoctorUserName: $("#cboStaff").val(), FuncId: $("#cboContent").val(),
         StartTime: $("#cboFromHour").val(), EndTime: $("#cboToHour").val(),
         StartDate: $("#txtFromDate").datepicker("getDate"), EndDate: $("#txtToDate").datepicker("getDate")
     });
@@ -911,7 +913,7 @@ function initEvents() {
     });
 
     $("#cboPatient").change(function() {
-        loadRooms();
+//        loadRooms();
     });
 
     // Call Load doctor function

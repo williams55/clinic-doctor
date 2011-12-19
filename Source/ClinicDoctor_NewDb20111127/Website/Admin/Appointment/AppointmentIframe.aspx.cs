@@ -152,15 +152,15 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             #region "Check Conflict"
             int intCompareValue = 0;
             // Check conflict Patient
-            if (!CheckConflict(tm, "CustomerId", strPatientId, "",
-                String.Format("{2}. {0} {1}", objPatient.FirstName, objPatient.LastName, objPatient.Title), dtStart, dtEnd, intCompareValue, ref result))
+            if (!CheckConflict(tm, "CustomerId", strPatientId, string.IsNullOrEmpty(objPatient.Title) ? "patient" : objPatient.Title + ".",
+                String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName), dtStart, dtEnd, intCompareValue, ref result))
             {
                 tm.Rollback();
                 goto StepResult;
             }
 
             // Check conflict Doctor
-            if (!CheckConflict(tm, "DoctorUserName", DoctorUsername, "Doctor", objDoctor.ShortName, dtStart, dtEnd, intCompareValue, ref result))
+            if (!CheckConflict(tm, "DoctorUserName", DoctorUsername, "Dr.", objDoctor.ShortName, dtStart, dtEnd, intCompareValue, ref result))
             {
                 tm.Rollback();
                 goto StepResult;
@@ -222,7 +222,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 + @"DoctorShortName: '" + newObj.DoctorShortName + @"',"
                 + @"CustomerId: '" + newObj.CustomerId + @"',"
                 + @"CustomerName: '" + newObj.CustomerName + @"',"
-                + @"ContentId: '" + newObj.ContentId + @"',"
+                + @"ContentId: '" + objContent.FuncId + chrSeperateStaff.ToString() + newObj.ContentId + @"',"
                 + @"ContentTitle: '" + newObj.ContentTitle + @"',"
                 + @"RoomId: '" + newObj.RoomId + @"',"
                 + @"RoomTitle: '" + newObj.RoomTitle + @"',"
@@ -551,7 +551,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 + @"DoctorShortName: '" + obj.DoctorShortName + @"',"
                 + @"CustomerId: '" + obj.CustomerId + @"',"
                 + @"CustomerName: '" + obj.CustomerName + @"',"
-                + @"ContentId: '" + obj.ContentId + @"',"
+                + @"ContentId: '" + objContent.FuncId + chrSeperateStaff.ToString() + obj.ContentId + @"',"
                 + @"ContentTitle: '" + obj.ContentTitle + @"',"
                 + @"RoomId: '" + obj.RoomId + @"',"
                 + @"RoomTitle: '" + obj.RoomTitle + @"',"
@@ -939,7 +939,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetStaffs(string FuncId, string StartTime, string EndTime, string StartDate, string EndDate)
+    public static string GetStaffs(string AppointmentId, string FuncId, string StartTime, string EndTime, string StartDate, string EndDate)
     {
         /* Return Structure
          * { result: true [success], false [fail],
@@ -973,6 +973,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "GetAvailableStaffsForAppointment";
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@AppointmentId", AppointmentId));
             cmd.Parameters.Add(new SqlParameter("@FuncId", Convert.ToInt64(arr[0])));
             cmd.Parameters.Add(new SqlParameter("@StartTime", dtStart));
             cmd.Parameters.Add(new SqlParameter("@EndTime", dtEnd));
@@ -1069,7 +1070,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetRooms(string DoctorUserName, string FuncId, string StartTime, string EndTime, string StartDate, string EndDate)
+    public static string GetRooms(string AppointmentId, string DoctorUserName, string FuncId, string StartTime, string EndTime, string StartDate, string EndDate)
     {
         /* Return Structure
          * { result: true [success], false [fail],
@@ -1103,6 +1104,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "GetAvailableRoomsForAppointment";
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@AppointmentId", AppointmentId));
             cmd.Parameters.Add(new SqlParameter("@DoctorUserName", DoctorUserName));
             cmd.Parameters.Add(new SqlParameter("@FuncId", Convert.ToInt64(arr[0])));
             cmd.Parameters.Add(new SqlParameter("@StartTime", dtStart));
