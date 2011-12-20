@@ -36,7 +36,7 @@
         </EmptyDataTemplate>
     </data:EntityGridView>
     <br />
-    <asp:Button runat="server" ID="btnStatus" OnClientClick="javascript:location.href='StatusEdit.aspx'; return false;"
+    <asp:Button runat="server" ID="btnStatus" CssClass="button" OnClientClick="javascript:location.href='StatusEdit.aspx'; return false;"
         Text="Add New"></asp:Button>
     <data:StatusDataSource ID="StatusDataSource" runat="server" SelectMethod="GetPaged"
         EnablePaging="True" EnableSorting="True">

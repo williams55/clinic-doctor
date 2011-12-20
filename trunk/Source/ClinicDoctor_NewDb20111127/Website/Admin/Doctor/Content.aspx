@@ -9,13 +9,15 @@
     <br />
     <data:EntityGridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
         DataSourceID="ContentDataSource" DataKeyNames="Id" AllowMultiColumnSorting="false"
-        DefaultSortColumnName="" DefaultSortDirection="Ascending" 
-        ExcelExportFileName="Export_Content.xls" onrowcommand="GridView1_RowCommand">
+        DefaultSortColumnName="" DefaultSortDirection="Ascending" ExcelExportFileName="Export_Content.xls"
+        OnRowCommand="GridView1_RowCommand">
         <Columns>
             <asp:CommandField ShowSelectButton="True" />
             <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]" />
             <data:HyperLinkField HeaderText="Func Id" DataNavigateUrlFormatString="FunctionalityEdit.aspx?Id={0}"
                 DataNavigateUrlFields="Id" DataContainer="FuncIdSource" DataTextField="Title" />
+            <asp:BoundField DataField="FuncTitle" HeaderText="Func Title" SortExpression="[FuncTitle]" />
+            <asp:BoundField DataField="ColorCode" HeaderText="Color Code" SortExpression="[ColorCode]"  />
             <asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />
             <data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />
             <asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />
