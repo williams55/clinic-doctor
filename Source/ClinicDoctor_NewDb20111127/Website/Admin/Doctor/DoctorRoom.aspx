@@ -7,17 +7,18 @@
     <data:GridViewSearchPanel ID="GridViewSearchPanel1" runat="server" GridViewControlID="GridView1"
         PersistenceMethod="Session" />
     <br />
-    <data:EntityGridView ID="GridView1" runat="server" 
-    AutoGenerateColumns="False" OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
+    <data:EntityGridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
         DataSourceID="DoctorRoomDataSource" DataKeyNames="Id" AllowMultiColumnSorting="false"
-        DefaultSortColumnName="" DefaultSortDirection="Ascending" 
-    ExcelExportFileName="Export_DoctorRoom.xls" onrowcommand="GridView1_RowCommand">
+        DefaultSortColumnName="" DefaultSortDirection="Ascending" ExcelExportFileName="Export_DoctorRoom.xls"
+        OnRowCommand="GridView1_RowCommand">
         <Columns>
             <asp:CommandField ShowSelectButton="True" />
-            <data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="StaffEdit.aspx?Id={0}"
-                DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="FirstName" />
+            <data:HyperLinkField HeaderText="Doctor User Name" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}"
+                DataNavigateUrlFields="UserName" DataContainer="DoctorUserNameSource" DataTextField="FirstName" />
+            <asp:BoundField DataField="DoctorShortName" HeaderText="Doctor Short Name" SortExpression="[DoctorShortName]" />
             <data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}"
                 DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
+            <asp:BoundField DataField="RoomTitle" HeaderText="Room Title" SortExpression="[RoomTitle]" />
             <asp:BoundField DataField="PriorityIndex" HeaderText="Priority Index" SortExpression="[PriorityIndex]" />
             <data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />
             <asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />
@@ -38,7 +39,7 @@
         </EmptyDataTemplate>
     </data:EntityGridView>
     <br />
-    <asp:Button runat="server" ID="btnDoctorRoom" OnClientClick="javascript:location.href='DoctorRoomEdit.aspx'; return false;"
+    <asp:Button runat="server" ID="btnDoctorRoom"  CssClass="button" OnClientClick="javascript:location.href='DoctorRoomEdit.aspx'; return false;"
         Text="Add New"></asp:Button>
     <data:DoctorRoomDataSource ID="DoctorRoomDataSource" runat="server" SelectMethod="GetPaged"
         EnablePaging="True" EnableSorting="True" EnableDeepLoad="True">

@@ -198,7 +198,7 @@ namespace ClinicDoctor.Settings.BusinessLayer
             set { ServiceFacade.SettingsService.SaveSetting<string>("APPOINTMENT_PREFIX", value); }
         }
 
-        public string CustomertPrefix
+        public string CustomerPrefix
         {
             get
             {
