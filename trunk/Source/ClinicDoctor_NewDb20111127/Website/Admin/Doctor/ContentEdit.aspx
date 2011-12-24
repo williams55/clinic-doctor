@@ -16,11 +16,11 @@
             <b>Content not found!</b>
         </EmptyDataTemplate>
         <FooterTemplate>
-            <asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert"
+            <asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" CssClass="button"
                 Text="Insert" />
-            <asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update"
+            <asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update" CssClass="button"
                 Text="Update" />
-            <asp:Button ID="CancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
+            <asp:Button ID="CancelButton" runat="server" CausesValidation="False" CommandName="Cancel" CssClass="button"
                 Text="Cancel" />
         </FooterTemplate>
     </data:MultiFormView>

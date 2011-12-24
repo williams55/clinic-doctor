@@ -21,6 +21,7 @@ public partial class ContentEdit : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        FormUtil.RedirectAfterInsertUpdate(FormView1, "ContentEdit.aspx?{0}", ContentDataSource);
         FormUtil.RedirectAfterAddNew(FormView1, "ContentEdit.aspx");
         FormUtil.RedirectAfterCancel(FormView1, "Content.aspx");
         FormUtil.SetDefaultMode(FormView1, "Id");
