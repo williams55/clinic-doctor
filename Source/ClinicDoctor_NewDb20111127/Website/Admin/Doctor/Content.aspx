@@ -39,7 +39,7 @@
     </data:EntityGridView>
     <br />
     <asp:Button runat="server" ID="btnContent" OnClientClick="javascript:location.href='ContentEdit.aspx'; return false;"
-        Text="Add New"></asp:Button>
+        Text="Add New" CssClass="button"></asp:Button>
     <data:ContentDataSource ID="ContentDataSource" runat="server" SelectMethod="GetPaged"
         EnablePaging="True" EnableSorting="True" EnableDeepLoad="True">
         <DeepLoadProperties Method="IncludeChildren" Recursive="False">

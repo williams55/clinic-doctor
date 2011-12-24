@@ -28,7 +28,11 @@ public class DoctorServices : WebService
         public string Title { get; set; }
         public string Note { get; set; }
     }
-
+    public class Func
+    {
+        public Int64 FuncId { get; set; }
+        public string FuncTitle { get; set; }
+    }
     [WebMethod]
     //[ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public Doctor GetFromStaff(string UserName)
@@ -48,6 +52,17 @@ public class DoctorServices : WebService
         if (obj != null)
             objroom = new room { Id = obj.Id, Title = obj.Title, Note = obj.Note };
         return objroom;
+
+    }
+    [WebMethod]
+    public Func GetFromFunc(string Id)
+    {
+
+        Functionality obj = DataRepository.FunctionalityProvider.GetById(long.Parse("0" + Id));
+        Func objFunc = new Func();
+        if (objFunc != null)
+            objFunc = new Func { FuncId = obj.Id, FuncTitle = obj.Title };
+        return objFunc;
 
     }
 
