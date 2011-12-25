@@ -191,6 +191,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             newObj.CustomerName = String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName);
             newObj.ContentId = lContentId;
             newObj.ContentTitle = objContent.Title;
+            newObj.DoctorEmail = objDoctor.Email;
             newObj.DoctorUsername = DoctorUsername;
             newObj.DoctorShortName = objDoctor.ShortName;
             newObj.RoomId = lRoomId;
@@ -233,6 +234,20 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 + @"isnew: 'false'"
                 + @"}"
                + @"] }]";
+            #endregion
+
+            #region "Send Appointment"
+            string strSubject = String.Format("New Appointment: {0} - {1}", newObj.ContentTitle, newObj.CustomerName);
+            string strBody = String.Format("You have a new appointment");
+            string strSummary = string.Empty;
+            string strDescription = string.Empty;
+            string strLocation = String.Format("Room {0}", newObj.RoomTitle);
+            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}", 
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment.ToString(), newObj.CustomerName);
+            MailAppointment objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
+                Convert.ToDateTime(newObj.StartTime), Convert.ToDateTime(newObj.EndTime));
+            objMail.AddMailAddress(newObj.DoctorEmail, newObj.DoctorShortName);
+            objMail.SendMail();
             #endregion
 
             tm.Commit();
@@ -385,7 +400,6 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     {
         string result = string.Empty;
 
-        int Count = 0;
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
@@ -521,6 +535,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             obj.CustomerName = String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName);
             obj.ContentId = lContentId;
             obj.ContentTitle = objContent.Title;
+            obj.DoctorEmail = objDoctor.Email;
             obj.DoctorUsername = DoctorUsername;
             obj.DoctorShortName = objDoctor.ShortName;
             obj.RoomId = lRoomId;
@@ -562,6 +577,20 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 + @"isnew: 'false'"
                 + @"}"
                + @"] }]";
+            #endregion
+
+            #region "Send Appointment"
+            string strSubject = String.Format("Change Appointment: {0} - {1}", obj.ContentTitle, obj.CustomerName);
+            string strBody = String.Format("You have a new change for appointment");
+            string strSummary = string.Empty;
+            string strDescription = string.Empty;
+            string strLocation = String.Format("Room {0}", obj.RoomTitle);
+            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}",
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment.ToString(), obj.CustomerName);
+            MailAppointment objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
+                Convert.ToDateTime(obj.StartTime), Convert.ToDateTime(obj.EndTime));
+            objMail.AddMailAddress(obj.DoctorEmail, obj.DoctorShortName);
+            objMail.SendMail();
             #endregion
 
             tm.Commit();
@@ -1235,7 +1264,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             string strUserName = EntitiesUtilities.GetAuthName();
             Customer newObj = new Customer();
             bool blIsFemale = Convert.ToBoolean(IsFemale);
-            string Perfix = "C" + ServiceFacade.SettingsHelper.CustomertPrefix + DateTime.Now.ToString("yyMMdd");
+            string Perfix = "C" + ServiceFacade.SettingsHelper.CustomerPrefix + DateTime.Now.ToString("yyMMdd");
             int Count = 0;
             TList<Customer> objPo = DataRepository.CustomerProvider.GetPaged("Id like '" + Perfix + "' + '%'", "Id desc", 0, 1, out Count);
             if (Count == 0)
