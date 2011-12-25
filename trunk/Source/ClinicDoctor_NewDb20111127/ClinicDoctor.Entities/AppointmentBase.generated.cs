@@ -88,6 +88,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_contentTitle"></param>
 		///<param name="_doctorUsername"></param>
 		///<param name="_doctorShortName"></param>
+		///<param name="_doctorEmail"></param>
 		///<param name="_roomId"></param>
 		///<param name="_roomTitle"></param>
 		///<param name="_nurseUsername"></param>
@@ -106,10 +107,11 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateDate"></param>
 		public AppointmentBase(System.String _id, System.String _customerId, System.String _customerName, 
 			System.Int64 _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
-			System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, System.String _nurseShortName, 
-			System.Int64? _statusId, System.String _statusTitle, System.String _note, System.DateTime? _startTime, 
-			System.DateTime? _endTime, System.String _colorCode, System.Boolean _isComplete, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.String _doctorEmail, System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, 
+			System.String _nurseShortName, System.Int64? _statusId, System.String _statusTitle, System.String _note, 
+			System.DateTime? _startTime, System.DateTime? _endTime, System.String _colorCode, System.Boolean _isComplete, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			this.entityData = new AppointmentEntityData();
 			this.backupData = null;
@@ -121,6 +123,7 @@ namespace ClinicDoctor.Entities
 			this.ContentTitle = _contentTitle;
 			this.DoctorUsername = _doctorUsername;
 			this.DoctorShortName = _doctorShortName;
+			this.DoctorEmail = _doctorEmail;
 			this.RoomId = _roomId;
 			this.RoomTitle = _roomTitle;
 			this.NurseUsername = _nurseUsername;
@@ -149,6 +152,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_contentTitle"></param>
 		///<param name="_doctorUsername"></param>
 		///<param name="_doctorShortName"></param>
+		///<param name="_doctorEmail"></param>
 		///<param name="_roomId"></param>
 		///<param name="_roomTitle"></param>
 		///<param name="_nurseUsername"></param>
@@ -167,10 +171,11 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateDate"></param>
 		public static Appointment CreateAppointment(System.String _id, System.String _customerId, System.String _customerName, 
 			System.Int64 _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
-			System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, System.String _nurseShortName, 
-			System.Int64? _statusId, System.String _statusTitle, System.String _note, System.DateTime? _startTime, 
-			System.DateTime? _endTime, System.String _colorCode, System.Boolean _isComplete, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.String _doctorEmail, System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, 
+			System.String _nurseShortName, System.Int64? _statusId, System.String _statusTitle, System.String _note, 
+			System.DateTime? _startTime, System.DateTime? _endTime, System.String _colorCode, System.Boolean _isComplete, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			Appointment newAppointment = new Appointment();
 			newAppointment.Id = _id;
@@ -180,6 +185,7 @@ namespace ClinicDoctor.Entities
 			newAppointment.ContentTitle = _contentTitle;
 			newAppointment.DoctorUsername = _doctorUsername;
 			newAppointment.DoctorShortName = _doctorShortName;
+			newAppointment.DoctorEmail = _doctorEmail;
 			newAppointment.RoomId = _roomId;
 			newAppointment.RoomTitle = _roomTitle;
 			newAppointment.NurseUsername = _nurseUsername;
@@ -462,6 +468,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(AppointmentColumn.DoctorShortName, this.entityData.DoctorShortName);
 				OnPropertyChanged("DoctorShortName");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the DoctorEmail property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 100)]
+		public virtual System.String DoctorEmail
+		{
+			get
+			{
+				return this.entityData.DoctorEmail; 
+			}
+			
+			set
+			{
+				if (this.entityData.DoctorEmail == value)
+					return;
+					
+				OnColumnChanging(AppointmentColumn.DoctorEmail, this.entityData.DoctorEmail);
+				this.entityData.DoctorEmail = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(AppointmentColumn.DoctorEmail, this.entityData.DoctorEmail);
+				OnPropertyChanged("DoctorEmail");
 			}
 		}
 		
@@ -1136,6 +1177,8 @@ namespace ClinicDoctor.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("DoctorShortName", "Doctor Short Name", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("DoctorEmail", "Doctor Email", 100));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("RoomTitle", "Room Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("NurseUsername", "Nurse Username", 200));
@@ -1174,7 +1217,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "CustomerId", "CustomerName", "ContentId", "ContentTitle", "DoctorUsername", "DoctorShortName", "RoomId", "RoomTitle", "NurseUsername", "NurseShortName", "StatusId", "StatusTitle", "Note", "StartTime", "EndTime", "ColorCode", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "CustomerId", "CustomerName", "ContentId", "ContentTitle", "DoctorUsername", "DoctorShortName", "DoctorEmail", "RoomId", "RoomTitle", "NurseUsername", "NurseShortName", "StatusId", "StatusTitle", "Note", "StartTime", "EndTime", "ColorCode", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1330,6 +1373,7 @@ namespace ClinicDoctor.Entities
 				copy.ContentTitle = this.ContentTitle;
 				copy.DoctorUsername = this.DoctorUsername;
 				copy.DoctorShortName = this.DoctorShortName;
+				copy.DoctorEmail = this.DoctorEmail;
 				copy.RoomId = this.RoomId;
 				copy.RoomTitle = this.RoomTitle;
 				copy.NurseUsername = this.NurseUsername;
@@ -1516,6 +1560,8 @@ namespace ClinicDoctor.Entities
 					return entityData.DoctorUsername != _originalData.DoctorUsername;
 					case AppointmentColumn.DoctorShortName:
 					return entityData.DoctorShortName != _originalData.DoctorShortName;
+					case AppointmentColumn.DoctorEmail:
+					return entityData.DoctorEmail != _originalData.DoctorEmail;
 					case AppointmentColumn.RoomId:
 					return entityData.RoomId != _originalData.RoomId;
 					case AppointmentColumn.RoomTitle:
@@ -1582,6 +1628,7 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.ContentTitle != _originalData.ContentTitle;
 			result = result || entityData.DoctorUsername != _originalData.DoctorUsername;
 			result = result || entityData.DoctorShortName != _originalData.DoctorShortName;
+			result = result || entityData.DoctorEmail != _originalData.DoctorEmail;
 			result = result || entityData.RoomId != _originalData.RoomId;
 			result = result || entityData.RoomTitle != _originalData.RoomTitle;
 			result = result || entityData.NurseUsername != _originalData.NurseUsername;
@@ -1615,6 +1662,7 @@ namespace ClinicDoctor.Entities
 				_originalData.ContentTitle,
 				_originalData.DoctorUsername,
 				_originalData.DoctorShortName,
+				_originalData.DoctorEmail,
 				_originalData.RoomId,
 				_originalData.RoomTitle,
 				_originalData.NurseUsername,
@@ -1667,6 +1715,7 @@ namespace ClinicDoctor.Entities
 					((this.ContentTitle == null) ? string.Empty : this.ContentTitle.ToString()).GetHashCode() ^ 
 					((this.DoctorUsername == null) ? string.Empty : this.DoctorUsername.ToString()).GetHashCode() ^ 
 					((this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString()).GetHashCode() ^ 
+					((this.DoctorEmail == null) ? string.Empty : this.DoctorEmail.ToString()).GetHashCode() ^ 
 					((this.RoomId == null) ? string.Empty : this.RoomId.ToString()).GetHashCode() ^ 
 					((this.RoomTitle == null) ? string.Empty : this.RoomTitle.ToString()).GetHashCode() ^ 
 					((this.NurseUsername == null) ? string.Empty : this.NurseUsername.ToString()).GetHashCode() ^ 
@@ -1754,6 +1803,15 @@ namespace ClinicDoctor.Entities
 					equal = false;
 			}
 			else if (Object1.DoctorShortName == null ^ Object2.DoctorShortName == null )
+			{
+				equal = false;
+			}
+			if ( Object1.DoctorEmail != null && Object2.DoctorEmail != null )
+			{
+				if (Object1.DoctorEmail != Object2.DoctorEmail)
+					equal = false;
+			}
+			else if (Object1.DoctorEmail == null ^ Object2.DoctorEmail == null )
 			{
 				equal = false;
 			}
@@ -1948,6 +2006,12 @@ namespace ClinicDoctor.Entities
             	
             	case AppointmentColumn.DoctorShortName:
             		return this.DoctorShortName.CompareTo(rhs.DoctorShortName);
+            		
+            		                 
+            	
+            	
+            	case AppointmentColumn.DoctorEmail:
+            		return this.DoctorEmail.CompareTo(rhs.DoctorEmail);
             		
             		                 
             	
@@ -2180,7 +2244,7 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{24}{23}- Id: {0}{23}- CustomerId: {1}{23}- CustomerName: {2}{23}- ContentId: {3}{23}- ContentTitle: {4}{23}- DoctorUsername: {5}{23}- DoctorShortName: {6}{23}- RoomId: {7}{23}- RoomTitle: {8}{23}- NurseUsername: {9}{23}- NurseShortName: {10}{23}- StatusId: {11}{23}- StatusTitle: {12}{23}- Note: {13}{23}- StartTime: {14}{23}- EndTime: {15}{23}- ColorCode: {16}{23}- IsComplete: {17}{23}- IsDisabled: {18}{23}- CreateUser: {19}{23}- CreateDate: {20}{23}- UpdateUser: {21}{23}- UpdateDate: {22}{23}{25}", 
+				"{25}{24}- Id: {0}{24}- CustomerId: {1}{24}- CustomerName: {2}{24}- ContentId: {3}{24}- ContentTitle: {4}{24}- DoctorUsername: {5}{24}- DoctorShortName: {6}{24}- DoctorEmail: {7}{24}- RoomId: {8}{24}- RoomTitle: {9}{24}- NurseUsername: {10}{24}- NurseShortName: {11}{24}- StatusId: {12}{24}- StatusTitle: {13}{24}- Note: {14}{24}- StartTime: {15}{24}- EndTime: {16}{24}- ColorCode: {17}{24}- IsComplete: {18}{24}- IsDisabled: {19}{24}- CreateUser: {20}{24}- CreateDate: {21}{24}- UpdateUser: {22}{24}- UpdateDate: {23}{24}{26}", 
 				this.Id,
 				this.CustomerId,
 				(this.CustomerName == null) ? string.Empty : this.CustomerName.ToString(),
@@ -2188,6 +2252,7 @@ namespace ClinicDoctor.Entities
 				(this.ContentTitle == null) ? string.Empty : this.ContentTitle.ToString(),
 				(this.DoctorUsername == null) ? string.Empty : this.DoctorUsername.ToString(),
 				(this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString(),
+				(this.DoctorEmail == null) ? string.Empty : this.DoctorEmail.ToString(),
 				(this.RoomId == null) ? string.Empty : this.RoomId.ToString(),
 				(this.RoomTitle == null) ? string.Empty : this.RoomTitle.ToString(),
 				(this.NurseUsername == null) ? string.Empty : this.NurseUsername.ToString(),
@@ -2272,6 +2337,11 @@ namespace ClinicDoctor.Entities
 		/// DoctorShortName : 
 		/// </summary>
 		public System.String		  DoctorShortName = null;
+		
+		/// <summary>
+		/// DoctorEmail : 
+		/// </summary>
+		public System.String		  DoctorEmail = null;
 		
 		/// <summary>
 		/// RoomId : 
@@ -2460,6 +2530,7 @@ namespace ClinicDoctor.Entities
 			_tmp.ContentTitle = this.ContentTitle;
 			_tmp.DoctorUsername = this.DoctorUsername;
 			_tmp.DoctorShortName = this.DoctorShortName;
+			_tmp.DoctorEmail = this.DoctorEmail;
 			_tmp.RoomId = this.RoomId;
 			_tmp.RoomTitle = this.RoomTitle;
 			_tmp.NurseUsername = this.NurseUsername;
@@ -2521,6 +2592,7 @@ namespace ClinicDoctor.Entities
 			_tmp.ContentTitle = this.ContentTitle;
 			_tmp.DoctorUsername = this.DoctorUsername;
 			_tmp.DoctorShortName = this.DoctorShortName;
+			_tmp.DoctorEmail = this.DoctorEmail;
 			_tmp.RoomId = this.RoomId;
 			_tmp.RoomTitle = this.RoomTitle;
 			_tmp.NurseUsername = this.NurseUsername;
@@ -2977,101 +3049,107 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("DoctorShortName", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		DoctorShortName = 7,
 		/// <summary>
+		/// DoctorEmail : 
+		/// </summary>
+		[EnumTextValue("DoctorEmail")]
+		[ColumnEnum("DoctorEmail", typeof(System.String), System.Data.DbType.String, false, false, true, 100)]
+		DoctorEmail = 8,
+		/// <summary>
 		/// RoomId : 
 		/// </summary>
 		[EnumTextValue("RoomId")]
 		[ColumnEnum("RoomId", typeof(System.Int64), System.Data.DbType.Int64, false, false, true)]
-		RoomId = 8,
+		RoomId = 9,
 		/// <summary>
 		/// RoomTitle : 
 		/// </summary>
 		[EnumTextValue("RoomTitle")]
 		[ColumnEnum("RoomTitle", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		RoomTitle = 9,
+		RoomTitle = 10,
 		/// <summary>
 		/// NurseUsername : 
 		/// </summary>
 		[EnumTextValue("NurseUsername")]
 		[ColumnEnum("NurseUsername", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		NurseUsername = 10,
+		NurseUsername = 11,
 		/// <summary>
 		/// NurseShortName : 
 		/// </summary>
 		[EnumTextValue("NurseShortName")]
 		[ColumnEnum("NurseShortName", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		NurseShortName = 11,
+		NurseShortName = 12,
 		/// <summary>
 		/// StatusId : 
 		/// </summary>
 		[EnumTextValue("StatusId")]
 		[ColumnEnum("StatusId", typeof(System.Int64), System.Data.DbType.Int64, false, false, true)]
-		StatusId = 12,
+		StatusId = 13,
 		/// <summary>
 		/// StatusTitle : 
 		/// </summary>
 		[EnumTextValue("StatusTitle")]
 		[ColumnEnum("StatusTitle", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		StatusTitle = 13,
+		StatusTitle = 14,
 		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 14,
+		Note = 15,
 		/// <summary>
 		/// StartTime : 
 		/// </summary>
 		[EnumTextValue("StartTime")]
 		[ColumnEnum("StartTime", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		StartTime = 15,
+		StartTime = 16,
 		/// <summary>
 		/// EndTime : 
 		/// </summary>
 		[EnumTextValue("EndTime")]
 		[ColumnEnum("EndTime", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		EndTime = 16,
+		EndTime = 17,
 		/// <summary>
 		/// ColorCode : 
 		/// </summary>
 		[EnumTextValue("ColorCode")]
 		[ColumnEnum("ColorCode", typeof(System.String), System.Data.DbType.String, false, false, false, 10)]
-		ColorCode = 17,
+		ColorCode = 18,
 		/// <summary>
 		/// IsComplete : 
 		/// </summary>
 		[EnumTextValue("IsComplete")]
 		[ColumnEnum("IsComplete", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsComplete = 18,
+		IsComplete = 19,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 19,
+		IsDisabled = 20,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 20,
+		CreateUser = 21,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 21,
+		CreateDate = 22,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 22,
+		UpdateUser = 23,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 23
+		UpdateDate = 24
 	}//End enum
 
 	#endregion AppointmentColumn Enum

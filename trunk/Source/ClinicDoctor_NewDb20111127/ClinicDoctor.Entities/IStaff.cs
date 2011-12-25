@@ -45,6 +45,11 @@ namespace ClinicDoctor.Entities
 		System.String  UserName  { get; set; }
 		
 		/// <summary>
+		/// Email : 
+		/// </summary>
+		System.String  Email  { get; set; }
+		
+		/// <summary>
 		/// Address : 
 		/// </summary>
 		System.String  Address  { get; set; }

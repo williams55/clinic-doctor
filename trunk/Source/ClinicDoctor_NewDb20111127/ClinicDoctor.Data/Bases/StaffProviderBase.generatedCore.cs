@@ -717,6 +717,7 @@ namespace ClinicDoctor.Data.Bases
 					c.LastName = (System.String)reader[((int)StaffColumn.LastName - 1)];
 					c.ShortName = (System.String)reader[((int)StaffColumn.ShortName - 1)];
 					c.UserName = (System.String)reader[((int)StaffColumn.UserName - 1)];
+					c.Email = (reader.IsDBNull(((int)StaffColumn.Email - 1)))?null:(System.String)reader[((int)StaffColumn.Email - 1)];
 					c.Address = (reader.IsDBNull(((int)StaffColumn.Address - 1)))?null:(System.String)reader[((int)StaffColumn.Address - 1)];
 					c.HomePhone = (reader.IsDBNull(((int)StaffColumn.HomePhone - 1)))?null:(System.String)reader[((int)StaffColumn.HomePhone - 1)];
 					c.WorkPhone = (reader.IsDBNull(((int)StaffColumn.WorkPhone - 1)))?null:(System.String)reader[((int)StaffColumn.WorkPhone - 1)];
@@ -754,6 +755,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.LastName = (System.String)reader[((int)StaffColumn.LastName - 1)];
 			entity.ShortName = (System.String)reader[((int)StaffColumn.ShortName - 1)];
 			entity.UserName = (System.String)reader[((int)StaffColumn.UserName - 1)];
+			entity.Email = (reader.IsDBNull(((int)StaffColumn.Email - 1)))?null:(System.String)reader[((int)StaffColumn.Email - 1)];
 			entity.Address = (reader.IsDBNull(((int)StaffColumn.Address - 1)))?null:(System.String)reader[((int)StaffColumn.Address - 1)];
 			entity.HomePhone = (reader.IsDBNull(((int)StaffColumn.HomePhone - 1)))?null:(System.String)reader[((int)StaffColumn.HomePhone - 1)];
 			entity.WorkPhone = (reader.IsDBNull(((int)StaffColumn.WorkPhone - 1)))?null:(System.String)reader[((int)StaffColumn.WorkPhone - 1)];
@@ -786,6 +788,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.LastName = (System.String)dataRow["LastName"];
 			entity.ShortName = (System.String)dataRow["ShortName"];
 			entity.UserName = (System.String)dataRow["UserName"];
+			entity.Email = Convert.IsDBNull(dataRow["Email"]) ? null : (System.String)dataRow["Email"];
 			entity.Address = Convert.IsDBNull(dataRow["Address"]) ? null : (System.String)dataRow["Address"];
 			entity.HomePhone = Convert.IsDBNull(dataRow["HomePhone"]) ? null : (System.String)dataRow["HomePhone"];
 			entity.WorkPhone = Convert.IsDBNull(dataRow["WorkPhone"]) ? null : (System.String)dataRow["WorkPhone"];

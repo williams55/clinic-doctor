@@ -180,6 +180,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@LastName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@ShortName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@UserName", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Email", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Address", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@HomePhone", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@WorkPhone", DbType.String, DBNull.Value);
@@ -236,6 +237,12 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@UserName", 
 						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("email ") || clause.Trim().StartsWith("email="))
+				{
+					database.SetParameterValue(commandWrapper, "@Email", 
+						clause.Trim().Remove(0,5).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("address ") || clause.Trim().StartsWith("address="))
@@ -1164,40 +1171,43 @@ namespace ClinicDoctor.Data.SqlClient
 			col3.AllowDBNull = false;		
 			DataColumn col4 = dataTable.Columns.Add("UserName", typeof(System.String));
 			col4.AllowDBNull = false;		
-			DataColumn col5 = dataTable.Columns.Add("Address", typeof(System.String));
+			DataColumn col5 = dataTable.Columns.Add("Email", typeof(System.String));
 			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("HomePhone", typeof(System.String));
+			DataColumn col6 = dataTable.Columns.Add("Address", typeof(System.String));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("WorkPhone", typeof(System.String));
+			DataColumn col7 = dataTable.Columns.Add("HomePhone", typeof(System.String));
 			col7.AllowDBNull = true;		
-			DataColumn col8 = dataTable.Columns.Add("CellPhone", typeof(System.String));
+			DataColumn col8 = dataTable.Columns.Add("WorkPhone", typeof(System.String));
 			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("Birthdate", typeof(System.DateTime));
+			DataColumn col9 = dataTable.Columns.Add("CellPhone", typeof(System.String));
 			col9.AllowDBNull = true;		
-			DataColumn col10 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
-			col10.AllowDBNull = false;		
-			DataColumn col11 = dataTable.Columns.Add("Title", typeof(System.String));
-			col11.AllowDBNull = true;		
-			DataColumn col12 = dataTable.Columns.Add("Note", typeof(System.String));
+			DataColumn col10 = dataTable.Columns.Add("Birthdate", typeof(System.DateTime));
+			col10.AllowDBNull = true;		
+			DataColumn col11 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
+			col11.AllowDBNull = false;		
+			DataColumn col12 = dataTable.Columns.Add("Title", typeof(System.String));
 			col12.AllowDBNull = true;		
-			DataColumn col13 = dataTable.Columns.Add("Roles", typeof(System.String));
-			col13.AllowDBNull = false;		
-			DataColumn col14 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col13 = dataTable.Columns.Add("Note", typeof(System.String));
+			col13.AllowDBNull = true;		
+			DataColumn col14 = dataTable.Columns.Add("Roles", typeof(System.String));
 			col14.AllowDBNull = false;		
-			DataColumn col15 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col15.AllowDBNull = true;		
-			DataColumn col16 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col16.AllowDBNull = false;		
-			DataColumn col17 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col17.AllowDBNull = true;		
-			DataColumn col18 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col18.AllowDBNull = false;		
+			DataColumn col15 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col15.AllowDBNull = false;		
+			DataColumn col16 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col16.AllowDBNull = true;		
+			DataColumn col17 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col17.AllowDBNull = false;		
+			DataColumn col18 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col18.AllowDBNull = true;		
+			DataColumn col19 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col19.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("FirstName", "FirstName");
 			bulkCopy.ColumnMappings.Add("LastName", "LastName");
 			bulkCopy.ColumnMappings.Add("ShortName", "ShortName");
 			bulkCopy.ColumnMappings.Add("UserName", "UserName");
+			bulkCopy.ColumnMappings.Add("Email", "Email");
 			bulkCopy.ColumnMappings.Add("Address", "Address");
 			bulkCopy.ColumnMappings.Add("HomePhone", "HomePhone");
 			bulkCopy.ColumnMappings.Add("WorkPhone", "WorkPhone");
@@ -1233,6 +1243,9 @@ namespace ClinicDoctor.Data.SqlClient
 							
 				
 					row["UserName"] = entity.UserName;
+							
+				
+					row["Email"] = entity.Email;
 							
 				
 					row["Address"] = entity.Address;
@@ -1316,6 +1329,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@ShortName", DbType.String, entity.ShortName );
 			database.AddInParameter(commandWrapper, "@UserName", DbType.String, entity.UserName );
+			database.AddInParameter(commandWrapper, "@Email", DbType.String, entity.Email );
 			database.AddInParameter(commandWrapper, "@Address", DbType.String, entity.Address );
 			database.AddInParameter(commandWrapper, "@HomePhone", DbType.String, entity.HomePhone );
 			database.AddInParameter(commandWrapper, "@WorkPhone", DbType.String, entity.WorkPhone );
@@ -1383,6 +1397,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@ShortName", DbType.String, entity.ShortName );
 			database.AddInParameter(commandWrapper, "@UserName", DbType.String, entity.UserName );
+			database.AddInParameter(commandWrapper, "@Email", DbType.String, entity.Email );
 			database.AddInParameter(commandWrapper, "@Address", DbType.String, entity.Address );
 			database.AddInParameter(commandWrapper, "@HomePhone", DbType.String, entity.HomePhone );
 			database.AddInParameter(commandWrapper, "@WorkPhone", DbType.String, entity.WorkPhone );

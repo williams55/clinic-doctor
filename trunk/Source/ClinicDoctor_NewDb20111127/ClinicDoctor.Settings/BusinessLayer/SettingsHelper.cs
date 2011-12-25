@@ -234,5 +234,24 @@ namespace ClinicDoctor.Settings.BusinessLayer
             }
         }
         #endregion
+
+        // Time [Minute] left to remind appointment
+        public double TimeLeftRemindAppointment
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<int>("TIME_LEFT_RMIND_APPOINTMENT", out result))
+                {
+                    throw new ApplicationException("Setting TIME_LEFT_RMIND_APPOINTMENT was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<double>("TIME_LEFT_RMIND_APPOINTMENT", value);
+            }
+        }
     }
 }

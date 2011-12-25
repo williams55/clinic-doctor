@@ -1933,6 +1933,7 @@ namespace ClinicDoctor.Data.Bases
 					c.ContentTitle = (reader.IsDBNull(((int)AppointmentColumn.ContentTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.ContentTitle - 1)];
 					c.DoctorUsername = (reader.IsDBNull(((int)AppointmentColumn.DoctorUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorUsername - 1)];
 					c.DoctorShortName = (reader.IsDBNull(((int)AppointmentColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorShortName - 1)];
+					c.DoctorEmail = (reader.IsDBNull(((int)AppointmentColumn.DoctorEmail - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorEmail - 1)];
 					c.RoomId = (reader.IsDBNull(((int)AppointmentColumn.RoomId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.RoomId - 1)];
 					c.RoomTitle = (reader.IsDBNull(((int)AppointmentColumn.RoomTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.RoomTitle - 1)];
 					c.NurseUsername = (reader.IsDBNull(((int)AppointmentColumn.NurseUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.NurseUsername - 1)];
@@ -1974,6 +1975,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.ContentTitle = (reader.IsDBNull(((int)AppointmentColumn.ContentTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.ContentTitle - 1)];
 			entity.DoctorUsername = (reader.IsDBNull(((int)AppointmentColumn.DoctorUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorUsername - 1)];
 			entity.DoctorShortName = (reader.IsDBNull(((int)AppointmentColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorShortName - 1)];
+			entity.DoctorEmail = (reader.IsDBNull(((int)AppointmentColumn.DoctorEmail - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorEmail - 1)];
 			entity.RoomId = (reader.IsDBNull(((int)AppointmentColumn.RoomId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.RoomId - 1)];
 			entity.RoomTitle = (reader.IsDBNull(((int)AppointmentColumn.RoomTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.RoomTitle - 1)];
 			entity.NurseUsername = (reader.IsDBNull(((int)AppointmentColumn.NurseUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.NurseUsername - 1)];
@@ -2010,6 +2012,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.ContentTitle = Convert.IsDBNull(dataRow["ContentTitle"]) ? null : (System.String)dataRow["ContentTitle"];
 			entity.DoctorUsername = Convert.IsDBNull(dataRow["DoctorUsername"]) ? null : (System.String)dataRow["DoctorUsername"];
 			entity.DoctorShortName = Convert.IsDBNull(dataRow["DoctorShortName"]) ? null : (System.String)dataRow["DoctorShortName"];
+			entity.DoctorEmail = Convert.IsDBNull(dataRow["DoctorEmail"]) ? null : (System.String)dataRow["DoctorEmail"];
 			entity.RoomId = Convert.IsDBNull(dataRow["RoomId"]) ? null : (System.Int64?)dataRow["RoomId"];
 			entity.RoomTitle = Convert.IsDBNull(dataRow["RoomTitle"]) ? null : (System.String)dataRow["RoomTitle"];
 			entity.NurseUsername = Convert.IsDBNull(dataRow["NurseUsername"]) ? null : (System.String)dataRow["NurseUsername"];

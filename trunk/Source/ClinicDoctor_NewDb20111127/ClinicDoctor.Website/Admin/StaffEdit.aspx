@@ -105,6 +105,7 @@
 				<asp:BoundField DataField="ContentTitle" HeaderText="Content Title" SortExpression="[ContentTitle]" />				
 				<data:HyperLinkField HeaderText="Doctor Username" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}" DataNavigateUrlFields="UserName" DataContainer="DoctorUsernameSource" DataTextField="FirstName" />
 				<asp:BoundField DataField="DoctorShortName" HeaderText="Doctor Short Name" SortExpression="[DoctorShortName]" />				
+				<asp:BoundField DataField="DoctorEmail" HeaderText="Doctor Email" SortExpression="[DoctorEmail]" />				
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="RoomTitle" HeaderText="Room Title" SortExpression="[RoomTitle]" />				
 				<data:HyperLinkField HeaderText="Nurse Username" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}" DataNavigateUrlFields="UserName" DataContainer="NurseUsernameSource" DataTextField="FirstName" />
@@ -171,6 +172,7 @@
 				<asp:BoundField DataField="ContentTitle" HeaderText="Content Title" SortExpression="[ContentTitle]" />				
 				<data:HyperLinkField HeaderText="Doctor Username" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}" DataNavigateUrlFields="UserName" DataContainer="DoctorUsernameSource" DataTextField="FirstName" />
 				<asp:BoundField DataField="DoctorShortName" HeaderText="Doctor Short Name" SortExpression="[DoctorShortName]" />				
+				<asp:BoundField DataField="DoctorEmail" HeaderText="Doctor Email" SortExpression="[DoctorEmail]" />				
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="RoomTitle" HeaderText="Room Title" SortExpression="[RoomTitle]" />				
 				<data:HyperLinkField HeaderText="Nurse Username" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}" DataNavigateUrlFields="UserName" DataContainer="NurseUsernameSource" DataTextField="FirstName" />
@@ -233,6 +235,7 @@
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Doctor User Name" DataNavigateUrlFormatString="StaffEdit.aspx?UserName={0}" DataNavigateUrlFields="UserName" DataContainer="DoctorUserNameSource" DataTextField="FirstName" />
 				<asp:BoundField DataField="DoctorShortName" HeaderText="Doctor Short Name" SortExpression="[DoctorShortName]" />				
+				<asp:BoundField DataField="DoctorEmail" HeaderText="Doctor Email" SortExpression="[DoctorEmail]" />				
 				<data:HyperLinkField HeaderText="Roster Type Id" DataNavigateUrlFormatString="RosterTypeEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RosterTypeIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="RosterTypeTitle" HeaderText="Roster Type Title" SortExpression="[RosterTypeTitle]" />				
 				<asp:BoundField DataField="ColorCode" HeaderText="Color Code" SortExpression="[ColorCode]" />				

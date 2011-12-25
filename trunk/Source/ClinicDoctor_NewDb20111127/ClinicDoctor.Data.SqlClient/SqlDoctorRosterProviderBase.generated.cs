@@ -178,6 +178,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@DoctorEmail", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RosterTypeId", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RosterTypeTitle", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, DBNull.Value);
@@ -221,6 +222,12 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@DoctorShortName", 
 						clause.Trim().Remove(0,15).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("doctoremail ") || clause.Trim().StartsWith("doctoremail="))
+				{
+					database.SetParameterValue(commandWrapper, "@DoctorEmail", 
+						clause.Trim().Remove(0,11).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("rostertypeid ") || clause.Trim().StartsWith("rostertypeid="))
@@ -1783,36 +1790,39 @@ namespace ClinicDoctor.Data.SqlClient
 			col1.AllowDBNull = false;		
 			DataColumn col2 = dataTable.Columns.Add("DoctorShortName", typeof(System.String));
 			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("RosterTypeId", typeof(System.Int64));
-			col3.AllowDBNull = false;		
-			DataColumn col4 = dataTable.Columns.Add("RosterTypeTitle", typeof(System.String));
-			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("ColorCode", typeof(System.String));
+			DataColumn col3 = dataTable.Columns.Add("DoctorEmail", typeof(System.String));
+			col3.AllowDBNull = true;		
+			DataColumn col4 = dataTable.Columns.Add("RosterTypeId", typeof(System.Int64));
+			col4.AllowDBNull = false;		
+			DataColumn col5 = dataTable.Columns.Add("RosterTypeTitle", typeof(System.String));
 			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("IsBooked", typeof(System.Boolean));
+			DataColumn col6 = dataTable.Columns.Add("ColorCode", typeof(System.String));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("StartTime", typeof(System.DateTime));
-			col7.AllowDBNull = false;		
-			DataColumn col8 = dataTable.Columns.Add("EndTime", typeof(System.DateTime));
+			DataColumn col7 = dataTable.Columns.Add("IsBooked", typeof(System.Boolean));
+			col7.AllowDBNull = true;		
+			DataColumn col8 = dataTable.Columns.Add("StartTime", typeof(System.DateTime));
 			col8.AllowDBNull = false;		
-			DataColumn col9 = dataTable.Columns.Add("Note", typeof(System.String));
-			col9.AllowDBNull = true;		
-			DataColumn col10 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
-			col10.AllowDBNull = false;		
-			DataColumn col11 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col9 = dataTable.Columns.Add("EndTime", typeof(System.DateTime));
+			col9.AllowDBNull = false;		
+			DataColumn col10 = dataTable.Columns.Add("Note", typeof(System.String));
+			col10.AllowDBNull = true;		
+			DataColumn col11 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
 			col11.AllowDBNull = false;		
-			DataColumn col12 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col12.AllowDBNull = true;		
-			DataColumn col13 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col13.AllowDBNull = false;		
-			DataColumn col14 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col14.AllowDBNull = true;		
-			DataColumn col15 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col15.AllowDBNull = false;		
+			DataColumn col12 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col12.AllowDBNull = false;		
+			DataColumn col13 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col13.AllowDBNull = true;		
+			DataColumn col14 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col14.AllowDBNull = false;		
+			DataColumn col15 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col15.AllowDBNull = true;		
+			DataColumn col16 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col16.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("DoctorUserName", "DoctorUserName");
 			bulkCopy.ColumnMappings.Add("DoctorShortName", "DoctorShortName");
+			bulkCopy.ColumnMappings.Add("DoctorEmail", "DoctorEmail");
 			bulkCopy.ColumnMappings.Add("RosterTypeId", "RosterTypeId");
 			bulkCopy.ColumnMappings.Add("RosterTypeTitle", "RosterTypeTitle");
 			bulkCopy.ColumnMappings.Add("ColorCode", "ColorCode");
@@ -1841,6 +1851,9 @@ namespace ClinicDoctor.Data.SqlClient
 							
 				
 					row["DoctorShortName"] = entity.DoctorShortName;
+							
+				
+					row["DoctorEmail"] = entity.DoctorEmail;
 							
 				
 					row["RosterTypeId"] = entity.RosterTypeId;
@@ -1919,6 +1932,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, entity.DoctorUserName );
 			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
+			database.AddInParameter(commandWrapper, "@DoctorEmail", DbType.String, entity.DoctorEmail );
 			database.AddInParameter(commandWrapper, "@RosterTypeId", DbType.Int64, entity.RosterTypeId );
 			database.AddInParameter(commandWrapper, "@RosterTypeTitle", DbType.String, entity.RosterTypeTitle );
 			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
@@ -1983,6 +1997,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
 			database.AddInParameter(commandWrapper, "@DoctorUserName", DbType.String, entity.DoctorUserName );
 			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
+			database.AddInParameter(commandWrapper, "@DoctorEmail", DbType.String, entity.DoctorEmail );
 			database.AddInParameter(commandWrapper, "@RosterTypeId", DbType.Int64, entity.RosterTypeId );
 			database.AddInParameter(commandWrapper, "@RosterTypeTitle", DbType.String, entity.RosterTypeTitle );
 			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );

@@ -84,6 +84,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_id"></param>
 		///<param name="_doctorUserName"></param>
 		///<param name="_doctorShortName"></param>
+		///<param name="_doctorEmail"></param>
 		///<param name="_rosterTypeId"></param>
 		///<param name="_rosterTypeTitle"></param>
 		///<param name="_colorCode"></param>
@@ -98,10 +99,10 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public DoctorRosterBase(System.String _id, System.String _doctorUserName, System.String _doctorShortName, 
-			System.Int64 _rosterTypeId, System.String _rosterTypeTitle, System.String _colorCode, 
-			System.Boolean? _isBooked, System.DateTime _startTime, System.DateTime _endTime, System.String _note, 
-			System.Boolean _isComplete, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+			System.String _doctorEmail, System.Int64 _rosterTypeId, System.String _rosterTypeTitle, 
+			System.String _colorCode, System.Boolean? _isBooked, System.DateTime _startTime, System.DateTime _endTime, 
+			System.String _note, System.Boolean _isComplete, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new DoctorRosterEntityData();
 			this.backupData = null;
@@ -109,6 +110,7 @@ namespace ClinicDoctor.Entities
 			this.Id = _id;
 			this.DoctorUserName = _doctorUserName;
 			this.DoctorShortName = _doctorShortName;
+			this.DoctorEmail = _doctorEmail;
 			this.RosterTypeId = _rosterTypeId;
 			this.RosterTypeTitle = _rosterTypeTitle;
 			this.ColorCode = _colorCode;
@@ -130,6 +132,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_id"></param>
 		///<param name="_doctorUserName"></param>
 		///<param name="_doctorShortName"></param>
+		///<param name="_doctorEmail"></param>
 		///<param name="_rosterTypeId"></param>
 		///<param name="_rosterTypeTitle"></param>
 		///<param name="_colorCode"></param>
@@ -144,15 +147,16 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public static DoctorRoster CreateDoctorRoster(System.String _id, System.String _doctorUserName, System.String _doctorShortName, 
-			System.Int64 _rosterTypeId, System.String _rosterTypeTitle, System.String _colorCode, 
-			System.Boolean? _isBooked, System.DateTime _startTime, System.DateTime _endTime, System.String _note, 
-			System.Boolean _isComplete, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+			System.String _doctorEmail, System.Int64 _rosterTypeId, System.String _rosterTypeTitle, 
+			System.String _colorCode, System.Boolean? _isBooked, System.DateTime _startTime, System.DateTime _endTime, 
+			System.String _note, System.Boolean _isComplete, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			DoctorRoster newDoctorRoster = new DoctorRoster();
 			newDoctorRoster.Id = _id;
 			newDoctorRoster.DoctorUserName = _doctorUserName;
 			newDoctorRoster.DoctorShortName = _doctorShortName;
+			newDoctorRoster.DoctorEmail = _doctorEmail;
 			newDoctorRoster.RosterTypeId = _rosterTypeId;
 			newDoctorRoster.RosterTypeTitle = _rosterTypeTitle;
 			newDoctorRoster.ColorCode = _colorCode;
@@ -292,6 +296,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(DoctorRosterColumn.DoctorShortName, this.entityData.DoctorShortName);
 				OnPropertyChanged("DoctorShortName");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the DoctorEmail property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 100)]
+		public virtual System.String DoctorEmail
+		{
+			get
+			{
+				return this.entityData.DoctorEmail; 
+			}
+			
+			set
+			{
+				if (this.entityData.DoctorEmail == value)
+					return;
+					
+				OnColumnChanging(DoctorRosterColumn.DoctorEmail, this.entityData.DoctorEmail);
+				this.entityData.DoctorEmail = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(DoctorRosterColumn.DoctorEmail, this.entityData.DoctorEmail);
+				OnPropertyChanged("DoctorEmail");
 			}
 		}
 		
@@ -804,6 +843,8 @@ namespace ClinicDoctor.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("DoctorShortName", "Doctor Short Name", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("DoctorEmail", "Doctor Email", 100));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("RosterTypeTitle", "Roster Type Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("ColorCode", "Color Code", 10));
@@ -834,7 +875,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "DoctorUserName", "DoctorShortName", "RosterTypeId", "RosterTypeTitle", "ColorCode", "IsBooked", "StartTime", "EndTime", "Note", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "DoctorUserName", "DoctorShortName", "DoctorEmail", "RosterTypeId", "RosterTypeTitle", "ColorCode", "IsBooked", "StartTime", "EndTime", "Note", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -986,6 +1027,7 @@ namespace ClinicDoctor.Entities
 					copy.OriginalId = this.OriginalId;
 				copy.DoctorUserName = this.DoctorUserName;
 				copy.DoctorShortName = this.DoctorShortName;
+				copy.DoctorEmail = this.DoctorEmail;
 				copy.RosterTypeId = this.RosterTypeId;
 				copy.RosterTypeTitle = this.RosterTypeTitle;
 				copy.ColorCode = this.ColorCode;
@@ -1145,6 +1187,8 @@ namespace ClinicDoctor.Entities
 					return entityData.DoctorUserName != _originalData.DoctorUserName;
 					case DoctorRosterColumn.DoctorShortName:
 					return entityData.DoctorShortName != _originalData.DoctorShortName;
+					case DoctorRosterColumn.DoctorEmail:
+					return entityData.DoctorEmail != _originalData.DoctorEmail;
 					case DoctorRosterColumn.RosterTypeId:
 					return entityData.RosterTypeId != _originalData.RosterTypeId;
 					case DoctorRosterColumn.RosterTypeTitle:
@@ -1201,6 +1245,7 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.DoctorUserName != _originalData.DoctorUserName;
 			result = result || entityData.DoctorShortName != _originalData.DoctorShortName;
+			result = result || entityData.DoctorEmail != _originalData.DoctorEmail;
 			result = result || entityData.RosterTypeId != _originalData.RosterTypeId;
 			result = result || entityData.RosterTypeTitle != _originalData.RosterTypeTitle;
 			result = result || entityData.ColorCode != _originalData.ColorCode;
@@ -1227,6 +1272,7 @@ namespace ClinicDoctor.Entities
 				_originalData.Id,
 				_originalData.DoctorUserName,
 				_originalData.DoctorShortName,
+				_originalData.DoctorEmail,
 				_originalData.RosterTypeId,
 				_originalData.RosterTypeTitle,
 				_originalData.ColorCode,
@@ -1272,6 +1318,7 @@ namespace ClinicDoctor.Entities
 			return this.Id.GetHashCode() ^ 
 					this.DoctorUserName.GetHashCode() ^ 
 					((this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString()).GetHashCode() ^ 
+					((this.DoctorEmail == null) ? string.Empty : this.DoctorEmail.ToString()).GetHashCode() ^ 
 					this.RosterTypeId.GetHashCode() ^ 
 					((this.RosterTypeTitle == null) ? string.Empty : this.RosterTypeTitle.ToString()).GetHashCode() ^ 
 					((this.ColorCode == null) ? string.Empty : this.ColorCode.ToString()).GetHashCode() ^ 
@@ -1327,6 +1374,15 @@ namespace ClinicDoctor.Entities
 					equal = false;
 			}
 			else if (Object1.DoctorShortName == null ^ Object2.DoctorShortName == null )
+			{
+				equal = false;
+			}
+			if ( Object1.DoctorEmail != null && Object2.DoctorEmail != null )
+			{
+				if (Object1.DoctorEmail != Object2.DoctorEmail)
+					equal = false;
+			}
+			else if (Object1.DoctorEmail == null ^ Object2.DoctorEmail == null )
 			{
 				equal = false;
 			}
@@ -1456,6 +1512,12 @@ namespace ClinicDoctor.Entities
             	
             	case DoctorRosterColumn.DoctorShortName:
             		return this.DoctorShortName.CompareTo(rhs.DoctorShortName);
+            		
+            		                 
+            	
+            	
+            	case DoctorRosterColumn.DoctorEmail:
+            		return this.DoctorEmail.CompareTo(rhs.DoctorEmail);
             		
             		                 
             	
@@ -1670,10 +1732,11 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{17}{16}- Id: {0}{16}- DoctorUserName: {1}{16}- DoctorShortName: {2}{16}- RosterTypeId: {3}{16}- RosterTypeTitle: {4}{16}- ColorCode: {5}{16}- IsBooked: {6}{16}- StartTime: {7}{16}- EndTime: {8}{16}- Note: {9}{16}- IsComplete: {10}{16}- IsDisabled: {11}{16}- CreateUser: {12}{16}- CreateDate: {13}{16}- UpdateUser: {14}{16}- UpdateDate: {15}{16}{18}", 
+				"{18}{17}- Id: {0}{17}- DoctorUserName: {1}{17}- DoctorShortName: {2}{17}- DoctorEmail: {3}{17}- RosterTypeId: {4}{17}- RosterTypeTitle: {5}{17}- ColorCode: {6}{17}- IsBooked: {7}{17}- StartTime: {8}{17}- EndTime: {9}{17}- Note: {10}{17}- IsComplete: {11}{17}- IsDisabled: {12}{17}- CreateUser: {13}{17}- CreateDate: {14}{17}- UpdateUser: {15}{17}- UpdateDate: {16}{17}{19}", 
 				this.Id,
 				this.DoctorUserName,
 				(this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString(),
+				(this.DoctorEmail == null) ? string.Empty : this.DoctorEmail.ToString(),
 				this.RosterTypeId,
 				(this.RosterTypeTitle == null) ? string.Empty : this.RosterTypeTitle.ToString(),
 				(this.ColorCode == null) ? string.Empty : this.ColorCode.ToString(),
@@ -1735,6 +1798,11 @@ namespace ClinicDoctor.Entities
 		/// DoctorShortName : 
 		/// </summary>
 		public System.String		  DoctorShortName = null;
+		
+		/// <summary>
+		/// DoctorEmail : 
+		/// </summary>
+		public System.String		  DoctorEmail = null;
 		
 		/// <summary>
 		/// RosterTypeId : 
@@ -1852,6 +1920,7 @@ namespace ClinicDoctor.Entities
 			
 			_tmp.DoctorUserName = this.DoctorUserName;
 			_tmp.DoctorShortName = this.DoctorShortName;
+			_tmp.DoctorEmail = this.DoctorEmail;
 			_tmp.RosterTypeId = this.RosterTypeId;
 			_tmp.RosterTypeTitle = this.RosterTypeTitle;
 			_tmp.ColorCode = this.ColorCode;
@@ -1898,6 +1967,7 @@ namespace ClinicDoctor.Entities
 			
 			_tmp.DoctorUserName = this.DoctorUserName;
 			_tmp.DoctorShortName = this.DoctorShortName;
+			_tmp.DoctorEmail = this.DoctorEmail;
 			_tmp.RosterTypeId = this.RosterTypeId;
 			_tmp.RosterTypeTitle = this.RosterTypeTitle;
 			_tmp.ColorCode = this.ColorCode;
@@ -2311,83 +2381,89 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("DoctorShortName", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		DoctorShortName = 3,
 		/// <summary>
+		/// DoctorEmail : 
+		/// </summary>
+		[EnumTextValue("DoctorEmail")]
+		[ColumnEnum("DoctorEmail", typeof(System.String), System.Data.DbType.String, false, false, true, 100)]
+		DoctorEmail = 4,
+		/// <summary>
 		/// RosterTypeId : 
 		/// </summary>
 		[EnumTextValue("RosterTypeId")]
 		[ColumnEnum("RosterTypeId", typeof(System.Int64), System.Data.DbType.Int64, false, false, false)]
-		RosterTypeId = 4,
+		RosterTypeId = 5,
 		/// <summary>
 		/// RosterTypeTitle : 
 		/// </summary>
 		[EnumTextValue("RosterTypeTitle")]
 		[ColumnEnum("RosterTypeTitle", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		RosterTypeTitle = 5,
+		RosterTypeTitle = 6,
 		/// <summary>
 		/// ColorCode : 
 		/// </summary>
 		[EnumTextValue("ColorCode")]
 		[ColumnEnum("ColorCode", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
-		ColorCode = 6,
+		ColorCode = 7,
 		/// <summary>
 		/// IsBooked : 
 		/// </summary>
 		[EnumTextValue("IsBooked")]
 		[ColumnEnum("IsBooked", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, true)]
-		IsBooked = 7,
+		IsBooked = 8,
 		/// <summary>
 		/// StartTime : 
 		/// </summary>
 		[EnumTextValue("StartTime")]
 		[ColumnEnum("StartTime", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		StartTime = 8,
+		StartTime = 9,
 		/// <summary>
 		/// EndTime : 
 		/// </summary>
 		[EnumTextValue("EndTime")]
 		[ColumnEnum("EndTime", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		EndTime = 9,
+		EndTime = 10,
 		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 10,
+		Note = 11,
 		/// <summary>
 		/// IsComplete : 
 		/// </summary>
 		[EnumTextValue("IsComplete")]
 		[ColumnEnum("IsComplete", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsComplete = 11,
+		IsComplete = 12,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 12,
+		IsDisabled = 13,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 13,
+		CreateUser = 14,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 14,
+		CreateDate = 15,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 15,
+		UpdateUser = 16,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 16
+		UpdateDate = 17
 	}//End enum
 
 	#endregion DoctorRosterColumn Enum

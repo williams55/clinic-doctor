@@ -359,6 +359,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.DoctorShortName; }
 		}
         /// <summary>
+        /// Gets the DoctorEmail
+        /// </summary>
+        /// <value>The DoctorEmail.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String DoctorEmail
+		{
+			get { return _entity.DoctorEmail; }
+		}
+        /// <summary>
         /// Gets the RosterTypeId
         /// </summary>
         /// <value>The RosterTypeId.</value>

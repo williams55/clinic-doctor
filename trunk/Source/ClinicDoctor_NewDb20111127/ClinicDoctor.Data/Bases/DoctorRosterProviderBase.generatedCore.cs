@@ -1522,6 +1522,7 @@ namespace ClinicDoctor.Data.Bases
 					c.OriginalId = c.Id;
 					c.DoctorUserName = (System.String)reader[((int)DoctorRosterColumn.DoctorUserName - 1)];
 					c.DoctorShortName = (reader.IsDBNull(((int)DoctorRosterColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.DoctorShortName - 1)];
+					c.DoctorEmail = (reader.IsDBNull(((int)DoctorRosterColumn.DoctorEmail - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.DoctorEmail - 1)];
 					c.RosterTypeId = (System.Int64)reader[((int)DoctorRosterColumn.RosterTypeId - 1)];
 					c.RosterTypeTitle = (reader.IsDBNull(((int)DoctorRosterColumn.RosterTypeTitle - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.RosterTypeTitle - 1)];
 					c.ColorCode = (reader.IsDBNull(((int)DoctorRosterColumn.ColorCode - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.ColorCode - 1)];
@@ -1556,6 +1557,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.OriginalId = (System.String)reader["Id"];
 			entity.DoctorUserName = (System.String)reader[((int)DoctorRosterColumn.DoctorUserName - 1)];
 			entity.DoctorShortName = (reader.IsDBNull(((int)DoctorRosterColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.DoctorShortName - 1)];
+			entity.DoctorEmail = (reader.IsDBNull(((int)DoctorRosterColumn.DoctorEmail - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.DoctorEmail - 1)];
 			entity.RosterTypeId = (System.Int64)reader[((int)DoctorRosterColumn.RosterTypeId - 1)];
 			entity.RosterTypeTitle = (reader.IsDBNull(((int)DoctorRosterColumn.RosterTypeTitle - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.RosterTypeTitle - 1)];
 			entity.ColorCode = (reader.IsDBNull(((int)DoctorRosterColumn.ColorCode - 1)))?null:(System.String)reader[((int)DoctorRosterColumn.ColorCode - 1)];
@@ -1585,6 +1587,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.OriginalId = (System.String)dataRow["Id"];
 			entity.DoctorUserName = (System.String)dataRow["DoctorUserName"];
 			entity.DoctorShortName = Convert.IsDBNull(dataRow["DoctorShortName"]) ? null : (System.String)dataRow["DoctorShortName"];
+			entity.DoctorEmail = Convert.IsDBNull(dataRow["DoctorEmail"]) ? null : (System.String)dataRow["DoctorEmail"];
 			entity.RosterTypeId = (System.Int64)dataRow["RosterTypeId"];
 			entity.RosterTypeTitle = Convert.IsDBNull(dataRow["RosterTypeTitle"]) ? null : (System.String)dataRow["RosterTypeTitle"];
 			entity.ColorCode = Convert.IsDBNull(dataRow["ColorCode"]) ? null : (System.String)dataRow["ColorCode"];

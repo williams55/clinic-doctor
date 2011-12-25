@@ -49,6 +49,12 @@
 				</td>
 			</tr>
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataDoctorEmail" runat="server" Text="Doctor Email:" AssociatedControlID="dataDoctorEmail" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataDoctorEmail" Text='<%# Bind("DoctorEmail") %>' MaxLength="100"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataRoomId" runat="server" Text="Room Id:" AssociatedControlID="dataRoomId" /></td>
         <td>
 					<data:EntityDropDownList runat="server" ID="dataRoomId" DataSourceID="RoomIdRoomDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("RoomId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
