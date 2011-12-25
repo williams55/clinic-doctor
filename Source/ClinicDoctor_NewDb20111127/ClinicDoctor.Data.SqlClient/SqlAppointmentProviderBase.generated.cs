@@ -182,6 +182,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@ContentTitle", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@DoctorUsername", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@DoctorEmail", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RoomId", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RoomTitle", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@NurseUsername", DbType.String, DBNull.Value);
@@ -252,6 +253,12 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@DoctorShortName", 
 						clause.Trim().Remove(0,15).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("doctoremail ") || clause.Trim().StartsWith("doctoremail="))
+				{
+					database.SetParameterValue(commandWrapper, "@DoctorEmail", 
+						clause.Trim().Remove(0,11).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("roomid ") || clause.Trim().StartsWith("roomid="))
@@ -2156,38 +2163,40 @@ namespace ClinicDoctor.Data.SqlClient
 			col5.AllowDBNull = true;		
 			DataColumn col6 = dataTable.Columns.Add("DoctorShortName", typeof(System.String));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("RoomId", typeof(System.Int64));
+			DataColumn col7 = dataTable.Columns.Add("DoctorEmail", typeof(System.String));
 			col7.AllowDBNull = true;		
-			DataColumn col8 = dataTable.Columns.Add("RoomTitle", typeof(System.String));
+			DataColumn col8 = dataTable.Columns.Add("RoomId", typeof(System.Int64));
 			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("NurseUsername", typeof(System.String));
+			DataColumn col9 = dataTable.Columns.Add("RoomTitle", typeof(System.String));
 			col9.AllowDBNull = true;		
-			DataColumn col10 = dataTable.Columns.Add("NurseShortName", typeof(System.String));
+			DataColumn col10 = dataTable.Columns.Add("NurseUsername", typeof(System.String));
 			col10.AllowDBNull = true;		
-			DataColumn col11 = dataTable.Columns.Add("StatusId", typeof(System.Int64));
+			DataColumn col11 = dataTable.Columns.Add("NurseShortName", typeof(System.String));
 			col11.AllowDBNull = true;		
-			DataColumn col12 = dataTable.Columns.Add("StatusTitle", typeof(System.String));
+			DataColumn col12 = dataTable.Columns.Add("StatusId", typeof(System.Int64));
 			col12.AllowDBNull = true;		
-			DataColumn col13 = dataTable.Columns.Add("Note", typeof(System.String));
+			DataColumn col13 = dataTable.Columns.Add("StatusTitle", typeof(System.String));
 			col13.AllowDBNull = true;		
-			DataColumn col14 = dataTable.Columns.Add("StartTime", typeof(System.DateTime));
+			DataColumn col14 = dataTable.Columns.Add("Note", typeof(System.String));
 			col14.AllowDBNull = true;		
-			DataColumn col15 = dataTable.Columns.Add("EndTime", typeof(System.DateTime));
+			DataColumn col15 = dataTable.Columns.Add("StartTime", typeof(System.DateTime));
 			col15.AllowDBNull = true;		
-			DataColumn col16 = dataTable.Columns.Add("ColorCode", typeof(System.String));
-			col16.AllowDBNull = false;		
-			DataColumn col17 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
+			DataColumn col16 = dataTable.Columns.Add("EndTime", typeof(System.DateTime));
+			col16.AllowDBNull = true;		
+			DataColumn col17 = dataTable.Columns.Add("ColorCode", typeof(System.String));
 			col17.AllowDBNull = false;		
-			DataColumn col18 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col18 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
 			col18.AllowDBNull = false;		
-			DataColumn col19 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col19.AllowDBNull = true;		
-			DataColumn col20 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col20.AllowDBNull = false;		
-			DataColumn col21 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col21.AllowDBNull = true;		
-			DataColumn col22 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col22.AllowDBNull = false;		
+			DataColumn col19 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col19.AllowDBNull = false;		
+			DataColumn col20 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col20.AllowDBNull = true;		
+			DataColumn col21 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col21.AllowDBNull = false;		
+			DataColumn col22 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col22.AllowDBNull = true;		
+			DataColumn col23 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col23.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("CustomerId", "CustomerId");
@@ -2196,6 +2205,7 @@ namespace ClinicDoctor.Data.SqlClient
 			bulkCopy.ColumnMappings.Add("ContentTitle", "ContentTitle");
 			bulkCopy.ColumnMappings.Add("DoctorUsername", "DoctorUsername");
 			bulkCopy.ColumnMappings.Add("DoctorShortName", "DoctorShortName");
+			bulkCopy.ColumnMappings.Add("DoctorEmail", "DoctorEmail");
 			bulkCopy.ColumnMappings.Add("RoomId", "RoomId");
 			bulkCopy.ColumnMappings.Add("RoomTitle", "RoomTitle");
 			bulkCopy.ColumnMappings.Add("NurseUsername", "NurseUsername");
@@ -2239,6 +2249,9 @@ namespace ClinicDoctor.Data.SqlClient
 							
 				
 					row["DoctorShortName"] = entity.DoctorShortName;
+							
+				
+					row["DoctorEmail"] = entity.DoctorEmail;
 							
 				
 					row["RoomId"] = entity.RoomId.HasValue ? (object) entity.RoomId  : System.DBNull.Value;
@@ -2330,6 +2343,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@ContentTitle", DbType.String, entity.ContentTitle );
 			database.AddInParameter(commandWrapper, "@DoctorUsername", DbType.String, entity.DoctorUsername );
 			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
+			database.AddInParameter(commandWrapper, "@DoctorEmail", DbType.String, entity.DoctorEmail );
 			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int64, (entity.RoomId.HasValue ? (object) entity.RoomId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@RoomTitle", DbType.String, entity.RoomTitle );
 			database.AddInParameter(commandWrapper, "@NurseUsername", DbType.String, entity.NurseUsername );
@@ -2401,6 +2415,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@ContentTitle", DbType.String, entity.ContentTitle );
 			database.AddInParameter(commandWrapper, "@DoctorUsername", DbType.String, entity.DoctorUsername );
 			database.AddInParameter(commandWrapper, "@DoctorShortName", DbType.String, entity.DoctorShortName );
+			database.AddInParameter(commandWrapper, "@DoctorEmail", DbType.String, entity.DoctorEmail );
 			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int64, (entity.RoomId.HasValue ? (object) entity.RoomId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@RoomTitle", DbType.String, entity.RoomTitle );
 			database.AddInParameter(commandWrapper, "@NurseUsername", DbType.String, entity.NurseUsername );

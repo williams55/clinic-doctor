@@ -603,6 +603,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -682,7 +683,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[CustomerId], O.[CustomerName], O.[ContentId], O.[ContentTitle], O.[DoctorUsername], O.[DoctorShortName], O.[RoomId], O.[RoomTitle], O.[NurseUsername], O.[NurseShortName], O.[StatusId], O.[StatusTitle], O.[Note], O.[StartTime], O.[EndTime], O.[ColorCode], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[CustomerId], O.[CustomerName], O.[ContentId], O.[ContentTitle], O.[DoctorUsername], O.[DoctorShortName], O.[DoctorEmail], O.[RoomId], O.[RoomTitle], O.[NurseUsername], O.[NurseShortName], O.[StatusId], O.[StatusTitle], O.[Note], O.[StartTime], O.[EndTime], O.[ColorCode], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Appointment] O,
 				    #PageIndex PageIndex
@@ -722,6 +723,7 @@
 				<parameter name="@ContentTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@DoctorEmail" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@NurseUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -750,6 +752,7 @@
 					,[ContentTitle]
 					,[DoctorUsername]
 					,[DoctorShortName]
+					,[DoctorEmail]
 					,[RoomId]
 					,[RoomTitle]
 					,[NurseUsername]
@@ -776,6 +779,7 @@
 					,@ContentTitle
 					,@DoctorUsername
 					,@DoctorShortName
+					,@DoctorEmail
 					,@RoomId
 					,@RoomTitle
 					,@NurseUsername
@@ -816,6 +820,7 @@
 				<parameter name="@ContentTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@DoctorEmail" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault=""/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@NurseUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -847,6 +852,7 @@
 					,[ContentTitle] = @ContentTitle
 					,[DoctorUsername] = @DoctorUsername
 					,[DoctorShortName] = @DoctorShortName
+					,[DoctorEmail] = @DoctorEmail
 					,[RoomId] = @RoomId
 					,[RoomTitle] = @RoomTitle
 					,[NurseUsername] = @NurseUsername
@@ -910,6 +916,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -956,6 +963,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1003,6 +1011,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1050,6 +1059,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1097,6 +1107,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1146,6 +1157,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1197,6 +1209,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1247,6 +1260,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1294,6 +1308,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1342,6 +1357,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1391,6 +1407,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1439,6 +1456,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1488,6 +1506,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1539,6 +1558,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1589,6 +1609,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1636,6 +1657,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1682,6 +1704,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1729,6 +1752,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1776,6 +1800,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1823,6 +1848,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1870,6 +1896,7 @@
 					[ContentTitle],
 					[DoctorUsername],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RoomId],
 					[RoomTitle],
 					[NurseUsername],
@@ -1913,6 +1940,7 @@
 				<parameter name="@ContentTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@DoctorUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
+				<parameter name="@DoctorEmail" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault="null"/>
 				<parameter name="@RoomId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@RoomTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@NurseUsername" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
@@ -1942,6 +1970,7 @@
 	, [ContentTitle]
 	, [DoctorUsername]
 	, [DoctorShortName]
+	, [DoctorEmail]
 	, [RoomId]
 	, [RoomTitle]
 	, [NurseUsername]
@@ -1968,6 +1997,7 @@
 	AND ([ContentTitle] = @ContentTitle OR @ContentTitle IS NULL)
 	AND ([DoctorUsername] = @DoctorUsername OR @DoctorUsername IS NULL)
 	AND ([DoctorShortName] = @DoctorShortName OR @DoctorShortName IS NULL)
+	AND ([DoctorEmail] = @DoctorEmail OR @DoctorEmail IS NULL)
 	AND ([RoomId] = @RoomId OR @RoomId IS NULL)
 	AND ([RoomTitle] = @RoomTitle OR @RoomTitle IS NULL)
 	AND ([NurseUsername] = @NurseUsername OR @NurseUsername IS NULL)
@@ -1996,6 +2026,7 @@
 	, [ContentTitle]
 	, [DoctorUsername]
 	, [DoctorShortName]
+	, [DoctorEmail]
 	, [RoomId]
 	, [RoomTitle]
 	, [NurseUsername]
@@ -2022,6 +2053,7 @@
 	OR ([ContentTitle] = @ContentTitle AND @ContentTitle is not null)
 	OR ([DoctorUsername] = @DoctorUsername AND @DoctorUsername is not null)
 	OR ([DoctorShortName] = @DoctorShortName AND @DoctorShortName is not null)
+	OR ([DoctorEmail] = @DoctorEmail AND @DoctorEmail is not null)
 	OR ([RoomId] = @RoomId AND @RoomId is not null)
 	OR ([RoomTitle] = @RoomTitle AND @RoomTitle is not null)
 	OR ([NurseUsername] = @NurseUsername AND @NurseUsername is not null)
@@ -2072,7 +2104,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[CustomerId], O.[CustomerName], O.[ContentId], O.[ContentTitle], O.[DoctorUsername], O.[DoctorShortName], O.[RoomId], O.[RoomTitle], O.[NurseUsername], O.[NurseShortName], O.[StatusId], O.[StatusTitle], O.[Note], O.[StartTime], O.[EndTime], O.[ColorCode], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[CustomerId], O.[CustomerName], O.[ContentId], O.[ContentTitle], O.[DoctorUsername], O.[DoctorShortName], O.[DoctorEmail], O.[RoomId], O.[RoomTitle], O.[NurseUsername], O.[NurseShortName], O.[StatusId], O.[StatusTitle], O.[Note], O.[StartTime], O.[EndTime], O.[ColorCode], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Appointment] O,
 				    #PageIndex PageIndex
@@ -3372,6 +3404,7 @@
 					[LastName],
 					[ShortName],
 					[UserName],
+					[Email],
 					[Address],
 					[HomePhone],
 					[WorkPhone],
@@ -3449,7 +3482,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[FirstName], O.[LastName], O.[ShortName], O.[UserName], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[Roles], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[FirstName], O.[LastName], O.[ShortName], O.[UserName], O.[Email], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[Roles], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Staff] O,
 				    #PageIndex PageIndex
@@ -3487,6 +3520,7 @@
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@UserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@Email" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault=""/>
 				<parameter name="@Address" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
@@ -3511,6 +3545,7 @@
 					,[LastName]
 					,[ShortName]
 					,[UserName]
+					,[Email]
 					,[Address]
 					,[HomePhone]
 					,[WorkPhone]
@@ -3533,6 +3568,7 @@
 					,@LastName
 					,@ShortName
 					,@UserName
+					,@Email
 					,@Address
 					,@HomePhone
 					,@WorkPhone
@@ -3569,6 +3605,7 @@
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@UserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@Email" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault=""/>
 				<parameter name="@Address" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
@@ -3596,6 +3633,7 @@
 					,[LastName] = @LastName
 					,[ShortName] = @ShortName
 					,[UserName] = @UserName
+					,[Email] = @Email
 					,[Address] = @Address
 					,[HomePhone] = @HomePhone
 					,[WorkPhone] = @WorkPhone
@@ -3654,6 +3692,7 @@
 					[LastName],
 					[ShortName],
 					[UserName],
+					[Email],
 					[Address],
 					[HomePhone],
 					[WorkPhone],
@@ -3697,6 +3736,7 @@
 					[LastName],
 					[ShortName],
 					[UserName],
+					[Email],
 					[Address],
 					[HomePhone],
 					[WorkPhone],
@@ -3739,6 +3779,7 @@
 					[LastName],
 					[ShortName],
 					[UserName],
+					[Email],
 					[Address],
 					[HomePhone],
 					[WorkPhone],
@@ -3782,6 +3823,7 @@
 					[LastName],
 					[ShortName],
 					[UserName],
+					[Email],
 					[Address],
 					[HomePhone],
 					[WorkPhone],
@@ -3825,6 +3867,7 @@
 					[LastName],
 					[ShortName],
 					[UserName],
+					[Email],
 					[Address],
 					[HomePhone],
 					[WorkPhone],
@@ -3868,6 +3911,7 @@
 					[LastName],
 					[ShortName],
 					[UserName],
+					[Email],
 					[Address],
 					[HomePhone],
 					[WorkPhone],
@@ -3911,6 +3955,7 @@
 					[LastName],
 					[ShortName],
 					[UserName],
+					[Email],
 					[Address],
 					[HomePhone],
 					[WorkPhone],
@@ -3950,6 +3995,7 @@
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@ShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@UserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@Email" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault="null"/>
 				<parameter name="@Address" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
@@ -3975,6 +4021,7 @@
 	, [LastName]
 	, [ShortName]
 	, [UserName]
+	, [Email]
 	, [Address]
 	, [HomePhone]
 	, [WorkPhone]
@@ -3997,6 +4044,7 @@
 	AND ([LastName] = @LastName OR @LastName IS NULL)
 	AND ([ShortName] = @ShortName OR @ShortName IS NULL)
 	AND ([UserName] = @UserName OR @UserName IS NULL)
+	AND ([Email] = @Email OR @Email IS NULL)
 	AND ([Address] = @Address OR @Address IS NULL)
 	AND ([HomePhone] = @HomePhone OR @HomePhone IS NULL)
 	AND ([WorkPhone] = @WorkPhone OR @WorkPhone IS NULL)
@@ -4021,6 +4069,7 @@
 	, [LastName]
 	, [ShortName]
 	, [UserName]
+	, [Email]
 	, [Address]
 	, [HomePhone]
 	, [WorkPhone]
@@ -4043,6 +4092,7 @@
 	OR ([LastName] = @LastName AND @LastName is not null)
 	OR ([ShortName] = @ShortName AND @ShortName is not null)
 	OR ([UserName] = @UserName AND @UserName is not null)
+	OR ([Email] = @Email AND @Email is not null)
 	OR ([Address] = @Address AND @Address is not null)
 	OR ([HomePhone] = @HomePhone AND @HomePhone is not null)
 	OR ([WorkPhone] = @WorkPhone AND @WorkPhone is not null)
@@ -4091,7 +4141,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[FirstName], O.[LastName], O.[ShortName], O.[UserName], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[Roles], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[FirstName], O.[LastName], O.[ShortName], O.[UserName], O.[Email], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[Roles], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Staff] O,
 				    #PageIndex PageIndex
@@ -4570,6 +4620,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -4646,7 +4697,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[RosterTypeId], O.[RosterTypeTitle], O.[ColorCode], O.[IsBooked], O.[StartTime], O.[EndTime], O.[Note], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[DoctorEmail], O.[RosterTypeId], O.[RosterTypeTitle], O.[ColorCode], O.[IsBooked], O.[StartTime], O.[EndTime], O.[Note], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorRoster] O,
 				    #PageIndex PageIndex
@@ -4682,6 +4733,7 @@
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@DoctorEmail" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault=""/>
 				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@RosterTypeTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
@@ -4703,6 +4755,7 @@
 					[Id]
 					,[DoctorUserName]
 					,[DoctorShortName]
+					,[DoctorEmail]
 					,[RosterTypeId]
 					,[RosterTypeTitle]
 					,[ColorCode]
@@ -4722,6 +4775,7 @@
 					@Id
 					,@DoctorUserName
 					,@DoctorShortName
+					,@DoctorEmail
 					,@RosterTypeId
 					,@RosterTypeTitle
 					,@ColorCode
@@ -4755,6 +4809,7 @@
 				<parameter name="@OriginalId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@DoctorEmail" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault=""/>
 				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@RosterTypeTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
@@ -4779,6 +4834,7 @@
 					[Id] = @Id
 					,[DoctorUserName] = @DoctorUserName
 					,[DoctorShortName] = @DoctorShortName
+					,[DoctorEmail] = @DoctorEmail
 					,[RosterTypeId] = @RosterTypeId
 					,[RosterTypeTitle] = @RosterTypeTitle
 					,[ColorCode] = @ColorCode
@@ -4833,6 +4889,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -4873,6 +4930,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -4915,6 +4973,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -4957,6 +5016,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -4998,6 +5058,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5040,6 +5101,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5084,6 +5146,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5128,6 +5191,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5170,6 +5234,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5212,6 +5277,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5254,6 +5320,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5294,6 +5361,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5333,6 +5401,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5373,6 +5442,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5415,6 +5485,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5456,6 +5527,7 @@
 					[Id],
 					[DoctorUserName],
 					[DoctorShortName],
+					[DoctorEmail],
 					[RosterTypeId],
 					[RosterTypeTitle],
 					[ColorCode],
@@ -5492,6 +5564,7 @@
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@DoctorUserName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@DoctorShortName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
+				<parameter name="@DoctorEmail" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault="null"/>
 				<parameter name="@RosterTypeId" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@RosterTypeTitle" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
@@ -5514,6 +5587,7 @@
 	  [Id]
 	, [DoctorUserName]
 	, [DoctorShortName]
+	, [DoctorEmail]
 	, [RosterTypeId]
 	, [RosterTypeTitle]
 	, [ColorCode]
@@ -5533,6 +5607,7 @@
 	 ([Id] = @Id OR @Id IS NULL)
 	AND ([DoctorUserName] = @DoctorUserName OR @DoctorUserName IS NULL)
 	AND ([DoctorShortName] = @DoctorShortName OR @DoctorShortName IS NULL)
+	AND ([DoctorEmail] = @DoctorEmail OR @DoctorEmail IS NULL)
 	AND ([RosterTypeId] = @RosterTypeId OR @RosterTypeId IS NULL)
 	AND ([RosterTypeTitle] = @RosterTypeTitle OR @RosterTypeTitle IS NULL)
 	AND ([ColorCode] = @ColorCode OR @ColorCode IS NULL)
@@ -5554,6 +5629,7 @@
 	  [Id]
 	, [DoctorUserName]
 	, [DoctorShortName]
+	, [DoctorEmail]
 	, [RosterTypeId]
 	, [RosterTypeTitle]
 	, [ColorCode]
@@ -5573,6 +5649,7 @@
 	 ([Id] = @Id AND @Id is not null)
 	OR ([DoctorUserName] = @DoctorUserName AND @DoctorUserName is not null)
 	OR ([DoctorShortName] = @DoctorShortName AND @DoctorShortName is not null)
+	OR ([DoctorEmail] = @DoctorEmail AND @DoctorEmail is not null)
 	OR ([RosterTypeId] = @RosterTypeId AND @RosterTypeId is not null)
 	OR ([RosterTypeTitle] = @RosterTypeTitle AND @RosterTypeTitle is not null)
 	OR ([ColorCode] = @ColorCode AND @ColorCode is not null)
@@ -5620,7 +5697,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[RosterTypeId], O.[RosterTypeTitle], O.[ColorCode], O.[IsBooked], O.[StartTime], O.[EndTime], O.[Note], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[DoctorUserName], O.[DoctorShortName], O.[DoctorEmail], O.[RosterTypeId], O.[RosterTypeTitle], O.[ColorCode], O.[IsBooked], O.[StartTime], O.[EndTime], O.[Note], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[DoctorRoster] O,
 				    #PageIndex PageIndex

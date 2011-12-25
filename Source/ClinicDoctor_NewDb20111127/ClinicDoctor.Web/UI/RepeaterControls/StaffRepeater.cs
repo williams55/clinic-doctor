@@ -377,6 +377,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.UserName; }
 		}
         /// <summary>
+        /// Gets the Email
+        /// </summary>
+        /// <value>The Email.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String Email
+		{
+			get { return _entity.Email; }
+		}
+        /// <summary>
         /// Gets the Address
         /// </summary>
         /// <value>The Address.</value>

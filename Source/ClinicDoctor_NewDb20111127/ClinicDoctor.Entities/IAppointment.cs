@@ -55,6 +55,11 @@ namespace ClinicDoctor.Entities
 		System.String  DoctorShortName  { get; set; }
 		
 		/// <summary>
+		/// DoctorEmail : 
+		/// </summary>
+		System.String  DoctorEmail  { get; set; }
+		
+		/// <summary>
 		/// RoomId : 
 		/// </summary>
 		System.Int64?  RoomId  { get; set; }

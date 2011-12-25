@@ -86,6 +86,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_lastName"></param>
 		///<param name="_shortName"></param>
 		///<param name="_userName"></param>
+		///<param name="_email"></param>
 		///<param name="_address"></param>
 		///<param name="_homePhone"></param>
 		///<param name="_workPhone"></param>
@@ -101,10 +102,10 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public StaffBase(System.Int64 _id, System.String _firstName, System.String _lastName, 
-			System.String _shortName, System.String _userName, System.String _address, System.String _homePhone, System.String _workPhone, 
-			System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, System.String _title, 
-			System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+			System.String _shortName, System.String _userName, System.String _email, System.String _address, System.String _homePhone, 
+			System.String _workPhone, System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, 
+			System.String _title, System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new StaffEntityData();
 			this.backupData = null;
@@ -114,6 +115,7 @@ namespace ClinicDoctor.Entities
 			this.LastName = _lastName;
 			this.ShortName = _shortName;
 			this.UserName = _userName;
+			this.Email = _email;
 			this.Address = _address;
 			this.HomePhone = _homePhone;
 			this.WorkPhone = _workPhone;
@@ -138,6 +140,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_lastName"></param>
 		///<param name="_shortName"></param>
 		///<param name="_userName"></param>
+		///<param name="_email"></param>
 		///<param name="_address"></param>
 		///<param name="_homePhone"></param>
 		///<param name="_workPhone"></param>
@@ -153,10 +156,10 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public static Staff CreateStaff(System.Int64 _id, System.String _firstName, System.String _lastName, 
-			System.String _shortName, System.String _userName, System.String _address, System.String _homePhone, System.String _workPhone, 
-			System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, System.String _title, 
-			System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+			System.String _shortName, System.String _userName, System.String _email, System.String _address, System.String _homePhone, 
+			System.String _workPhone, System.String _cellPhone, System.DateTime? _birthdate, System.Boolean _isFemale, 
+			System.String _title, System.String _note, System.String _roles, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			Staff newStaff = new Staff();
 			newStaff.Id = _id;
@@ -164,6 +167,7 @@ namespace ClinicDoctor.Entities
 			newStaff.LastName = _lastName;
 			newStaff.ShortName = _shortName;
 			newStaff.UserName = _userName;
+			newStaff.Email = _email;
 			newStaff.Address = _address;
 			newStaff.HomePhone = _homePhone;
 			newStaff.WorkPhone = _workPhone;
@@ -376,6 +380,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(StaffColumn.UserName, this.entityData.UserName);
 				OnPropertyChanged("UserName");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the Email property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 100)]
+		public virtual System.String Email
+		{
+			get
+			{
+				return this.entityData.Email; 
+			}
+			
+			set
+			{
+				if (this.entityData.Email == value)
+					return;
+					
+				OnColumnChanging(StaffColumn.Email, this.entityData.Email);
+				this.entityData.Email = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(StaffColumn.Email, this.entityData.Email);
+				OnPropertyChanged("Email");
 			}
 		}
 		
@@ -963,6 +1002,8 @@ namespace ClinicDoctor.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("UserName", "User Name", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("Email", "Email", 100));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Address", "Address", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("HomePhone", "Home Phone", 20));
@@ -1003,7 +1044,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "FirstName", "LastName", "ShortName", "UserName", "Address", "HomePhone", "WorkPhone", "CellPhone", "Birthdate", "IsFemale", "Title", "Note", "Roles", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "FirstName", "LastName", "ShortName", "UserName", "Email", "Address", "HomePhone", "WorkPhone", "CellPhone", "Birthdate", "IsFemale", "Title", "Note", "Roles", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1157,6 +1198,7 @@ namespace ClinicDoctor.Entities
 				copy.LastName = this.LastName;
 				copy.ShortName = this.ShortName;
 				copy.UserName = this.UserName;
+				copy.Email = this.Email;
 				copy.Address = this.Address;
 				copy.HomePhone = this.HomePhone;
 				copy.WorkPhone = this.WorkPhone;
@@ -1319,6 +1361,8 @@ namespace ClinicDoctor.Entities
 					return entityData.ShortName != _originalData.ShortName;
 					case StaffColumn.UserName:
 					return entityData.UserName != _originalData.UserName;
+					case StaffColumn.Email:
+					return entityData.Email != _originalData.Email;
 					case StaffColumn.Address:
 					return entityData.Address != _originalData.Address;
 					case StaffColumn.HomePhone:
@@ -1379,6 +1423,7 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.LastName != _originalData.LastName;
 			result = result || entityData.ShortName != _originalData.ShortName;
 			result = result || entityData.UserName != _originalData.UserName;
+			result = result || entityData.Email != _originalData.Email;
 			result = result || entityData.Address != _originalData.Address;
 			result = result || entityData.HomePhone != _originalData.HomePhone;
 			result = result || entityData.WorkPhone != _originalData.WorkPhone;
@@ -1408,6 +1453,7 @@ namespace ClinicDoctor.Entities
 				_originalData.LastName,
 				_originalData.ShortName,
 				_originalData.UserName,
+				_originalData.Email,
 				_originalData.Address,
 				_originalData.HomePhone,
 				_originalData.WorkPhone,
@@ -1456,6 +1502,7 @@ namespace ClinicDoctor.Entities
 					this.LastName.GetHashCode() ^ 
 					this.ShortName.GetHashCode() ^ 
 					this.UserName.GetHashCode() ^ 
+					((this.Email == null) ? string.Empty : this.Email.ToString()).GetHashCode() ^ 
 					((this.Address == null) ? string.Empty : this.Address.ToString()).GetHashCode() ^ 
 					((this.HomePhone == null) ? string.Empty : this.HomePhone.ToString()).GetHashCode() ^ 
 					((this.WorkPhone == null) ? string.Empty : this.WorkPhone.ToString()).GetHashCode() ^ 
@@ -1512,6 +1559,15 @@ namespace ClinicDoctor.Entities
 				equal = false;
 			if (Object1.UserName != Object2.UserName)
 				equal = false;
+			if ( Object1.Email != null && Object2.Email != null )
+			{
+				if (Object1.Email != Object2.Email)
+					equal = false;
+			}
+			else if (Object1.Email == null ^ Object2.Email == null )
+			{
+				equal = false;
+			}
 			if ( Object1.Address != null && Object2.Address != null )
 			{
 				if (Object1.Address != Object2.Address)
@@ -1673,6 +1729,12 @@ namespace ClinicDoctor.Entities
             	
             	case StaffColumn.UserName:
             		return this.UserName.CompareTo(rhs.UserName);
+            		
+            		                 
+            	
+            	
+            	case StaffColumn.Email:
+            		return this.Email.CompareTo(rhs.Email);
             		
             		                 
             	
@@ -1893,12 +1955,13 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{20}{19}- Id: {0}{19}- FirstName: {1}{19}- LastName: {2}{19}- ShortName: {3}{19}- UserName: {4}{19}- Address: {5}{19}- HomePhone: {6}{19}- WorkPhone: {7}{19}- CellPhone: {8}{19}- Birthdate: {9}{19}- IsFemale: {10}{19}- Title: {11}{19}- Note: {12}{19}- Roles: {13}{19}- IsDisabled: {14}{19}- CreateUser: {15}{19}- CreateDate: {16}{19}- UpdateUser: {17}{19}- UpdateDate: {18}{19}{21}", 
+				"{21}{20}- Id: {0}{20}- FirstName: {1}{20}- LastName: {2}{20}- ShortName: {3}{20}- UserName: {4}{20}- Email: {5}{20}- Address: {6}{20}- HomePhone: {7}{20}- WorkPhone: {8}{20}- CellPhone: {9}{20}- Birthdate: {10}{20}- IsFemale: {11}{20}- Title: {12}{20}- Note: {13}{20}- Roles: {14}{20}- IsDisabled: {15}{20}- CreateUser: {16}{20}- CreateDate: {17}{20}- UpdateUser: {18}{20}- UpdateDate: {19}{20}{22}", 
 				this.Id,
 				this.FirstName,
 				this.LastName,
 				this.ShortName,
 				this.UserName,
+				(this.Email == null) ? string.Empty : this.Email.ToString(),
 				(this.Address == null) ? string.Empty : this.Address.ToString(),
 				(this.HomePhone == null) ? string.Empty : this.HomePhone.ToString(),
 				(this.WorkPhone == null) ? string.Empty : this.WorkPhone.ToString(),
@@ -1971,6 +2034,11 @@ namespace ClinicDoctor.Entities
 		/// UserName : 
 		/// </summary>
 		public System.String		  UserName = string.Empty;
+		
+		/// <summary>
+		/// Email : 
+		/// </summary>
+		public System.String		  Email = null;
 		
 		/// <summary>
 		/// Address : 
@@ -2194,6 +2262,7 @@ namespace ClinicDoctor.Entities
 			_tmp.LastName = this.LastName;
 			_tmp.ShortName = this.ShortName;
 			_tmp.UserName = this.UserName;
+			_tmp.Email = this.Email;
 			_tmp.Address = this.Address;
 			_tmp.HomePhone = this.HomePhone;
 			_tmp.WorkPhone = this.WorkPhone;
@@ -2250,6 +2319,7 @@ namespace ClinicDoctor.Entities
 			_tmp.LastName = this.LastName;
 			_tmp.ShortName = this.ShortName;
 			_tmp.UserName = this.UserName;
+			_tmp.Email = this.Email;
 			_tmp.Address = this.Address;
 			_tmp.HomePhone = this.HomePhone;
 			_tmp.WorkPhone = this.WorkPhone;
@@ -2674,89 +2744,95 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("UserName", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
 		UserName = 5,
 		/// <summary>
+		/// Email : 
+		/// </summary>
+		[EnumTextValue("Email")]
+		[ColumnEnum("Email", typeof(System.String), System.Data.DbType.String, false, false, true, 100)]
+		Email = 6,
+		/// <summary>
 		/// Address : 
 		/// </summary>
 		[EnumTextValue("Address")]
 		[ColumnEnum("Address", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Address = 6,
+		Address = 7,
 		/// <summary>
 		/// HomePhone : 
 		/// </summary>
 		[EnumTextValue("HomePhone")]
 		[ColumnEnum("HomePhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		HomePhone = 7,
+		HomePhone = 8,
 		/// <summary>
 		/// WorkPhone : 
 		/// </summary>
 		[EnumTextValue("WorkPhone")]
 		[ColumnEnum("WorkPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		WorkPhone = 8,
+		WorkPhone = 9,
 		/// <summary>
 		/// CellPhone : 
 		/// </summary>
 		[EnumTextValue("CellPhone")]
 		[ColumnEnum("CellPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		CellPhone = 9,
+		CellPhone = 10,
 		/// <summary>
 		/// Birthdate : 
 		/// </summary>
 		[EnumTextValue("Birthdate")]
 		[ColumnEnum("Birthdate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		Birthdate = 10,
+		Birthdate = 11,
 		/// <summary>
 		/// IsFemale : 
 		/// </summary>
 		[EnumTextValue("IsFemale")]
 		[ColumnEnum("IsFemale", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsFemale = 11,
+		IsFemale = 12,
 		/// <summary>
 		/// Title : 
 		/// </summary>
 		[EnumTextValue("Title")]
 		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
-		Title = 12,
+		Title = 13,
 		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 13,
+		Note = 14,
 		/// <summary>
 		/// Roles : 
 		/// </summary>
 		[EnumTextValue("Roles")]
 		[ColumnEnum("Roles", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
-		Roles = 14,
+		Roles = 15,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 15,
+		IsDisabled = 16,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 16,
+		CreateUser = 17,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 17,
+		CreateDate = 18,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 18,
+		UpdateUser = 19,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 19
+		UpdateDate = 20
 	}//End enum
 
 	#endregion StaffColumn Enum

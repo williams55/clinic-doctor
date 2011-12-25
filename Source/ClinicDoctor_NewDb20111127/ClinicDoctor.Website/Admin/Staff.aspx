@@ -22,6 +22,7 @@
 				<asp:BoundField DataField="LastName" HeaderText="Last Name" SortExpression="[LastName]"  />
 				<asp:BoundField DataField="ShortName" HeaderText="Short Name" SortExpression="[ShortName]"  />
 				<asp:BoundField DataField="UserName" HeaderText="User Name" SortExpression="[UserName]"  />
+				<asp:BoundField DataField="Email" HeaderText="Email" SortExpression="[Email]"  />
 				<asp:BoundField DataField="Address" HeaderText="Address" SortExpression="[Address]"  />
 				<asp:BoundField DataField="HomePhone" HeaderText="Home Phone" SortExpression="[HomePhone]"  />
 				<asp:BoundField DataField="WorkPhone" HeaderText="Work Phone" SortExpression="[WorkPhone]"  />
