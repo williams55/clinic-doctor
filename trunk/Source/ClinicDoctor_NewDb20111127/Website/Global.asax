@@ -1,13 +1,14 @@
 ﻿<%@ Application Language="C#" %>
 <%@ Import Namespace="System.Globalization" %>
 <%@ Import Namespace="System.Threading" %>
+<%@ Import Namespace="LogUtil" %>
 
 <script RunAt="server">
 
     void Application_Start(object sender, EventArgs e)
     {
         // Code that runs on application startup
-
+        InitializeLogger();
     }
 
     void Application_End(object sender, EventArgs e)
@@ -48,5 +49,45 @@
         Thread.CurrentThread.CurrentCulture = customCulture;
         Thread.CurrentThread.CurrentUICulture = customCulture;
     }
+
+    /// <summary>
+    /// Initializes logging facility with severity level and observer(s).
+    /// Private helper method.
+    /// </summary>
+    private void InitializeLogger()
+    {
+        // Read and assign application wide logging severity
+        string severity = ConfigurationManager.AppSettings.Get("LogSeverity");
+        SingletonLogger.Instance.Severity = (LogSeverity)Enum.Parse(typeof(LogSeverity), severity, true);
+
+        // Send log messages to debugger console (output window). 
+        // Btw: the attach operation is the Observer pattern.
+        ILog log = new ObserverLogToConsole();
+        SingletonLogger.Instance.Attach(log);
+
+        // Send log messages to email (observer pattern)
+        //string from = "notification@yourcompany.com";
+        //string to = "webmaster@yourcompany.com";
+        //string subject = "Webmaster: please review";
+        //string body = "email text";
+        //var smtpClient = new SmtpClient("mail.yourcompany.com");
+        //log = new ObserverLogToEmail(from, to, subject, body, smtpClient);
+        //SingletonLogger.Instance.Attach(log);
+
+        // Other log output options
+
+        //// Send log messages to a file
+        log = new ObserverLogToFile();
+        SingletonLogger.Instance.Attach(log);
+
+        //// Send log message to event log
+        //log = new ObserverLogToEventlog();
+        //SingletonLogger.Instance.Attach(log);
+
+        //// Send log messages to database (observer pattern)
+        //log = new ObserverLogToDatabase();
+        //SingletonLogger.Instance.Attach(log);
+    }
+
 </script>
 

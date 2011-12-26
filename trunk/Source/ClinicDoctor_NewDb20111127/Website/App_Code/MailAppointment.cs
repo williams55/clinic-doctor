@@ -14,6 +14,7 @@ using DDay.iCal.Serialization.iCalendar;
 using System.Net.Mail;
 using System.Collections.Generic;
 using ClinicDoctor.Settings.BusinessLayer;
+using LogUtil;
 
 public class MailAddressObject
 {
@@ -88,7 +89,7 @@ public class MailAppointment
     #endregion
 
     #region "Function"
-    public void SendMail()
+    public bool SendMail()
     {
         try
         {
@@ -129,12 +130,6 @@ public class MailAppointment
             iCalendarSerializer serializer = new iCalendarSerializer(iCal);
             string icalData = serializer.SerializeToString();
 
-            //System.Net.Mail.Attachment attachment = System.Net.Mail.Attachment.CreateAttachmentFromString(icalData, new System.Net.Mime.ContentType("text/calendar"));
-            //attachment.TransferEncoding = System.Net.Mime.TransferEncoding.Base64;
-            //attachment.Name = "EventDetails.ics"; //not visible in outlook
-
-
-
             AlternateView loTextView = null;
             AlternateView loHTMLView = null;
             AlternateView loCalendarView = null;
@@ -143,6 +138,7 @@ public class MailAppointment
             System.Net.Mime.ContentType loTextType = new System.Net.Mime.ContentType("text/plain");
             System.Net.Mime.ContentType loHTMLType = new System.Net.Mime.ContentType("text/html");
             System.Net.Mime.ContentType loCalendarType = new System.Net.Mime.ContentType("text/calendar");
+
             // Add parameters to the calendar header
             loCalendarType.Parameters.Add("method", "REQUEST");
             loCalendarType.Parameters.Add("name", "meeting.ics");
@@ -157,15 +153,13 @@ public class MailAppointment
             loCalendarView.TransferEncoding = System.Net.Mime.TransferEncoding.SevenBit;
             msg.AlternateViews.Add(loCalendarView);
 
-
-
-            //msg.Attachments.Add(attachment);
-
             sc.Send(msg);
+            return true;
         }
-        catch
+        catch (Exception ex)
         {
-
+            SingletonLogger.Instance.Error("MailAppointment.SendMail", ex);
+            return false;
         }
     }
 
@@ -175,9 +169,9 @@ public class MailAppointment
         {
             lstMail.Add(new MailAddressObject(_email, _name));
         }
-        catch
+        catch (Exception ex)
         {
-
+            SingletonLogger.Instance.Error("MailAppointment.AddMailAddress", ex);
         }
     }
     #endregion
