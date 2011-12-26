@@ -8,6 +8,7 @@ using ClinicDoctor.Settings.BusinessLayer;
 using System.Globalization;
 using System.Data;
 using System.Data.SqlClient;
+using LogUtil;
 
 public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 {
@@ -242,7 +243,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             string strSummary = string.Empty;
             string strDescription = string.Empty;
             string strLocation = String.Format("Room {0}", newObj.RoomTitle);
-            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}", 
+            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}",
                 ServiceFacade.SettingsHelper.TimeLeftRemindAppointment.ToString(), newObj.CustomerName);
             MailAppointment objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(newObj.StartTime), Convert.ToDateTime(newObj.EndTime));
@@ -255,7 +256,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //Write log cho nay
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.SaveEvent", ex);
+
             tm.Rollback();
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
@@ -291,7 +293,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //Write log cho nay
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.UpdateEventSave", ex);
 
             return @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
         }
@@ -387,7 +389,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //Write log cho nay
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.UpdateEventMove", ex);
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
             return result;
@@ -551,6 +553,23 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             DataRepository.AppointmentProvider.Save(tm, obj);
             #endregion
 
+            #region "Send Appointment"
+            string strSubject = String.Format("Change Appointment: {0} - {1}", obj.ContentTitle, obj.CustomerName);
+            string strBody = String.Format("You have a new change for appointment");
+            string strSummary = string.Empty;
+            string strDescription = string.Empty;
+            string strLocation = String.Format("Room {0}", obj.RoomTitle);
+            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}",
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment.ToString(), obj.CustomerName);
+            MailAppointment objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
+                Convert.ToDateTime(obj.StartTime), Convert.ToDateTime(obj.EndTime));
+            objMail.AddMailAddress(obj.DoctorEmail, obj.DoctorShortName);
+            if (!objMail.SendMail())
+            {
+
+            }
+            #endregion
+
             #region "Return String"
             result = @"[{ 'result': 'true', 'message': '', 'data': ["
                 + @"{id: '" + obj.Id + @"',"
@@ -579,25 +598,12 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                + @"] }]";
             #endregion
 
-            #region "Send Appointment"
-            string strSubject = String.Format("Change Appointment: {0} - {1}", obj.ContentTitle, obj.CustomerName);
-            string strBody = String.Format("You have a new change for appointment");
-            string strSummary = string.Empty;
-            string strDescription = string.Empty;
-            string strLocation = String.Format("Room {0}", obj.RoomTitle);
-            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment.ToString(), obj.CustomerName);
-            MailAppointment objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
-                Convert.ToDateTime(obj.StartTime), Convert.ToDateTime(obj.EndTime));
-            objMail.AddMailAddress(obj.DoctorEmail, obj.DoctorShortName);
-            objMail.SendMail();
-            #endregion
-
             tm.Commit();
         }
         catch (Exception ex)
         {
-            //Write log cho nay
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.UpdateEvent", ex);
+
             tm.Rollback();
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
@@ -753,7 +759,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //Write log cho nay
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.LoadRoster", ex);
+
             tm.Rollback();
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': '[]' }]";
@@ -781,7 +788,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             if (obj == null || obj.IsComplete == true)
             {
                 result = @"[{ 'result': 'false', 'message': 'There is no appointment to delete or appointment is expired.', 'data': [] }]";
-                return result;
+                goto StepResult;
             }
 
             obj.IsDisabled = true;
@@ -792,14 +799,16 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             result = @"[{ 'result': 'true', 'message': '', 'data': [] }]";
             tm.Commit();
+            goto StepResult;
         }
         catch (Exception ex)
         {
-            //Write log cho nay
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.DeleteEvent", ex);
+
             tm.Rollback();
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            return result;
+            goto StepResult;
         }
 
     StepResult:
@@ -853,6 +862,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetPatient", ex);
+
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
             goto StepResult;
         }
@@ -864,31 +875,43 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetTime()
     {
-        int step = ServiceFacade.SettingsHelper.MinuteStep;
-        int minute = ServiceFacade.SettingsHelper.MaxMinute;
-        int hour = ServiceFacade.SettingsHelper.MaxHour;
-
-        TList<RosterType> lst = DataRepository.RosterTypeProvider.GetByIsDisabled(false);
-
         string result = string.Empty;
-        int m = 0;
-        string key = string.Empty;
-        string label = string.Empty;
-
-        for (int h = 0; h < hour; h++)
+        try
         {
-            m = 0;
-            while (m < minute)
-            {
-                key = h.ToString("00") + ":" + m.ToString("00") + ":00";
-                label = h.ToString("00") + ":" + m.ToString("00");
-                result += @"{'key' : '" + key + @"'" + "," + @"'label' : '" + label + @"'" + "},";
-                m += step;
-            }
-        }
-        if (result.Length > 1)
-            result = "[" + result.Substring(0, result.Length - 1) + "]";
+            int step = ServiceFacade.SettingsHelper.MinuteStep;
+            int minute = ServiceFacade.SettingsHelper.MaxMinute;
+            int hour = ServiceFacade.SettingsHelper.MaxHour;
 
+            TList<RosterType> lst = DataRepository.RosterTypeProvider.GetByIsDisabled(false);
+
+            int m = 0;
+            string key = string.Empty;
+            string label = string.Empty;
+
+            for (int h = 0; h < hour; h++)
+            {
+                m = 0;
+                while (m < minute)
+                {
+                    key = h.ToString("00") + ":" + m.ToString("00") + ":00";
+                    label = h.ToString("00") + ":" + m.ToString("00");
+                    result += @"{'key' : '" + key + @"'" + "," + @"'label' : '" + label + @"'" + "},";
+                    m += step;
+                }
+            }
+            if (result.Length > 1)
+                result = "[" + result.Substring(0, result.Length - 1) + "]";
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetTime", ex);
+
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            goto StepResult;
+        }
+    StepResult:
         return result;
     }
 
@@ -959,6 +982,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetDoctorTree", ex);
+
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
             goto StepResult;
         }
@@ -1045,6 +1070,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetStaffs", ex);
+
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
             goto StepResult;
         }
@@ -1090,6 +1117,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetContents", ex);
+
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
             goto StepResult;
         }
@@ -1176,6 +1205,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetRooms", ex);
+
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
             goto StepResult;
         }
@@ -1226,6 +1257,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetCurrentContents", ex);
+
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
             goto StepResult;
         }
@@ -1292,6 +1325,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.CreateSimplePatient", ex);
+
             result = @"[{ ""result"": ""false"", ""message"": ""Cannot create new patient. Please try again."", ""data"": """" }]";
             goto StepResult;
         }
@@ -1306,23 +1341,33 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     {
         bool blResult = true;
 
-        int Count = 0;
-        string query = String.Format("{3} = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'",
-            CompareValue, dtEnd.ToString("yyyy-MM-dd HH:mm:ss"), dtStart.ToString("yyyy-MM-dd HH:mm:ss"), Column);
-        TList<Appointment> lstObj = DataRepository.AppointmentProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
-        // If there is no roster -> insert new roster
-        if (Count > ConflictNumber)
+        try
         {
-            strResult = @"[{ 'result': 'false', 'message': 'Cannot assign appointment because ";
-            strResult += String.Format(@"{0} {1}", Name, Title);
-            strResult += @" is not available from ";
-            strResult += String.Format(@"{0} {1}", dtStart.DayOfWeek.ToString(), dtStart.ToString("dd MMM yyyy HH:mm"));
-            strResult += String.Format(@" to {0} {1}", dtEnd.DayOfWeek.ToString(), dtEnd.ToString("dd MMM yyyy HH:mm"));
-            strResult += @".', 'data': [] }]";
+            int Count = 0;
+            string query = String.Format("{3} = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'",
+                CompareValue, dtEnd.ToString("yyyy-MM-dd HH:mm:ss"), dtStart.ToString("yyyy-MM-dd HH:mm:ss"), Column);
+            TList<Appointment> lstObj = DataRepository.AppointmentProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
+            // If there is no roster -> insert new roster
+            if (Count > ConflictNumber)
+            {
+                strResult = @"[{ 'result': 'false', 'message': 'Cannot assign appointment because ";
+                strResult += String.Format(@"{0} {1}", Name, Title);
+                strResult += @" is not available from ";
+                strResult += String.Format(@"{0} {1}", dtStart.DayOfWeek.ToString(), dtStart.ToString("dd MMM yyyy HH:mm"));
+                strResult += String.Format(@" to {0} {1}", dtEnd.DayOfWeek.ToString(), dtEnd.ToString("dd MMM yyyy HH:mm"));
+                strResult += @".', 'data': [] }]";
+
+                blResult = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.CheckConflict", ex);
 
             blResult = false;
+            goto StepResult;
         }
-
+    StepResult:
         return blResult;
     }
     #endregion
