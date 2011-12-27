@@ -35,20 +35,24 @@ public partial class Admin_Staff : System.Web.UI.Page
         string ID = e.CommandArgument.ToString().Trim();
         if (e.CommandName == "CustomDelete")
         {
+            string userName;
 
-            TList<Appointment> listAppointmentDoctor = DataRepository.AppointmentProvider.GetByDoctorId((int.Parse(ID)));
-            TList<Appointment> listAppointmentNurse = DataRepository.AppointmentProvider.GetByNurseId((int.Parse(ID)));
-            TList<DoctorRoom> listDoctorRoom = DataRepository.DoctorRoomProvider.GetByDoctorId((int.Parse(ID)));
-            TList<DoctorFunc> listDoctorFunc = DataRepository.DoctorFuncProvider.GetByDoctorId((int.Parse(ID)));
-            TList<DoctorRoster> listDoctorRoster = DataRepository.DoctorRosterProvider.GetByDoctorId((int.Parse(ID)));
-            if (listAppointmentDoctor.Count > 0 || listAppointmentNurse.Count > 0 || listDoctorRoom.Count > 0 || listDoctorFunc.Count > 0 || listDoctorRoster.Count>0)
+            Staff objStaff = DataRepository.StaffProvider.GetById(int.Parse("0"+ID));
+            userName = objStaff.UserName;
+
+            TList<Appointment> listAppointmentDoctor = DataRepository.AppointmentProvider.GetByDoctorUsername(userName);
+            TList<Appointment> listAppointmentNurse = DataRepository.AppointmentProvider.GetByNurseUsername(userName);
+            TList<DoctorRoom> listDoctorRoom = DataRepository.DoctorRoomProvider.GetByDoctorUserName(userName);
+            TList<DoctorFunc> listDoctorFunc = DataRepository.DoctorFuncProvider.GetByDoctorUserName(userName);
+            TList<DoctorRoster> listDoctorRoster = DataRepository.DoctorRosterProvider.GetByDoctorUserName(userName);
+            if (listAppointmentDoctor.Count > 0 || listAppointmentNurse.Count > 0 || listDoctorRoom.Count > 0 || listDoctorFunc.Count > 0 || listDoctorRoster.Count > 0)
             {
                 Response.Write(@"<script language='javascript'>alert('Vui lòng xóa tất cả chi tiết.')</script>");
 
             }
             else
             {
-                Staff objStaff = new Staff();
+                objStaff = new Staff();
                 objStaff.Id = int.Parse(ID);
                 DataRepository.StaffProvider.Delete(objStaff);
             }

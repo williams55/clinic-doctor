@@ -6,8 +6,7 @@
     <siteMapNode title="Staff" roles="Admin,Manager">
       <siteMapNode url="~/Admin/Staff/Staff.aspx" title="Manage Staff"  description="" />
       <siteMapNode url="~/Admin/Staff/StaffEdit.aspx" title="Add New Staff"  description="" />
-      <siteMapNode url="~/Admin/Staff/Group.aspx" title="Manage Group"  description="" />
-      <siteMapNode url="~/Admin/Staff/GroupEdit.aspx" title="Add New Group"  description="" />
+
       <siteMapNode url="~/Admin/Staff/Functionality.aspx" title="Manage Functionality"  description="" />
       <siteMapNode url="~/Admin/Staff/FunctionalityEdit.aspx" title="Add New Functionality"  description="" />
     </siteMapNode>
