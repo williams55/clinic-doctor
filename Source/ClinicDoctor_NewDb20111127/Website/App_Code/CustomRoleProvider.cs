@@ -60,8 +60,11 @@ public class CustomRoleProvider :RoleProvider
     public override string[] GetRolesForUser(string username)
     {
         string authUserName;
-        authUserName = username.Split('\\')[1];
-
+        string[] split = username.Split('\\');
+        if (split.Length > 1)
+            authUserName = username.Split('\\')[1];
+        else
+            authUserName = username;
         Staff obj = DataRepository.StaffProvider.GetByUserName(authUserName);
 
         if (obj == null)
