@@ -42,14 +42,14 @@
             </tr>
             <tr>
                 <td class="literal">
-                    <asp:Label ID="lbldataGroupId" runat="server" Text="Group Id:" AssociatedControlID="dataGroupId" />
+                   <%-- <asp:Label ID="lbldataGroupId" runat="server" Text="Group Id:" AssociatedControlID="dataGroupId" />--%>
                 </td>
                 <td>
-                    <data:EntityDropDownList runat="server" ID="dataGroupId" DataSourceID="GroupIdGroupDataSource"
+                   <%-- <data:EntityDropDownList runat="server" ID="dataGroupId" DataSourceID="GroupIdGroupDataSource"
                         DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("GroupId") %>'
                         AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required"
                         Width="250px" />
-                    <data:GroupDataSource ID="GroupIdGroupDataSource" runat="server" SelectMethod="GetAll" />
+                    <data:g ID="GroupIdGroupDataSource" runat="server" SelectMethod="GetAll" />--%>
                 </td>
                 <td class="literal">
                     <asp:Label ID="lbldataIsFemale" runat="server" Text="Sex:" AssociatedControlID="dataIsFemale" />
