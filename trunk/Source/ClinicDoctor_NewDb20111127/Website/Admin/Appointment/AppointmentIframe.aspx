@@ -28,10 +28,13 @@
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/json2.js") %>"
         type="text/javascript"></script>
 
-    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.js") %>"
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler_debug.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_timeline.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_units.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_treetimeline.js") %>"
@@ -46,9 +49,14 @@
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_tooltip.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/analogclock.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.css") %>"
         type="text/css" media="screen" title="no title" charset="utf-8" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/myscript/css/scheduler.css") %>"
+        type="text/css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/css/AnalogClock.css") %>"
         type="text/css" media="screen" title="no title" charset="utf-8" />
     <style type="text/css" media="screen">
         html, body
@@ -75,12 +83,35 @@
         var stepTime = <%=ClinicDoctor.Settings.BusinessLayer.ServiceFacade.SettingsHelper.MinuteStep %>;
         var html = function (id) { return document.getElementById(id); }; //just a helper
 
+        $(document).ready(function () {
+            $(".dhx_cal_today_button:not(#btnToday)").click(function() {
+                $("#btnToday").click();
+                scheduler.updateCalendar(miniCalendar, scheduler._date);
+            });
+        });
     </script>
 
     <script src="GRNEditt.js" type="text/javascript"></script>
 
 </head>
 <body>
+    <div style="padding: 10px;">
+        <div style="float: right; padding: 10px 20px 10px 30px;">
+            <ul id="clock">
+                <li id="sec"></li>
+                <li id="hour"></li>
+                <li id="min"></li>
+            </ul>
+        </div>
+        <div style="float: right; width: 251px; height: 205px;" id="datepicker">
+            <div class="dhx_cal_today_button" style="margin-left: 90px; font-family: Tahoma;
+                font-size: 11px;">
+                Today
+            </div>
+        </div>
+        <div style="clear: both;">
+        </div>
+    </div>
     <div id="RosterForm" class="schedulerForm" style="width: 650px">
         <input type="hidden" id="hdId" value="" />
         <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
@@ -247,18 +278,14 @@
             </tr>
         </table>
     </div>
-    <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 100%;'>
+    <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 330px;'>
         <div class="dhx_cal_navline">
-            <div class="dhx_cal_prev_button">
-                &nbsp;</div>
-            <div class="dhx_cal_next_button">
-                &nbsp;</div>
-            <div class="dhx_cal_today_button">
+            <div class="dhx_cal_today_button" id="btnToday" style="display: none;">
             </div>
             <div class="dhx_cal_date">
             </div>
-            <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="show_minical()">
-                &nbsp;</div>
+            <div class="dhx_cal_tab" name="unit_tab" style="right: 380px;">
+            </div>
             <div class="dhx_cal_tab" name="week_tab" style="right: 140px;">
             </div>
             <div class="dhx_cal_tab" name="timeline_tab" style="right: 280px;">

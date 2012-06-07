@@ -2,34 +2,34 @@
 var blStaff = false;
 var blPatient = false;
 var _current_id = "-1";
+var miniCalendar;
 
 // Load calendar for Schedule
 function show_minical() {
-    if (scheduler.isCalendarVisible())
-        scheduler.destroyCalendar();
-    else
-        scheduler.renderCalendar({
-            position: "dhx_minical_icon",
-            date: scheduler._date,
-            navigation: true,
-            handler: function(date, calendar) {
-                scheduler.setCurrentView(date);
-                scheduler.destroyCalendar()
-            }
-        });
+    miniCalendar = scheduler.renderCalendar({
+        container: "datepicker",
+        date: scheduler._date,
+        navigation: true,
+        handler: function(date, calendar) {
+            scheduler.setCurrentView(date);
+        }
+    });
 }
 
 
 // Init Schedule
 function initSchedule(weekday) {
     var _date = new Date();
-    var _mode = "timeline";
+    var _mode = "unit";
 
     scheduler.locale.labels.timeline_tab = "Timeline";
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
-    scheduler.config.time_step = stepTime;
+    //scheduler.config.time_step = stepTime;
+    scheduler.config.mark_now = true;
+
+    scheduler.locale.labels.unit_tab = "Unit";
 
     $.ajax({
         type: "POST",
@@ -57,6 +57,12 @@ function initSchedule(weekday) {
                         render: "tree",
                         folder_dy: 20,
                         dy: 60
+                    });
+
+                    scheduler.createUnitsView({
+                        name: _mode,
+                        property: "section_id",
+                        list: elements
                     });
 
                     scheduler.init('scheduler_here', _date, _mode);
@@ -150,11 +156,12 @@ function initSchedule(weekday) {
             alert("Unknow error!");
         },
         complete: function() {
+            show_minical();
         }
     });
 }
 
-scheduler.showLightbox = function (id) {
+scheduler.showLightbox = function(id) {
     if (!blHour || !blStaff || !blPatient) {
         scheduler.deleteEvent(id);
         alert("Loading data is not complete. Please wait for a few moment.");
@@ -218,7 +225,7 @@ scheduler.showLightbox = function (id) {
                 data: requestdata,
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                success: function (response) {
+                success: function(response) {
                     var obj = eval(response.d)[0];
 
                     if (obj.result == "true") {
@@ -232,10 +239,10 @@ scheduler.showLightbox = function (id) {
                         alert(obj.message);
                     }
                 },
-                fail: function () {
+                fail: function() {
                     alert("Unknow error!");
                 },
-                complete: function () {
+                complete: function() {
                     $("#cboContent").show();
                     $("#spanContent").hide();
                 }
@@ -913,7 +920,7 @@ function initEvents() {
     });
 
     $("#cboPatient").change(function() {
-//        loadRooms();
+        //        loadRooms();
     });
 
     // Call Load doctor function
