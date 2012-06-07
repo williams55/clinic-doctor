@@ -1,14 +1,254 @@
-/*
-This software is allowed to use under GPL or you need to obtain Commercial or Enterise License
-to use it in not GPL project. Please contact sales@dhtmlx.com for details
-*/
-scheduler.toPDF=function(x,f,m,n){function g(c){return c.replace(html_regexp,"")}function j(c){c=parseFloat(c);return isNaN(c)?"auto":100*c/(o+1)}function t(c){c=parseFloat(c);return isNaN(c)?"auto":100*c/k}function q(c){var a="";if(scheduler.matrix&&scheduler.matrix[scheduler._mode])c=c[0].childNodes;for(var b=0;b<c.length;b++)a+="\n<column><![CDATA["+g(c[b].innerHTML)+"]]\></column>";o=c[0].offsetWidth;return a}function y(c,a){for(var b=parseInt(c.style.left),d=0;d<scheduler._cols.length;d++)if(b-=
-scheduler._cols[d],b<0)return d;return a}function z(c,a){for(var b=parseInt(c.style.top),d=0;d<scheduler._colsS.heights.length;d++)if(scheduler._colsS.heights[d]>b)return d;return a}function w(c){for(var a="",b=c.firstChild.rows,d=0;d<b.length;d++){for(var e=[],h=0;h<b[d].cells.length;h++)e.push(b[d].cells[h].firstChild.innerHTML);a+="\n<row height='"+c.firstChild.rows[d].cells[0].offsetHeight+"'><![CDATA["+g(e.join("|"))+"]]\></row>";k=c.firstChild.rows[0].cells[0].offsetHeight}return a}function A(c){var a=
-"<data profile='"+c+"'";m&&(a+=" header='"+m+"'");n&&(a+=" footer='"+n+"'");a+=">";a+="<scale mode='"+scheduler._mode+"' today='"+scheduler._els.dhx_cal_date[0].innerHTML+"'>";if(scheduler._mode=="agenda"){var b=scheduler._els.dhx_cal_header[0].childNodes[0].childNodes;a+="<column>"+g(b[0].innerHTML)+"</column><column>"+g(b[1].innerHTML)+"</column>"}else if(scheduler._mode=="year")for(var b=scheduler._els.dhx_cal_data[0].childNodes,d=0;d<b.length;d++)a+="<month label='"+g(b[d].childNodes[0].innerHTML)+
-"'>",a+=q(b[d].childNodes[1].childNodes),a+=w(b[d].childNodes[2]),a+="</month>";else{a+="<x>";b=scheduler._els.dhx_cal_header[0].childNodes;a+=q(b);a+="</x>";var e=scheduler._els.dhx_cal_data[0];if(scheduler.matrix&&scheduler.matrix[scheduler._mode]){a+="<y>";for(d=0;d<e.firstChild.rows.length;d++)a+="<row><![CDATA["+e.firstChild.rows[d].cells[0].innerHTML+"]]\></row>";a+="</y>";k=e.firstChild.rows[0].cells[0].offsetHeight}else if(e.firstChild.tagName=="TABLE")a+=w(e);else{for(e=e.childNodes[e.childNodes.length-
-1];e.className.indexOf("dhx_scale_holder")==-1;)e=e.previousSibling;e=e.childNodes;a+="<y>";for(d=0;d<e.length;d++)a+="\n<row><![CDATA["+g(e[d].innerHTML)+"]]\></row>";a+="</y>";k=e[0].offsetHeight}}a+="</scale>";return a}function r(c,a){return(window.getComputedStyle?window.getComputedStyle(c,null)[a]:c.currentStyle?c.currentStyle[a]:null)||""}function B(){var c="",a=scheduler._rendered;if(scheduler._mode=="agenda")for(var b=0;b<a.length;b++)c+="<event><head>"+g(a[b].childNodes[0].innerHTML)+"</head><body>"+
-g(a[b].childNodes[2].innerHTML)+"</body></event>";else if(scheduler._mode=="year"){a=scheduler.get_visible_events();for(b=0;b<a.length;b++){var d=a[b].start_date;if(d.valueOf()<scheduler._min_date.valueOf())d=scheduler._min_date;for(;d<a[b].end_date;){var e=d.getMonth()+12*(d.getFullYear()-scheduler._min_date.getFullYear())-scheduler.week_starts._month,h=scheduler.week_starts[e]+d.getDate()-1;c+="<event day='"+h%7+"' week='"+Math.floor(h/7)+"' month='"+e+"'></event>";d=scheduler.date.add(d,1,"day");
-if(d.valueOf()>=scheduler._max_date.valueOf())break}}}else for(b=0;b<a.length;b++){var f=j(a[b].style.left),i=j(a[b].style.width),l=t(a[b].style.top),m=t(a[b].style.height),n=a[b].className.split(" ")[0].replace("dhx_cal_",""),o=scheduler.getEvent(a[b].getAttribute("event_id")),h=o._sday,s=o._sweek;if(scheduler._mode!="month"){if(scheduler.matrix&&scheduler.matrix[scheduler._mode])h=0,s=a[b].parentNode.parentNode.parentNode.rowIndex,i+=j(10);else{i+=j(i*20/100);f-=j(20-f*20/100);if(a[b].parentNode==
-scheduler._els.dhx_cal_data[0])continue;f+=j(a[b].parentNode.style.left);f-=j(51)}if(scheduler._mode=="timeline"){var q=k;k=180;l=t(a[b].style.top);k=q}}else m=parseInt(a[b].offsetHeight),l=parseInt(a[b].style.top)-22,h=y(a[b],h),s=z(a[b],s);c+="\n<event week='"+s+"' day='"+h+"' type='"+n+"' x='"+f+"' y='"+l+"' width='"+i+"' height='"+m+"'>";if(n=="event"){c+="<header><![CDATA["+g(a[b].childNodes[1].innerHTML)+"]]\></header>";var u=p?r(a[b].childNodes[2],"color"):"",v=p?r(a[b].childNodes[2],"backgroundColor"):
-"";c+="<body backgroundColor='"+v+"' color='"+u+"'><![CDATA["+g(a[b].childNodes[2].innerHTML)+"]]\></body>"}else u=p?r(a[b],"color"):"",v=p?r(a[b],"backgroundColor"):"",c+="<body backgroundColor='"+v+"' color='"+u+"'><![CDATA["+g(a[b].innerHTML)+"]]\></body>";c+="</event>"}return c}function C(){var c="</data>";return c}var o=0,k=0,p=!1;f=="fullcolor"&&(p=!0,f="color");f=f||"color";html_regexp=RegExp("<[^>]*>","g");var l=(new Date).valueOf(),i=document.createElement("div");i.style.display="none";document.body.appendChild(i);
-i.innerHTML='<form id="'+l+'" method="post" target="_blank" action="'+x+'" accept-charset="utf-8" enctype="application/x-www-form-urlencoded"><input type="hidden" name="mycoolxmlbody"/> </form>';document.getElementById(l).firstChild.value=A(f).replace("\u2013","-")+B()+C();document.getElementById(l).submit();i.parentNode.removeChild(i);grid=null};
+scheduler.toPDF=function(url,mode,header,footer){ 
+	var dx = 0;
+	var dy = 0;
+	var colors = false;
+	if (mode == "fullcolor"){
+		colors = true;
+		mode = "color";
+	}
+		
+	mode = mode||"color";
+	html_regexp = new RegExp("<[^>]*>","g");
+	newline_regexp = new RegExp("<br[^>]*>","g");
+	function clean_html(val){
+		return val.replace(newline_regexp, "\n").replace(html_regexp,"");
+	}
+	function x_norm(x) {
+	    x = parseFloat(x);
+	    if (isNaN(x)) return "auto";
+	    return 100 * x / (dx + 1);
+	}
+	function y_norm(y) {
+	    y = parseFloat(y);
+	    if (isNaN(y)) return "auto";
+	    return 100 * y / dy;
+	}
+	function xml_month_scale(xh){
+		var xml="";
+		if (scheduler.matrix && scheduler.matrix[scheduler._mode])
+			xh = xh[0].childNodes;
+		for (var i = 0; i < xh.length; i++)
+			xml += "\n<column><![CDATA[" + clean_html(xh[i].innerHTML) + "]]></column>";
+		dx = xh[0].offsetWidth;
+		return xml;
+	}
+	function de_day(node,n){ 
+		var x = parseInt(node.style.left,10);
+		
+		for (var dx=0; dx < scheduler._cols.length; dx++){
+			x-=scheduler._cols[dx];
+			if (x<0) return dx;
+		}
+		return n;
+	}
+	function de_week(node,n){ 
+		var y = parseInt(node.style.top,10);
+		for (var dy=0; dy < scheduler._colsS.heights.length; dy++)
+			if (scheduler._colsS.heights[dy]>y) return dy;
+		return n;
+	}
+	function xml_month(yh){
+		var xml="";
+        var r = yh.firstChild.rows;
+        for (var i = 0; i < r.length; i++) {
+            var days = [];
+            for (var j = 0; j < r[i].cells.length; j++){
+            /*	var dd = r[i].cells[j];
+            	var css = dd.className;
+            	
+            	if (css!=" " && css!="dhx_now ")
+            		days.push("");
+            	else*/
+                	days.push(r[i].cells[j].firstChild.innerHTML);
+            }
+
+            xml += "\n<row height='"+yh.firstChild.rows[i].cells[0].offsetHeight+"'><![CDATA[" + clean_html(days.join("|")) + "]]></row>";
+            dy = yh.firstChild.rows[0].cells[0].offsetHeight;
+        }
+        return xml;
+	}
+	function xml_top(profile) {
+	    var xml = "<data profile='"+profile+"'";
+	       if (header)
+	          xml+=" header='"+header+"'";
+	       if (footer)
+	          xml+=" footer='"+footer+"'";
+	    xml+=">";
+		// detects if current mode is timeline
+		var mode = scheduler._mode;
+		if (scheduler.matrix && scheduler.matrix[scheduler._mode]) mode = "timeline";
+	    xml += "<scale mode='" + mode + "' today='" + scheduler._els.dhx_cal_date[0].innerHTML + "'>";
+	    
+	    if (scheduler._mode == "week_agenda"){
+	    	var xh = scheduler._els.dhx_cal_data[0].getElementsByTagName("DIV");
+	    	for (var i=0; i<xh.length; i++)
+	    		if (xh[i].className == "dhx_wa_scale_bar")
+			    	xml+="<column>"+clean_html(xh[i].innerHTML)+"</column>";
+	    } else if (scheduler._mode == "agenda" || scheduler._mode == "map"){
+	    	var xh = scheduler._els.dhx_cal_header[0].childNodes[0].childNodes;
+	    	
+	    	xml+="<column>"+clean_html(xh[0].innerHTML)+"</column><column>"+clean_html(xh[1].innerHTML)+"</column>";
+	    } else if (scheduler._mode == "year"){
+	    	var xh = scheduler._els.dhx_cal_data[0].childNodes;
+	    	for (var i=0; i < xh.length; i++) {
+	    		xml+="<month label='"+clean_html(xh[i].childNodes[0].innerHTML)+"'>";
+	    			xml+=xml_month_scale(xh[i].childNodes[1].childNodes);
+	    			xml+=xml_month(xh[i].childNodes[2]);
+	    		xml+="</month>";
+	    	}
+		} else {
+			xml += "<x>";
+		    var xh = scheduler._els.dhx_cal_header[0].childNodes;
+			xml+=xml_month_scale(xh);
+		    xml += "</x>";
+
+			var yh = scheduler._els.dhx_cal_data[0];
+			if (scheduler.matrix && scheduler.matrix[scheduler._mode]) {
+				xml += "<y>";
+				for (var i=0; i < yh.firstChild.rows.length; i++) {
+					var el = yh.firstChild.rows[i];
+					if (el.className !== 'dhx_row_folder')
+						xml+="<row><![CDATA["+clean_html(el.cells[0].innerHTML)+"]]></row>";
+				}
+				xml+="</y>";
+				dy = yh.firstChild.rows[0].cells[0].offsetHeight;
+			} else if (yh.firstChild.tagName == "TABLE") {
+				xml += xml_month(yh);
+		    } else {
+				yh = yh.childNodes[yh.childNodes.length - 1];
+		        while (yh.className.indexOf("dhx_scale_holder") == -1)
+		            yh = yh.previousSibling;
+		        yh = yh.childNodes;
+
+		        xml += "<y>";
+		        for (var i = 0; i < yh.length; i++)
+		            xml += "\n<row><![CDATA[" + clean_html(yh[i].innerHTML) + "]]></row>";
+		        xml += "</y>";
+		        dy = yh[0].offsetHeight;
+		    }
+		}
+	    xml += "</scale>";
+	    return xml;
+	}
+	function get_style(node, style){
+		return (window.getComputedStyle?(window.getComputedStyle(node, null)[style]):(node.currentStyle?node.currentStyle[style]:null))||"";
+	}
+	function xml_body() { 
+	    var xml = "";
+	    var evs = scheduler._rendered;
+	    if (scheduler._mode == "agenda" || scheduler._mode == "map"){
+	    	for (var i=0; i < evs.length; i++)
+	    	 	xml+="<event><head>"+clean_html(evs[i].childNodes[0].innerHTML)+"</head><body>"+clean_html(evs[i].childNodes[2].innerHTML)+"</body></event>";
+	    } else if (scheduler._mode == "week_agenda"){
+	    	for (var i=0; i < evs.length; i++)
+	    	 	xml+="<event day='"+evs[i].parentNode.getAttribute("day")+"'><body>"+clean_html(evs[i].innerHTML)+"</body></event>";
+	    } else if (scheduler._mode == "year"){
+	    	var evs = scheduler.get_visible_events();
+	    	for (var i=0; i < evs.length; i++) {
+	    		var d = evs[i].start_date;
+				if (d.valueOf()<scheduler._min_date.valueOf()) 
+      				d = scheduler._min_date;
+   				while (d<evs[i].end_date){
+   					var m = d.getMonth()+12*(d.getFullYear()-scheduler._min_date.getFullYear())-scheduler.week_starts._month; 
+   					var day  = scheduler.week_starts[m]+d.getDate()-1;
+					var text_color = colors?get_style(scheduler._get_year_cell(d),"color"):"";
+					var bg_color = colors?get_style(scheduler._get_year_cell(d),"backgroundColor"):"";
+
+					xml+="<event day='"+(day%7)+"' week='"+Math.floor(day/7)+"' month='"+m+"' backgroundColor='"+bg_color+"' color='" + text_color + "'></event>";
+      				d = scheduler.date.add(d,1,"day");
+      				if (d.valueOf()>=scheduler._max_date.valueOf()) 
+         				break;
+     			}
+			}   
+	    } else {
+		    var matrix = scheduler.matrix && scheduler.matrix[scheduler._mode];
+		    if (matrix && matrix.render == "cell"){
+		    	var evs = scheduler._els.dhx_cal_data[0].getElementsByTagName("TD");
+		    	for (var i = 0; i < evs.length; i++){
+		    		var text_color = colors?get_style(evs[i],"color"):"";
+		        	var bg_color = colors?get_style(evs[i],"backgroundColor"):"";
+		            xml += "\n<event><body backgroundColor='"+bg_color+"' color='" + text_color + "'><![CDATA[" + clean_html(evs[i].innerHTML) + "]]></body></event>";
+		    	}
+		    } else {
+			    for (var i = 0; i < evs.length; i++) {
+			        var zx = x_norm(evs[i].style.left);
+			        var zdx = x_norm(evs[i].style.width);
+			        if (isNaN(zdx*1)) continue;
+			        var zy = y_norm(evs[i].style.top);
+			        var zdy = y_norm(evs[i].style.height);
+			        var e_type = evs[i].className.split(" ")[0].replace("dhx_cal_", "");
+					if (e_type === 'dhx_tooltip_line') continue;
+			        var dets = scheduler.getEvent(evs[i].getAttribute("event_id"));
+//					if (evs[i].parentNode == scheduler._els.dhx_cal_data[0]) continue;
+			        var day = dets._sday;
+			        var week = dets._sweek;
+					var length = dets._length || 0;
+			        if (scheduler._mode != "month") {
+			            if (scheduler.matrix && scheduler.matrix[scheduler._mode]){
+			            	day = 0;
+							var el = evs[i].parentNode.parentNode.parentNode;
+			            	var week_was = week = el.rowIndex;
+							var parent = el.parentNode;
+							for (var j = 0; j < week_was && j < parent.childNodes.length; j++)
+								if (parent.childNodes[j].className === "dhx_row_folder")
+									week--;
+			            	zdx += x_norm(10);
+			            } else {
+			            	
+			            	if (scheduler.xy.menu_width){
+			            		zdx+=x_norm(zdx*20/100);
+								zx-=x_norm(15-zx*20/100);
+							}
+						
+			            	if (evs[i].parentNode == scheduler._els.dhx_cal_data[0]) continue;
+			            	zx += x_norm(evs[i].parentNode.style.left);
+			            	zx -= x_norm(51);
+			            }
+						if (scheduler.matrix && scheduler.matrix[scheduler._mode]) {
+							var dy_copy = dy;
+							dy = 180;
+							zy = y_norm(evs[i].style.top);
+							dy = dy_copy;
+						}
+			        } else {
+			            zdy = parseInt(evs[i].offsetHeight,10);
+			            zy = parseInt(evs[i].style.top,10) - 22;
+			            
+			            day = de_day(evs[i],day);
+			            week = de_week(evs[i],week);
+			        }
+			        
+			        xml += "\n<event week='"+week+"' day='"+day+"' type='" + e_type + "' x='" + zx + "' y='" + zy + "' width='" + zdx + "' height='" + zdy + "' len='" + length + "'>";
+			        
+			        
+			        if (e_type == "event") {
+			            xml += "<header><![CDATA[" + clean_html(evs[i].childNodes[1].innerHTML) + "]]></header>";
+			            var text_color = colors?get_style(evs[i].childNodes[2],"color"):"";
+			        	var bg_color = colors?get_style(evs[i].childNodes[2],"backgroundColor"):"";
+			            xml += "<body backgroundColor='"+bg_color+"' color='" + text_color + "'><![CDATA[" + clean_html(evs[i].childNodes[2].innerHTML) + "]]></body>";
+			        } else {
+			            var text_color = colors?get_style(evs[i],"color"):"";
+			        	var bg_color = colors?get_style(evs[i],"backgroundColor"):"";
+			            xml += "<body backgroundColor='"+bg_color+"' color='" + text_color + "'><![CDATA[" + clean_html(evs[i].innerHTML) + "]]></body>";
+			        }
+			        xml += "</event>";
+			    }
+			}
+	    }
+	    return xml;
+	}
+	function xml_end(){
+	    var xml = "</data>";
+	    return xml;
+	}
+	
+	var uid = (new Date()).valueOf();
+	var d=document.createElement("div");
+	d.style.display="none";
+	document.body.appendChild(d);
+
+	d.innerHTML = '<form id="'+uid+'" method="post" target="_blank" action="'+url+'" accept-charset="utf-8" enctype="application/x-www-form-urlencoded"><input type="hidden" name="mycoolxmlbody"/> </form>';
+	document.getElementById(uid).firstChild.value = xml_top(mode).replace("\u2013", "-") + xml_body() + xml_end();
+	document.getElementById(uid).submit();
+	d.parentNode.removeChild(d);grid = null;	
+};

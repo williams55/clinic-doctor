@@ -1,8 +1,73 @@
-/*
-This software is allowed to use under GPL or you need to obtain Commercial or Enterise License
-to use it in not GPL project. Please contact sales@dhtmlx.com for details
-*/
-scheduler.data_attributes=function(){var f=[],d=scheduler.templates.xml_format,c;for(c in this._events){var e=this._events[c],a;for(a in e)a.substr(0,1)!="_"&&f.push([a,a=="start_date"||a=="end_date"?d:null]);break}return f};
-scheduler.toXML=function(f){var d=[],c=this.data_attributes(),e;for(e in this._events){var a=this._events[e];if(a.id.toString().indexOf("#")==-1){d.push("<event>");for(var b=0;b<c.length;b++)d.push("<"+c[b][0]+"><![CDATA["+(c[b][1]?c[b][1](a[c[b][0]]):a[c[b][0]])+"]]\></"+c[b][0]+">");d.push("</event>")}}return(f||"")+"<data>"+d.join("\n")+"</data>"};
-scheduler.toJSON=function(){var f=[],d=this.data_attributes(),c;for(c in this._events){var e=this._events[c];if(e.id.toString().indexOf("#")==-1){for(var e=this._events[c],a=[],b=0;b<d.length;b++)a.push(" "+d[b][0]+':"'+((d[b][1]?d[b][1](e[d[b][0]]):e[d[b][0]])||"").toString().replace(/\n/g,"")+'" ');f.push("{"+a.join(",")+"}")}}return"["+f.join(",\n")+"]"};
-scheduler.toICal=function(f){var d="BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//dhtmlXScheduler//NONSGML v2.2//EN\nDESCRIPTION:",c="END:VCALENDAR",e=scheduler.date.date_to_str("%Y%m%dT%H%i%s"),a=[],b;for(b in this._events){var g=this._events[b];g.id.toString().indexOf("#")==-1&&(a.push("BEGIN:VEVENT"),a.push("DTSTART:"+e(g.start_date)),a.push("DTEND:"+e(g.end_date)),a.push("SUMMARY:"+g.text),a.push("END:VEVENT"))}return d+(f||"")+"\n"+a.join("\n")+"\n"+c};
+//redefine this method, if you want to provide a custom set of attributes for serialization
+scheduler.data_attributes=function(){
+	var attrs = [];
+	var format = scheduler.templates.xml_format;
+	for (var a in this._events){
+		var ev = this._events[a];
+		for (var name in ev)
+			if (name.substr(0,1) !="_")
+				attrs.push([name,((name == "start_date" || name == "end_date")?format:null)]);
+		break;
+	}
+	return attrs;
+}
+
+scheduler.toXML = function(header){
+	var xml = [];
+	var attrs = this.data_attributes();
+	
+	
+	for (var a in this._events){
+		var ev = this._events[a];
+		if (ev.id.toString().indexOf("#")!=-1) continue;
+		xml.push("<event>");	
+		for (var i=0; i < attrs.length; i++)
+			xml.push("<"+attrs[i][0]+"><![CDATA["+(attrs[i][1]?attrs[i][1](ev[attrs[i][0]]):ev[attrs[i][0]])+"]]></"+attrs[i][0]+">");
+			
+		xml.push("</event>");
+	}
+	return (header||"")+"<data>"+xml.join("\n")+"</data>";
+};
+
+scheduler.toJSON = function(){
+	var json = [];
+	var attrs = this.data_attributes();
+	for (var a in this._events){
+		var ev = this._events[a];
+		if (ev.id.toString().indexOf("#")!=-1) continue;
+		var ev = this._events[a];
+		var line =[];	
+		for (var i=0; i < attrs.length; i++)
+			line.push(' "'+attrs[i][0]+'": "'+((attrs[i][1]?attrs[i][1](ev[attrs[i][0]]):ev[attrs[i][0]])||"").toString().replace(/\n/g,"")+'" ');
+		json.push("{"+line.join(",")+"}");
+	}
+	return "["+json.join(",\n")+"]";
+};
+
+
+scheduler.toICal = function(header){
+	var start = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//dhtmlXScheduler//NONSGML v2.2//EN\nDESCRIPTION:";
+	var end = "END:VCALENDAR";
+	var format = scheduler.date.date_to_str("%Y%m%dT%H%i%s");
+	var full_day_format = scheduler.date.date_to_str("%Y%m%d");
+		
+	var ical = [];
+	for (var a in this._events){
+		var ev = this._events[a];
+		if (ev.id.toString().indexOf("#")!=-1) continue;
+		
+		
+		ical.push("BEGIN:VEVENT");	
+		if (!ev._timed || (!ev.start_date.getHours() && !ev.start_date.getMinutes()))
+			ical.push("DTSTART:"+full_day_format(ev.start_date));	
+		else
+			ical.push("DTSTART:"+format(ev.start_date));
+		if (!ev._timed || (!ev.end_date.getHours() && !ev.end_date.getMinutes()))
+			ical.push("DTEND:"+full_day_format(ev.end_date));	
+		else
+			ical.push("DTEND:"+format(ev.end_date));
+		ical.push("SUMMARY:"+ev.text);	
+		ical.push("END:VEVENT");
+	}
+	return start+(header||"")+"\n"+ical.join("\n")+"\n"+end;
+};
