@@ -589,6 +589,10 @@ namespace ClinicDoctor.Web.UI
         /// <param name="e"></param>
         void lnkExport_Click(object sender, EventArgs e)
         {
+            GridViewSearchPanel gvsp =
+  (GridViewSearchPanel)this.Parent.FindControl("GridViewSearchPanel1");
+            if (gvsp != null)
+                gvsp.DataBind();
             if (ExcelColumns != null)
             {
                 foreach (DataControlField field in ExcelColumns)

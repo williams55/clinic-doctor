@@ -93,11 +93,6 @@ namespace ClinicDoctor.Entities
 		/// <summary>
 		/// 
 		/// </summary>
-		System.Boolean IsDisabled{ get; }
-
-		/// <summary>
-		/// 
-		/// </summary>
 		System.String CreateUser{ get; }
 
 		/// <summary>

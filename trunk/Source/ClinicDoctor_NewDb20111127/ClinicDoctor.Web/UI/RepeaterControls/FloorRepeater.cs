@@ -10,14 +10,14 @@ using System.Web.UI.WebControls;
 namespace ClinicDoctor.Web.UI
 {
     /// <summary>
-    /// A designer class for a strongly typed repeater <c>RoomRepeater</c>
+    /// A designer class for a strongly typed repeater <c>FloorRepeater</c>
     /// </summary>
-	public class RoomRepeaterDesigner : System.Web.UI.Design.ControlDesigner
+	public class FloorRepeaterDesigner : System.Web.UI.Design.ControlDesigner
 	{
 	    /// <summary>
-        /// Initializes a new instance of the <see cref="T:RoomRepeaterDesigner"/> class.
+        /// Initializes a new instance of the <see cref="T:FloorRepeaterDesigner"/> class.
         /// </summary>
-		public RoomRepeaterDesigner()
+		public FloorRepeaterDesigner()
 		{
 		}
 
@@ -27,9 +27,9 @@ namespace ClinicDoctor.Web.UI
         /// <param name="component">The control being designed.</param>
 		public override void Initialize(IComponent component)
 		{
-			if (!(component is RoomRepeater))
+			if (!(component is FloorRepeater))
 			{ 
-				throw new ArgumentException("Component is not a RoomRepeater."); 
+				throw new ArgumentException("Component is not a FloorRepeater."); 
 			} 
 			base.Initialize(component); 
 			base.SetViewFlags(ViewFlags.TemplateEditing, true); 
@@ -45,7 +45,7 @@ namespace ClinicDoctor.Web.UI
 
 			// Get the instance this designer applies to
 			//
-			RoomRepeater z = (RoomRepeater)Component;
+			FloorRepeater z = (FloorRepeater)Component;
 			z.DataBind();
 
 			return base.GetDesignTimeHtml();
@@ -61,17 +61,17 @@ namespace ClinicDoctor.Web.UI
 	}
 
     /// <summary>
-    /// A strongly typed repeater control for the <c cref="RoomRepeater"></c> Type.
+    /// A strongly typed repeater control for the <c cref="FloorRepeater"></c> Type.
     /// </summary>
-	[Designer(typeof(RoomRepeaterDesigner))]
+	[Designer(typeof(FloorRepeaterDesigner))]
 	[ParseChildren(true)]
-	[ToolboxData("<{0}:RoomRepeater runat=\"server\"></{0}:RoomRepeater>")]
-	public class RoomRepeater : CompositeDataBoundControl, System.Web.UI.INamingContainer
+	[ToolboxData("<{0}:FloorRepeater runat=\"server\"></{0}:FloorRepeater>")]
+	public class FloorRepeater : CompositeDataBoundControl, System.Web.UI.INamingContainer
 	{
 	    /// <summary>
-        /// Initializes a new instance of the <see cref="T:RoomRepeater"/> class.
+        /// Initializes a new instance of the <see cref="T:FloorRepeater"/> class.
         /// </summary>
-		public RoomRepeater()
+		public FloorRepeater()
 		{
 		}
 
@@ -95,7 +95,7 @@ namespace ClinicDoctor.Web.UI
         /// </summary>
         /// <value>The header template.</value>
 		[Browsable(false)]
-		[TemplateContainer(typeof(RoomItem))]
+		[TemplateContainer(typeof(FloorItem))]
 		[PersistenceMode(PersistenceMode.InnerDefaultProperty)]
 		public ITemplate HeaderTemplate
 		{
@@ -109,7 +109,7 @@ namespace ClinicDoctor.Web.UI
         /// </summary>
         /// <value>The item template.</value>
 		[Browsable(false)]
-		[TemplateContainer(typeof(RoomItem))]
+		[TemplateContainer(typeof(FloorItem))]
 		[PersistenceMode(PersistenceMode.InnerDefaultProperty)]
 		public ITemplate ItemTemplate
 		{
@@ -122,7 +122,7 @@ namespace ClinicDoctor.Web.UI
         /// Gets or sets the Seperator Template
         /// </summary>
         [Browsable(false)]
-        [TemplateContainer(typeof(RoomItem))]
+        [TemplateContainer(typeof(FloorItem))]
         [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
         public ITemplate SeperatorTemplate
         {
@@ -136,7 +136,7 @@ namespace ClinicDoctor.Web.UI
         /// </summary>
         /// <value>The alternating item template.</value>
 		[Browsable(false)]
-		[TemplateContainer(typeof(RoomItem))]
+		[TemplateContainer(typeof(FloorItem))]
 		[PersistenceMode(PersistenceMode.InnerDefaultProperty)]
 		public ITemplate AlternatingItemTemplate
 		{
@@ -150,7 +150,7 @@ namespace ClinicDoctor.Web.UI
         /// </summary>
         /// <value>The footer template.</value>
 		[Browsable(false)]
-		[TemplateContainer(typeof(RoomItem))]
+		[TemplateContainer(typeof(FloorItem))]
 		[PersistenceMode(PersistenceMode.InnerDefaultProperty)]
 		public ITemplate FooterTemplate
 		{
@@ -227,8 +227,8 @@ namespace ClinicDoctor.Web.UI
 			{
 				foreach (object o in dataSource)
 				{
-						ClinicDoctor.Entities.Room entity = o as ClinicDoctor.Entities.Room;
-						RoomItem container = new RoomItem(entity);
+						ClinicDoctor.Entities.Floor entity = o as ClinicDoctor.Entities.Floor;
+						FloorItem container = new FloorItem(entity);
 	
 						if (m_itemTemplate != null && (pos % 2) == 0)
 						{
@@ -311,21 +311,21 @@ namespace ClinicDoctor.Web.UI
     /// A wrapper type for the entity
     /// </summary>
 	[System.ComponentModel.ToolboxItem(false)]
-	public class RoomItem : System.Web.UI.Control, System.Web.UI.INamingContainer
+	public class FloorItem : System.Web.UI.Control, System.Web.UI.INamingContainer
 	{
-		private ClinicDoctor.Entities.Room _entity;
+		private ClinicDoctor.Entities.Floor _entity;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:RoomItem"/> class.
+        /// Initializes a new instance of the <see cref="T:FloorItem"/> class.
         /// </summary>
-		public RoomItem()
+		public FloorItem()
 			: base()
 		{ }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:RoomItem"/> class.
+        /// Initializes a new instance of the <see cref="T:FloorItem"/> class.
         /// </summary>
-		public RoomItem(ClinicDoctor.Entities.Room entity)
+		public FloorItem(ClinicDoctor.Entities.Floor entity)
 			: base()
 		{
 			_entity = entity;
@@ -336,7 +336,7 @@ namespace ClinicDoctor.Web.UI
         /// </summary>
         /// <value>The Id.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int64 Id
+		public System.Int32 Id
 		{
 			get { return _entity.Id; }
 		}
@@ -348,42 +348,6 @@ namespace ClinicDoctor.Web.UI
 		public System.String Title
 		{
 			get { return _entity.Title; }
-		}
-        /// <summary>
-        /// Gets the Note
-        /// </summary>
-        /// <value>The Note.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String Note
-		{
-			get { return _entity.Note; }
-		}
-        /// <summary>
-        /// Gets the Status
-        /// </summary>
-        /// <value>The Status.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String Status
-		{
-			get { return _entity.Status; }
-		}
-        /// <summary>
-        /// Gets the FloorId
-        /// </summary>
-        /// <value>The FloorId.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.Int32? FloorId
-		{
-			get { return _entity.FloorId; }
-		}
-        /// <summary>
-        /// Gets the IsDisabled
-        /// </summary>
-        /// <value>The IsDisabled.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.Boolean IsDisabled
-		{
-			get { return _entity.IsDisabled; }
 		}
         /// <summary>
         /// Gets the CreateUser
@@ -423,11 +387,11 @@ namespace ClinicDoctor.Web.UI
 		}
 
         /// <summary>
-        /// Gets a <see cref="T:ClinicDoctor.Entities.Room"></see> object
+        /// Gets a <see cref="T:ClinicDoctor.Entities.Floor"></see> object
         /// </summary>
         /// <value></value>
         [System.ComponentModel.Bindable(true)]
-        public ClinicDoctor.Entities.Room Entity
+        public ClinicDoctor.Entities.Floor Entity
         {
             get { return _entity; }
         }

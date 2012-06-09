@@ -179,6 +179,7 @@ namespace ClinicDoctor.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Status", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@FloorId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, DBNull.Value);
@@ -220,6 +221,12 @@ namespace ClinicDoctor.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@Status", 
 						clause.Trim().Remove(0,6).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("floorid ") || clause.Trim().StartsWith("floorid="))
+				{
+					database.SetParameterValue(commandWrapper, "@FloorId", 
+						clause.Trim().Remove(0,7).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("isdisabled ") || clause.Trim().StartsWith("isdisabled="))
@@ -522,6 +529,70 @@ namespace ClinicDoctor.Data.SqlClient
 		#endregion	
 		
 		#region Get By Foreign Key Functions
+
+		#region GetByFloorId
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Room_Floor key.
+		///		FK_Room_Floor Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_floorId"></param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Room objects.</returns>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Room> GetByFloorId(TransactionManager transactionManager, System.Int32? _floorId, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_GetByFloorId", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@FloorId", DbType.Int32, _floorId);
+			
+			IDataReader reader = null;
+			TList<Room> rows = new TList<Room>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByFloorId", rows)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}
+			
+				//Create Collection
+				Fill(reader, rows, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByFloorId", rows)); 
+			}
+			finally
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			return rows;
+		}	
+		#endregion
+	
 	#endregion
 	
 		#region Get By Index Functions
@@ -1096,21 +1167,24 @@ namespace ClinicDoctor.Data.SqlClient
 			col2.AllowDBNull = true;		
 			DataColumn col3 = dataTable.Columns.Add("Status", typeof(System.String));
 			col3.AllowDBNull = false;		
-			DataColumn col4 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col4.AllowDBNull = false;		
-			DataColumn col5 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col6.AllowDBNull = false;		
-			DataColumn col7 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col7.AllowDBNull = true;		
-			DataColumn col8 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col8.AllowDBNull = false;		
+			DataColumn col4 = dataTable.Columns.Add("FloorId", typeof(System.Int32));
+			col4.AllowDBNull = true;		
+			DataColumn col5 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col5.AllowDBNull = false;		
+			DataColumn col6 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col6.AllowDBNull = true;		
+			DataColumn col7 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col7.AllowDBNull = false;		
+			DataColumn col8 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col8.AllowDBNull = true;		
+			DataColumn col9 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col9.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("Title", "Title");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("Status", "Status");
+			bulkCopy.ColumnMappings.Add("FloorId", "FloorId");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
 			bulkCopy.ColumnMappings.Add("CreateDate", "CreateDate");
@@ -1134,6 +1208,9 @@ namespace ClinicDoctor.Data.SqlClient
 							
 				
 					row["Status"] = entity.Status;
+							
+				
+					row["FloorId"] = entity.FloorId.HasValue ? (object) entity.FloorId  : System.DBNull.Value;
 							
 				
 					row["IsDisabled"] = entity.IsDisabled;
@@ -1189,6 +1266,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@Status", DbType.String, entity.Status );
+			database.AddInParameter(commandWrapper, "@FloorId", DbType.Int32, (entity.FloorId.HasValue ? (object) entity.FloorId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );
@@ -1246,6 +1324,7 @@ namespace ClinicDoctor.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@Status", DbType.String, entity.Status );
+			database.AddInParameter(commandWrapper, "@FloorId", DbType.Int32, (entity.FloorId.HasValue ? (object) entity.FloorId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );

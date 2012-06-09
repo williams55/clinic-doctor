@@ -162,6 +162,7 @@ namespace ClinicDoctor.Web.Data
 			System.Int64 _id;
 			System.Boolean _isDisabled;
 			System.String _status;
+			System.Int32? _floorId_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -233,6 +234,10 @@ namespace ClinicDoctor.Web.Data
 					results = RoomProvider.GetByStatusIsDisabled(GetTransactionManager(), _status, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
 				// FK
+				case RoomSelectMethod.GetByFloorId:
+					_floorId_nullable = (System.Int32?) EntityUtil.ChangeType(values["FloorId"], typeof(System.Int32?));
+					results = RoomProvider.GetByFloorId(GetTransactionManager(), _floorId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
 				// M:M
 				// Custom
 				default:
@@ -436,7 +441,11 @@ namespace ClinicDoctor.Web.Data
 		/// <summary>
 		/// Represents the GetById method.
 		/// </summary>
-		GetById
+		GetById,
+		/// <summary>
+		/// Represents the GetByFloorId method.
+		/// </summary>
+		GetByFloorId
 	}
 	
 	#endregion RoomSelectMethod

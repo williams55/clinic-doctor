@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Services;
 using System.Web.Script.Services;
 using System.Web;
@@ -9,11 +11,51 @@ using System.Globalization;
 using System.Data;
 using System.Data.SqlClient;
 using LogUtil;
+using Newtonsoft.Json;
 
 public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 {
-    static string strSeperateStaff = " | ";
-    static char chrSeperateStaff = '|';
+    #region Variables
+    private const string StrSeperateStaff = " | ";
+    private const char ChrSeperateStaff = '|';
+
+    // Contain list of floor with Json format
+    protected string StrFloors = string.Empty;
+    #endregion
+
+    #region Events
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        GetFloors();
+    }
+    #endregion
+
+    #region Methods
+    /// <summary>
+    /// Get floor list
+    /// </summary>
+    private void GetFloors()
+    {
+        try
+        {
+            TList<Floor> lst = DataRepository.FloorProvider.GetAll();
+            var lstFloor = from floor in lst
+                           select new JFloor()
+                           {
+                               Id = floor.Id,
+                               Title = floor.Title
+                           };
+            StrFloors = JsonConvert.SerializeObject(lstFloor);
+
+            rptFloor.DataSource = lstFloor;
+            rptFloor.DataBind();
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetFloors", ex);
+        }
+    }
+    #endregion
 
     #region "Roster"
     [WebMethod]
@@ -106,7 +148,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             string strUserName = EntitiesUtilities.GetAuthName();
             string strPatientId = PatientId;
-            string[] arr = ContentId.Split(chrSeperateStaff);
+            string[] arr = ContentId.Split(ChrSeperateStaff);
             long lContentId = Convert.ToInt64(arr[1]);
             long lRoomId = Convert.ToInt64(RoomId);
 
@@ -224,7 +266,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 + @"DoctorShortName: '" + newObj.DoctorShortName + @"',"
                 + @"CustomerId: '" + newObj.CustomerId + @"',"
                 + @"CustomerName: '" + newObj.CustomerName + @"',"
-                + @"ContentId: '" + objContent.FuncId + chrSeperateStaff.ToString() + newObj.ContentId + @"',"
+                + @"ContentId: '" + objContent.FuncId + ChrSeperateStaff.ToString() + newObj.ContentId + @"',"
                 + @"ContentTitle: '" + newObj.ContentTitle + @"',"
                 + @"RoomId: '" + newObj.RoomId + @"',"
                 + @"RoomTitle: '" + newObj.RoomTitle + @"',"
@@ -384,7 +426,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 }
             }
 
-            return UpdateEvent(Id, obj.CustomerId, chrSeperateStaff.ToString() + obj.ContentId.ToString(), obj.Note, dtStart,
+            return UpdateEvent(Id, obj.CustomerId, ChrSeperateStaff.ToString() + obj.ContentId.ToString(), obj.Note, dtStart,
                 dtEnd, DoctorUsername, obj.RoomId.ToString());
         }
         catch (Exception ex)
@@ -456,7 +498,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             string strUserName = EntitiesUtilities.GetAuthName();
             string strPatientId = PatientId;
-            string[] arr = ContentId.Split(chrSeperateStaff);
+            string[] arr = ContentId.Split(ChrSeperateStaff);
             long lContentId = Convert.ToInt64(arr[1]);
             long lRoomId = Convert.ToInt64(RoomId);
 
@@ -585,7 +627,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 + @"DoctorShortName: '" + obj.DoctorShortName + @"',"
                 + @"CustomerId: '" + obj.CustomerId + @"',"
                 + @"CustomerName: '" + obj.CustomerName + @"',"
-                + @"ContentId: '" + objContent.FuncId + chrSeperateStaff.ToString() + obj.ContentId + @"',"
+                + @"ContentId: '" + objContent.FuncId + ChrSeperateStaff.ToString() + obj.ContentId + @"',"
                 + @"ContentTitle: '" + obj.ContentTitle + @"',"
                 + @"RoomId: '" + obj.RoomId + @"',"
                 + @"RoomTitle: '" + obj.RoomTitle + @"',"
@@ -706,7 +748,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 result += @"{id: '" + item.Id + @"',"
                     + @"start_date: '" + item.StartTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
                     + @"end_date: '" + item.EndTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"section_id: '" + item.DoctorUsername + @"',"
+                    + @"section_id: '" + item.RoomId + @"',"
                     + @"text: '" + item.ContentTitle + @"<br />Doctor: " + item.DoctorUsername + @"<br />";
 
                 if (!string.IsNullOrEmpty(item.Note))
@@ -716,7 +758,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                     + @"DoctorShortName: '" + item.DoctorShortName + @"',"
                     + @"CustomerId: '" + item.CustomerId + @"',"
                     + @"CustomerName: '" + item.CustomerName + @"',"
-                    + @"ContentId: '" + objContent.FuncId + chrSeperateStaff.ToString() + item.ContentId + @"',"
+                    + @"ContentId: '" + objContent.FuncId + ChrSeperateStaff.ToString() + item.ContentId + @"',"
                     + @"ContentTitle: '" + item.ContentTitle + @"',"
                     + @"RoomId: '" + item.RoomId + @"',"
                     + @"RoomTitle: '" + item.RoomTitle + @"',"
@@ -731,7 +773,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                     item.IsComplete = true;
                     DataRepository.AppointmentProvider.Save(tm, item);
 
-                    result += @"readonly: true,";
+                    result += @"ReadOnly: true,";
                 }
                 if (string.IsNullOrEmpty(item.ColorCode))
                 {
@@ -1021,7 +1063,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
             dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
 
-            string[] arr = FuncId.Split(chrSeperateStaff);
+            string[] arr = FuncId.Split(ChrSeperateStaff);
 
             DataSet ds = new DataSet();
             SqlCommand cmd = new SqlCommand();
@@ -1051,7 +1093,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 DoctorAppointmentStatus.Instance().TryGetValue(dr["Status"].ToString(), out strStatus);
 
                 result += @", {'key' : '" + dr["DoctorUserName"].ToString() + @"'" + "," + @"'label' : '" + dr["DoctorShortName"].ToString();
-                result += strSeperateStaff + strStatus + @"', ";
+                result += StrSeperateStaff + strStatus + @"', ";
 
                 if (intStatus != 0)
                 {
@@ -1108,8 +1150,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             lstObj.Sort("FuncTitle ASC, Title ASC");
             foreach (Content item in lstObj)
             {
-                result += @", {'key' : '" + item.FuncId + chrSeperateStaff.ToString() + item.Id.ToString() + @"'" + "," + @"'label' : '"
-                    + item.FuncTitle + strSeperateStaff + item.Title + @"'}";
+                result += @", {'key' : '" + item.FuncId + ChrSeperateStaff.ToString() + item.Id.ToString() + @"'" + "," + @"'label' : '"
+                    + item.FuncTitle + StrSeperateStaff + item.Title + @"'}";
             }
 
             result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
@@ -1156,7 +1198,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
             dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
 
-            string[] arr = FuncId.Split(chrSeperateStaff);
+            string[] arr = FuncId.Split(ChrSeperateStaff);
 
             DataSet ds = new DataSet();
             SqlCommand cmd = new SqlCommand();
@@ -1187,7 +1229,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 RoomAppointmentStatus.Instance().TryGetValue(dr["Status"].ToString(), out strStatus);
 
                 result += @", {'key' : '" + dr["RoomId"].ToString() + @"'" + "," + @"'label' : '" + dr["RoomTitle"].ToString();
-                result += strSeperateStaff + strStatus + @"', ";
+                result += StrSeperateStaff + strStatus + @"', ";
 
                 if (intStatus != 0)
                 {
@@ -1245,7 +1287,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 {
                     if (item.FuncId == itemDr.FuncId)
                     {
-                        result = item.FuncId.ToString() + chrSeperateStaff.ToString() + item.Id.ToString();
+                        result = item.FuncId.ToString() + ChrSeperateStaff.ToString() + item.Id.ToString();
                         goto StepString;
                     }
                 }
@@ -1331,6 +1373,110 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             goto StepResult;
         }
     StepResult:
+        return result;
+    }
+
+    /// <summary>
+    /// Get Patient's info by AppointmentId
+    /// </summary>
+    /// <param name="appointmentId"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetPatientByAppointmentId(string appointmentId)
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data: string patient id
+         *  }
+         */
+        string result = string.Empty;
+
+        try
+        {
+            // Get appointment by id
+            var objAppt = DataRepository.AppointmentProvider.GetById(appointmentId);
+
+            // If there is no appointment, return
+            if (objAppt == null)
+            {
+                result = @"[{ 'result': 'true', 'message': 'Appointment is not existed', 'data':'' }]";
+                goto StepResult;
+            }
+
+            // Get patient
+            var objPatient = DataRepository.CustomerProvider.GetById(objAppt.CustomerId);
+
+            // If there is no patient, return
+            if (objPatient == null)
+            {
+                result = @"[{ 'result': 'true', 'message': 'Appointment is not existed', 'data':'' }]";
+                goto StepResult;
+            }
+
+            var lstPatient = new List<JPatient> {new JPatient()
+                                                     {
+                                                         Id=objPatient.Id,
+                                                         FirstName=objPatient.FirstName ?? "&nbsp;",
+                                                         LastName = objPatient.LastName ?? "&nbsp;",
+                                                         Address = objPatient.Address ?? "&nbsp;",
+                                                         HomePhone = objPatient.HomePhone ?? "&nbsp;",
+                                                         WorkPhone = objPatient.WorkPhone ?? "&nbsp;",
+                                                         CellPhone = objPatient.CellPhone ?? "&nbsp;",
+                                                         Birthdate = objPatient.Birthdate==null?"&nbsp;":((DateTime) objPatient.Birthdate).ToString("MM-dd-yyyy"),
+                                                         IsFemale = objPatient.IsFemale,
+                                                         Title = objPatient.Title ?? "&nbsp;",
+                                                         Note = objPatient.Note ?? "&nbsp;"
+                                                     }};
+
+            result = @"[{ 'result': 'true', 'message': '', 'data':'" + JsonConvert.SerializeObject(lstPatient) + @"' }]";
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.CreateSimplePatient", ex);
+
+            result = @"[{ ""result"": ""false"", ""message"": ""Cannot load patient's information. Please try again."", ""data"": """" }]";
+        }
+    StepResult:
+        return result;
+    }
+
+    /// <summary>
+    /// Get Room list by floor
+    /// </summary>
+    /// <param name="floorId"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetRoomByFloor(string floorId)
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data: string patient id
+         *  }
+         */
+        string result = string.Empty;
+
+        try
+        {
+            Floor obj = DataRepository.FloorProvider.GetById(Convert.ToInt32(floorId));
+            DataRepository.FloorProvider.DeepLoad(obj);
+            var lstRoom = from room in obj.RoomCollection
+                          select new JSection()
+                           {
+                               key = room.Id.ToString(),
+                               label = room.Title
+                           };
+            result = @"[{ 'result': 'true', 'message': '', 'data':" + JsonConvert.SerializeObject(lstRoom) + @" }]";
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.CreateSimplePatient", ex);
+
+            result = @"[{ ""result"": ""false"", ""message"": ""Cannot load room list. Please try again."", ""data"": """" }]";
+        }
         return result;
     }
     #endregion

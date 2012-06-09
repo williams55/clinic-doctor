@@ -35,6 +35,11 @@ namespace ClinicDoctor.Entities
 		System.String  Status  { get; set; }
 		
 		/// <summary>
+		/// FloorId : 
+		/// </summary>
+		System.Int32?  FloorId  { get; set; }
+		
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		System.Boolean  IsDisabled  { get; set; }

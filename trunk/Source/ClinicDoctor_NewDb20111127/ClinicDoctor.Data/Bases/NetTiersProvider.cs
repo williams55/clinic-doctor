@@ -21,24 +21,9 @@ namespace ClinicDoctor.Data.Bases
 	{
 		
 		///<summary>
-		/// Current RoomProviderBase instance.
+		/// Current FloorProviderBase instance.
 		///</summary>
-		public virtual RoomProviderBase RoomProvider{get {throw new NotImplementedException();}}
-		
-		///<summary>
-		/// Current AppointmentProviderBase instance.
-		///</summary>
-		public virtual AppointmentProviderBase AppointmentProvider{get {throw new NotImplementedException();}}
-		
-		///<summary>
-		/// Current RoomFuncProviderBase instance.
-		///</summary>
-		public virtual RoomFuncProviderBase RoomFuncProvider{get {throw new NotImplementedException();}}
-		
-		///<summary>
-		/// Current RosterTypeProviderBase instance.
-		///</summary>
-		public virtual RosterTypeProviderBase RosterTypeProvider{get {throw new NotImplementedException();}}
+		public virtual FloorProviderBase FloorProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
 		/// Current StaffProviderBase instance.
@@ -51,14 +36,24 @@ namespace ClinicDoctor.Data.Bases
 		public virtual FunctionalityProviderBase FunctionalityProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
+		/// Current RosterTypeProviderBase instance.
+		///</summary>
+		public virtual RosterTypeProviderBase RosterTypeProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
 		/// Current DoctorRosterProviderBase instance.
 		///</summary>
 		public virtual DoctorRosterProviderBase DoctorRosterProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
-		/// Current ContentProviderBase instance.
+		/// Current StatusProviderBase instance.
 		///</summary>
-		public virtual ContentProviderBase ContentProvider{get {throw new NotImplementedException();}}
+		public virtual StatusProviderBase StatusProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current RoomProviderBase instance.
+		///</summary>
+		public virtual RoomProviderBase RoomProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
 		/// Current CustomerProviderBase instance.
@@ -66,9 +61,9 @@ namespace ClinicDoctor.Data.Bases
 		public virtual CustomerProviderBase CustomerProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
-		/// Current DoctorFuncProviderBase instance.
+		/// Current ContentProviderBase instance.
 		///</summary>
-		public virtual DoctorFuncProviderBase DoctorFuncProvider{get {throw new NotImplementedException();}}
+		public virtual ContentProviderBase ContentProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
 		/// Current DoctorRoomProviderBase instance.
@@ -76,9 +71,19 @@ namespace ClinicDoctor.Data.Bases
 		public virtual DoctorRoomProviderBase DoctorRoomProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
-		/// Current StatusProviderBase instance.
+		/// Current RoomFuncProviderBase instance.
 		///</summary>
-		public virtual StatusProviderBase StatusProvider{get {throw new NotImplementedException();}}
+		public virtual RoomFuncProviderBase RoomFuncProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current AppointmentProviderBase instance.
+		///</summary>
+		public virtual AppointmentProviderBase AppointmentProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current DoctorFuncProviderBase instance.
+		///</summary>
+		public virtual DoctorFuncProviderBase DoctorFuncProvider{get {throw new NotImplementedException();}}
 		
 		
 	}

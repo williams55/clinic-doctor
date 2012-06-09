@@ -84,13 +84,15 @@ namespace ClinicDoctor.Entities
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_status"></param>
+		///<param name="_floorId"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public RoomBase(System.String _title, System.String _note, System.String _status, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public RoomBase(System.String _title, System.String _note, System.String _status, System.Int32? _floorId, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			this.entityData = new RoomEntityData();
 			this.backupData = null;
@@ -98,6 +100,7 @@ namespace ClinicDoctor.Entities
 			this.Title = _title;
 			this.Note = _note;
 			this.Status = _status;
+			this.FloorId = _floorId;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -111,18 +114,21 @@ namespace ClinicDoctor.Entities
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_status"></param>
+		///<param name="_floorId"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Room CreateRoom(System.String _title, System.String _note, System.String _status, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public static Room CreateRoom(System.String _title, System.String _note, System.String _status, System.Int32? _floorId, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			Room newRoom = new Room();
 			newRoom.Title = _title;
 			newRoom.Note = _note;
 			newRoom.Status = _status;
+			newRoom.FloorId = _floorId;
 			newRoom.IsDisabled = _isDisabled;
 			newRoom.CreateUser = _createUser;
 			newRoom.CreateDate = _createDate;
@@ -280,6 +286,43 @@ namespace ClinicDoctor.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or sets the FloorId property. 
+		///		
+		/// </summary>
+		/// <value>This type is int.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// If this column is null, this property will return (int)0. It is up to the developer
+		/// to check the value of IsFloorIdNull() and perform business logic appropriately.
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true)]
+		public virtual System.Int32? FloorId
+		{
+			get
+			{
+				return this.entityData.FloorId; 
+			}
+			
+			set
+			{
+				if (this.entityData.FloorId == value)
+					return;
+					
+				OnColumnChanging(RoomColumn.FloorId, this.entityData.FloorId);
+				this.entityData.FloorId = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(RoomColumn.FloorId, this.entityData.FloorId);
+				OnPropertyChanged("FloorId");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or sets the IsDisabled property. 
 		///		
 		/// </summary>
@@ -293,7 +336,7 @@ namespace ClinicDoctor.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, false)]
-		public override System.Boolean IsDisabled
+		public virtual System.Boolean IsDisabled
 		{
 			get
 			{
@@ -458,6 +501,17 @@ namespace ClinicDoctor.Entities
 
 		#region Source Foreign Key Property
 				
+		/// <summary>
+		/// Gets or sets the source <see cref="Floor"/>.
+		/// </summary>
+		/// <value>The source Floor for FloorId.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Floor FloorIdSource
+      	{
+            get { return entityData.FloorIdSource; }
+            set { entityData.FloorIdSource = value; }
+      	}
 		#endregion
 		
 		#region Children Collections
@@ -541,7 +595,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Title", "Note", "Status", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Title", "Note", "Status", "FloorId", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -693,12 +747,17 @@ namespace ClinicDoctor.Entities
 				copy.Title = this.Title;
 				copy.Note = this.Note;
 				copy.Status = this.Status;
+				copy.FloorId = this.FloorId;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
 				copy.UpdateUser = this.UpdateUser;
 				copy.UpdateDate = this.UpdateDate;
 			
+			if (this.FloorIdSource != null && existingCopies.Contains(this.FloorIdSource))
+				copy.FloorIdSource = existingCopies[this.FloorIdSource] as Floor;
+			else
+				copy.FloorIdSource = MakeCopyOf(this.FloorIdSource, existingCopies) as Floor;
 		
 			//deep copy nested objects
 			copy.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection, existingCopies); 
@@ -842,6 +901,8 @@ namespace ClinicDoctor.Entities
 					return entityData.Note != _originalData.Note;
 					case RoomColumn.Status:
 					return entityData.Status != _originalData.Status;
+					case RoomColumn.FloorId:
+					return entityData.FloorId != _originalData.FloorId;
 					case RoomColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case RoomColumn.CreateUser:
@@ -883,6 +944,7 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.Title != _originalData.Title;
 			result = result || entityData.Note != _originalData.Note;
 			result = result || entityData.Status != _originalData.Status;
+			result = result || entityData.FloorId != _originalData.FloorId;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -901,6 +963,7 @@ namespace ClinicDoctor.Entities
 				_originalData.Title,
 				_originalData.Note,
 				_originalData.Status,
+				_originalData.FloorId,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -939,6 +1002,7 @@ namespace ClinicDoctor.Entities
 					this.Title.GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
 					this.Status.GetHashCode() ^ 
+					((this.FloorId == null) ? string.Empty : this.FloorId.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
@@ -991,6 +1055,15 @@ namespace ClinicDoctor.Entities
 			}
 			if (Object1.Status != Object2.Status)
 				equal = false;
+			if ( Object1.FloorId != null && Object2.FloorId != null )
+			{
+				if (Object1.FloorId != Object2.FloorId)
+					equal = false;
+			}
+			else if (Object1.FloorId == null ^ Object2.FloorId == null )
+			{
+				equal = false;
+			}
 			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
 			if ( Object1.CreateUser != null && Object2.CreateUser != null )
@@ -1079,6 +1152,12 @@ namespace ClinicDoctor.Entities
             	
             	case RoomColumn.Status:
             		return this.Status.CompareTo(rhs.Status);
+            		
+            		                 
+            	
+            	
+            	case RoomColumn.FloorId:
+            		return this.FloorId.Value.CompareTo(rhs.FloorId.Value);
             		
             		                 
             	
@@ -1245,11 +1324,12 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{10}{9}- Id: {0}{9}- Title: {1}{9}- Note: {2}{9}- Status: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
+				"{11}{10}- Id: {0}{10}- Title: {1}{10}- Note: {2}{10}- Status: {3}{10}- FloorId: {4}{10}- IsDisabled: {5}{10}- CreateUser: {6}{10}- CreateDate: {7}{10}- UpdateUser: {8}{10}- UpdateDate: {9}{10}{12}", 
 				this.Id,
 				this.Title,
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
 				this.Status,
+				(this.FloorId == null) ? string.Empty : this.FloorId.ToString(),
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
@@ -1305,6 +1385,11 @@ namespace ClinicDoctor.Entities
 		public System.String		  Status = string.Empty;
 		
 		/// <summary>
+		/// FloorId : 
+		/// </summary>
+		public System.Int32?		  FloorId = null;
+		
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		public System.Boolean		  IsDisabled = false;
@@ -1332,6 +1417,19 @@ namespace ClinicDoctor.Entities
 			
 		#region Source Foreign Key Property
 				
+		private Floor _floorIdSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Floor"/>.
+		/// </summary>
+		/// <value>The source Floor for FloorId.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Floor FloorIdSource
+      	{
+            get { return this._floorIdSource; }
+            set { this._floorIdSource = value; }
+      	}
 		#endregion
 		#endregion Variable Declarations
 	
@@ -1429,6 +1527,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
 			_tmp.Status = this.Status;
+			_tmp.FloorId = this.FloorId;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1436,6 +1535,8 @@ namespace ClinicDoctor.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.FloorIdSource != null)
+				_tmp.FloorIdSource = MakeCopyOf(this.FloorIdSource) as Floor;
 			#endregion
 		
 			#region Child Collections
@@ -1470,6 +1571,7 @@ namespace ClinicDoctor.Entities
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
 			_tmp.Status = this.Status;
+			_tmp.FloorId = this.FloorId;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1477,6 +1579,10 @@ namespace ClinicDoctor.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.FloorIdSource != null && existingCopies.Contains(this.FloorIdSource))
+				_tmp.FloorIdSource = existingCopies[this.FloorIdSource] as Floor;
+			else
+				_tmp.FloorIdSource = MakeCopyOf(this.FloorIdSource, existingCopies) as Floor;
 			#endregion
 		
 			#region Child Collections
@@ -1877,35 +1983,41 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("Status", typeof(System.String), System.Data.DbType.String, false, false, false, 100)]
 		Status = 4,
 		/// <summary>
+		/// FloorId : 
+		/// </summary>
+		[EnumTextValue("FloorId")]
+		[ColumnEnum("FloorId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
+		FloorId = 5,
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 5,
+		IsDisabled = 6,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 6,
+		CreateUser = 7,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 7,
+		CreateDate = 8,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 8,
+		UpdateUser = 9,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 9
+		UpdateDate = 10
 	}//End enum
 
 	#endregion RoomColumn Enum

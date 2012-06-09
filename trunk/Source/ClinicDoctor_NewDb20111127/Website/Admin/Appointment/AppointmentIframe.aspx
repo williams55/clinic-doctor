@@ -58,6 +58,8 @@
         type="text/css" media="screen" title="no title" charset="utf-8" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/css/AnalogClock.css") %>"
         type="text/css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/media/css/scheduler.css") %>"
+        type="text/css" media="screen" title="no title" charset="utf-8" />
     <style type="text/css" media="screen">
         html, body
         {
@@ -82,6 +84,7 @@
         var weekday = <%=Constants.Weekdays %>;
         var stepTime = <%=ClinicDoctor.Settings.BusinessLayer.ServiceFacade.SettingsHelper.MinuteStep %>;
         var html = function (id) { return document.getElementById(id); }; //just a helper
+        var floors = eval(<%=StrFloors%>);
 
         $(document).ready(function () {
             $(".dhx_cal_today_button:not(#btnToday)").click(function() {
@@ -96,6 +99,41 @@
 </head>
 <body>
     <div style="padding: 10px;">
+        <div class="appt-info">
+            <h3>
+                Patient's Information</h3>
+            <div class="title">
+                Firstname</div>
+            <div class="content" id="divFirstname" style="margin-right: 35px;">
+                &nbsp;
+            </div>
+            <div class="title">
+                Lastname</div>
+            <div class="content" id="divLastname">
+                &nbsp;
+            </div>
+            <div class="clear">
+            </div>
+            <div class="title">
+                Cell phone</div>
+            <div class="content" id="divCellPhone" style="margin-right: 35px;">
+                &nbsp;
+            </div>
+            <div class="title">
+                Birthday</div>
+            <div class="content" id="divBirthday">
+                &nbsp;
+            </div>
+            <div class="clear">
+            </div>
+            <div class="title">
+                Address</div>
+            <div class="content" id="divAddress" style="width: 435px;">
+                &nbsp;
+            </div>
+            <div class="clear">
+            </div>
+        </div>
         <div style="float: right; padding: 10px 20px 10px 30px;">
             <ul id="clock">
                 <li id="sec"></li>
@@ -280,18 +318,16 @@
     </div>
     <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 330px;'>
         <div class="dhx_cal_navline">
-            <div class="dhx_cal_today_button" id="btnToday" style="display: none;">
+            <div class="dhx_cal_today_button" id="btnToday" style="display: none; float: right;">
             </div>
-            <div class="dhx_cal_date">
+            <div class="dhx_cal_date" style="right:10px; left: auto;">
             </div>
-            <div class="dhx_cal_tab" name="unit_tab" style="right: 380px;">
-            </div>
-            <div class="dhx_cal_tab" name="week_tab" style="right: 140px;">
-            </div>
-            <div class="dhx_cal_tab" name="timeline_tab" style="right: 280px;">
-            </div>
-            <div class="dhx_cal_tab" name="month_tab" style="right: 76px;">
-            </div>
+            <asp:Repeater ID="rptFloor" runat="server">
+                <ItemTemplate>
+                    <div class="dhx_cal_tab" name="<%# Eval("Id") %>_tab" style="left: <%# (Container.ItemIndex * 70) + 10 %>px;">
+                    </div>
+                </ItemTemplate>
+            </asp:Repeater>
         </div>
         <div class="dhx_cal_header">
         </div>
