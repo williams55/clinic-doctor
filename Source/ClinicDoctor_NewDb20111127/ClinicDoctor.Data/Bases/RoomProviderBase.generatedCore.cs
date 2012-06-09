@@ -58,6 +58,91 @@ namespace ClinicDoctor.Data.Bases
 		#endregion Delete Methods
 		
 		#region Get By Foreign Key Functions
+	
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Room_Floor key.
+		///		FK_Room_Floor Description: 
+		/// </summary>
+		/// <param name="_floorId"></param>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Room objects.</returns>
+		public TList<Room> GetByFloorId(System.Int32? _floorId)
+		{
+			int count = -1;
+			return GetByFloorId(_floorId, 0,int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Room_Floor key.
+		///		FK_Room_Floor Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_floorId"></param>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Room objects.</returns>
+		/// <remarks></remarks>
+		public TList<Room> GetByFloorId(TransactionManager transactionManager, System.Int32? _floorId)
+		{
+			int count = -1;
+			return GetByFloorId(transactionManager, _floorId, 0, int.MaxValue, out count);
+		}
+		
+			/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Room_Floor key.
+		///		FK_Room_Floor Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_floorId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		///  <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Room objects.</returns>
+		public TList<Room> GetByFloorId(TransactionManager transactionManager, System.Int32? _floorId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByFloorId(transactionManager, _floorId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Room_Floor key.
+		///		fkRoomFloor Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_floorId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Room objects.</returns>
+		public TList<Room> GetByFloorId(System.Int32? _floorId, int start, int pageLength)
+		{
+			int count =  -1;
+			return GetByFloorId(null, _floorId, start, pageLength,out count);	
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Room_Floor key.
+		///		fkRoomFloor Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_floorId"></param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Room objects.</returns>
+		public TList<Room> GetByFloorId(System.Int32? _floorId, int start, int pageLength,out int count)
+		{
+			return GetByFloorId(null, _floorId, start, pageLength, out count);	
+		}
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Room_Floor key.
+		///		FK_Room_Floor Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_floorId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns a typed collection of ClinicDoctor.Entities.Room objects.</returns>
+		public abstract TList<Room> GetByFloorId(TransactionManager transactionManager, System.Int32? _floorId, int start, int pageLength, out int count);
+		
 		#endregion
 
 		#region Get By Index Functions
@@ -727,6 +812,7 @@ namespace ClinicDoctor.Data.Bases
 					c.Title = (System.String)reader[((int)RoomColumn.Title - 1)];
 					c.Note = (reader.IsDBNull(((int)RoomColumn.Note - 1)))?null:(System.String)reader[((int)RoomColumn.Note - 1)];
 					c.Status = (System.String)reader[((int)RoomColumn.Status - 1)];
+					c.FloorId = (reader.IsDBNull(((int)RoomColumn.FloorId - 1)))?null:(System.Int32?)reader[((int)RoomColumn.FloorId - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)RoomColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)RoomColumn.CreateUser - 1)))?null:(System.String)reader[((int)RoomColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)RoomColumn.CreateDate - 1)];
@@ -753,6 +839,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.Title = (System.String)reader[((int)RoomColumn.Title - 1)];
 			entity.Note = (reader.IsDBNull(((int)RoomColumn.Note - 1)))?null:(System.String)reader[((int)RoomColumn.Note - 1)];
 			entity.Status = (System.String)reader[((int)RoomColumn.Status - 1)];
+			entity.FloorId = (reader.IsDBNull(((int)RoomColumn.FloorId - 1)))?null:(System.Int32?)reader[((int)RoomColumn.FloorId - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)RoomColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)RoomColumn.CreateUser - 1)))?null:(System.String)reader[((int)RoomColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)RoomColumn.CreateDate - 1)];
@@ -774,6 +861,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.Title = (System.String)dataRow["Title"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.Status = (System.String)dataRow["Status"];
+			entity.FloorId = Convert.IsDBNull(dataRow["FloorId"]) ? null : (System.Int32?)dataRow["FloorId"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];
@@ -803,6 +891,32 @@ namespace ClinicDoctor.Data.Bases
 		{
 			if(entity == null)
 				return;
+
+			#region FloorIdSource	
+			if (CanDeepLoad(entity, "Floor|FloorIdSource", deepLoadType, innerList) 
+				&& entity.FloorIdSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = (entity.FloorId ?? (int)0);
+				Floor tmpEntity = EntityManager.LocateEntity<Floor>(EntityLocator.ConstructKeyFromPkItems(typeof(Floor), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.FloorIdSource = tmpEntity;
+				else
+					entity.FloorIdSource = DataRepository.FloorProvider.GetById(transactionManager, (entity.FloorId ?? (int)0));		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'FloorIdSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.FloorIdSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.FloorProvider.DeepLoad(transactionManager, entity.FloorIdSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion FloorIdSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -900,6 +1014,15 @@ namespace ClinicDoctor.Data.Bases
 			#region Composite Parent Properties
 			//Save Source Composite Properties, however, don't call deep save on them.  
 			//So they only get saved a single level deep.
+			
+			#region FloorIdSource
+			if (CanDeepSave(entity, "Floor|FloorIdSource", deepSaveType, innerList) 
+				&& entity.FloorIdSource != null)
+			{
+				DataRepository.FloorProvider.Save(transactionManager, entity.FloorIdSource);
+				entity.FloorId = entity.FloorIdSource.Id;
+			}
+			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -1024,7 +1147,13 @@ namespace ClinicDoctor.Data.Bases
 	///</summary>
 	public enum RoomChildEntityTypes
 	{
-
+		
+		///<summary>
+		/// Composite Property for <c>Floor</c> at FloorIdSource
+		///</summary>
+		[ChildEntityType(typeof(Floor))]
+		Floor,
+	
 		///<summary>
 		/// Collection of <c>Room</c> as OneToMany for DoctorRoomCollection
 		///</summary>

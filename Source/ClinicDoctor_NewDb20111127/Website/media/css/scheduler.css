@@ -1,0 +1,42 @@
+
+div.appt-info
+{
+    font-size: 10;
+    font-family: Tahoma, Arial;
+    float: left;
+    padding: 10px 20px 20px 10px;
+    box-shadow: 10px 10px 5px #888;
+    width: 525px;
+    border: 1px solid #aaa;
+}
+
+div.appt-info h3
+{
+    font-size: 16px;
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
+div.appt-info div.title
+{
+    width: 70px;
+    float: left;
+    padding: 3px 0 0 0;
+    margin: 3px 0 3px 0;
+}
+
+div.appt-info div.content
+{
+    font-weight: bold;
+    float: left;
+    padding: 0 0 1px 10px;
+    border-bottom: 1px solid #000;
+    margin: 3px 3px 3px 0;
+    width: 160px;
+}
+
+div.appt-info .clear
+{
+    clear: both;
+}
+

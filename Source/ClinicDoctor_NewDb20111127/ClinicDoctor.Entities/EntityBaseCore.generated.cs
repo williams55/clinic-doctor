@@ -164,11 +164,6 @@ namespace ClinicDoctor.Entities
 		/// 
 		/// </summary>
 		
-		public abstract System.Boolean IsDisabled {get;set;}
-		/// <summary>
-		/// 
-		/// </summary>
-		
 		public abstract System.String CreateUser {get;set;}
 		/// <summary>
 		/// 

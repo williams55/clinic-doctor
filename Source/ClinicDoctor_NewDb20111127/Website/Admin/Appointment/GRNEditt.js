@@ -19,143 +19,130 @@ function show_minical() {
 
 // Init Schedule
 function initSchedule(weekday) {
-    var _date = new Date();
-    var _mode = "unit";
+    var date = new Date();
 
-    scheduler.locale.labels.timeline_tab = "Timeline";
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
-    //scheduler.config.time_step = stepTime;
     scheduler.config.mark_now = true;
 
-    scheduler.locale.labels.unit_tab = "Unit";
+    var arrAjax = [];
+    $.each(floors, function(i, item) {
+        scheduler.locale.labels[item.Id + "_tab"] = item.Title;
+        arrAjax.push($.ajax({
+            type: "POST",
+            url: "AppointmentIframe.aspx/GetRoomByFloor",
+            data: "{floorId: '" + item.Id + "'}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function(response) {
+                var obj = eval(response.d)[0];
 
-    $.ajax({
-        type: "POST",
-        url: "AppointmentIframe.aspx/GetDoctorTree",
-        data: "{}",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function(response) {
-            var obj = eval(response.d)[0];
-
-            if (obj.result == "true") {
-                var elements = obj.data;
-                if (elements) {
-                    scheduler.createTimelineView({
-                        section_autoheight: false,
-                        name: "timeline",
-                        x_unit: "hour",
-                        x_date: "%m/%d %H:%i",
-                        x_step: 6,
-                        x_size: 10,
-                        x_start: 0,
-                        x_length: 30,
-                        y_unit: elements,
-                        y_property: "section_id",
-                        render: "tree",
-                        folder_dy: 20,
-                        dy: 60
-                    });
-
-                    scheduler.createUnitsView({
-                        name: _mode,
-                        property: "section_id",
-                        list: elements
-                    });
-
-                    scheduler.init('scheduler_here', _date, _mode);
-
-                    function block_readonly(id) {
-                        if (!id) return true;
-                        return !this.getEvent(id).readonly;
-                    }
-                    scheduler.attachEvent("onBeforeDrag", block_readonly)
-                    scheduler.attachEvent("onClick", block_readonly)
-
-                    // When event changed, check and update
-                    scheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new) {
-                        // If update roster
-                        if (is_new == false) {
-                            if (event_object.start_date <= new Date()) {
-                                alert("You can not change appointment to passed or current date.");
-                                return false;
-                            }
-                        }
-
-                        return true;
-                    });
-
-                    // Save roster when resized or moved
-                    scheduler.attachEvent("onEventChanged", function(event_id, event_object) {
-                        //any custom logic here
-                        var _id = event_object.id;
-                        var _doctorUserName = event_object.section_id;
-                        var _rosterType = event_object.RosterTypeId;
-                        var _rosterTitle = event_object.RosterTypeTitle;
-                        var _fromTime = event_object.start_date;
-                        var _toTime = event_object.end_date;
-                        var _note = event_object.note;
-
-                        var requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, StartTime: _fromTime, EndTime: _toTime });
-                        $.ajax({
-                            type: "POST",
-                            url: "AppointmentIframe.aspx/UpdateEventMove",
-                            async: true,
-                            data: requestdata,
-                            dataType: "json",
-                            contentType: "application/json; charset=utf-8",
-                            success: function(response) {
-                                var obj = eval(response.d)[0];
-
-                                var evs = obj.data;
-
-                                if (obj.result == "false") {
-                                    alert(obj.message);
-                                }
-
-                                scheduler.deleteEvent(_id);
-                                addRoster(evs);
-                            },
-                            fail: function() {
-                                alert("Unknow error!");
-                                return false;
-                            },
-                            complete: function() {
-                            }
+                if (obj.result == "true") {
+                    var elements = obj.data;
+                    if (elements) {
+                        scheduler.createUnitsView({
+                            name: item.Id,
+                            property: "section_id",
+                            list: elements
                         });
-                    });
+                    }
+                } else {
+                    alert(obj.message);
+                }
+            },
+            fail: function() {
+                alert("Unknow error!");
+            },
+            complete: function() {
+            }
+        }));
+    });
+    $.when.apply($, arrAjax).done(function() {
+        // OnClick event, get patient's info
+        function blockReadonly(id) {
+            GetPatientInfo(id);
+            if (!id) return true;
+            return !this.getEvent(id).ReadOnly;
+        }
 
-                    dhtmlxEvent(document, (_isOpera ? "keypress" : "keydown"), function(e) {
+        scheduler.attachEvent("onBeforeDrag", blockReadonly);
+        scheduler.attachEvent("onClick", blockReadonly);
 
-                        if (e.keyCode == 37) {
-                            //left
-                            scheduler.matrix.timeline.x_start -= 1;
-                            if (scheduler.matrix.timeline.x_start < 0)
-                                scheduler.matrix.timeline.x_start = 0;
-                            scheduler.callEvent("onOptionsLoad", []);
-                        } else if (e.keyCode == 39) {
-                            //right
-                            scheduler.matrix.timeline.x_start += 1;
-                            if (scheduler.matrix.timeline.x_start > 24)
-                                scheduler.matrix.timeline.x_start = 24;
-                            scheduler.callEvent("onOptionsLoad", []);
-                        }
-                    });
-
-                    // Load roster
-                    LoadRoster(_mode, _date);
+        // When event changed, check and update
+        scheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new) {
+            // If update roster
+            if (is_new == false) {
+                if (event_object.start_date <= new Date()) {
+                    alert("You can not change appointment to passed or current date.");
+                    return false;
                 }
             }
-            else {
-                alert(obj.message);
+
+            return true;
+        });
+
+        // Save roster when resized or moved
+        scheduler.attachEvent("onEventChanged", function(event_id, event_object) {
+            //any custom logic here
+            var _id = event_object.id;
+            var _doctorUserName = event_object.section_id;
+            var _rosterType = event_object.RosterTypeId;
+            var _rosterTitle = event_object.RosterTypeTitle;
+            var _fromTime = event_object.start_date;
+            var _toTime = event_object.end_date;
+            var _note = event_object.note;
+
+            var requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, StartTime: _fromTime, EndTime: _toTime });
+            $.ajax({
+                type: "POST",
+                url: "AppointmentIframe.aspx/UpdateEventMove",
+                async: true,
+                data: requestdata,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function(response) {
+                    var obj = eval(response.d)[0];
+
+                    var evs = obj.data;
+
+                    if (obj.result == "false") {
+                        alert(obj.message);
+                    }
+
+                    scheduler.deleteEvent(_id);
+                    addRoster(evs);
+                },
+                fail: function() {
+                    alert("Unknow error!");
+                    return false;
+                },
+                complete: function() {
+                }
+            });
+        });
+
+        dhtmlxEvent(document, (_isOpera ? "keypress" : "keydown"), function(e) {
+
+            if (e.keyCode == 37) {
+                //left
+                scheduler.matrix.timeline.x_start -= 1;
+                if (scheduler.matrix.timeline.x_start < 0)
+                    scheduler.matrix.timeline.x_start = 0;
+                scheduler.callEvent("onOptionsLoad", []);
+            } else if (e.keyCode == 39) {
+                //right
+                scheduler.matrix.timeline.x_start += 1;
+                if (scheduler.matrix.timeline.x_start > 24)
+                    scheduler.matrix.timeline.x_start = 24;
+                scheduler.callEvent("onOptionsLoad", []);
             }
-        },
-        fail: function() {
-            alert("Unknow error!");
-        },
-        complete: function() {
+        });
+
+        // Load roster
+        if (floors.length > 0) {
+            scheduler.init('scheduler_here', date, floors[0].Id);
+            LoadRoster(floors[0].Id, date);
             show_minical();
         }
     });
@@ -177,8 +164,7 @@ scheduler.showLightbox = function(id) {
         if (ev.isnew == "false") {
             alert("You cannot change a passed appointment.");
             return false;
-        }
-        else {
+        } else {
             scheduler.deleteEvent(id);
             alert("You cannot create new appointment a passed day.");
             return false;
@@ -212,8 +198,7 @@ scheduler.showLightbox = function(id) {
             $("#cboContent").show();
             $("#spanContent").hide();
             $("#cboContent").change();
-        }
-        else {
+        } else {
             $("#spanContent").show();
             $("#cboContent").hide();
 
@@ -234,8 +219,7 @@ scheduler.showLightbox = function(id) {
                             $("#cboContent").val(evs);
                             $("#cboContent").change();
                         }
-                    }
-                    else {
+                    } else {
                         alert(obj.message);
                     }
                 },
@@ -262,7 +246,7 @@ scheduler.showLightbox = function(id) {
     $('#trNewPatient2').hide();
     $('#idIsFemaleTitle').hide();
     $('#idIsFemale').hide();
-}
+};
 
 function LoadRoster(mode, date) {
     var requestdata = JSON.stringify({ Mode: mode, CurrentDateView: date });
@@ -387,7 +371,40 @@ function loadContent() {
     });
 }
 
-function loadStaff() {
+// Get Patient's info by appointment id
+function GetPatientInfo(currentId) {
+    var requestdata = JSON.stringify({ appointmentId: currentId });
+    $.ajax({
+        type: "POST",
+        url: "AppointmentIframe.aspx/GetPatientByAppointmentId",
+        data: requestdata,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(response) {
+            var obj = eval(response.d)[0];
+            if (obj.result == "true") {
+                var arr = eval(obj.data)[0]; // Get first item
+                $("#divFirstname").html(arr.FirstName);
+                $("#divLastname").html(arr.LastName);
+                $("#divCellPhone").html(arr.CellPhone);
+                $("#divBirthday").html(arr.Birthday);
+                $("#divAddress").html(arr.Address);
+            }
+            else {
+                alert(obj.message);
+            }
+            blStaff = true;
+        },
+        fail: function() {
+            alert("Cannot load Patient's info. Please try again or contact Administrator.");
+        },
+        complete: function() {
+        }
+    });
+}
+
+// Get Doctor list
+function GetDoctorList() {
     if (!$("#txtFromDate").datepicker("getDate") || !$("#txtToDate").datepicker("getDate"))
         return;
 
@@ -765,7 +782,7 @@ function DeleteRoster() {
 $(document).ready(function() {
     loadPatient();
     loadHour();
-    loadStaff();
+    GetDoctorList();
     loadContent();
 
     $("input, textarea").addClass("idle");
@@ -802,18 +819,6 @@ $(document).ready(function() {
 
     initEvents();
 });
-
-// Get patient info
-function GetPatientInfo(patientId, cboPatientName, cboPatientId) {
-    if (patientId) {
-        // Load patient
-        cboPatientName.setComboValue(patientId);
-        cboPatientId.setComboValue(patientId);
-    }
-    else {
-        // Tao moi patient
-    }
-}
 
 function setTime(ev) {
     var startTime = ev.start_date.format("HH:MM");
@@ -926,7 +931,7 @@ function initEvents() {
     // Call Load doctor function
     $("#cboContent").change(function() {
         $("#cboStaff").change();
-        loadStaff();
+        GetDoctorList();
     });
 
     $("#cboFromHour, #txtFromDate").change(function() {
@@ -936,7 +941,7 @@ function initEvents() {
         }
 
         $("#cboStaff").change();
-        loadStaff();
+        GetDoctorList();
     });
 
     $("#cboToHour, #txtToDate").change(function() {
@@ -946,7 +951,7 @@ function initEvents() {
         }
 
         $("#cboStaff").change();
-        loadStaff();
+        GetDoctorList();
     });
 
     // Call Load room function

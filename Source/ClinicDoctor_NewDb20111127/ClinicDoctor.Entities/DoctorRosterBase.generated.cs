@@ -630,7 +630,7 @@ namespace ClinicDoctor.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, false)]
-		public override System.Boolean IsDisabled
+		public virtual System.Boolean IsDisabled
 		{
 			get
 			{

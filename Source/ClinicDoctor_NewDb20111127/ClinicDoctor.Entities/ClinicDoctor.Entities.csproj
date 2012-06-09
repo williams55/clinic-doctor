@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{20E43088-4618-4F4A-B8AD-FC31B50D94CD}</ProjectGuid>
     <ProjectType>Local</ProjectType>
@@ -143,6 +143,8 @@
       <DependentUpon>Appointment.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Floor.cs" />
+    <Compile Include="FloorBase.generated.cs" />
     <Compile Include="IAppointment.cs">
       <DependentUpon>Appointment.cs</DependentUpon>
       <SubType>Code</SubType>
@@ -209,6 +211,7 @@
       <DependentUpon>Functionality.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IFloor.cs" />
     <Compile Include="IFunctionality.cs">
       <DependentUpon>Functionality.cs</DependentUpon>
       <SubType>Code</SubType>

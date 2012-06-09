@@ -276,7 +276,7 @@ function loadHour() {
     });
 }
 
-function loadStaff() {
+function GetDoctorList() {
     $.ajax({
         type: "POST",
         url: "RosterIframe.aspx/GetStaffs",
@@ -515,7 +515,7 @@ function DeleteRoster() {
 $(document).ready(function() {
     loadRosterType();
     loadHour();
-    loadStaff();
+    GetDoctorList();
 
     $("input, textarea").addClass("idle");
     $("input, textarea").focus(function() {
