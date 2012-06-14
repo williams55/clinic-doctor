@@ -1,0 +1,118 @@
+﻿11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid Boolean.-----Source :    at System.Boolean.Parse(String value)
+   at System.Convert.ToBoolean(String value)
+   at Admin_Appointment_AppointmentIframe.CreateSimplePatient(String FirstName, String LastName, String CellPhone, String Address, String IsFemale) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 1347
+11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid Boolean.-----Source :    at System.Boolean.Parse(String value)
+   at System.Convert.ToBoolean(String value)
+   at Admin_Appointment_AppointmentIframe.CreateSimplePatient(String FirstName, String LastName, String CellPhone, String Address, String IsFemale) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 1347
+11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid Boolean.-----Source :    at System.Boolean.Parse(String value)
+   at System.Convert.ToBoolean(String value)
+   at Admin_Appointment_AppointmentIframe.CreateSimplePatient(String FirstName, String LastName, String CellPhone, String Address, String IsFemale) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 1347
+11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid Boolean.-----Source :    at System.Boolean.Parse(String value)
+   at System.Convert.ToBoolean(String value)
+   at Admin_Appointment_AppointmentIframe.CreateSimplePatient(String FirstName, String LastName, String CellPhone, String Address, String IsFemale) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 1347
+11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid Boolean.-----Source :    at System.Boolean.Parse(String value)
+   at System.Convert.ToBoolean(String value)
+   at Admin_Appointment_AppointmentIframe.CreateSimplePatient(String FirstName, String LastName, String CellPhone, String Address, String IsFemale) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 1347
+11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid Boolean.-----Source :    at System.Boolean.Parse(String value)
+   at System.Convert.ToBoolean(String value)
+   at Admin_Appointment_AppointmentIframe.CreateSimplePatient(String FirstName, String LastName, String CellPhone, String Address, String IsFemale) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 1347
+11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid DateTime.-----Source :    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at Admin_Appointment_AppointmentIframe.SearchDoctor() in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 150
+11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid DateTime.-----Source :    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at Admin_Appointment_AppointmentIframe.SearchDoctor() in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 150
+11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid DateTime.-----Source :    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at Admin_Appointment_AppointmentIframe.SearchDoctor() in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 150
+11-Jun-2012 ----Object[Method] : Log-----Message : String was not recognized as a valid DateTime.-----Source :    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at Admin_Appointment_AppointmentIframe.SearchDoctor() in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 151
+11-Jun-2012 ----Object[Method] : Log-----Message : Procedure or function 'GetAvailableStaffsForAppointment' expects parameter '@FuncId', which was not supplied.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlDataReader.ConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoLoadDataSet(IDbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 517
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1383
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1336
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteDataSet(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 589
+   at ClinicDoctor.Data.SqlClient.SqlNetTiersProvider.ExecuteDataSet(DbCommand commandWrapper) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlNetTiersProvider.cs:line 888
+   at Admin_Appointment_AppointmentIframe.SearchDoctor(String keyword, String appointmentId, String startTime, String endTime, String startDate, String endDate) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 190
+11-Jun-2012 ----Object[Method] : Log-----Message : Procedure or function 'GetAvailableStaffsForAppointment' expects parameter '@FuncId', which was not supplied.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlDataReader.ConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoLoadDataSet(IDbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 517
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1383
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1336
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteDataSet(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 589
+   at ClinicDoctor.Data.SqlClient.SqlNetTiersProvider.ExecuteDataSet(DbCommand commandWrapper) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlNetTiersProvider.cs:line 888
+   at Admin_Appointment_AppointmentIframe.SearchDoctor(String keyword, String appointmentId, String startTime, String endTime, String startDate, String endDate) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 190
+11-Jun-2012 ----Object[Method] : Log-----Message : Procedure or function 'GetAvailableStaffsForAppointment' expects parameter '@FuncId', which was not supplied.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlDataReader.ConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoLoadDataSet(IDbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 517
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1383
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1336
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteDataSet(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 589
+   at ClinicDoctor.Data.SqlClient.SqlNetTiersProvider.ExecuteDataSet(DbCommand commandWrapper) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlNetTiersProvider.cs:line 888
+   at Admin_Appointment_AppointmentIframe.SearchDoctor(String keyword, String appointmentId, String startTime, String endTime, String startDate, String endDate) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 190
+11-Jun-2012 ----Object[Method] : Log-----Message : Procedure or function 'GetAvailableStaffsForAppointment' expects parameter '@FuncId', which was not supplied.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlDataReader.ConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.System.Data.IDbCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoLoadDataSet(IDbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 517
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1383
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1336
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteDataSet(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 589
+   at ClinicDoctor.Data.SqlClient.SqlNetTiersProvider.ExecuteDataSet(DbCommand commandWrapper) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlNetTiersProvider.cs:line 888
+   at Admin_Appointment_AppointmentIframe.SearchDoctor(String keyword, String appointmentId, String startTime, String endTime, String startDate, String endDate) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 190

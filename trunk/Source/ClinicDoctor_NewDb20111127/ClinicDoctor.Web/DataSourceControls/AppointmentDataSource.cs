@@ -159,7 +159,7 @@ namespace ClinicDoctor.Web.Data
 			Appointment item;
 			count = 0;
 			
-			System.Int64 _contentId;
+			System.Int64? _contentId_nullable;
 			System.Boolean _isDisabled;
 			System.String _customerId;
 			System.Boolean _isComplete;
@@ -201,13 +201,13 @@ namespace ClinicDoctor.Web.Data
 					break;
 				// IX
 				case AppointmentSelectMethod.GetByContentId:
-					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
-					results = AppointmentProvider.GetByContentId(GetTransactionManager(), _contentId, this.StartIndex, this.PageSize, out count);
+					_contentId_nullable = (System.Int64?) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64?));
+					results = AppointmentProvider.GetByContentId(GetTransactionManager(), _contentId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case AppointmentSelectMethod.GetByContentIdIsDisabled:
-					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
+					_contentId_nullable = (System.Int64?) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64?));
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = AppointmentProvider.GetByContentIdIsDisabled(GetTransactionManager(), _contentId, _isDisabled, this.StartIndex, this.PageSize, out count);
+					results = AppointmentProvider.GetByContentIdIsDisabled(GetTransactionManager(), _contentId_nullable, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
 				case AppointmentSelectMethod.GetByCustomerId:
 					_customerId = ( values["CustomerId"] != null ) ? (System.String) EntityUtil.ChangeType(values["CustomerId"], typeof(System.String)) : string.Empty;
@@ -215,21 +215,21 @@ namespace ClinicDoctor.Web.Data
 					break;
 				case AppointmentSelectMethod.GetByCustomerIdContentId:
 					_customerId = ( values["CustomerId"] != null ) ? (System.String) EntityUtil.ChangeType(values["CustomerId"], typeof(System.String)) : string.Empty;
-					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
-					results = AppointmentProvider.GetByCustomerIdContentId(GetTransactionManager(), _customerId, _contentId, this.StartIndex, this.PageSize, out count);
+					_contentId_nullable = (System.Int64?) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64?));
+					results = AppointmentProvider.GetByCustomerIdContentId(GetTransactionManager(), _customerId, _contentId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case AppointmentSelectMethod.GetByCustomerIdContentIdIsComplete:
 					_customerId = ( values["CustomerId"] != null ) ? (System.String) EntityUtil.ChangeType(values["CustomerId"], typeof(System.String)) : string.Empty;
-					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
+					_contentId_nullable = (System.Int64?) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64?));
 					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
-					results = AppointmentProvider.GetByCustomerIdContentIdIsComplete(GetTransactionManager(), _customerId, _contentId, _isComplete, this.StartIndex, this.PageSize, out count);
+					results = AppointmentProvider.GetByCustomerIdContentIdIsComplete(GetTransactionManager(), _customerId, _contentId_nullable, _isComplete, this.StartIndex, this.PageSize, out count);
 					break;
 				case AppointmentSelectMethod.GetByCustomerIdContentIdIsCompleteIsDisabled:
 					_customerId = ( values["CustomerId"] != null ) ? (System.String) EntityUtil.ChangeType(values["CustomerId"], typeof(System.String)) : string.Empty;
-					_contentId = ( values["ContentId"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64)) : (long)0;
+					_contentId_nullable = (System.Int64?) EntityUtil.ChangeType(values["ContentId"], typeof(System.Int64?));
 					_isComplete = ( values["IsComplete"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsComplete"], typeof(System.Boolean)) : false;
 					_isDisabled = ( values["IsDisabled"] != null ) ? (System.Boolean) EntityUtil.ChangeType(values["IsDisabled"], typeof(System.Boolean)) : false;
-					results = AppointmentProvider.GetByCustomerIdContentIdIsCompleteIsDisabled(GetTransactionManager(), _customerId, _contentId, _isComplete, _isDisabled, this.StartIndex, this.PageSize, out count);
+					results = AppointmentProvider.GetByCustomerIdContentIdIsCompleteIsDisabled(GetTransactionManager(), _customerId, _contentId_nullable, _isComplete, _isDisabled, this.StartIndex, this.PageSize, out count);
 					break;
 				case AppointmentSelectMethod.GetByCustomerIdIsDisabled:
 					_customerId = ( values["CustomerId"] != null ) ? (System.String) EntityUtil.ChangeType(values["CustomerId"], typeof(System.String)) : string.Empty;

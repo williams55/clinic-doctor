@@ -386,6 +386,7 @@ namespace ClinicDoctor.Data.Bases
 					c.Id = (System.Int64)reader[((int)StatusColumn.Id - 1)];
 					c.Title = (System.String)reader[((int)StatusColumn.Title - 1)];
 					c.ColorCode = (System.String)reader[((int)StatusColumn.ColorCode - 1)];
+					c.PriorityIndex = (System.Int32)reader[((int)StatusColumn.PriorityIndex - 1)];
 					c.Note = (reader.IsDBNull(((int)StatusColumn.Note - 1)))?null:(System.String)reader[((int)StatusColumn.Note - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)StatusColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)StatusColumn.CreateUser - 1)))?null:(System.String)reader[((int)StatusColumn.CreateUser - 1)];
@@ -412,6 +413,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.Id = (System.Int64)reader[((int)StatusColumn.Id - 1)];
 			entity.Title = (System.String)reader[((int)StatusColumn.Title - 1)];
 			entity.ColorCode = (System.String)reader[((int)StatusColumn.ColorCode - 1)];
+			entity.PriorityIndex = (System.Int32)reader[((int)StatusColumn.PriorityIndex - 1)];
 			entity.Note = (reader.IsDBNull(((int)StatusColumn.Note - 1)))?null:(System.String)reader[((int)StatusColumn.Note - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)StatusColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)StatusColumn.CreateUser - 1)))?null:(System.String)reader[((int)StatusColumn.CreateUser - 1)];
@@ -433,6 +435,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.Id = (System.Int64)dataRow["Id"];
 			entity.Title = (System.String)dataRow["Title"];
 			entity.ColorCode = (System.String)dataRow["ColorCode"];
+			entity.PriorityIndex = (System.Int32)dataRow["PriorityIndex"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];

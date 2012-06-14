@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Services;
 using System.Web.Script.Services;
-using System.Web;
 using ClinicDoctor.Data;
 using ClinicDoctor.Entities;
 using ClinicDoctor.Settings.BusinessLayer;
-using System.Globalization;
 using System.Data;
 using System.Data.SqlClient;
 using LogUtil;
@@ -26,7 +25,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     #region Events
     protected void Page_Load(object sender, EventArgs e)
     {
-        GetFloors();
+        BindFloor();
+        BindStatus();
     }
     #endregion
 
@@ -34,7 +34,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     /// <summary>
     /// Get floor list
     /// </summary>
-    private void GetFloors()
+    private void BindFloor()
     {
         try
         {
@@ -52,16 +52,463 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetFloors", ex);
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.BindFloor", ex);
         }
+    }
+
+    /// <summary>
+    /// Get status list
+    /// </summary>
+    private void BindStatus()
+    {
+        try
+        {
+            var lst = DataRepository.StatusProvider.GetByIsDisabled(false);
+            lst.Sort((p1, p2) => p1.PriorityIndex.CompareTo(p2.PriorityIndex));
+
+            cboStatus.DataSource = lst;
+            cboStatus.DataTextField = "Title";
+            cboStatus.DataValueField = "Id";
+            cboStatus.DataBind();
+
+            lst.Add(new Status()
+                        {
+                            Title = "Out of date",
+                            ColorCode = ServiceFacade.SettingsHelper.CompleteColor
+                        });
+            rptStatus.DataSource = lst;
+            rptStatus.DataBind();
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetStatus", ex);
+        }
+    }
+    #endregion
+
+    #region Patient
+    /// <summary>
+    /// Search patient by keyword
+    /// </summary>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static string SearchPatient()
+    {
+        var keyword = HttpContext.Current.Request["q"];
+        var lstTk = new List<JPatientToken>();
+        try
+        {
+            int count;
+            var lst = DataRepository.CustomerProvider.GetPaged(String.Format("FirstName LIKE '%{0}%' OR LastName LIKE '%{0}%'" +
+                                                                             " OR Address LIKE '%{0}%' OR HomePhone LIKE '%{0}%'" +
+                                                                             " OR WorkPhone LIKE '%{0}%' OR CellPhone LIKE '%{0}%'" +
+                                                                             " OR Birthdate LIKE '%{0}%'", keyword)
+                , string.Empty, 0, 10000, out count);
+
+            lstTk = lst.Select(x => new JPatientToken()
+                                        {
+                                            Id = x.Id,
+                                            id = x.Id,
+                                            FirstName = x.FirstName,
+                                            LastName = x.LastName,
+                                            Address = x.Address,
+                                            HomePhone = x.HomePhone,
+                                            WorkPhone = x.WorkPhone,
+                                            CellPhone = x.CellPhone,
+                                            Birthdate = x.Birthdate == null ? string.Empty : ((DateTime)x.Birthdate).ToString("dd-MM-yyyy"),
+                                            Title = x.Title,
+                                            IsFemale = x.IsFemale,
+                                            Note = x.Note,
+                                            propertyToSearch = ParsePatientInfo(x)
+                                        }).ToList();
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("home_recharge_Default.aspx.Search", ex);
+        }
+
+        return JsonConvert.SerializeObject(lstTk);
+    }
+
+    /// <summary>
+    /// Parse data to string for property search of token input
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    private static string ParsePatientInfo(Customer obj)
+    {
+        string strResult = string.Empty;
+        try
+        {
+            strResult = String.Format("{0}{1} {2}. {3}{4}{5}{6}{7}"
+                          , string.IsNullOrEmpty(obj.Title) ? string.Empty : String.Format("{0}. ", obj.Title)
+                          , obj.FirstName, obj.LastName
+                          ,
+                          obj.Birthdate == null
+                              ? string.Empty
+                              : String.Format("Birthday: {0}. ", ((DateTime)obj.Birthdate).ToString("dd-MM-yyyy"))
+                          ,
+                          string.IsNullOrEmpty(obj.HomePhone)
+                              ? string.Empty
+                              : String.Format("Home Phone: {0}. ", obj.HomePhone)
+                          ,
+                          string.IsNullOrEmpty(obj.CellPhone)
+                              ? string.Empty
+                              : String.Format("Cell Phone: {0}. ", obj.CellPhone)
+                          ,
+                          string.IsNullOrEmpty(obj.WorkPhone)
+                              ? string.Empty
+                              : String.Format("Work Phone: {0}. ", obj.WorkPhone)
+                          , string.IsNullOrEmpty(obj.Address) ? string.Empty : String.Format("Address: {0}. ", obj.Address)
+                );
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("home_recharge_Default.aspx.Search", ex);
+        }
+        return strResult;
+    }
+    #endregion
+
+    #region Doctor
+    /// <summary>
+    /// Search doctor by keyword
+    /// </summary>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static string SearchDoctor()
+    {
+        try
+        {
+            return SearchDoctor(HttpContext.Current.Request["q"], HttpContext.Current.Request["appointmentId"]
+                , HttpContext.Current.Request["fromTime"], HttpContext.Current.Request["toTime"]
+                , HttpContext.Current.Request["fromDate"], HttpContext.Current.Request["toDate"]);
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("home_recharge_Default.aspx.SearchDoctor", ex);
+        }
+
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// Search Doctor with conditions
+    /// </summary>
+    /// <param name="keyword"> </param>
+    /// <param name="appointmentId"> </param>
+    /// <param name="startTime"></param>
+    /// <param name="endTime"></param>
+    /// <param name="startDate"></param>
+    /// <param name="endDate"></param>
+    /// <returns></returns>
+    private static string SearchDoctor(string keyword, string appointmentId, string startTime, string endTime, string startDate, string endDate)
+    {
+        string result = string.Empty;
+
+        try
+        {
+            // Get start time and end time
+            int intStartHour = Convert.ToInt32(startTime.Split(':')[0]);
+            int intStartMinute = Convert.ToInt32(startTime.Split(':')[1]);
+            int intEndHour = Convert.ToInt32(endTime.Split(':')[0]);
+            int intEndMinute = Convert.ToInt32(endTime.Split(':')[1]);
+
+            // Get start date and end date
+            DateTime dtStart = Convert.ToDateTime(startDate);
+            DateTime dtEnd = Convert.ToDateTime(endDate);
+
+            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
+            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
+
+            var cmd = new SqlCommand { CommandText = "GetAvailableStaffsForAppointment", CommandType = CommandType.StoredProcedure };
+            cmd.Parameters.Add(new SqlParameter("@AppointmentId", appointmentId));
+            cmd.Parameters.Add(new SqlParameter("@Keyword", keyword));
+            cmd.Parameters.Add(new SqlParameter("@StartTime", dtStart));
+            cmd.Parameters.Add(new SqlParameter("@EndTime", dtEnd));
+            cmd.CommandTimeout = 0;
+
+            DataSet ds = DataRepository.Provider.ExecuteDataSet(cmd);
+            DataTable objTable = ds.Tables[0];
+
+            if (objTable == null) goto StepResult;
+
+            var lst = (from DataRow dr in objTable.Rows
+                       select new JDoctorToken()
+                                  {
+                                      id = dr["DoctorUserName"].ToString(),
+                                      ShortName = dr["DoctorShortName"].ToString(),
+                                      propertyToSearch = String.Format("Dr. {0}. {1}", dr["DoctorShortName"], String.Format("Specialty: {0}. ", dr["FuncTitle"]))
+                                  }).ToList();
+
+            result = JsonConvert.SerializeObject(lst);
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetStaffs", ex);
+            result = string.Empty;
+        }
+    StepResult:
+        return result;
+    }
+    #endregion
+
+    #region Room
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static string SearchRoom()
+    {
+        try
+        {
+            return SearchRoom(HttpContext.Current.Request["q"], HttpContext.Current.Request["appointmentId"]
+                , HttpContext.Current.Request["doctorUserName"]
+                , HttpContext.Current.Request["fromTime"], HttpContext.Current.Request["toTime"]
+                , HttpContext.Current.Request["fromDate"], HttpContext.Current.Request["toDate"]);
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("home_recharge_Default.aspx.SearchRoom", ex);
+        }
+
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// Search room by condition
+    /// </summary>
+    /// <param name="keyword"> </param>
+    /// <param name="appointmentId"></param>
+    /// <param name="doctorUserName"></param>
+    /// <param name="startTime"></param>
+    /// <param name="endTime"></param>
+    /// <param name="startDate"></param>
+    /// <param name="endDate"></param>
+    /// <returns></returns>
+    private static string SearchRoom(string keyword, string appointmentId, string doctorUserName
+        , string startTime, string endTime, string startDate, string endDate)
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data:  [{
+         *          key: name of roles,
+         *          label: name of roles,
+         *          }, {}, {}]
+         *  }]
+         */
+        string result = string.Empty;
+
+        try
+        {
+            // Get start time and end time
+            int intStartHour = Convert.ToInt32(startTime.Split(':')[0]);
+            int intStartMinute = Convert.ToInt32(startTime.Split(':')[1]);
+            int intEndHour = Convert.ToInt32(endTime.Split(':')[0]);
+            int intEndMinute = Convert.ToInt32(endTime.Split(':')[1]);
+
+            // Get start date and end date
+            DateTime dtStart = Convert.ToDateTime(startDate);
+            DateTime dtEnd = Convert.ToDateTime(endDate);
+
+            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
+            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
+
+            var cmd = new SqlCommand
+                                 {
+                                     CommandText = "GetAvailableRoomsForAppointment",
+                                     CommandType = CommandType.StoredProcedure
+                                 };
+            cmd.Parameters.Add(new SqlParameter("@AppointmentId", appointmentId));
+            cmd.Parameters.Add(new SqlParameter("@DoctorUserName", doctorUserName));
+            cmd.Parameters.Add(new SqlParameter("@StartTime", dtStart));
+            cmd.Parameters.Add(new SqlParameter("@EndTime", dtEnd));
+            cmd.Parameters.Add(new SqlParameter("@Keyword", keyword));
+            cmd.CommandTimeout = 0;
+
+            DataSet ds = DataRepository.Provider.ExecuteDataSet(cmd);
+            DataTable objTable = ds.Tables[0];
+
+            if (objTable == null) goto StepResult;
+
+            var lst = (from DataRow dr in objTable.Rows
+                       select new JRoomToken()
+                       {
+                           id = dr["Id"].ToString(),
+                           PriorityIndex = Convert.ToInt32(dr["PriorityIndex"].ToString()),
+                           propertyToSearch = dr["Title"].ToString()
+                       }).ToList();
+            lst.Sort((p1, p2) => p2.PriorityIndex.CompareTo(p1.PriorityIndex));
+
+            result = JsonConvert.SerializeObject(lst);
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetRoom", ex);
+            result = string.Empty;
+        }
+    StepResult:
+        return result;
+    }
+
+    /// <summary>
+    /// Get a room info
+    /// </summary>
+    /// <param name="roomId"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetRoom(string roomId)
+    {
+        string result = string.Empty;
+
+        try
+        {
+            Room obj = DataRepository.RoomProvider.GetByIdIsDisabled(Convert.ToInt64(roomId), false);
+            if (obj == null)
+            {
+                result = @"[{ 'result': 'true', 'message': 'Cannot find room.', 'data': '' }]";
+                goto StepResult;
+            }
+
+            result = JsonConvert.SerializeObject(new JRoomToken()
+                                                     {
+                                                         id = obj.Id.ToString(),
+                                                         propertyToSearch = obj.Title
+                                                     });
+            result = @"[{ 'result': 'true', 'message': '', 'data':" + result + @" }]";
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetRoom", ex);
+            result = string.Empty;
+        }
+    StepResult:
+        return result;
+    }
+    #endregion
+
+    #region Appointment
+    /// <summary>
+    /// Get a room info
+    /// </summary>
+    /// <param name="appointmentId"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetAppointment(string appointmentId)
+    {
+        /* Return Structure
+         * { result: true [success], false [fail],
+         *   message: message content [will be showed when fail]
+         *   data:  [{
+         *              Id: Id of appointment,
+         *              PatientId: Patient Id,
+         *              PatientInfo: Patient propertyToSearch,
+         *              DoctorUserName: Doctor UserName,
+         *              DoctorInfo: Doctor propertyToSearch,
+         *              RoomId: Room Id,
+         *              RoomInfo: Room propertyToSearch,
+         *              start_date: start date,
+         *              end_date: end date,
+         *              note: note
+         *          }, {}, {}]
+         *  }
+         */
+        string result;
+
+        try
+        {
+            Appointment obj = DataRepository.AppointmentProvider.GetByIdIsDisabled(appointmentId, false);
+            if (obj == null)
+            {
+                result = @"[{ 'result': 'true', 'message': 'Cannot find appointment.', 'data': '' }]";
+                goto StepResult;
+            }
+
+            // Deep load appointment
+            DataRepository.AppointmentProvider.DeepLoad(obj);
+
+            // Get Specialty [Functionality]
+            var lstFunc = DataRepository.DoctorFuncProvider.GetByDoctorUserName(obj.DoctorUsername);
+            DoctorFunc objFunc = null;
+            if (lstFunc.Any()) objFunc = lstFunc.First();
+
+            result = JsonConvert.SerializeObject(new
+            {
+                Id = obj.Id,
+                PatientId = obj.CustomerId,
+                PatientInfo = ParsePatientInfo(obj.CustomerIdSource),
+                DoctorUserName = obj.DoctorUsername,
+                DoctorInfo = String.Format("Dr. {0}. {1}"
+                    , obj.DoctorUsernameSource.ShortName, objFunc == null ? string.Empty : String.Format("Specialty: {0}. ", objFunc.FuncTitle)),
+                RoomId = obj.RoomId,
+                RoomInfo = obj.RoomIdSource.Title,
+                note = obj.Note
+            });
+            result = @"[{ 'result': 'true', 'message': '', 'data':" + result + @" }]";
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetAppointment", ex);
+            result = string.Empty;
+        }
+    StepResult:
+        return result;
+    }
+
+    /// <summary>
+    /// Build object to string result
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    private static string BuildResult(Appointment obj)
+    {
+        var lstEvent = new List<JEvent>();
+        try
+        {
+            if (obj.StartTime != null && obj.EndTime != null)
+                lstEvent.Add(
+                    new JEvent()
+                        {
+                            id = obj.Id,
+                            start_date = obj.StartTime.Value.ToString("dd-MM-yyyy HH:mm"),
+                            end_date = obj.EndTime.Value.ToString("dd-MM-yyyy HH:mm"),
+                            section_id = obj.RoomId.ToString(),
+                            text =
+                                String.Format("Patient: {0}.<br />Note: {1}", obj.CustomerName,
+                                              obj.Note),
+                            DoctorUserName = obj.DoctorUsername,
+                            DoctorShortName = obj.DoctorShortName,
+                            CustomerId = obj.CustomerId,
+                            CustomerName = obj.CustomerName,
+                            ContentId = obj.ContentId.ToString(),
+                            ContentTitle = obj.ContentTitle,
+                            RoomId = obj.RoomId.ToString(),
+                            RoomTitle = obj.RoomTitle,
+                            NurseUsername = obj.NurseUsername,
+                            NurseShortName = obj.NurseShortName,
+                            note = obj.Note,
+                            ReadOnly = (obj.StartTime <= DateTime.Now).ToString().ToLower(),
+                            color = obj.ColorCode,
+                            isnew = "false"
+                        }
+                    );
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.BuildResult", ex);
+        }
+        return JsonConvert.SerializeObject(lstEvent);
     }
     #endregion
 
     #region "Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string SaveEvent(string PatientId, string ContentId, string Note,
-        string StartTime, string EndTime, string StartDate, string EndDate, string DoctorUsername, string RoomId)
+    public static string SaveEvent(string PatientId, string Note, string StartTime, string EndTime, string StartDate, string EndDate
+        , string DoctorUsername, string RoomId, string Status)
     {
         /* Return Structure
          * { result: true [success], false [fail],
@@ -90,16 +537,9 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             #region "Validate"
             // Check Patient
-            if (string.IsNullOrEmpty(PatientId) || PatientId == "-1")
+            if (string.IsNullOrEmpty(PatientId) || PatientId == "")
             {
                 result = @"[{ 'result': 'false', 'message': 'You must choose patient.', 'data': [] }]";
-                return result;
-            }
-
-            // Check Content
-            if (string.IsNullOrEmpty(ContentId) || ContentId == "-1")
-            {
-                result = @"[{ 'result': 'false', 'message': 'You must choose content.', 'data': [] }]";
                 return result;
             }
 
@@ -125,31 +565,37 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             // If appointment is created in a passed or current day
             DateTime dtNow = DateTime.Now;
-            if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(dtStart.Year, dtStart.Month, dtStart.Day))
+            if (dtNow >= dtStart)
             {
                 result = @"[{ 'result': 'false', 'message': 'You can not change roster to passed or current date.', 'data': [] }]";
                 goto StepResult;
             }
 
             // Check Doctor
-            if (string.IsNullOrEmpty(DoctorUsername) || DoctorUsername == "-1")
+            if (string.IsNullOrEmpty(DoctorUsername) || DoctorUsername == "")
             {
                 result = @"[{ 'result': 'false', 'message': 'You must choose doctor.', 'data': [] }]";
                 goto StepResult;
             }
 
             // Check Room
-            if (string.IsNullOrEmpty(RoomId) || RoomId == "-1")
+            if (string.IsNullOrEmpty(RoomId) || RoomId == "")
             {
                 result = @"[{ 'result': 'false', 'message': 'You must choose room.', 'data': [] }]";
+                goto StepResult;
+            }
+
+            // Check Status
+            long lStatus;
+            if (!Int64.TryParse(Status, out lStatus))
+            {
+                result = @"[{ 'result': 'false', 'message': 'You must choose status.', 'data': [] }]";
                 goto StepResult;
             }
             #endregion
 
             string strUserName = EntitiesUtilities.GetAuthName();
             string strPatientId = PatientId;
-            string[] arr = ContentId.Split(ChrSeperateStaff);
-            long lContentId = Convert.ToInt64(arr[1]);
             long lRoomId = Convert.ToInt64(RoomId);
 
             tm.BeginTransaction();
@@ -164,15 +610,6 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 goto StepResult;
             }
 
-            // Check exists Content
-            Content objContent = DataRepository.ContentProvider.GetByIdIsDisabled(tm, lContentId, false);
-            if (objPatient == null)
-            {
-                tm.Rollback();
-                result = @"[{ 'result': 'false', 'message': 'Content is not exist.', 'data': '[]' }]";
-                goto StepResult;
-            }
-
             // Check exists Doctor
             Staff objDoctor = DataRepository.StaffProvider.GetByUserNameIsDisabled(tm, DoctorUsername, false);
             if (objDoctor == null)
@@ -184,10 +621,19 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             // Check exists Room
             Room objRoom = DataRepository.RoomProvider.GetByIdIsDisabled(tm, lRoomId, false);
-            if (objDoctor == null)
+            if (objRoom == null)
             {
                 tm.Rollback();
                 result = @"[{ 'result': 'false', 'message': 'Room is not exist.', 'data': '[]' }]";
+                goto StepResult;
+            }
+
+            // Check exists Room
+            Status objStatus = DataRepository.StatusProvider.GetByIdIsDisabled(tm, lStatus, false);
+            if (objStatus == null)
+            {
+                tm.Rollback();
+                result = @"[{ 'result': 'false', 'message': 'Status is not exist.', 'data': '[]' }]";
                 goto StepResult;
             }
             #endregion
@@ -232,51 +678,20 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             newObj.CustomerId = strPatientId;
             newObj.CustomerName = String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName);
-            newObj.ContentId = lContentId;
-            newObj.ContentTitle = objContent.Title;
             newObj.DoctorEmail = objDoctor.Email;
             newObj.DoctorUsername = DoctorUsername;
             newObj.DoctorShortName = objDoctor.ShortName;
             newObj.RoomId = lRoomId;
             newObj.RoomTitle = objRoom.Title;
-            //newObj.NurseUsername = string.Empty;
-            //newObj.NurseShortName = string.Empty;
             newObj.Note = Note;
+            newObj.StatusId = lStatus;
             newObj.StartTime = dtStart;
             newObj.EndTime = dtEnd;
-            newObj.ColorCode = string.Empty; // Cho nay se them 1 field chon mau
+            newObj.ColorCode = objStatus.ColorCode;
             newObj.CreateUser = strUserName;
             newObj.UpdateUser = strUserName;
 
             DataRepository.AppointmentProvider.Insert(tm, newObj);
-            #endregion
-
-            #region "Return string"
-            result = @"[{ 'result': 'true', 'message': '', 'data': ["
-                + @"{id: '" + newObj.Id + @"',"
-                + @"start_date: '" + newObj.StartTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                + @"end_date: '" + newObj.EndTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                + @"section_id: '" + newObj.DoctorUsername + @"',"
-                + @"text: '" + newObj.ContentTitle + @"<br />Doctor: " + newObj.DoctorUsername + @"<br />";
-
-            if (!string.IsNullOrEmpty(newObj.Note))
-                result += newObj.Note;
-
-            result += @"',DoctorUserName: '" + newObj.DoctorUsername + @"',"
-                + @"DoctorShortName: '" + newObj.DoctorShortName + @"',"
-                + @"CustomerId: '" + newObj.CustomerId + @"',"
-                + @"CustomerName: '" + newObj.CustomerName + @"',"
-                + @"ContentId: '" + objContent.FuncId + ChrSeperateStaff.ToString() + newObj.ContentId + @"',"
-                + @"ContentTitle: '" + newObj.ContentTitle + @"',"
-                + @"RoomId: '" + newObj.RoomId + @"',"
-                + @"RoomTitle: '" + newObj.RoomTitle + @"',"
-                + @"NurseUsername: '" + newObj.NurseUsername + @"',"
-                + @"NurseShortName: '" + newObj.NurseShortName + @"',"
-                + @"note: '" + newObj.Note + @"',"
-                + @"color: '" + newObj.ColorCode + @"',"
-                + @"isnew: 'false'"
-                + @"}"
-               + @"] }]";
             #endregion
 
             #region "Send Appointment"
@@ -293,6 +708,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             objMail.SendMail();
             #endregion
 
+            result = @"[{ 'result': 'true', 'message': '', 'data':" + BuildResult(newObj) + @" }]";
+
             tm.Commit();
 
         }
@@ -302,8 +719,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             tm.Rollback();
 
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
+            result = @"[{ 'result': 'false', 'message': 'Cannot create appointment', 'data': [] }]";
         }
 
     StepResult:
@@ -313,8 +729,8 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     #region "Update Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateEventSave(string Id, string PatientId, string ContentId, string Note,
-        string StartTime, string EndTime, string StartDate, string EndDate, string DoctorUsername, string RoomId)
+    public static string UpdateEventSave(string Id, string PatientId, string Note,
+        string StartTime, string EndTime, string StartDate, string EndDate, string DoctorUsername, string RoomId, string Status)
     {
         try
         {
@@ -331,7 +747,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
             dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
 
-            return UpdateEvent(Id, PatientId, ContentId, Note, dtStart, dtEnd, DoctorUsername, RoomId);
+            return UpdateEvent(Id, PatientId, Note, dtStart, dtEnd, DoctorUsername, RoomId, Status);
         }
         catch (Exception ex)
         {
@@ -343,7 +759,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateEventMove(string Id, string DoctorUsername, string StartTime, string EndTime)
+    public static string UpdateEventMove(string Id, string DoctorUsername, string StartTime, string EndTime, string RoomId)
     {
         string result = string.Empty;
         try
@@ -353,81 +769,14 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             DateTime dtEnd = Convert.ToDateTime(EndTime);
 
             Appointment obj = DataRepository.AppointmentProvider.GetByIdIsDisabled(Id, false);
-            if (obj == null || obj.IsComplete == true)
+            if (obj == null || obj.IsComplete)
             {
                 result = @"[{ 'result': 'false', 'message': 'There is no appointment to change or appointment is expired.', 'data': [] }]";
                 return result;
             }
 
-            // Check if user drag to another function
-            TList<DoctorFunc> lstObj = DataRepository.DoctorFuncProvider.GetByDoctorUserNameIsDisabled(DoctorUsername, false);
-            Content objContent = DataRepository.ContentProvider.GetByIdIsDisabled(obj.ContentId, false);
-            if (lstObj.Count == 0 || objContent == null)
-            {
-                #region "Return string"
-                result = @"{id: '" + obj.Id + @"',"
-                    + @"start_date: '" + obj.StartTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"end_date: '" + obj.EndTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"section_id: '" + obj.DoctorUsername + @"',"
-                    + @"text: '" + obj.ContentTitle + @"<br />Doctor: " + obj.DoctorUsername + @"<br />";
-
-                if (!string.IsNullOrEmpty(obj.Note))
-                    result += obj.Note;
-
-                result += @"',DoctorUserName: '" + obj.DoctorUsername + @"',"
-                    + @"DoctorShortName: '" + obj.DoctorShortName + @"',"
-                    + @"CustomerId: '" + obj.CustomerId + @"',"
-                    + @"CustomerName: '" + obj.CustomerName + @"',"
-                    + @"ContentId: '" + obj.ContentId + @"',"
-                    + @"ContentTitle: '" + obj.ContentTitle + @"',"
-                    + @"RoomId: '" + obj.RoomId + @"',"
-                    + @"RoomTitle: '" + obj.RoomTitle + @"',"
-                    + @"NurseUsername: '" + obj.NurseUsername + @"',"
-                    + @"NurseShortName: '" + obj.NurseShortName + @"',"
-                    + @"note: '" + obj.Note + @"',"
-                    + @"color: '" + obj.ColorCode + @"',"
-                    + @"isnew: 'false'"
-                    + @"}";
-                #endregion
-                result = @"[{ 'result': 'false', 'message': 'You cannot change content appointment to another functionality by dragging.', 'data': [" + result + "] }]";
-                return result;
-            }
-            else
-            {
-                if (lstObj[0].FuncId != objContent.FuncId)
-                {
-                    #region "Return string"
-                    result = @"{id: '" + obj.Id + @"',"
-                        + @"start_date: '" + obj.StartTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                        + @"end_date: '" + obj.EndTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                        + @"section_id: '" + obj.DoctorUsername + @"',"
-                        + @"text: '" + obj.ContentTitle + @"<br />Doctor: " + obj.DoctorUsername + @"<br />";
-
-                    if (!string.IsNullOrEmpty(obj.Note))
-                        result += obj.Note;
-
-                    result += @"',DoctorUserName: '" + obj.DoctorUsername + @"',"
-                        + @"DoctorShortName: '" + obj.DoctorShortName + @"',"
-                        + @"CustomerId: '" + obj.CustomerId + @"',"
-                        + @"CustomerName: '" + obj.CustomerName + @"',"
-                        + @"ContentId: '" + obj.ContentId + @"',"
-                        + @"ContentTitle: '" + obj.ContentTitle + @"',"
-                        + @"RoomId: '" + obj.RoomId + @"',"
-                        + @"RoomTitle: '" + obj.RoomTitle + @"',"
-                        + @"NurseUsername: '" + obj.NurseUsername + @"',"
-                        + @"NurseShortName: '" + obj.NurseShortName + @"',"
-                        + @"note: '" + obj.Note + @"',"
-                        + @"color: '" + obj.ColorCode + @"',"
-                        + @"isnew: 'false'"
-                        + @"}";
-                    #endregion
-                    result = @"[{ 'result': 'false', 'message': 'You cannot change content appointment to another functionality by dragging.', 'data': [" + result + "] }]";
-                    return result;
-                }
-            }
-
-            return UpdateEvent(Id, obj.CustomerId, ChrSeperateStaff.ToString() + obj.ContentId.ToString(), obj.Note, dtStart,
-                dtEnd, DoctorUsername, obj.RoomId.ToString());
+            return UpdateEvent(Id, obj.CustomerId, obj.Note, dtStart,
+                dtEnd, DoctorUsername, RoomId, obj.StatusId.ToString());
         }
         catch (Exception ex)
         {
@@ -438,9 +787,20 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         }
     }
 
-    // Update roster
-    private static string UpdateEvent(string Id, string PatientId, string ContentId, string Note, DateTime StartTime, DateTime EndTime,
-        string DoctorUsername, string RoomId)
+    /// <summary>
+    /// Update an appointment
+    /// </summary>
+    /// <param name="Id"></param>
+    /// <param name="PatientId"></param>
+    /// <param name="ContentId"></param>
+    /// <param name="Note"></param>
+    /// <param name="StartTime"></param>
+    /// <param name="EndTime"></param>
+    /// <param name="DoctorUsername"></param>
+    /// <param name="RoomId"></param>
+    /// <returns></returns>
+    private static string UpdateEvent(string Id, string PatientId, string Note, DateTime StartTime, DateTime EndTime,
+        string DoctorUsername, string RoomId, string Status)
     {
         string result = string.Empty;
 
@@ -449,16 +809,9 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         {
             #region "Validate"
             // Check Patient
-            if (string.IsNullOrEmpty(PatientId) || PatientId == "-1")
+            if (string.IsNullOrEmpty(PatientId) || PatientId == "")
             {
                 result = @"[{ 'result': 'false', 'message': 'You must choose patient.', 'data': [] }]";
-                return result;
-            }
-
-            // Check Content
-            if (string.IsNullOrEmpty(ContentId) || ContentId == "-1")
-            {
-                result = @"[{ 'result': 'false', 'message': 'You must choose content.', 'data': [] }]";
                 return result;
             }
 
@@ -475,31 +828,37 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             // If appointment is created in a passed or current day
             DateTime dtNow = DateTime.Now;
-            if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(dtStart.Year, dtStart.Month, dtStart.Day))
+            if (dtNow >= dtStart)
             {
                 result = @"[{ 'result': 'false', 'message': 'You can not change roster to passed or current date.', 'data': [] }]";
                 goto StepResult;
             }
 
             // Check Doctor
-            if (string.IsNullOrEmpty(DoctorUsername) || DoctorUsername == "-1")
+            if (string.IsNullOrEmpty(DoctorUsername) || DoctorUsername == "")
             {
                 result = @"[{ 'result': 'false', 'message': 'You must choose doctor.', 'data': [] }]";
                 goto StepResult;
             }
 
             // Check Room
-            if (string.IsNullOrEmpty(RoomId) || RoomId == "-1")
+            if (string.IsNullOrEmpty(RoomId) || RoomId == "")
             {
                 result = @"[{ 'result': 'false', 'message': 'You must choose room.', 'data': [] }]";
+                goto StepResult;
+            }
+
+            // Check Status
+            long lStatus;
+            if (!Int64.TryParse(Status, out lStatus))
+            {
+                result = @"[{ 'result': 'false', 'message': 'You must choose status.', 'data': [] }]";
                 goto StepResult;
             }
             #endregion
 
             string strUserName = EntitiesUtilities.GetAuthName();
             string strPatientId = PatientId;
-            string[] arr = ContentId.Split(ChrSeperateStaff);
-            long lContentId = Convert.ToInt64(arr[1]);
             long lRoomId = Convert.ToInt64(RoomId);
 
             tm.BeginTransaction();
@@ -514,15 +873,6 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 goto StepResult;
             }
 
-            // Check exists Content
-            Content objContent = DataRepository.ContentProvider.GetByIdIsDisabled(tm, lContentId, false);
-            if (objPatient == null)
-            {
-                tm.Rollback();
-                result = @"[{ 'result': 'false', 'message': 'Content is not exist.', 'data': '[]' }]";
-                goto StepResult;
-            }
-
             // Check exists Doctor
             Staff objDoctor = DataRepository.StaffProvider.GetByUserNameIsDisabled(tm, DoctorUsername, false);
             if (objDoctor == null)
@@ -534,10 +884,19 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             // Check exists Room
             Room objRoom = DataRepository.RoomProvider.GetByIdIsDisabled(tm, lRoomId, false);
-            if (objDoctor == null)
+            if (objRoom == null)
             {
                 tm.Rollback();
                 result = @"[{ 'result': 'false', 'message': 'Room is not exist.', 'data': '[]' }]";
+                goto StepResult;
+            }
+
+            // Check exists Room
+            Status objStatus = DataRepository.StatusProvider.GetByIdIsDisabled(tm, lStatus, false);
+            if (objStatus == null)
+            {
+                tm.Rollback();
+                result = @"[{ 'result': 'false', 'message': 'Status is not exist.', 'data': '[]' }]";
                 goto StepResult;
             }
             #endregion
@@ -577,16 +936,14 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             obj.CustomerId = strPatientId;
             obj.CustomerName = String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName);
-            obj.ContentId = lContentId;
-            obj.ContentTitle = objContent.Title;
             obj.DoctorEmail = objDoctor.Email;
             obj.DoctorUsername = DoctorUsername;
             obj.DoctorShortName = objDoctor.ShortName;
             obj.RoomId = lRoomId;
             obj.RoomTitle = objRoom.Title;
-            //obj.NurseUsername = string.Empty;
-            //obj.NurseShortName = string.Empty;
             obj.Note = Note;
+            obj.StatusId = lStatus;
+            obj.ColorCode = objStatus.ColorCode;
             obj.StartTime = dtStart;
             obj.EndTime = dtEnd;
             obj.UpdateUser = strUserName;
@@ -612,33 +969,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             }
             #endregion
 
-            #region "Return String"
-            result = @"[{ 'result': 'true', 'message': '', 'data': ["
-                + @"{id: '" + obj.Id + @"',"
-                + @"start_date: '" + obj.StartTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                + @"end_date: '" + obj.EndTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                + @"section_id: '" + obj.DoctorUsername + @"',"
-                + @"text: '" + obj.ContentTitle + @"<br />Doctor: " + obj.DoctorUsername + @"<br />";
-
-            if (!string.IsNullOrEmpty(obj.Note))
-                result += obj.Note;
-
-            result += @"',DoctorUserName: '" + obj.DoctorUsername + @"',"
-                + @"DoctorShortName: '" + obj.DoctorShortName + @"',"
-                + @"CustomerId: '" + obj.CustomerId + @"',"
-                + @"CustomerName: '" + obj.CustomerName + @"',"
-                + @"ContentId: '" + objContent.FuncId + ChrSeperateStaff.ToString() + obj.ContentId + @"',"
-                + @"ContentTitle: '" + obj.ContentTitle + @"',"
-                + @"RoomId: '" + obj.RoomId + @"',"
-                + @"RoomTitle: '" + obj.RoomTitle + @"',"
-                + @"NurseUsername: '" + obj.NurseUsername + @"',"
-                + @"NurseShortName: '" + obj.NurseShortName + @"',"
-                + @"note: '" + obj.Note + @"',"
-                + @"color: '" + obj.ColorCode + @"',"
-                + @"isnew: 'false'"
-                + @"}"
-               + @"] }]";
-            #endregion
+            result = @"[{ 'result': 'true', 'message': '', 'data':" + BuildResult(obj) + @" }]";
 
             tm.Commit();
         }
@@ -657,9 +988,15 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     }
     #endregion
 
+    /// <summary>
+    /// Get list of appointment in day
+    /// </summary>
+    /// <param name="mode">Floor Id</param>
+    /// <param name="currentDateView">Date</param>
+    /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string LoadRoster(string Mode, string CurrentDateView)
+    public static string GetAppointments(string mode, string currentDateView)
     {
         /* Return Structure
          * { result: true [success], false [fail],
@@ -686,6 +1023,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         {
             tm.BeginTransaction();
 
+            // Check active user
             string username = EntitiesUtilities.GetAuthName();
             Staff obj = DataRepository.StaffProvider.GetByUserNameIsDisabled(username, false);
             if (obj == null)
@@ -693,120 +1031,68 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                 result = @"[{ 'result': 'false', 'message': 'Doctor is not exist.', 'data': '[]' }]";
                 goto StepResult;
             }
-            /*
-            #region "Load roster in appointment"
-            TList<DoctorRoster> lstObj = DataRepository.DoctorRosterProvider.GetByIsDisabled(tm, false);
 
-            string color = string.Empty;
-            foreach (DoctorRoster item in lstObj)
-            {
-                result += @"{id: '" + item.Id + @"',"
-                    + @"start_date: '" + item.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"end_date: '" + item.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"section_id: '" + item.DoctorUserName + @"',"
-                    + @"text: '" + item.RosterTypeTitle + @"<br />";
-
-                if (!string.IsNullOrEmpty(item.Note))
-                    result += item.Note;
-
-                result += @"',DoctorUserName: '" + item.DoctorUserName + @"',"
-                    + @"DoctorShortName: '" + item.DoctorShortName + @"',"
-                    + @"RosterTypeId: '" + item.RosterTypeId + @"',"
-                    + @"RosterTypeTitle: '" + item.RosterTypeTitle + @"',"
-                    + @"RosterTypeId: '" + item.RosterTypeId + @"',"
-                    + @"note: '" + item.Note + @"',";
-
-                // If roster is passed, set color code and is completed
-                if (item.StartTime <= DateTime.Now)
-                {
-                    item.ColorCode = ServiceFacade.SettingsHelper.CompleteColor;
-                    item.IsComplete = true;
-                    DataRepository.DoctorRosterProvider.Save(tm, item);
-
-                    result += @"readonly: true,";
-                }
-                // Set color to recognize that's is roster
-                result += @"color: '" + ServiceFacade.SettingsHelper.RosterInAppointmentColor + @"',";
-                result += @"isnew: 'false'},";
-            }
-            #endregion
-            */
             #region "Load appointment"
-            TList<Appointment> lstApt = DataRepository.AppointmentProvider.GetByIsDisabled(tm, false);
+            // Get datetime to filter
+            DateTime fromDate = Convert.ToDateTime(currentDateView);
+            fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+            var toDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 23, 59, 59);
+            int count;
 
-            foreach (Appointment item in lstApt)
-            {
-                Content objContent = DataRepository.ContentProvider.GetByIdIsDisabled(item.ContentId, false);
-                if (objContent == null)
-                {
-                    tm.Rollback();
-                    result = @"[{ 'result': 'false', 'message': 'Content " + item.ContentTitle
-                        + " has no function or function is disabled. Please contact Administrator.', 'data': '[]' }]";
-                    goto StepResult;
-                }
+            // Get appointment
+            TList<Appointment> lstAppt = DataRepository.AppointmentProvider.GetPaged(String.Format("StartTime BETWEEN N'{0}' AND N'{1}'"
+                , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"), toDate.ToString("yyyy-MM-dd HH:mm:ss.000")), string.Empty, 0, 10000, out count);
+            //TList<Appointment> lstAppt = DataRepository.AppointmentProvider.GetPaged(0, 10000, out count); // Good performance later
 
-                result += @"{id: '" + item.Id + @"',"
-                    + @"start_date: '" + item.StartTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"end_date: '" + item.EndTime.Value.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"section_id: '" + item.RoomId + @"',"
-                    + @"text: '" + item.ContentTitle + @"<br />Doctor: " + item.DoctorUsername + @"<br />";
+            // Set out of date for passed appointment
+            lstAppt.ForEach(x =>
+                                {
+                                    x.ColorCode = x.StartTime <= DateTime.Now
+                                                      ? ServiceFacade.SettingsHelper.CompleteColor
+                                                      : x.ColorCode;
+                                });
+            DataRepository.AppointmentProvider.Save(lstAppt);
 
-                if (!string.IsNullOrEmpty(item.Note))
-                    result += item.Note;
-
-                result += @"',DoctorUserName: '" + item.DoctorUsername + @"',"
-                    + @"DoctorShortName: '" + item.DoctorShortName + @"',"
-                    + @"CustomerId: '" + item.CustomerId + @"',"
-                    + @"CustomerName: '" + item.CustomerName + @"',"
-                    + @"ContentId: '" + objContent.FuncId + ChrSeperateStaff.ToString() + item.ContentId + @"',"
-                    + @"ContentTitle: '" + item.ContentTitle + @"',"
-                    + @"RoomId: '" + item.RoomId + @"',"
-                    + @"RoomTitle: '" + item.RoomTitle + @"',"
-                    + @"NurseUsername: '" + item.NurseUsername + @"',"
-                    + @"NurseShortName: '" + item.NurseShortName + @"',"
-                    + @"note: '" + item.Note + @"',";
-
-                // If roster is passed, set color code and is completed
-                if (item.StartTime <= DateTime.Now)
-                {
-                    item.ColorCode = ServiceFacade.SettingsHelper.CompleteColor;
-                    item.IsComplete = true;
-                    DataRepository.AppointmentProvider.Save(tm, item);
-
-                    result += @"ReadOnly: true,";
-                }
-                if (string.IsNullOrEmpty(item.ColorCode))
-                {
-                    item.ColorCode = ServiceFacade.SettingsHelper.UncompleteColor;
-                    DataRepository.AppointmentProvider.Save(tm, item);
-                }
-                // Set color to recognize that's is roster
-                result += @"color: '" + item.ColorCode + @"',";
-                result += @"isnew: 'false'},";
-            }
+            var lstEvent = from item in lstAppt
+                           let startTime = item.StartTime
+                           where startTime != null
+                           let dateTime = item.EndTime
+                           where dateTime != null
+                           select new JEvent()
+                           {
+                               id = item.Id,
+                               start_date = startTime.Value.ToString("dd-MM-yyyy HH:mm"),
+                               end_date = dateTime.Value.ToString("dd-MM-yyyy HH:mm"),
+                               section_id = item.RoomId.ToString(),
+                               text = String.Format("Patient: {0}.<br />Note: {1}", item.CustomerName, item.Note),
+                               DoctorUserName = item.DoctorUsername,
+                               DoctorShortName = item.DoctorShortName,
+                               CustomerId = item.CustomerId,
+                               CustomerName = item.CustomerName,
+                               ContentId = item.ContentId.ToString(),
+                               ContentTitle = item.ContentTitle,
+                               RoomId = item.RoomId.ToString(),
+                               RoomTitle = item.RoomTitle,
+                               NurseUsername = item.NurseUsername,
+                               NurseShortName = item.NurseShortName,
+                               note = item.Note,
+                               ReadOnly = (item.StartTime <= DateTime.Now).ToString().ToLower(),
+                               color = item.ColorCode,
+                               isnew = "false"
+                           };
             #endregion
 
-            if (result.Length > 1)
-            {
-                result = @"[{ 'result': 'true', 'message': '', 'data': "
-                    + "[" + result.Substring(0, result.Length - 1) + "]"
-                    + @" }]";
-            }
-            else
-            {
-                result = @"[{ 'result': 'true', 'message': '' }]";
-            }
+            result = @"[{ 'result': 'true', 'message': '', 'data':" + JsonConvert.SerializeObject(lstEvent) + @" }]";
 
             tm.Commit();
         }
         catch (Exception ex)
         {
-            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.LoadRoster", ex);
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetAppointments", ex);
 
             tm.Rollback();
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': '[]' }]";
-            goto StepResult;
         }
 
     StepResult:
@@ -841,7 +1127,6 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
 
             result = @"[{ 'result': 'true', 'message': '', 'data': [] }]";
             tm.Commit();
-            goto StepResult;
         }
         catch (Exception ex)
         {
@@ -850,7 +1135,36 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             tm.Rollback();
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
+        }
+
+    StepResult:
+        return result;
+    }
+    #endregion
+
+    #region Status
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetStatus()
+    {
+        string result = string.Empty;
+
+        try
+        {
+            var lst = DataRepository.StatusProvider.GetByIsDisabled(false);
+
+            result = @"[{ 'result': 'true', 'message': '', '"
+                     + JsonConvert.SerializeObject(lst.Select(x => new
+                                                                       {
+                                                                           x.Id,
+                                                                           x.Title
+                                                                       })) + "': [] }]";
+        }
+        catch (Exception ex)
+        {
+            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.DeleteEvent", ex);
+
+            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
         }
 
     StepResult:
@@ -859,268 +1173,6 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     #endregion
 
     #region "Function"
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetPatient()
-    {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *          key: name of roles,
-         *          label: name of roles,
-         *          open: true, [priority for Doctor]
-         *          children:  [{
-         *                      key: Staff Id,
-         *                      label: Staff Name,
-         *                      }, {}, {}]
-         *          }, {}, {}]
-         *  }]
-         */
-        string result = string.Empty;
-
-        try
-        {
-
-            TList<Customer> lst = DataRepository.CustomerProvider.GetByIsDisabled(false);
-
-            result = @"{'key': '-1', 'label': 'Select Patient'}";
-            if (lst.Count == 0)
-            {
-                result = @"[{ 'result': 'true', 'message': 'There is no patient.', 'data': [" + result + "] }]";
-                goto StepResult;
-            }
-
-            lst.Sort("FirstName ASC");
-            foreach (Customer item in lst)
-            {
-                result += @",{'key' : '" + item.Id + @"'" + "," + @"'label' : '" +
-                    String.Format("{3} |{2} {0} {1}", item.FirstName, item.LastName, string.IsNullOrEmpty(item.Title) ? string.Empty : item.Title + ". ",
-                    item.Id) + @"'" + "}";
-            }
-
-            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
-            goto StepResult;
-        }
-        catch (Exception ex)
-        {
-            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetPatient", ex);
-
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
-        }
-    StepResult:
-        return result;
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetTime()
-    {
-        string result = string.Empty;
-        try
-        {
-            int step = ServiceFacade.SettingsHelper.MinuteStep;
-            int minute = ServiceFacade.SettingsHelper.MaxMinute;
-            int hour = ServiceFacade.SettingsHelper.MaxHour;
-
-            TList<RosterType> lst = DataRepository.RosterTypeProvider.GetByIsDisabled(false);
-
-            int m = 0;
-            string key = string.Empty;
-            string label = string.Empty;
-
-            for (int h = 0; h < hour; h++)
-            {
-                m = 0;
-                while (m < minute)
-                {
-                    key = h.ToString("00") + ":" + m.ToString("00") + ":00";
-                    label = h.ToString("00") + ":" + m.ToString("00");
-                    result += @"{'key' : '" + key + @"'" + "," + @"'label' : '" + label + @"'" + "},";
-                    m += step;
-                }
-            }
-            if (result.Length > 1)
-                result = "[" + result.Substring(0, result.Length - 1) + "]";
-
-            return result;
-        }
-        catch (Exception ex)
-        {
-            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetTime", ex);
-
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
-        }
-    StepResult:
-        return result;
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetDoctorTree()
-    {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *          key: name of roles,
-         *          label: name of roles,
-         *          open: true, [priority for Doctor]
-         *          children:  [{
-         *                      key: Staff Id,
-         *                      label: Staff Name
-         *                      }, {}, {}]
-         *          }, {}, {}]
-         *  }]
-         */
-        string result = string.Empty;
-
-        try
-        {
-            // Get all functionalities
-            TList<Functionality> lstFunc = DataRepository.FunctionalityProvider.GetByIsDisabled(false);
-
-            // If there is no functionality, return empty data
-            if (lstFunc.Count == 0)
-            {
-                result = @"[{ 'result': 'false', 'message': 'There is no group. Please contact Administrator.', 'data': [] }]";
-                goto StepResult;
-            }
-
-            // Get all available staffs
-            TList<DoctorFunc> lstDoctorFunc = DataRepository.DoctorFuncProvider.GetByIsDisabled(false);
-            bool hasItem = false;
-            lstDoctorFunc.Sort("DoctorShortName ASC");
-
-            foreach (Functionality objFunc in lstFunc)
-            {
-                result += @"{'key' : '" + objFunc.Id + @"'" + "," + @"'label' : '" + objFunc.Title + @"', open: false, children: [";
-                hasItem = false;
-
-                // Get staff by functionality then remove it from list
-                for (int j = 0; j < lstDoctorFunc.Count; j++)
-                {
-                    if (lstDoctorFunc[j].FuncId == objFunc.Id)
-                    {
-                        result += @"{'key' : '" + lstDoctorFunc[j].DoctorUserName + @"'" + "," + @"'label' : '"
-                            + lstDoctorFunc[j].DoctorShortName + @"'" + "},";
-                        lstDoctorFunc.RemoveAt(j);
-                        j--;
-                        hasItem = true;
-                    }
-                }
-
-                if (hasItem)
-                    result = result.Substring(0, result.Length - 1);
-                result += @"]},";
-            }
-            if (result.Length > 1)
-                result = result.Substring(0, result.Length - 1);
-
-            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
-            goto StepResult;
-        }
-        catch (Exception ex)
-        {
-            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetDoctorTree", ex);
-
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
-        }
-    StepResult:
-        return result;
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetStaffs(string AppointmentId, string FuncId, string StartTime, string EndTime, string StartDate, string EndDate)
-    {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *          key: name of roles,
-         *          label: name of roles,
-         *          }, {}, {}]
-         *  }]
-         */
-        string result = string.Empty;
-
-        try
-        {
-            // Get start time and end time
-            int intStartHour = Convert.ToInt32(StartTime.Split(':')[0]);
-            int intStartMinute = Convert.ToInt32(StartTime.Split(':')[1]);
-            int intEndHour = Convert.ToInt32(EndTime.Split(':')[0]);
-            int intEndMinute = Convert.ToInt32(EndTime.Split(':')[1]);
-
-            // Get start date and end date
-            DateTime dtStart = Convert.ToDateTime(StartDate);
-            DateTime dtEnd = Convert.ToDateTime(EndDate);
-
-            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
-            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
-
-            string[] arr = FuncId.Split(ChrSeperateStaff);
-
-            DataSet ds = new DataSet();
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "GetAvailableStaffsForAppointment";
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add(new SqlParameter("@AppointmentId", AppointmentId));
-            cmd.Parameters.Add(new SqlParameter("@FuncId", Convert.ToInt64(arr[0])));
-            cmd.Parameters.Add(new SqlParameter("@StartTime", dtStart));
-            cmd.Parameters.Add(new SqlParameter("@EndTime", dtEnd));
-            cmd.CommandTimeout = 0;
-
-            ds = DataRepository.Provider.ExecuteDataSet(cmd);
-            DataTable objTable = ds.Tables[0];
-
-            result = @"{'key': '-1', 'label': 'Select Doctor'}";
-            if (objTable.Rows.Count == 0)
-            {
-                result = @"[{ 'result': 'true', 'message': 'There is no doctor. Please contact Administrator.', 'data': [" + result + "] }]";
-                goto StepResult;
-            }
-
-            int intStatus = 0;
-            string strStatus = string.Empty;
-            foreach (DataRow dr in objTable.Rows)
-            {
-                intStatus = Convert.ToInt32(dr["Status"]);
-                DoctorAppointmentStatus.Instance().TryGetValue(dr["Status"].ToString(), out strStatus);
-
-                result += @", {'key' : '" + dr["DoctorUserName"].ToString() + @"'" + "," + @"'label' : '" + dr["DoctorShortName"].ToString();
-                result += StrSeperateStaff + strStatus + @"', ";
-
-                if (intStatus != 0)
-                {
-                    result += @"'property' : 'disabled=""disabled""'";
-                }
-                else
-                {
-                    result += @"'property' : ''";
-                }
-
-                result += @"}";
-            }
-
-            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
-            goto StepResult;
-        }
-        catch (Exception ex)
-        {
-            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetStaffs", ex);
-
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
-        }
-    StepResult:
-        return result;
-    }
-
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetContents()
@@ -1160,94 +1212,6 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
         catch (Exception ex)
         {
             SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetContents", ex);
-
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
-        }
-    StepResult:
-        return result;
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetRooms(string AppointmentId, string DoctorUserName, string FuncId, string StartTime, string EndTime, string StartDate, string EndDate)
-    {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *          key: name of roles,
-         *          label: name of roles,
-         *          }, {}, {}]
-         *  }]
-         */
-        string result = string.Empty;
-
-        try
-        {
-            // Get start time and end time
-            int intStartHour = Convert.ToInt32(StartTime.Split(':')[0]);
-            int intStartMinute = Convert.ToInt32(StartTime.Split(':')[1]);
-            int intEndHour = Convert.ToInt32(EndTime.Split(':')[0]);
-            int intEndMinute = Convert.ToInt32(EndTime.Split(':')[1]);
-
-            // Get start date and end date
-            DateTime dtStart = Convert.ToDateTime(StartDate);
-            DateTime dtEnd = Convert.ToDateTime(EndDate);
-
-            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
-            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
-
-            string[] arr = FuncId.Split(ChrSeperateStaff);
-
-            DataSet ds = new DataSet();
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "GetAvailableRoomsForAppointment";
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add(new SqlParameter("@AppointmentId", AppointmentId));
-            cmd.Parameters.Add(new SqlParameter("@DoctorUserName", DoctorUserName));
-            cmd.Parameters.Add(new SqlParameter("@FuncId", Convert.ToInt64(arr[0])));
-            cmd.Parameters.Add(new SqlParameter("@StartTime", dtStart));
-            cmd.Parameters.Add(new SqlParameter("@EndTime", dtEnd));
-            cmd.CommandTimeout = 0;
-
-            ds = DataRepository.Provider.ExecuteDataSet(cmd);
-            DataTable objTable = ds.Tables[0];
-
-            result = @"{'key': '-1', 'label': 'Select Room'}";
-            if (objTable.Rows.Count == 0)
-            {
-                result = @"[{ 'result': 'true', 'message': 'There is no room. Please contact Administrator.', 'data': [" + result + "] }]";
-                goto StepResult;
-            }
-
-            int intStatus = 0;
-            string strStatus = string.Empty;
-            foreach (DataRow dr in objTable.Rows)
-            {
-                intStatus = Convert.ToInt32(dr["Status"]);
-                RoomAppointmentStatus.Instance().TryGetValue(dr["Status"].ToString(), out strStatus);
-
-                result += @", {'key' : '" + dr["RoomId"].ToString() + @"'" + "," + @"'label' : '" + dr["RoomTitle"].ToString();
-                result += StrSeperateStaff + strStatus + @"', ";
-
-                if (intStatus != 0)
-                {
-                    result += @"'property' : 'disabled=""disabled""'";
-                }
-                else
-                {
-                    result += @"'property' : ''";
-                }
-                result += @"}";
-            }
-
-            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
-            goto StepResult;
-        }
-        catch (Exception ex)
-        {
-            SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetRooms", ex);
 
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
             goto StepResult;
@@ -1358,19 +1322,49 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
             newObj.UpdateUser = strUserName;
 
             DataRepository.CustomerProvider.Insert(newObj);
-            result = newObj.Id;
 
+            var patient = new JPatientToken()
+                              {
+                                  id = newObj.Id,
+                                  propertyToSearch = String.Format("{0}{1} {2}. {3}{4}{5}{6}{7}"
+                                                                   ,
+                                                                   string.IsNullOrEmpty(newObj.Title)
+                                                                       ? string.Empty
+                                                                       : String.Format("{0}. ", newObj.Title)
+                                                                   , newObj.FirstName, newObj.LastName
+                                                                   ,
+                                                                   newObj.Birthdate == null
+                                                                       ? string.Empty
+                                                                       : String.Format("Birthday: {0}. ",
+                                                                                       ((DateTime)newObj.Birthdate).ToString
+                                                                                           ("dd-MM-yyyy"))
+                                                                   ,
+                                                                   string.IsNullOrEmpty(newObj.HomePhone)
+                                                                       ? string.Empty
+                                                                       : String.Format("Home Phone: {0}. ", newObj.HomePhone)
+                                                                   ,
+                                                                   string.IsNullOrEmpty(newObj.CellPhone)
+                                                                       ? string.Empty
+                                                                       : String.Format("Cell Phone: {0}. ", newObj.CellPhone)
+                                                                   ,
+                                                                   string.IsNullOrEmpty(newObj.WorkPhone)
+                                                                       ? string.Empty
+                                                                       : String.Format("Work Phone: {0}. ", newObj.WorkPhone)
+                                                                   ,
+                                                                   string.IsNullOrEmpty(newObj.Address)
+                                                                       ? string.Empty
+                                                                       : String.Format("Address: {0}. ", newObj.Address)
+                                      )
+                              };
             #endregion
 
-            result = @"[{ 'result': 'true', 'message': '', 'data':'" + result + @"' }]";
-            goto StepResult;
+            result = @"[{ 'result': 'true', 'message': '', 'data':" + JsonConvert.SerializeObject(patient) + @" }]";
         }
         catch (Exception ex)
         {
             SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.CreateSimplePatient", ex);
 
             result = @"[{ ""result"": ""false"", ""message"": ""Cannot create new patient. Please try again."", ""data"": """" }]";
-            goto StepResult;
         }
     StepResult:
         return result;
@@ -1385,16 +1379,17 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetPatientByAppointmentId(string appointmentId)
     {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data: string patient id
-         *  }
-         */
         string result = string.Empty;
 
         try
         {
+            // If there is no appointment, return
+            if (appointmentId == null)
+            {
+                result = @"[{ 'result': 'true', 'message': '', 'data':'' }]";
+                goto StepResult;
+            }
+
             // Get appointment by id
             var objAppt = DataRepository.AppointmentProvider.GetById(appointmentId);
 
@@ -1430,7 +1425,7 @@ public partial class Admin_Appointment_AppointmentIframe : System.Web.UI.Page
                                                          Note = objPatient.Note ?? "&nbsp;"
                                                      }};
 
-            result = @"[{ 'result': 'true', 'message': '', 'data':'" + JsonConvert.SerializeObject(lstPatient) + @"' }]";
+            result = @"[{ 'result': 'true', 'message': '', 'data':" + JsonConvert.SerializeObject(lstPatient) + @" }]";
         }
         catch (Exception ex)
         {

@@ -109,7 +109,15 @@ public partial class StaffEdit : System.Web.UI.Page
     }
     protected void FormView1_DataBinding(object sender, EventArgs e)
     {
-        
+        CheckBoxList cbdataRoles = (CheckBoxList)FormView1.Row.FindControl("dataRoles");
+        TextBox tbdataUserName = (TextBox)FormView1.Row.FindControl("dataUserName");
+        CustomRoleProvider role = new CustomRoleProvider();
+        string[] listRoles = role.GetAllRoles();
+        cbdataRoles.Items.Clear();
+        foreach (var item in listRoles)
+        {
+            cbdataRoles.Items.Add(item.ToString());
+        }
     }
     protected void FormView1_DataBound(object sender, EventArgs e)
     {
@@ -117,18 +125,10 @@ public partial class StaffEdit : System.Web.UI.Page
         TextBox tbdataUserName = (TextBox)FormView1.Row.FindControl("dataUserName");
         CustomRoleProvider role = new CustomRoleProvider();
         string[] listRoles = role.GetAllRoles();
-        //cbdataRoles.Items.Clear();
+        cbdataRoles.Items.Clear();
         foreach (var item in listRoles)
         {
             cbdataRoles.Items.Add(item.ToString());
-        }
-        if (FormView1.CurrentMode == FormViewMode.Edit)
-        {
-            listRoles = role.GetRolesForUser(tbdataUserName.Text);
-            foreach (var item in listRoles)
-            {
-                (cbdataRoles.Items.FindByValue(item)).Selected=true;
-            }
         }
     }
 }

@@ -1837,7 +1837,7 @@ scheduler.addEventNow = function(start, end, e) {
 
     // scheduler.addEventNow(new Date(), new Date()) + collision though get_visible events defect (such event was not retrieved)
     if (start_date.valueOf() == end_date.valueOf())
-        end_date.setTime(end_date.valueOf() + d);
+        end_date.SetTime(end_date.valueOf() + d);
 
     base.start_date = base.start_date || start_date;
     base.end_date = base.end_date || end_date;
@@ -2426,7 +2426,7 @@ scheduler.date = {
         date.setSeconds(0);
         date.setMilliseconds(0);
         if (date.getHours() != 0)
-            date.setTime(date.getTime() + 60 * 60 * 1000 * (24 - date.getHours()));
+            date.SetTime(date.getTime() + 60 * 60 * 1000 * (24 - date.getHours()));
         return date;
     },
     time_part: function(date) {
@@ -2459,7 +2459,7 @@ scheduler.date = {
             case "day":
                 ndate.setDate(ndate.getDate() + inc);
                 if (!date.getHours() && ndate.getHours()) //shift to yesterday
-                    ndate.setTime(ndate.getTime() + 60 * 60 * 1000 * (24 - ndate.getHours()));
+                    ndate.SetTime(ndate.getTime() + 60 * 60 * 1000 * (24 - ndate.getHours()));
                 break;
             case "month":
                 var new_month = ndate.getMonth() + inc;
@@ -2773,7 +2773,7 @@ scheduler.addEvent = function(start_date, end_date, text, id, extra_data) {
 
     var d = (this.config.event_duration || this.config.time_step) * 60000;
     if (ev.start_date.valueOf() == ev.end_date.valueOf())
-        ev.end_date.setTime(ev.end_date.valueOf() + d);
+        ev.end_date.SetTime(ev.end_date.valueOf() + d);
 
     ev._timed = this.is_one_day_event(ev);
 
@@ -3788,7 +3788,7 @@ scheduler.form_blocks = {
                 var time = this.templates.time_picker(dt);
                 html += "<option value='" + i + "'>" + time + "</option>";
                 sns._time_values.push(i);
-                dt.setTime(dt.valueOf() + this.config.time_step * 60 * 1000);
+                dt.SetTime(dt.valueOf() + this.config.time_step * 60 * 1000);
                 var diff = (dt.getDate() != tdate) ? 1 : 0; // moved or not to the next day
                 i = diff * 24 * 60 + dt.getHours() * 60 + dt.getMinutes();
             }
@@ -3856,7 +3856,7 @@ scheduler.form_blocks = {
             if (cfg.auto_end_date && cfg.event_duration) {
                 function _update_lightbox_select() {
                     ev.start_date = new Date(s[3].value, s[2].value, s[1].value, 0, s[0].value);
-                    ev.end_date.setTime(ev.start_date.getTime() + (scheduler.config.event_duration * 60 * 1000));
+                    ev.end_date.SetTime(ev.start_date.getTime() + (scheduler.config.event_duration * 60 * 1000));
                     _fill_lightbox_select(s, 4, ev.end_date);
                 }
                 for (var i = 0; i < 4; i++) {

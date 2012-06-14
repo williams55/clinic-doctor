@@ -1,0 +1,190 @@
+﻿10-Jun-2012 ----Object[Method] : Log-----Message : Unable to use this part of the where clause in this version of Find: 10-jun-2012 -----Source :    at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 361
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Unable to use this part of the where clause in this version of Find: '10-jun-2012 '-----Source :    at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 361
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Unable to use this part of the where clause in this version of Find: '2012-06-10 23:59:59'-----Source :    at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 361
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Unable to use this part of the where clause in this version of Find: starttime>='06-10-2012'-----Source :    at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 361
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Failed to convert parameter value from a String to a DateTime.-----Source :    at System.Data.SqlClient.SqlParameter.CoerceValue(Object value, MetaType destinationType)
+   at System.Data.SqlClient.SqlParameter.GetCoercedValue()
+   at System.Data.SqlClient.SqlParameter.Validate(Int32 index, Boolean isCommandProc)
+   at System.Data.SqlClient.SqlCommand.BuildParamList(TdsParser parser, SqlParameterCollection parameters)
+   at System.Data.SqlClient.SqlCommand.BuildExecuteSql(CommandBehavior behavior, String commandText, SqlParameterCollection parameters, _SqlRPC& rpc)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 460
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 846
+   at ClinicDoctor.Data.Utility.ExecuteReader(Database database, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 357
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 380
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : Unable to use this part of the where clause in this version of Find: n'2012-06-10 23:59:59.000'-----Source :    at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Find(TransactionManager transactionManager, String whereClause, Int32 start, Int32 pageLength, Int32& count) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlAppointmentProviderBase.generated.cs:line 361
+   at ClinicDoctor.Data.Bases.EntityProviderBaseCore`2.Find(String whereClause) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Bases\EntityProviderBaseCore.generated.cs:line 259
+   at Admin_Appointment_AppointmentIframe.LoadRoster(String Mode, String currentDateView) in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 704
+10-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156

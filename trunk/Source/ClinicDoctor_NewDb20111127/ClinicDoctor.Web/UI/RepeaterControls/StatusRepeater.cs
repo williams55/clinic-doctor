@@ -359,6 +359,15 @@ namespace ClinicDoctor.Web.UI
 			get { return _entity.ColorCode; }
 		}
         /// <summary>
+        /// Gets the PriorityIndex
+        /// </summary>
+        /// <value>The PriorityIndex.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.Int32 PriorityIndex
+		{
+			get { return _entity.PriorityIndex; }
+		}
+        /// <summary>
         /// Gets the Note
         /// </summary>
         /// <value>The Note.</value>

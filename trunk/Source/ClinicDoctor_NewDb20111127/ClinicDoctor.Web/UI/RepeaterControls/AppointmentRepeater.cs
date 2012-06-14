@@ -363,7 +363,7 @@ namespace ClinicDoctor.Web.UI
         /// </summary>
         /// <value>The ContentId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int64 ContentId
+		public System.Int64? ContentId
 		{
 			get { return _entity.ContentId; }
 		}

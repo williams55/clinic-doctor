@@ -70,7 +70,7 @@
             </div>
             <div class="dhx_cal_date">
             </div>
-            <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="show_minical()">
+            <div class="dhx_minical_icon" id="dhx_minical_icon" onclick=" ShowMinical()">
                 &nbsp;</div>
             <div class="dhx_cal_tab" name="day_tab" style="right: 204px;">
             </div>

@@ -3289,6 +3289,7 @@
 					[Id],
 					[Title],
 					[ColorCode],
+					[PriorityIndex],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -3358,7 +3359,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[ColorCode], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[ColorCode], O.[PriorityIndex], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Status] O,
 				    #PageIndex PageIndex
@@ -3394,6 +3395,7 @@
 				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -3407,6 +3409,7 @@
 					(
 					[Title]
 					,[ColorCode]
+					,[PriorityIndex]
 					,[Note]
 					,[IsDisabled]
 					,[CreateUser]
@@ -3418,6 +3421,7 @@
 					(
 					@Title
 					,@ColorCode
+					,@PriorityIndex
 					,@Note
 					,@IsDisabled
 					,@CreateUser
@@ -3445,6 +3449,7 @@
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
@@ -3461,6 +3466,7 @@
 				SET
 					[Title] = @Title
 					,[ColorCode] = @ColorCode
+					,[PriorityIndex] = @PriorityIndex
 					,[Note] = @Note
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
@@ -3509,6 +3515,7 @@
 					[Id],
 					[Title],
 					[ColorCode],
+					[PriorityIndex],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -3542,6 +3549,7 @@
 					[Id],
 					[Title],
 					[ColorCode],
+					[PriorityIndex],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -3574,6 +3582,7 @@
 					[Id],
 					[Title],
 					[ColorCode],
+					[PriorityIndex],
 					[Note],
 					[IsDisabled],
 					[CreateUser],
@@ -3603,6 +3612,7 @@
 				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
+				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
@@ -3618,6 +3628,7 @@
 	  [Id]
 	, [Title]
 	, [ColorCode]
+	, [PriorityIndex]
 	, [Note]
 	, [IsDisabled]
 	, [CreateUser]
@@ -3630,6 +3641,7 @@
 	 ([Id] = @Id OR @Id IS NULL)
 	AND ([Title] = @Title OR @Title IS NULL)
 	AND ([ColorCode] = @ColorCode OR @ColorCode IS NULL)
+	AND ([PriorityIndex] = @PriorityIndex OR @PriorityIndex IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
@@ -3644,6 +3656,7 @@
 	  [Id]
 	, [Title]
 	, [ColorCode]
+	, [PriorityIndex]
 	, [Note]
 	, [IsDisabled]
 	, [CreateUser]
@@ -3656,6 +3669,7 @@
 	 ([Id] = @Id AND @Id is not null)
 	OR ([Title] = @Title AND @Title is not null)
 	OR ([ColorCode] = @ColorCode AND @ColorCode is not null)
+	OR ([PriorityIndex] = @PriorityIndex AND @PriorityIndex is not null)
 	OR ([Note] = @Note AND @Note is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
@@ -3696,7 +3710,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[ColorCode], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[ColorCode], O.[PriorityIndex], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Status] O,
 				    #PageIndex PageIndex

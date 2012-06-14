@@ -106,7 +106,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public AppointmentBase(System.String _id, System.String _customerId, System.String _customerName, 
-			System.Int64 _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
+			System.Int64? _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
 			System.String _doctorEmail, System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, 
 			System.String _nurseShortName, System.Int64? _statusId, System.String _statusTitle, System.String _note, 
 			System.DateTime? _startTime, System.DateTime? _endTime, System.String _colorCode, System.Boolean _isComplete, 
@@ -170,7 +170,7 @@ namespace ClinicDoctor.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public static Appointment CreateAppointment(System.String _id, System.String _customerId, System.String _customerName, 
-			System.Int64 _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
+			System.Int64? _contentId, System.String _contentTitle, System.String _doctorUsername, System.String _doctorShortName, 
 			System.String _doctorEmail, System.Int64? _roomId, System.String _roomTitle, System.String _nurseUsername, 
 			System.String _nurseShortName, System.Int64? _statusId, System.String _statusTitle, System.String _note, 
 			System.DateTime? _startTime, System.DateTime? _endTime, System.String _colorCode, System.Boolean _isComplete, 
@@ -337,15 +337,17 @@ namespace ClinicDoctor.Entities
 		/// </summary>
 		/// <value>This type is bigint.</value>
 		/// <remarks>
-		/// This property can not be set to null. 
+		/// This property can be set to null. 
+		/// If this column is null, this property will return (long)0. It is up to the developer
+		/// to check the value of IsContentIdNull() and perform business logic appropriately.
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false)]
-		public virtual System.Int64 ContentId
+		[DataObjectField(false, false, true)]
+		public virtual System.Int64? ContentId
 		{
 			get
 			{
@@ -1711,7 +1713,7 @@ namespace ClinicDoctor.Entities
 			return this.Id.GetHashCode() ^ 
 					this.CustomerId.GetHashCode() ^ 
 					((this.CustomerName == null) ? string.Empty : this.CustomerName.ToString()).GetHashCode() ^ 
-					this.ContentId.GetHashCode() ^ 
+					((this.ContentId == null) ? string.Empty : this.ContentId.ToString()).GetHashCode() ^ 
 					((this.ContentTitle == null) ? string.Empty : this.ContentTitle.ToString()).GetHashCode() ^ 
 					((this.DoctorUsername == null) ? string.Empty : this.DoctorUsername.ToString()).GetHashCode() ^ 
 					((this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString()).GetHashCode() ^ 
@@ -1777,8 +1779,15 @@ namespace ClinicDoctor.Entities
 			{
 				equal = false;
 			}
-			if (Object1.ContentId != Object2.ContentId)
+			if ( Object1.ContentId != null && Object2.ContentId != null )
+			{
+				if (Object1.ContentId != Object2.ContentId)
+					equal = false;
+			}
+			else if (Object1.ContentId == null ^ Object2.ContentId == null )
+			{
 				equal = false;
+			}
 			if ( Object1.ContentTitle != null && Object2.ContentTitle != null )
 			{
 				if (Object1.ContentTitle != Object2.ContentTitle)
@@ -1987,7 +1996,7 @@ namespace ClinicDoctor.Entities
             	
             	
             	case AppointmentColumn.ContentId:
-            		return this.ContentId.CompareTo(rhs.ContentId);
+            		return this.ContentId.Value.CompareTo(rhs.ContentId.Value);
             		
             		                 
             	
@@ -2248,7 +2257,7 @@ namespace ClinicDoctor.Entities
 				this.Id,
 				this.CustomerId,
 				(this.CustomerName == null) ? string.Empty : this.CustomerName.ToString(),
-				this.ContentId,
+				(this.ContentId == null) ? string.Empty : this.ContentId.ToString(),
 				(this.ContentTitle == null) ? string.Empty : this.ContentTitle.ToString(),
 				(this.DoctorUsername == null) ? string.Empty : this.DoctorUsername.ToString(),
 				(this.DoctorShortName == null) ? string.Empty : this.DoctorShortName.ToString(),
@@ -2321,7 +2330,7 @@ namespace ClinicDoctor.Entities
 		/// <summary>
 		/// ContentId : 
 		/// </summary>
-		public System.Int64		  ContentId = (long)0;
+		public System.Int64?		  ContentId = null;
 		
 		/// <summary>
 		/// ContentTitle : 
@@ -3028,7 +3037,7 @@ namespace ClinicDoctor.Entities
 		/// ContentId : 
 		/// </summary>
 		[EnumTextValue("ContentId")]
-		[ColumnEnum("ContentId", typeof(System.Int64), System.Data.DbType.Int64, false, false, false)]
+		[ColumnEnum("ContentId", typeof(System.Int64), System.Data.DbType.Int64, false, false, true)]
 		ContentId = 4,
 		/// <summary>
 		/// ContentTitle : 

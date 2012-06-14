@@ -1,0 +1,214 @@
+﻿14-Jun-2012 ----Object[Method] : Log-----Message : Error converting data type nvarchar to bigint.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlDataReader.HasMoreRows()
+   at System.Data.SqlClient.SqlDataReader.ReadInternal(Boolean setTimeout)
+   at System.Data.SqlClient.SqlDataReader.Read()
+   at System.Data.Common.DataAdapter.FillLoadDataRow(SchemaMapping mapping)
+   at System.Data.Common.DataAdapter.FillFromReader(DataSet dataset, DataTable datatable, String srcTable, DataReaderContainer dataReader, Int32 startRecord, Int32 maxRecords, DataColumn parentChapterColumn, Object parentChapterValue)
+   at System.Data.Common.DataAdapter.Fill(DataSet dataSet, String srcTable, IDataReader dataReader, Int32 startRecord, Int32 maxRecords)
+   at System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoLoadDataSet(IDbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 517
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1383
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1336
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteDataSet(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 589
+   at ClinicDoctor.Data.SqlClient.SqlNetTiersProvider.ExecuteDataSet(DbCommand commandWrapper) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlNetTiersProvider.cs:line 888
+   at Admin_Appointment_AppointmentIframe.SearchRoom(String keyword, String appointmentId, String doctorUserName, String startTime, String endTime, String startDate, String endDate) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 317
+14-Jun-2012 ----Object[Method] : Log-----Message : Error converting data type nvarchar to bigint.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlDataReader.HasMoreRows()
+   at System.Data.SqlClient.SqlDataReader.ReadInternal(Boolean setTimeout)
+   at System.Data.SqlClient.SqlDataReader.Read()
+   at System.Data.Common.DataAdapter.FillLoadDataRow(SchemaMapping mapping)
+   at System.Data.Common.DataAdapter.FillFromReader(DataSet dataset, DataTable datatable, String srcTable, DataReaderContainer dataReader, Int32 startRecord, Int32 maxRecords, DataColumn parentChapterColumn, Object parentChapterValue)
+   at System.Data.Common.DataAdapter.Fill(DataSet dataSet, String srcTable, IDataReader dataReader, Int32 startRecord, Int32 maxRecords)
+   at System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoLoadDataSet(IDbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 517
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1383
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1336
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteDataSet(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 589
+   at ClinicDoctor.Data.SqlClient.SqlNetTiersProvider.ExecuteDataSet(DbCommand commandWrapper) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlNetTiersProvider.cs:line 888
+   at Admin_Appointment_AppointmentIframe.SearchRoom(String keyword, String appointmentId, String doctorUserName, String startTime, String endTime, String startDate, String endDate) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 317
+14-Jun-2012 ----Object[Method] : Log-----Message : Error converting data type nvarchar to bigint.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlDataReader.HasMoreRows()
+   at System.Data.SqlClient.SqlDataReader.ReadInternal(Boolean setTimeout)
+   at System.Data.SqlClient.SqlDataReader.Read()
+   at System.Data.Common.DataAdapter.FillLoadDataRow(SchemaMapping mapping)
+   at System.Data.Common.DataAdapter.FillFromReader(DataSet dataset, DataTable datatable, String srcTable, DataReaderContainer dataReader, Int32 startRecord, Int32 maxRecords, DataColumn parentChapterColumn, Object parentChapterValue)
+   at System.Data.Common.DataAdapter.Fill(DataSet dataSet, String srcTable, IDataReader dataReader, Int32 startRecord, Int32 maxRecords)
+   at System.Data.Common.DbDataAdapter.FillInternal(DataSet dataset, DataTable[] datatables, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet, Int32 startRecord, Int32 maxRecords, String srcTable, IDbCommand command, CommandBehavior behavior)
+   at System.Data.Common.DbDataAdapter.Fill(DataSet dataSet)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoLoadDataSet(IDbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 517
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1383
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 1336
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteDataSet(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 589
+   at ClinicDoctor.Data.SqlClient.SqlNetTiersProvider.ExecuteDataSet(DbCommand commandWrapper) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data.SqlClient\SqlNetTiersProvider.cs:line 888
+   at Admin_Appointment_AppointmentIframe.SearchRoom(String keyword, String appointmentId, String doctorUserName, String startTime, String endTime, String startDate, String endDate) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 317
+14-Jun-2012 ----Object[Method] : Log-----Message : The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Appointment_Content". The conflict occurred in database "ClinicDoctor", table "dbo.Content", column 'Id'.
+The statement has been terminated.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(DbAsyncResult result, String methodName, Boolean sendToPipe)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteNonQuery(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 443
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteNonQuery(DbCommand command, DbTransaction transaction) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 732
+   at ClinicDoctor.Data.Utility.ExecuteNonQuery(TransactionManager transactionManager, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 385
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Insert(TransactionManager transactionManager, Appointment entity) in e:\freelance\project\clinicdoctor\source\clinicdoctor_newdb20111127\clinicdoctor.data.sqlclient\sqlappointmentproviderbase.generated.cs:line 2371
+   at Admin_Appointment_AppointmentIframe.SaveEvent(String PatientId, String Note, String StartTime, String EndTime, String StartDate, String EndDate, String DoctorUsername, String RoomId) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 668
+14-Jun-2012 ----Object[Method] : Log-----Message : The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Appointment_Content". The conflict occurred in database "ClinicDoctor", table "dbo.Content", column 'Id'.
+The statement has been terminated.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(DbAsyncResult result, String methodName, Boolean sendToPipe)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteNonQuery(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 443
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteNonQuery(DbCommand command, DbTransaction transaction) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 732
+   at ClinicDoctor.Data.Utility.ExecuteNonQuery(TransactionManager transactionManager, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 385
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Insert(TransactionManager transactionManager, Appointment entity) in e:\freelance\project\clinicdoctor\source\clinicdoctor_newdb20111127\clinicdoctor.data.sqlclient\sqlappointmentproviderbase.generated.cs:line 2371
+   at Admin_Appointment_AppointmentIframe.SaveEvent(String PatientId, String Note, String StartTime, String EndTime, String StartDate, String EndDate, String DoctorUsername, String RoomId) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 668
+14-Jun-2012 ----Object[Method] : Log-----Message : The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Appointment_Content". The conflict occurred in database "ClinicDoctor", table "dbo.Content", column 'Id'.
+The statement has been terminated.-----Source :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(DbAsyncResult result, String methodName, Boolean sendToPipe)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteNonQuery(DbCommand command) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 443
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteNonQuery(DbCommand command, DbTransaction transaction) in e:\Builds\EntLib\Latest\Source\Blocks\Data\Src\Data\Database.cs:line 732
+   at ClinicDoctor.Data.Utility.ExecuteNonQuery(TransactionManager transactionManager, DbCommand dbCommand) in E:\Freelance\Project\ClinicDoctor\Source\ClinicDoctor_NewDb20111127\ClinicDoctor.Data\Utility.cs:line 385
+   at ClinicDoctor.Data.SqlClient.SqlAppointmentProviderBase.Insert(TransactionManager transactionManager, Appointment entity) in e:\freelance\project\clinicdoctor\source\clinicdoctor_newdb20111127\clinicdoctor.data.sqlclient\sqlappointmentproviderbase.generated.cs:line 2371
+   at Admin_Appointment_AppointmentIframe.SaveEvent(String PatientId, String Note, String StartTime, String EndTime, String StartDate, String EndDate, String DoctorUsername, String RoomId) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 668
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.5.1 Authentication Required. Learn more at-----Source :    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, String from)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MailAppointment.SendMail() in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\App_Code\MailAppointment.cs:line 156
+14-Jun-2012 ----Object[Method] : Log-----Message : Index (zero based) must be greater than or equal to zero and less than the size of the argument list.-----Source :    at System.Text.StringBuilder.AppendFormat(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(String format, Object[] args)
+   at Admin_Appointment_AppointmentIframe.ParsePatientInfo(Customer obj) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 144
+14-Jun-2012 ----Object[Method] : Log-----Message : Index (zero based) must be greater than or equal to zero and less than the size of the argument list.-----Source :    at System.Text.StringBuilder.AppendFormat(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(String format, Object[] args)
+   at Admin_Appointment_AppointmentIframe.ParsePatientInfo(Customer obj) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 144
+14-Jun-2012 ----Object[Method] : Log-----Message : Index (zero based) must be greater than or equal to zero and less than the size of the argument list.-----Source :    at System.Text.StringBuilder.AppendFormat(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(String format, Object[] args)
+   at Admin_Appointment_AppointmentIframe.ParsePatientInfo(Customer obj) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 144
+14-Jun-2012 ----Object[Method] : Log-----Message : Index (zero based) must be greater than or equal to zero and less than the size of the argument list.-----Source :    at System.Text.StringBuilder.AppendFormat(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(String format, Object[] args)
+   at Admin_Appointment_AppointmentIframe.ParsePatientInfo(Customer obj) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 144
+14-Jun-2012 ----Object[Method] : Log-----Message : Index (zero based) must be greater than or equal to zero and less than the size of the argument list.-----Source :    at System.Text.StringBuilder.AppendFormat(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(String format, Object[] args)
+   at Admin_Appointment_AppointmentIframe.ParsePatientInfo(Customer obj) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 144
+14-Jun-2012 ----Object[Method] : Log-----Message : Index (zero based) must be greater than or equal to zero and less than the size of the argument list.-----Source :    at System.Text.StringBuilder.AppendFormat(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(String format, Object[] args)
+   at Admin_Appointment_AppointmentIframe.ParsePatientInfo(Customer obj) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 144
+14-Jun-2012 ----Object[Method] : Log-----Message : Index (zero based) must be greater than or equal to zero and less than the size of the argument list.-----Source :    at System.Text.StringBuilder.AppendFormat(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(String format, Object[] args)
+   at Admin_Appointment_AppointmentIframe.ParsePatientInfo(Customer obj) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 144
+14-Jun-2012 ----Object[Method] : Log-----Message : Index (zero based) must be greater than or equal to zero and less than the size of the argument list.-----Source :    at System.Text.StringBuilder.AppendFormat(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(String format, Object[] args)
+   at Admin_Appointment_AppointmentIframe.ParsePatientInfo(Customer obj) in e:\Freelance\Project\clinic-doctor\Source\ClinicDoctor_NewDb20111127\Website\Admin\Appointment\AppointmentIframe.aspx.cs:line 144

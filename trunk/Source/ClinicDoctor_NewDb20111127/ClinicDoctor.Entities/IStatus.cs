@@ -30,6 +30,11 @@ namespace ClinicDoctor.Entities
 		System.String  ColorCode  { get; set; }
 		
 		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		System.Int32  PriorityIndex  { get; set; }
+		
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		System.String  Note  { get; set; }

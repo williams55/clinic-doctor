@@ -3,7 +3,7 @@ var blStaff = false;
 var blRosterType = false;
 
 // Load calendar for Schedule
-function show_minical() {
+function ShowMinical() {
     if (scheduler.isCalendarVisible())
         scheduler.destroyCalendar();
     else
