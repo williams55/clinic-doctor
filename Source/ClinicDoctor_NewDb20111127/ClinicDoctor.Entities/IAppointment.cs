@@ -37,7 +37,7 @@ namespace ClinicDoctor.Entities
 		/// <summary>
 		/// ContentId : 
 		/// </summary>
-		System.Int64  ContentId  { get; set; }
+		System.Int64?  ContentId  { get; set; }
 		
 		/// <summary>
 		/// ContentTitle : 

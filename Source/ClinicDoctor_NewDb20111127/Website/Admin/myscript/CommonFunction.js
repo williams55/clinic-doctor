@@ -44,5 +44,6 @@ function MasterPageLoad() {
         $('[id*=ReportViewer] table td').css('padding', '0px');
     }
     
-    // needed when AsyncEnabled=true. 
+    // needed when AsyncEnabled=true.
 }
+

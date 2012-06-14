@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AppointmentIframe.aspx.cs"
     Inherits="Admin_Appointment_AppointmentIframe" %>
 
+<%@ Import Namespace="ClinicDoctor.Settings.BusinessLayer" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -10,16 +11,7 @@
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/jquery-1.6.2.min.js") %>"
         type="text/javascript"></script>
 
-    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.core.js") %>"
-        type="text/javascript"></script>
-
-    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.widget.js") %>"
-        type="text/javascript"></script>
-
-    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.dialog.js") %>"
-        type="text/javascript"></script>
-
-    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/ui/jquery.ui.datepicker.js") %>"
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/jquery-ui-1.7.3.custom.min.js") %>"
         type="text/javascript"></script>
 
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/date.format.js") %>"
@@ -49,17 +41,30 @@
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_tooltip.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
+    <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/ext/dhtmlxscheduler_collision.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/analogclock.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/media/scripts/tokeninput/jquery.tokeninput.js") %>"></script>
+
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/Admin/myscript/maxZIndex.js") %>"></script>
+
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/media/scripts/tokeninput/styles/token-input.css") %>"
+        type="text/css" />
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/media/scripts/tokeninput/styles/token-input-facebook.css") %>"
+        type="text/css" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/scripts/codebase/dhtmlxscheduler.css") %>"
-        type="text/css" media="screen" title="no title" charset="utf-8" />
+        type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/myscript/css/scheduler.css") %>"
-        type="text/css" media="screen" title="no title" charset="utf-8" />
+        type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/myscript/css/dialog-form.css") %>"
+        type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/Admin/resources/css/AnalogClock.css") %>"
-        type="text/css" media="screen" title="no title" charset="utf-8" />
+        type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/media/css/scheduler.css") %>"
-        type="text/css" media="screen" title="no title" charset="utf-8" />
+        type="text/css" media="screen" title="no title" />
     <style type="text/css" media="screen">
         html, body
         {
@@ -85,12 +90,92 @@
         var stepTime = <%=ClinicDoctor.Settings.BusinessLayer.ServiceFacade.SettingsHelper.MinuteStep %>;
         var html = function (id) { return document.getElementById(id); }; //just a helper
         var floors = eval(<%=StrFloors%>);
+        
+        var minuteStep = eval(<%=ServiceFacade.SettingsHelper.MinuteStep%>);
+        var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
+        var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
 
-        $(document).ready(function () {
+  		    function updateTips( t ) {
+			    $( ".validateTips" )
+				    .text( t )
+				    .addClass( "ui-state-highlight" );
+			    setTimeout(function() {
+				    $( ".validateTips" ).removeClass( "ui-state-highlight", 1500 );
+			    }, 500 );
+		    }
+
+		    function checkLength( o, n, min, max ) {
+			    if ( o.val().length > max || o.val().length < min ) {
+				    o.addClass( "ui-state-error" );
+				    updateTips( "Length of " + n + " must be between " +
+					    min + " and " + max + "." );
+				    return false;
+			    } else {
+				    return true;
+			    }
+		    }
+
+		    function checkRegexp( o, regexp, n ) {
+			    if ( !( regexp.test( o.val() ) ) ) {
+				    o.addClass( "ui-state-error" );
+				    updateTips( n );
+				    return false;
+			    } else {
+				    return true;
+			    }
+		    }
+		    
+      $(document).ready(function () {
             $(".dhx_cal_today_button:not(#btnToday)").click(function() {
                 $("#btnToday").click();
                 scheduler.updateCalendar(miniCalendar, scheduler._date);
             });
+
+            // Call init input token
+            GetToken();
+          
+            $( "#dialog:ui-dialog" ).dialog( "destroy" );
+
+            var txtFirstName = $("#txtFirstName"),
+                txtLastName = $("#txtLastName"),
+                radSex = $("input[name=radSex]:checked"),
+                txtCellPhone = $("#txtCellPhone"),
+                txtAddress = $("#txtAddress"),
+                allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone).add(txtAddress);
+
+            $( "#dialog-form" ).dialog({
+			    autoOpen: false,
+			    height: 350,
+			    width: 550,
+			    modal: true,
+			    zIndex: $.maxZIndex()+ 1,
+			    resizable: false,
+			    buttons: {
+				    "Create a patient": function() {
+					    var bValid = true;
+					    allFields.removeClass( "ui-state-error" );
+
+					    bValid = bValid && checkRegexp( txtFirstName, /^[a-z]([0-9a-z_])+$/i, "Firstname may consist of a-z." );
+					    bValid = bValid && checkRegexp( txtLastName, /^[a-z]([0-9a-z_])+$/i, "Lastname may consist of a-z." );
+
+                        if(bValid) {
+                            CreateSimplePatient(radSex, txtFirstName, txtLastName, txtCellPhone, txtAddress, this);
+                        }
+				    },
+				    Cancel: function() {
+					    $( this ).dialog( "close" );
+				    }
+			    },
+			    close: function() {
+				    allFields.val( "" ).removeClass( "ui-state-error" );
+			    }
+		    });
+
+		    $( "#create-user" )
+			    .click(function() {
+			        $("#dialog-form").dialog("open");
+			        $("#frm").reset();
+			    });
         });
     </script>
 
@@ -98,6 +183,42 @@
 
 </head>
 <body>
+    <div id="dialog-form" title="Create new patient" class="dialog-form">
+        <p class="validateTips">
+        </p>
+        <form id="frm">
+        <label for="name" class="title">
+            Sex</label>
+        <input type="radio" name="radSex" id="radMale" value="false" checked="checked" />
+        <label for="radMale">
+            Male</label>
+        <input type="radio" name="radSex" id="radFemale" value="true" />
+        <label for="radFemale">
+            Female</label>
+        <div class="clear">
+        </div>
+        <label for="name" class="title">
+            Firstname</label>
+        <input type="text" name="txtFirstName" id="txtFirstName" class="content-input ui-widget-content ui-corner-all" />
+        <div class="clear">
+        </div>
+        <label for="email" class="title">
+            Lastname</label>
+        <input type="text" name="txtLastName" id="txtLastName" value="" class="content-input ui-widget-content ui-corner-all" />
+        <div class="clear">
+        </div>
+        <label for="txtCellPhone" class="title">
+            Cell Phone</label>
+        <input type="text" name="txtCellPhone" id="txtCellPhone" value="" class="content-input ui-widget-content ui-corner-all" />
+        <div class="clear">
+        </div>
+        <label for="txtAddress" class="title">
+            Address</label>
+        <input type="text" name="txtAddress" id="txtAddress" value="" class="content-input ui-widget-content ui-corner-all" />
+        <div class="clear">
+        </div>
+        </form>
+    </div>
     <div style="padding: 10px;">
         <div class="appt-info">
             <h3>
@@ -147,102 +268,47 @@
                 Today
             </div>
         </div>
-        <div style="clear: both;">
+        <div class="status-info">
+            <asp:Repeater ID="rptStatus" runat="server">
+                <ItemTemplate>
+                    <div class="tinybox" style="background-color: <%# Eval("ColorCode") %>">
+                    </div>
+                    <span class="tinybox-info">
+                        <%# Eval("Title") %></span>
+                </ItemTemplate>
+            </asp:Repeater>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
         </div>
     </div>
-    <div id="RosterForm" class="schedulerForm" style="width: 650px">
+    <div id="RosterForm" class="schedulerForm" style="width: 650px;">
         <input type="hidden" id="hdId" value="" />
-        <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
-            <span class="loading"></span>
-        </div>
         <table cellpadding="3" width="100%" id="tblContent">
             <tr>
                 <td colspan="4" class="title" id="tdTitle">
                 </td>
             </tr>
             <tr>
-                <td colspan="4" class="subtitle">
+                <td class="header">
+                    Status
+                </td>
+                <td colspan="3">
+                    <form id="frmAppointmet" runat="server">
+                    <asp:DropDownList runat="server" ID="cboStatus">
+                    </asp:DropDownList>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
                     Patient
                 </td>
-            </tr>
-            <tr>
-                <td class="header">
-                    Is New Patient
-                </td>
-                <td>
-                    <input tabindex="100" id="chkNewPatient" type="checkbox" value="true" checked="checked"
-                        style="float: left;" />
-                </td>
-                <td id="idIsFemaleTitle" class="header">
-                    Is Female
-                </td>
-                <td id="idIsFemale">
-                    <input tabindex="101" id="chkIsFemale" type="checkbox" value="true" style="float: left;" />
-                </td>
-            </tr>
-            <tr id="trNewPatient">
-                <td class="header">
-                    Select Patient
-                </td>
-                <td>
-                    <select id="cboPatient" style="width: 95%;" tabindex="102">
-                    </select><div id="loadingPatient" style="float: left;">
-                        <span class="loading"></span>
-                    </div>
-                    <input type="hidden" id="hdPatient" />
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr id="trNewPatient1">
-                <td class="header">
-                    First Name
-                </td>
-                <td>
-                    <input type="text" id="txtFirstName" style="width: 100%;" maxlength="200" tabindex="103" />
-                </td>
-                <td class="header">
-                    Last Name
-                </td>
-                <td>
-                    <input type="text" id="txtLastName" style="width: 100%;" maxlength="200" tabindex="104" />
-                </td>
-            </tr>
-            <tr id="trNewPatient2">
-                <td class="header">
-                    Cell Phone
-                </td>
-                <td>
-                    <input type="text" id="txtCellPhone" style="width: 100%;" maxlength="20" tabindex="105" />
-                </td>
-                <td class="header">
-                    Address
-                </td>
-                <td>
-                    <input type="text" id="txtAddress" style="width: 100%;" maxlength="500" tabindex="106" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4" class="subtitle">
-                    Content
-                </td>
-            </tr>
-            <tr>
-                <td class="header">
-                    Select Content
-                </td>
-                <td>
-                    <select id="cboContent" style="width: 95%;" tabindex="107">
-                    </select><div id="spanContent" style="float: left;">
-                        <span class="loading"></span>
-                    </div>
-                    <input type="hidden" id="hdContent" />
-                </td>
-                <td>
-                </td>
-                <td>
+                <td colspan="3">
+                    <input type="text" id="txtPatient" style="width: 80%;" />
+                    <button id="create-user">
+                        Create new patient</button>
                 </td>
             </tr>
             <tr>
@@ -251,11 +317,6 @@
                 </td>
                 <td colspan="3">
                     <textarea id="txtNote" cols="10" rows="2" style="width: 95%;" tabindex="108"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4" class="subtitle">
-                    Time
                 </td>
             </tr>
             <tr>
@@ -281,34 +342,23 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" class="subtitle">
+                <td class="header">
                     Doctor
+                </td>
+                <td colspan="3">
+                    <input type="text" id="txtDoctor" style="width: 80%;" />
                 </td>
             </tr>
             <tr>
-                <td class="header">
-                    Select Doctor
-                </td>
-                <td>
-                    <select id="cboStaff" style="width: 95%;" tabindex="113">
-                    </select><div id="spanStaff" style="float: left;">
-                        <span class="loading"></span>
-                    </div>
-                    <input type="hidden" id="hdStaff" />
-                </td>
                 <td class="header">
                     Room
                 </td>
-                <td>
-                    <select id="cboRoom" style="width: 95%;" tabindex="114">
-                    </select><div id="loadingRoom" style="float: left;">
-                        <span class="loading"></span>
-                    </div>
-                    <input type="hidden" id="hdRoom" />
+                <td colspan="3">
+                    <input type="text" id="txtRoom" style="width: 80%;" />
                 </td>
             </tr>
             <tr>
-                <td class="subtitle" colspan="4">
+                <td colspan="4">
                     <input type="submit" value="Save" id="btnSave" style="float: left;" tabindex="115" />
                     <input type="submit" value="Cancel" id="btnCancel" style="float: left;" tabindex="116" />
                     <input type="submit" value="Delete" id="btnDelete" style="float: right;" tabindex="117" />
@@ -320,7 +370,7 @@
         <div class="dhx_cal_navline">
             <div class="dhx_cal_today_button" id="btnToday" style="display: none; float: right;">
             </div>
-            <div class="dhx_cal_date" style="right:10px; left: auto;">
+            <div class="dhx_cal_date" style="right: 10px; left: auto;">
             </div>
             <asp:Repeater ID="rptFloor" runat="server">
                 <ItemTemplate>

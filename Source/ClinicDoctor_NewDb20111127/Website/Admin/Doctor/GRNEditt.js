@@ -3,7 +3,7 @@ var blStaff = false;
 var blRosterType = false;
 
 // Load calendar for Schedule
-function show_minical() {
+function ShowMinical() {
     if (scheduler.isCalendarVisible())
         scheduler.destroyCalendar();
     else
@@ -93,7 +93,7 @@ function initSchedule(weekday) {
 
                         // Update roster
                         $("#dialog-modal").show();
-                        disableAllElements($("#tblContent"), false)
+                        DisableAllElements($("#tblContent"), false)
 
                         var requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle,
                             StartTime: _fromTime, EndTime: _toTime, Note: _note
@@ -156,7 +156,7 @@ scheduler.showLightbox = function(id) {
         return false;
     }
 
-    setTime(ev);
+    SetTime(ev);
 
     // Set init value
     $("#hdId").val(id);
@@ -241,7 +241,7 @@ function loadRosterType() {
     });
 }
 
-function setTime(ev) {
+function SetTime(ev) {
     var startTime = ev.start_date.format("HH:MM");
     var endTime = ev.end_date.format("HH:MM");
     $("#cboFromHour").val(startTime + ":00");
@@ -336,7 +336,7 @@ function initForm() {
 
     $("#cboStaff").focus();
 
-    disableAllElements($("#tblContent"), true)
+    DisableAllElements($("#tblContent"), true)
 }
 
 function SaveRoster() {
@@ -377,7 +377,7 @@ function SaveRoster() {
     if (ev.isnew == "false") {
         // Update roster
         $("#dialog-modal").show();
-        disableAllElements($("#tblContent"), false)
+        DisableAllElements($("#tblContent"), false)
 
         requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle,
             StartTime: _fromTime, EndTime: _toTime, StartDate: _fromDate, EndDate: _toDate, Note: _note
@@ -407,7 +407,7 @@ function SaveRoster() {
         }
 
         $("#dialog-modal").show();
-        disableAllElements($("#tblContent"), false)
+        DisableAllElements($("#tblContent"), false)
 
         requestdata = JSON.stringify({ DoctorUsername: _doctorUserName, RosterTypeId: _rosterType, RosterTitle: _rosterTitle, StartTime: _fromTime, EndTime: _toTime,
             StartDate: _fromDate, EndDate: _toDate, Note: _note, RepeatRoster: _repeat, Weekday: _weekday, Month: _month
@@ -433,7 +433,7 @@ function SaveRoster() {
                 alert("Unknow error!");
             },
             complete: function() {
-                disableAllElements($("#tblContent"), true)
+                DisableAllElements($("#tblContent"), true)
                 $("#dialog-modal").hide();
             }
         });
@@ -463,7 +463,7 @@ function UpdateRoster(requestdata, method, _id) {
             alert("Unknow error!");
         },
         complete: function() {
-            disableAllElements($("#tblContent"), true)
+            DisableAllElements($("#tblContent"), true)
             $("#dialog-modal").hide();
         }
     });
@@ -590,7 +590,7 @@ $(document).ready(function() {
 
 });
 
-function disableAllElements(obj, disabled) {
+function DisableAllElements(obj, disabled) {
     if (disabled) {
         $("input, textarea, select", obj).removeAttr('disabled');
     }

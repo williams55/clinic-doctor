@@ -5,7 +5,7 @@ div.appt-info
     font-family: Tahoma, Arial;
     float: left;
     padding: 10px 20px 20px 10px;
-    box-shadow: 10px 10px 5px #888;
+    box-shadow: 5px 5px 5px #888;
     width: 525px;
     border: 1px solid #aaa;
 }
@@ -35,8 +35,32 @@ div.appt-info div.content
     width: 160px;
 }
 
-div.appt-info .clear
+div.clear
 {
     clear: both;
 }
 
+div.status-info
+{
+    font-size: 10;
+    font-family: Tahoma, Arial;
+    float: left;
+    padding: 5px 20px 5px 10px;
+    margin-top: 15px;
+    box-shadow: 5px 5px 5px #888;
+    width: 525px;
+    border: 1px solid #aaa;
+}
+
+div.tinybox {
+    margin: 5px 5px 5px 15px;
+    float: left;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #aaa;
+}
+
+span.tinybox-info {
+    margin-top: 2px;
+    float: left;
+}

@@ -165,7 +165,7 @@ namespace ClinicDoctor.Data.Bases
 		/// </summary>
 		/// <param name="_contentId"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentId(System.Int64 _contentId)
+		public TList<Appointment> GetByContentId(System.Int64? _contentId)
 		{
 			int count = -1;
 			return GetByContentId(null,_contentId, 0, int.MaxValue, out count);
@@ -179,7 +179,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentId(System.Int64 _contentId, int start, int pageLength)
+		public TList<Appointment> GetByContentId(System.Int64? _contentId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByContentId(null, _contentId, start, pageLength, out count);
@@ -192,7 +192,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_contentId"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentId(TransactionManager transactionManager, System.Int64 _contentId)
+		public TList<Appointment> GetByContentId(TransactionManager transactionManager, System.Int64? _contentId)
 		{
 			int count = -1;
 			return GetByContentId(transactionManager, _contentId, 0, int.MaxValue, out count);
@@ -207,7 +207,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentId(TransactionManager transactionManager, System.Int64 _contentId, int start, int pageLength)
+		public TList<Appointment> GetByContentId(TransactionManager transactionManager, System.Int64? _contentId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByContentId(transactionManager, _contentId, start, pageLength, out count);
@@ -222,7 +222,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentId(System.Int64 _contentId, int start, int pageLength, out int count)
+		public TList<Appointment> GetByContentId(System.Int64? _contentId, int start, int pageLength, out int count)
 		{
 			return GetByContentId(null, _contentId, start, pageLength, out count);
 		}
@@ -237,7 +237,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByContentId(TransactionManager transactionManager, System.Int64 _contentId, int start, int pageLength, out int count);
+		public abstract TList<Appointment> GetByContentId(TransactionManager transactionManager, System.Int64? _contentId, int start, int pageLength, out int count);
 						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Appointment_ContentId_IsDisabled index.
@@ -245,7 +245,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_contentId"></param>
 		/// <param name="_isDisabled"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentIdIsDisabled(System.Int64 _contentId, System.Boolean _isDisabled)
+		public TList<Appointment> GetByContentIdIsDisabled(System.Int64? _contentId, System.Boolean _isDisabled)
 		{
 			int count = -1;
 			return GetByContentIdIsDisabled(null,_contentId, _isDisabled, 0, int.MaxValue, out count);
@@ -260,7 +260,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentIdIsDisabled(System.Int64 _contentId, System.Boolean _isDisabled, int start, int pageLength)
+		public TList<Appointment> GetByContentIdIsDisabled(System.Int64? _contentId, System.Boolean _isDisabled, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByContentIdIsDisabled(null, _contentId, _isDisabled, start, pageLength, out count);
@@ -274,7 +274,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_isDisabled"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentIdIsDisabled(TransactionManager transactionManager, System.Int64 _contentId, System.Boolean _isDisabled)
+		public TList<Appointment> GetByContentIdIsDisabled(TransactionManager transactionManager, System.Int64? _contentId, System.Boolean _isDisabled)
 		{
 			int count = -1;
 			return GetByContentIdIsDisabled(transactionManager, _contentId, _isDisabled, 0, int.MaxValue, out count);
@@ -290,7 +290,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentIdIsDisabled(TransactionManager transactionManager, System.Int64 _contentId, System.Boolean _isDisabled, int start, int pageLength)
+		public TList<Appointment> GetByContentIdIsDisabled(TransactionManager transactionManager, System.Int64? _contentId, System.Boolean _isDisabled, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByContentIdIsDisabled(transactionManager, _contentId, _isDisabled, start, pageLength, out count);
@@ -306,7 +306,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByContentIdIsDisabled(System.Int64 _contentId, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public TList<Appointment> GetByContentIdIsDisabled(System.Int64? _contentId, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
 			return GetByContentIdIsDisabled(null, _contentId, _isDisabled, start, pageLength, out count);
 		}
@@ -322,7 +322,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByContentIdIsDisabled(TransactionManager transactionManager, System.Int64 _contentId, System.Boolean _isDisabled, int start, int pageLength, out int count);
+		public abstract TList<Appointment> GetByContentIdIsDisabled(TransactionManager transactionManager, System.Int64? _contentId, System.Boolean _isDisabled, int start, int pageLength, out int count);
 						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Appointment_CustomerId index.
@@ -409,7 +409,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_customerId"></param>
 		/// <param name="_contentId"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentId(System.String _customerId, System.Int64 _contentId)
+		public TList<Appointment> GetByCustomerIdContentId(System.String _customerId, System.Int64? _contentId)
 		{
 			int count = -1;
 			return GetByCustomerIdContentId(null,_customerId, _contentId, 0, int.MaxValue, out count);
@@ -424,7 +424,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentId(System.String _customerId, System.Int64 _contentId, int start, int pageLength)
+		public TList<Appointment> GetByCustomerIdContentId(System.String _customerId, System.Int64? _contentId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByCustomerIdContentId(null, _customerId, _contentId, start, pageLength, out count);
@@ -438,7 +438,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_contentId"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentId(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId)
+		public TList<Appointment> GetByCustomerIdContentId(TransactionManager transactionManager, System.String _customerId, System.Int64? _contentId)
 		{
 			int count = -1;
 			return GetByCustomerIdContentId(transactionManager, _customerId, _contentId, 0, int.MaxValue, out count);
@@ -454,7 +454,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentId(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, int start, int pageLength)
+		public TList<Appointment> GetByCustomerIdContentId(TransactionManager transactionManager, System.String _customerId, System.Int64? _contentId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByCustomerIdContentId(transactionManager, _customerId, _contentId, start, pageLength, out count);
@@ -470,7 +470,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentId(System.String _customerId, System.Int64 _contentId, int start, int pageLength, out int count)
+		public TList<Appointment> GetByCustomerIdContentId(System.String _customerId, System.Int64? _contentId, int start, int pageLength, out int count)
 		{
 			return GetByCustomerIdContentId(null, _customerId, _contentId, start, pageLength, out count);
 		}
@@ -486,7 +486,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByCustomerIdContentId(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, int start, int pageLength, out int count);
+		public abstract TList<Appointment> GetByCustomerIdContentId(TransactionManager transactionManager, System.String _customerId, System.Int64? _contentId, int start, int pageLength, out int count);
 						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Appointment_CustomerId_ContentId_IsComplete index.
@@ -495,7 +495,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_contentId"></param>
 		/// <param name="_isComplete"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsComplete(System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete)
+		public TList<Appointment> GetByCustomerIdContentIdIsComplete(System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete)
 		{
 			int count = -1;
 			return GetByCustomerIdContentIdIsComplete(null,_customerId, _contentId, _isComplete, 0, int.MaxValue, out count);
@@ -511,7 +511,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsComplete(System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, int start, int pageLength)
+		public TList<Appointment> GetByCustomerIdContentIdIsComplete(System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByCustomerIdContentIdIsComplete(null, _customerId, _contentId, _isComplete, start, pageLength, out count);
@@ -526,7 +526,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_isComplete"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsComplete(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete)
+		public TList<Appointment> GetByCustomerIdContentIdIsComplete(TransactionManager transactionManager, System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete)
 		{
 			int count = -1;
 			return GetByCustomerIdContentIdIsComplete(transactionManager, _customerId, _contentId, _isComplete, 0, int.MaxValue, out count);
@@ -543,7 +543,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsComplete(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, int start, int pageLength)
+		public TList<Appointment> GetByCustomerIdContentIdIsComplete(TransactionManager transactionManager, System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByCustomerIdContentIdIsComplete(transactionManager, _customerId, _contentId, _isComplete, start, pageLength, out count);
@@ -560,7 +560,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsComplete(System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, int start, int pageLength, out int count)
+		public TList<Appointment> GetByCustomerIdContentIdIsComplete(System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, int start, int pageLength, out int count)
 		{
 			return GetByCustomerIdContentIdIsComplete(null, _customerId, _contentId, _isComplete, start, pageLength, out count);
 		}
@@ -577,7 +577,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByCustomerIdContentIdIsComplete(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, int start, int pageLength, out int count);
+		public abstract TList<Appointment> GetByCustomerIdContentIdIsComplete(TransactionManager transactionManager, System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, int start, int pageLength, out int count);
 						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Appointment_CustomerId_ContentId_IsComplete_IsDisabled index.
@@ -587,7 +587,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_isComplete"></param>
 		/// <param name="_isDisabled"></param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, System.Boolean _isDisabled)
+		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, System.Boolean _isDisabled)
 		{
 			int count = -1;
 			return GetByCustomerIdContentIdIsCompleteIsDisabled(null,_customerId, _contentId, _isComplete, _isDisabled, 0, int.MaxValue, out count);
@@ -604,7 +604,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
+		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByCustomerIdContentIdIsCompleteIsDisabled(null, _customerId, _contentId, _isComplete, _isDisabled, start, pageLength, out count);
@@ -620,7 +620,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="_isDisabled"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, System.Boolean _isDisabled)
+		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, System.Boolean _isDisabled)
 		{
 			int count = -1;
 			return GetByCustomerIdContentIdIsCompleteIsDisabled(transactionManager, _customerId, _contentId, _isComplete, _isDisabled, 0, int.MaxValue, out count);
@@ -638,7 +638,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
+		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByCustomerIdContentIdIsCompleteIsDisabled(transactionManager, _customerId, _contentId, _isComplete, _isDisabled, start, pageLength, out count);
@@ -656,7 +656,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count)
+		public TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count)
 		{
 			return GetByCustomerIdContentIdIsCompleteIsDisabled(null, _customerId, _contentId, _isComplete, _isDisabled, start, pageLength, out count);
 		}
@@ -674,7 +674,7 @@ namespace ClinicDoctor.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="TList&lt;Appointment&gt;"/> class.</returns>
-		public abstract TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _customerId, System.Int64 _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count);
+		public abstract TList<Appointment> GetByCustomerIdContentIdIsCompleteIsDisabled(TransactionManager transactionManager, System.String _customerId, System.Int64? _contentId, System.Boolean _isComplete, System.Boolean _isDisabled, int start, int pageLength, out int count);
 						
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key IX_Appointment_CustomerId_IsDisabled index.
@@ -1929,7 +1929,7 @@ namespace ClinicDoctor.Data.Bases
 					c.OriginalId = c.Id;
 					c.CustomerId = (System.String)reader[((int)AppointmentColumn.CustomerId - 1)];
 					c.CustomerName = (reader.IsDBNull(((int)AppointmentColumn.CustomerName - 1)))?null:(System.String)reader[((int)AppointmentColumn.CustomerName - 1)];
-					c.ContentId = (System.Int64)reader[((int)AppointmentColumn.ContentId - 1)];
+					c.ContentId = (reader.IsDBNull(((int)AppointmentColumn.ContentId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.ContentId - 1)];
 					c.ContentTitle = (reader.IsDBNull(((int)AppointmentColumn.ContentTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.ContentTitle - 1)];
 					c.DoctorUsername = (reader.IsDBNull(((int)AppointmentColumn.DoctorUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorUsername - 1)];
 					c.DoctorShortName = (reader.IsDBNull(((int)AppointmentColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorShortName - 1)];
@@ -1971,7 +1971,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.OriginalId = (System.String)reader["Id"];
 			entity.CustomerId = (System.String)reader[((int)AppointmentColumn.CustomerId - 1)];
 			entity.CustomerName = (reader.IsDBNull(((int)AppointmentColumn.CustomerName - 1)))?null:(System.String)reader[((int)AppointmentColumn.CustomerName - 1)];
-			entity.ContentId = (System.Int64)reader[((int)AppointmentColumn.ContentId - 1)];
+			entity.ContentId = (reader.IsDBNull(((int)AppointmentColumn.ContentId - 1)))?null:(System.Int64?)reader[((int)AppointmentColumn.ContentId - 1)];
 			entity.ContentTitle = (reader.IsDBNull(((int)AppointmentColumn.ContentTitle - 1)))?null:(System.String)reader[((int)AppointmentColumn.ContentTitle - 1)];
 			entity.DoctorUsername = (reader.IsDBNull(((int)AppointmentColumn.DoctorUsername - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorUsername - 1)];
 			entity.DoctorShortName = (reader.IsDBNull(((int)AppointmentColumn.DoctorShortName - 1)))?null:(System.String)reader[((int)AppointmentColumn.DoctorShortName - 1)];
@@ -2008,7 +2008,7 @@ namespace ClinicDoctor.Data.Bases
 			entity.OriginalId = (System.String)dataRow["Id"];
 			entity.CustomerId = (System.String)dataRow["CustomerId"];
 			entity.CustomerName = Convert.IsDBNull(dataRow["CustomerName"]) ? null : (System.String)dataRow["CustomerName"];
-			entity.ContentId = (System.Int64)dataRow["ContentId"];
+			entity.ContentId = Convert.IsDBNull(dataRow["ContentId"]) ? null : (System.Int64?)dataRow["ContentId"];
 			entity.ContentTitle = Convert.IsDBNull(dataRow["ContentTitle"]) ? null : (System.String)dataRow["ContentTitle"];
 			entity.DoctorUsername = Convert.IsDBNull(dataRow["DoctorUsername"]) ? null : (System.String)dataRow["DoctorUsername"];
 			entity.DoctorShortName = Convert.IsDBNull(dataRow["DoctorShortName"]) ? null : (System.String)dataRow["DoctorShortName"];
@@ -2059,12 +2059,12 @@ namespace ClinicDoctor.Data.Bases
 				&& entity.ContentIdSource == null)
 			{
 				object[] pkItems = new object[1];
-				pkItems[0] = entity.ContentId;
+				pkItems[0] = (entity.ContentId ?? (long)0);
 				Content tmpEntity = EntityManager.LocateEntity<Content>(EntityLocator.ConstructKeyFromPkItems(typeof(Content), pkItems), DataRepository.Provider.EnableEntityTracking);
 				if (tmpEntity != null)
 					entity.ContentIdSource = tmpEntity;
 				else
-					entity.ContentIdSource = DataRepository.ContentProvider.GetById(transactionManager, entity.ContentId);		
+					entity.ContentIdSource = DataRepository.ContentProvider.GetById(transactionManager, (entity.ContentId ?? (long)0));		
 				
 				#if NETTIERS_DEBUG
 				System.Diagnostics.Debug.WriteLine("- property 'ContentIdSource' loaded. key " + entity.EntityTrackingKey);

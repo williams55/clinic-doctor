@@ -43,7 +43,7 @@ EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Website", "Website\", "{4EB74450-B82E-4846-83F2-55C6B5B59935}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
-		ProjectReferences = "{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}|ClinicDoctor.Data.dll;{20E43088-4618-4F4A-B8AD-FC31B50D94CD}|ClinicDoctor.Entities.dll;{8996A7B4-57D3-440B-A545-A701844B8C4A}|ClinicDoctor.Data.SqlClient.dll;{727845F6-932D-47CC-9957-E7BE626A461E}|ClinicDoctor.Settings.dll;{47FE3BE8-3E46-47CA-8494-473755867DD0}|ClinicDoctor.Web.dll;"
+		ProjectReferences = "{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}|ClinicDoctor.Data.dll;{20E43088-4618-4F4A-B8AD-FC31B50D94CD}|ClinicDoctor.Entities.dll;{8996A7B4-57D3-440B-A545-A701844B8C4A}|ClinicDoctor.Data.SqlClient.dll;{727845F6-932D-47CC-9957-E7BE626A461E}|ClinicDoctor.Settings.dll;{47FE3BE8-3E46-47CA-8494-473755867DD0}|ClinicDoctor.Web.dll;{0DF343C2-796D-4779-92E5-5555C262DFE6}|FCommon.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Website"
 		Debug.AspNetCompiler.PhysicalPath = "Website\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Website\"
@@ -60,6 +60,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Website", "Website\", "{4EB
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "11625"
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FCommon", "..\..\..\Framework\FCommon\FCommon.csproj", "{0DF343C2-796D-4779-92E5-5555C262DFE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,6 +144,16 @@ Global
 		{4EB74450-B82E-4846-83F2-55C6B5B59935}.Release|Any CPU.ActiveCfg = Debug|.NET
 		{4EB74450-B82E-4846-83F2-55C6B5B59935}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
 		{4EB74450-B82E-4846-83F2-55C6B5B59935}.Release|Mixed Platforms.Build.0 = Debug|.NET
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Release|.NET.ActiveCfg = Release|Any CPU
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0DF343C2-796D-4779-92E5-5555C262DFE6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,5 +166,6 @@ Global
 		{1DCAB031-308A-4581-AFA8-BD29F45A1357} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
 		{20E43088-4618-4F4A-B8AD-FC31B50D94CD} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
 		{4EB74450-B82E-4846-83F2-55C6B5B59935} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
+		{0DF343C2-796D-4779-92E5-5555C262DFE6} = {F3A10C8D-3227-449F-A2CB-014DE2D7F415}
 	EndGlobalSection
 EndGlobal

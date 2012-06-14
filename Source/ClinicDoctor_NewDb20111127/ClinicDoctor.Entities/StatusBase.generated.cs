@@ -83,21 +83,23 @@ namespace ClinicDoctor.Entities
 		///</summary>
 		///<param name="_title"></param>
 		///<param name="_colorCode"></param>
+		///<param name="_priorityIndex"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public StatusBase(System.String _title, System.String _colorCode, System.String _note, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public StatusBase(System.String _title, System.String _colorCode, System.Int32 _priorityIndex, 
+			System.String _note, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new StatusEntityData();
 			this.backupData = null;
 
 			this.Title = _title;
 			this.ColorCode = _colorCode;
+			this.PriorityIndex = _priorityIndex;
 			this.Note = _note;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
@@ -111,19 +113,21 @@ namespace ClinicDoctor.Entities
 		///</summary>
 		///<param name="_title"></param>
 		///<param name="_colorCode"></param>
+		///<param name="_priorityIndex"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Status CreateStatus(System.String _title, System.String _colorCode, System.String _note, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public static Status CreateStatus(System.String _title, System.String _colorCode, System.Int32 _priorityIndex, 
+			System.String _note, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			Status newStatus = new Status();
 			newStatus.Title = _title;
 			newStatus.ColorCode = _colorCode;
+			newStatus.PriorityIndex = _priorityIndex;
 			newStatus.Note = _note;
 			newStatus.IsDisabled = _isDisabled;
 			newStatus.CreateUser = _createUser;
@@ -243,6 +247,41 @@ namespace ClinicDoctor.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(StatusColumn.ColorCode, this.entityData.ColorCode);
 				OnPropertyChanged("ColorCode");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the PriorityIndex property. 
+		///		
+		/// </summary>
+		/// <value>This type is int.</value>
+		/// <remarks>
+		/// This property can not be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, false)]
+		public virtual System.Int32 PriorityIndex
+		{
+			get
+			{
+				return this.entityData.PriorityIndex; 
+			}
+			
+			set
+			{
+				if (this.entityData.PriorityIndex == value)
+					return;
+					
+				OnColumnChanging(StatusColumn.PriorityIndex, this.entityData.PriorityIndex);
+				this.entityData.PriorityIndex = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(StatusColumn.PriorityIndex, this.entityData.PriorityIndex);
+				OnPropertyChanged("PriorityIndex");
 			}
 		}
 		
@@ -521,7 +560,7 @@ namespace ClinicDoctor.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Title", "ColorCode", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Title", "ColorCode", "PriorityIndex", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -672,6 +711,7 @@ namespace ClinicDoctor.Entities
 				copy.Id = this.Id;
 				copy.Title = this.Title;
 				copy.ColorCode = this.ColorCode;
+				copy.PriorityIndex = this.PriorityIndex;
 				copy.Note = this.Note;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -818,6 +858,8 @@ namespace ClinicDoctor.Entities
 					return entityData.Title != _originalData.Title;
 					case StatusColumn.ColorCode:
 					return entityData.ColorCode != _originalData.ColorCode;
+					case StatusColumn.PriorityIndex:
+					return entityData.PriorityIndex != _originalData.PriorityIndex;
 					case StatusColumn.Note:
 					return entityData.Note != _originalData.Note;
 					case StatusColumn.IsDisabled:
@@ -860,6 +902,7 @@ namespace ClinicDoctor.Entities
 			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.Title != _originalData.Title;
 			result = result || entityData.ColorCode != _originalData.ColorCode;
+			result = result || entityData.PriorityIndex != _originalData.PriorityIndex;
 			result = result || entityData.Note != _originalData.Note;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
@@ -878,6 +921,7 @@ namespace ClinicDoctor.Entities
 				return CreateStatus(
 				_originalData.Title,
 				_originalData.ColorCode,
+				_originalData.PriorityIndex,
 				_originalData.Note,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
@@ -916,6 +960,7 @@ namespace ClinicDoctor.Entities
 			return this.Id.GetHashCode() ^ 
 					this.Title.GetHashCode() ^ 
 					this.ColorCode.GetHashCode() ^ 
+					this.PriorityIndex.GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -959,6 +1004,8 @@ namespace ClinicDoctor.Entities
 			if (Object1.Title != Object2.Title)
 				equal = false;
 			if (Object1.ColorCode != Object2.ColorCode)
+				equal = false;
+			if (Object1.PriorityIndex != Object2.PriorityIndex)
 				equal = false;
 			if ( Object1.Note != null && Object2.Note != null )
 			{
@@ -1051,6 +1098,12 @@ namespace ClinicDoctor.Entities
             	
             	case StatusColumn.ColorCode:
             		return this.ColorCode.CompareTo(rhs.ColorCode);
+            		
+            		                 
+            	
+            	
+            	case StatusColumn.PriorityIndex:
+            		return this.PriorityIndex.CompareTo(rhs.PriorityIndex);
             		
             		                 
             	
@@ -1223,10 +1276,11 @@ namespace ClinicDoctor.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{10}{9}- Id: {0}{9}- Title: {1}{9}- ColorCode: {2}{9}- Note: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
+				"{11}{10}- Id: {0}{10}- Title: {1}{10}- ColorCode: {2}{10}- PriorityIndex: {3}{10}- Note: {4}{10}- IsDisabled: {5}{10}- CreateUser: {6}{10}- CreateDate: {7}{10}- UpdateUser: {8}{10}- UpdateDate: {9}{10}{12}", 
 				this.Id,
 				this.Title,
 				this.ColorCode,
+				this.PriorityIndex,
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -1276,6 +1330,11 @@ namespace ClinicDoctor.Entities
 		/// ColorCode : 
 		/// </summary>
 		public System.String		  ColorCode = string.Empty;
+		
+		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		public System.Int32		  PriorityIndex = (int)1;
 		
 		/// <summary>
 		/// Note : 
@@ -1356,6 +1415,7 @@ namespace ClinicDoctor.Entities
 			
 			_tmp.Title = this.Title;
 			_tmp.ColorCode = this.ColorCode;
+			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.Note = this.Note;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1393,6 +1453,7 @@ namespace ClinicDoctor.Entities
 			
 			_tmp.Title = this.Title;
 			_tmp.ColorCode = this.ColorCode;
+			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.Note = this.Note;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1793,41 +1854,47 @@ namespace ClinicDoctor.Entities
 		[ColumnEnum("ColorCode", typeof(System.String), System.Data.DbType.String, false, false, false, 10)]
 		ColorCode = 3,
 		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		[EnumTextValue("PriorityIndex")]
+		[ColumnEnum("PriorityIndex", typeof(System.Int32), System.Data.DbType.Int32, false, false, false)]
+		PriorityIndex = 4,
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 4,
+		Note = 5,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 5,
+		IsDisabled = 6,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 6,
+		CreateUser = 7,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 7,
+		CreateDate = 8,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 8,
+		UpdateUser = 9,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 9
+		UpdateDate = 10
 	}//End enum
 
 	#endregion StatusColumn Enum

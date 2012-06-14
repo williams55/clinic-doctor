@@ -326,7 +326,7 @@ scheduler.form_blocks.calendar_time={
 			
 			function _update_minical_select() {
 				ev.start_date = scheduler.date.add(inputs[0]._date, selects[0].value, "minute");
-				ev.end_date.setTime(ev.start_date.getTime() + (scheduler.config.event_duration * 60 * 1000));
+				ev.end_date.SetTime(ev.start_date.getTime() + (scheduler.config.event_duration * 60 * 1000));
 				
 				inputs[1].value = scheduler.templates.calendar_time(ev.end_date);
 				inputs[1]._date = scheduler.date.date_part(new Date(ev.end_date));	
