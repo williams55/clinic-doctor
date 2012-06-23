@@ -1,0 +1,161 @@
+/*************************Start lightbox form for scheduler***************************/
+.schedulerForm
+{
+    position: absolute;
+    z-index: 10001;
+    display: none;
+    font-family: Arial, Sans-Serif;
+    background-color: #d6e5f4;
+    padding: 10px;
+    visibility: visible;
+    width: 320px;
+    top: 22px;
+    left: 0px;
+    border: 2px solid #3380CB;
+}
+.schedulerForm table tr td
+{
+    padding: 5px;
+    vertical-align: top;
+}
+.schedulerForm table tr td.header
+{
+    font-weight: bold;
+}
+.schedulerForm table tr td.title
+{
+    font-family: Arial, Sans-Serif;
+    font-weight: bold;
+    font-size:16px;
+    padding-bottom: 10px;
+    color: #FF0000;
+}
+.schedulerForm table tr td.subtitle
+{
+    font-family: Arial, Sans-Serif;
+    font-weight: bold;
+    font-size:14px;
+    margin-top: 10px;
+    border-top: 2px solid #3380CB;
+    color: #3380CB;
+}
+/*.schedulerForm input[type="text"], .schedulerForm textarea
+{
+    font-family: Arial, Sans-Serif;
+    margin-bottom: 5px;
+    display: block;
+    padding: 1px 2px 1px 2px;
+    border: solid 1px #85b1de;
+    width: 300px;
+    background-color: #EDF2F7;
+    font-size:13px;
+}
+.schedulerForm textarea
+{
+    padding: 4px;
+}
+.schedulerForm input[type="text"].activeField, #RosterForm textarea.activeField
+{
+    background-image: none;
+    background-color: #ffffff;
+    border: solid 1px #33677F;
+}
+.schedulerForm input[type="text"].idle, #RosterForm textarea.idle
+{
+    border: solid 1px #85b1de;
+    background-color: #eeeeee;
+    background-repeat: repeat-x;
+    background-position: top;
+}*/
+
+.schedulerForm .loading
+{
+    background: url(../images/loading_bar.gif) top left no-repeat;
+    padding-left: 65px;
+}
+
+.clear
+{
+    clear: both;
+}
+
+.schedulerForm input[type="text"].datePicker, .schedulerForm input[type="text"]#txtMonth
+{
+    width: 80px;
+    float: left;
+    height:11px;
+}
+.schedulerForm select
+{
+    float: left;
+    margin-right: 10px;
+}
+/*************************End lightbox form for scheduler***************************/
+
+/*************************Start customer info box***************************/
+div.appt-info
+{
+    font-size: 10;
+    font-family: Tahoma, Arial;
+    float: left;
+    padding: 10px 20px 20px 10px;
+    box-shadow: 5px 5px 5px #888;
+    width: 525px;
+    border: 1px solid #aaa;
+}
+
+div.appt-info h3
+{
+    font-size: 16px;
+    text-align: center;
+    padding: 0 0 10px 0;
+}
+
+div.appt-info div.title
+{
+    width: 70px;
+    float: left;
+    padding: 3px 0 0 0;
+    margin: 3px 0 3px 0;
+}
+
+div.appt-info div.content
+{
+    font-weight: bold;
+    float: left;
+    padding: 0 0 1px 10px;
+    border-bottom: 1px solid #000;
+    margin: 3px 3px 3px 0;
+    width: 160px;
+}
+
+div.clear
+{
+    clear: both;
+}
+
+div.status-info
+{
+    font-size: 10;
+    font-family: Tahoma, Arial;
+    float: left;
+    padding: 5px 20px 5px 10px;
+    margin-top: 15px;
+    box-shadow: 5px 5px 5px #888;
+    width: 525px;
+    border: 1px solid #aaa;
+}
+
+div.tinybox {
+    margin: 5px 5px 5px 15px;
+    float: left;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #aaa;
+}
+
+span.tinybox-info {
+    margin-top: 2px;
+    float: left;
+}
+/*************************End customer info box***************************/
