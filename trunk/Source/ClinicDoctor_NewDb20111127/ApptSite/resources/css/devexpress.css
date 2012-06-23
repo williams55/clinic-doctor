@@ -1,0 +1,49 @@
+#devexpress-form
+{
+    padding: 10px;
+    width: 95%;
+}
+
+#devexpress-form table.edit-form
+{
+    width: 100%;
+    border-collapse:collapse;
+    padding: 0;
+}
+
+#devexpress-form table.edit-form td
+{
+}
+
+#devexpress-form table.edit-form td.title-row
+{
+    font-weight: bold;
+    padding: 3px 0 3px 10px;
+}
+
+#devexpress-form table.edit-form td.content-row
+{
+    width: 40%;
+    padding: 3px 0 3px 0;
+}
+
+#devexpress-form table.edit-form td.content-row input[type=text]
+{
+    width: 100%;
+}
+
+#devexpress-form table.edit-form td.content-row textarea
+{
+    width: 100%;
+    height: 100px;
+}
+
+#devexpress-form .text-form, .area-form
+{
+    width: 100%;
+}
+
+#devexpress-form .area-form
+{
+    height: 100px;
+}
