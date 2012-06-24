@@ -9,6 +9,8 @@
         type="text/css" />
     <link rel="stylesheet" media="screen" type="text/css" href="<%= ResolveUrl("~/resources/components/colorpicker/css/layout.css") %>" />
 
+    <script src="<%= Page.ResolveClientUrl("~/resources/scripts/json2.js") %>" type="text/javascript"></script>
+
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/components/colorpicker/js/colorpicker.js") %>"></script>
 
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/components/colorpicker/js/eye.js") %>"></script>
@@ -17,6 +19,7 @@
 
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/components/colorpicker/js/layout.js?ver=1.0.2") %>"></script>
 
+    <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div class="title">
@@ -25,10 +28,15 @@
     </div>
     <div id="box-other">
         <dx:ASPxGridView ID="grid" ClientInstanceName="grid" runat="server" DataSourceID="AccessDataSource1"
-            KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowUpdating="grid_RowUpdating">
+            KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowUpdating="grid_RowUpdating"
+            OnCustomButtonCallback="grid_CustomButtonCallback">
             <Columns>
                 <dx:GridViewCommandColumn VisibleIndex="0">
                     <EditButton Visible="true" />
+                    <CustomButtons>
+                        <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
+                        </dx:GridViewCommandColumnCustomButton>
+                    </CustomButtons>
                 </dx:GridViewCommandColumn>
                 <dx:GridViewDataColumn FieldName="Title" VisibleIndex="1" />
                 <dx:GridViewDataColumn FieldName="ColorCode" VisibleIndex="2" />
@@ -36,7 +44,8 @@
                     <Settings AllowAutoFilter="False" />
                 </dx:GridViewDataMemoColumn>
             </Columns>
-            <ClientSideEvents EndCallback="BuildColorPicker"></ClientSideEvents>
+            <ClientSideEvents EndCallback="function(s, e) { BuildColorPicker(); RefreshGrid();}"
+                BeginCallback="function(s, e) {command = e.command; gridObject = s;}"></ClientSideEvents>
             <Templates>
                 <EditForm>
                     <div id="devexpress-form">
@@ -98,7 +107,7 @@
         <data:StatusDataSource ID="AccessDataSource1" runat="server" SelectMethod="GetPaged"
             EnablePaging="True" EnableSorting="True">
             <Parameters>
-                <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
+                <data:CustomParameter Name="WhereClause" Value="IsDisabled = 'false'" ConvertEmptyStringToNull="false" />
                 <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
