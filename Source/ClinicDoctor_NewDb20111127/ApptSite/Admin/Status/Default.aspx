@@ -23,8 +23,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div class="title">
-        <h5>
-            Status</h5>
+        <h5>Status</h5>
     </div>
     <div id="box-other">
         <dx:ASPxGridView ID="grid" ClientInstanceName="grid" runat="server" DataSourceID="AccessDataSource1"

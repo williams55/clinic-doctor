@@ -33,6 +33,7 @@ public partial class Admin_Status_Default : System.Web.UI.Page
         long id;
         if (Int64.TryParse(grid.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
         {
+            //var abc = DataRepository.RoomProvider.GetById(id);
             var obj = DataRepository.StatusProvider.GetById(id);
             obj.IsDisabled = true;
             obj.UpdateUser = WebCommon.GetAuthUsername();
