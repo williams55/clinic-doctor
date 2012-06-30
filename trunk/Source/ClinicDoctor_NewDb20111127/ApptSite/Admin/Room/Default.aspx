@@ -39,7 +39,7 @@
         </dx:ASPxGridView>
          <data:RoomDataSource ID="RoomDataSource" runat="server" SelectMethod="GetPaged" EnablePaging="True" EnableSorting="True">
 			<Parameters>
-				<data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
+				<data:CustomParameter Name="WhereClause" Value="IsDisabled = 'false'" ConvertEmptyStringToNull="false" />
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
 				<asp:ControlParameter Name="PageIndex" ControlID="gridRoom" PropertyName="PageIndex" Type="Int32" />				
 				<data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
