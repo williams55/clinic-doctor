@@ -32,6 +32,7 @@
             <Columns>
                 <dx:GridViewCommandColumn VisibleIndex="0">
                     <EditButton Visible="true" />
+                    <NewButton Visible="True"></NewButton>
                     <CustomButtons>
                         <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
                         </dx:GridViewCommandColumnCustomButton>

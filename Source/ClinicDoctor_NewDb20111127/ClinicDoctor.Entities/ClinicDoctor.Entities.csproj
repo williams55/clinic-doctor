@@ -131,11 +131,6 @@
   </ItemGroup>
   <!-- Include any user files -->
   <ItemGroup>
-    <Compile Include="**\*.user.*" Exclude="**\*.csproj.user;**\.svn\**">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Appointment.cs">
       <SubType>Code</SubType>
     </Compile>
