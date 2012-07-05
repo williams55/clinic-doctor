@@ -19,7 +19,7 @@
                     <EditButton Visible="true" />
                     <NewButton Visible="true" />
                     <CustomButtons>
-                        <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
+                        <dx:GridViewCommandColumnCustomButton ID="btnDelete"  Text="Delete">
                         
                         </dx:GridViewCommandColumnCustomButton>
                     </CustomButtons>
@@ -46,6 +46,7 @@
 			</Parameters>
 		</data:RoomDataSource>
     </div>
+    <asp:Label ID="message" runat="server">test</asp:Label>
 
 </asp:Content>
 

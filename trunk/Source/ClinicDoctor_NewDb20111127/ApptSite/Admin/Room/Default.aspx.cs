@@ -26,8 +26,9 @@ public partial class Admin_Room_Default : System.Web.UI.Page
         long id;
         if (Int64.TryParse( gridRoom.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
         {
-           // var abc = DataRepository.RoomProvider.GetById(id);
-            var obj =(Room)DataRepository.RoomProvider.GetById(id);
+            //var abc = DataRepository.RoomProvider.GetById(id);
+            this.message.Text = id.ToString();
+            var obj = (Room) DataRepository.RoomProvider.GetById(id);
             obj.IsDisabled = true;
             obj.UpdateUser = WebCommon.GetAuthUsername();
             obj.UpdateDate = DateTime.Now;
