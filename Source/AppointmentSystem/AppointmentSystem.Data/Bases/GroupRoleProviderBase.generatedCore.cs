@@ -65,7 +65,7 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="_roleId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public TList<GroupRole> GetByRoleId(System.String _roleId)
+		public TList<GroupRole> GetByRoleId(System.Int32? _roleId)
 		{
 			int count = -1;
 			return GetByRoleId(_roleId, 0,int.MaxValue, out count);
@@ -79,7 +79,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_roleId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
 		/// <remarks></remarks>
-		public TList<GroupRole> GetByRoleId(TransactionManager transactionManager, System.String _roleId)
+		public TList<GroupRole> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId)
 		{
 			int count = -1;
 			return GetByRoleId(transactionManager, _roleId, 0, int.MaxValue, out count);
@@ -95,7 +95,7 @@ namespace AppointmentSystem.Data.Bases
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public TList<GroupRole> GetByRoleId(TransactionManager transactionManager, System.String _roleId, int start, int pageLength)
+		public TList<GroupRole> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByRoleId(transactionManager, _roleId, start, pageLength, out count);
@@ -110,7 +110,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_roleId"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public TList<GroupRole> GetByRoleId(System.String _roleId, int start, int pageLength)
+		public TList<GroupRole> GetByRoleId(System.Int32? _roleId, int start, int pageLength)
 		{
 			int count =  -1;
 			return GetByRoleId(null, _roleId, start, pageLength,out count);	
@@ -126,7 +126,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public TList<GroupRole> GetByRoleId(System.String _roleId, int start, int pageLength,out int count)
+		public TList<GroupRole> GetByRoleId(System.Int32? _roleId, int start, int pageLength,out int count)
 		{
 			return GetByRoleId(null, _roleId, start, pageLength, out count);	
 		}
@@ -141,7 +141,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public abstract TList<GroupRole> GetByRoleId(TransactionManager transactionManager, System.String _roleId, int start, int pageLength, out int count);
+		public abstract TList<GroupRole> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength, out int count);
 		
 	
 		/// <summary>
@@ -150,7 +150,7 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="_groupId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public TList<GroupRole> GetByGroupId(System.String _groupId)
+		public TList<GroupRole> GetByGroupId(System.Int32 _groupId)
 		{
 			int count = -1;
 			return GetByGroupId(_groupId, 0,int.MaxValue, out count);
@@ -164,7 +164,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_groupId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
 		/// <remarks></remarks>
-		public TList<GroupRole> GetByGroupId(TransactionManager transactionManager, System.String _groupId)
+		public TList<GroupRole> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId)
 		{
 			int count = -1;
 			return GetByGroupId(transactionManager, _groupId, 0, int.MaxValue, out count);
@@ -180,7 +180,7 @@ namespace AppointmentSystem.Data.Bases
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public TList<GroupRole> GetByGroupId(TransactionManager transactionManager, System.String _groupId, int start, int pageLength)
+		public TList<GroupRole> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByGroupId(transactionManager, _groupId, start, pageLength, out count);
@@ -195,7 +195,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_groupId"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public TList<GroupRole> GetByGroupId(System.String _groupId, int start, int pageLength)
+		public TList<GroupRole> GetByGroupId(System.Int32 _groupId, int start, int pageLength)
 		{
 			int count =  -1;
 			return GetByGroupId(null, _groupId, start, pageLength,out count);	
@@ -211,7 +211,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public TList<GroupRole> GetByGroupId(System.String _groupId, int start, int pageLength,out int count)
+		public TList<GroupRole> GetByGroupId(System.Int32 _groupId, int start, int pageLength,out int count)
 		{
 			return GetByGroupId(null, _groupId, start, pageLength, out count);	
 		}
@@ -226,7 +226,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.GroupRole objects.</returns>
-		public abstract TList<GroupRole> GetByGroupId(TransactionManager transactionManager, System.String _groupId, int start, int pageLength, out int count);
+		public abstract TList<GroupRole> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId, int start, int pageLength, out int count);
 		
 		#endregion
 
@@ -390,8 +390,8 @@ namespace AppointmentSystem.Data.Bases
 				{
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)GroupRoleColumn.Id - 1)];
-					c.GroupId = (System.String)reader[((int)GroupRoleColumn.GroupId - 1)];
-					c.RoleId = (reader.IsDBNull(((int)GroupRoleColumn.RoleId - 1)))?null:(System.String)reader[((int)GroupRoleColumn.RoleId - 1)];
+					c.GroupId = (System.Int32)reader[((int)GroupRoleColumn.GroupId - 1)];
+					c.RoleId = (reader.IsDBNull(((int)GroupRoleColumn.RoleId - 1)))?null:(System.Int32?)reader[((int)GroupRoleColumn.RoleId - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)GroupRoleColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)GroupRoleColumn.CreateUser - 1)))?null:(System.String)reader[((int)GroupRoleColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)GroupRoleColumn.CreateDate - 1)];
@@ -415,8 +415,8 @@ namespace AppointmentSystem.Data.Bases
 			if (!reader.Read()) return;
 			
 			entity.Id = (System.Int64)reader[((int)GroupRoleColumn.Id - 1)];
-			entity.GroupId = (System.String)reader[((int)GroupRoleColumn.GroupId - 1)];
-			entity.RoleId = (reader.IsDBNull(((int)GroupRoleColumn.RoleId - 1)))?null:(System.String)reader[((int)GroupRoleColumn.RoleId - 1)];
+			entity.GroupId = (System.Int32)reader[((int)GroupRoleColumn.GroupId - 1)];
+			entity.RoleId = (reader.IsDBNull(((int)GroupRoleColumn.RoleId - 1)))?null:(System.Int32?)reader[((int)GroupRoleColumn.RoleId - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)GroupRoleColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)GroupRoleColumn.CreateUser - 1)))?null:(System.String)reader[((int)GroupRoleColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)GroupRoleColumn.CreateDate - 1)];
@@ -435,8 +435,8 @@ namespace AppointmentSystem.Data.Bases
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
 			entity.Id = (System.Int64)dataRow["Id"];
-			entity.GroupId = (System.String)dataRow["GroupId"];
-			entity.RoleId = Convert.IsDBNull(dataRow["RoleId"]) ? null : (System.String)dataRow["RoleId"];
+			entity.GroupId = (System.Int32)dataRow["GroupId"];
+			entity.RoleId = Convert.IsDBNull(dataRow["RoleId"]) ? null : (System.Int32?)dataRow["RoleId"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];
@@ -472,12 +472,12 @@ namespace AppointmentSystem.Data.Bases
 				&& entity.RoleIdSource == null)
 			{
 				object[] pkItems = new object[1];
-				pkItems[0] = (entity.RoleId ?? string.Empty);
+				pkItems[0] = (entity.RoleId ?? (int)0);
 				Role tmpEntity = EntityManager.LocateEntity<Role>(EntityLocator.ConstructKeyFromPkItems(typeof(Role), pkItems), DataRepository.Provider.EnableEntityTracking);
 				if (tmpEntity != null)
 					entity.RoleIdSource = tmpEntity;
 				else
-					entity.RoleIdSource = DataRepository.RoleProvider.GetById(transactionManager, (entity.RoleId ?? string.Empty));		
+					entity.RoleIdSource = DataRepository.RoleProvider.GetById(transactionManager, (entity.RoleId ?? (int)0));		
 				
 				#if NETTIERS_DEBUG
 				System.Diagnostics.Debug.WriteLine("- property 'RoleIdSource' loaded. key " + entity.EntityTrackingKey);

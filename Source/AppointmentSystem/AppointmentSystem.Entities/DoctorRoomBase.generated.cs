@@ -89,7 +89,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public DoctorRoomBase(System.String _doctorId, System.String _roomId, System.Int32 _priority, 
+		public DoctorRoomBase(System.String _doctorId, System.Int32? _roomId, System.Int32 _priority, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
 		{
@@ -117,7 +117,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static DoctorRoom CreateDoctorRoom(System.String _doctorId, System.String _roomId, System.Int32 _priority, 
+		public static DoctorRoom CreateDoctorRoom(System.String _doctorId, System.Int32? _roomId, System.Int32 _priority, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
 		{
@@ -213,17 +213,19 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the RoomId property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can be set to null. 
+		/// If this column is null, this property will return (int)0. It is up to the developer
+		/// to check the value of IsRoomIdNull() and perform business logic appropriately.
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 20)]
-		public virtual System.String RoomId
+		[DataObjectField(false, false, true)]
+		public virtual System.Int32? RoomId
 		{
 			get
 			{
@@ -469,6 +471,17 @@ namespace AppointmentSystem.Entities
             get { return entityData.RoomIdSource; }
             set { entityData.RoomIdSource = value; }
       	}
+		/// <summary>
+		/// Gets or sets the source <see cref="Users"/>.
+		/// </summary>
+		/// <value>The source Users for DoctorId.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Users DoctorIdSource
+      	{
+            get { return entityData.DoctorIdSource; }
+            set { entityData.DoctorIdSource = value; }
+      	}
 		#endregion
 		
 		#region Children Collections
@@ -486,8 +499,6 @@ namespace AppointmentSystem.Entities
 			//Validation rules based on database schema.
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("DoctorId", "Doctor Id", 20));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("RoomId", "Room Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -675,6 +686,10 @@ namespace AppointmentSystem.Entities
 				copy.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				copy.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
+			if (this.DoctorIdSource != null && existingCopies.Contains(this.DoctorIdSource))
+				copy.DoctorIdSource = existingCopies[this.DoctorIdSource] as Users;
+			else
+				copy.DoctorIdSource = MakeCopyOf(this.DoctorIdSource, existingCopies) as Users;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -1051,7 +1066,7 @@ namespace AppointmentSystem.Entities
             	
             	
             	case DoctorRoomColumn.RoomId:
-            		return this.RoomId.CompareTo(rhs.RoomId);
+            		return this.RoomId.Value.CompareTo(rhs.RoomId.Value);
             		
             		                 
             	
@@ -1276,7 +1291,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
-		public System.String		  RoomId = null;
+		public System.Int32?		  RoomId = null;
 		
 		/// <summary>
 		/// Priority : 
@@ -1324,6 +1339,19 @@ namespace AppointmentSystem.Entities
             get { return this._roomIdSource; }
             set { this._roomIdSource = value; }
       	}
+		private Users _doctorIdSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Users"/>.
+		/// </summary>
+		/// <value>The source Users for DoctorId.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Users DoctorIdSource
+      	{
+            get { return this._doctorIdSource; }
+            set { this._doctorIdSource = value; }
+      	}
 		#endregion
 		#endregion Variable Declarations
 	
@@ -1355,6 +1383,8 @@ namespace AppointmentSystem.Entities
 			#region Source Parent Composite Entities
 			if (this.RoomIdSource != null)
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource) as Room;
+			if (this.DoctorIdSource != null)
+				_tmp.DoctorIdSource = MakeCopyOf(this.DoctorIdSource) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -1393,6 +1423,10 @@ namespace AppointmentSystem.Entities
 				_tmp.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
+			if (this.DoctorIdSource != null && existingCopies.Contains(this.DoctorIdSource))
+				_tmp.DoctorIdSource = existingCopies[this.DoctorIdSource] as Users;
+			else
+				_tmp.DoctorIdSource = MakeCopyOf(this.DoctorIdSource, existingCopies) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -1780,7 +1814,7 @@ namespace AppointmentSystem.Entities
 		/// RoomId : 
 		/// </summary>
 		[EnumTextValue("RoomId")]
-		[ColumnEnum("RoomId", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
+		[ColumnEnum("RoomId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
 		RoomId = 3,
 		/// <summary>
 		/// Priority : 

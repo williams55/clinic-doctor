@@ -159,8 +159,8 @@ namespace AppointmentSystem.Web.Data
 			AppointmentGroup item;
 			count = 0;
 			
-			System.String _id;
-			System.String _unitId_nullable;
+			System.Int32 _id;
+			System.Int32? _unitId_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -186,7 +186,7 @@ namespace AppointmentSystem.Web.Data
                     break;
 				// PK
 				case AppointmentGroupSelectMethod.GetById:
-					_id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
 					item = AppointmentGroupProvider.GetById(GetTransactionManager(), _id);
 					results = new TList<AppointmentGroup>();
 					if ( item != null ) results.Add(item);
@@ -195,7 +195,7 @@ namespace AppointmentSystem.Web.Data
 				// IX
 				// FK
 				case AppointmentGroupSelectMethod.GetByUnitId:
-					_unitId_nullable = (System.String) EntityUtil.ChangeType(values["UnitId"], typeof(System.String));
+					_unitId_nullable = (System.Int32?) EntityUtil.ChangeType(values["UnitId"], typeof(System.Int32?));
 					results = AppointmentGroupProvider.GetByUnitId(GetTransactionManager(), _unitId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				// M:M

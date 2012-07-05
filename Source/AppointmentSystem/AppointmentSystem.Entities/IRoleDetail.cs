@@ -15,24 +15,19 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "RoleDetail"</remarks>
-		System.String Id { get; set; }
+		System.Int64 Id { get; set; }
 				
-		/// <summary>
-		/// keep a copy of the original so it can be used for editable primary keys.
-		/// </summary>
-		System.String OriginalId { get; set; }
-			
 		
 		
 		/// <summary>
 		/// RoleId : 
 		/// </summary>
-		System.String  RoleId  { get; set; }
+		System.Int32?  RoleId  { get; set; }
 		
 		/// <summary>
-		/// Screen : What screen role can access
+		/// ScreenId : What screen role can access
 		/// </summary>
-		System.String  Screen  { get; set; }
+		System.Int32?  ScreenId  { get; set; }
 		
 		/// <summary>
 		/// Crud : Define what action user can do.

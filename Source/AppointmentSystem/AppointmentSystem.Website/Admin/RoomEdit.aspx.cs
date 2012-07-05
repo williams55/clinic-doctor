@@ -32,6 +32,11 @@ public partial class RoomEdit : System.Web.UI.Page
 		string urlParams = string.Format("Id={0}", GridViewAppointment2.SelectedDataKey.Values[0]);
 		Response.Redirect("AppointmentEdit.aspx?" + urlParams, true);		
 	}	
+	protected void GridViewRoster3_SelectedIndexChanged(object sender, EventArgs e)
+	{
+		string urlParams = string.Format("Id={0}", GridViewRoster3.SelectedDataKey.Values[0]);
+		Response.Redirect("RosterEdit.aspx?" + urlParams, true);		
+	}	
 }
 
 

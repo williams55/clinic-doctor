@@ -192,40 +192,79 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 
 		
-		#region "RoleProvider"
+		#region "ServicesProvider"
 			
-		private SqlRoleProvider innerSqlRoleProvider;
+		private SqlServicesProvider innerSqlServicesProvider;
 
 		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="Role"/> business entity.
+		/// This class is the Data Access Logic Component for the <see cref="Services"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
 		/// <value></value>
-		public override RoleProviderBase RoleProvider
+		public override ServicesProviderBase ServicesProvider
 		{
 			get
 			{
-				if (innerSqlRoleProvider == null) 
+				if (innerSqlServicesProvider == null) 
 				{
 					lock (syncRoot) 
 					{
-						if (innerSqlRoleProvider == null)
+						if (innerSqlServicesProvider == null)
 						{
-							this.innerSqlRoleProvider = new SqlRoleProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+							this.innerSqlServicesProvider = new SqlServicesProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
 						}
 					}
 				}
-				return innerSqlRoleProvider;
+				return innerSqlServicesProvider;
 			}
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlRoleProvider"/>.
+		/// Gets the current <c cref="SqlServicesProvider"/>.
 		/// </summary>
 		/// <value></value>
-		public SqlRoleProvider SqlRoleProvider
+		public SqlServicesProvider SqlServicesProvider
 		{
-			get {return RoleProvider as SqlRoleProvider;}
+			get {return ServicesProvider as SqlServicesProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "UsersProvider"
+			
+		private SqlUsersProvider innerSqlUsersProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="Users"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override UsersProviderBase UsersProvider
+		{
+			get
+			{
+				if (innerSqlUsersProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlUsersProvider == null)
+						{
+							this.innerSqlUsersProvider = new SqlUsersProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlUsersProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlUsersProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlUsersProvider SqlUsersProvider
+		{
+			get {return UsersProvider as SqlUsersProvider;}
 		}
 		
 		#endregion
@@ -309,40 +348,79 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 		
 		
-		#region "UserGroupProvider"
+		#region "ScreenProvider"
 			
-		private SqlUserGroupProvider innerSqlUserGroupProvider;
+		private SqlScreenProvider innerSqlScreenProvider;
 
 		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="UserGroup"/> business entity.
+		/// This class is the Data Access Logic Component for the <see cref="Screen"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
 		/// <value></value>
-		public override UserGroupProviderBase UserGroupProvider
+		public override ScreenProviderBase ScreenProvider
 		{
 			get
 			{
-				if (innerSqlUserGroupProvider == null) 
+				if (innerSqlScreenProvider == null) 
 				{
 					lock (syncRoot) 
 					{
-						if (innerSqlUserGroupProvider == null)
+						if (innerSqlScreenProvider == null)
 						{
-							this.innerSqlUserGroupProvider = new SqlUserGroupProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+							this.innerSqlScreenProvider = new SqlScreenProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
 						}
 					}
 				}
-				return innerSqlUserGroupProvider;
+				return innerSqlScreenProvider;
 			}
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlUserGroupProvider"/>.
+		/// Gets the current <c cref="SqlScreenProvider"/>.
 		/// </summary>
 		/// <value></value>
-		public SqlUserGroupProvider SqlUserGroupProvider
+		public SqlScreenProvider SqlScreenProvider
 		{
-			get {return UserGroupProvider as SqlUserGroupProvider;}
+			get {return ScreenProvider as SqlScreenProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "UnitsProvider"
+			
+		private SqlUnitsProvider innerSqlUnitsProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="Units"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override UnitsProviderBase UnitsProvider
+		{
+			get
+			{
+				if (innerSqlUnitsProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlUnitsProvider == null)
+						{
+							this.innerSqlUnitsProvider = new SqlUnitsProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlUnitsProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlUnitsProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlUnitsProvider SqlUnitsProvider
+		{
+			get {return UnitsProvider as SqlUnitsProvider;}
 		}
 		
 		#endregion
@@ -387,40 +465,157 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 		
 		
-		#region "RoleDetailProvider"
+		#region "UserRoleProvider"
 			
-		private SqlRoleDetailProvider innerSqlRoleDetailProvider;
+		private SqlUserRoleProvider innerSqlUserRoleProvider;
 
 		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="RoleDetail"/> business entity.
+		/// This class is the Data Access Logic Component for the <see cref="UserRole"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
 		/// <value></value>
-		public override RoleDetailProviderBase RoleDetailProvider
+		public override UserRoleProviderBase UserRoleProvider
 		{
 			get
 			{
-				if (innerSqlRoleDetailProvider == null) 
+				if (innerSqlUserRoleProvider == null) 
 				{
 					lock (syncRoot) 
 					{
-						if (innerSqlRoleDetailProvider == null)
+						if (innerSqlUserRoleProvider == null)
 						{
-							this.innerSqlRoleDetailProvider = new SqlRoleDetailProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+							this.innerSqlUserRoleProvider = new SqlUserRoleProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
 						}
 					}
 				}
-				return innerSqlRoleDetailProvider;
+				return innerSqlUserRoleProvider;
 			}
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlRoleDetailProvider"/>.
+		/// Gets the current <c cref="SqlUserRoleProvider"/>.
 		/// </summary>
 		/// <value></value>
-		public SqlRoleDetailProvider SqlRoleDetailProvider
+		public SqlUserRoleProvider SqlUserRoleProvider
 		{
-			get {return RoleDetailProvider as SqlRoleDetailProvider;}
+			get {return UserRoleProvider as SqlUserRoleProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "RosterTypeProvider"
+			
+		private SqlRosterTypeProvider innerSqlRosterTypeProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="RosterType"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override RosterTypeProviderBase RosterTypeProvider
+		{
+			get
+			{
+				if (innerSqlRosterTypeProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlRosterTypeProvider == null)
+						{
+							this.innerSqlRosterTypeProvider = new SqlRosterTypeProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlRosterTypeProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlRosterTypeProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlRosterTypeProvider SqlRosterTypeProvider
+		{
+			get {return RosterTypeProvider as SqlRosterTypeProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "UserGroupProvider"
+			
+		private SqlUserGroupProvider innerSqlUserGroupProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="UserGroup"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override UserGroupProviderBase UserGroupProvider
+		{
+			get
+			{
+				if (innerSqlUserGroupProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlUserGroupProvider == null)
+						{
+							this.innerSqlUserGroupProvider = new SqlUserGroupProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlUserGroupProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlUserGroupProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlUserGroupProvider SqlUserGroupProvider
+		{
+			get {return UserGroupProvider as SqlUserGroupProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "RosterProvider"
+			
+		private SqlRosterProvider innerSqlRosterProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="Roster"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override RosterProviderBase RosterProvider
+		{
+			get
+			{
+				if (innerSqlRosterProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlRosterProvider == null)
+						{
+							this.innerSqlRosterProvider = new SqlRosterProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlRosterProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlRosterProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlRosterProvider SqlRosterProvider
+		{
+			get {return RosterProvider as SqlRosterProvider;}
 		}
 		
 		#endregion
@@ -465,45 +660,6 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 		
 		
-		#region "UserRoleProvider"
-			
-		private SqlUserRoleProvider innerSqlUserRoleProvider;
-
-		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="UserRole"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		/// <value></value>
-		public override UserRoleProviderBase UserRoleProvider
-		{
-			get
-			{
-				if (innerSqlUserRoleProvider == null) 
-				{
-					lock (syncRoot) 
-					{
-						if (innerSqlUserRoleProvider == null)
-						{
-							this.innerSqlUserRoleProvider = new SqlUserRoleProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
-						}
-					}
-				}
-				return innerSqlUserRoleProvider;
-			}
-		}
-		
-		/// <summary>
-		/// Gets the current <c cref="SqlUserRoleProvider"/>.
-		/// </summary>
-		/// <value></value>
-		public SqlUserRoleProvider SqlUserRoleProvider
-		{
-			get {return UserRoleProvider as SqlUserRoleProvider;}
-		}
-		
-		#endregion
-		
-		
 		#region "GroupRoleProvider"
 			
 		private SqlGroupRoleProvider innerSqlGroupRoleProvider;
@@ -543,45 +699,6 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 		
 		
-		#region "AppointmentGroupProvider"
-			
-		private SqlAppointmentGroupProvider innerSqlAppointmentGroupProvider;
-
-		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="AppointmentGroup"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		/// <value></value>
-		public override AppointmentGroupProviderBase AppointmentGroupProvider
-		{
-			get
-			{
-				if (innerSqlAppointmentGroupProvider == null) 
-				{
-					lock (syncRoot) 
-					{
-						if (innerSqlAppointmentGroupProvider == null)
-						{
-							this.innerSqlAppointmentGroupProvider = new SqlAppointmentGroupProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
-						}
-					}
-				}
-				return innerSqlAppointmentGroupProvider;
-			}
-		}
-		
-		/// <summary>
-		/// Gets the current <c cref="SqlAppointmentGroupProvider"/>.
-		/// </summary>
-		/// <value></value>
-		public SqlAppointmentGroupProvider SqlAppointmentGroupProvider
-		{
-			get {return AppointmentGroupProvider as SqlAppointmentGroupProvider;}
-		}
-		
-		#endregion
-		
-		
 		#region "PatientProvider"
 			
 		private SqlPatientProvider innerSqlPatientProvider;
@@ -616,6 +733,123 @@ namespace AppointmentSystem.Data.SqlClient
 		public SqlPatientProvider SqlPatientProvider
 		{
 			get {return PatientProvider as SqlPatientProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "RoleProvider"
+			
+		private SqlRoleProvider innerSqlRoleProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="Role"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override RoleProviderBase RoleProvider
+		{
+			get
+			{
+				if (innerSqlRoleProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlRoleProvider == null)
+						{
+							this.innerSqlRoleProvider = new SqlRoleProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlRoleProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlRoleProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlRoleProvider SqlRoleProvider
+		{
+			get {return RoleProvider as SqlRoleProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "RoleDetailProvider"
+			
+		private SqlRoleDetailProvider innerSqlRoleDetailProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="RoleDetail"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override RoleDetailProviderBase RoleDetailProvider
+		{
+			get
+			{
+				if (innerSqlRoleDetailProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlRoleDetailProvider == null)
+						{
+							this.innerSqlRoleDetailProvider = new SqlRoleDetailProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlRoleDetailProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlRoleDetailProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlRoleDetailProvider SqlRoleDetailProvider
+		{
+			get {return RoleDetailProvider as SqlRoleDetailProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "AppointmentGroupProvider"
+			
+		private SqlAppointmentGroupProvider innerSqlAppointmentGroupProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="AppointmentGroup"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override AppointmentGroupProviderBase AppointmentGroupProvider
+		{
+			get
+			{
+				if (innerSqlAppointmentGroupProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlAppointmentGroupProvider == null)
+						{
+							this.innerSqlAppointmentGroupProvider = new SqlAppointmentGroupProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlAppointmentGroupProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <c cref="SqlAppointmentGroupProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlAppointmentGroupProvider SqlAppointmentGroupProvider
+		{
+			get {return AppointmentGroupProvider as SqlAppointmentGroupProvider;}
 		}
 		
 		#endregion

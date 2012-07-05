@@ -11,8 +11,14 @@
 	<siteMapNode url="~/Admin/Role.aspx" title="Role"  description="" />
 	<siteMapNode url="~/Admin/RoleDetail.aspx" title="Role Detail"  description="" />
 	<siteMapNode url="~/Admin/Room.aspx" title="Room"  description="" />
+	<siteMapNode url="~/Admin/Roster.aspx" title="Roster"  description="" />
+	<siteMapNode url="~/Admin/RosterType.aspx" title="Roster Type"  description="" />
+	<siteMapNode url="~/Admin/Screen.aspx" title="Screen"  description="" />
+	<siteMapNode url="~/Admin/Services.aspx" title="Services"  description="" />
 	<siteMapNode url="~/Admin/Status.aspx" title="Status"  description="" />
+	<siteMapNode url="~/Admin/Units.aspx" title="Units"  description="" />
 	<siteMapNode url="~/Admin/UserGroup.aspx" title="User Group"  description="" />
 	<siteMapNode url="~/Admin/UserRole.aspx" title="User Role"  description="" />
+	<siteMapNode url="~/Admin/Users.aspx" title="Users"  description="" />
         </siteMapNode>              
 </siteMap>

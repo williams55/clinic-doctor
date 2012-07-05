@@ -81,7 +81,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="UserGroupBase"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_roles">Roles of user group. A group can have many roles, they is seperated by semi-comma [;]
@@ -92,14 +91,13 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public UserGroupBase(System.String _id, System.String _title, System.String _note, 
-			System.String _roles, System.Boolean _isLocked, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public UserGroupBase(System.String _title, System.String _note, System.String _roles, 
+			System.Boolean _isLocked, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new UserGroupEntityData();
 			this.backupData = null;
 
-			this.Id = _id;
 			this.Title = _title;
 			this.Note = _note;
 			this.Roles = _roles;
@@ -114,7 +112,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="UserGroup"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_roles">Roles of user group. A group can have many roles, they is seperated by semi-comma [;]
@@ -125,12 +122,11 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static UserGroup CreateUserGroup(System.String _id, System.String _title, System.String _note, 
-			System.String _roles, System.Boolean _isLocked, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public static UserGroup CreateUserGroup(System.String _title, System.String _note, System.String _roles, 
+			System.Boolean _isLocked, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			UserGroup newUserGroup = new UserGroup();
-			newUserGroup.Id = _id;
 			newUserGroup.Title = _title;
 			newUserGroup.Note = _note;
 			newUserGroup.Roles = _roles;
@@ -152,18 +148,17 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the Id property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
-		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, false, false, 20)]
-		public virtual System.String Id
+		[ReadOnlyAttribute(false)/*, XmlIgnoreAttribute()*/, DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(true, true, false)]
+		public virtual System.Int32 Id
 		{
 			get
 			{
@@ -183,19 +178,6 @@ namespace AppointmentSystem.Entities
 				OnColumnChanged(UserGroupColumn.Id, this.entityData.Id);
 				OnPropertyChanged("Id");
 			}
-		}
-		
-		/// <summary>
-		/// 	Get the original value of the Id property.
-		///		
-		/// </summary>
-		/// <remarks>This is the original value of the Id property.</remarks>
-		/// <value>This type is nvarchar</value>
-		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
-		public  virtual System.String OriginalId
-		{
-			get { return this.entityData.OriginalId; }
-			set { this.entityData.OriginalId = value; }
 		}
 		
 		/// <summary>
@@ -544,10 +526,6 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
-			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("Id", "Id"));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -728,7 +706,6 @@ namespace AppointmentSystem.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
-					copy.OriginalId = this.OriginalId;
 				copy.Title = this.Title;
 				copy.Note = this.Note;
 				copy.Roles = this.Roles;
@@ -939,7 +916,6 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreateUserGroup(
-				_originalData.Id,
 				_originalData.Title,
 				_originalData.Note,
 				_originalData.Roles,
@@ -1349,13 +1325,8 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "UserGroup"</remarks>
-		public System.String Id;
+		public System.Int32 Id;
 			
-		/// <summary>
-		/// keep a copy of the original so it can be used for editable primary keys.
-		/// </summary>
-		public System.String OriginalId;
-		
 		#endregion
 		
 		#region Non Primary key(s)
@@ -1453,7 +1424,6 @@ namespace AppointmentSystem.Entities
 			UserGroupEntityData _tmp = new UserGroupEntityData();
 						
 			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1492,7 +1462,6 @@ namespace AppointmentSystem.Entities
 			UserGroupEntityData _tmp = new UserGroupEntityData();
 						
 			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1772,7 +1741,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Initializes a new instance of the UserGroupKey class.
 		/// </summary>
-		public UserGroupKey(System.String _id)
+		public UserGroupKey(System.Int32 _id)
 		{
 			#region Init Properties
 
@@ -1798,12 +1767,12 @@ namespace AppointmentSystem.Entities
 		}
 		
 		// member variable for the Id property
-		private System.String _id;
+		private System.Int32 _id;
 		
 		/// <summary>
 		/// Gets or sets the Id property.
 		/// </summary>
-		public System.String Id
+		public System.Int32 Id
 		{
 			get { return _id; }
 			set
@@ -1831,7 +1800,7 @@ namespace AppointmentSystem.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
+				Id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
 			}
 
 			#endregion
@@ -1882,7 +1851,7 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
+		[ColumnEnum("Id", typeof(System.Int32), System.Data.DbType.Int32, true, true, false)]
 		Id = 1,
 		/// <summary>
 		/// Title : 

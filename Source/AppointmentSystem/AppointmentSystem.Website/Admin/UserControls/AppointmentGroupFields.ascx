@@ -4,12 +4,6 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataId" runat="server" Text="Id:" AssociatedControlID="dataId" /></td>
-        <td>
-					<asp:TextBox runat="server" ID="dataId" Text='<%# Bind("Id") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataId" runat="server" Display="Dynamic" ControlToValidate="dataId" ErrorMessage="Required"></asp:RequiredFieldValidator>
-				</td>
-			</tr>
-			<tr>
         <td class="literal"><asp:Label ID="lbldataTitle" runat="server" Text="Title:" AssociatedControlID="dataTitle" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataTitle" Text='<%# Bind("Title") %>' MaxLength="200"></asp:TextBox>
@@ -49,6 +43,13 @@
         <td class="literal"><asp:Label ID="lbldataUpdateDate" runat="server" Text="Update Date:" AssociatedControlID="dataUpdateDate" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataUpdateDate" Text='<%# Bind("UpdateDate", "{0:d}") %>' MaxLength="10"></asp:TextBox><asp:ImageButton ID="cal_dataUpdateDate" runat="server" SkinID="CalendarImageButton" OnClientClick="javascript:showCalendarControl(this.previousSibling);return false;" /><asp:RequiredFieldValidator ID="ReqVal_dataUpdateDate" runat="server" Display="Dynamic" ControlToValidate="dataUpdateDate" ErrorMessage="Required"></asp:RequiredFieldValidator>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataUnitId" runat="server" Text="Unit Id:" AssociatedControlID="dataUnitId" /></td>
+        <td>
+					<data:EntityDropDownList runat="server" ID="dataUnitId" DataSourceID="UnitIdUnitsDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("UnitId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:UnitsDataSource ID="UnitIdUnitsDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			

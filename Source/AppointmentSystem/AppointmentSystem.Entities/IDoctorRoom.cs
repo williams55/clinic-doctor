@@ -27,7 +27,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
-		System.String  RoomId  { get; set; }
+		System.Int32?  RoomId  { get; set; }
 		
 		/// <summary>
 		/// Priority : 

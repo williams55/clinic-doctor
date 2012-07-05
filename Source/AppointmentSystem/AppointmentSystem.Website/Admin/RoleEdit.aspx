@@ -97,7 +97,7 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Role Id" DataNavigateUrlFormatString="RoleEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoleIdSource" DataTextField="Title" />
-				<asp:BoundField DataField="Screen" HeaderText="Screen" SortExpression="[Screen]" />				
+				<data:HyperLinkField HeaderText="Screen Id" DataNavigateUrlFormatString="ScreenEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ScreenIdSource" DataTextField="ScreenCode" />
 				<asp:BoundField DataField="Crud" HeaderText="Crud" SortExpression="[Crud]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
@@ -117,6 +117,7 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:RoleDetailProperty Name="Role"/> 
+					<data:RoleDetailProperty Name="Screen"/> 
 				</Types>
 			</DeepLoadProperties>
 			
@@ -144,7 +145,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
-
+				<data:HyperLinkField HeaderText="User Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="UserIdSource" DataTextField="Username" />
 				<data:HyperLinkField HeaderText="Role Id" DataNavigateUrlFormatString="RoleEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoleIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
@@ -164,6 +165,7 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:UserRoleProperty Name="Role"/> 
+					<data:UserRoleProperty Name="Users"/> 
 				</Types>
 			</DeepLoadProperties>
 			

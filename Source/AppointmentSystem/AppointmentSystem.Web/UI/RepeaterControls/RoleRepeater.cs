@@ -336,7 +336,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The Id.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String Id
+		public System.Int32 Id
 		{
 			get { return _entity.Id; }
 		}

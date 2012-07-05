@@ -159,7 +159,7 @@ namespace AppointmentSystem.Web.Data
 			Status item;
 			count = 0;
 			
-			System.String _id;
+			System.Int32 _id;
 
 			switch ( SelectMethod )
 			{
@@ -185,7 +185,7 @@ namespace AppointmentSystem.Web.Data
                     break;
 				// PK
 				case StatusSelectMethod.GetById:
-					_id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
+					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
 					item = StatusProvider.GetById(GetTransactionManager(), _id);
 					results = new TList<Status>();
 					if ( item != null ) results.Add(item);

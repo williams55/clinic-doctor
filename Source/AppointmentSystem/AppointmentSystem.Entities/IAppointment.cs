@@ -30,29 +30,29 @@ namespace AppointmentSystem.Entities
 		System.String  PatientId  { get; set; }
 		
 		/// <summary>
-		/// UserName : 
+		/// DoctorId : 
 		/// </summary>
-		System.String  UserName  { get; set; }
+		System.String  DoctorId  { get; set; }
 		
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
-		System.String  RoomId  { get; set; }
+		System.Int32?  RoomId  { get; set; }
 		
 		/// <summary>
 		/// ServicesId : What do patient wanna be served
 		/// </summary>
-		System.String  ServicesId  { get; set; }
+		System.Int32?  ServicesId  { get; set; }
 		
 		/// <summary>
 		/// StatusId : 
 		/// </summary>
-		System.String  StatusId  { get; set; }
+		System.Int32?  StatusId  { get; set; }
 		
 		/// <summary>
 		/// AppointmentGroupId : 
 		/// </summary>
-		System.String  AppointmentGroupId  { get; set; }
+		System.Int32?  AppointmentGroupId  { get; set; }
 		
 		/// <summary>
 		/// Note : 

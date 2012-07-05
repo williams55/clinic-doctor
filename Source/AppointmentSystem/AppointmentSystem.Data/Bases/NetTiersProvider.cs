@@ -21,9 +21,14 @@ namespace AppointmentSystem.Data.Bases
 	{
 		
 		///<summary>
-		/// Current RoleProviderBase instance.
+		/// Current ServicesProviderBase instance.
 		///</summary>
-		public virtual RoleProviderBase RoleProvider{get {throw new NotImplementedException();}}
+		public virtual ServicesProviderBase ServicesProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current UsersProviderBase instance.
+		///</summary>
+		public virtual UsersProviderBase UsersProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
 		/// Current RoomProviderBase instance.
@@ -36,9 +41,14 @@ namespace AppointmentSystem.Data.Bases
 		public virtual StatusProviderBase StatusProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
-		/// Current UserGroupProviderBase instance.
+		/// Current ScreenProviderBase instance.
 		///</summary>
-		public virtual UserGroupProviderBase UserGroupProvider{get {throw new NotImplementedException();}}
+		public virtual ScreenProviderBase ScreenProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current UnitsProviderBase instance.
+		///</summary>
+		public virtual UnitsProviderBase UnitsProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
 		/// Current AppointmentProviderBase instance.
@@ -46,9 +56,24 @@ namespace AppointmentSystem.Data.Bases
 		public virtual AppointmentProviderBase AppointmentProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
-		/// Current RoleDetailProviderBase instance.
+		/// Current UserRoleProviderBase instance.
 		///</summary>
-		public virtual RoleDetailProviderBase RoleDetailProvider{get {throw new NotImplementedException();}}
+		public virtual UserRoleProviderBase UserRoleProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current RosterTypeProviderBase instance.
+		///</summary>
+		public virtual RosterTypeProviderBase RosterTypeProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current UserGroupProviderBase instance.
+		///</summary>
+		public virtual UserGroupProviderBase UserGroupProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current RosterProviderBase instance.
+		///</summary>
+		public virtual RosterProviderBase RosterProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
 		/// Current DoctorRoomProviderBase instance.
@@ -56,24 +81,29 @@ namespace AppointmentSystem.Data.Bases
 		public virtual DoctorRoomProviderBase DoctorRoomProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
-		/// Current UserRoleProviderBase instance.
-		///</summary>
-		public virtual UserRoleProviderBase UserRoleProvider{get {throw new NotImplementedException();}}
-		
-		///<summary>
 		/// Current GroupRoleProviderBase instance.
 		///</summary>
 		public virtual GroupRoleProviderBase GroupRoleProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
-		/// Current AppointmentGroupProviderBase instance.
-		///</summary>
-		public virtual AppointmentGroupProviderBase AppointmentGroupProvider{get {throw new NotImplementedException();}}
-		
-		///<summary>
 		/// Current PatientProviderBase instance.
 		///</summary>
 		public virtual PatientProviderBase PatientProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current RoleProviderBase instance.
+		///</summary>
+		public virtual RoleProviderBase RoleProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current RoleDetailProviderBase instance.
+		///</summary>
+		public virtual RoleDetailProviderBase RoleDetailProvider{get {throw new NotImplementedException();}}
+		
+		///<summary>
+		/// Current AppointmentGroupProviderBase instance.
+		///</summary>
+		public virtual AppointmentGroupProviderBase AppointmentGroupProvider{get {throw new NotImplementedException();}}
 		
 		
 	}

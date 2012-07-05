@@ -256,10 +256,40 @@
 			<Compile Include="UI\RepeaterControls\RoomRepeater.cs">
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="DataSourceControls\RosterDataSource.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UI\RepeaterControls\RosterRepeater.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="DataSourceControls\RosterTypeDataSource.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UI\RepeaterControls\RosterTypeRepeater.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="DataSourceControls\ScreenDataSource.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UI\RepeaterControls\ScreenRepeater.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="DataSourceControls\ServicesDataSource.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UI\RepeaterControls\ServicesRepeater.cs">
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="DataSourceControls\StatusDataSource.cs">
 			  <SubType>Code</SubType>
 			</Compile>
 			<Compile Include="UI\RepeaterControls\StatusRepeater.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="DataSourceControls\UnitsDataSource.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UI\RepeaterControls\UnitsRepeater.cs">
 			  <SubType>Code</SubType>
 			</Compile>
 			<Compile Include="DataSourceControls\UserGroupDataSource.cs">
@@ -272,6 +302,12 @@
 			  <SubType>Code</SubType>
 			</Compile>
 			<Compile Include="UI\RepeaterControls\UserRoleRepeater.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="DataSourceControls\UsersDataSource.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UI\RepeaterControls\UsersRepeater.cs">
 			  <SubType>Code</SubType>
 			</Compile>
 			<Compile Include="UI\FormUtil.cs">

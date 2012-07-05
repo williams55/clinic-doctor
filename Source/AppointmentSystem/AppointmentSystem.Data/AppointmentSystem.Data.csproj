@@ -209,12 +209,52 @@
 			  <DependentUpon>RoomProviderBase.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="Bases\RosterProviderBase.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="Bases\RosterProviderBase.generatedCore.cs">
+			  <DependentUpon>RosterProviderBase.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="Bases\RosterTypeProviderBase.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="Bases\RosterTypeProviderBase.generatedCore.cs">
+			  <DependentUpon>RosterTypeProviderBase.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="Bases\ScreenProviderBase.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="Bases\ScreenProviderBase.generatedCore.cs">
+			  <DependentUpon>ScreenProviderBase.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="Bases\ServicesProviderBase.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="Bases\ServicesProviderBase.generatedCore.cs">
+			  <DependentUpon>ServicesProviderBase.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="Bases\StatusProviderBase.cs">
 			  <SubType>Code</SubType>
 			</Compile>
 			
 			<Compile Include="Bases\StatusProviderBase.generatedCore.cs">
 			  <DependentUpon>StatusProviderBase.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="Bases\UnitsProviderBase.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="Bases\UnitsProviderBase.generatedCore.cs">
+			  <DependentUpon>UnitsProviderBase.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
 			<Compile Include="Bases\UserGroupProviderBase.cs">
@@ -231,6 +271,14 @@
 			
 			<Compile Include="Bases\UserRoleProviderBase.generatedCore.cs">
 			  <DependentUpon>UserRoleProviderBase.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="Bases\UsersProviderBase.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="Bases\UsersProviderBase.generatedCore.cs">
+			  <DependentUpon>UsersProviderBase.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
 		<Compile Include="..\AssemblyInfo.cs">

@@ -110,11 +110,11 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override bool Delete(TransactionManager transactionManager, System.String _id)
+		public override bool Delete(TransactionManager transactionManager, System.Int32 _id)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_Delete", _useStoredProcedure);
-			database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
+			database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
 			
 			//Provider Data Requesting Command Event
 			OnDataRequesting(new CommandEventArgs(commandWrapper, "Delete")); 
@@ -175,10 +175,10 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
-		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Id", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@ServicesId", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, DBNull.Value);
@@ -539,12 +539,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Room> GetByServicesId(TransactionManager transactionManager, System.String _servicesId, int start, int pageLength, out int count)
+		public override TList<Room> GetByServicesId(TransactionManager transactionManager, System.Int32? _servicesId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_GetByServicesId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@ServicesId", DbType.String, _servicesId);
+				database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, _servicesId);
 			
 			IDataReader reader = null;
 			TList<Room> rows = new TList<Room>();
@@ -606,12 +606,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override AppointmentSystem.Entities.Room GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count)
+		public override AppointmentSystem.Entities.Room GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_GetById", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
+				database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
 			
 			IDataReader reader = null;
 			TList<Room> tmp = new TList<Room>();
@@ -702,13 +702,13 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.DestinationTableName = "Room";
 			
 			DataTable dataTable = new DataTable();
-			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.String));
+			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int32));
 			col0.AllowDBNull = false;		
 			DataColumn col1 = dataTable.Columns.Add("Title", typeof(System.String));
 			col1.AllowDBNull = true;		
 			DataColumn col2 = dataTable.Columns.Add("Note", typeof(System.String));
 			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("ServicesId", typeof(System.String));
+			DataColumn col3 = dataTable.Columns.Add("ServicesId", typeof(System.Int32));
 			col3.AllowDBNull = true;		
 			DataColumn col4 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
 			col4.AllowDBNull = false;		
@@ -747,7 +747,7 @@ namespace AppointmentSystem.Data.SqlClient
 					row["Note"] = entity.Note;
 							
 				
-					row["ServicesId"] = entity.ServicesId;
+					row["ServicesId"] = entity.ServicesId.HasValue ? (object) entity.ServicesId  : System.DBNull.Value;
 							
 				
 					row["IsDisabled"] = entity.IsDisabled;
@@ -799,10 +799,10 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_Insert", _useStoredProcedure);
 			
-			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
+			database.AddOutParameter(commandWrapper, "@Id", DbType.Int32, 4);
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
-			database.AddInParameter(commandWrapper, "@ServicesId", DbType.String, entity.ServicesId );
+			database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, (entity.ServicesId.HasValue ? (object) entity.ServicesId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );
@@ -823,8 +823,9 @@ namespace AppointmentSystem.Data.SqlClient
 				results = Utility.ExecuteNonQuery(database,commandWrapper);
 			}
 					
+			object _id = database.GetParameterValue(commandWrapper, "@Id");
+			entity.Id = (System.Int32)_id;
 			
-			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 	
@@ -855,11 +856,10 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Room_Update", _useStoredProcedure);
 			
-			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
-			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
+			database.AddInParameter(commandWrapper, "@Id", DbType.Int32, entity.Id );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
-			database.AddInParameter(commandWrapper, "@ServicesId", DbType.String, entity.ServicesId );
+			database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, (entity.ServicesId.HasValue ? (object) entity.ServicesId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );
@@ -884,7 +884,6 @@ namespace AppointmentSystem.Data.SqlClient
 			if (DataRepository.Provider.EnableEntityTracking)
 				EntityManager.StopTracking(entity.EntityTrackingKey);
 			
-			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 			

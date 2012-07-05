@@ -41,7 +41,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public bool Delete(System.String _id)
+		public bool Delete(System.Int32 _id)
 		{
 			return Delete(null, _id);
 		}
@@ -53,7 +53,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public abstract bool Delete(TransactionManager transactionManager, System.String _id);		
+		public abstract bool Delete(TransactionManager transactionManager, System.Int32 _id);		
 		
 		#endregion Delete Methods
 		
@@ -67,7 +67,7 @@ namespace AppointmentSystem.Data.Bases
 		/// 		/// It's seperated by semi-comma [;]
 		/// 		/// Ex: 1stFloor;2ndFloor</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentGroup objects.</returns>
-		public TList<AppointmentGroup> GetByUnitId(System.String _unitId)
+		public TList<AppointmentGroup> GetByUnitId(System.Int32? _unitId)
 		{
 			int count = -1;
 			return GetByUnitId(_unitId, 0,int.MaxValue, out count);
@@ -83,7 +83,7 @@ namespace AppointmentSystem.Data.Bases
 		/// 		/// Ex: 1stFloor;2ndFloor</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentGroup objects.</returns>
 		/// <remarks></remarks>
-		public TList<AppointmentGroup> GetByUnitId(TransactionManager transactionManager, System.String _unitId)
+		public TList<AppointmentGroup> GetByUnitId(TransactionManager transactionManager, System.Int32? _unitId)
 		{
 			int count = -1;
 			return GetByUnitId(transactionManager, _unitId, 0, int.MaxValue, out count);
@@ -101,7 +101,7 @@ namespace AppointmentSystem.Data.Bases
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentGroup objects.</returns>
-		public TList<AppointmentGroup> GetByUnitId(TransactionManager transactionManager, System.String _unitId, int start, int pageLength)
+		public TList<AppointmentGroup> GetByUnitId(TransactionManager transactionManager, System.Int32? _unitId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByUnitId(transactionManager, _unitId, start, pageLength, out count);
@@ -118,7 +118,7 @@ namespace AppointmentSystem.Data.Bases
 		/// 		/// Ex: 1stFloor;2ndFloor</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentGroup objects.</returns>
-		public TList<AppointmentGroup> GetByUnitId(System.String _unitId, int start, int pageLength)
+		public TList<AppointmentGroup> GetByUnitId(System.Int32? _unitId, int start, int pageLength)
 		{
 			int count =  -1;
 			return GetByUnitId(null, _unitId, start, pageLength,out count);	
@@ -136,7 +136,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentGroup objects.</returns>
-		public TList<AppointmentGroup> GetByUnitId(System.String _unitId, int start, int pageLength,out int count)
+		public TList<AppointmentGroup> GetByUnitId(System.Int32? _unitId, int start, int pageLength,out int count)
 		{
 			return GetByUnitId(null, _unitId, start, pageLength, out count);	
 		}
@@ -153,7 +153,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentGroup objects.</returns>
-		public abstract TList<AppointmentGroup> GetByUnitId(TransactionManager transactionManager, System.String _unitId, int start, int pageLength, out int count);
+		public abstract TList<AppointmentGroup> GetByUnitId(TransactionManager transactionManager, System.Int32? _unitId, int start, int pageLength, out int count);
 		
 		#endregion
 
@@ -177,7 +177,7 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="_id"></param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.AppointmentGroup"/> class.</returns>
-		public AppointmentSystem.Entities.AppointmentGroup GetById(System.String _id)
+		public AppointmentSystem.Entities.AppointmentGroup GetById(System.Int32 _id)
 		{
 			int count = -1;
 			return GetById(null,_id, 0, int.MaxValue, out count);
@@ -191,7 +191,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.AppointmentGroup"/> class.</returns>
-		public AppointmentSystem.Entities.AppointmentGroup GetById(System.String _id, int start, int pageLength)
+		public AppointmentSystem.Entities.AppointmentGroup GetById(System.Int32 _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(null, _id, start, pageLength, out count);
@@ -204,7 +204,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.AppointmentGroup"/> class.</returns>
-		public AppointmentSystem.Entities.AppointmentGroup GetById(TransactionManager transactionManager, System.String _id)
+		public AppointmentSystem.Entities.AppointmentGroup GetById(TransactionManager transactionManager, System.Int32 _id)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, 0, int.MaxValue, out count);
@@ -219,7 +219,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.AppointmentGroup"/> class.</returns>
-		public AppointmentSystem.Entities.AppointmentGroup GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength)
+		public AppointmentSystem.Entities.AppointmentGroup GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, start, pageLength, out count);
@@ -234,7 +234,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.AppointmentGroup"/> class.</returns>
-		public AppointmentSystem.Entities.AppointmentGroup GetById(System.String _id, int start, int pageLength, out int count)
+		public AppointmentSystem.Entities.AppointmentGroup GetById(System.Int32 _id, int start, int pageLength, out int count)
 		{
 			return GetById(null, _id, start, pageLength, out count);
 		}
@@ -249,7 +249,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.AppointmentGroup"/> class.</returns>
-		public abstract AppointmentSystem.Entities.AppointmentGroup GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count);
+		public abstract AppointmentSystem.Entities.AppointmentGroup GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength, out int count);
 						
 		#endregion "Get By Index Functions"
 	
@@ -293,7 +293,7 @@ namespace AppointmentSystem.Data.Bases
 				if (useEntityFactory)
 				{
 					key = new System.Text.StringBuilder("AppointmentGroup")
-					.Append("|").Append((System.String)reader[((int)AppointmentGroupColumn.Id - 1)]).ToString();
+					.Append("|").Append((System.Int32)reader[((int)AppointmentGroupColumn.Id - 1)]).ToString();
 					c = EntityManager.LocateOrCreate<AppointmentGroup>(
 					key.ToString(), // EntityTrackingKey
 					"AppointmentGroup",  //Creational Type
@@ -316,8 +316,7 @@ namespace AppointmentSystem.Data.Bases
 					))
 				{
 					c.SuppressEntityEvents = true;
-					c.Id = (System.String)reader[((int)AppointmentGroupColumn.Id - 1)];
-					c.OriginalId = c.Id;
+					c.Id = (System.Int32)reader[((int)AppointmentGroupColumn.Id - 1)];
 					c.Title = (reader.IsDBNull(((int)AppointmentGroupColumn.Title - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.Title - 1)];
 					c.Note = (reader.IsDBNull(((int)AppointmentGroupColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.Note - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)AppointmentGroupColumn.IsDisabled - 1)];
@@ -325,7 +324,7 @@ namespace AppointmentSystem.Data.Bases
 					c.CreateDate = (System.DateTime)reader[((int)AppointmentGroupColumn.CreateDate - 1)];
 					c.UpdateUser = (reader.IsDBNull(((int)AppointmentGroupColumn.UpdateUser - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.UpdateUser - 1)];
 					c.UpdateDate = (System.DateTime)reader[((int)AppointmentGroupColumn.UpdateDate - 1)];
-					c.UnitId = (reader.IsDBNull(((int)AppointmentGroupColumn.UnitId - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.UnitId - 1)];
+					c.UnitId = (reader.IsDBNull(((int)AppointmentGroupColumn.UnitId - 1)))?null:(System.Int32?)reader[((int)AppointmentGroupColumn.UnitId - 1)];
 					c.EntityTrackingKey = key;
 					c.AcceptChanges();
 					c.SuppressEntityEvents = false;
@@ -343,8 +342,7 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if (!reader.Read()) return;
 			
-			entity.Id = (System.String)reader[((int)AppointmentGroupColumn.Id - 1)];
-			entity.OriginalId = (System.String)reader["Id"];
+			entity.Id = (System.Int32)reader[((int)AppointmentGroupColumn.Id - 1)];
 			entity.Title = (reader.IsDBNull(((int)AppointmentGroupColumn.Title - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.Title - 1)];
 			entity.Note = (reader.IsDBNull(((int)AppointmentGroupColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.Note - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)AppointmentGroupColumn.IsDisabled - 1)];
@@ -352,7 +350,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.CreateDate = (System.DateTime)reader[((int)AppointmentGroupColumn.CreateDate - 1)];
 			entity.UpdateUser = (reader.IsDBNull(((int)AppointmentGroupColumn.UpdateUser - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.UpdateUser - 1)];
 			entity.UpdateDate = (System.DateTime)reader[((int)AppointmentGroupColumn.UpdateDate - 1)];
-			entity.UnitId = (reader.IsDBNull(((int)AppointmentGroupColumn.UnitId - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.UnitId - 1)];
+			entity.UnitId = (reader.IsDBNull(((int)AppointmentGroupColumn.UnitId - 1)))?null:(System.Int32?)reader[((int)AppointmentGroupColumn.UnitId - 1)];
 			entity.AcceptChanges();
 		}
 		
@@ -365,8 +363,7 @@ namespace AppointmentSystem.Data.Bases
 		{
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
-			entity.Id = (System.String)dataRow["Id"];
-			entity.OriginalId = (System.String)dataRow["Id"];
+			entity.Id = (System.Int32)dataRow["Id"];
 			entity.Title = Convert.IsDBNull(dataRow["Title"]) ? null : (System.String)dataRow["Title"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
@@ -374,7 +371,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];
 			entity.UpdateUser = Convert.IsDBNull(dataRow["UpdateUser"]) ? null : (System.String)dataRow["UpdateUser"];
 			entity.UpdateDate = (System.DateTime)dataRow["UpdateDate"];
-			entity.UnitId = Convert.IsDBNull(dataRow["UnitId"]) ? null : (System.String)dataRow["UnitId"];
+			entity.UnitId = Convert.IsDBNull(dataRow["UnitId"]) ? null : (System.Int32?)dataRow["UnitId"];
 			entity.AcceptChanges();
 		}
 		#endregion 
@@ -399,6 +396,32 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if(entity == null)
 				return;
+
+			#region UnitIdSource	
+			if (CanDeepLoad(entity, "Units|UnitIdSource", deepLoadType, innerList) 
+				&& entity.UnitIdSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = (entity.UnitId ?? (int)0);
+				Units tmpEntity = EntityManager.LocateEntity<Units>(EntityLocator.ConstructKeyFromPkItems(typeof(Units), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.UnitIdSource = tmpEntity;
+				else
+					entity.UnitIdSource = DataRepository.UnitsProvider.GetById(transactionManager, (entity.UnitId ?? (int)0));		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'UnitIdSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.UnitIdSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.UnitsProvider.DeepLoad(transactionManager, entity.UnitIdSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion UnitIdSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -454,6 +477,15 @@ namespace AppointmentSystem.Data.Bases
 			#region Composite Parent Properties
 			//Save Source Composite Properties, however, don't call deep save on them.  
 			//So they only get saved a single level deep.
+			
+			#region UnitIdSource
+			if (CanDeepSave(entity, "Units|UnitIdSource", deepSaveType, innerList) 
+				&& entity.UnitIdSource != null)
+			{
+				DataRepository.UnitsProvider.Save(transactionManager, entity.UnitIdSource);
+				entity.UnitId = entity.UnitIdSource.Id;
+			}
+			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -518,7 +550,13 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum AppointmentGroupChildEntityTypes
 	{
-
+		
+		///<summary>
+		/// Composite Property for <c>Units</c> at UnitIdSource
+		///</summary>
+		[ChildEntityType(typeof(Units))]
+		Units,
+	
 		///<summary>
 		/// Collection of <c>AppointmentGroup</c> as OneToMany for AppointmentCollection
 		///</summary>

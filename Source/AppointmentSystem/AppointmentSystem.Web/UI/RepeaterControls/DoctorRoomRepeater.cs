@@ -354,7 +354,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The RoomId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String RoomId
+		public System.Int32? RoomId
 		{
 			get { return _entity.RoomId; }
 		}

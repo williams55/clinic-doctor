@@ -160,7 +160,7 @@ namespace AppointmentSystem.Web.Data
 			count = 0;
 			
 			System.Int64 _id;
-			System.String _roomId_nullable;
+			System.Int32? _roomId_nullable;
 			System.String _doctorId_nullable;
 
 			switch ( SelectMethod )
@@ -196,7 +196,7 @@ namespace AppointmentSystem.Web.Data
 				// IX
 				// FK
 				case DoctorRoomSelectMethod.GetByRoomId:
-					_roomId_nullable = (System.String) EntityUtil.ChangeType(values["RoomId"], typeof(System.String));
+					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
 					results = DoctorRoomProvider.GetByRoomId(GetTransactionManager(), _roomId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case DoctorRoomSelectMethod.GetByDoctorId:

@@ -88,7 +88,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public GroupRoleBase(System.String _groupId, System.String _roleId, System.Boolean _isDisabled, 
+		public GroupRoleBase(System.Int32 _groupId, System.Int32? _roleId, System.Boolean _isDisabled, 
 			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new GroupRoleEntityData();
@@ -113,7 +113,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static GroupRole CreateGroupRole(System.String _groupId, System.String _roleId, System.Boolean _isDisabled, 
+		public static GroupRole CreateGroupRole(System.Int32 _groupId, System.Int32? _roleId, System.Boolean _isDisabled, 
 			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			GroupRole newGroupRole = new GroupRole();
@@ -172,18 +172,17 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the GroupId property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false, 20)]
-		public virtual System.String GroupId
+		[DataObjectField(false, false, false)]
+		public virtual System.Int32 GroupId
 		{
 			get
 			{
@@ -208,17 +207,19 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the RoleId property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can be set to null. 
+		/// If this column is null, this property will return (int)0. It is up to the developer
+		/// to check the value of IsRoleIdNull() and perform business logic appropriately.
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 20)]
-		public virtual System.String RoleId
+		[DataObjectField(false, false, true)]
+		public virtual System.Int32? RoleId
 		{
 			get
 			{
@@ -455,12 +456,6 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
-			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("GroupId", "Group Id"));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("GroupId", "Group Id", 20));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("RoleId", "Role Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -1013,7 +1008,7 @@ namespace AppointmentSystem.Entities
             	
             	
             	case GroupRoleColumn.RoleId:
-            		return this.RoleId.CompareTo(rhs.RoleId);
+            		return this.RoleId.Value.CompareTo(rhs.RoleId.Value);
             		
             		                 
             	
@@ -1226,12 +1221,12 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// GroupId : 
 		/// </summary>
-		public System.String		  GroupId = string.Empty;
+		public System.Int32		  GroupId = (int)0;
 		
 		/// <summary>
 		/// RoleId : 
 		/// </summary>
-		public System.String		  RoleId = null;
+		public System.Int32?		  RoleId = null;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1741,13 +1736,13 @@ namespace AppointmentSystem.Entities
 		/// GroupId : 
 		/// </summary>
 		[EnumTextValue("GroupId")]
-		[ColumnEnum("GroupId", typeof(System.String), System.Data.DbType.String, false, false, false, 20)]
+		[ColumnEnum("GroupId", typeof(System.Int32), System.Data.DbType.Int32, false, false, false)]
 		GroupId = 2,
 		/// <summary>
 		/// RoleId : 
 		/// </summary>
 		[EnumTextValue("RoleId")]
-		[ColumnEnum("RoleId", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
+		[ColumnEnum("RoleId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
 		RoleId = 3,
 		/// <summary>
 		/// IsDisabled : 

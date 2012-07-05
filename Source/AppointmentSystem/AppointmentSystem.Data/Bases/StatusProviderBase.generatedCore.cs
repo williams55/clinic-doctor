@@ -41,7 +41,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public bool Delete(System.String _id)
+		public bool Delete(System.Int32 _id)
 		{
 			return Delete(null, _id);
 		}
@@ -53,7 +53,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public abstract bool Delete(TransactionManager transactionManager, System.String _id);		
+		public abstract bool Delete(TransactionManager transactionManager, System.Int32 _id);		
 		
 		#endregion Delete Methods
 		
@@ -80,7 +80,7 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="_id"></param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Status"/> class.</returns>
-		public AppointmentSystem.Entities.Status GetById(System.String _id)
+		public AppointmentSystem.Entities.Status GetById(System.Int32 _id)
 		{
 			int count = -1;
 			return GetById(null,_id, 0, int.MaxValue, out count);
@@ -94,7 +94,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Status"/> class.</returns>
-		public AppointmentSystem.Entities.Status GetById(System.String _id, int start, int pageLength)
+		public AppointmentSystem.Entities.Status GetById(System.Int32 _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(null, _id, start, pageLength, out count);
@@ -107,7 +107,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Status"/> class.</returns>
-		public AppointmentSystem.Entities.Status GetById(TransactionManager transactionManager, System.String _id)
+		public AppointmentSystem.Entities.Status GetById(TransactionManager transactionManager, System.Int32 _id)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, 0, int.MaxValue, out count);
@@ -122,7 +122,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Status"/> class.</returns>
-		public AppointmentSystem.Entities.Status GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength)
+		public AppointmentSystem.Entities.Status GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, start, pageLength, out count);
@@ -137,7 +137,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Status"/> class.</returns>
-		public AppointmentSystem.Entities.Status GetById(System.String _id, int start, int pageLength, out int count)
+		public AppointmentSystem.Entities.Status GetById(System.Int32 _id, int start, int pageLength, out int count)
 		{
 			return GetById(null, _id, start, pageLength, out count);
 		}
@@ -152,7 +152,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Status"/> class.</returns>
-		public abstract AppointmentSystem.Entities.Status GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count);
+		public abstract AppointmentSystem.Entities.Status GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength, out int count);
 						
 		#endregion "Get By Index Functions"
 	
@@ -196,7 +196,7 @@ namespace AppointmentSystem.Data.Bases
 				if (useEntityFactory)
 				{
 					key = new System.Text.StringBuilder("Status")
-					.Append("|").Append((System.String)reader[((int)StatusColumn.Id - 1)]).ToString();
+					.Append("|").Append((System.Int32)reader[((int)StatusColumn.Id - 1)]).ToString();
 					c = EntityManager.LocateOrCreate<Status>(
 					key.ToString(), // EntityTrackingKey
 					"Status",  //Creational Type
@@ -219,8 +219,7 @@ namespace AppointmentSystem.Data.Bases
 					))
 				{
 					c.SuppressEntityEvents = true;
-					c.Id = (System.String)reader[((int)StatusColumn.Id - 1)];
-					c.OriginalId = c.Id;
+					c.Id = (System.Int32)reader[((int)StatusColumn.Id - 1)];
 					c.Title = (System.String)reader[((int)StatusColumn.Title - 1)];
 					c.ColorCode = (System.String)reader[((int)StatusColumn.ColorCode - 1)];
 					c.PriorityIndex = (System.Int32)reader[((int)StatusColumn.PriorityIndex - 1)];
@@ -247,8 +246,7 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if (!reader.Read()) return;
 			
-			entity.Id = (System.String)reader[((int)StatusColumn.Id - 1)];
-			entity.OriginalId = (System.String)reader["Id"];
+			entity.Id = (System.Int32)reader[((int)StatusColumn.Id - 1)];
 			entity.Title = (System.String)reader[((int)StatusColumn.Title - 1)];
 			entity.ColorCode = (System.String)reader[((int)StatusColumn.ColorCode - 1)];
 			entity.PriorityIndex = (System.Int32)reader[((int)StatusColumn.PriorityIndex - 1)];
@@ -270,8 +268,7 @@ namespace AppointmentSystem.Data.Bases
 		{
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
-			entity.Id = (System.String)dataRow["Id"];
-			entity.OriginalId = (System.String)dataRow["Id"];
+			entity.Id = (System.Int32)dataRow["Id"];
 			entity.Title = (System.String)dataRow["Title"];
 			entity.ColorCode = (System.String)dataRow["ColorCode"];
 			entity.PriorityIndex = (System.Int32)dataRow["PriorityIndex"];

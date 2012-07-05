@@ -160,8 +160,8 @@ namespace AppointmentSystem.Web.Data
 			count = 0;
 			
 			System.Int64 _id;
-			System.String _roleId_nullable;
-			System.String _groupId;
+			System.Int32? _roleId_nullable;
+			System.Int32 _groupId;
 
 			switch ( SelectMethod )
 			{
@@ -196,11 +196,11 @@ namespace AppointmentSystem.Web.Data
 				// IX
 				// FK
 				case GroupRoleSelectMethod.GetByRoleId:
-					_roleId_nullable = (System.String) EntityUtil.ChangeType(values["RoleId"], typeof(System.String));
+					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
 					results = GroupRoleProvider.GetByRoleId(GetTransactionManager(), _roleId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case GroupRoleSelectMethod.GetByGroupId:
-					_groupId = ( values["GroupId"] != null ) ? (System.String) EntityUtil.ChangeType(values["GroupId"], typeof(System.String)) : string.Empty;
+					_groupId = ( values["GroupId"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["GroupId"], typeof(System.Int32)) : (int)0;
 					results = GroupRoleProvider.GetByGroupId(GetTransactionManager(), _groupId, this.StartIndex, this.PageSize, out count);
 					break;
 				// M:M

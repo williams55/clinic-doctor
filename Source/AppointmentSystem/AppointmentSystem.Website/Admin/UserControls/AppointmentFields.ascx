@@ -17,9 +17,10 @@
 				</td>
 			</tr>
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataUserName" runat="server" Text="User Name:" AssociatedControlID="dataUserName" /></td>
+        <td class="literal"><asp:Label ID="lbldataDoctorId" runat="server" Text="Doctor Id:" AssociatedControlID="dataDoctorId" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataUserName" Text='<%# Bind("UserName") %>' MaxLength="50"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataUserName" runat="server" Display="Dynamic" ControlToValidate="dataUserName" ErrorMessage="Required"></asp:RequiredFieldValidator>
+					<data:EntityDropDownList runat="server" ID="dataDoctorId" DataSourceID="DoctorIdUsersDataSource" DataTextField="Username" DataValueField="Id" SelectedValue='<%# Bind("DoctorId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:UsersDataSource ID="DoctorIdUsersDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>
@@ -27,6 +28,13 @@
         <td>
 					<data:EntityDropDownList runat="server" ID="dataRoomId" DataSourceID="RoomIdRoomDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("RoomId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
 					<data:RoomDataSource ID="RoomIdRoomDataSource" runat="server" SelectMethod="GetAll"  />
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataServicesId" runat="server" Text="Services Id:" AssociatedControlID="dataServicesId" /></td>
+        <td>
+					<data:EntityDropDownList runat="server" ID="dataServicesId" DataSourceID="ServicesIdServicesDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("ServicesId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:ServicesDataSource ID="ServicesIdServicesDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>

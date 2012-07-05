@@ -336,7 +336,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The Id.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String Id
+		public System.Int64 Id
 		{
 			get { return _entity.Id; }
 		}
@@ -345,18 +345,18 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The RoleId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String RoleId
+		public System.Int32? RoleId
 		{
 			get { return _entity.RoleId; }
 		}
         /// <summary>
-        /// Gets the Screen
+        /// Gets the ScreenId
         /// </summary>
-        /// <value>The Screen.</value>
+        /// <value>The ScreenId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String Screen
+		public System.Int32? ScreenId
 		{
-			get { return _entity.Screen; }
+			get { return _entity.ScreenId; }
 		}
         /// <summary>
         /// Gets the Crud

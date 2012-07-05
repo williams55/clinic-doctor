@@ -15,13 +15,8 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "AppointmentGroup"</remarks>
-		System.String Id { get; set; }
+		System.Int32 Id { get; set; }
 				
-		/// <summary>
-		/// keep a copy of the original so it can be used for editable primary keys.
-		/// </summary>
-		System.String OriginalId { get; set; }
-			
 		
 		
 		/// <summary>
@@ -64,7 +59,7 @@ namespace AppointmentSystem.Entities
 		/// 		/// It's seperated by semi-comma [;]
 		/// 		/// Ex: 1stFloor;2ndFloor
 		/// </summary>
-		System.String  UnitId  { get; set; }
+		System.Int32?  UnitId  { get; set; }
 			
 		/// <summary>
 		/// Creates a new object that is a copy of the current instance.
