@@ -1,0 +1,13 @@
+﻿.dialog-form .title {
+    float: left;
+    width: 20%;
+    font-weight: bold;
+    margin: 5px 10px 5px 0;
+}
+
+.dialog-form input.content-input {
+    float: left;
+    width: 70%;
+    margin: 5px 10px 5px 0;
+    padding: 3px;
+}
