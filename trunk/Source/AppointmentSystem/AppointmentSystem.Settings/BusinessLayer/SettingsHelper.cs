@@ -165,12 +165,15 @@ namespace AppointmentSystem.Settings.BusinessLayer
         #endregion
 
         #region "Prefix"
+        /// <summary>
+        /// Prefix for Roster Id
+        /// </summary>
         public string RosterPrefix
         {
             get
             {
                 string result;
-                if (!ServiceFacade.SettingsService.TryGetSetting<string>("ROSTER_PREFIX", out result))
+                if (!ServiceFacade.SettingsService.TryGetSetting("ROSTER_PREFIX", out result))
                 {
                     throw new ApplicationException("Setting ROSTER_PREFIX was not found.");
                 }
@@ -183,34 +186,58 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
         }
 
+        /// <summary>
+        /// Prefix for Appointment Id
+        /// </summary>
         public string AppointmentPrefix
         {
             get
             {
                 string result;
-                if (!ServiceFacade.SettingsService.TryGetSetting<string>("APPOINTMENT_PREFIX", out result))
+                if (!ServiceFacade.SettingsService.TryGetSetting("APPOINTMENT_PREFIX", out result))
                 {
                     throw new ApplicationException("Setting APPOINTMENT_PREFIX was not found.");
                 }
 
                 return result;
             }
-            set { ServiceFacade.SettingsService.SaveSetting<string>("APPOINTMENT_PREFIX", value); }
+            set { ServiceFacade.SettingsService.SaveSetting("APPOINTMENT_PREFIX", value); }
         }
 
-        public string CustomerPrefix
+        /// <summary>
+        /// Prefix for Patient Id
+        /// </summary>
+        public string PatientPrefix
         {
             get
             {
                 string result;
-                if (!ServiceFacade.SettingsService.TryGetSetting<string>("CUSTOMER_PREFIX", out result))
+                if (!ServiceFacade.SettingsService.TryGetSetting("PATIENT_PREFIX", out result))
                 {
-                    throw new ApplicationException("Setting CUSTOMER_PREFIX was not found.");
+                    throw new ApplicationException("Setting PATIENT_PREFIX was not found.");
                 }
 
                 return result;
             }
-            set { ServiceFacade.SettingsService.SaveSetting<string>("CUSTOMER_PREFIX", value); }
+            set { ServiceFacade.SettingsService.SaveSetting("PATIENT_PREFIX", value); }
+        }
+
+        /// <summary>
+        /// Prefix for User Id
+        /// </summary>
+        public string UserPrefix
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("USER_PREFIX", out result))
+                {
+                    throw new ApplicationException("Setting USER_PREFIX was not found.");
+                }
+
+                return result;
+            }
+            set { ServiceFacade.SettingsService.SaveSetting("USER_PREFIX", value); }
         }
         #endregion
 
@@ -253,5 +280,28 @@ namespace AppointmentSystem.Settings.BusinessLayer
                 ServiceFacade.SettingsService.SaveSetting<double>("TIME_LEFT_RMIND_APPOINTMENT", value);
             }
         }
+
+        #region Location
+        /// <summary>
+        /// Location code for a clinic
+        /// </summary>
+        public string LocationCode
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("LOCATION_CODE", out result))
+                {
+                    throw new ApplicationException("Setting LOCATION_CODE was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("LOCATION_CODE", value);
+            }
+        }
+        #endregion
     }
 }

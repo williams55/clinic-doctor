@@ -160,7 +160,7 @@ namespace AppointmentSystem.Web.Data
 			count = 0;
 			
 			System.Int64 _id;
-			System.String _roleId_nullable;
+			System.Int32? _roleId_nullable;
 			System.String _userId;
 
 			switch ( SelectMethod )
@@ -196,7 +196,7 @@ namespace AppointmentSystem.Web.Data
 				// IX
 				// FK
 				case UserRoleSelectMethod.GetByRoleId:
-					_roleId_nullable = (System.String) EntityUtil.ChangeType(values["RoleId"], typeof(System.String));
+					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
 					results = UserRoleProvider.GetByRoleId(GetTransactionManager(), _roleId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case UserRoleSelectMethod.GetByUserId:

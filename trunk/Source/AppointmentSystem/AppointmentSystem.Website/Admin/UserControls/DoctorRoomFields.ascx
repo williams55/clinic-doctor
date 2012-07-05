@@ -4,6 +4,13 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataDoctorId" runat="server" Text="Doctor Id:" AssociatedControlID="dataDoctorId" /></td>
+        <td>
+					<data:EntityDropDownList runat="server" ID="dataDoctorId" DataSourceID="DoctorIdUsersDataSource" DataTextField="Username" DataValueField="Id" SelectedValue='<%# Bind("DoctorId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:UsersDataSource ID="DoctorIdUsersDataSource" runat="server" SelectMethod="GetAll"  />
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataRoomId" runat="server" Text="Room Id:" AssociatedControlID="dataRoomId" /></td>
         <td>
 					<data:EntityDropDownList runat="server" ID="dataRoomId" DataSourceID="RoomIdRoomDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("RoomId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />

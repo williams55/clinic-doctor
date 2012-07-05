@@ -88,7 +88,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public UserRoleBase(System.String _userId, System.String _roleId, System.Boolean _isDisabled, 
+		public UserRoleBase(System.String _userId, System.Int32? _roleId, System.Boolean _isDisabled, 
 			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new UserRoleEntityData();
@@ -113,7 +113,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static UserRole CreateUserRole(System.String _userId, System.String _roleId, System.Boolean _isDisabled, 
+		public static UserRole CreateUserRole(System.String _userId, System.Int32? _roleId, System.Boolean _isDisabled, 
 			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			UserRole newUserRole = new UserRole();
@@ -208,17 +208,19 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the RoleId property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can be set to null. 
+		/// If this column is null, this property will return (int)0. It is up to the developer
+		/// to check the value of IsRoleIdNull() and perform business logic appropriately.
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 20)]
-		public virtual System.String RoleId
+		[DataObjectField(false, false, true)]
+		public virtual System.Int32? RoleId
 		{
 			get
 			{
@@ -429,6 +431,17 @@ namespace AppointmentSystem.Entities
             get { return entityData.RoleIdSource; }
             set { entityData.RoleIdSource = value; }
       	}
+		/// <summary>
+		/// Gets or sets the source <see cref="Users"/>.
+		/// </summary>
+		/// <value>The source Users for UserId.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Users UserIdSource
+      	{
+            get { return entityData.UserIdSource; }
+            set { entityData.UserIdSource = value; }
+      	}
 		#endregion
 		
 		#region Children Collections
@@ -448,8 +461,6 @@ namespace AppointmentSystem.Entities
 				new ValidationRuleArgs("UserId", "User Id"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("UserId", "User Id", 20));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("RoleId", "Role Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -636,6 +647,10 @@ namespace AppointmentSystem.Entities
 				copy.RoleIdSource = existingCopies[this.RoleIdSource] as Role;
 			else
 				copy.RoleIdSource = MakeCopyOf(this.RoleIdSource, existingCopies) as Role;
+			if (this.UserIdSource != null && existingCopies.Contains(this.UserIdSource))
+				copy.UserIdSource = existingCopies[this.UserIdSource] as Users;
+			else
+				copy.UserIdSource = MakeCopyOf(this.UserIdSource, existingCopies) as Users;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -998,7 +1013,7 @@ namespace AppointmentSystem.Entities
             	
             	
             	case UserRoleColumn.RoleId:
-            		return this.RoleId.CompareTo(rhs.RoleId);
+            		return this.RoleId.Value.CompareTo(rhs.RoleId.Value);
             		
             		                 
             	
@@ -1216,7 +1231,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// RoleId : 
 		/// </summary>
-		public System.String		  RoleId = null;
+		public System.Int32?		  RoleId = null;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1259,6 +1274,19 @@ namespace AppointmentSystem.Entities
             get { return this._roleIdSource; }
             set { this._roleIdSource = value; }
       	}
+		private Users _userIdSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Users"/>.
+		/// </summary>
+		/// <value>The source Users for UserId.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Users UserIdSource
+      	{
+            get { return this._userIdSource; }
+            set { this._userIdSource = value; }
+      	}
 		#endregion
 		#endregion Variable Declarations
 	
@@ -1289,6 +1317,8 @@ namespace AppointmentSystem.Entities
 			#region Source Parent Composite Entities
 			if (this.RoleIdSource != null)
 				_tmp.RoleIdSource = MakeCopyOf(this.RoleIdSource) as Role;
+			if (this.UserIdSource != null)
+				_tmp.UserIdSource = MakeCopyOf(this.UserIdSource) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -1326,6 +1356,10 @@ namespace AppointmentSystem.Entities
 				_tmp.RoleIdSource = existingCopies[this.RoleIdSource] as Role;
 			else
 				_tmp.RoleIdSource = MakeCopyOf(this.RoleIdSource, existingCopies) as Role;
+			if (this.UserIdSource != null && existingCopies.Contains(this.UserIdSource))
+				_tmp.UserIdSource = existingCopies[this.UserIdSource] as Users;
+			else
+				_tmp.UserIdSource = MakeCopyOf(this.UserIdSource, existingCopies) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -1713,7 +1747,7 @@ namespace AppointmentSystem.Entities
 		/// RoleId : 
 		/// </summary>
 		[EnumTextValue("RoleId")]
-		[ColumnEnum("RoleId", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
+		[ColumnEnum("RoleId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
 		RoleId = 3,
 		/// <summary>
 		/// IsDisabled : 

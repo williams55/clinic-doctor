@@ -81,7 +81,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="AppointmentGroupBase"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
@@ -92,14 +91,13 @@ namespace AppointmentSystem.Entities
 		///<param name="_unitId">Define current unit belongs to what tab.
 		/// 		/// It's seperated by semi-comma [;]
 		/// 		/// Ex: 1stFloor;2ndFloor</param>
-		public AppointmentGroupBase(System.String _id, System.String _title, System.String _note, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate, System.String _unitId)
+		public AppointmentGroupBase(System.String _title, System.String _note, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate, System.Int32? _unitId)
 		{
 			this.entityData = new AppointmentGroupEntityData();
 			this.backupData = null;
 
-			this.Id = _id;
 			this.Title = _title;
 			this.Note = _note;
 			this.IsDisabled = _isDisabled;
@@ -113,7 +111,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="AppointmentGroup"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_isDisabled"></param>
@@ -124,12 +121,11 @@ namespace AppointmentSystem.Entities
 		///<param name="_unitId">Define current unit belongs to what tab.
 		/// 		/// It's seperated by semi-comma [;]
 		/// 		/// Ex: 1stFloor;2ndFloor</param>
-		public static AppointmentGroup CreateAppointmentGroup(System.String _id, System.String _title, System.String _note, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate, System.String _unitId)
+		public static AppointmentGroup CreateAppointmentGroup(System.String _title, System.String _note, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate, System.Int32? _unitId)
 		{
 			AppointmentGroup newAppointmentGroup = new AppointmentGroup();
-			newAppointmentGroup.Id = _id;
 			newAppointmentGroup.Title = _title;
 			newAppointmentGroup.Note = _note;
 			newAppointmentGroup.IsDisabled = _isDisabled;
@@ -150,18 +146,17 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the Id property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
-		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, false, false, 20)]
-		public virtual System.String Id
+		[ReadOnlyAttribute(false)/*, XmlIgnoreAttribute()*/, DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(true, true, false)]
+		public virtual System.Int32 Id
 		{
 			get
 			{
@@ -181,19 +176,6 @@ namespace AppointmentSystem.Entities
 				OnColumnChanged(AppointmentGroupColumn.Id, this.entityData.Id);
 				OnPropertyChanged("Id");
 			}
-		}
-		
-		/// <summary>
-		/// 	Get the original value of the Id property.
-		///		
-		/// </summary>
-		/// <remarks>This is the original value of the Id property.</remarks>
-		/// <value>This type is nvarchar</value>
-		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
-		public  virtual System.String OriginalId
-		{
-			get { return this.entityData.OriginalId; }
-			set { this.entityData.OriginalId = value; }
 		}
 		
 		/// <summary>
@@ -447,17 +429,19 @@ namespace AppointmentSystem.Entities
 		/// 		/// It's seperated by semi-comma [;]
 		/// 		/// Ex: 1stFloor;2ndFloor
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can be set to null. 
+		/// If this column is null, this property will return (int)0. It is up to the developer
+		/// to check the value of IsUnitIdNull() and perform business logic appropriately.
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@"Define current unit belongs to what tab. It's seperated by semi-comma [;] Ex: 1stFloor;2ndFloor"), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 20)]
-		public virtual System.String UnitId
+		[DataObjectField(false, false, true)]
+		public virtual System.Int32? UnitId
 		{
 			get
 			{
@@ -482,6 +466,17 @@ namespace AppointmentSystem.Entities
 
 		#region Source Foreign Key Property
 				
+		/// <summary>
+		/// Gets or sets the source <see cref="Units"/>.
+		/// </summary>
+		/// <value>The source Units for UnitId.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Units UnitIdSource
+      	{
+            get { return entityData.UnitIdSource; }
+            set { entityData.UnitIdSource = value; }
+      	}
 		#endregion
 		
 		#region Children Collections
@@ -508,10 +503,6 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
-			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("Id", "Id"));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -520,8 +511,6 @@ namespace AppointmentSystem.Entities
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("UpdateUser", "Update User", 200));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("UnitId", "Unit Id", 20));
 		}
    		#endregion
 		
@@ -692,7 +681,6 @@ namespace AppointmentSystem.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
-					copy.OriginalId = this.OriginalId;
 				copy.Title = this.Title;
 				copy.Note = this.Note;
 				copy.IsDisabled = this.IsDisabled;
@@ -702,6 +690,10 @@ namespace AppointmentSystem.Entities
 				copy.UpdateDate = this.UpdateDate;
 				copy.UnitId = this.UnitId;
 			
+			if (this.UnitIdSource != null && existingCopies.Contains(this.UnitIdSource))
+				copy.UnitIdSource = existingCopies[this.UnitIdSource] as Units;
+			else
+				copy.UnitIdSource = MakeCopyOf(this.UnitIdSource, existingCopies) as Units;
 		
 			//deep copy nested objects
 			copy.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
@@ -899,7 +891,6 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreateAppointmentGroup(
-				_originalData.Id,
 				_originalData.Title,
 				_originalData.Note,
 				_originalData.IsDisabled,
@@ -1124,7 +1115,7 @@ namespace AppointmentSystem.Entities
             	
             	
             	case AppointmentGroupColumn.UnitId:
-            		return this.UnitId.CompareTo(rhs.UnitId);
+            		return this.UnitId.Value.CompareTo(rhs.UnitId.Value);
             		
             		                 
             }
@@ -1298,13 +1289,8 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "AppointmentGroup"</remarks>
-		public System.String Id;
+		public System.Int32 Id;
 			
-		/// <summary>
-		/// keep a copy of the original so it can be used for editable primary keys.
-		/// </summary>
-		public System.String OriginalId;
-		
 		#endregion
 		
 		#region Non Primary key(s)
@@ -1350,11 +1336,24 @@ namespace AppointmentSystem.Entities
 		/// 		/// It's seperated by semi-comma [;]
 		/// 		/// Ex: 1stFloor;2ndFloor
 		/// </summary>
-		public System.String		  UnitId = null;
+		public System.Int32?		  UnitId = null;
 		#endregion
 			
 		#region Source Foreign Key Property
 				
+		private Units _unitIdSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Units"/>.
+		/// </summary>
+		/// <value>The source Units for UnitId.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Units UnitIdSource
+      	{
+            get { return this._unitIdSource; }
+            set { this._unitIdSource = value; }
+      	}
 		#endregion
 		#endregion Variable Declarations
 	
@@ -1398,7 +1397,6 @@ namespace AppointmentSystem.Entities
 			AppointmentGroupEntityData _tmp = new AppointmentGroupEntityData();
 						
 			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1410,6 +1408,8 @@ namespace AppointmentSystem.Entities
 			_tmp.UnitId = this.UnitId;
 			
 			#region Source Parent Composite Entities
+			if (this.UnitIdSource != null)
+				_tmp.UnitIdSource = MakeCopyOf(this.UnitIdSource) as Units;
 			#endregion
 		
 			#region Child Collections
@@ -1436,7 +1436,6 @@ namespace AppointmentSystem.Entities
 			AppointmentGroupEntityData _tmp = new AppointmentGroupEntityData();
 						
 			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1448,6 +1447,10 @@ namespace AppointmentSystem.Entities
 			_tmp.UnitId = this.UnitId;
 			
 			#region Source Parent Composite Entities
+			if (this.UnitIdSource != null && existingCopies.Contains(this.UnitIdSource))
+				_tmp.UnitIdSource = existingCopies[this.UnitIdSource] as Units;
+			else
+				_tmp.UnitIdSource = MakeCopyOf(this.UnitIdSource, existingCopies) as Units;
 			#endregion
 		
 			#region Child Collections
@@ -1715,7 +1718,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Initializes a new instance of the AppointmentGroupKey class.
 		/// </summary>
-		public AppointmentGroupKey(System.String _id)
+		public AppointmentGroupKey(System.Int32 _id)
 		{
 			#region Init Properties
 
@@ -1741,12 +1744,12 @@ namespace AppointmentSystem.Entities
 		}
 		
 		// member variable for the Id property
-		private System.String _id;
+		private System.Int32 _id;
 		
 		/// <summary>
 		/// Gets or sets the Id property.
 		/// </summary>
-		public System.String Id
+		public System.Int32 Id
 		{
 			get { return _id; }
 			set
@@ -1774,7 +1777,7 @@ namespace AppointmentSystem.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
+				Id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
 			}
 
 			#endregion
@@ -1825,7 +1828,7 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
+		[ColumnEnum("Id", typeof(System.Int32), System.Data.DbType.Int32, true, true, false)]
 		Id = 1,
 		/// <summary>
 		/// Title : 
@@ -1875,7 +1878,7 @@ namespace AppointmentSystem.Entities
 		/// 		/// Ex: 1stFloor;2ndFloor
 		/// </summary>
 		[EnumTextValue("UnitId")]
-		[ColumnEnum("UnitId", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
+		[ColumnEnum("UnitId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
 		UnitId = 9
 	}//End enum
 

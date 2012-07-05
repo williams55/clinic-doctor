@@ -4,12 +4,6 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataId" runat="server" Text="Id:" AssociatedControlID="dataId" /></td>
-        <td>
-					<asp:TextBox runat="server" ID="dataId" Text='<%# Bind("Id") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataId" runat="server" Display="Dynamic" ControlToValidate="dataId" ErrorMessage="Required"></asp:RequiredFieldValidator>
-				</td>
-			</tr>
-			<tr>
         <td class="literal"><asp:Label ID="lbldataRoleId" runat="server" Text="Role Id:" AssociatedControlID="dataRoleId" /></td>
         <td>
 					<data:EntityDropDownList runat="server" ID="dataRoleId" DataSourceID="RoleIdRoleDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("RoleId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
@@ -17,9 +11,10 @@
 				</td>
 			</tr>
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataScreen" runat="server" Text="Screen:" AssociatedControlID="dataScreen" /></td>
+        <td class="literal"><asp:Label ID="lbldataScreenId" runat="server" Text="Screen Id:" AssociatedControlID="dataScreenId" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataScreen" Text='<%# Bind("Screen") %>' MaxLength="10"></asp:TextBox>
+					<data:EntityDropDownList runat="server" ID="dataScreenId" DataSourceID="ScreenIdScreenDataSource" DataTextField="ScreenCode" DataValueField="Id" SelectedValue='<%# Bind("ScreenId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:ScreenDataSource ID="ScreenIdScreenDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>

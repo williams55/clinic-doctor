@@ -17,7 +17,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
-
+				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="Priority" HeaderText="Priority" SortExpression="[Priority]"  />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
@@ -41,6 +41,7 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:DoctorRoomProperty Name="Room"/> 
+					<data:DoctorRoomProperty Name="Users"/> 
 				</Types>
 			</DeepLoadProperties>
 			<Parameters>

@@ -81,7 +81,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="RoomBase"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_servicesId">A room can have many procedures. They are seperated by semi-comma [;]
@@ -91,14 +90,12 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public RoomBase(System.String _id, System.String _title, System.String _note, System.String _servicesId, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public RoomBase(System.String _title, System.String _note, System.Int32? _servicesId, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new RoomEntityData();
 			this.backupData = null;
 
-			this.Id = _id;
 			this.Title = _title;
 			this.Note = _note;
 			this.ServicesId = _servicesId;
@@ -112,7 +109,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="Room"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_servicesId">A room can have many procedures. They are seperated by semi-comma [;]
@@ -122,12 +118,10 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Room CreateRoom(System.String _id, System.String _title, System.String _note, System.String _servicesId, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public static Room CreateRoom(System.String _title, System.String _note, System.Int32? _servicesId, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			Room newRoom = new Room();
-			newRoom.Id = _id;
 			newRoom.Title = _title;
 			newRoom.Note = _note;
 			newRoom.ServicesId = _servicesId;
@@ -148,18 +142,17 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the Id property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
-		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, false, false, 20)]
-		public virtual System.String Id
+		[ReadOnlyAttribute(false)/*, XmlIgnoreAttribute()*/, DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(true, true, false)]
+		public virtual System.Int32 Id
 		{
 			get
 			{
@@ -179,19 +172,6 @@ namespace AppointmentSystem.Entities
 				OnColumnChanged(RoomColumn.Id, this.entityData.Id);
 				OnPropertyChanged("Id");
 			}
-		}
-		
-		/// <summary>
-		/// 	Get the original value of the Id property.
-		///		
-		/// </summary>
-		/// <remarks>This is the original value of the Id property.</remarks>
-		/// <value>This type is nvarchar</value>
-		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
-		public  virtual System.String OriginalId
-		{
-			get { return this.entityData.OriginalId; }
-			set { this.entityData.OriginalId = value; }
 		}
 		
 		/// <summary>
@@ -269,17 +249,19 @@ namespace AppointmentSystem.Entities
 		///		A room can have many procedures. They are seperated by semi-comma [;]
 		/// 		/// For example: XRay;MRI
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can be set to null. 
+		/// If this column is null, this property will return (int)0. It is up to the developer
+		/// to check the value of IsServicesIdNull() and perform business logic appropriately.
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@"A room can have many procedures. They are seperated by semi-comma [;] For example: XRay;MRI"), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 20)]
-		public virtual System.String ServicesId
+		[DataObjectField(false, false, true)]
+		public virtual System.Int32? ServicesId
 		{
 			get
 			{
@@ -479,6 +461,17 @@ namespace AppointmentSystem.Entities
 
 		#region Source Foreign Key Property
 				
+		/// <summary>
+		/// Gets or sets the source <see cref="Services"/>.
+		/// </summary>
+		/// <value>The source Services for ServicesId.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Services ServicesIdSource
+      	{
+            get { return entityData.ServicesIdSource; }
+            set { entityData.ServicesIdSource = value; }
+      	}
 		#endregion
 		
 		#region Children Collections
@@ -504,6 +497,17 @@ namespace AppointmentSystem.Entities
 			get { return entityData.AppointmentCollection; }
 			set { entityData.AppointmentCollection = value; }	
 		}
+	
+		/// <summary>
+		///	Holds a collection of Roster objects
+		///	which are related to this object through the relation FK_Roster_Room
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<Roster> RosterCollection
+		{
+			get { return entityData.RosterCollection; }
+			set { entityData.RosterCollection = value; }	
+		}
 		#endregion Children Collections
 		
 		#endregion
@@ -516,16 +520,10 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
-			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("Id", "Id"));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("ServicesId", "Services Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -700,7 +698,6 @@ namespace AppointmentSystem.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
-					copy.OriginalId = this.OriginalId;
 				copy.Title = this.Title;
 				copy.Note = this.Note;
 				copy.ServicesId = this.ServicesId;
@@ -710,10 +707,15 @@ namespace AppointmentSystem.Entities
 				copy.UpdateUser = this.UpdateUser;
 				copy.UpdateDate = this.UpdateDate;
 			
+			if (this.ServicesIdSource != null && existingCopies.Contains(this.ServicesIdSource))
+				copy.ServicesIdSource = existingCopies[this.ServicesIdSource] as Services;
+			else
+				copy.ServicesIdSource = MakeCopyOf(this.ServicesIdSource, existingCopies) as Services;
 		
 			//deep copy nested objects
 			copy.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection, existingCopies); 
 			copy.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
+			copy.RosterCollection = (TList<Roster>) MakeCopyOf(this.RosterCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
 			return copy;
@@ -908,7 +910,6 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreateRoom(
-				_originalData.Id,
 				_originalData.Title,
 				_originalData.Note,
 				_originalData.ServicesId,
@@ -1103,7 +1104,7 @@ namespace AppointmentSystem.Entities
             	
             	
             	case RoomColumn.ServicesId:
-            		return this.ServicesId.CompareTo(rhs.ServicesId);
+            		return this.ServicesId.Value.CompareTo(rhs.ServicesId.Value);
             		
             		                 
             	
@@ -1307,13 +1308,8 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Room"</remarks>
-		public System.String Id;
+		public System.Int32 Id;
 			
-		/// <summary>
-		/// keep a copy of the original so it can be used for editable primary keys.
-		/// </summary>
-		public System.String OriginalId;
-		
 		#endregion
 		
 		#region Non Primary key(s)
@@ -1333,7 +1329,7 @@ namespace AppointmentSystem.Entities
 		/// ServicesId : A room can have many procedures. They are seperated by semi-comma [;]
 		/// 		/// For example: XRay;MRI
 		/// </summary>
-		public System.String		  ServicesId = null;
+		public System.Int32?		  ServicesId = null;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1363,6 +1359,19 @@ namespace AppointmentSystem.Entities
 			
 		#region Source Foreign Key Property
 				
+		private Services _servicesIdSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Services"/>.
+		/// </summary>
+		/// <value>The source Services for ServicesId.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Services ServicesIdSource
+      	{
+            get { return this._servicesIdSource; }
+            set { this._servicesIdSource = value; }
+      	}
 		#endregion
 		#endregion Variable Declarations
 	
@@ -1418,6 +1427,31 @@ namespace AppointmentSystem.Entities
 		
 		#endregion
 
+		#region RosterCollection
+		
+		private TList<Roster> _rosterRoomId;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _rosterRoomId
+		/// </summary>
+		
+		public TList<Roster> RosterCollection
+		{
+			get
+			{
+				if (_rosterRoomId == null)
+				{
+				_rosterRoomId = new TList<Roster>();
+				}
+	
+				return _rosterRoomId;
+			}
+			set { _rosterRoomId = value; }
+		}
+		
+		#endregion
+
 		#endregion Data Properties
 		
 		#region Clone Method
@@ -1431,7 +1465,6 @@ namespace AppointmentSystem.Entities
 			RoomEntityData _tmp = new RoomEntityData();
 						
 			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1443,6 +1476,8 @@ namespace AppointmentSystem.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.ServicesIdSource != null)
+				_tmp.ServicesIdSource = MakeCopyOf(this.ServicesIdSource) as Services;
 			#endregion
 		
 			#region Child Collections
@@ -1451,6 +1486,8 @@ namespace AppointmentSystem.Entities
 				_tmp.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection); 
 			if (this._appointmentRoomId != null)
 				_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection); 
+			if (this._rosterRoomId != null)
+				_tmp.RosterCollection = (TList<Roster>) MakeCopyOf(this.RosterCollection); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -1471,7 +1508,6 @@ namespace AppointmentSystem.Entities
 			RoomEntityData _tmp = new RoomEntityData();
 						
 			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1483,12 +1519,17 @@ namespace AppointmentSystem.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.ServicesIdSource != null && existingCopies.Contains(this.ServicesIdSource))
+				_tmp.ServicesIdSource = existingCopies[this.ServicesIdSource] as Services;
+			else
+				_tmp.ServicesIdSource = MakeCopyOf(this.ServicesIdSource, existingCopies) as Services;
 			#endregion
 		
 			#region Child Collections
 			//deep copy nested objects
 			_tmp.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection, existingCopies); 
 			_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
+			_tmp.RosterCollection = (TList<Roster>) MakeCopyOf(this.RosterCollection, existingCopies); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -1751,7 +1792,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Initializes a new instance of the RoomKey class.
 		/// </summary>
-		public RoomKey(System.String _id)
+		public RoomKey(System.Int32 _id)
 		{
 			#region Init Properties
 
@@ -1777,12 +1818,12 @@ namespace AppointmentSystem.Entities
 		}
 		
 		// member variable for the Id property
-		private System.String _id;
+		private System.Int32 _id;
 		
 		/// <summary>
 		/// Gets or sets the Id property.
 		/// </summary>
-		public System.String Id
+		public System.Int32 Id
 		{
 			get { return _id; }
 			set
@@ -1810,7 +1851,7 @@ namespace AppointmentSystem.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
+				Id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
 			}
 
 			#endregion
@@ -1861,7 +1902,7 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
+		[ColumnEnum("Id", typeof(System.Int32), System.Data.DbType.Int32, true, true, false)]
 		Id = 1,
 		/// <summary>
 		/// Title : 
@@ -1880,7 +1921,7 @@ namespace AppointmentSystem.Entities
 		/// 		/// For example: XRay;MRI
 		/// </summary>
 		[EnumTextValue("ServicesId")]
-		[ColumnEnum("ServicesId", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
+		[ColumnEnum("ServicesId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
 		ServicesId = 4,
 		/// <summary>
 		/// IsDisabled : 

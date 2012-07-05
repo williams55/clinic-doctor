@@ -65,7 +65,7 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="_roomId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.DoctorRoom objects.</returns>
-		public TList<DoctorRoom> GetByRoomId(System.String _roomId)
+		public TList<DoctorRoom> GetByRoomId(System.Int32? _roomId)
 		{
 			int count = -1;
 			return GetByRoomId(_roomId, 0,int.MaxValue, out count);
@@ -79,7 +79,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_roomId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.DoctorRoom objects.</returns>
 		/// <remarks></remarks>
-		public TList<DoctorRoom> GetByRoomId(TransactionManager transactionManager, System.String _roomId)
+		public TList<DoctorRoom> GetByRoomId(TransactionManager transactionManager, System.Int32? _roomId)
 		{
 			int count = -1;
 			return GetByRoomId(transactionManager, _roomId, 0, int.MaxValue, out count);
@@ -95,7 +95,7 @@ namespace AppointmentSystem.Data.Bases
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.DoctorRoom objects.</returns>
-		public TList<DoctorRoom> GetByRoomId(TransactionManager transactionManager, System.String _roomId, int start, int pageLength)
+		public TList<DoctorRoom> GetByRoomId(TransactionManager transactionManager, System.Int32? _roomId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByRoomId(transactionManager, _roomId, start, pageLength, out count);
@@ -110,7 +110,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_roomId"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.DoctorRoom objects.</returns>
-		public TList<DoctorRoom> GetByRoomId(System.String _roomId, int start, int pageLength)
+		public TList<DoctorRoom> GetByRoomId(System.Int32? _roomId, int start, int pageLength)
 		{
 			int count =  -1;
 			return GetByRoomId(null, _roomId, start, pageLength,out count);	
@@ -126,7 +126,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.DoctorRoom objects.</returns>
-		public TList<DoctorRoom> GetByRoomId(System.String _roomId, int start, int pageLength,out int count)
+		public TList<DoctorRoom> GetByRoomId(System.Int32? _roomId, int start, int pageLength,out int count)
 		{
 			return GetByRoomId(null, _roomId, start, pageLength, out count);	
 		}
@@ -141,7 +141,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.DoctorRoom objects.</returns>
-		public abstract TList<DoctorRoom> GetByRoomId(TransactionManager transactionManager, System.String _roomId, int start, int pageLength, out int count);
+		public abstract TList<DoctorRoom> GetByRoomId(TransactionManager transactionManager, System.Int32? _roomId, int start, int pageLength, out int count);
 		
 	
 		/// <summary>
@@ -391,7 +391,7 @@ namespace AppointmentSystem.Data.Bases
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)DoctorRoomColumn.Id - 1)];
 					c.DoctorId = (reader.IsDBNull(((int)DoctorRoomColumn.DoctorId - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.DoctorId - 1)];
-					c.RoomId = (reader.IsDBNull(((int)DoctorRoomColumn.RoomId - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.RoomId - 1)];
+					c.RoomId = (reader.IsDBNull(((int)DoctorRoomColumn.RoomId - 1)))?null:(System.Int32?)reader[((int)DoctorRoomColumn.RoomId - 1)];
 					c.Priority = (System.Int32)reader[((int)DoctorRoomColumn.Priority - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)DoctorRoomColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)DoctorRoomColumn.CreateUser - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.CreateUser - 1)];
@@ -417,7 +417,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.Int64)reader[((int)DoctorRoomColumn.Id - 1)];
 			entity.DoctorId = (reader.IsDBNull(((int)DoctorRoomColumn.DoctorId - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.DoctorId - 1)];
-			entity.RoomId = (reader.IsDBNull(((int)DoctorRoomColumn.RoomId - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.RoomId - 1)];
+			entity.RoomId = (reader.IsDBNull(((int)DoctorRoomColumn.RoomId - 1)))?null:(System.Int32?)reader[((int)DoctorRoomColumn.RoomId - 1)];
 			entity.Priority = (System.Int32)reader[((int)DoctorRoomColumn.Priority - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)DoctorRoomColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)DoctorRoomColumn.CreateUser - 1)))?null:(System.String)reader[((int)DoctorRoomColumn.CreateUser - 1)];
@@ -438,7 +438,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.Int64)dataRow["Id"];
 			entity.DoctorId = Convert.IsDBNull(dataRow["DoctorId"]) ? null : (System.String)dataRow["DoctorId"];
-			entity.RoomId = Convert.IsDBNull(dataRow["RoomId"]) ? null : (System.String)dataRow["RoomId"];
+			entity.RoomId = Convert.IsDBNull(dataRow["RoomId"]) ? null : (System.Int32?)dataRow["RoomId"];
 			entity.Priority = (System.Int32)dataRow["Priority"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
@@ -475,12 +475,12 @@ namespace AppointmentSystem.Data.Bases
 				&& entity.RoomIdSource == null)
 			{
 				object[] pkItems = new object[1];
-				pkItems[0] = (entity.RoomId ?? string.Empty);
+				pkItems[0] = (entity.RoomId ?? (int)0);
 				Room tmpEntity = EntityManager.LocateEntity<Room>(EntityLocator.ConstructKeyFromPkItems(typeof(Room), pkItems), DataRepository.Provider.EnableEntityTracking);
 				if (tmpEntity != null)
 					entity.RoomIdSource = tmpEntity;
 				else
-					entity.RoomIdSource = DataRepository.RoomProvider.GetById(transactionManager, (entity.RoomId ?? string.Empty));		
+					entity.RoomIdSource = DataRepository.RoomProvider.GetById(transactionManager, (entity.RoomId ?? (int)0));		
 				
 				#if NETTIERS_DEBUG
 				System.Diagnostics.Debug.WriteLine("- property 'RoomIdSource' loaded. key " + entity.EntityTrackingKey);
@@ -495,6 +495,32 @@ namespace AppointmentSystem.Data.Bases
 					
 			}
 			#endregion RoomIdSource
+
+			#region DoctorIdSource	
+			if (CanDeepLoad(entity, "Users|DoctorIdSource", deepLoadType, innerList) 
+				&& entity.DoctorIdSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = (entity.DoctorId ?? string.Empty);
+				Users tmpEntity = EntityManager.LocateEntity<Users>(EntityLocator.ConstructKeyFromPkItems(typeof(Users), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.DoctorIdSource = tmpEntity;
+				else
+					entity.DoctorIdSource = DataRepository.UsersProvider.GetById(transactionManager, (entity.DoctorId ?? string.Empty));		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'DoctorIdSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.DoctorIdSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.UsersProvider.DeepLoad(transactionManager, entity.DoctorIdSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion DoctorIdSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -537,6 +563,15 @@ namespace AppointmentSystem.Data.Bases
 				entity.RoomId = entity.RoomIdSource.Id;
 			}
 			#endregion 
+			
+			#region DoctorIdSource
+			if (CanDeepSave(entity, "Users|DoctorIdSource", deepSaveType, innerList) 
+				&& entity.DoctorIdSource != null)
+			{
+				DataRepository.UsersProvider.Save(transactionManager, entity.DoctorIdSource);
+				entity.DoctorId = entity.DoctorIdSource.Id;
+			}
+			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -577,6 +612,12 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Room))]
 		Room,
+			
+		///<summary>
+		/// Composite Property for <c>Users</c> at DoctorIdSource
+		///</summary>
+		[ChildEntityType(typeof(Users))]
+		Users,
 		}
 	
 	#endregion DoctorRoomChildEntityTypes

@@ -17,9 +17,8 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
-				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
 				<data:HyperLinkField HeaderText="Role Id" DataNavigateUrlFormatString="RoleEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoleIdSource" DataTextField="Title" />
-				<asp:BoundField DataField="Screen" HeaderText="Screen" SortExpression="[Screen]"  />
+				<data:HyperLinkField HeaderText="Screen Id" DataNavigateUrlFormatString="ScreenEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ScreenIdSource" DataTextField="ScreenCode" />
 				<asp:BoundField DataField="Crud" HeaderText="Crud" SortExpression="[Crud]"  />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]"  />
@@ -42,6 +41,7 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:RoleDetailProperty Name="Role"/> 
+					<data:RoleDetailProperty Name="Screen"/> 
 				</Types>
 			</DeepLoadProperties>
 			<Parameters>

@@ -177,11 +177,11 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@PatientId", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@UserName", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@RoomId", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@ServicesId", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@StatusId", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@AppointmentGroupId", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@StatusId", DbType.Int32, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@AppointmentGroupId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, DBNull.Value);
@@ -217,9 +217,9 @@ namespace AppointmentSystem.Data.SqlClient
 						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
-				if (clause.Trim().StartsWith("username ") || clause.Trim().StartsWith("username="))
+				if (clause.Trim().StartsWith("doctorid ") || clause.Trim().StartsWith("doctorid="))
 				{
-					database.SetParameterValue(commandWrapper, "@UserName", 
+					database.SetParameterValue(commandWrapper, "@DoctorId", 
 						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
@@ -587,12 +587,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByAppointmentGroupId(TransactionManager transactionManager, System.String _appointmentGroupId, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByAppointmentGroupId(TransactionManager transactionManager, System.Int32? _appointmentGroupId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByAppointmentGroupId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@AppointmentGroupId", DbType.String, _appointmentGroupId);
+				database.AddInParameter(commandWrapper, "@AppointmentGroupId", DbType.Int32, _appointmentGroupId);
 			
 			IDataReader reader = null;
 			TList<Appointment> rows = new TList<Appointment>();
@@ -715,12 +715,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByServicesId(TransactionManager transactionManager, System.String _servicesId, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByServicesId(TransactionManager transactionManager, System.Int32? _servicesId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByServicesId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@ServicesId", DbType.String, _servicesId);
+				database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, _servicesId);
 			
 			IDataReader reader = null;
 			TList<Appointment> rows = new TList<Appointment>();
@@ -779,12 +779,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByRoomId(TransactionManager transactionManager, System.String _roomId, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByRoomId(TransactionManager transactionManager, System.Int32? _roomId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByRoomId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@RoomId", DbType.String, _roomId);
+				database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, _roomId);
 			
 			IDataReader reader = null;
 			TList<Appointment> rows = new TList<Appointment>();
@@ -843,12 +843,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByStatusId(TransactionManager transactionManager, System.String _statusId, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByStatusId(TransactionManager transactionManager, System.Int32? _statusId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByStatusId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@StatusId", DbType.String, _statusId);
+				database.AddInParameter(commandWrapper, "@StatusId", DbType.Int32, _statusId);
 			
 			IDataReader reader = null;
 			TList<Appointment> rows = new TList<Appointment>();
@@ -879,6 +879,70 @@ namespace AppointmentSystem.Data.SqlClient
 				
 				//Provider Data Requested Command Event
 				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByStatusId", rows)); 
+			}
+			finally
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			return rows;
+		}	
+		#endregion
+	
+
+		#region GetByDoctorId
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Users key.
+		///		FK_Appointment_Users Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_doctorId"></param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Appointment> GetByDoctorId(TransactionManager transactionManager, System.String _doctorId, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByDoctorId", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, _doctorId);
+			
+			IDataReader reader = null;
+			TList<Appointment> rows = new TList<Appointment>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByDoctorId", rows)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}
+			
+				//Create Collection
+				Fill(reader, rows, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByDoctorId", rows)); 
 			}
 			finally
 			{
@@ -1010,15 +1074,15 @@ namespace AppointmentSystem.Data.SqlClient
 			col0.AllowDBNull = false;		
 			DataColumn col1 = dataTable.Columns.Add("PatientId", typeof(System.String));
 			col1.AllowDBNull = false;		
-			DataColumn col2 = dataTable.Columns.Add("UserName", typeof(System.String));
+			DataColumn col2 = dataTable.Columns.Add("DoctorId", typeof(System.String));
 			col2.AllowDBNull = false;		
-			DataColumn col3 = dataTable.Columns.Add("RoomId", typeof(System.String));
+			DataColumn col3 = dataTable.Columns.Add("RoomId", typeof(System.Int32));
 			col3.AllowDBNull = true;		
-			DataColumn col4 = dataTable.Columns.Add("ServicesId", typeof(System.String));
+			DataColumn col4 = dataTable.Columns.Add("ServicesId", typeof(System.Int32));
 			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("StatusId", typeof(System.String));
+			DataColumn col5 = dataTable.Columns.Add("StatusId", typeof(System.Int32));
 			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("AppointmentGroupId", typeof(System.String));
+			DataColumn col6 = dataTable.Columns.Add("AppointmentGroupId", typeof(System.Int32));
 			col6.AllowDBNull = true;		
 			DataColumn col7 = dataTable.Columns.Add("Note", typeof(System.String));
 			col7.AllowDBNull = true;		
@@ -1041,7 +1105,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("PatientId", "PatientId");
-			bulkCopy.ColumnMappings.Add("UserName", "UserName");
+			bulkCopy.ColumnMappings.Add("DoctorId", "DoctorId");
 			bulkCopy.ColumnMappings.Add("RoomId", "RoomId");
 			bulkCopy.ColumnMappings.Add("ServicesId", "ServicesId");
 			bulkCopy.ColumnMappings.Add("StatusId", "StatusId");
@@ -1069,19 +1133,19 @@ namespace AppointmentSystem.Data.SqlClient
 					row["PatientId"] = entity.PatientId;
 							
 				
-					row["UserName"] = entity.UserName;
+					row["DoctorId"] = entity.DoctorId;
 							
 				
-					row["RoomId"] = entity.RoomId;
+					row["RoomId"] = entity.RoomId.HasValue ? (object) entity.RoomId  : System.DBNull.Value;
 							
 				
-					row["ServicesId"] = entity.ServicesId;
+					row["ServicesId"] = entity.ServicesId.HasValue ? (object) entity.ServicesId  : System.DBNull.Value;
 							
 				
-					row["StatusId"] = entity.StatusId;
+					row["StatusId"] = entity.StatusId.HasValue ? (object) entity.StatusId  : System.DBNull.Value;
 							
 				
-					row["AppointmentGroupId"] = entity.AppointmentGroupId;
+					row["AppointmentGroupId"] = entity.AppointmentGroupId.HasValue ? (object) entity.AppointmentGroupId  : System.DBNull.Value;
 							
 				
 					row["Note"] = entity.Note;
@@ -1147,11 +1211,11 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@PatientId", DbType.String, entity.PatientId );
-			database.AddInParameter(commandWrapper, "@UserName", DbType.String, entity.UserName );
-			database.AddInParameter(commandWrapper, "@RoomId", DbType.String, entity.RoomId );
-			database.AddInParameter(commandWrapper, "@ServicesId", DbType.String, entity.ServicesId );
-			database.AddInParameter(commandWrapper, "@StatusId", DbType.String, entity.StatusId );
-			database.AddInParameter(commandWrapper, "@AppointmentGroupId", DbType.String, entity.AppointmentGroupId );
+			database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, entity.DoctorId );
+			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, (entity.RoomId.HasValue ? (object) entity.RoomId  : System.DBNull.Value));
+			database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, (entity.ServicesId.HasValue ? (object) entity.ServicesId  : System.DBNull.Value));
+			database.AddInParameter(commandWrapper, "@StatusId", DbType.Int32, (entity.StatusId.HasValue ? (object) entity.StatusId  : System.DBNull.Value));
+			database.AddInParameter(commandWrapper, "@AppointmentGroupId", DbType.Int32, (entity.AppointmentGroupId.HasValue ? (object) entity.AppointmentGroupId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, (entity.StartTime.HasValue ? (object) entity.StartTime  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, (entity.EndTime.HasValue ? (object) entity.EndTime  : System.DBNull.Value));
@@ -1211,11 +1275,11 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
 			database.AddInParameter(commandWrapper, "@PatientId", DbType.String, entity.PatientId );
-			database.AddInParameter(commandWrapper, "@UserName", DbType.String, entity.UserName );
-			database.AddInParameter(commandWrapper, "@RoomId", DbType.String, entity.RoomId );
-			database.AddInParameter(commandWrapper, "@ServicesId", DbType.String, entity.ServicesId );
-			database.AddInParameter(commandWrapper, "@StatusId", DbType.String, entity.StatusId );
-			database.AddInParameter(commandWrapper, "@AppointmentGroupId", DbType.String, entity.AppointmentGroupId );
+			database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, entity.DoctorId );
+			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, (entity.RoomId.HasValue ? (object) entity.RoomId : System.DBNull.Value) );
+			database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, (entity.ServicesId.HasValue ? (object) entity.ServicesId : System.DBNull.Value) );
+			database.AddInParameter(commandWrapper, "@StatusId", DbType.Int32, (entity.StatusId.HasValue ? (object) entity.StatusId : System.DBNull.Value) );
+			database.AddInParameter(commandWrapper, "@AppointmentGroupId", DbType.Int32, (entity.AppointmentGroupId.HasValue ? (object) entity.AppointmentGroupId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, (entity.StartTime.HasValue ? (object) entity.StartTime : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, (entity.EndTime.HasValue ? (object) entity.EndTime : System.DBNull.Value) );

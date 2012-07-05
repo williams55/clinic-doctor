@@ -246,6 +246,58 @@
 			</Compile>
 		
 		
+			<Compile Include="Roster.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="RosterBase.generated.cs">
+			  <DependentUpon>Roster.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="IRoster.cs">
+			  <DependentUpon>Roster.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+		
+		
+			<Compile Include="RosterType.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="RosterTypeBase.generated.cs">
+			  <DependentUpon>RosterType.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="IRosterType.cs">
+			  <DependentUpon>RosterType.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+		
+		
+			<Compile Include="Screen.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="ScreenBase.generated.cs">
+			  <DependentUpon>Screen.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="IScreen.cs">
+			  <DependentUpon>Screen.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+		
+		
+			<Compile Include="Services.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="ServicesBase.generated.cs">
+			  <DependentUpon>Services.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="IServices.cs">
+			  <DependentUpon>Services.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+		
+		
 			<Compile Include="Status.cs">
 			  <SubType>Code</SubType>
 			</Compile>
@@ -255,6 +307,19 @@
 			</Compile>
 			<Compile Include="IStatus.cs">
 			  <DependentUpon>Status.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+		
+		
+			<Compile Include="Units.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UnitsBase.generated.cs">
+			  <DependentUpon>Units.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="IUnits.cs">
+			  <DependentUpon>Units.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
 		
@@ -281,6 +346,19 @@
 			</Compile>
 			<Compile Include="IUserRole.cs">
 			  <DependentUpon>UserRole.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+		
+		
+			<Compile Include="Users.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UsersBase.generated.cs">
+			  <DependentUpon>Users.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="IUsers.cs">
+			  <DependentUpon>Users.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
 		

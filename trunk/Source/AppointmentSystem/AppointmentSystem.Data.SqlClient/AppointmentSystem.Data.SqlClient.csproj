@@ -212,12 +212,52 @@
 			  <DependentUpon>SqlRoomProvider.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="SqlRosterProvider.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="SqlRosterProviderBase.generated.cs">
+			  <DependentUpon>SqlRosterProvider.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="SqlRosterTypeProvider.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="SqlRosterTypeProviderBase.generated.cs">
+			  <DependentUpon>SqlRosterTypeProvider.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="SqlScreenProvider.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="SqlScreenProviderBase.generated.cs">
+			  <DependentUpon>SqlScreenProvider.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="SqlServicesProvider.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="SqlServicesProviderBase.generated.cs">
+			  <DependentUpon>SqlServicesProvider.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="SqlStatusProvider.cs">
 			  <SubType>Code</SubType>
 			</Compile>
 			
 			<Compile Include="SqlStatusProviderBase.generated.cs">
 			  <DependentUpon>SqlStatusProvider.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="SqlUnitsProvider.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="SqlUnitsProviderBase.generated.cs">
+			  <DependentUpon>SqlUnitsProvider.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
 			<Compile Include="SqlUserGroupProvider.cs">
@@ -234,6 +274,14 @@
 			
 			<Compile Include="SqlUserRoleProviderBase.generated.cs">
 			  <DependentUpon>SqlUserRoleProvider.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="SqlUsersProvider.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="SqlUsersProviderBase.generated.cs">
+			  <DependentUpon>SqlUsersProvider.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
 		<Compile Include="..\AssemblyInfo.cs">

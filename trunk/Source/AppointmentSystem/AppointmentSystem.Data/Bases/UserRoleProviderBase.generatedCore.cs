@@ -65,7 +65,7 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="_roleId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public TList<UserRole> GetByRoleId(System.String _roleId)
+		public TList<UserRole> GetByRoleId(System.Int32? _roleId)
 		{
 			int count = -1;
 			return GetByRoleId(_roleId, 0,int.MaxValue, out count);
@@ -79,7 +79,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_roleId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
 		/// <remarks></remarks>
-		public TList<UserRole> GetByRoleId(TransactionManager transactionManager, System.String _roleId)
+		public TList<UserRole> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId)
 		{
 			int count = -1;
 			return GetByRoleId(transactionManager, _roleId, 0, int.MaxValue, out count);
@@ -95,7 +95,7 @@ namespace AppointmentSystem.Data.Bases
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public TList<UserRole> GetByRoleId(TransactionManager transactionManager, System.String _roleId, int start, int pageLength)
+		public TList<UserRole> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByRoleId(transactionManager, _roleId, start, pageLength, out count);
@@ -110,7 +110,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_roleId"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public TList<UserRole> GetByRoleId(System.String _roleId, int start, int pageLength)
+		public TList<UserRole> GetByRoleId(System.Int32? _roleId, int start, int pageLength)
 		{
 			int count =  -1;
 			return GetByRoleId(null, _roleId, start, pageLength,out count);	
@@ -126,7 +126,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public TList<UserRole> GetByRoleId(System.String _roleId, int start, int pageLength,out int count)
+		public TList<UserRole> GetByRoleId(System.Int32? _roleId, int start, int pageLength,out int count)
 		{
 			return GetByRoleId(null, _roleId, start, pageLength, out count);	
 		}
@@ -141,7 +141,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public abstract TList<UserRole> GetByRoleId(TransactionManager transactionManager, System.String _roleId, int start, int pageLength, out int count);
+		public abstract TList<UserRole> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength, out int count);
 		
 	
 		/// <summary>
@@ -391,7 +391,7 @@ namespace AppointmentSystem.Data.Bases
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)UserRoleColumn.Id - 1)];
 					c.UserId = (System.String)reader[((int)UserRoleColumn.UserId - 1)];
-					c.RoleId = (reader.IsDBNull(((int)UserRoleColumn.RoleId - 1)))?null:(System.String)reader[((int)UserRoleColumn.RoleId - 1)];
+					c.RoleId = (reader.IsDBNull(((int)UserRoleColumn.RoleId - 1)))?null:(System.Int32?)reader[((int)UserRoleColumn.RoleId - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)UserRoleColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)UserRoleColumn.CreateUser - 1)))?null:(System.String)reader[((int)UserRoleColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)UserRoleColumn.CreateDate - 1)];
@@ -416,7 +416,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.Int64)reader[((int)UserRoleColumn.Id - 1)];
 			entity.UserId = (System.String)reader[((int)UserRoleColumn.UserId - 1)];
-			entity.RoleId = (reader.IsDBNull(((int)UserRoleColumn.RoleId - 1)))?null:(System.String)reader[((int)UserRoleColumn.RoleId - 1)];
+			entity.RoleId = (reader.IsDBNull(((int)UserRoleColumn.RoleId - 1)))?null:(System.Int32?)reader[((int)UserRoleColumn.RoleId - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)UserRoleColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)UserRoleColumn.CreateUser - 1)))?null:(System.String)reader[((int)UserRoleColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)UserRoleColumn.CreateDate - 1)];
@@ -436,7 +436,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.Int64)dataRow["Id"];
 			entity.UserId = (System.String)dataRow["UserId"];
-			entity.RoleId = Convert.IsDBNull(dataRow["RoleId"]) ? null : (System.String)dataRow["RoleId"];
+			entity.RoleId = Convert.IsDBNull(dataRow["RoleId"]) ? null : (System.Int32?)dataRow["RoleId"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];
@@ -472,12 +472,12 @@ namespace AppointmentSystem.Data.Bases
 				&& entity.RoleIdSource == null)
 			{
 				object[] pkItems = new object[1];
-				pkItems[0] = (entity.RoleId ?? string.Empty);
+				pkItems[0] = (entity.RoleId ?? (int)0);
 				Role tmpEntity = EntityManager.LocateEntity<Role>(EntityLocator.ConstructKeyFromPkItems(typeof(Role), pkItems), DataRepository.Provider.EnableEntityTracking);
 				if (tmpEntity != null)
 					entity.RoleIdSource = tmpEntity;
 				else
-					entity.RoleIdSource = DataRepository.RoleProvider.GetById(transactionManager, (entity.RoleId ?? string.Empty));		
+					entity.RoleIdSource = DataRepository.RoleProvider.GetById(transactionManager, (entity.RoleId ?? (int)0));		
 				
 				#if NETTIERS_DEBUG
 				System.Diagnostics.Debug.WriteLine("- property 'RoleIdSource' loaded. key " + entity.EntityTrackingKey);
@@ -492,6 +492,32 @@ namespace AppointmentSystem.Data.Bases
 					
 			}
 			#endregion RoleIdSource
+
+			#region UserIdSource	
+			if (CanDeepLoad(entity, "Users|UserIdSource", deepLoadType, innerList) 
+				&& entity.UserIdSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = entity.UserId;
+				Users tmpEntity = EntityManager.LocateEntity<Users>(EntityLocator.ConstructKeyFromPkItems(typeof(Users), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.UserIdSource = tmpEntity;
+				else
+					entity.UserIdSource = DataRepository.UsersProvider.GetById(transactionManager, entity.UserId);		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'UserIdSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.UserIdSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.UsersProvider.DeepLoad(transactionManager, entity.UserIdSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion UserIdSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -534,6 +560,15 @@ namespace AppointmentSystem.Data.Bases
 				entity.RoleId = entity.RoleIdSource.Id;
 			}
 			#endregion 
+			
+			#region UserIdSource
+			if (CanDeepSave(entity, "Users|UserIdSource", deepSaveType, innerList) 
+				&& entity.UserIdSource != null)
+			{
+				DataRepository.UsersProvider.Save(transactionManager, entity.UserIdSource);
+				entity.UserId = entity.UserIdSource.Id;
+			}
+			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -574,6 +609,12 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Role))]
 		Role,
+			
+		///<summary>
+		/// Composite Property for <c>Users</c> at UserIdSource
+		///</summary>
+		[ChildEntityType(typeof(Users))]
+		Users,
 		}
 	
 	#endregion UserRoleChildEntityTypes

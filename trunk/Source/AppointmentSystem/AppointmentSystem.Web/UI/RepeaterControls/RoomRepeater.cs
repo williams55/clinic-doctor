@@ -336,7 +336,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The Id.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String Id
+		public System.Int32 Id
 		{
 			get { return _entity.Id; }
 		}
@@ -363,7 +363,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The ServicesId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String ServicesId
+		public System.Int32? ServicesId
 		{
 			get { return _entity.ServicesId; }
 		}

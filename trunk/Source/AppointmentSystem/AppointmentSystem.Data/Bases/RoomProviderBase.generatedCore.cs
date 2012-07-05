@@ -41,7 +41,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public bool Delete(System.String _id)
+		public bool Delete(System.Int32 _id)
 		{
 			return Delete(null, _id);
 		}
@@ -53,7 +53,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public abstract bool Delete(TransactionManager transactionManager, System.String _id);		
+		public abstract bool Delete(TransactionManager transactionManager, System.Int32 _id);		
 		
 		#endregion Delete Methods
 		
@@ -66,7 +66,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_servicesId">A room can have many procedures. They are seperated by semi-comma [;]
 		/// 		/// For example: XRay;MRI</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Room objects.</returns>
-		public TList<Room> GetByServicesId(System.String _servicesId)
+		public TList<Room> GetByServicesId(System.Int32? _servicesId)
 		{
 			int count = -1;
 			return GetByServicesId(_servicesId, 0,int.MaxValue, out count);
@@ -81,7 +81,7 @@ namespace AppointmentSystem.Data.Bases
 		/// 		/// For example: XRay;MRI</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Room objects.</returns>
 		/// <remarks></remarks>
-		public TList<Room> GetByServicesId(TransactionManager transactionManager, System.String _servicesId)
+		public TList<Room> GetByServicesId(TransactionManager transactionManager, System.Int32? _servicesId)
 		{
 			int count = -1;
 			return GetByServicesId(transactionManager, _servicesId, 0, int.MaxValue, out count);
@@ -98,7 +98,7 @@ namespace AppointmentSystem.Data.Bases
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Room objects.</returns>
-		public TList<Room> GetByServicesId(TransactionManager transactionManager, System.String _servicesId, int start, int pageLength)
+		public TList<Room> GetByServicesId(TransactionManager transactionManager, System.Int32? _servicesId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByServicesId(transactionManager, _servicesId, start, pageLength, out count);
@@ -114,7 +114,7 @@ namespace AppointmentSystem.Data.Bases
 		/// 		/// For example: XRay;MRI</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Room objects.</returns>
-		public TList<Room> GetByServicesId(System.String _servicesId, int start, int pageLength)
+		public TList<Room> GetByServicesId(System.Int32? _servicesId, int start, int pageLength)
 		{
 			int count =  -1;
 			return GetByServicesId(null, _servicesId, start, pageLength,out count);	
@@ -131,7 +131,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Room objects.</returns>
-		public TList<Room> GetByServicesId(System.String _servicesId, int start, int pageLength,out int count)
+		public TList<Room> GetByServicesId(System.Int32? _servicesId, int start, int pageLength,out int count)
 		{
 			return GetByServicesId(null, _servicesId, start, pageLength, out count);	
 		}
@@ -147,7 +147,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Room objects.</returns>
-		public abstract TList<Room> GetByServicesId(TransactionManager transactionManager, System.String _servicesId, int start, int pageLength, out int count);
+		public abstract TList<Room> GetByServicesId(TransactionManager transactionManager, System.Int32? _servicesId, int start, int pageLength, out int count);
 		
 		#endregion
 
@@ -171,7 +171,7 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="_id"></param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Room"/> class.</returns>
-		public AppointmentSystem.Entities.Room GetById(System.String _id)
+		public AppointmentSystem.Entities.Room GetById(System.Int32 _id)
 		{
 			int count = -1;
 			return GetById(null,_id, 0, int.MaxValue, out count);
@@ -185,7 +185,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Room"/> class.</returns>
-		public AppointmentSystem.Entities.Room GetById(System.String _id, int start, int pageLength)
+		public AppointmentSystem.Entities.Room GetById(System.Int32 _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(null, _id, start, pageLength, out count);
@@ -198,7 +198,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Room"/> class.</returns>
-		public AppointmentSystem.Entities.Room GetById(TransactionManager transactionManager, System.String _id)
+		public AppointmentSystem.Entities.Room GetById(TransactionManager transactionManager, System.Int32 _id)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, 0, int.MaxValue, out count);
@@ -213,7 +213,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Room"/> class.</returns>
-		public AppointmentSystem.Entities.Room GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength)
+		public AppointmentSystem.Entities.Room GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, start, pageLength, out count);
@@ -228,7 +228,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Room"/> class.</returns>
-		public AppointmentSystem.Entities.Room GetById(System.String _id, int start, int pageLength, out int count)
+		public AppointmentSystem.Entities.Room GetById(System.Int32 _id, int start, int pageLength, out int count)
 		{
 			return GetById(null, _id, start, pageLength, out count);
 		}
@@ -243,7 +243,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Room"/> class.</returns>
-		public abstract AppointmentSystem.Entities.Room GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count);
+		public abstract AppointmentSystem.Entities.Room GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength, out int count);
 						
 		#endregion "Get By Index Functions"
 	
@@ -287,7 +287,7 @@ namespace AppointmentSystem.Data.Bases
 				if (useEntityFactory)
 				{
 					key = new System.Text.StringBuilder("Room")
-					.Append("|").Append((System.String)reader[((int)RoomColumn.Id - 1)]).ToString();
+					.Append("|").Append((System.Int32)reader[((int)RoomColumn.Id - 1)]).ToString();
 					c = EntityManager.LocateOrCreate<Room>(
 					key.ToString(), // EntityTrackingKey
 					"Room",  //Creational Type
@@ -310,11 +310,10 @@ namespace AppointmentSystem.Data.Bases
 					))
 				{
 					c.SuppressEntityEvents = true;
-					c.Id = (System.String)reader[((int)RoomColumn.Id - 1)];
-					c.OriginalId = c.Id;
+					c.Id = (System.Int32)reader[((int)RoomColumn.Id - 1)];
 					c.Title = (reader.IsDBNull(((int)RoomColumn.Title - 1)))?null:(System.String)reader[((int)RoomColumn.Title - 1)];
 					c.Note = (reader.IsDBNull(((int)RoomColumn.Note - 1)))?null:(System.String)reader[((int)RoomColumn.Note - 1)];
-					c.ServicesId = (reader.IsDBNull(((int)RoomColumn.ServicesId - 1)))?null:(System.String)reader[((int)RoomColumn.ServicesId - 1)];
+					c.ServicesId = (reader.IsDBNull(((int)RoomColumn.ServicesId - 1)))?null:(System.Int32?)reader[((int)RoomColumn.ServicesId - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)RoomColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)RoomColumn.CreateUser - 1)))?null:(System.String)reader[((int)RoomColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)RoomColumn.CreateDate - 1)];
@@ -337,11 +336,10 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if (!reader.Read()) return;
 			
-			entity.Id = (System.String)reader[((int)RoomColumn.Id - 1)];
-			entity.OriginalId = (System.String)reader["Id"];
+			entity.Id = (System.Int32)reader[((int)RoomColumn.Id - 1)];
 			entity.Title = (reader.IsDBNull(((int)RoomColumn.Title - 1)))?null:(System.String)reader[((int)RoomColumn.Title - 1)];
 			entity.Note = (reader.IsDBNull(((int)RoomColumn.Note - 1)))?null:(System.String)reader[((int)RoomColumn.Note - 1)];
-			entity.ServicesId = (reader.IsDBNull(((int)RoomColumn.ServicesId - 1)))?null:(System.String)reader[((int)RoomColumn.ServicesId - 1)];
+			entity.ServicesId = (reader.IsDBNull(((int)RoomColumn.ServicesId - 1)))?null:(System.Int32?)reader[((int)RoomColumn.ServicesId - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)RoomColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)RoomColumn.CreateUser - 1)))?null:(System.String)reader[((int)RoomColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)RoomColumn.CreateDate - 1)];
@@ -359,11 +357,10 @@ namespace AppointmentSystem.Data.Bases
 		{
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
-			entity.Id = (System.String)dataRow["Id"];
-			entity.OriginalId = (System.String)dataRow["Id"];
+			entity.Id = (System.Int32)dataRow["Id"];
 			entity.Title = Convert.IsDBNull(dataRow["Title"]) ? null : (System.String)dataRow["Title"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
-			entity.ServicesId = Convert.IsDBNull(dataRow["ServicesId"]) ? null : (System.String)dataRow["ServicesId"];
+			entity.ServicesId = Convert.IsDBNull(dataRow["ServicesId"]) ? null : (System.Int32?)dataRow["ServicesId"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];
@@ -393,6 +390,32 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if(entity == null)
 				return;
+
+			#region ServicesIdSource	
+			if (CanDeepLoad(entity, "Services|ServicesIdSource", deepLoadType, innerList) 
+				&& entity.ServicesIdSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = (entity.ServicesId ?? (int)0);
+				Services tmpEntity = EntityManager.LocateEntity<Services>(EntityLocator.ConstructKeyFromPkItems(typeof(Services), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.ServicesIdSource = tmpEntity;
+				else
+					entity.ServicesIdSource = DataRepository.ServicesProvider.GetById(transactionManager, (entity.ServicesId ?? (int)0));		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'ServicesIdSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.ServicesIdSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.ServicesProvider.DeepLoad(transactionManager, entity.ServicesIdSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion ServicesIdSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -440,6 +463,27 @@ namespace AppointmentSystem.Data.Bases
 			#endregion 
 			
 			
+			#region RosterCollection
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<Roster>|RosterCollection", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'RosterCollection' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.RosterCollection = DataRepository.RosterProvider.GetByRoomId(transactionManager, entity.Id);
+
+				if (deep && entity.RosterCollection.Count > 0)
+				{
+					deepHandles.Add("RosterCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<Roster>) DataRepository.RosterProvider.DeepLoad,
+						new object[] { transactionManager, entity.RosterCollection, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
+			
 			//Fire all DeepLoad Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
 		    {
@@ -469,6 +513,15 @@ namespace AppointmentSystem.Data.Bases
 			#region Composite Parent Properties
 			//Save Source Composite Properties, however, don't call deep save on them.  
 			//So they only get saved a single level deep.
+			
+			#region ServicesIdSource
+			if (CanDeepSave(entity, "Services|ServicesIdSource", deepSaveType, innerList) 
+				&& entity.ServicesIdSource != null)
+			{
+				DataRepository.ServicesProvider.Save(transactionManager, entity.ServicesIdSource);
+				entity.ServicesId = entity.ServicesIdSource.Id;
+			}
+			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -537,6 +590,36 @@ namespace AppointmentSystem.Data.Bases
 				} 
 			#endregion 
 				
+	
+			#region List<Roster>
+				if (CanDeepSave(entity.RosterCollection, "List<Roster>|RosterCollection", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(Roster child in entity.RosterCollection)
+					{
+						if(child.RoomIdSource != null)
+						{
+							child.RoomId = child.RoomIdSource.Id;
+						}
+						else
+						{
+							child.RoomId = entity.Id;
+						}
+
+					}
+
+					if (entity.RosterCollection.Count > 0 || entity.RosterCollection.DeletedItems.Count > 0)
+					{
+						//DataRepository.RosterProvider.Save(transactionManager, entity.RosterCollection);
+						
+						deepHandles.Add("RosterCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< Roster >) DataRepository.RosterProvider.DeepSave,
+							new object[] { transactionManager, entity.RosterCollection, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
 			//Fire all DeepSave Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
 		    {
@@ -563,7 +646,13 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum RoomChildEntityTypes
 	{
-
+		
+		///<summary>
+		/// Composite Property for <c>Services</c> at ServicesIdSource
+		///</summary>
+		[ChildEntityType(typeof(Services))]
+		Services,
+	
 		///<summary>
 		/// Collection of <c>Room</c> as OneToMany for DoctorRoomCollection
 		///</summary>
@@ -575,6 +664,12 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(TList<Appointment>))]
 		AppointmentCollection,
+
+		///<summary>
+		/// Collection of <c>Room</c> as OneToMany for RosterCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<Roster>))]
+		RosterCollection,
 	}
 	
 	#endregion RoomChildEntityTypes

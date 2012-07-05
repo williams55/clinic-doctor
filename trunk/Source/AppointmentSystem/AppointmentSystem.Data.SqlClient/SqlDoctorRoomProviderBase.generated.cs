@@ -177,7 +177,7 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@RoomId", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Priority", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -538,12 +538,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<DoctorRoom> GetByRoomId(TransactionManager transactionManager, System.String _roomId, int start, int pageLength, out int count)
+		public override TList<DoctorRoom> GetByRoomId(TransactionManager transactionManager, System.Int32? _roomId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.DoctorRoom_GetByRoomId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@RoomId", DbType.String, _roomId);
+				database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, _roomId);
 			
 			IDataReader reader = null;
 			TList<DoctorRoom> rows = new TList<DoctorRoom>();
@@ -769,7 +769,7 @@ namespace AppointmentSystem.Data.SqlClient
 			col0.AllowDBNull = false;		
 			DataColumn col1 = dataTable.Columns.Add("DoctorId", typeof(System.String));
 			col1.AllowDBNull = true;		
-			DataColumn col2 = dataTable.Columns.Add("RoomId", typeof(System.String));
+			DataColumn col2 = dataTable.Columns.Add("RoomId", typeof(System.Int32));
 			col2.AllowDBNull = true;		
 			DataColumn col3 = dataTable.Columns.Add("Priority", typeof(System.Int32));
 			col3.AllowDBNull = false;		
@@ -807,7 +807,7 @@ namespace AppointmentSystem.Data.SqlClient
 					row["DoctorId"] = entity.DoctorId;
 							
 				
-					row["RoomId"] = entity.RoomId;
+					row["RoomId"] = entity.RoomId.HasValue ? (object) entity.RoomId  : System.DBNull.Value;
 							
 				
 					row["Priority"] = entity.Priority;
@@ -864,7 +864,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
 			database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, entity.DoctorId );
-			database.AddInParameter(commandWrapper, "@RoomId", DbType.String, entity.RoomId );
+			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, (entity.RoomId.HasValue ? (object) entity.RoomId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@Priority", DbType.Int32, entity.Priority );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -921,7 +921,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
 			database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, entity.DoctorId );
-			database.AddInParameter(commandWrapper, "@RoomId", DbType.String, entity.RoomId );
+			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, (entity.RoomId.HasValue ? (object) entity.RoomId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@Priority", DbType.Int32, entity.Priority );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );

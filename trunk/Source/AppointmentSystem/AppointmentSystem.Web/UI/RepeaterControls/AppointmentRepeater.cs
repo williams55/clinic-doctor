@@ -350,20 +350,20 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.PatientId; }
 		}
         /// <summary>
-        /// Gets the UserName
+        /// Gets the DoctorId
         /// </summary>
-        /// <value>The UserName.</value>
+        /// <value>The DoctorId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String UserName
+		public System.String DoctorId
 		{
-			get { return _entity.UserName; }
+			get { return _entity.DoctorId; }
 		}
         /// <summary>
         /// Gets the RoomId
         /// </summary>
         /// <value>The RoomId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String RoomId
+		public System.Int32? RoomId
 		{
 			get { return _entity.RoomId; }
 		}
@@ -372,7 +372,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The ServicesId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String ServicesId
+		public System.Int32? ServicesId
 		{
 			get { return _entity.ServicesId; }
 		}
@@ -381,7 +381,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The StatusId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String StatusId
+		public System.Int32? StatusId
 		{
 			get { return _entity.StatusId; }
 		}
@@ -390,7 +390,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The AppointmentGroupId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String AppointmentGroupId
+		public System.Int32? AppointmentGroupId
 		{
 			get { return _entity.AppointmentGroupId; }
 		}

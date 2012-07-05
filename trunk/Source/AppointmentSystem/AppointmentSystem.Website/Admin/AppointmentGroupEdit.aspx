@@ -49,9 +49,9 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Patient Id" DataNavigateUrlFormatString="PatientEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="PatientIdSource" DataTextField="FirstName" />
-				<asp:BoundField DataField="UserName" HeaderText="User Name" SortExpression="[UserName]" />				
+				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
-
+				<data:HyperLinkField HeaderText="Services Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServicesIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Appointment Group Id" DataNavigateUrlFormatString="AppointmentGroupEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="AppointmentGroupIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
@@ -77,8 +77,10 @@
 	            <Types>
 					<data:AppointmentProperty Name="AppointmentGroup"/> 
 					<data:AppointmentProperty Name="Patient"/> 
+					<data:AppointmentProperty Name="Services"/> 
 					<data:AppointmentProperty Name="Room"/> 
 					<data:AppointmentProperty Name="Status"/> 
+					<data:AppointmentProperty Name="Users"/> 
 				</Types>
 			</DeepLoadProperties>
 			

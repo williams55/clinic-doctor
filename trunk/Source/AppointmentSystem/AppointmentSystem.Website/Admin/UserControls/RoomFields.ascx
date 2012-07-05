@@ -4,12 +4,6 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataId" runat="server" Text="Id:" AssociatedControlID="dataId" /></td>
-        <td>
-					<asp:TextBox runat="server" ID="dataId" Text='<%# Bind("Id") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataId" runat="server" Display="Dynamic" ControlToValidate="dataId" ErrorMessage="Required"></asp:RequiredFieldValidator>
-				</td>
-			</tr>
-			<tr>
         <td class="literal"><asp:Label ID="lbldataTitle" runat="server" Text="Title:" AssociatedControlID="dataTitle" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataTitle" Text='<%# Bind("Title") %>' MaxLength="200"></asp:TextBox>
@@ -19,6 +13,13 @@
         <td class="literal"><asp:Label ID="lbldataNote" runat="server" Text="Note:" AssociatedControlID="dataNote" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataNote" Text='<%# Bind("Note") %>'  TextMode="MultiLine"  Width="250px" Rows="5"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataServicesId" runat="server" Text="Services Id:" AssociatedControlID="dataServicesId" /></td>
+        <td>
+					<data:EntityDropDownList runat="server" ID="dataServicesId" DataSourceID="ServicesIdServicesDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("ServicesId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:ServicesDataSource ID="ServicesIdServicesDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>

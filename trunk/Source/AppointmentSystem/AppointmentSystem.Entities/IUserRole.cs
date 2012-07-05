@@ -27,7 +27,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// RoleId : 
 		/// </summary>
-		System.String  RoleId  { get; set; }
+		System.Int32?  RoleId  { get; set; }
 		
 		/// <summary>
 		/// IsDisabled : 

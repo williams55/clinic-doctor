@@ -159,8 +159,9 @@ namespace AppointmentSystem.Web.Data
 			RoleDetail item;
 			count = 0;
 			
-			System.String _id;
-			System.String _roleId_nullable;
+			System.Int64 _id;
+			System.Int32? _roleId_nullable;
+			System.Int32? _screenId_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -186,7 +187,7 @@ namespace AppointmentSystem.Web.Data
                     break;
 				// PK
 				case RoleDetailSelectMethod.GetById:
-					_id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
+					_id = ( values["Id"] != null ) ? (System.Int64) EntityUtil.ChangeType(values["Id"], typeof(System.Int64)) : (long)0;
 					item = RoleDetailProvider.GetById(GetTransactionManager(), _id);
 					results = new TList<RoleDetail>();
 					if ( item != null ) results.Add(item);
@@ -195,8 +196,12 @@ namespace AppointmentSystem.Web.Data
 				// IX
 				// FK
 				case RoleDetailSelectMethod.GetByRoleId:
-					_roleId_nullable = (System.String) EntityUtil.ChangeType(values["RoleId"], typeof(System.String));
+					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
 					results = RoleDetailProvider.GetByRoleId(GetTransactionManager(), _roleId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case RoleDetailSelectMethod.GetByScreenId:
+					_screenId_nullable = (System.Int32?) EntityUtil.ChangeType(values["ScreenId"], typeof(System.Int32?));
+					results = RoleDetailProvider.GetByScreenId(GetTransactionManager(), _screenId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				// M:M
 				// Custom
@@ -381,7 +386,11 @@ namespace AppointmentSystem.Web.Data
 		/// <summary>
 		/// Represents the GetByRoleId method.
 		/// </summary>
-		GetByRoleId
+		GetByRoleId,
+		/// <summary>
+		/// Represents the GetByScreenId method.
+		/// </summary>
+		GetByScreenId
 	}
 	
 	#endregion RoleDetailSelectMethod

@@ -2690,6 +2690,205 @@
             </summary>
             <value></value>
         </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterDataSource">
+            <summary>
+            Represents the DataRepository.RosterProvider object that provides
+            data to data-bound controls in multi-tier Web application architectures.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the RosterDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSource.GetNewDataSourceView">
+            <summary>
+            Creates a new instance of the RosterDataSourceView class that is to be
+            used by the RosterDataSource.
+            </summary>
+            <returns>An instance of the RosterDataSourceView class.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSource.CacheHashKey(System.Int32,System.Int32)">
+            <summary>
+            Creates a cache hashing key based on the startIndex, pageSize and the SelectMethod being used.
+            </summary>
+            <param name="startIndex">The current start row index.</param>
+            <param name="pageSize">The current page size.</param>
+            <returns>A string that can be used as a key for caching purposes.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterDataSource.RosterView">
+            <summary>
+            Gets a reference to the RosterDataSourceView used by the RosterDataSource.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterDataSource.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the RosterDataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterDataSourceView">
+            <summary>
+            Supports the RosterDataSource control and provides an interface for
+            data-bound controls to perform data operations with business and data objects.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSourceView.#ctor(AppointmentSystem.Web.Data.RosterDataSource,System.String)">
+            <summary>
+            Initializes a new instance of the RosterDataSourceView class.
+            </summary>
+            <param name="owner">A reference to the RosterDataSource which created this instance.</param>
+            <param name="viewName">The name of the view.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSourceView.GetSelectData(System.Int32@)">
+            <summary>
+            Gets a collection of Entity objects based on the value of the SelectMethod property.
+            </summary>
+            <param name="count">The total number of rows in the DataSource.</param>
+            <returns>A collection of Entity objects.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSourceView.GetSelectParameters(System.Collections.IDictionary)">
+            <summary>
+            Gets the values of any supplied parameters for internal caching.
+            </summary>
+            <param name="values">An IDictionary object of name/value pairs.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSourceView.DeepLoad">
+            <summary>
+            Performs a DeepLoad operation for the current entity if it has
+            not already been performed.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSourceView.DeepLoad(AppointmentSystem.Entities.TList{AppointmentSystem.Entities.Roster},AppointmentSystem.Web.Data.ProviderDataSourceDeepLoadList)">
+            <summary>
+            Performs a DeepLoad operation on the specified entity collection.
+            </summary>
+            <param name="entityList"></param>
+            <param name="properties"></param>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterDataSourceView.RosterOwner">
+            <summary>
+            Gets a strongly-typed reference to the Owner property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterDataSourceView.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the DataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterDataSourceView.RosterProvider">
+            <summary>
+            Gets a strongly typed reference to the Provider property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterDataSourceDesigner">
+            <summary>
+            Provides design-time support in a design host for the RosterDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSourceDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the RosterDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterDataSourceDesigner.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterDataSourceDesigner.ActionLists">
+            <summary>Gets the designer action list collection for this designer.</summary>
+            <returns>The <see cref="T:System.ComponentModel.Design.DesignerActionListCollection"/>
+            associated with this designer.</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterDataSourceActionList">
+            <summary>
+            Supports the RosterDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSourceActionList.#ctor(AppointmentSystem.Web.Data.RosterDataSourceDesigner)">
+            <summary>
+            Initializes a new instance of the RosterDataSourceActionList class.
+            </summary>
+            <param name="designer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterDataSourceActionList.GetSortedActionItems">
+            <summary>
+            Returns the collection of <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            objects contained in the list.
+            </summary>
+            <returns>A <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            array that contains the items in this list.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterDataSourceActionList.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterSelectMethod">
+            <summary>
+            Enumeration of method names available for the RosterDataSource.SelectMethod property.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterSelectMethod.Get">
+            <summary>
+            Represents the Get method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterSelectMethod.GetAll">
+            <summary>
+            Represents the GetAll method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterSelectMethod.GetPaged">
+            <summary>
+            Represents the GetPaged method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterSelectMethod.Find">
+            <summary>
+            Represents the Find method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterSelectMethod.GetById">
+            <summary>
+            Represents the GetById method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterSelectMethod.GetByRoomId">
+            <summary>
+            Represents the GetByRoomId method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterSelectMethod.GetByRosterTypeId">
+            <summary>
+            Represents the GetByRosterTypeId method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterSelectMethod.GetByDoctorId">
+            <summary>
+            Represents the GetByDoctorId method.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterFilter">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlFilter`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Roster"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterExpressionBuilder">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlExpressionBuilder`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Roster"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterProperty">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Data.Bases.ChildEntityProperty`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Roster"/> object.
+            </summary>
+        </member>
         <member name="T:AppointmentSystem.Web.UI.AppointmentRepeaterDesigner">
             <summary>
             A designer class for a strongly typed repeater <c>AppointmentRepeater</c>
@@ -2814,11 +3013,11 @@
             </summary>
             <value>The PatientId.</value>
         </member>
-        <member name="P:AppointmentSystem.Web.UI.AppointmentItem.UserName">
+        <member name="P:AppointmentSystem.Web.UI.AppointmentItem.DoctorId">
             <summary>
-            Gets the UserName
+            Gets the DoctorId
             </summary>
-            <value>The UserName.</value>
+            <value>The DoctorId.</value>
         </member>
         <member name="P:AppointmentSystem.Web.UI.AppointmentItem.RoomId">
             <summary>
@@ -3459,6 +3658,11 @@
         <member name="F:AppointmentSystem.Web.Data.AppointmentSelectMethod.GetByStatusId">
             <summary>
             Represents the GetByStatusId method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.AppointmentSelectMethod.GetByDoctorId">
+            <summary>
+            Represents the GetByDoctorId method.
             </summary>
         </member>
         <member name="T:AppointmentSystem.Web.Data.AppointmentFilter">
@@ -4252,6 +4456,190 @@
             represents the foreign key table in the relationship.
             </summary>
         </member>
+        <member name="T:AppointmentSystem.Web.Data.ServicesDataSource">
+            <summary>
+            Represents the DataRepository.ServicesProvider object that provides
+            data to data-bound controls in multi-tier Web application architectures.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the ServicesDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSource.GetNewDataSourceView">
+            <summary>
+            Creates a new instance of the ServicesDataSourceView class that is to be
+            used by the ServicesDataSource.
+            </summary>
+            <returns>An instance of the ServicesDataSourceView class.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSource.CacheHashKey(System.Int32,System.Int32)">
+            <summary>
+            Creates a cache hashing key based on the startIndex, pageSize and the SelectMethod being used.
+            </summary>
+            <param name="startIndex">The current start row index.</param>
+            <param name="pageSize">The current page size.</param>
+            <returns>A string that can be used as a key for caching purposes.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ServicesDataSource.ServicesView">
+            <summary>
+            Gets a reference to the ServicesDataSourceView used by the ServicesDataSource.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ServicesDataSource.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the ServicesDataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ServicesDataSourceView">
+            <summary>
+            Supports the ServicesDataSource control and provides an interface for
+            data-bound controls to perform data operations with business and data objects.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSourceView.#ctor(AppointmentSystem.Web.Data.ServicesDataSource,System.String)">
+            <summary>
+            Initializes a new instance of the ServicesDataSourceView class.
+            </summary>
+            <param name="owner">A reference to the ServicesDataSource which created this instance.</param>
+            <param name="viewName">The name of the view.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSourceView.GetSelectData(System.Int32@)">
+            <summary>
+            Gets a collection of Entity objects based on the value of the SelectMethod property.
+            </summary>
+            <param name="count">The total number of rows in the DataSource.</param>
+            <returns>A collection of Entity objects.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSourceView.GetSelectParameters(System.Collections.IDictionary)">
+            <summary>
+            Gets the values of any supplied parameters for internal caching.
+            </summary>
+            <param name="values">An IDictionary object of name/value pairs.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSourceView.DeepLoad">
+            <summary>
+            Performs a DeepLoad operation for the current entity if it has
+            not already been performed.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSourceView.DeepLoad(AppointmentSystem.Entities.TList{AppointmentSystem.Entities.Services},AppointmentSystem.Web.Data.ProviderDataSourceDeepLoadList)">
+            <summary>
+            Performs a DeepLoad operation on the specified entity collection.
+            </summary>
+            <param name="entityList"></param>
+            <param name="properties"></param>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ServicesDataSourceView.ServicesOwner">
+            <summary>
+            Gets a strongly-typed reference to the Owner property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ServicesDataSourceView.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the DataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ServicesDataSourceView.ServicesProvider">
+            <summary>
+            Gets a strongly typed reference to the Provider property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ServicesDataSourceDesigner">
+            <summary>
+            Provides design-time support in a design host for the ServicesDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSourceDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the ServicesDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ServicesDataSourceDesigner.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ServicesDataSourceDesigner.ActionLists">
+            <summary>Gets the designer action list collection for this designer.</summary>
+            <returns>The <see cref="T:System.ComponentModel.Design.DesignerActionListCollection"/>
+            associated with this designer.</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ServicesDataSourceActionList">
+            <summary>
+            Supports the ServicesDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSourceActionList.#ctor(AppointmentSystem.Web.Data.ServicesDataSourceDesigner)">
+            <summary>
+            Initializes a new instance of the ServicesDataSourceActionList class.
+            </summary>
+            <param name="designer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ServicesDataSourceActionList.GetSortedActionItems">
+            <summary>
+            Returns the collection of <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            objects contained in the list.
+            </summary>
+            <returns>A <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            array that contains the items in this list.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ServicesDataSourceActionList.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ServicesSelectMethod">
+            <summary>
+            Enumeration of method names available for the ServicesDataSource.SelectMethod property.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ServicesSelectMethod.Get">
+            <summary>
+            Represents the Get method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ServicesSelectMethod.GetAll">
+            <summary>
+            Represents the GetAll method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ServicesSelectMethod.GetPaged">
+            <summary>
+            Represents the GetPaged method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ServicesSelectMethod.Find">
+            <summary>
+            Represents the Find method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ServicesSelectMethod.GetById">
+            <summary>
+            Represents the GetById method.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ServicesFilter">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlFilter`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Services"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ServicesExpressionBuilder">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlExpressionBuilder`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Services"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ServicesProperty">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Data.Bases.ChildEntityProperty`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Services"/> object.
+            </summary>
+        </member>
         <member name="T:AppointmentSystem.Web.Data.OneToManyGridRelationship">
             <summary>
             Provides management of a one-to-many relationship between a primary
@@ -4563,6 +4951,190 @@
             that is used exclusively with a <see cref="T:AppointmentSystem.Entities.UserGroup"/> object.
             </summary>
         </member>
+        <member name="T:AppointmentSystem.Web.Data.UnitsDataSource">
+            <summary>
+            Represents the DataRepository.UnitsProvider object that provides
+            data to data-bound controls in multi-tier Web application architectures.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the UnitsDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSource.GetNewDataSourceView">
+            <summary>
+            Creates a new instance of the UnitsDataSourceView class that is to be
+            used by the UnitsDataSource.
+            </summary>
+            <returns>An instance of the UnitsDataSourceView class.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSource.CacheHashKey(System.Int32,System.Int32)">
+            <summary>
+            Creates a cache hashing key based on the startIndex, pageSize and the SelectMethod being used.
+            </summary>
+            <param name="startIndex">The current start row index.</param>
+            <param name="pageSize">The current page size.</param>
+            <returns>A string that can be used as a key for caching purposes.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UnitsDataSource.UnitsView">
+            <summary>
+            Gets a reference to the UnitsDataSourceView used by the UnitsDataSource.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UnitsDataSource.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the UnitsDataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UnitsDataSourceView">
+            <summary>
+            Supports the UnitsDataSource control and provides an interface for
+            data-bound controls to perform data operations with business and data objects.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSourceView.#ctor(AppointmentSystem.Web.Data.UnitsDataSource,System.String)">
+            <summary>
+            Initializes a new instance of the UnitsDataSourceView class.
+            </summary>
+            <param name="owner">A reference to the UnitsDataSource which created this instance.</param>
+            <param name="viewName">The name of the view.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSourceView.GetSelectData(System.Int32@)">
+            <summary>
+            Gets a collection of Entity objects based on the value of the SelectMethod property.
+            </summary>
+            <param name="count">The total number of rows in the DataSource.</param>
+            <returns>A collection of Entity objects.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSourceView.GetSelectParameters(System.Collections.IDictionary)">
+            <summary>
+            Gets the values of any supplied parameters for internal caching.
+            </summary>
+            <param name="values">An IDictionary object of name/value pairs.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSourceView.DeepLoad">
+            <summary>
+            Performs a DeepLoad operation for the current entity if it has
+            not already been performed.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSourceView.DeepLoad(AppointmentSystem.Entities.TList{AppointmentSystem.Entities.Units},AppointmentSystem.Web.Data.ProviderDataSourceDeepLoadList)">
+            <summary>
+            Performs a DeepLoad operation on the specified entity collection.
+            </summary>
+            <param name="entityList"></param>
+            <param name="properties"></param>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UnitsDataSourceView.UnitsOwner">
+            <summary>
+            Gets a strongly-typed reference to the Owner property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UnitsDataSourceView.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the DataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UnitsDataSourceView.UnitsProvider">
+            <summary>
+            Gets a strongly typed reference to the Provider property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UnitsDataSourceDesigner">
+            <summary>
+            Provides design-time support in a design host for the UnitsDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSourceDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the UnitsDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UnitsDataSourceDesigner.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UnitsDataSourceDesigner.ActionLists">
+            <summary>Gets the designer action list collection for this designer.</summary>
+            <returns>The <see cref="T:System.ComponentModel.Design.DesignerActionListCollection"/>
+            associated with this designer.</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UnitsDataSourceActionList">
+            <summary>
+            Supports the UnitsDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSourceActionList.#ctor(AppointmentSystem.Web.Data.UnitsDataSourceDesigner)">
+            <summary>
+            Initializes a new instance of the UnitsDataSourceActionList class.
+            </summary>
+            <param name="designer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UnitsDataSourceActionList.GetSortedActionItems">
+            <summary>
+            Returns the collection of <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            objects contained in the list.
+            </summary>
+            <returns>A <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            array that contains the items in this list.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UnitsDataSourceActionList.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UnitsSelectMethod">
+            <summary>
+            Enumeration of method names available for the UnitsDataSource.SelectMethod property.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UnitsSelectMethod.Get">
+            <summary>
+            Represents the Get method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UnitsSelectMethod.GetAll">
+            <summary>
+            Represents the GetAll method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UnitsSelectMethod.GetPaged">
+            <summary>
+            Represents the GetPaged method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UnitsSelectMethod.Find">
+            <summary>
+            Represents the Find method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UnitsSelectMethod.GetById">
+            <summary>
+            Represents the GetById method.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UnitsFilter">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlFilter`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Units"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UnitsExpressionBuilder">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlExpressionBuilder`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Units"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UnitsProperty">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Data.Bases.ChildEntityProperty`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Units"/> object.
+            </summary>
+        </member>
         <member name="T:AppointmentSystem.Web.UI.StatusRepeaterDesigner">
             <summary>
             A designer class for a strongly typed repeater <c>StatusRepeater</c>
@@ -4738,6 +5310,172 @@
         <member name="P:AppointmentSystem.Web.UI.StatusItem.Entity">
             <summary>
             Gets a <see cref="T:AppointmentSystem.Entities.Status"></see> object
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.ScreenRepeaterDesigner">
+            <summary>
+            A designer class for a strongly typed repeater <c>ScreenRepeater</c>
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenRepeaterDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScreenRepeaterDesigner"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenRepeaterDesigner.Initialize(System.ComponentModel.IComponent)">
+            <summary>
+            Initializes the control designer and loads the specified component.
+            </summary>
+            <param name="component">The control being designed.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenRepeaterDesigner.GetDesignTimeHtml">
+            <summary>
+            Generate HTML for the designer
+            </summary>
+            <returns>a string of design time HTML</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.ScreenRepeater">
+            <summary>
+            A strongly typed repeater control for the <c cref="T:AppointmentSystem.Web.UI.ScreenRepeater"></c> Type.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenRepeater.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScreenRepeater"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenRepeater.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenRepeater.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenRepeater.CreateChildControls(System.Collections.IEnumerable,System.Boolean)">
+            <summary>
+            Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenRepeater.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"></see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenRepeater.RenderAtDesignTime">
+            <summary>
+            Renders at design time.
+            </summary>
+            <returns>a  string of the Designed HTML</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenRepeater.Controls">
+            <summary>
+            Gets a <see cref="T:System.Web.UI.ControlCollection"></see> object that represents the child controls for a specified server control in the UI hierarchy.
+            </summary>
+            <value></value>
+            <returns>The collection of child controls for the specified server control.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenRepeater.HeaderTemplate">
+            <summary>
+            Gets or sets the header template.
+            </summary>
+            <value>The header template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenRepeater.ItemTemplate">
+            <summary>
+            Gets or sets the item template.
+            </summary>
+            <value>The item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenRepeater.SeperatorTemplate">
+            <summary>
+            Gets or sets the Seperator Template
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenRepeater.AlternatingItemTemplate">
+            <summary>
+            Gets or sets the alternating item template.
+            </summary>
+            <value>The alternating item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenRepeater.FooterTemplate">
+            <summary>
+            Gets or sets the footer template.
+            </summary>
+            <value>The footer template.</value>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.ScreenItem">
+            <summary>
+            A wrapper type for the entity
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScreenItem"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ScreenItem.#ctor(AppointmentSystem.Entities.Screen)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScreenItem"/> class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenItem.Id">
+            <summary>
+            Gets the Id
+            </summary>
+            <value>The Id.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenItem.ScreenCode">
+            <summary>
+            Gets the ScreenCode
+            </summary>
+            <value>The ScreenCode.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenItem.ScreenName">
+            <summary>
+            Gets the ScreenName
+            </summary>
+            <value>The ScreenName.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenItem.IsDisabled">
+            <summary>
+            Gets the IsDisabled
+            </summary>
+            <value>The IsDisabled.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenItem.CreateUser">
+            <summary>
+            Gets the CreateUser
+            </summary>
+            <value>The CreateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenItem.CreateDate">
+            <summary>
+            Gets the CreateDate
+            </summary>
+            <value>The CreateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenItem.UpdateUser">
+            <summary>
+            Gets the UpdateUser
+            </summary>
+            <value>The UpdateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenItem.UpdateDate">
+            <summary>
+            Gets the UpdateDate
+            </summary>
+            <value>The UpdateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ScreenItem.Entity">
+            <summary>
+            Gets a <see cref="T:AppointmentSystem.Entities.Screen"></see> object
             </summary>
             <value></value>
         </member>
@@ -5717,6 +6455,196 @@
             Gets or sets a value indicating whether an exception that was thrown by the business object has been handled.
             </summary>
         </member>
+        <member name="T:AppointmentSystem.Web.UI.UsersRepeaterDesigner">
+            <summary>
+            A designer class for a strongly typed repeater <c>UsersRepeater</c>
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersRepeaterDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:UsersRepeaterDesigner"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersRepeaterDesigner.Initialize(System.ComponentModel.IComponent)">
+            <summary>
+            Initializes the control designer and loads the specified component.
+            </summary>
+            <param name="component">The control being designed.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersRepeaterDesigner.GetDesignTimeHtml">
+            <summary>
+            Generate HTML for the designer
+            </summary>
+            <returns>a string of design time HTML</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.UsersRepeater">
+            <summary>
+            A strongly typed repeater control for the <c cref="T:AppointmentSystem.Web.UI.UsersRepeater"></c> Type.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersRepeater.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:UsersRepeater"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersRepeater.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersRepeater.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersRepeater.CreateChildControls(System.Collections.IEnumerable,System.Boolean)">
+            <summary>
+            Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersRepeater.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"></see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersRepeater.RenderAtDesignTime">
+            <summary>
+            Renders at design time.
+            </summary>
+            <returns>a  string of the Designed HTML</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersRepeater.Controls">
+            <summary>
+            Gets a <see cref="T:System.Web.UI.ControlCollection"></see> object that represents the child controls for a specified server control in the UI hierarchy.
+            </summary>
+            <value></value>
+            <returns>The collection of child controls for the specified server control.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersRepeater.HeaderTemplate">
+            <summary>
+            Gets or sets the header template.
+            </summary>
+            <value>The header template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersRepeater.ItemTemplate">
+            <summary>
+            Gets or sets the item template.
+            </summary>
+            <value>The item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersRepeater.SeperatorTemplate">
+            <summary>
+            Gets or sets the Seperator Template
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersRepeater.AlternatingItemTemplate">
+            <summary>
+            Gets or sets the alternating item template.
+            </summary>
+            <value>The alternating item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersRepeater.FooterTemplate">
+            <summary>
+            Gets or sets the footer template.
+            </summary>
+            <value>The footer template.</value>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.UsersItem">
+            <summary>
+            A wrapper type for the entity
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:UsersItem"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UsersItem.#ctor(AppointmentSystem.Entities.Users)">
+            <summary>
+            Initializes a new instance of the <see cref="T:UsersItem"/> class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.Id">
+            <summary>
+            Gets the Id
+            </summary>
+            <value>The Id.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.Username">
+            <summary>
+            Gets the Username
+            </summary>
+            <value>The Username.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.Title">
+            <summary>
+            Gets the Title
+            </summary>
+            <value>The Title.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.DisplayName">
+            <summary>
+            Gets the DisplayName
+            </summary>
+            <value>The DisplayName.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.Email">
+            <summary>
+            Gets the Email
+            </summary>
+            <value>The Email.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.Note">
+            <summary>
+            Gets the Note
+            </summary>
+            <value>The Note.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.UserGroupId">
+            <summary>
+            Gets the UserGroupId
+            </summary>
+            <value>The UserGroupId.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.IsDisabled">
+            <summary>
+            Gets the IsDisabled
+            </summary>
+            <value>The IsDisabled.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.CreateUser">
+            <summary>
+            Gets the CreateUser
+            </summary>
+            <value>The CreateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.CreateDate">
+            <summary>
+            Gets the CreateDate
+            </summary>
+            <value>The CreateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.UpdateUser">
+            <summary>
+            Gets the UpdateUser
+            </summary>
+            <value>The UpdateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.UpdateDate">
+            <summary>
+            Gets the UpdateDate
+            </summary>
+            <value>The UpdateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UsersItem.Entity">
+            <summary>
+            Gets a <see cref="T:AppointmentSystem.Entities.Users"></see> object
+            </summary>
+            <value></value>
+        </member>
         <member name="T:AppointmentSystem.Web.Data.UserRoleDataSource">
             <summary>
             Represents the DataRepository.UserRoleProvider object that provides
@@ -5911,6 +6839,178 @@
             that is used exclusively with a <see cref="T:AppointmentSystem.Entities.UserRole"/> object.
             </summary>
         </member>
+        <member name="T:AppointmentSystem.Web.UI.RosterTypeRepeaterDesigner">
+            <summary>
+            A designer class for a strongly typed repeater <c>RosterTypeRepeater</c>
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeRepeaterDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RosterTypeRepeaterDesigner"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeRepeaterDesigner.Initialize(System.ComponentModel.IComponent)">
+            <summary>
+            Initializes the control designer and loads the specified component.
+            </summary>
+            <param name="component">The control being designed.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeRepeaterDesigner.GetDesignTimeHtml">
+            <summary>
+            Generate HTML for the designer
+            </summary>
+            <returns>a string of design time HTML</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.RosterTypeRepeater">
+            <summary>
+            A strongly typed repeater control for the <c cref="T:AppointmentSystem.Web.UI.RosterTypeRepeater"></c> Type.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeRepeater.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RosterTypeRepeater"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeRepeater.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeRepeater.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeRepeater.CreateChildControls(System.Collections.IEnumerable,System.Boolean)">
+            <summary>
+            Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeRepeater.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"></see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeRepeater.RenderAtDesignTime">
+            <summary>
+            Renders at design time.
+            </summary>
+            <returns>a  string of the Designed HTML</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeRepeater.Controls">
+            <summary>
+            Gets a <see cref="T:System.Web.UI.ControlCollection"></see> object that represents the child controls for a specified server control in the UI hierarchy.
+            </summary>
+            <value></value>
+            <returns>The collection of child controls for the specified server control.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeRepeater.HeaderTemplate">
+            <summary>
+            Gets or sets the header template.
+            </summary>
+            <value>The header template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeRepeater.ItemTemplate">
+            <summary>
+            Gets or sets the item template.
+            </summary>
+            <value>The item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeRepeater.SeperatorTemplate">
+            <summary>
+            Gets or sets the Seperator Template
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeRepeater.AlternatingItemTemplate">
+            <summary>
+            Gets or sets the alternating item template.
+            </summary>
+            <value>The alternating item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeRepeater.FooterTemplate">
+            <summary>
+            Gets or sets the footer template.
+            </summary>
+            <value>The footer template.</value>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.RosterTypeItem">
+            <summary>
+            A wrapper type for the entity
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RosterTypeItem"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterTypeItem.#ctor(AppointmentSystem.Entities.RosterType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:RosterTypeItem"/> class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.Id">
+            <summary>
+            Gets the Id
+            </summary>
+            <value>The Id.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.Title">
+            <summary>
+            Gets the Title
+            </summary>
+            <value>The Title.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.IsBooked">
+            <summary>
+            Gets the IsBooked
+            </summary>
+            <value>The IsBooked.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.Note">
+            <summary>
+            Gets the Note
+            </summary>
+            <value>The Note.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.IsDisabled">
+            <summary>
+            Gets the IsDisabled
+            </summary>
+            <value>The IsDisabled.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.CreateUser">
+            <summary>
+            Gets the CreateUser
+            </summary>
+            <value>The CreateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.CreateDate">
+            <summary>
+            Gets the CreateDate
+            </summary>
+            <value>The CreateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.UpdateUser">
+            <summary>
+            Gets the UpdateUser
+            </summary>
+            <value>The UpdateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.UpdateDate">
+            <summary>
+            Gets the UpdateDate
+            </summary>
+            <value>The UpdateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterTypeItem.Entity">
+            <summary>
+            Gets a <see cref="T:AppointmentSystem.Entities.RosterType"></see> object
+            </summary>
+            <value></value>
+        </member>
         <member name="T:AppointmentSystem.Web.Data.LinkedDataSourceEventHandler">
             <summary>
             Represents the method that will handle the <see cref="T:AppointmentSystem.Web.Data.ILinkedDataSource"/> control's events.
@@ -6033,6 +7133,190 @@
             Gets or sets a value indicating whether to append a null item.
             </summary>
             <value><c>true</c> if append null item; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ScreenDataSource">
+            <summary>
+            Represents the DataRepository.ScreenProvider object that provides
+            data to data-bound controls in multi-tier Web application architectures.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the ScreenDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSource.GetNewDataSourceView">
+            <summary>
+            Creates a new instance of the ScreenDataSourceView class that is to be
+            used by the ScreenDataSource.
+            </summary>
+            <returns>An instance of the ScreenDataSourceView class.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSource.CacheHashKey(System.Int32,System.Int32)">
+            <summary>
+            Creates a cache hashing key based on the startIndex, pageSize and the SelectMethod being used.
+            </summary>
+            <param name="startIndex">The current start row index.</param>
+            <param name="pageSize">The current page size.</param>
+            <returns>A string that can be used as a key for caching purposes.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ScreenDataSource.ScreenView">
+            <summary>
+            Gets a reference to the ScreenDataSourceView used by the ScreenDataSource.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ScreenDataSource.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the ScreenDataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ScreenDataSourceView">
+            <summary>
+            Supports the ScreenDataSource control and provides an interface for
+            data-bound controls to perform data operations with business and data objects.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSourceView.#ctor(AppointmentSystem.Web.Data.ScreenDataSource,System.String)">
+            <summary>
+            Initializes a new instance of the ScreenDataSourceView class.
+            </summary>
+            <param name="owner">A reference to the ScreenDataSource which created this instance.</param>
+            <param name="viewName">The name of the view.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSourceView.GetSelectData(System.Int32@)">
+            <summary>
+            Gets a collection of Entity objects based on the value of the SelectMethod property.
+            </summary>
+            <param name="count">The total number of rows in the DataSource.</param>
+            <returns>A collection of Entity objects.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSourceView.GetSelectParameters(System.Collections.IDictionary)">
+            <summary>
+            Gets the values of any supplied parameters for internal caching.
+            </summary>
+            <param name="values">An IDictionary object of name/value pairs.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSourceView.DeepLoad">
+            <summary>
+            Performs a DeepLoad operation for the current entity if it has
+            not already been performed.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSourceView.DeepLoad(AppointmentSystem.Entities.TList{AppointmentSystem.Entities.Screen},AppointmentSystem.Web.Data.ProviderDataSourceDeepLoadList)">
+            <summary>
+            Performs a DeepLoad operation on the specified entity collection.
+            </summary>
+            <param name="entityList"></param>
+            <param name="properties"></param>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ScreenDataSourceView.ScreenOwner">
+            <summary>
+            Gets a strongly-typed reference to the Owner property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ScreenDataSourceView.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the DataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ScreenDataSourceView.ScreenProvider">
+            <summary>
+            Gets a strongly typed reference to the Provider property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ScreenDataSourceDesigner">
+            <summary>
+            Provides design-time support in a design host for the ScreenDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSourceDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the ScreenDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ScreenDataSourceDesigner.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ScreenDataSourceDesigner.ActionLists">
+            <summary>Gets the designer action list collection for this designer.</summary>
+            <returns>The <see cref="T:System.ComponentModel.Design.DesignerActionListCollection"/>
+            associated with this designer.</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ScreenDataSourceActionList">
+            <summary>
+            Supports the ScreenDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSourceActionList.#ctor(AppointmentSystem.Web.Data.ScreenDataSourceDesigner)">
+            <summary>
+            Initializes a new instance of the ScreenDataSourceActionList class.
+            </summary>
+            <param name="designer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.ScreenDataSourceActionList.GetSortedActionItems">
+            <summary>
+            Returns the collection of <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            objects contained in the list.
+            </summary>
+            <returns>A <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            array that contains the items in this list.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.ScreenDataSourceActionList.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ScreenSelectMethod">
+            <summary>
+            Enumeration of method names available for the ScreenDataSource.SelectMethod property.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ScreenSelectMethod.Get">
+            <summary>
+            Represents the Get method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ScreenSelectMethod.GetAll">
+            <summary>
+            Represents the GetAll method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ScreenSelectMethod.GetPaged">
+            <summary>
+            Represents the GetPaged method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ScreenSelectMethod.Find">
+            <summary>
+            Represents the Find method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.ScreenSelectMethod.GetById">
+            <summary>
+            Represents the GetById method.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ScreenFilter">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlFilter`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Screen"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ScreenExpressionBuilder">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlExpressionBuilder`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Screen"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.ScreenProperty">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Data.Bases.ChildEntityProperty`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Screen"/> object.
+            </summary>
         </member>
         <member name="T:AppointmentSystem.Web.UI.EntityLabel">
             <summary>
@@ -8403,6 +9687,196 @@
             that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Status"/> object.
             </summary>
         </member>
+        <member name="T:AppointmentSystem.Web.UI.RosterRepeaterDesigner">
+            <summary>
+            A designer class for a strongly typed repeater <c>RosterRepeater</c>
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterRepeaterDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RosterRepeaterDesigner"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterRepeaterDesigner.Initialize(System.ComponentModel.IComponent)">
+            <summary>
+            Initializes the control designer and loads the specified component.
+            </summary>
+            <param name="component">The control being designed.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterRepeaterDesigner.GetDesignTimeHtml">
+            <summary>
+            Generate HTML for the designer
+            </summary>
+            <returns>a string of design time HTML</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.RosterRepeater">
+            <summary>
+            A strongly typed repeater control for the <c cref="T:AppointmentSystem.Web.UI.RosterRepeater"></c> Type.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterRepeater.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RosterRepeater"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterRepeater.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterRepeater.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterRepeater.CreateChildControls(System.Collections.IEnumerable,System.Boolean)">
+            <summary>
+            Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterRepeater.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"></see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterRepeater.RenderAtDesignTime">
+            <summary>
+            Renders at design time.
+            </summary>
+            <returns>a  string of the Designed HTML</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterRepeater.Controls">
+            <summary>
+            Gets a <see cref="T:System.Web.UI.ControlCollection"></see> object that represents the child controls for a specified server control in the UI hierarchy.
+            </summary>
+            <value></value>
+            <returns>The collection of child controls for the specified server control.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterRepeater.HeaderTemplate">
+            <summary>
+            Gets or sets the header template.
+            </summary>
+            <value>The header template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterRepeater.ItemTemplate">
+            <summary>
+            Gets or sets the item template.
+            </summary>
+            <value>The item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterRepeater.SeperatorTemplate">
+            <summary>
+            Gets or sets the Seperator Template
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterRepeater.AlternatingItemTemplate">
+            <summary>
+            Gets or sets the alternating item template.
+            </summary>
+            <value>The alternating item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterRepeater.FooterTemplate">
+            <summary>
+            Gets or sets the footer template.
+            </summary>
+            <value>The footer template.</value>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.RosterItem">
+            <summary>
+            A wrapper type for the entity
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RosterItem"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.RosterItem.#ctor(AppointmentSystem.Entities.Roster)">
+            <summary>
+            Initializes a new instance of the <see cref="T:RosterItem"/> class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.Id">
+            <summary>
+            Gets the Id
+            </summary>
+            <value>The Id.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.DoctorId">
+            <summary>
+            Gets the DoctorId
+            </summary>
+            <value>The DoctorId.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.RoomId">
+            <summary>
+            Gets the RoomId
+            </summary>
+            <value>The RoomId.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.RosterTypeId">
+            <summary>
+            Gets the RosterTypeId
+            </summary>
+            <value>The RosterTypeId.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.StartTime">
+            <summary>
+            Gets the StartTime
+            </summary>
+            <value>The StartTime.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.EndTime">
+            <summary>
+            Gets the EndTime
+            </summary>
+            <value>The EndTime.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.Note">
+            <summary>
+            Gets the Note
+            </summary>
+            <value>The Note.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.IsDisabled">
+            <summary>
+            Gets the IsDisabled
+            </summary>
+            <value>The IsDisabled.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.CreateUser">
+            <summary>
+            Gets the CreateUser
+            </summary>
+            <value>The CreateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.CreateDate">
+            <summary>
+            Gets the CreateDate
+            </summary>
+            <value>The CreateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.UpdateUser">
+            <summary>
+            Gets the UpdateUser
+            </summary>
+            <value>The UpdateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.UpdateDate">
+            <summary>
+            Gets the UpdateDate
+            </summary>
+            <value>The UpdateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.RosterItem.Entity">
+            <summary>
+            Gets a <see cref="T:AppointmentSystem.Entities.Roster"></see> object
+            </summary>
+            <value></value>
+        </member>
         <member name="T:AppointmentSystem.Web.Data.RoomDataSource">
             <summary>
             Represents the DataRepository.RoomProvider object that provides
@@ -8763,6 +10237,11 @@
             Represents the GetByRoleId method.
             </summary>
         </member>
+        <member name="F:AppointmentSystem.Web.Data.RoleDetailSelectMethod.GetByScreenId">
+            <summary>
+            Represents the GetByScreenId method.
+            </summary>
+        </member>
         <member name="T:AppointmentSystem.Web.Data.RoleDetailFilter">
             <summary>
             A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlFilter`1"/> class
@@ -8950,6 +10429,367 @@
         <member name="P:AppointmentSystem.Web.UI.RoleItem.Entity">
             <summary>
             Gets a <see cref="T:AppointmentSystem.Entities.Role"></see> object
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UsersDataSource">
+            <summary>
+            Represents the DataRepository.UsersProvider object that provides
+            data to data-bound controls in multi-tier Web application architectures.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the UsersDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSource.GetNewDataSourceView">
+            <summary>
+            Creates a new instance of the UsersDataSourceView class that is to be
+            used by the UsersDataSource.
+            </summary>
+            <returns>An instance of the UsersDataSourceView class.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSource.CacheHashKey(System.Int32,System.Int32)">
+            <summary>
+            Creates a cache hashing key based on the startIndex, pageSize and the SelectMethod being used.
+            </summary>
+            <param name="startIndex">The current start row index.</param>
+            <param name="pageSize">The current page size.</param>
+            <returns>A string that can be used as a key for caching purposes.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UsersDataSource.UsersView">
+            <summary>
+            Gets a reference to the UsersDataSourceView used by the UsersDataSource.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UsersDataSource.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the UsersDataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UsersDataSourceView">
+            <summary>
+            Supports the UsersDataSource control and provides an interface for
+            data-bound controls to perform data operations with business and data objects.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSourceView.#ctor(AppointmentSystem.Web.Data.UsersDataSource,System.String)">
+            <summary>
+            Initializes a new instance of the UsersDataSourceView class.
+            </summary>
+            <param name="owner">A reference to the UsersDataSource which created this instance.</param>
+            <param name="viewName">The name of the view.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSourceView.GetSelectData(System.Int32@)">
+            <summary>
+            Gets a collection of Entity objects based on the value of the SelectMethod property.
+            </summary>
+            <param name="count">The total number of rows in the DataSource.</param>
+            <returns>A collection of Entity objects.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSourceView.GetSelectParameters(System.Collections.IDictionary)">
+            <summary>
+            Gets the values of any supplied parameters for internal caching.
+            </summary>
+            <param name="values">An IDictionary object of name/value pairs.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSourceView.DeepLoad">
+            <summary>
+            Performs a DeepLoad operation for the current entity if it has
+            not already been performed.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSourceView.DeepLoad(AppointmentSystem.Entities.TList{AppointmentSystem.Entities.Users},AppointmentSystem.Web.Data.ProviderDataSourceDeepLoadList)">
+            <summary>
+            Performs a DeepLoad operation on the specified entity collection.
+            </summary>
+            <param name="entityList"></param>
+            <param name="properties"></param>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UsersDataSourceView.UsersOwner">
+            <summary>
+            Gets a strongly-typed reference to the Owner property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UsersDataSourceView.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the DataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UsersDataSourceView.UsersProvider">
+            <summary>
+            Gets a strongly typed reference to the Provider property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UsersDataSourceDesigner">
+            <summary>
+            Provides design-time support in a design host for the UsersDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSourceDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the UsersDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UsersDataSourceDesigner.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UsersDataSourceDesigner.ActionLists">
+            <summary>Gets the designer action list collection for this designer.</summary>
+            <returns>The <see cref="T:System.ComponentModel.Design.DesignerActionListCollection"/>
+            associated with this designer.</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UsersDataSourceActionList">
+            <summary>
+            Supports the UsersDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSourceActionList.#ctor(AppointmentSystem.Web.Data.UsersDataSourceDesigner)">
+            <summary>
+            Initializes a new instance of the UsersDataSourceActionList class.
+            </summary>
+            <param name="designer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.UsersDataSourceActionList.GetSortedActionItems">
+            <summary>
+            Returns the collection of <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            objects contained in the list.
+            </summary>
+            <returns>A <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            array that contains the items in this list.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.UsersDataSourceActionList.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UsersSelectMethod">
+            <summary>
+            Enumeration of method names available for the UsersDataSource.SelectMethod property.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UsersSelectMethod.Get">
+            <summary>
+            Represents the Get method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UsersSelectMethod.GetAll">
+            <summary>
+            Represents the GetAll method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UsersSelectMethod.GetPaged">
+            <summary>
+            Represents the GetPaged method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UsersSelectMethod.Find">
+            <summary>
+            Represents the Find method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UsersSelectMethod.GetByUsername">
+            <summary>
+            Represents the GetByUsername method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.UsersSelectMethod.GetById">
+            <summary>
+            Represents the GetById method.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UsersFilter">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlFilter`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Users"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UsersExpressionBuilder">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlExpressionBuilder`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Users"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.UsersProperty">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Data.Bases.ChildEntityProperty`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.Users"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.UnitsRepeaterDesigner">
+            <summary>
+            A designer class for a strongly typed repeater <c>UnitsRepeater</c>
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsRepeaterDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:UnitsRepeaterDesigner"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsRepeaterDesigner.Initialize(System.ComponentModel.IComponent)">
+            <summary>
+            Initializes the control designer and loads the specified component.
+            </summary>
+            <param name="component">The control being designed.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsRepeaterDesigner.GetDesignTimeHtml">
+            <summary>
+            Generate HTML for the designer
+            </summary>
+            <returns>a string of design time HTML</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.UnitsRepeater">
+            <summary>
+            A strongly typed repeater control for the <c cref="T:AppointmentSystem.Web.UI.UnitsRepeater"></c> Type.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsRepeater.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:UnitsRepeater"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsRepeater.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsRepeater.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsRepeater.CreateChildControls(System.Collections.IEnumerable,System.Boolean)">
+            <summary>
+            Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsRepeater.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"></see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsRepeater.RenderAtDesignTime">
+            <summary>
+            Renders at design time.
+            </summary>
+            <returns>a  string of the Designed HTML</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsRepeater.Controls">
+            <summary>
+            Gets a <see cref="T:System.Web.UI.ControlCollection"></see> object that represents the child controls for a specified server control in the UI hierarchy.
+            </summary>
+            <value></value>
+            <returns>The collection of child controls for the specified server control.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsRepeater.HeaderTemplate">
+            <summary>
+            Gets or sets the header template.
+            </summary>
+            <value>The header template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsRepeater.ItemTemplate">
+            <summary>
+            Gets or sets the item template.
+            </summary>
+            <value>The item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsRepeater.SeperatorTemplate">
+            <summary>
+            Gets or sets the Seperator Template
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsRepeater.AlternatingItemTemplate">
+            <summary>
+            Gets or sets the alternating item template.
+            </summary>
+            <value>The alternating item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsRepeater.FooterTemplate">
+            <summary>
+            Gets or sets the footer template.
+            </summary>
+            <value>The footer template.</value>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.UnitsItem">
+            <summary>
+            A wrapper type for the entity
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:UnitsItem"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.UnitsItem.#ctor(AppointmentSystem.Entities.Units)">
+            <summary>
+            Initializes a new instance of the <see cref="T:UnitsItem"/> class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.Id">
+            <summary>
+            Gets the Id
+            </summary>
+            <value>The Id.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.Title">
+            <summary>
+            Gets the Title
+            </summary>
+            <value>The Title.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.Note">
+            <summary>
+            Gets the Note
+            </summary>
+            <value>The Note.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.Users">
+            <summary>
+            Gets the Users
+            </summary>
+            <value>The Users.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.IsDisabled">
+            <summary>
+            Gets the IsDisabled
+            </summary>
+            <value>The IsDisabled.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.CreateUser">
+            <summary>
+            Gets the CreateUser
+            </summary>
+            <value>The CreateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.CreateDate">
+            <summary>
+            Gets the CreateDate
+            </summary>
+            <value>The CreateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.UpdateUser">
+            <summary>
+            Gets the UpdateUser
+            </summary>
+            <value>The UpdateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.UpdateDate">
+            <summary>
+            Gets the UpdateDate
+            </summary>
+            <value>The UpdateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.UnitsItem.Entity">
+            <summary>
+            Gets a <see cref="T:AppointmentSystem.Entities.Units"></see> object
             </summary>
             <value></value>
         </member>
@@ -9532,6 +11372,371 @@
             This file is generated once and will never be overwritten.
             </remarks>
         </member>
+        <member name="T:AppointmentSystem.Web.UI.ServicesRepeaterDesigner">
+            <summary>
+            A designer class for a strongly typed repeater <c>ServicesRepeater</c>
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesRepeaterDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ServicesRepeaterDesigner"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesRepeaterDesigner.Initialize(System.ComponentModel.IComponent)">
+            <summary>
+            Initializes the control designer and loads the specified component.
+            </summary>
+            <param name="component">The control being designed.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesRepeaterDesigner.GetDesignTimeHtml">
+            <summary>
+            Generate HTML for the designer
+            </summary>
+            <returns>a string of design time HTML</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.ServicesRepeater">
+            <summary>
+            A strongly typed repeater control for the <c cref="T:AppointmentSystem.Web.UI.ServicesRepeater"></c> Type.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesRepeater.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ServicesRepeater"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesRepeater.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesRepeater.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden and Empty so that span tags are not written
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesRepeater.CreateChildControls(System.Collections.IEnumerable,System.Boolean)">
+            <summary>
+            Called by the ASP.NET page framework to notify server controls that use composition-based implementation to create any child controls they contain in preparation for posting back or rendering.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesRepeater.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender"></see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesRepeater.RenderAtDesignTime">
+            <summary>
+            Renders at design time.
+            </summary>
+            <returns>a  string of the Designed HTML</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesRepeater.Controls">
+            <summary>
+            Gets a <see cref="T:System.Web.UI.ControlCollection"></see> object that represents the child controls for a specified server control in the UI hierarchy.
+            </summary>
+            <value></value>
+            <returns>The collection of child controls for the specified server control.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesRepeater.HeaderTemplate">
+            <summary>
+            Gets or sets the header template.
+            </summary>
+            <value>The header template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesRepeater.ItemTemplate">
+            <summary>
+            Gets or sets the item template.
+            </summary>
+            <value>The item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesRepeater.SeperatorTemplate">
+            <summary>
+            Gets or sets the Seperator Template
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesRepeater.AlternatingItemTemplate">
+            <summary>
+            Gets or sets the alternating item template.
+            </summary>
+            <value>The alternating item template.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesRepeater.FooterTemplate">
+            <summary>
+            Gets or sets the footer template.
+            </summary>
+            <value>The footer template.</value>
+        </member>
+        <member name="T:AppointmentSystem.Web.UI.ServicesItem">
+            <summary>
+            A wrapper type for the entity
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ServicesItem"/> class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.UI.ServicesItem.#ctor(AppointmentSystem.Entities.Services)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ServicesItem"/> class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesItem.Id">
+            <summary>
+            Gets the Id
+            </summary>
+            <value>The Id.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesItem.Title">
+            <summary>
+            Gets the Title
+            </summary>
+            <value>The Title.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesItem.Note">
+            <summary>
+            Gets the Note
+            </summary>
+            <value>The Note.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesItem.IsDisabled">
+            <summary>
+            Gets the IsDisabled
+            </summary>
+            <value>The IsDisabled.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesItem.CreateUser">
+            <summary>
+            Gets the CreateUser
+            </summary>
+            <value>The CreateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesItem.CreateDate">
+            <summary>
+            Gets the CreateDate
+            </summary>
+            <value>The CreateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesItem.UpdateUser">
+            <summary>
+            Gets the UpdateUser
+            </summary>
+            <value>The UpdateUser.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesItem.UpdateDate">
+            <summary>
+            Gets the UpdateDate
+            </summary>
+            <value>The UpdateDate.</value>
+        </member>
+        <member name="P:AppointmentSystem.Web.UI.ServicesItem.Entity">
+            <summary>
+            Gets a <see cref="T:AppointmentSystem.Entities.Services"></see> object
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterTypeDataSource">
+            <summary>
+            Represents the DataRepository.RosterTypeProvider object that provides
+            data to data-bound controls in multi-tier Web application architectures.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the RosterTypeDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSource.GetNewDataSourceView">
+            <summary>
+            Creates a new instance of the RosterTypeDataSourceView class that is to be
+            used by the RosterTypeDataSource.
+            </summary>
+            <returns>An instance of the RosterTypeDataSourceView class.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSource.CacheHashKey(System.Int32,System.Int32)">
+            <summary>
+            Creates a cache hashing key based on the startIndex, pageSize and the SelectMethod being used.
+            </summary>
+            <param name="startIndex">The current start row index.</param>
+            <param name="pageSize">The current page size.</param>
+            <returns>A string that can be used as a key for caching purposes.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterTypeDataSource.RosterTypeView">
+            <summary>
+            Gets a reference to the RosterTypeDataSourceView used by the RosterTypeDataSource.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterTypeDataSource.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the RosterTypeDataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterTypeDataSourceView">
+            <summary>
+            Supports the RosterTypeDataSource control and provides an interface for
+            data-bound controls to perform data operations with business and data objects.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSourceView.#ctor(AppointmentSystem.Web.Data.RosterTypeDataSource,System.String)">
+            <summary>
+            Initializes a new instance of the RosterTypeDataSourceView class.
+            </summary>
+            <param name="owner">A reference to the RosterTypeDataSource which created this instance.</param>
+            <param name="viewName">The name of the view.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSourceView.GetSelectData(System.Int32@)">
+            <summary>
+            Gets a collection of Entity objects based on the value of the SelectMethod property.
+            </summary>
+            <param name="count">The total number of rows in the DataSource.</param>
+            <returns>A collection of Entity objects.</returns>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSourceView.GetSelectParameters(System.Collections.IDictionary)">
+            <summary>
+            Gets the values of any supplied parameters for internal caching.
+            </summary>
+            <param name="values">An IDictionary object of name/value pairs.</param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSourceView.DeepLoad">
+            <summary>
+            Performs a DeepLoad operation for the current entity if it has
+            not already been performed.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSourceView.DeepLoad(AppointmentSystem.Entities.TList{AppointmentSystem.Entities.RosterType},AppointmentSystem.Web.Data.ProviderDataSourceDeepLoadList)">
+            <summary>
+            Performs a DeepLoad operation on the specified entity collection.
+            </summary>
+            <param name="entityList"></param>
+            <param name="properties"></param>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterTypeDataSourceView.RosterTypeOwner">
+            <summary>
+            Gets a strongly-typed reference to the Owner property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterTypeDataSourceView.SelectMethod">
+            <summary>
+            Gets or sets the name of the method or function that
+            the DataSource control invokes to retrieve data.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterTypeDataSourceView.RosterTypeProvider">
+            <summary>
+            Gets a strongly typed reference to the Provider property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterTypeDataSourceDesigner">
+            <summary>
+            Provides design-time support in a design host for the RosterTypeDataSource class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSourceDesigner.#ctor">
+            <summary>
+            Initializes a new instance of the RosterTypeDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterTypeDataSourceDesigner.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterTypeDataSourceDesigner.ActionLists">
+            <summary>Gets the designer action list collection for this designer.</summary>
+            <returns>The <see cref="T:System.ComponentModel.Design.DesignerActionListCollection"/>
+            associated with this designer.</returns>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterTypeDataSourceActionList">
+            <summary>
+            Supports the RosterTypeDataSourceDesigner class.
+            </summary>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSourceActionList.#ctor(AppointmentSystem.Web.Data.RosterTypeDataSourceDesigner)">
+            <summary>
+            Initializes a new instance of the RosterTypeDataSourceActionList class.
+            </summary>
+            <param name="designer"></param>
+        </member>
+        <member name="M:AppointmentSystem.Web.Data.RosterTypeDataSourceActionList.GetSortedActionItems">
+            <summary>
+            Returns the collection of <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            objects contained in the list.
+            </summary>
+            <returns>A <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+            array that contains the items in this list.</returns>
+        </member>
+        <member name="P:AppointmentSystem.Web.Data.RosterTypeDataSourceActionList.SelectMethod">
+            <summary>
+            Gets or sets the SelectMethod property.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterTypeSelectMethod">
+            <summary>
+            Enumeration of method names available for the RosterTypeDataSource.SelectMethod property.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterTypeSelectMethod.Get">
+            <summary>
+            Represents the Get method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterTypeSelectMethod.GetAll">
+            <summary>
+            Represents the GetAll method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterTypeSelectMethod.GetPaged">
+            <summary>
+            Represents the GetPaged method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterTypeSelectMethod.Find">
+            <summary>
+            Represents the Find method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterTypeSelectMethod.GetByIdIsBooked">
+            <summary>
+            Represents the GetByIdIsBooked method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterTypeSelectMethod.GetByIdIsBookedIsDisabled">
+            <summary>
+            Represents the GetByIdIsBookedIsDisabled method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterTypeSelectMethod.GetByIdIsDisabled">
+            <summary>
+            Represents the GetByIdIsDisabled method.
+            </summary>
+        </member>
+        <member name="F:AppointmentSystem.Web.Data.RosterTypeSelectMethod.GetById">
+            <summary>
+            Represents the GetById method.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterTypeFilter">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlFilter`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.RosterType"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterTypeExpressionBuilder">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Web.Data.SqlExpressionBuilder`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.RosterType"/> object.
+            </summary>
+        </member>
+        <member name="T:AppointmentSystem.Web.Data.RosterTypeProperty">
+            <summary>
+            A strongly-typed instance of the <see cref="T:AppointmentSystem.Data.Bases.ChildEntityProperty`1"/> class
+            that is used exclusively with a <see cref="T:AppointmentSystem.Entities.RosterType"/> object.
+            </summary>
+        </member>
         <member name="T:AppointmentSystem.Web.UI.RoleDetailRepeaterDesigner">
             <summary>
             A designer class for a strongly typed repeater <c>RoleDetailRepeater</c>
@@ -9656,11 +11861,11 @@
             </summary>
             <value>The RoleId.</value>
         </member>
-        <member name="P:AppointmentSystem.Web.UI.RoleDetailItem.Screen">
+        <member name="P:AppointmentSystem.Web.UI.RoleDetailItem.ScreenId">
             <summary>
-            Gets the Screen
+            Gets the ScreenId
             </summary>
-            <value>The Screen.</value>
+            <value>The ScreenId.</value>
         </member>
         <member name="P:AppointmentSystem.Web.UI.RoleDetailItem.Crud">
             <summary>

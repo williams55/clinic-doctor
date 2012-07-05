@@ -177,7 +177,7 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@UserId", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@RoleId", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, DBNull.Value);
@@ -531,12 +531,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<UserRole> GetByRoleId(TransactionManager transactionManager, System.String _roleId, int start, int pageLength, out int count)
+		public override TList<UserRole> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.UserRole_GetByRoleId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@RoleId", DbType.String, _roleId);
+				database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, _roleId);
 			
 			IDataReader reader = null;
 			TList<UserRole> rows = new TList<UserRole>();
@@ -762,7 +762,7 @@ namespace AppointmentSystem.Data.SqlClient
 			col0.AllowDBNull = false;		
 			DataColumn col1 = dataTable.Columns.Add("UserId", typeof(System.String));
 			col1.AllowDBNull = false;		
-			DataColumn col2 = dataTable.Columns.Add("RoleId", typeof(System.String));
+			DataColumn col2 = dataTable.Columns.Add("RoleId", typeof(System.Int32));
 			col2.AllowDBNull = true;		
 			DataColumn col3 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
 			col3.AllowDBNull = false;		
@@ -797,7 +797,7 @@ namespace AppointmentSystem.Data.SqlClient
 					row["UserId"] = entity.UserId;
 							
 				
-					row["RoleId"] = entity.RoleId;
+					row["RoleId"] = entity.RoleId.HasValue ? (object) entity.RoleId  : System.DBNull.Value;
 							
 				
 					row["IsDisabled"] = entity.IsDisabled;
@@ -851,7 +851,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
 			database.AddInParameter(commandWrapper, "@UserId", DbType.String, entity.UserId );
-			database.AddInParameter(commandWrapper, "@RoleId", DbType.String, entity.RoleId );
+			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );
@@ -907,7 +907,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
 			database.AddInParameter(commandWrapper, "@UserId", DbType.String, entity.UserId );
-			database.AddInParameter(commandWrapper, "@RoleId", DbType.String, entity.RoleId );
+			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );

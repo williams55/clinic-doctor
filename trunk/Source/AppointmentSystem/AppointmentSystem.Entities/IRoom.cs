@@ -15,13 +15,8 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Room"</remarks>
-		System.String Id { get; set; }
+		System.Int32 Id { get; set; }
 				
-		/// <summary>
-		/// keep a copy of the original so it can be used for editable primary keys.
-		/// </summary>
-		System.String OriginalId { get; set; }
-			
 		
 		
 		/// <summary>
@@ -38,7 +33,7 @@ namespace AppointmentSystem.Entities
 		/// ServicesId : A room can have many procedures. They are seperated by semi-comma [;]
 		/// 		/// For example: XRay;MRI
 		/// </summary>
-		System.String  ServicesId  { get; set; }
+		System.Int32?  ServicesId  { get; set; }
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -86,6 +81,13 @@ namespace AppointmentSystem.Entities
 		///	which are related to this object through the relation _appointmentRoomId
 		/// </summary>	
 		TList<Appointment> AppointmentCollection {  get;  set;}	
+
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _rosterRoomId
+		/// </summary>	
+		TList<Roster> RosterCollection {  get;  set;}	
 
 		#endregion Data Properties
 

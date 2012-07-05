@@ -15,13 +15,8 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Role"</remarks>
-		System.String Id { get; set; }
+		System.Int32 Id { get; set; }
 				
-		/// <summary>
-		/// keep a copy of the original so it can be used for editable primary keys.
-		/// </summary>
-		System.String OriginalId { get; set; }
-			
 		
 		
 		/// <summary>

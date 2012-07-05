@@ -81,7 +81,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="RoleBase"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_isLocked">You can CRUD if it's false (Admin, Manager...) These group is set by developer or database administrator</param>
@@ -90,14 +89,12 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public RoleBase(System.String _id, System.String _title, System.String _note, System.Boolean _isLocked, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public RoleBase(System.String _title, System.String _note, System.Boolean _isLocked, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new RoleEntityData();
 			this.backupData = null;
 
-			this.Id = _id;
 			this.Title = _title;
 			this.Note = _note;
 			this.IsLocked = _isLocked;
@@ -111,7 +108,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="Role"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_isLocked">You can CRUD if it's false (Admin, Manager...) These group is set by developer or database administrator</param>
@@ -120,12 +116,10 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Role CreateRole(System.String _id, System.String _title, System.String _note, System.Boolean _isLocked, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public static Role CreateRole(System.String _title, System.String _note, System.Boolean _isLocked, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			Role newRole = new Role();
-			newRole.Id = _id;
 			newRole.Title = _title;
 			newRole.Note = _note;
 			newRole.IsLocked = _isLocked;
@@ -146,18 +140,17 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the Id property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is int.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
-		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, false, false, 20)]
-		public virtual System.String Id
+		[ReadOnlyAttribute(false)/*, XmlIgnoreAttribute()*/, DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(true, true, false)]
+		public virtual System.Int32 Id
 		{
 			get
 			{
@@ -177,19 +170,6 @@ namespace AppointmentSystem.Entities
 				OnColumnChanged(RoleColumn.Id, this.entityData.Id);
 				OnPropertyChanged("Id");
 			}
-		}
-		
-		/// <summary>
-		/// 	Get the original value of the Id property.
-		///		
-		/// </summary>
-		/// <remarks>This is the original value of the Id property.</remarks>
-		/// <value>This type is nvarchar</value>
-		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
-		public  virtual System.String OriginalId
-		{
-			get { return this.entityData.OriginalId; }
-			set { this.entityData.OriginalId = value; }
 		}
 		
 		/// <summary>
@@ -524,10 +504,6 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
-			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("Id", "Id"));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -706,7 +682,6 @@ namespace AppointmentSystem.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
-					copy.OriginalId = this.OriginalId;
 				copy.Title = this.Title;
 				copy.Note = this.Note;
 				copy.IsLocked = this.IsLocked;
@@ -915,7 +890,6 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreateRole(
-				_originalData.Id,
 				_originalData.Title,
 				_originalData.Note,
 				_originalData.IsLocked,
@@ -1307,13 +1281,8 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Role"</remarks>
-		public System.String Id;
+		public System.Int32 Id;
 			
-		/// <summary>
-		/// keep a copy of the original so it can be used for editable primary keys.
-		/// </summary>
-		public System.String OriginalId;
-		
 		#endregion
 		
 		#region Non Primary key(s)
@@ -1455,7 +1424,6 @@ namespace AppointmentSystem.Entities
 			RoleEntityData _tmp = new RoleEntityData();
 						
 			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1497,7 +1465,6 @@ namespace AppointmentSystem.Entities
 			RoleEntityData _tmp = new RoleEntityData();
 						
 			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1778,7 +1745,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Initializes a new instance of the RoleKey class.
 		/// </summary>
-		public RoleKey(System.String _id)
+		public RoleKey(System.Int32 _id)
 		{
 			#region Init Properties
 
@@ -1804,12 +1771,12 @@ namespace AppointmentSystem.Entities
 		}
 		
 		// member variable for the Id property
-		private System.String _id;
+		private System.Int32 _id;
 		
 		/// <summary>
 		/// Gets or sets the Id property.
 		/// </summary>
-		public System.String Id
+		public System.Int32 Id
 		{
 			get { return _id; }
 			set
@@ -1837,7 +1804,7 @@ namespace AppointmentSystem.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
+				Id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
 			}
 
 			#endregion
@@ -1888,7 +1855,7 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
+		[ColumnEnum("Id", typeof(System.Int32), System.Data.DbType.Int32, true, true, false)]
 		Id = 1,
 		/// <summary>
 		/// Title : 

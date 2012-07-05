@@ -110,11 +110,11 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override bool Delete(TransactionManager transactionManager, System.String _id)
+		public override bool Delete(TransactionManager transactionManager, System.Int64 _id)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RoleDetail_Delete", _useStoredProcedure);
-			database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
+			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, _id);
 			
 			//Provider Data Requesting Command Event
 			OnDataRequesting(new CommandEventArgs(commandWrapper, "Delete")); 
@@ -175,9 +175,9 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
-		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@RoleId", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@Screen", DbType.AnsiString, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ScreenId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Crud", DbType.AnsiString, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -210,10 +210,10 @@ namespace AppointmentSystem.Data.SqlClient
 						clause.Trim().Remove(0,6).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
-				if (clause.Trim().StartsWith("screen ") || clause.Trim().StartsWith("screen="))
+				if (clause.Trim().StartsWith("screenid ") || clause.Trim().StartsWith("screenid="))
 				{
-					database.SetParameterValue(commandWrapper, "@Screen", 
-						clause.Trim().Remove(0,6).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					database.SetParameterValue(commandWrapper, "@ScreenId", 
+						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("crud ") || clause.Trim().StartsWith("crud="))
@@ -538,12 +538,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<RoleDetail> GetByRoleId(TransactionManager transactionManager, System.String _roleId, int start, int pageLength, out int count)
+		public override TList<RoleDetail> GetByRoleId(TransactionManager transactionManager, System.Int32? _roleId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RoleDetail_GetByRoleId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@RoleId", DbType.String, _roleId);
+				database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, _roleId);
 			
 			IDataReader reader = null;
 			TList<RoleDetail> rows = new TList<RoleDetail>();
@@ -586,6 +586,70 @@ namespace AppointmentSystem.Data.SqlClient
 		}	
 		#endregion
 	
+
+		#region GetByScreenId
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_RoleDetail_Screen key.
+		///		FK_RoleDetail_Screen Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_screenId">What screen role can access</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.RoleDetail objects.</returns>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<RoleDetail> GetByScreenId(TransactionManager transactionManager, System.Int32? _screenId, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RoleDetail_GetByScreenId", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@ScreenId", DbType.Int32, _screenId);
+			
+			IDataReader reader = null;
+			TList<RoleDetail> rows = new TList<RoleDetail>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByScreenId", rows)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}
+			
+				//Create Collection
+				Fill(reader, rows, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByScreenId", rows)); 
+			}
+			finally
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			return rows;
+		}	
+		#endregion
+	
 	#endregion
 	
 		#region Get By Index Functions
@@ -605,12 +669,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override AppointmentSystem.Entities.RoleDetail GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count)
+		public override AppointmentSystem.Entities.RoleDetail GetById(TransactionManager transactionManager, System.Int64 _id, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RoleDetail_GetById", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
+				database.AddInParameter(commandWrapper, "@Id", DbType.Int64, _id);
 			
 			IDataReader reader = null;
 			TList<RoleDetail> tmp = new TList<RoleDetail>();
@@ -701,11 +765,11 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.DestinationTableName = "RoleDetail";
 			
 			DataTable dataTable = new DataTable();
-			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.String));
+			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int64));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("RoleId", typeof(System.String));
+			DataColumn col1 = dataTable.Columns.Add("RoleId", typeof(System.Int32));
 			col1.AllowDBNull = true;		
-			DataColumn col2 = dataTable.Columns.Add("Screen", typeof(System.String));
+			DataColumn col2 = dataTable.Columns.Add("ScreenId", typeof(System.Int32));
 			col2.AllowDBNull = true;		
 			DataColumn col3 = dataTable.Columns.Add("Crud", typeof(System.String));
 			col3.AllowDBNull = true;		
@@ -722,7 +786,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("RoleId", "RoleId");
-			bulkCopy.ColumnMappings.Add("Screen", "Screen");
+			bulkCopy.ColumnMappings.Add("ScreenId", "ScreenId");
 			bulkCopy.ColumnMappings.Add("Crud", "Crud");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
@@ -740,10 +804,10 @@ namespace AppointmentSystem.Data.SqlClient
 					row["Id"] = entity.Id;
 							
 				
-					row["RoleId"] = entity.RoleId;
+					row["RoleId"] = entity.RoleId.HasValue ? (object) entity.RoleId  : System.DBNull.Value;
 							
 				
-					row["Screen"] = entity.Screen;
+					row["ScreenId"] = entity.ScreenId.HasValue ? (object) entity.ScreenId  : System.DBNull.Value;
 							
 				
 					row["Crud"] = entity.Crud;
@@ -798,9 +862,9 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RoleDetail_Insert", _useStoredProcedure);
 			
-			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
-			database.AddInParameter(commandWrapper, "@RoleId", DbType.String, entity.RoleId );
-			database.AddInParameter(commandWrapper, "@Screen", DbType.AnsiString, entity.Screen );
+			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
+			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId  : System.DBNull.Value));
+			database.AddInParameter(commandWrapper, "@ScreenId", DbType.Int32, (entity.ScreenId.HasValue ? (object) entity.ScreenId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@Crud", DbType.AnsiString, entity.Crud );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -822,8 +886,9 @@ namespace AppointmentSystem.Data.SqlClient
 				results = Utility.ExecuteNonQuery(database,commandWrapper);
 			}
 					
+			object _id = database.GetParameterValue(commandWrapper, "@Id");
+			entity.Id = (System.Int64)_id;
 			
-			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 	
@@ -854,10 +919,9 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RoleDetail_Update", _useStoredProcedure);
 			
-			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
-			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
-			database.AddInParameter(commandWrapper, "@RoleId", DbType.String, entity.RoleId );
-			database.AddInParameter(commandWrapper, "@Screen", DbType.AnsiString, entity.Screen );
+			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
+			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId : System.DBNull.Value) );
+			database.AddInParameter(commandWrapper, "@ScreenId", DbType.Int32, (entity.ScreenId.HasValue ? (object) entity.ScreenId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@Crud", DbType.AnsiString, entity.Crud );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -883,7 +947,6 @@ namespace AppointmentSystem.Data.SqlClient
 			if (DataRepository.Provider.EnableEntityTracking)
 				EntityManager.StopTracking(entity.EntityTrackingKey);
 			
-			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 			
