@@ -7,13 +7,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
+using AppointmentSystem.Settings.BusinessLayer;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
 public partial class Admin_Room_Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
     }
     protected void gridRoom_RowInserting(object sender,ASPxDataInsertingEventArgs e)
     {
@@ -22,16 +22,16 @@ public partial class Admin_Room_Default : System.Web.UI.Page
     }
     protected void gridRoom_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
-        if (e.ButtonID != "btnDelete") return;
-        long id;
-        if (Int64.TryParse( gridRoom.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
-        {
-           // var abc = DataRepository.RoomProvider.GetById(id);
-            var obj =(Room)DataRepository.RoomProvider.GetById(id);
-            obj.IsDisabled = true;
-            obj.UpdateUser = WebCommon.GetAuthUsername();
-            obj.UpdateDate = DateTime.Now;
-            DataRepository.RoomProvider.Update(obj);
-        }
+        //if (e.ButtonID != "btnDelete") return;
+        //long id;
+        //if (Int64.TryParse( gridRoom.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
+        //{
+        //   // var abc = DataRepository.RoomProvider.GetById(id);
+        //    var obj =(Room)DataRepository.RoomProvider.GetById(id);
+        //    obj.IsDisabled = true;
+        //    obj.UpdateUser = WebCommon.GetAuthUsername();
+        //    obj.UpdateDate = DateTime.Now;
+        //    DataRepository.RoomProvider.Update(obj);
+        //}
     }
 }

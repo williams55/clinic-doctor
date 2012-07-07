@@ -28,7 +28,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AppointmentSystem.Website",
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "2005"
+		VWDPort = "18011"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetTiers", "NetTiers", "{F3A10C8D-3227-449F-A2CB-014DE2D7F415}"
@@ -43,7 +43,7 @@ EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ApptSite", "ApptSite\", "{F0F133C8-F354-4C7B-8119-281611D54BD3}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
-		ProjectReferences = "{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}|AppointmentSystem.Data.dll;{8996A7B4-57D3-440B-A545-A701844B8C4A}|AppointmentSystem.Data.SqlClient.dll;{20E43088-4618-4F4A-B8AD-FC31B50D94CD}|AppointmentSystem.Entities.dll;{727845F6-932D-47CC-9957-E7BE626A461E}|AppointmentSystem.Settings.dll;{47FE3BE8-3E46-47CA-8494-473755867DD0}|AppointmentSystem.Web.dll;{A7AF0303-7027-41CD-A6E4-4DBE978E46D4}|Appt.dll;{0DF343C2-796D-4779-92E5-5555C262DFE6}|Common.dll;{48D77CD5-2DD9-4326-8CD9-6DFB5B046C21}|Log.dll;"
+		ProjectReferences = "{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}|AppointmentSystem.Data.dll;{8996A7B4-57D3-440B-A545-A701844B8C4A}|AppointmentSystem.Data.SqlClient.dll;{20E43088-4618-4F4A-B8AD-FC31B50D94CD}|AppointmentSystem.Entities.dll;{727845F6-932D-47CC-9957-E7BE626A461E}|AppointmentSystem.Settings.dll;{47FE3BE8-3E46-47CA-8494-473755867DD0}|AppointmentSystem.Web.dll;{A7AF0303-7027-41CD-A6E4-4DBE978E46D4}|Appt.dll;{0DF343C2-796D-4779-92E5-5555C262DFE6}|Common.dll;{48D77CD5-2DD9-4326-8CD9-6DFB5B046C21}|Log.dll;{BB7C4398-A2FD-4FA5-A629-0C67BDA8108D}|AppointmentBusiness.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/ApptSite"
 		Debug.AspNetCompiler.PhysicalPath = "ApptSite\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\ApptSite\"
@@ -58,7 +58,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ApptSite", "ApptSite\", "{F
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "5863"
+		VWDPort = "18015"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApptCommon", "ApptCommon\ApptCommon.csproj", "{A7AF0303-7027-41CD-A6E4-4DBE978E46D4}"
@@ -66,6 +66,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "..\..\..\freelance-dll\Framework\FCommon\Common.csproj", "{0DF343C2-796D-4779-92E5-5555C262DFE6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log", "..\..\..\freelance-dll\Framework\Log\Log.csproj", "{48D77CD5-2DD9-4326-8CD9-6DFB5B046C21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLayer", "BusinessLayer", "{16866B5B-2528-4353-9360-E9E21B29D6E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentBusiness", "AppointmentBusiness\AppointmentBusiness.csproj", "{BB7C4398-A2FD-4FA5-A629-0C67BDA8108D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +117,10 @@ Global
 		{48D77CD5-2DD9-4326-8CD9-6DFB5B046C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48D77CD5-2DD9-4326-8CD9-6DFB5B046C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48D77CD5-2DD9-4326-8CD9-6DFB5B046C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB7C4398-A2FD-4FA5-A629-0C67BDA8108D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB7C4398-A2FD-4FA5-A629-0C67BDA8108D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB7C4398-A2FD-4FA5-A629-0C67BDA8108D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB7C4398-A2FD-4FA5-A629-0C67BDA8108D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,5 +136,6 @@ Global
 		{0DF343C2-796D-4779-92E5-5555C262DFE6} = {96FA3540-6680-4842-9D50-9D4439538379}
 		{48D77CD5-2DD9-4326-8CD9-6DFB5B046C21} = {96FA3540-6680-4842-9D50-9D4439538379}
 		{F0F133C8-F354-4C7B-8119-281611D54BD3} = {AA332249-52A5-4BF1-A47F-E4EC31B6A6AA}
+		{BB7C4398-A2FD-4FA5-A629-0C67BDA8108D} = {16866B5B-2528-4353-9360-E9E21B29D6E1}
 	EndGlobalSection
 EndGlobal
