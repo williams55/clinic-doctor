@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BB7C4398-A2FD-4FA5-A629-0C67BDA8108D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AppointmentBusiness</RootNamespace>
+    <AssemblyName>AppointmentBusiness</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BoFactory.cs" />
+    <Compile Include="InterfaceBO\IUserBO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BO\UserBO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\freelance-dll\Framework\FCommon\Common.csproj">
+      <Project>{0DF343C2-796D-4779-92E5-5555C262DFE6}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\freelance-dll\Framework\Log\Log.csproj">
+      <Project>{48D77CD5-2DD9-4326-8CD9-6DFB5B046C21}</Project>
+      <Name>Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppointmentSystem.Data.SqlClient\AppointmentSystem.Data.SqlClient.csproj">
+      <Project>{8996A7B4-57D3-440B-A545-A701844B8C4A}</Project>
+      <Name>AppointmentSystem.Data.SqlClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppointmentSystem.Data\AppointmentSystem.Data.csproj">
+      <Project>{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}</Project>
+      <Name>AppointmentSystem.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppointmentSystem.Entities\AppointmentSystem.Entities.csproj">
+      <Project>{20E43088-4618-4F4A-B8AD-FC31B50D94CD}</Project>
+      <Name>AppointmentSystem.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppointmentSystem.Settings\AppointmentSystem.Settings.csproj">
+      <Project>{727845F6-932D-47CC-9957-E7BE626A461E}</Project>
+      <Name>AppointmentSystem.Settings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppointmentSystem.Web\AppointmentSystem.Web.csproj">
+      <Project>{47FE3BE8-3E46-47CA-8494-473755867DD0}</Project>
+      <Name>AppointmentSystem.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApptCommon\ApptCommon.csproj">
+      <Project>{A7AF0303-7027-41CD-A6E4-4DBE978E46D4}</Project>
+      <Name>ApptCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -88,12 +88,10 @@
     <!-- end header -->
     <!-- content -->
     <div id="content">
-    <form id="frm" runat="server">
-        <div id="box-tabs" class="box">
-            <asp:ContentPlaceHolder ID="ContentContent" runat="server">
-            </asp:ContentPlaceHolder>
-        </div>
-    </form>
+        <form id="frm" runat="server">
+        <asp:ContentPlaceHolder ID="ContentContent" runat="server">
+        </asp:ContentPlaceHolder>
+        </form>
     </div>
     <!-- end content -->
     <!-- footer -->

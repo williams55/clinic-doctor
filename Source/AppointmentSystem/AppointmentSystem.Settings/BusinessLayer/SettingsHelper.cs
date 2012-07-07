@@ -56,7 +56,7 @@ namespace AppointmentSystem.Settings.BusinessLayer
             get
             {
                 int result;
-                if (!ServiceFacade.SettingsService.TryGetSetting<int>("MINUTE_STEP", out result))
+                if (!ServiceFacade.SettingsService.TryGetSetting("MINUTE_STEP", out result))
                 {
                     throw new ApplicationException("Setting MINUTE_STEP was not found.");
                 }
@@ -65,7 +65,7 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
             set
             {
-                ServiceFacade.SettingsService.SaveSetting<int>("MINUTE_STEP", value);
+                ServiceFacade.SettingsService.SaveSetting("MINUTE_STEP", value);
             }
         }
 
@@ -75,7 +75,7 @@ namespace AppointmentSystem.Settings.BusinessLayer
             get
             {
                 int result;
-                if (!ServiceFacade.SettingsService.TryGetSetting<int>("MAX_MINUTE", out result))
+                if (!ServiceFacade.SettingsService.TryGetSetting("MAX_MINUTE", out result))
                 {
                     throw new ApplicationException("Setting MAX_MINUTE was not found.");
                 }
@@ -84,7 +84,7 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
             set
             {
-                ServiceFacade.SettingsService.SaveSetting<int>("MAX_MINUTE", value);
+                ServiceFacade.SettingsService.SaveSetting("MAX_MINUTE", value);
             }
         }
 
@@ -94,7 +94,7 @@ namespace AppointmentSystem.Settings.BusinessLayer
             get
             {
                 int result;
-                if (!ServiceFacade.SettingsService.TryGetSetting<int>("MAX_HOUR", out result))
+                if (!ServiceFacade.SettingsService.TryGetSetting("MAX_HOUR", out result))
                 {
                     throw new ApplicationException("Setting MAX_HOUR was not found.");
                 }
@@ -103,7 +103,26 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
             set
             {
-                ServiceFacade.SettingsService.SaveSetting<int>("MAX_HOUR", value);
+                ServiceFacade.SettingsService.SaveSetting("MAX_HOUR", value);
+            }
+        }
+
+        // Time [Minute] left to remind appointment
+        public double TimeLeftRemindAppointment
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("TIME_LEFT_RMIND_APPOINTMENT", out result))
+                {
+                    throw new ApplicationException("Setting TIME_LEFT_RMIND_APPOINTMENT was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("TIME_LEFT_RMIND_APPOINTMENT", value);
             }
         }
         #endregion
@@ -261,25 +280,6 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
         }
         #endregion
-
-        // Time [Minute] left to remind appointment
-        public double TimeLeftRemindAppointment
-        {
-            get
-            {
-                int result;
-                if (!ServiceFacade.SettingsService.TryGetSetting<int>("TIME_LEFT_RMIND_APPOINTMENT", out result))
-                {
-                    throw new ApplicationException("Setting TIME_LEFT_RMIND_APPOINTMENT was not found.");
-                }
-
-                return result;
-            }
-            set
-            {
-                ServiceFacade.SettingsService.SaveSetting<double>("TIME_LEFT_RMIND_APPOINTMENT", value);
-            }
-        }
 
         #region Location
         /// <summary>

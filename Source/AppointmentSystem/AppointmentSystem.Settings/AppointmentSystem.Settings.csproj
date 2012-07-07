@@ -115,7 +115,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AppointmentSystem.Data\AppointmentSystem.Data.csproj">
       <Project>{041C1BBE-0BFB-4D45-8125-9AB0BBC09A92}</Project>
-      <Name>"AppointmentSystem.Data"</Name>
+      <Name>AppointmentSystem.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

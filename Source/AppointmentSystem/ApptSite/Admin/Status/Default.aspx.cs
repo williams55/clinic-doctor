@@ -29,15 +29,15 @@ public partial class Admin_Status_Default : System.Web.UI.Page
     }
     protected void grid_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
-        if (e.ButtonID != "btnDelete") return;
-        long id;
-        if (Int64.TryParse(grid.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
-        {
-            var obj = DataRepository.StatusProvider.GetById(id.ToString());
-            obj.IsDisabled = true;
-            obj.UpdateUser = WebCommon.GetAuthUsername();
-            obj.UpdateDate = DateTime.Now;
-            DataRepository.StatusProvider.Update(obj);
-        }
+        //if (e.ButtonID != "btnDelete") return;
+        //long id;
+        //if (Int64.TryParse(grid.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
+        //{
+        //    var obj = DataRepository.StatusProvider.GetById(id.ToString());
+        //    obj.IsDisabled = true;
+        //    obj.UpdateUser = WebCommon.GetAuthUsername();
+        //    obj.UpdateDate = DateTime.Now;
+        //    DataRepository.StatusProvider.Update(obj);
+        //}
     }
 }

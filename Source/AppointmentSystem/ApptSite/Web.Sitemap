@@ -21,12 +21,8 @@
       <siteMapNode url="~/Admin/Room/RoomFunc.aspx" title="Manage Room Function"  description="" />
       <siteMapNode url="~/Admin/Room/RoomFuncEdit.aspx" title="Add New Room Function"  description="" />
     </siteMapNode>
-    <siteMapNode title="Appointment" url="~/Admin/Appointment" roles="Admin,Manager,Doctor,Receptionist">
-      <siteMapNode url="~/Admin/Appointment/Appointment.aspx" title="Appointment"  description="" roles="Admin,Manager,Receptionist" />
-      <siteMapNode url="~/Admin/Appointment/Status.aspx" title="Manage Status"  description="" />
-      <siteMapNode url="~/Admin/Appointment/StatusEdit.aspx" title="Add New Status"  description="" />
-    </siteMapNode>
-
+    <siteMapNode title="Appointment" url="~/Admin/Appointment" />
+    <siteMapNode title="Roster" url="~/Admin/Roster" roles="Admin,Manager,Doctor" />
 
     <siteMapNode title="Doctor" roles="Admin,Manager,Doctor">
       <siteMapNode url="~/Admin/Doctor/DoctorRoom.aspx" title="Manage Doctor Room"  description="" />
@@ -41,10 +37,7 @@
       <siteMapNode url="~/Admin/Doctor/ContentEdit.aspx" title="Add New Content"  description=""  roles="Admin,Manager" />
 
     </siteMapNode>
-    <siteMapNode title="Settings" roles="Admin,Manager">
-
-      <siteMapNode url="~/Admin/SettingPrefix.aspx" title="Setting Prefix"  description="" />
-    </siteMapNode>
+    <siteMapNode title="Settings" url="~/Admin/Setting" roles="Admin,Manager" />
 
   </siteMapNode>
 </siteMap>
