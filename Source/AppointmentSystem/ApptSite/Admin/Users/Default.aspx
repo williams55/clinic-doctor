@@ -1,15 +1,13 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Admin_Room_edit" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Admin_Users_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" Runat="Server">
-<script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" Runat="Server">
-    <dx:ASPxGridView ID="gridRoom" ClientInstanceName="grid" runat="server" DataSourceID="RoomDatas"
-                KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoom_RowInserting"
-                OnCustomButtonCallback="gridRoom_CustomButtonCallback"
-                onrowupdating="gridRoom_RowUpdating">
+    <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" DataSourceID="UserDatas"
+                KeyFieldName="Id" Width="100%" EnableRowsCache="False" 
+        onrowinserting="gridUser_RowInserting">
         <Settings ShowGroupPanel="True" />
         <SettingsEditing Mode="Inline" />
         <Columns>
@@ -21,15 +19,12 @@
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>           
             </dx:GridViewCommandColumn>
-            <dx:GridViewDataColumn VisibleIndex="1" FieldName="Id">
-                <EditFormSettings Visible="False" />
-             </dx:GridViewDataColumn>
-            <dx:GridViewDataColumn VisibleIndex="2" FieldName="Title"> </dx:GridViewDataColumn>
-            <dx:GridViewDataColumn VisibleIndex="3" FieldName="Note"> </dx:GridViewDataColumn>
-            <dx:GridViewDataComboBoxColumn FieldName="ServicesId" VisibleIndex="4">
-                <PropertiesComboBox TextField="Title" ValueField="Id" DataSourceID="ServicesDatas">
-                </PropertiesComboBox>
-            </dx:GridViewDataComboBoxColumn>
+            <dx:GridViewDataColumn VisibleIndex="1" FieldName="Id"> </dx:GridViewDataColumn>
+            <dx:GridViewDataColumn VisibleIndex="2" FieldName="Username"> </dx:GridViewDataColumn>
+            <dx:GridViewDataColumn VisibleIndex="3" FieldName="DisplayName"> </dx:GridViewDataColumn>
+            <dx:GridViewDataColumn VisibleIndex="4" FieldName="Email"> </dx:GridViewDataColumn>
+            <dx:GridViewDataColumn VisibleIndex="5" FieldName="Note"> </dx:GridViewDataColumn> 
+            <dx:GridViewDataColumn VisibleIndex="6" FieldName="UserGroupId"> </dx:GridViewDataColumn> 
         </Columns>
        <%-- <Templates>
                 <EditForm>                 
@@ -46,7 +41,7 @@
                                     <tbody>
                                         <tr>
                                             <td class="title-row">
-                                               Room Id
+                                               User Id
                                             </td>
                                             <td class="content-row">
                                                 <dx:ASPxTextBox  runat="server" ReadOnly="false" ID="txtTitle" Text='<%# Bind("Id") %>' CssClass="text-form">
@@ -87,18 +82,20 @@
         <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
         </SettingsPager>                
         <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
+        
 </dx:ASPxGridView>
-    <data:RoomDataSource SelectMethod="GetPaged" runat="server" ID="RoomDatas"  EnablePaging="True"  EnableSorting="True" >
-    <DeepLoadProperties Method="IncludeChildren" Recursive="False"></DeepLoadProperties>
+    <data:UsersDataSource SelectMethod="GetPaged" runat="server" ID="UserDatas"  EnablePaging="True"  EnableSorting="True" > 
+    <DeepLoadProperties>
+        <Types>
+          <data:UserGroupProperty Name="GroupRoleCollection"/>
+        </Types>
+    </DeepLoadProperties>   
         <Parameters>
             <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
             <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
-            <asp:ControlParameter Name="PageIndex" ControlID="gridRoom" PropertyName="PageIndex"  Type="Int32" />
+            <asp:ControlParameter Name="PageIndex" ControlID="gridUser" PropertyName="PageIndex"  Type="Int32" />
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />                   
         </Parameters>    
-    </data:RoomDataSource>
-    <data:ServicesDataSource SelectMethod="GetAll" runat="server" ID="ServicesDatas" >
-
-</data:ServicesDataSource>
+    </data:UsersDataSource>
 </asp:Content>
 
