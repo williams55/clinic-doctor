@@ -315,28 +315,33 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     }
 
     // Update roster
-    private static string UpdateEvent(string Id, string DoctorUsername, string RosterTypeId, string RosterTitle, DateTime StartTime, DateTime EndTime, string Note)
+    private static string UpdateEvent(string Id, string doctorId, string RosterTypeId, string RosterTitle, DateTime StartTime, DateTime EndTime, string Note)
     {
         string result = string.Empty;
         string message = string.Empty;
 
         // Check StaffId
-        if (DoctorUsername == null)
+        if (doctorId == null)
         {
             return WebCommon.BuildFailedResult("You must choose staff.");
         }
 
-        int Count = 0;
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
+            int count;
             tm.BeginTransaction();
 
+            // Validate current user have any right to operate this action
             string username = EntitiesUtilities.GetAuthName();
             Users objUser;
             if (!BoFactory.UserBO.ValidateCurrentUser(username, out objUser, out message))
                 return WebCommon.BuildFailedResult(message);
 
+            // Them phan kiem tra doctor Id co hop le hay khong
+            // Se lam sau
+
+            // Validate existed or expired roster
             Roster dr = DataRepository.RosterProvider.GetById(Id);
             if (dr == null || dr.IsDisabled)
                 return WebCommon.BuildFailedResult("There is no roster to update or the roster is expired.");
@@ -346,7 +351,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             if (objRt == null)
                 return WebCommon.BuildFailedResult("Roster Type is not exist.");
 
-            dr.DoctorId = objUser.Id;
+            dr.DoctorId = doctorId;
             dr.RosterTypeId = Convert.ToInt32(RosterTypeId);
             dr.StartTime = StartTime;
             dr.EndTime = EndTime;
@@ -369,9 +374,9 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             // Check roster before insert new roster
             string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, dr.EndTime, dr.StartTime);
-            TList<Roster> lstRoster = DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
+            TList<Roster> lstRoster = DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out count);
             // If there is no roster -> insert new roster
-            if (Count > 1)
+            if (count > 1)
             {
                 tm.Rollback();
                 return WebCommon.BuildFailedResult(String.Format("There is roster conflicted: From {0} {1} to {2} {3}"

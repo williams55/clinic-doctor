@@ -24,6 +24,7 @@
 				<asp:BoundField DataField="HomePhone" HeaderText="Home Phone" SortExpression="[HomePhone]"  />
 				<asp:BoundField DataField="WorkPhone" HeaderText="Work Phone" SortExpression="[WorkPhone]"  />
 				<asp:BoundField DataField="CellPhone" HeaderText="Cell Phone" SortExpression="[CellPhone]"  />
+				<asp:BoundField DataField="Avatar" HeaderText="Avatar" SortExpression="[Avatar]"  />
 				<asp:BoundField DataField="Birthdate" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Birthdate" SortExpression="[Birthdate]"  />
 				<data:BoundRadioButtonField DataField="IsFemale" HeaderText="Is Female" SortExpression="[IsFemale]"  />
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />

@@ -307,6 +307,7 @@ namespace AppointmentSystem.Data.Bases
 					c.DisplayName = (System.String)reader[((int)UsersColumn.DisplayName - 1)];
 					c.CellPhone = (reader.IsDBNull(((int)UsersColumn.CellPhone - 1)))?null:(System.String)reader[((int)UsersColumn.CellPhone - 1)];
 					c.Email = (reader.IsDBNull(((int)UsersColumn.Email - 1)))?null:(System.String)reader[((int)UsersColumn.Email - 1)];
+					c.Avatar = (reader.IsDBNull(((int)UsersColumn.Avatar - 1)))?null:(System.String)reader[((int)UsersColumn.Avatar - 1)];
 					c.Note = (reader.IsDBNull(((int)UsersColumn.Note - 1)))?null:(System.String)reader[((int)UsersColumn.Note - 1)];
 					c.UserGroupId = (System.String)reader[((int)UsersColumn.UserGroupId - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)UsersColumn.IsDisabled - 1)];
@@ -340,6 +341,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.DisplayName = (System.String)reader[((int)UsersColumn.DisplayName - 1)];
 			entity.CellPhone = (reader.IsDBNull(((int)UsersColumn.CellPhone - 1)))?null:(System.String)reader[((int)UsersColumn.CellPhone - 1)];
 			entity.Email = (reader.IsDBNull(((int)UsersColumn.Email - 1)))?null:(System.String)reader[((int)UsersColumn.Email - 1)];
+			entity.Avatar = (reader.IsDBNull(((int)UsersColumn.Avatar - 1)))?null:(System.String)reader[((int)UsersColumn.Avatar - 1)];
 			entity.Note = (reader.IsDBNull(((int)UsersColumn.Note - 1)))?null:(System.String)reader[((int)UsersColumn.Note - 1)];
 			entity.UserGroupId = (System.String)reader[((int)UsersColumn.UserGroupId - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)UsersColumn.IsDisabled - 1)];
@@ -368,6 +370,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.DisplayName = (System.String)dataRow["DisplayName"];
 			entity.CellPhone = Convert.IsDBNull(dataRow["CellPhone"]) ? null : (System.String)dataRow["CellPhone"];
 			entity.Email = Convert.IsDBNull(dataRow["Email"]) ? null : (System.String)dataRow["Email"];
+			entity.Avatar = Convert.IsDBNull(dataRow["Avatar"]) ? null : (System.String)dataRow["Avatar"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.UserGroupId = (System.String)dataRow["UserGroupId"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];

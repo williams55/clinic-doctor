@@ -52,6 +52,12 @@
 				</td>
 			</tr>
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataAvatar" runat="server" Text="Avatar:" AssociatedControlID="dataAvatar" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataAvatar" Text='<%# Bind("Avatar") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataNote" runat="server" Text="Note:" AssociatedControlID="dataNote" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataNote" Text='<%# Bind("Note") %>'  TextMode="MultiLine"  Width="250px" Rows="5"></asp:TextBox>

@@ -60,6 +60,11 @@ namespace AppointmentSystem.Entities
 		System.String  Email  { get; set; }
 		
 		/// <summary>
+		/// Avatar : 
+		/// </summary>
+		System.String  Avatar  { get; set; }
+		
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		System.String  Note  { get; set; }

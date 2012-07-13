@@ -118,10 +118,10 @@ function BlockReadonly(id) {
 }
 
 // Validate before changing event
-function ValidatingBeforeEventChanged(event_object, native_event, is_new) {
+function ValidatingBeforeEventChanged(eventObject, nativeEvent, isNew) {
     // If update roster
-    if (is_new == false) {
-        if (event_object.start_date <= new Date()) {
+    if (isNew == false) {
+        if (eventObject.start_date <= new Date()) {
             alert("You can not change roster to passed or current date.");
             return false;
         }
@@ -548,7 +548,7 @@ $(document).ready(function() {
     BindTime();
     GetDoctorList();
     loadRosterType();
-    
+
     $("input, textarea").addClass("idle");
     $("input, textarea").focus(function() {
         $(this).addClass("activeField").removeClass("idle");

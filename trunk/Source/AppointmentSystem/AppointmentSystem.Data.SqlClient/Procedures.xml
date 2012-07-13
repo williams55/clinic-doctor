@@ -4054,6 +4054,7 @@
 					[DisplayName],
 					[CellPhone],
 					[Email],
+					[Avatar],
 					[Note],
 					[UserGroupId],
 					[IsDisabled],
@@ -4125,7 +4126,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Note], O.[UserGroupId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Users] O,
 				    #PageIndex PageIndex
@@ -4167,6 +4168,7 @@
 				<parameter name="@DisplayName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@Email" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@UserGroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
@@ -4187,6 +4189,7 @@
 					,[DisplayName]
 					,[CellPhone]
 					,[Email]
+					,[Avatar]
 					,[Note]
 					,[UserGroupId]
 					,[IsDisabled]
@@ -4205,6 +4208,7 @@
 					,@DisplayName
 					,@CellPhone
 					,@Email
+					,@Avatar
 					,@Note
 					,@UserGroupId
 					,@IsDisabled
@@ -4238,6 +4242,7 @@
 				<parameter name="@DisplayName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@Email" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@UserGroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
@@ -4261,6 +4266,7 @@
 					,[DisplayName] = @DisplayName
 					,[CellPhone] = @CellPhone
 					,[Email] = @Email
+					,[Avatar] = @Avatar
 					,[Note] = @Note
 					,[UserGroupId] = @UserGroupId
 					,[IsDisabled] = @IsDisabled
@@ -4315,6 +4321,7 @@
 					[DisplayName],
 					[CellPhone],
 					[Email],
+					[Avatar],
 					[Note],
 					[UserGroupId],
 					[IsDisabled],
@@ -4353,6 +4360,7 @@
 					[DisplayName],
 					[CellPhone],
 					[Email],
+					[Avatar],
 					[Note],
 					[UserGroupId],
 					[IsDisabled],
@@ -4389,6 +4397,7 @@
 				<parameter name="@DisplayName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@Email" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
+				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@UserGroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
@@ -4410,6 +4419,7 @@
 	, [DisplayName]
 	, [CellPhone]
 	, [Email]
+	, [Avatar]
 	, [Note]
 	, [UserGroupId]
 	, [IsDisabled]
@@ -4428,6 +4438,7 @@
 	AND ([DisplayName] = @DisplayName OR @DisplayName IS NULL)
 	AND ([CellPhone] = @CellPhone OR @CellPhone IS NULL)
 	AND ([Email] = @Email OR @Email IS NULL)
+	AND ([Avatar] = @Avatar OR @Avatar IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
 	AND ([UserGroupId] = @UserGroupId OR @UserGroupId IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
@@ -4448,6 +4459,7 @@
 	, [DisplayName]
 	, [CellPhone]
 	, [Email]
+	, [Avatar]
 	, [Note]
 	, [UserGroupId]
 	, [IsDisabled]
@@ -4466,6 +4478,7 @@
 	OR ([DisplayName] = @DisplayName AND @DisplayName is not null)
 	OR ([CellPhone] = @CellPhone AND @CellPhone is not null)
 	OR ([Email] = @Email AND @Email is not null)
+	OR ([Avatar] = @Avatar AND @Avatar is not null)
 	OR ([Note] = @Note AND @Note is not null)
 	OR ([UserGroupId] = @UserGroupId AND @UserGroupId is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
@@ -4508,7 +4521,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Note], O.[UserGroupId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Users] O,
 				    #PageIndex PageIndex
@@ -6314,6 +6327,7 @@
 					[HomePhone],
 					[WorkPhone],
 					[CellPhone],
+					[Avatar],
 					[Birthdate],
 					[IsFemale],
 					[Title],
@@ -6386,7 +6400,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[FirstName], O.[LastName], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[FirstName], O.[LastName], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Patient] O,
 				    #PageIndex PageIndex
@@ -6426,6 +6440,7 @@
 				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
@@ -6447,6 +6462,7 @@
 					,[HomePhone]
 					,[WorkPhone]
 					,[CellPhone]
+					,[Avatar]
 					,[Birthdate]
 					,[IsFemale]
 					,[Title]
@@ -6466,6 +6482,7 @@
 					,@HomePhone
 					,@WorkPhone
 					,@CellPhone
+					,@Avatar
 					,@Birthdate
 					,@IsFemale
 					,@Title
@@ -6499,6 +6516,7 @@
 				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
@@ -6523,6 +6541,7 @@
 					,[HomePhone] = @HomePhone
 					,[WorkPhone] = @WorkPhone
 					,[CellPhone] = @CellPhone
+					,[Avatar] = @Avatar
 					,[Birthdate] = @Birthdate
 					,[IsFemale] = @IsFemale
 					,[Title] = @Title
@@ -6577,6 +6596,7 @@
 					[HomePhone],
 					[WorkPhone],
 					[CellPhone],
+					[Avatar],
 					[Birthdate],
 					[IsFemale],
 					[Title],
@@ -6613,6 +6633,7 @@
 				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
 				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
@@ -6635,6 +6656,7 @@
 	, [HomePhone]
 	, [WorkPhone]
 	, [CellPhone]
+	, [Avatar]
 	, [Birthdate]
 	, [IsFemale]
 	, [Title]
@@ -6654,6 +6676,7 @@
 	AND ([HomePhone] = @HomePhone OR @HomePhone IS NULL)
 	AND ([WorkPhone] = @WorkPhone OR @WorkPhone IS NULL)
 	AND ([CellPhone] = @CellPhone OR @CellPhone IS NULL)
+	AND ([Avatar] = @Avatar OR @Avatar IS NULL)
 	AND ([Birthdate] = @Birthdate OR @Birthdate IS NULL)
 	AND ([IsFemale] = @IsFemale OR @IsFemale IS NULL)
 	AND ([Title] = @Title OR @Title IS NULL)
@@ -6675,6 +6698,7 @@
 	, [HomePhone]
 	, [WorkPhone]
 	, [CellPhone]
+	, [Avatar]
 	, [Birthdate]
 	, [IsFemale]
 	, [Title]
@@ -6694,6 +6718,7 @@
 	OR ([HomePhone] = @HomePhone AND @HomePhone is not null)
 	OR ([WorkPhone] = @WorkPhone AND @WorkPhone is not null)
 	OR ([CellPhone] = @CellPhone AND @CellPhone is not null)
+	OR ([Avatar] = @Avatar AND @Avatar is not null)
 	OR ([Birthdate] = @Birthdate AND @Birthdate is not null)
 	OR ([IsFemale] = @IsFemale AND @IsFemale is not null)
 	OR ([Title] = @Title AND @Title is not null)
@@ -6737,7 +6762,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[FirstName], O.[LastName], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[FirstName], O.[LastName], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Patient] O,
 				    #PageIndex PageIndex

@@ -395,6 +395,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.CellPhone; }
 		}
         /// <summary>
+        /// Gets the Avatar
+        /// </summary>
+        /// <value>The Avatar.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String Avatar
+		{
+			get { return _entity.Avatar; }
+		}
+        /// <summary>
         /// Gets the Birthdate
         /// </summary>
         /// <value>The Birthdate.</value>

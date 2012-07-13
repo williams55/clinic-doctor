@@ -183,6 +183,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@DisplayName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CellPhone", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Email", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Avatar", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
@@ -250,6 +251,12 @@ namespace AppointmentSystem.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@Email", 
 						clause.Trim().Remove(0,5).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("avatar ") || clause.Trim().StartsWith("avatar="))
+				{
+					database.SetParameterValue(commandWrapper, "@Avatar", 
+						clause.Trim().Remove(0,6).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("note ") || clause.Trim().StartsWith("note="))
@@ -774,20 +781,22 @@ namespace AppointmentSystem.Data.SqlClient
 			col6.AllowDBNull = true;		
 			DataColumn col7 = dataTable.Columns.Add("Email", typeof(System.String));
 			col7.AllowDBNull = true;		
-			DataColumn col8 = dataTable.Columns.Add("Note", typeof(System.String));
+			DataColumn col8 = dataTable.Columns.Add("Avatar", typeof(System.String));
 			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("UserGroupId", typeof(System.String));
-			col9.AllowDBNull = false;		
-			DataColumn col10 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col9 = dataTable.Columns.Add("Note", typeof(System.String));
+			col9.AllowDBNull = true;		
+			DataColumn col10 = dataTable.Columns.Add("UserGroupId", typeof(System.String));
 			col10.AllowDBNull = false;		
-			DataColumn col11 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col11.AllowDBNull = true;		
-			DataColumn col12 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col12.AllowDBNull = false;		
-			DataColumn col13 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col13.AllowDBNull = true;		
-			DataColumn col14 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col14.AllowDBNull = false;		
+			DataColumn col11 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col11.AllowDBNull = false;		
+			DataColumn col12 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col12.AllowDBNull = true;		
+			DataColumn col13 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col13.AllowDBNull = false;		
+			DataColumn col14 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col14.AllowDBNull = true;		
+			DataColumn col15 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col15.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("Username", "Username");
@@ -797,6 +806,7 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.ColumnMappings.Add("DisplayName", "DisplayName");
 			bulkCopy.ColumnMappings.Add("CellPhone", "CellPhone");
 			bulkCopy.ColumnMappings.Add("Email", "Email");
+			bulkCopy.ColumnMappings.Add("Avatar", "Avatar");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("UserGroupId", "UserGroupId");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
@@ -834,6 +844,9 @@ namespace AppointmentSystem.Data.SqlClient
 							
 				
 					row["Email"] = entity.Email;
+							
+				
+					row["Avatar"] = entity.Avatar;
 							
 				
 					row["Note"] = entity.Note;
@@ -899,6 +912,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@DisplayName", DbType.String, entity.DisplayName );
 			database.AddInParameter(commandWrapper, "@CellPhone", DbType.String, entity.CellPhone );
 			database.AddInParameter(commandWrapper, "@Email", DbType.String, entity.Email );
+			database.AddInParameter(commandWrapper, "@Avatar", DbType.String, entity.Avatar );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, entity.UserGroupId );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
@@ -962,6 +976,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@DisplayName", DbType.String, entity.DisplayName );
 			database.AddInParameter(commandWrapper, "@CellPhone", DbType.String, entity.CellPhone );
 			database.AddInParameter(commandWrapper, "@Email", DbType.String, entity.Email );
+			database.AddInParameter(commandWrapper, "@Avatar", DbType.String, entity.Avatar );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, entity.UserGroupId );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
