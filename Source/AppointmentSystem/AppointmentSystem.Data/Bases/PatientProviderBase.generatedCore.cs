@@ -227,6 +227,7 @@ namespace AppointmentSystem.Data.Bases
 					c.HomePhone = (reader.IsDBNull(((int)PatientColumn.HomePhone - 1)))?null:(System.String)reader[((int)PatientColumn.HomePhone - 1)];
 					c.WorkPhone = (reader.IsDBNull(((int)PatientColumn.WorkPhone - 1)))?null:(System.String)reader[((int)PatientColumn.WorkPhone - 1)];
 					c.CellPhone = (reader.IsDBNull(((int)PatientColumn.CellPhone - 1)))?null:(System.String)reader[((int)PatientColumn.CellPhone - 1)];
+					c.Avatar = (reader.IsDBNull(((int)PatientColumn.Avatar - 1)))?null:(System.String)reader[((int)PatientColumn.Avatar - 1)];
 					c.Birthdate = (reader.IsDBNull(((int)PatientColumn.Birthdate - 1)))?null:(System.DateTime?)reader[((int)PatientColumn.Birthdate - 1)];
 					c.IsFemale = (System.Boolean)reader[((int)PatientColumn.IsFemale - 1)];
 					c.Title = (reader.IsDBNull(((int)PatientColumn.Title - 1)))?null:(System.String)reader[((int)PatientColumn.Title - 1)];
@@ -261,6 +262,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.HomePhone = (reader.IsDBNull(((int)PatientColumn.HomePhone - 1)))?null:(System.String)reader[((int)PatientColumn.HomePhone - 1)];
 			entity.WorkPhone = (reader.IsDBNull(((int)PatientColumn.WorkPhone - 1)))?null:(System.String)reader[((int)PatientColumn.WorkPhone - 1)];
 			entity.CellPhone = (reader.IsDBNull(((int)PatientColumn.CellPhone - 1)))?null:(System.String)reader[((int)PatientColumn.CellPhone - 1)];
+			entity.Avatar = (reader.IsDBNull(((int)PatientColumn.Avatar - 1)))?null:(System.String)reader[((int)PatientColumn.Avatar - 1)];
 			entity.Birthdate = (reader.IsDBNull(((int)PatientColumn.Birthdate - 1)))?null:(System.DateTime?)reader[((int)PatientColumn.Birthdate - 1)];
 			entity.IsFemale = (System.Boolean)reader[((int)PatientColumn.IsFemale - 1)];
 			entity.Title = (reader.IsDBNull(((int)PatientColumn.Title - 1)))?null:(System.String)reader[((int)PatientColumn.Title - 1)];
@@ -290,6 +292,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.HomePhone = Convert.IsDBNull(dataRow["HomePhone"]) ? null : (System.String)dataRow["HomePhone"];
 			entity.WorkPhone = Convert.IsDBNull(dataRow["WorkPhone"]) ? null : (System.String)dataRow["WorkPhone"];
 			entity.CellPhone = Convert.IsDBNull(dataRow["CellPhone"]) ? null : (System.String)dataRow["CellPhone"];
+			entity.Avatar = Convert.IsDBNull(dataRow["Avatar"]) ? null : (System.String)dataRow["Avatar"];
 			entity.Birthdate = Convert.IsDBNull(dataRow["Birthdate"]) ? null : (System.DateTime?)dataRow["Birthdate"];
 			entity.IsFemale = (System.Boolean)dataRow["IsFemale"];
 			entity.Title = Convert.IsDBNull(dataRow["Title"]) ? null : (System.String)dataRow["Title"];

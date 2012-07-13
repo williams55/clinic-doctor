@@ -46,6 +46,12 @@
 				</td>
 			</tr>
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataAvatar" runat="server" Text="Avatar:" AssociatedControlID="dataAvatar" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataAvatar" Text='<%# Bind("Avatar") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataBirthdate" runat="server" Text="Birthdate:" AssociatedControlID="dataBirthdate" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataBirthdate" Text='<%# Bind("Birthdate", "{0:d}") %>' MaxLength="10"></asp:TextBox><asp:ImageButton ID="cal_dataBirthdate" runat="server" SkinID="CalendarImageButton" OnClientClick="javascript:showCalendarControl(this.previousSibling);return false;" />

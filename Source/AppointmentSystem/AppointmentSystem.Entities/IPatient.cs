@@ -55,6 +55,11 @@ namespace AppointmentSystem.Entities
 		System.String  CellPhone  { get; set; }
 		
 		/// <summary>
+		/// Avatar : 
+		/// </summary>
+		System.String  Avatar  { get; set; }
+		
+		/// <summary>
 		/// Birthdate : 
 		/// </summary>
 		System.DateTime?  Birthdate  { get; set; }

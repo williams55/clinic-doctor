@@ -404,6 +404,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Email; }
 		}
         /// <summary>
+        /// Gets the Avatar
+        /// </summary>
+        /// <value>The Avatar.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String Avatar
+		{
+			get { return _entity.Avatar; }
+		}
+        /// <summary>
         /// Gets the Note
         /// </summary>
         /// <value>The Note.</value>
