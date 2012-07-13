@@ -20,7 +20,10 @@
 				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
 				<asp:BoundField DataField="Username" HeaderText="Username" SortExpression="[Username]"  />
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
+				<asp:BoundField DataField="Firstname" HeaderText="Firstname" SortExpression="[Firstname]"  />
+				<asp:BoundField DataField="Lastname" HeaderText="Lastname" SortExpression="[Lastname]"  />
 				<asp:BoundField DataField="DisplayName" HeaderText="Display Name" SortExpression="[DisplayName]"  />
+				<asp:BoundField DataField="CellPhone" HeaderText="Cell Phone" SortExpression="[CellPhone]"  />
 				<asp:BoundField DataField="Email" HeaderText="Email" SortExpression="[Email]"  />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
 				<asp:BoundField DataField="UserGroupId" HeaderText="User Group Id" SortExpression="[UserGroupId]"  />

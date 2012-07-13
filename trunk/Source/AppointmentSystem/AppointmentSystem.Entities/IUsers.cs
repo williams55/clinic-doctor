@@ -35,9 +35,24 @@ namespace AppointmentSystem.Entities
 		System.String  Title  { get; set; }
 		
 		/// <summary>
+		/// Firstname : 
+		/// </summary>
+		System.String  Firstname  { get; set; }
+		
+		/// <summary>
+		/// Lastname : 
+		/// </summary>
+		System.String  Lastname  { get; set; }
+		
+		/// <summary>
 		/// DisplayName : 
 		/// </summary>
 		System.String  DisplayName  { get; set; }
+		
+		/// <summary>
+		/// CellPhone : 
+		/// </summary>
+		System.String  CellPhone  { get; set; }
 		
 		/// <summary>
 		/// Email : 
