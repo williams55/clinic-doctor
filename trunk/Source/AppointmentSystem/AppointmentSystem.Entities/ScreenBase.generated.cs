@@ -135,42 +135,6 @@ namespace AppointmentSystem.Entities
 		
 		#region Data Properties		
 		/// <summary>
-		/// 	Gets or sets the Id property. 
-		///		
-		/// </summary>
-		/// <value>This type is int.</value>
-		/// <remarks>
-		/// This property can not be set to null. 
-		/// </remarks>
-
-
-
-
-		[ReadOnlyAttribute(false)/*, XmlIgnoreAttribute()*/, DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, true, false)]
-		public virtual System.Int32 Id
-		{
-			get
-			{
-				return this.entityData.Id; 
-			}
-			
-			set
-			{
-				if (this.entityData.Id == value)
-					return;
-					
-				OnColumnChanging(ScreenColumn.Id, this.entityData.Id);
-				this.entityData.Id = value;
-				this.EntityId.Id = value;
-				if (this.EntityState == EntityState.Unchanged)
-					this.EntityState = EntityState.Changed;
-				OnColumnChanged(ScreenColumn.Id, this.entityData.Id);
-				OnPropertyChanged("Id");
-			}
-		}
-		
-		/// <summary>
 		/// 	Gets or sets the ScreenCode property. 
 		///		Link name of screen. 
 		/// 		/// Ex: Status, Appointment...
@@ -185,7 +149,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@"Link name of screen.  Ex: Status, Appointment..."), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false, 20)]
+		[DataObjectField(true, false, false, 20)]
 		public virtual System.String ScreenCode
 		{
 			get
@@ -200,11 +164,26 @@ namespace AppointmentSystem.Entities
 					
 				OnColumnChanging(ScreenColumn.ScreenCode, this.entityData.ScreenCode);
 				this.entityData.ScreenCode = value;
+				this.EntityId.ScreenCode = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(ScreenColumn.ScreenCode, this.entityData.ScreenCode);
 				OnPropertyChanged("ScreenCode");
 			}
+		}
+		
+		/// <summary>
+		/// 	Get the original value of the ScreenCode property.
+		///		Link name of screen. 
+		/// 		/// Ex: Status, Appointment...
+		/// </summary>
+		/// <remarks>This is the original value of the ScreenCode property.</remarks>
+		/// <value>This type is varchar</value>
+		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
+		public  virtual System.String OriginalScreenCode
+		{
+			get { return this.entityData.OriginalScreenCode; }
+			set { this.entityData.OriginalScreenCode = value; }
 		}
 		
 		/// <summary>
@@ -478,7 +457,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "ScreenCode", "ScreenName", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"ScreenCode", "ScreenName", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -626,8 +605,8 @@ namespace AppointmentSystem.Entities
 			Screen copy = new Screen();
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
-				copy.Id = this.Id;
 				copy.ScreenCode = this.ScreenCode;
+					copy.OriginalScreenCode = this.OriginalScreenCode;
 				copy.ScreenName = this.ScreenName;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -768,8 +747,6 @@ namespace AppointmentSystem.Entities
 		{
 			switch(column)
 			{
-					case ScreenColumn.Id:
-					return entityData.Id != _originalData.Id;
 					case ScreenColumn.ScreenCode:
 					return entityData.ScreenCode != _originalData.ScreenCode;
 					case ScreenColumn.ScreenName:
@@ -811,7 +788,6 @@ namespace AppointmentSystem.Entities
 		public bool HasDataChanged()
 		{
 			bool result = false;
-			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.ScreenCode != _originalData.ScreenCode;
 			result = result || entityData.ScreenName != _originalData.ScreenName;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
@@ -865,8 +841,7 @@ namespace AppointmentSystem.Entities
         /// <returns>number (hash code) that corresponds to the value of an object</returns>
         public override int GetHashCode()
         {
-			return this.Id.GetHashCode() ^ 
-					this.ScreenCode.GetHashCode() ^ 
+			return this.ScreenCode.GetHashCode() ^ 
 					((this.ScreenName == null) ? string.Empty : this.ScreenName.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -905,8 +880,6 @@ namespace AppointmentSystem.Entities
 				return false;
 				
 			bool equal = true;
-			if (Object1.Id != Object2.Id)
-				equal = false;
 			if (Object1.ScreenCode != Object2.ScreenCode)
 				equal = false;
 			if ( Object1.ScreenName != null && Object2.ScreenName != null )
@@ -984,12 +957,6 @@ namespace AppointmentSystem.Entities
         {
             switch (which)
             {
-            	
-            	
-            	case ScreenColumn.Id:
-            		return this.Id.CompareTo(rhs.Id);
-            		
-            		                 
             	
             	
             	case ScreenColumn.ScreenCode:
@@ -1147,7 +1114,7 @@ namespace AppointmentSystem.Entities
 			{
 				if(entityTrackingKey == null)
 					entityTrackingKey = new System.Text.StringBuilder("Screen")
-					.Append("|").Append( this.Id.ToString()).ToString();
+					.Append("|").Append( this.ScreenCode.ToString()).ToString();
 				return entityTrackingKey;
 			}
 			set
@@ -1166,8 +1133,7 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{9}{8}- Id: {0}{8}- ScreenCode: {1}{8}- ScreenName: {2}{8}- IsDisabled: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
-				this.Id,
+				"{8}{7}- ScreenCode: {0}{7}- ScreenName: {1}{7}- IsDisabled: {2}{7}- CreateUser: {3}{7}- CreateDate: {4}{7}- UpdateUser: {5}{7}- UpdateDate: {6}{7}{9}", 
 				this.ScreenCode,
 				(this.ScreenName == null) ? string.Empty : this.ScreenName.ToString(),
 				this.IsDisabled,
@@ -1199,21 +1165,21 @@ namespace AppointmentSystem.Entities
 		
 		#region Primary key(s)
 		/// <summary>			
-		/// Id : 
+		/// ScreenCode : Link name of screen. 
+		/// 		/// Ex: Status, Appointment...
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Screen"</remarks>
-		public System.Int32 Id;
+		public System.String ScreenCode;
 			
+		/// <summary>
+		/// keep a copy of the original so it can be used for editable primary keys.
+		/// </summary>
+		public System.String OriginalScreenCode;
+		
 		#endregion
 		
 		#region Non Primary key(s)
 		
-		
-		/// <summary>
-		/// ScreenCode : Link name of screen. 
-		/// 		/// Ex: Status, Appointment...
-		/// </summary>
-		public System.String		  ScreenCode = string.Empty;
 		
 		/// <summary>
 		/// ScreenName : 
@@ -1255,25 +1221,25 @@ namespace AppointmentSystem.Entities
 
 		#region RoleDetailCollection
 		
-		private TList<RoleDetail> _roleDetailScreenId;
+		private TList<RoleDetail> _roleDetailScreenCode;
 		
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _roleDetailScreenId
+		///	which are related to this object through the relation _roleDetailScreenCode
 		/// </summary>
 		
 		public TList<RoleDetail> RoleDetailCollection
 		{
 			get
 			{
-				if (_roleDetailScreenId == null)
+				if (_roleDetailScreenCode == null)
 				{
-				_roleDetailScreenId = new TList<RoleDetail>();
+				_roleDetailScreenCode = new TList<RoleDetail>();
 				}
 	
-				return _roleDetailScreenId;
+				return _roleDetailScreenCode;
 			}
-			set { _roleDetailScreenId = value; }
+			set { _roleDetailScreenCode = value; }
 		}
 		
 		#endregion
@@ -1290,9 +1256,9 @@ namespace AppointmentSystem.Entities
 		{
 			ScreenEntityData _tmp = new ScreenEntityData();
 						
-			_tmp.Id = this.Id;
-			
 			_tmp.ScreenCode = this.ScreenCode;
+			_tmp.OriginalScreenCode = this.OriginalScreenCode;
+			
 			_tmp.ScreenName = this.ScreenName;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1305,7 +1271,7 @@ namespace AppointmentSystem.Entities
 		
 			#region Child Collections
 			//deep copy nested objects
-			if (this._roleDetailScreenId != null)
+			if (this._roleDetailScreenCode != null)
 				_tmp.RoleDetailCollection = (TList<RoleDetail>) MakeCopyOf(this.RoleDetailCollection); 
 			#endregion Child Collections
 			
@@ -1326,9 +1292,9 @@ namespace AppointmentSystem.Entities
 				
 			ScreenEntityData _tmp = new ScreenEntityData();
 						
-			_tmp.Id = this.Id;
-			
 			_tmp.ScreenCode = this.ScreenCode;
+			_tmp.OriginalScreenCode = this.OriginalScreenCode;
+			
 			_tmp.ScreenName = this.ScreenName;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1595,7 +1561,7 @@ namespace AppointmentSystem.Entities
 
 			if ( entity != null )
 			{
-				this.Id = entity.Id;
+				this.ScreenCode = entity.ScreenCode;
 			}
 
 			#endregion
@@ -1604,11 +1570,11 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Initializes a new instance of the ScreenKey class.
 		/// </summary>
-		public ScreenKey(System.Int32 _id)
+		public ScreenKey(System.String _screenCode)
 		{
 			#region Init Properties
 
-			this.Id = _id;
+			this.ScreenCode = _screenCode;
 
 			#endregion
 		}
@@ -1629,21 +1595,21 @@ namespace AppointmentSystem.Entities
 			set { _entity = value; }
 		}
 		
-		// member variable for the Id property
-		private System.Int32 _id;
+		// member variable for the ScreenCode property
+		private System.String _screenCode;
 		
 		/// <summary>
-		/// Gets or sets the Id property.
+		/// Gets or sets the ScreenCode property.
 		/// </summary>
-		public System.Int32 Id
+		public System.String ScreenCode
 		{
-			get { return _id; }
+			get { return _screenCode; }
 			set
 			{
 				if ( this.Entity != null )
-					this.Entity.Id = value;
+					this.Entity.ScreenCode = value;
 				
-				_id = value;
+				_screenCode = value;
 			}
 		}
 		
@@ -1663,7 +1629,7 @@ namespace AppointmentSystem.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+				ScreenCode = ( values["ScreenCode"] != null ) ? (System.String) EntityUtil.ChangeType(values["ScreenCode"], typeof(System.String)) : string.Empty;
 			}
 
 			#endregion
@@ -1680,7 +1646,7 @@ namespace AppointmentSystem.Entities
 
 			#region Init Dictionary
 
-			values.Add("Id", Id);
+			values.Add("ScreenCode", ScreenCode);
 
 			#endregion Init Dictionary
 
@@ -1692,8 +1658,8 @@ namespace AppointmentSystem.Entities
 		///</summary>
 		public override string ToString()
 		{
-			return String.Format("Id: {0}{1}",
-								Id,
+			return String.Format("ScreenCode: {0}{1}",
+								ScreenCode,
 								System.Environment.NewLine);
 		}
 
@@ -1711,54 +1677,48 @@ namespace AppointmentSystem.Entities
 	public enum ScreenColumn : int
 	{
 		/// <summary>
-		/// Id : 
-		/// </summary>
-		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.Int32), System.Data.DbType.Int32, true, true, false)]
-		Id = 1,
-		/// <summary>
 		/// ScreenCode : Link name of screen. 
 		/// 		/// Ex: Status, Appointment...
 		/// </summary>
 		[EnumTextValue("ScreenCode")]
-		[ColumnEnum("ScreenCode", typeof(System.String), System.Data.DbType.AnsiString, false, false, false, 20)]
-		ScreenCode = 2,
+		[ColumnEnum("ScreenCode", typeof(System.String), System.Data.DbType.AnsiString, true, false, false, 20)]
+		ScreenCode = 1,
 		/// <summary>
 		/// ScreenName : 
 		/// </summary>
 		[EnumTextValue("ScreenName")]
 		[ColumnEnum("ScreenName", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		ScreenName = 3,
+		ScreenName = 2,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 4,
+		IsDisabled = 3,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 5,
+		CreateUser = 4,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 6,
+		CreateDate = 5,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 7,
+		UpdateUser = 6,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 8
+		UpdateDate = 7
 	}//End enum
 
 	#endregion ScreenColumn Enum

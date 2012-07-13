@@ -189,7 +189,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@"Dr, Mr, Ms..."), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 10)]
+		[DataObjectField(false, false, true, 50)]
 		public virtual System.String Title
 		{
 			get
@@ -489,7 +489,7 @@ namespace AppointmentSystem.Entities
 		{
 			//Validation rules based on database schema.
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Title", "Title", 10));
+				new CommonRules.MaxLengthRuleArgs("Title", "Title", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -1798,7 +1798,7 @@ namespace AppointmentSystem.Entities
 		/// Title : Dr, Mr, Ms...
 		/// </summary>
 		[EnumTextValue("Title")]
-		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
+		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		Title = 2,
 		/// <summary>
 		/// Note : 

@@ -350,13 +350,13 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.RoleId; }
 		}
         /// <summary>
-        /// Gets the ScreenId
+        /// Gets the ScreenCode
         /// </summary>
-        /// <value>The ScreenId.</value>
+        /// <value>The ScreenCode.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int32? ScreenId
+		public System.String ScreenCode
 		{
-			get { return _entity.ScreenId; }
+			get { return _entity.ScreenCode; }
 		}
         /// <summary>
         /// Gets the Crud

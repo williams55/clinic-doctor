@@ -20,7 +20,7 @@ public partial class ScreenEdit : System.Web.UI.Page
 		FormUtil.RedirectAfterInsertUpdate(FormView1, "ScreenEdit.aspx?{0}", ScreenDataSource);
 		FormUtil.RedirectAfterAddNew(FormView1, "ScreenEdit.aspx");
 		FormUtil.RedirectAfterCancel(FormView1, "Screen.aspx");
-		FormUtil.SetDefaultMode(FormView1, "Id");
+		FormUtil.SetDefaultMode(FormView1, "ScreenCode");
 	}
 	protected void GridViewRoleDetail1_SelectedIndexChanged(object sender, EventArgs e)
 	{

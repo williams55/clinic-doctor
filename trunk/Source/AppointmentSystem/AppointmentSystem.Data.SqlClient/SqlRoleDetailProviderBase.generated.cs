@@ -177,7 +177,7 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@ScreenId", DbType.Int32, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ScreenCode", DbType.AnsiString, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Crud", DbType.AnsiString, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -210,10 +210,10 @@ namespace AppointmentSystem.Data.SqlClient
 						clause.Trim().Remove(0,6).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
-				if (clause.Trim().StartsWith("screenid ") || clause.Trim().StartsWith("screenid="))
+				if (clause.Trim().StartsWith("screencode ") || clause.Trim().StartsWith("screencode="))
 				{
-					database.SetParameterValue(commandWrapper, "@ScreenId", 
-						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					database.SetParameterValue(commandWrapper, "@ScreenCode", 
+						clause.Trim().Remove(0,10).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("crud ") || clause.Trim().StartsWith("crud="))
@@ -587,7 +587,7 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 	
 
-		#region GetByScreenId
+		#region GetByScreenCode
 		/// <summary>
 		/// 	Gets rows from the datasource based on the FK_RoleDetail_Screen key.
 		///		FK_RoleDetail_Screen Description: 
@@ -595,26 +595,26 @@ namespace AppointmentSystem.Data.SqlClient
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_screenId">What screen role can access</param>
+		/// <param name="_screenCode">What screen role can access</param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.RoleDetail objects.</returns>
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<RoleDetail> GetByScreenId(TransactionManager transactionManager, System.Int32? _screenId, int start, int pageLength, out int count)
+		public override TList<RoleDetail> GetByScreenCode(TransactionManager transactionManager, System.String _screenCode, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RoleDetail_GetByScreenId", _useStoredProcedure);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.RoleDetail_GetByScreenCode", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@ScreenId", DbType.Int32, _screenId);
+				database.AddInParameter(commandWrapper, "@ScreenCode", DbType.AnsiString, _screenCode);
 			
 			IDataReader reader = null;
 			TList<RoleDetail> rows = new TList<RoleDetail>();
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByScreenId", rows)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByScreenCode", rows)); 
 
 				if (transactionManager != null)
 				{
@@ -637,7 +637,7 @@ namespace AppointmentSystem.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByScreenId", rows)); 
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByScreenCode", rows)); 
 			}
 			finally
 			{
@@ -769,7 +769,7 @@ namespace AppointmentSystem.Data.SqlClient
 			col0.AllowDBNull = false;		
 			DataColumn col1 = dataTable.Columns.Add("RoleId", typeof(System.Int32));
 			col1.AllowDBNull = true;		
-			DataColumn col2 = dataTable.Columns.Add("ScreenId", typeof(System.Int32));
+			DataColumn col2 = dataTable.Columns.Add("ScreenCode", typeof(System.String));
 			col2.AllowDBNull = true;		
 			DataColumn col3 = dataTable.Columns.Add("Crud", typeof(System.String));
 			col3.AllowDBNull = true;		
@@ -786,7 +786,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("RoleId", "RoleId");
-			bulkCopy.ColumnMappings.Add("ScreenId", "ScreenId");
+			bulkCopy.ColumnMappings.Add("ScreenCode", "ScreenCode");
 			bulkCopy.ColumnMappings.Add("Crud", "Crud");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
@@ -807,7 +807,7 @@ namespace AppointmentSystem.Data.SqlClient
 					row["RoleId"] = entity.RoleId.HasValue ? (object) entity.RoleId  : System.DBNull.Value;
 							
 				
-					row["ScreenId"] = entity.ScreenId.HasValue ? (object) entity.ScreenId  : System.DBNull.Value;
+					row["ScreenCode"] = entity.ScreenCode;
 							
 				
 					row["Crud"] = entity.Crud;
@@ -864,7 +864,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
 			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId  : System.DBNull.Value));
-			database.AddInParameter(commandWrapper, "@ScreenId", DbType.Int32, (entity.ScreenId.HasValue ? (object) entity.ScreenId  : System.DBNull.Value));
+			database.AddInParameter(commandWrapper, "@ScreenCode", DbType.AnsiString, entity.ScreenCode );
 			database.AddInParameter(commandWrapper, "@Crud", DbType.AnsiString, entity.Crud );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -921,7 +921,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
 			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId : System.DBNull.Value) );
-			database.AddInParameter(commandWrapper, "@ScreenId", DbType.Int32, (entity.ScreenId.HasValue ? (object) entity.ScreenId : System.DBNull.Value) );
+			database.AddInParameter(commandWrapper, "@ScreenCode", DbType.AnsiString, entity.ScreenCode );
 			database.AddInParameter(commandWrapper, "@Crud", DbType.AnsiString, entity.Crud );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );

@@ -332,15 +332,6 @@ namespace AppointmentSystem.Web.UI
 		}
 		
         /// <summary>
-        /// Gets the Id
-        /// </summary>
-        /// <value>The Id.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.Int32 Id
-		{
-			get { return _entity.Id; }
-		}
-        /// <summary>
         /// Gets the ScreenCode
         /// </summary>
         /// <value>The ScreenCode.</value>

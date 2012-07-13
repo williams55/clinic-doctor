@@ -692,7 +692,7 @@ $(document).ready(function() {
 
     $(".datePicker").datepicker({
         showOn: "button",
-        buttonImage: "../resources/scripts/codebase/imgs/calendar.gif",
+        buttonImage: "../resources/css/ui-lightness/images/calendar.gif",
         buttonImageOnly: true, changeMonth: true,
         changeYear: true,
         showOtherMonths: true,
@@ -704,7 +704,7 @@ $(document).ready(function() {
     var _nextMonth = new Date(_currentMonth.getFullYear(), _currentMonth.getMonth() + 1, 1);
     $("#txtMonth").datepicker({
         showOn: "button",
-        buttonImage: "../resources/scripts/codebase/imgs/calendar.gif",
+        buttonImage: "../resources/css/ui-lightness/images/calendar.gif",
         buttonImageOnly: true, changeMonth: true,
         changeYear: true,
         showOtherMonths: true,
@@ -717,7 +717,7 @@ $(document).ready(function() {
 });
 
 //
-function initForm() {
+function InitForm() {
     $("#dialog-modal").hide();
 
     $("#cboFromHour").show();

@@ -32,28 +32,30 @@ namespace AppointmentSystem.Data.Bases
 		/// <returns>Returns true if operation suceeded.</returns>
 		public override bool Delete(TransactionManager transactionManager, AppointmentSystem.Entities.ScreenKey key)
 		{
-			return Delete(transactionManager, key.Id);
+			return Delete(transactionManager, key.ScreenCode);
 		}
 		
 		/// <summary>
 		/// 	Deletes a row from the DataSource.
 		/// </summary>
-		/// <param name="_id">. Primary Key.</param>
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment.... Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public bool Delete(System.Int32 _id)
+		public bool Delete(System.String _screenCode)
 		{
-			return Delete(null, _id);
+			return Delete(null, _screenCode);
 		}
 		
 		/// <summary>
 		/// 	Deletes a row from the DataSource.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id">. Primary Key.</param>
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment.... Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public abstract bool Delete(TransactionManager transactionManager, System.Int32 _id);		
+		public abstract bool Delete(TransactionManager transactionManager, System.String _screenCode);		
 		
 		#endregion Delete Methods
 		
@@ -72,74 +74,79 @@ namespace AppointmentSystem.Data.Bases
 		/// <returns>Returns an instance of the Entity class.</returns>
 		public override AppointmentSystem.Entities.Screen Get(TransactionManager transactionManager, AppointmentSystem.Entities.ScreenKey key, int start, int pageLength)
 		{
-			return GetById(transactionManager, key.Id, start, pageLength);
+			return GetByScreenCode(transactionManager, key.ScreenCode, start, pageLength);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key PK_Screen index.
 		/// </summary>
-		/// <param name="_id"></param>
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment...</param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Screen"/> class.</returns>
-		public AppointmentSystem.Entities.Screen GetById(System.Int32 _id)
+		public AppointmentSystem.Entities.Screen GetByScreenCode(System.String _screenCode)
 		{
 			int count = -1;
-			return GetById(null,_id, 0, int.MaxValue, out count);
+			return GetByScreenCode(null,_screenCode, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the PK_Screen index.
 		/// </summary>
-		/// <param name="_id"></param>
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment...</param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Screen"/> class.</returns>
-		public AppointmentSystem.Entities.Screen GetById(System.Int32 _id, int start, int pageLength)
+		public AppointmentSystem.Entities.Screen GetByScreenCode(System.String _screenCode, int start, int pageLength)
 		{
 			int count = -1;
-			return GetById(null, _id, start, pageLength, out count);
+			return GetByScreenCode(null, _screenCode, start, pageLength, out count);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the PK_Screen index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id"></param>
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment...</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Screen"/> class.</returns>
-		public AppointmentSystem.Entities.Screen GetById(TransactionManager transactionManager, System.Int32 _id)
+		public AppointmentSystem.Entities.Screen GetByScreenCode(TransactionManager transactionManager, System.String _screenCode)
 		{
 			int count = -1;
-			return GetById(transactionManager, _id, 0, int.MaxValue, out count);
+			return GetByScreenCode(transactionManager, _screenCode, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the PK_Screen index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id"></param>
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment...</param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Screen"/> class.</returns>
-		public AppointmentSystem.Entities.Screen GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength)
+		public AppointmentSystem.Entities.Screen GetByScreenCode(TransactionManager transactionManager, System.String _screenCode, int start, int pageLength)
 		{
 			int count = -1;
-			return GetById(transactionManager, _id, start, pageLength, out count);
+			return GetByScreenCode(transactionManager, _screenCode, start, pageLength, out count);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the PK_Screen index.
 		/// </summary>
-		/// <param name="_id"></param>
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment...</param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Screen"/> class.</returns>
-		public AppointmentSystem.Entities.Screen GetById(System.Int32 _id, int start, int pageLength, out int count)
+		public AppointmentSystem.Entities.Screen GetByScreenCode(System.String _screenCode, int start, int pageLength, out int count)
 		{
-			return GetById(null, _id, start, pageLength, out count);
+			return GetByScreenCode(null, _screenCode, start, pageLength, out count);
 		}
 		
 				
@@ -147,12 +154,13 @@ namespace AppointmentSystem.Data.Bases
 		/// 	Gets rows from the datasource based on the PK_Screen index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id"></param>
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment...</param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Screen"/> class.</returns>
-		public abstract AppointmentSystem.Entities.Screen GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength, out int count);
+		public abstract AppointmentSystem.Entities.Screen GetByScreenCode(TransactionManager transactionManager, System.String _screenCode, int start, int pageLength, out int count);
 						
 		#endregion "Get By Index Functions"
 	
@@ -196,7 +204,7 @@ namespace AppointmentSystem.Data.Bases
 				if (useEntityFactory)
 				{
 					key = new System.Text.StringBuilder("Screen")
-					.Append("|").Append((System.Int32)reader[((int)ScreenColumn.Id - 1)]).ToString();
+					.Append("|").Append((System.String)reader[((int)ScreenColumn.ScreenCode - 1)]).ToString();
 					c = EntityManager.LocateOrCreate<Screen>(
 					key.ToString(), // EntityTrackingKey
 					"Screen",  //Creational Type
@@ -219,8 +227,8 @@ namespace AppointmentSystem.Data.Bases
 					))
 				{
 					c.SuppressEntityEvents = true;
-					c.Id = (System.Int32)reader[((int)ScreenColumn.Id - 1)];
 					c.ScreenCode = (System.String)reader[((int)ScreenColumn.ScreenCode - 1)];
+					c.OriginalScreenCode = c.ScreenCode;
 					c.ScreenName = (reader.IsDBNull(((int)ScreenColumn.ScreenName - 1)))?null:(System.String)reader[((int)ScreenColumn.ScreenName - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)ScreenColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)ScreenColumn.CreateUser - 1)))?null:(System.String)reader[((int)ScreenColumn.CreateUser - 1)];
@@ -244,8 +252,8 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if (!reader.Read()) return;
 			
-			entity.Id = (System.Int32)reader[((int)ScreenColumn.Id - 1)];
 			entity.ScreenCode = (System.String)reader[((int)ScreenColumn.ScreenCode - 1)];
+			entity.OriginalScreenCode = (System.String)reader["ScreenCode"];
 			entity.ScreenName = (reader.IsDBNull(((int)ScreenColumn.ScreenName - 1)))?null:(System.String)reader[((int)ScreenColumn.ScreenName - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)ScreenColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)ScreenColumn.CreateUser - 1)))?null:(System.String)reader[((int)ScreenColumn.CreateUser - 1)];
@@ -264,8 +272,8 @@ namespace AppointmentSystem.Data.Bases
 		{
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
-			entity.Id = (System.Int32)dataRow["Id"];
 			entity.ScreenCode = (System.String)dataRow["ScreenCode"];
+			entity.OriginalScreenCode = (System.String)dataRow["ScreenCode"];
 			entity.ScreenName = Convert.IsDBNull(dataRow["ScreenName"]) ? null : (System.String)dataRow["ScreenName"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
@@ -299,7 +307,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
-			// Deep load child collections  - Call GetById methods when available
+			// Deep load child collections  - Call GetByScreenCode methods when available
 			
 			#region RoleDetailCollection
 			//Relationship Type One : Many
@@ -309,7 +317,7 @@ namespace AppointmentSystem.Data.Bases
 				System.Diagnostics.Debug.WriteLine("- property 'RoleDetailCollection' loaded. key " + entity.EntityTrackingKey);
 				#endif 
 
-				entity.RoleDetailCollection = DataRepository.RoleDetailProvider.GetByScreenId(transactionManager, entity.Id);
+				entity.RoleDetailCollection = DataRepository.RoleDetailProvider.GetByScreenCode(transactionManager, entity.ScreenCode);
 
 				if (deep && entity.RoleDetailCollection.Count > 0)
 				{
@@ -366,13 +374,13 @@ namespace AppointmentSystem.Data.Bases
 					// update each child parent id with the real parent id (mostly used on insert)
 					foreach(RoleDetail child in entity.RoleDetailCollection)
 					{
-						if(child.ScreenIdSource != null)
+						if(child.ScreenCodeSource != null)
 						{
-							child.ScreenId = child.ScreenIdSource.Id;
+							child.ScreenCode = child.ScreenCodeSource.ScreenCode;
 						}
 						else
 						{
-							child.ScreenId = entity.Id;
+							child.ScreenCode = entity.ScreenCode;
 						}
 
 					}

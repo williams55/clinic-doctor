@@ -25,9 +25,9 @@ namespace AppointmentSystem.Entities
 		System.Int32?  RoleId  { get; set; }
 		
 		/// <summary>
-		/// ScreenId : What screen role can access
+		/// ScreenCode : What screen role can access
 		/// </summary>
-		System.Int32?  ScreenId  { get; set; }
+		System.String  ScreenCode  { get; set; }
 		
 		/// <summary>
 		/// Crud : Define what action user can do.

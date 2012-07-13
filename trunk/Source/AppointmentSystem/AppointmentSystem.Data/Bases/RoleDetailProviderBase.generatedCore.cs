@@ -148,12 +148,12 @@ namespace AppointmentSystem.Data.Bases
 		/// 	Gets rows from the datasource based on the FK_RoleDetail_Screen key.
 		///		FK_RoleDetail_Screen Description: 
 		/// </summary>
-		/// <param name="_screenId">What screen role can access</param>
+		/// <param name="_screenCode">What screen role can access</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.RoleDetail objects.</returns>
-		public TList<RoleDetail> GetByScreenId(System.Int32? _screenId)
+		public TList<RoleDetail> GetByScreenCode(System.String _screenCode)
 		{
 			int count = -1;
-			return GetByScreenId(_screenId, 0,int.MaxValue, out count);
+			return GetByScreenCode(_screenCode, 0,int.MaxValue, out count);
 		}
 		
 		/// <summary>
@@ -161,13 +161,13 @@ namespace AppointmentSystem.Data.Bases
 		///		FK_RoleDetail_Screen Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_screenId">What screen role can access</param>
+		/// <param name="_screenCode">What screen role can access</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.RoleDetail objects.</returns>
 		/// <remarks></remarks>
-		public TList<RoleDetail> GetByScreenId(TransactionManager transactionManager, System.Int32? _screenId)
+		public TList<RoleDetail> GetByScreenCode(TransactionManager transactionManager, System.String _screenCode)
 		{
 			int count = -1;
-			return GetByScreenId(transactionManager, _screenId, 0, int.MaxValue, out count);
+			return GetByScreenCode(transactionManager, _screenCode, 0, int.MaxValue, out count);
 		}
 		
 			/// <summary>
@@ -175,15 +175,15 @@ namespace AppointmentSystem.Data.Bases
 		///		FK_RoleDetail_Screen Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_screenId">What screen role can access</param>
+		/// <param name="_screenCode">What screen role can access</param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.RoleDetail objects.</returns>
-		public TList<RoleDetail> GetByScreenId(TransactionManager transactionManager, System.Int32? _screenId, int start, int pageLength)
+		public TList<RoleDetail> GetByScreenCode(TransactionManager transactionManager, System.String _screenCode, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByScreenId(transactionManager, _screenId, start, pageLength, out count);
+			return GetByScreenCode(transactionManager, _screenCode, start, pageLength, out count);
 		}
 		
 		/// <summary>
@@ -192,13 +192,13 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_screenId">What screen role can access</param>
+		/// <param name="_screenCode">What screen role can access</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.RoleDetail objects.</returns>
-		public TList<RoleDetail> GetByScreenId(System.Int32? _screenId, int start, int pageLength)
+		public TList<RoleDetail> GetByScreenCode(System.String _screenCode, int start, int pageLength)
 		{
 			int count =  -1;
-			return GetByScreenId(null, _screenId, start, pageLength,out count);	
+			return GetByScreenCode(null, _screenCode, start, pageLength,out count);	
 		}
 		
 		/// <summary>
@@ -207,13 +207,13 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_screenId">What screen role can access</param>
+		/// <param name="_screenCode">What screen role can access</param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.RoleDetail objects.</returns>
-		public TList<RoleDetail> GetByScreenId(System.Int32? _screenId, int start, int pageLength,out int count)
+		public TList<RoleDetail> GetByScreenCode(System.String _screenCode, int start, int pageLength,out int count)
 		{
-			return GetByScreenId(null, _screenId, start, pageLength, out count);	
+			return GetByScreenCode(null, _screenCode, start, pageLength, out count);	
 		}
 						
 		/// <summary>
@@ -221,12 +221,12 @@ namespace AppointmentSystem.Data.Bases
 		///		FK_RoleDetail_Screen Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_screenId">What screen role can access</param>
+		/// <param name="_screenCode">What screen role can access</param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.RoleDetail objects.</returns>
-		public abstract TList<RoleDetail> GetByScreenId(TransactionManager transactionManager, System.Int32? _screenId, int start, int pageLength, out int count);
+		public abstract TList<RoleDetail> GetByScreenCode(TransactionManager transactionManager, System.String _screenCode, int start, int pageLength, out int count);
 		
 		#endregion
 
@@ -391,7 +391,7 @@ namespace AppointmentSystem.Data.Bases
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)RoleDetailColumn.Id - 1)];
 					c.RoleId = (reader.IsDBNull(((int)RoleDetailColumn.RoleId - 1)))?null:(System.Int32?)reader[((int)RoleDetailColumn.RoleId - 1)];
-					c.ScreenId = (reader.IsDBNull(((int)RoleDetailColumn.ScreenId - 1)))?null:(System.Int32?)reader[((int)RoleDetailColumn.ScreenId - 1)];
+					c.ScreenCode = (reader.IsDBNull(((int)RoleDetailColumn.ScreenCode - 1)))?null:(System.String)reader[((int)RoleDetailColumn.ScreenCode - 1)];
 					c.Crud = (reader.IsDBNull(((int)RoleDetailColumn.Crud - 1)))?null:(System.String)reader[((int)RoleDetailColumn.Crud - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)RoleDetailColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)RoleDetailColumn.CreateUser - 1)))?null:(System.String)reader[((int)RoleDetailColumn.CreateUser - 1)];
@@ -417,7 +417,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.Int64)reader[((int)RoleDetailColumn.Id - 1)];
 			entity.RoleId = (reader.IsDBNull(((int)RoleDetailColumn.RoleId - 1)))?null:(System.Int32?)reader[((int)RoleDetailColumn.RoleId - 1)];
-			entity.ScreenId = (reader.IsDBNull(((int)RoleDetailColumn.ScreenId - 1)))?null:(System.Int32?)reader[((int)RoleDetailColumn.ScreenId - 1)];
+			entity.ScreenCode = (reader.IsDBNull(((int)RoleDetailColumn.ScreenCode - 1)))?null:(System.String)reader[((int)RoleDetailColumn.ScreenCode - 1)];
 			entity.Crud = (reader.IsDBNull(((int)RoleDetailColumn.Crud - 1)))?null:(System.String)reader[((int)RoleDetailColumn.Crud - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)RoleDetailColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)RoleDetailColumn.CreateUser - 1)))?null:(System.String)reader[((int)RoleDetailColumn.CreateUser - 1)];
@@ -438,7 +438,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.Int64)dataRow["Id"];
 			entity.RoleId = Convert.IsDBNull(dataRow["RoleId"]) ? null : (System.Int32?)dataRow["RoleId"];
-			entity.ScreenId = Convert.IsDBNull(dataRow["ScreenId"]) ? null : (System.Int32?)dataRow["ScreenId"];
+			entity.ScreenCode = Convert.IsDBNull(dataRow["ScreenCode"]) ? null : (System.String)dataRow["ScreenCode"];
 			entity.Crud = Convert.IsDBNull(dataRow["Crud"]) ? null : (System.String)dataRow["Crud"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
@@ -496,31 +496,31 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion RoleIdSource
 
-			#region ScreenIdSource	
-			if (CanDeepLoad(entity, "Screen|ScreenIdSource", deepLoadType, innerList) 
-				&& entity.ScreenIdSource == null)
+			#region ScreenCodeSource	
+			if (CanDeepLoad(entity, "Screen|ScreenCodeSource", deepLoadType, innerList) 
+				&& entity.ScreenCodeSource == null)
 			{
 				object[] pkItems = new object[1];
-				pkItems[0] = (entity.ScreenId ?? (int)0);
+				pkItems[0] = (entity.ScreenCode ?? string.Empty);
 				Screen tmpEntity = EntityManager.LocateEntity<Screen>(EntityLocator.ConstructKeyFromPkItems(typeof(Screen), pkItems), DataRepository.Provider.EnableEntityTracking);
 				if (tmpEntity != null)
-					entity.ScreenIdSource = tmpEntity;
+					entity.ScreenCodeSource = tmpEntity;
 				else
-					entity.ScreenIdSource = DataRepository.ScreenProvider.GetById(transactionManager, (entity.ScreenId ?? (int)0));		
+					entity.ScreenCodeSource = DataRepository.ScreenProvider.GetByScreenCode(transactionManager, (entity.ScreenCode ?? string.Empty));		
 				
 				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'ScreenIdSource' loaded. key " + entity.EntityTrackingKey);
+				System.Diagnostics.Debug.WriteLine("- property 'ScreenCodeSource' loaded. key " + entity.EntityTrackingKey);
 				#endif 
 				
-				if (deep && entity.ScreenIdSource != null)
+				if (deep && entity.ScreenCodeSource != null)
 				{
 					innerList.SkipChildren = true;
-					DataRepository.ScreenProvider.DeepLoad(transactionManager, entity.ScreenIdSource, deep, deepLoadType, childTypes, innerList);
+					DataRepository.ScreenProvider.DeepLoad(transactionManager, entity.ScreenCodeSource, deep, deepLoadType, childTypes, innerList);
 					innerList.SkipChildren = false;
 				}
 					
 			}
-			#endregion ScreenIdSource
+			#endregion ScreenCodeSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -564,12 +564,12 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion 
 			
-			#region ScreenIdSource
-			if (CanDeepSave(entity, "Screen|ScreenIdSource", deepSaveType, innerList) 
-				&& entity.ScreenIdSource != null)
+			#region ScreenCodeSource
+			if (CanDeepSave(entity, "Screen|ScreenCodeSource", deepSaveType, innerList) 
+				&& entity.ScreenCodeSource != null)
 			{
-				DataRepository.ScreenProvider.Save(transactionManager, entity.ScreenIdSource);
-				entity.ScreenId = entity.ScreenIdSource.Id;
+				DataRepository.ScreenProvider.Save(transactionManager, entity.ScreenCodeSource);
+				entity.ScreenCode = entity.ScreenCodeSource.ScreenCode;
 			}
 			#endregion 
 			#endregion Composite Parent Properties
@@ -614,7 +614,7 @@ namespace AppointmentSystem.Data.Bases
 		Role,
 			
 		///<summary>
-		/// Composite Property for <c>Screen</c> at ScreenIdSource
+		/// Composite Property for <c>Screen</c> at ScreenCodeSource
 		///</summary>
 		[ChildEntityType(typeof(Screen))]
 		Screen,

@@ -7,47 +7,54 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AppointmentBusiness.BO;
+using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
+using Appt.Common.Constants;
+using Common.Util;
+using Log.Controller;
+using Newtonsoft.Json;
 
 public partial class Admin_Roster_Default : System.Web.UI.Page
 {
     static string strSeperateStaff = " | ";
+    private const string ScreenCode = "Roster";
+    static string _message;
+
+    #region Event
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        try
+        {
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key,
+                                       out _message))
+            {
+                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+    #endregion
 
     #region "Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string SaveEvent(string DoctorUsername, string RosterTypeId, string RosterTitle, string StartTime, string EndTime,
+    public static string SaveEvent(string DoctorId, string RosterTypeId, string RosterTitle, string StartTime, string EndTime,
         string StartDate, string EndDate, string Note, string RepeatRoster, string Weekday, string Month)
     {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *              Id: id of roster,
-         *              DoctorUserName: Doctor UserName,
-         *              DoctorShortName: Doctor ShortName,
-         *              RosterTypeId: Roster Type Id,
-         *              RosterTypeTitle: Roster Type Title,
-         *              start_date: start date,
-         *              end_date: end date,
-         *              note: note,
-         *              text: roster type + note,
-         *              color: color of event [get from status],
-         *              isnew: true
-         *          }, {}, {}]
-         *  }
-         */
-
         string result = string.Empty;
         string message = string.Empty;
+        string username = EntitiesUtilities.GetAuthName();
 
         // Check StaffId
-        if (DoctorUsername == null)
+        if (DoctorId == null)
         {
-            result = @"[{ 'result': 'false', 'message': 'You must choose staff.', 'data': [] }]";
-            return result;
+            return WebCommon.BuildFailedResult("You must choose staff.");
         }
 
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
@@ -55,13 +62,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         {
             tm.BeginTransaction();
 
+            RightAccess.CheckUserRight(username, WebCommon.GetScreenCode(), OperationConstant.Create.Key, out message);
+
             #region Validate current user
-            string username = EntitiesUtilities.GetAuthName();
             Users objUser;
             if (!BoFactory.UserBO.ValidateCurrentUser(username, out objUser, out message))
             {
-                result = @"[{ 'result': 'false', 'message': '" + message + "', 'data': '[]' }]";
-                goto StepResult;
+                return WebCommon.BuildFailedResult(message);
             }
             #endregion
 
@@ -69,8 +76,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             RosterType objRt = DataRepository.RosterTypeProvider.GetById(Convert.ToInt32(RosterTypeId));
             if (objRt == null || objRt.IsDisabled)
             {
-                result = @"[{ 'result': 'false', 'message': 'Roster Type is not exist.', 'data': '[]' }]";
-                goto StepResult;
+                return WebCommon.BuildFailedResult("Roster Type is not exist.");
             }
 
             // Get start time and end time
@@ -78,6 +84,9 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             int intStartMinute = Convert.ToInt32(StartTime.Split(':')[1]);
             int intEndHour = Convert.ToInt32(EndTime.Split(':')[0]);
             int intEndMinute = Convert.ToInt32(EndTime.Split(':')[1]);
+
+            // Declare list of object are returned
+            var lstResult = new List<object>();
 
             // Repeat roster
             if (RepeatRoster == "true")
@@ -98,9 +107,6 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     strNumber = String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)));
                 }
 
-                // Variable for result
-                result = string.Empty;
-
                 // Variable for error message if there is conflict roster
                 string errorMessage = string.Empty;
 
@@ -113,7 +119,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
                         newObj.Id = Perfix + strNumber;
 
-                        newObj.DoctorId = objUser.Id;
+                        newObj.DoctorId = DoctorId;
                         newObj.RosterTypeId = Convert.ToInt32(RosterTypeId);
                         newObj.StartTime = new DateTime(item.Year, item.Month, item.Day, intStartHour, intStartMinute, 0);
                         newObj.EndTime = new DateTime(item.Year, item.Month, item.Day, intEndHour, intEndMinute, 0);
@@ -127,8 +133,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                         if (newObj.StartTime >= newObj.EndTime)
                         {
                             tm.Rollback();
-                            result = @"[{ 'result': 'false', 'message': 'To date must be greater than From date.', 'data': [] }]";
-                            goto StepResult;
+                            return WebCommon.BuildFailedResult("To date must be greater than from date.");
                         }
 
                         // If roster is created in a passed or current day
@@ -136,12 +141,11 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                         if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(newObj.StartTime.Year, newObj.StartTime.Month, newObj.StartTime.Day))
                         {
                             tm.Rollback();
-                            result = @"[{ 'result': 'false', 'message': 'You can not change roster to passed or current date.', 'data': [] }]";
-                            goto StepResult;
+                            return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
                         }
 
                         // Check roster before insert new roster
-                        string query = string.Format("DoctorId = {0} AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, newObj.EndTime, newObj.StartTime);
+                        string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, newObj.EndTime, newObj.StartTime);
                         TList<Roster> lstRoster = DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
                         // If there is no roster -> insert new roster
                         if (Count > 1)
@@ -150,23 +154,24 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                         }
 
                         DataRepository.RosterProvider.DeepLoad(newObj);
-                        result += @"{id: '" + newObj.Id + @"',"
-                            + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                            + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                            + @"section_id: '" + newObj.DoctorId + @"',"
-                            + @"text: '" + newObj.RosterTypeIdSource.Title + @"<br />Doctor: " + newObj.DoctorIdSource.Username + @"<br />";
 
-                        if (!string.IsNullOrEmpty(newObj.Note))
-                            result += newObj.Note;
-
-                        result += @"',DoctorUserName: '" + newObj.DoctorIdSource.Username + @"',"
-                           + @"DoctorShortName: '" + newObj.DoctorIdSource.DisplayName + @"',"
-                           + @"RosterTypeId: '" + newObj.RosterTypeId + @"',"
-                           + @"RosterTypeTitle: '" + newObj.RosterTypeIdSource.Title + @"',"
-                           + @"note: '" + newObj.Note + @"',"
-                            //+ @"color: '" + newObj.ColorCode + @"',"
-                           + @"isnew: 'false'"
-                           + @"},";
+                        lstResult.Add(new
+                                          {
+                                              id = newObj.Id,
+                                              start_date = newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                                              end_date = newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                                              section_id = newObj.DoctorId,
+                                              text = String.Format("{0}<br />Doctor: {1}<br />{2}"
+                                                      , newObj.RosterTypeIdSource.Title
+                                                      , newObj.DoctorIdSource.Username
+                                                      , newObj.Note),
+                                              DoctorUserName = newObj.DoctorIdSource.Username,
+                                              DoctorShortName = newObj.DoctorIdSource.DisplayName,
+                                              newObj.RosterTypeId,
+                                              RosterTypeTitle = newObj.RosterTypeIdSource.Title,
+                                              note = newObj.Note,
+                                              isnew = false
+                                          });
                     }
                     item = item.AddDays(1);
                 }
@@ -174,17 +179,14 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 if (errorMessage.Length > 0)
                 {
                     tm.Rollback();
-                    result = @"[{ 'result': 'false', 'message': 'There are some rosters conflicted: " + errorMessage.Substring(0, errorMessage.Length - 1) + "', 'data': [] }]";
-                    goto StepResult;
+                    return WebCommon.BuildFailedResult(String.Format("There are some rosters conflicted: {0}", errorMessage.Substring(0, errorMessage.Length - 1)));
                 }
-                else
-                {
-                    result = @"[{ 'result': 'true', 'message': '', 'data': [" + result.Substring(0, result.Length - 1) + @"] }]";
-                }
+
+                result = WebCommon.BuildSuccessfulResult(lstResult);
             }
             else
             {
-                Roster newObj = new Roster();
+                var newObj = new Roster();
 
                 // Get start date and end date
                 DateTime dtStart = Convert.ToDateTime(StartDate);
@@ -200,7 +202,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     newObj.Id = Perfix + String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
                 }
 
-                newObj.DoctorId = objUser.Id;
+                newObj.DoctorId = DoctorId;
                 newObj.RosterTypeId = Convert.ToInt32(RosterTypeId);
                 newObj.StartTime = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
                 newObj.EndTime = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
@@ -214,8 +216,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 if (newObj.StartTime >= newObj.EndTime)
                 {
                     tm.Rollback();
-                    result = @"[{ 'result': 'false', 'message': 'To date must be greater than From date.', 'data': [] }]";
-                    goto StepResult;
+                    return WebCommon.BuildFailedResult("To date must be greater than from date.");
                 }
 
                 // If roster is created in a passed or current day
@@ -223,57 +224,51 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(newObj.StartTime.Year, newObj.StartTime.Month, newObj.StartTime.Day))
                 {
                     tm.Rollback();
-                    result = @"[{ 'result': 'false', 'message': 'You can not change roster to passed or current date.', 'data': [] }]";
-                    goto StepResult;
+                    return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
                 }
 
                 // Check roster before insert new roster
-                string query = string.Format("DoctorId = {0} AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, newObj.EndTime, newObj.StartTime);
+                string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, newObj.EndTime, newObj.StartTime);
                 TList<Roster> lstRoster = DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
                 // If there is no roster -> insert new roster
                 if (Count > 1)
                 {
                     tm.Rollback();
-                    result = @"[{ 'result': 'false', 'message': 'There is roster conflicted: From "
-                        + newObj.StartTime.DayOfWeek.ToString() + " " + newObj.StartTime.ToString("dd MMM yyyy HH:mm") + " to  "
-                        + newObj.EndTime.DayOfWeek.ToString() + " " + newObj.EndTime.ToString("dd MMM yyyy HH:mm") + "', 'data': [] }]";
-                    goto StepResult;
+                    return WebCommon.BuildFailedResult(String.Format("There is roster conflicted: From {0} {1} to {2} {3}"
+                        , newObj.StartTime.DayOfWeek, newObj.StartTime.ToString("dd MMM yyyy HH:mm")
+                        , newObj.EndTime.DayOfWeek, newObj.EndTime.ToString("dd MMM yyyy HH:mm")));
                 }
 
                 DataRepository.RosterProvider.DeepLoad(newObj);
-                result = @"[{ 'result': 'true', 'message': '', 'data': ["
-                    + @"{id: '" + newObj.Id + @"',"
-                    + @"start_date: '" + newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"end_date: '" + newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"section_id: '" + newObj.DoctorId + @"',"
-                    + @"text: '" + newObj.RosterTypeIdSource.Title + @"<br />Doctor: " + newObj.DoctorIdSource.Username + @"<br />";
-
-                if (!string.IsNullOrEmpty(newObj.Note))
-                    result += newObj.Note;
-
-                result += @"',DoctorUserName: '" + newObj.DoctorIdSource.Username + @"',"
-                    + @"DoctorShortName: '" + newObj.DoctorIdSource.DisplayName + @"',"
-                    + @"RosterTypeId: '" + newObj.RosterTypeId + @"',"
-                    + @"RosterTypeTitle: '" + newObj.RosterTypeIdSource.Title + @"',"
-                    + @"note: '" + newObj.Note + @"',"
-                    //+ @"color: '" + newObj.ColorCode + @"',"
-                    + @"isnew: 'false'"
-                    + @"}"
-                   + @"] }]";
+                lstResult.Add(new
+                {
+                    id = newObj.Id,
+                    start_date = newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                    end_date = newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                    section_id = newObj.DoctorId,
+                    text = String.Format("{0}<br />Doctor: {1}<br />{2}"
+                            , newObj.RosterTypeIdSource.Title
+                            , newObj.DoctorIdSource.Username
+                            , newObj.Note),
+                    DoctorUserName = newObj.DoctorIdSource.Username,
+                    DoctorShortName = newObj.DoctorIdSource.DisplayName,
+                    newObj.RosterTypeId,
+                    RosterTypeTitle = newObj.RosterTypeIdSource.Title,
+                    note = newObj.Note,
+                    isnew = false
+                });
             }
             tm.Commit();
 
+            result = WebCommon.BuildSuccessfulResult(lstResult);
         }
         catch (Exception ex)
         {
             //Write log cho nay
             tm.Rollback();
-
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
+            return WebCommon.BuildFailedResult(ex.Message);
         }
 
-    StepResult:
         return result;
     }
 
@@ -328,8 +323,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         // Check StaffId
         if (DoctorUsername == null)
         {
-            result = @"[{ 'result': 'false', 'message': 'You must choose staff.', 'data': [] }]";
-            return result;
+            return WebCommon.BuildFailedResult("You must choose staff.");
         }
 
         int Count = 0;
@@ -341,25 +335,16 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             string username = EntitiesUtilities.GetAuthName();
             Users objUser;
             if (!BoFactory.UserBO.ValidateCurrentUser(username, out objUser, out message))
-            {
-                result = @"[{ 'result': 'false', 'message': '" + message + "', 'data': '[]' }]";
-                goto StepResult;
-            }
+                return WebCommon.BuildFailedResult(message);
 
             Roster dr = DataRepository.RosterProvider.GetById(Id);
             if (dr == null || dr.IsDisabled)
-            {
-                result = @"[{ 'result': 'false', 'message': 'There is no roster to update or the roster is expired.', 'data': [] }]";
-                goto StepResult;
-            }
+                return WebCommon.BuildFailedResult("There is no roster to update or the roster is expired.");
 
             // Get Roster Type
             RosterType objRt = DataRepository.RosterTypeProvider.GetByIdIsDisabled(Convert.ToInt32(RosterTypeId), false);
             if (objRt == null)
-            {
-                result = @"[{ 'result': 'false', 'message': 'Roster Type is not exist.', 'data': '[]' }]";
-                goto StepResult;
-            }
+                return WebCommon.BuildFailedResult("Roster Type is not exist.");
 
             dr.DoctorId = objUser.Id;
             dr.RosterTypeId = Convert.ToInt32(RosterTypeId);
@@ -373,92 +358,67 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             // Check if start time >= end time
             if (dr.StartTime >= dr.EndTime)
-            {
-                tm.Rollback();
-                result = @"[{ 'result': 'false', 'message': 'To date must be greater than From date.', 'data': [] }]";
-                goto StepResult;
-            }
+                return WebCommon.BuildFailedResult("To date must be greater than from date.");
 
             // If roster is created in a passed or current day
             if (Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd")) >= Convert.ToDateTime(dr.StartTime.ToString("yyyy/MM/dd")))
             {
                 tm.Rollback();
-                result = @"[{ 'result': 'false', 'message': 'You can not change roster to passed or current date.', 'data': [] }]";
-                goto StepResult;
+                return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
             }
 
             // Check roster before insert new roster
-            string query = string.Format("DoctorId = {0} AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, dr.EndTime, dr.StartTime);
+            string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, dr.EndTime, dr.StartTime);
             TList<Roster> lstRoster = DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
             // If there is no roster -> insert new roster
             if (Count > 1)
             {
                 tm.Rollback();
-                result = @"[{ 'result': 'false', 'message': 'There is roster conflicted: From "
-                    + dr.StartTime.DayOfWeek.ToString() + " " + dr.StartTime.ToString("dd MMM yyyy HH:mm") + " to  "
-                    + dr.EndTime.DayOfWeek.ToString() + " " + dr.EndTime.ToString("dd MMM yyyy HH:mm") + "', 'data': [] }]";
-                goto StepResult;
+                return WebCommon.BuildFailedResult(String.Format("There is roster conflicted: From {0} {1} to {2} {3}"
+                    , dr.StartTime.DayOfWeek.ToString(), dr.StartTime.ToString("dd MMM yyyy HH:mm")
+                    , dr.EndTime.DayOfWeek.ToString(), dr.EndTime.ToString("dd MMM yyyy HH:mm")));
             }
 
+            // Declare list of object are returned
+            var lstResult = new List<object>();
+
             DataRepository.RosterProvider.DeepLoad(dr);
-            result = @"[{ 'result': 'true', 'message': '', 'data': ["
-                + @"{id: '" + dr.Id + @"',"
-                + @"start_date: '" + dr.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                + @"end_date: '" + dr.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                + @"section_id: '" + dr.DoctorId + @"',"
-                + @"text: '" + dr.RosterTypeIdSource.Title + @"<br />Doctor: " + dr.DoctorIdSource.Username + @"<br />";
 
-            if (!string.IsNullOrEmpty(dr.Note))
-                result += dr.Note;
-
-            result += @"',DoctorUserName: '" + dr.DoctorIdSource.Username + @"',"
-                + @"DoctorShortName: '" + dr.DoctorIdSource.DisplayName + @"',"
-                + @"RosterTypeId: '" + dr.RosterTypeId + @"',"
-                + @"RosterTypeTitle: '" + dr.RosterTypeIdSource.Title + @"',"
-                + @"note: '" + dr.Note + @"',"
-                //+ @"color: '" + newObj.ColorCode + @"',"
-                + @"isnew: 'false'"
-                + @"}"
-                + @"] }]";
+            lstResult.Add(new
+            {
+                id = dr.Id,
+                start_date = dr.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                end_date = dr.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                section_id = dr.DoctorId,
+                text = String.Format("{0}<br />Doctor: {1}<br />{2}"
+                        , dr.RosterTypeIdSource.Title
+                        , dr.DoctorIdSource.Username
+                        , dr.Note),
+                DoctorUserName = dr.DoctorIdSource.Username,
+                DoctorShortName = dr.DoctorIdSource.DisplayName,
+                dr.RosterTypeId,
+                RosterTypeTitle = dr.RosterTypeIdSource.Title,
+                note = dr.Note,
+                isnew = false
+            });
             tm.Commit();
+            result = WebCommon.BuildSuccessfulResult(lstResult);
         }
         catch (Exception ex)
         {
             //Write log cho nay
             tm.Rollback();
-
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            return result;
+            return WebCommon.BuildFailedResult(ex.Message);
         }
 
-    StepResult:
         return result;
     }
     #endregion
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string LoadRoster(string Mode, string CurrentDateView)
+    public static string LoadRoster(string mode, string currentDateView)
     {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *              Id: id of roster,
-         *              DoctorUserName: Doctor UserName,
-         *              DoctorShortName: Doctor ShortName,
-         *              RosterTypeId: Roster Type Id,
-         *              RosterTypeTitle: Roster Type Title,
-         *              start_date: start date,
-         *              end_date: end date,
-         *              note: note,
-         *              text: roster type + note,
-         *              color: color of event [get from status],
-         *              isnew: true
-         *          }, {}, {}]
-         *  }
-         */
-
         string result = string.Empty;
         string message = string.Empty;
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
@@ -470,67 +430,47 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             Users objUser;
             if (!BoFactory.UserBO.ValidateCurrentUser(username, out objUser, out message))
             {
-                result = @"[{ 'result': 'false', 'message': '" + message + "', 'data': '[]' }]";
-                goto StepResult;
+                return WebCommon.BuildFailedResult(message);
             }
 
             int count;
-            var lstObj = DataRepository.RosterProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, 10000, out count);
+            var lstObj = DataRepository.RosterProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
             DataRepository.RosterProvider.DeepLoad(lstObj);
+
+            // Declare list of object are returned
+            var lstResult = new List<object>();
 
             string color = string.Empty;
             foreach (Roster item in lstObj)
             {
-                result += @"{id: '" + item.Id + @"',"
-                    + @"start_date: '" + item.StartTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"end_date: '" + item.EndTime.ToString("dd/MM/yyyy HH:mm:ss") + @"',"
-                    + @"section_id: '" + item.DoctorId + @"',"
-                    + @"text: '" + item.RosterTypeIdSource.Title + @"<br />Doctor: " + item.DoctorIdSource.Username + @"<br />";
-
-                if (!string.IsNullOrEmpty(item.Note))
-                    result += item.Note;
-
-                result += @"',DoctorUserName: '" + item.DoctorIdSource.Username + @"',"
-                          + @"DoctorShortName: '" + item.DoctorIdSource.DisplayName + @"',"
-                          + @"RosterTypeId: '" + item.RosterTypeId + @"',"
-                          + @"RosterTypeTitle: '" + item.RosterTypeIdSource.Title + @"',"
-                          + @"note: '" + item.Note + @"',";
-
-                // If roster is passed, set color code and is completed
-                //if (item.StartTime <= DateTime.Now)
-                //{
-                //    item.ColorCode = ServiceFacade.SettingsHelper.CompleteColor;
-                //    item.IsComplete = true;
-                //    DataRepository.DoctorRosterProvider.Save(tm, item);
-
-                //    result += @"readonly: true,";
-                //}
-                //result += @"color: '" + item.ColorCode + @"',";
-                result += @"isnew: 'false'},";
+                lstResult.Add(new
+                {
+                    id = item.Id,
+                    start_date = item.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                    end_date = item.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                    section_id = item.DoctorId,
+                    text = String.Format("{0}<br />Doctor: {1}<br />{2}"
+                            , item.RosterTypeIdSource.Title
+                            , item.DoctorIdSource.Username
+                            , item.Note),
+                    DoctorUserName = item.DoctorIdSource.Username,
+                    DoctorShortName = item.DoctorIdSource.DisplayName,
+                    item.RosterTypeId,
+                    RosterTypeTitle = item.RosterTypeIdSource.Title,
+                    note = item.Note,
+                    isnew = false
+                });
             }
-            if (result.Length > 1)
-            {
-                result = @"[{ 'result': 'true', 'message': '', 'data': "
-                    + "[" + result.Substring(0, result.Length - 1) + "]"
-                    + @" }]";
-            }
-            else
-            {
-                result = @"[{ 'result': 'true', 'message': '' }]";
-            }
-
+            result = WebCommon.BuildSuccessfulResult(lstResult);
             tm.Commit();
         }
         catch (Exception ex)
         {
             //Write log cho nay
             tm.Rollback();
-
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': '[]' }]";
-            goto StepResult;
+            return WebCommon.BuildFailedResult(ex.Message);
         }
 
-    StepResult:
         return result;
     }
 
@@ -582,8 +522,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetRosterType()
     {
-            int count;
-            TList<RosterType> lst = DataRepository.RosterTypeProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, 10000, out count);
+        int count;
+        TList<RosterType> lst = DataRepository.RosterTypeProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, 10000, out count);
 
         string result = "[]";
         if (lst.Count > 0)
@@ -636,20 +576,6 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetDoctorTree()
     {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *          key: name of roles,
-         *          label: name of roles,
-         *          open: true, [priority for Doctor]
-         *          children:  [{
-         *                      key: Staff Id,
-         *                      label: Staff Name
-         *                      }, {}, {}]
-         *          }, {}, {}]
-         *  }]
-         */
         string result = string.Empty;
 
         try
@@ -697,12 +623,10 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 result = result.Substring(0, result.Length - 1);
 
             result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
-            goto StepResult;
         }
         catch (Exception ex)
         {
             result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
         }
     StepResult:
         return result;

@@ -9,7 +9,7 @@
 				AutoGenerateColumns="False"					
 				OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
 				DataSourceID="ScreenDataSource"
-				DataKeyNames="Id"
+				DataKeyNames="ScreenCode"
 				AllowMultiColumnSorting="false"
 				DefaultSortColumnName="" 
 				DefaultSortDirection="Ascending"	
@@ -17,7 +17,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
-				<asp:BoundField DataField="ScreenCode" HeaderText="Screen Code" SortExpression="[ScreenCode]"  />
+				<asp:BoundField DataField="ScreenCode" HeaderText="Screen Code" SortExpression="[ScreenCode]" ReadOnly="True" />
 				<asp:BoundField DataField="ScreenName" HeaderText="Screen Name" SortExpression="[ScreenName]"  />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]"  />

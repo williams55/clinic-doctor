@@ -22,6 +22,7 @@
       <siteMapNode url="~/Admin/Room/RoomFuncEdit.aspx" title="Add New Room Function"  description="" />
     </siteMapNode>
     <siteMapNode title="Appointment" url="~/Admin/Appointment" />
+    <siteMapNode title="Appointment Group" url="~/Admin/AppointmentGroup" />
     <siteMapNode title="Roster" url="~/Admin/Roster" roles="Admin,Manager,Doctor" />
 
     <siteMapNode title="Doctor" roles="Admin,Manager,Doctor">
