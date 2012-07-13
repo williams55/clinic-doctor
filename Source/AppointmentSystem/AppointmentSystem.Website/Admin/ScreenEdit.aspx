@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Screen - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="ScreenDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="ScreenCode" runat="server" DataSourceID="ScreenDataSource">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/ScreenFields.ascx" />
@@ -25,10 +25,10 @@
 		</data:MultiFormView>
 		
 		<data:ScreenDataSource ID="ScreenDataSource" runat="server"
-			SelectMethod="GetById"
+			SelectMethod="GetByScreenCode"
 		>
 			<Parameters>
-				<asp:QueryStringParameter Name="Id" QueryStringField="Id" Type="String" />
+				<asp:QueryStringParameter Name="ScreenCode" QueryStringField="ScreenCode" Type="String" />
 
 			</Parameters>
 		</data:ScreenDataSource>
@@ -49,7 +49,7 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Role Id" DataNavigateUrlFormatString="RoleEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoleIdSource" DataTextField="Title" />
-				<data:HyperLinkField HeaderText="Screen Id" DataNavigateUrlFormatString="ScreenEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ScreenIdSource" DataTextField="ScreenCode" />
+				<data:HyperLinkField HeaderText="Screen Code" DataNavigateUrlFormatString="ScreenEdit.aspx?ScreenCode={0}" DataNavigateUrlFields="ScreenCode" DataContainer="ScreenCodeSource" DataTextField="ScreenName" />
 				<asp:BoundField DataField="Crud" HeaderText="Crud" SortExpression="[Crud]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
@@ -76,7 +76,7 @@
 		    <Parameters>
 				<data:SqlParameter Name="Parameters">
 					<Filters>
-						<data:RoleDetailFilter  Column="ScreenId" QueryStringField="Id" /> 
+						<data:RoleDetailFilter  Column="ScreenCode" QueryStringField="ScreenCode" /> 
 					</Filters>
 				</data:SqlParameter>
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 

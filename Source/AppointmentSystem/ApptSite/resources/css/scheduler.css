@@ -1,7 +1,7 @@
 /*************************Start lightbox form for scheduler***************************/
 .schedulerForm
 {
-    position: absolute;
+    /*position: absolute;
     z-index: 10001;
     display: none;
     font-family: Arial, Sans-Serif;
@@ -11,7 +11,7 @@
     width: 320px;
     top: 22px;
     left: 0px;
-    border: 2px solid #3380CB;
+    border: 2px solid #3380CB;*/
 }
 .schedulerForm table tr td
 {

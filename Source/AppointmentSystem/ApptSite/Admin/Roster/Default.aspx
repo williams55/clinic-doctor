@@ -18,9 +18,6 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_timeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
-    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_units.js") %>"
-        type="text/javascript" charset="utf-8"></script>
-
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_treetimeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
@@ -33,29 +30,24 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_tooltip.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
-    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_collision.js") %>"
-        type="text/javascript" charset="utf-8"></script>
-
-    <script src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/analogclock.js") %>"
-        type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
 
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler.css") %>"
         type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/scheduler.css") %>"
         type="text/css" media="screen" title="no title" />
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/ui-lightness/jquery-ui-1.7.3.custom.css") %>"
-        type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/dialog-form.css") %>"
-        type="text/css" media="screen" title="no title" />
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/analogClock/analogclock.css") %>"
         type="text/css" media="screen" title="no title" />
 
     <script type="text/javascript" charset="utf-8">
-        // Load weekday
         var weekday = <%=Constants.Weekdays %>;
         var stepTime = <%=ServiceFacade.SettingsHelper.MinuteStep %>;
         var html = function (id) { return document.getElementById(id); }; //just a helper
-    </script>
+        
+        var minuteStep = eval(<%=ServiceFacade.SettingsHelper.MinuteStep%>);
+        var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
+        var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
+   </script>
 
     <script src="GRNEditt.js" type="text/javascript"></script>
 
@@ -67,7 +59,7 @@
                 Roster</h5>
         </div>
         <div id="box-other">
-            <div id="RosterForm" class="schedulerForm">
+            <div id="RosterForm" class="dialog-form" title="Roster" style="display: none;">
                 <input type="hidden" id="hdId" value="" />
                 <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
                     <span class="loading"></span>
@@ -87,7 +79,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="header" width="80">
+                        <td class="header">
                             Roster Type
                         </td>
                         <td>
@@ -102,7 +94,7 @@
                         <td>
                             <input id="chkRepeat" type="checkbox" value="repeated" checked="checked" style="float: left;" />
                             <span id="spanMonth">
-                                <input type="text" id="txtMonth" readonly="readonly" style="padding: 4px 2px 4px 2px;" /></span>
+                                <input type="text" id="txtMonth" readonly="readonly" /></span>
                         </td>
                     </tr>
                     <tr id="divWeekday">
@@ -118,8 +110,8 @@
                         </td>
                         <td>
                             <select id="cboFromHour">
-                            </select><span id="loadingFromHour" class="loading"></span> <span id="spanFromDate">
-                                <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;" /></span>
+                            </select><span id="loadingFromHour" class="loading"></span> <span id="spanFromDate" style="display: none;">
+                                <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" /></span>
                         </td>
                     </tr>
                     <tr>
@@ -128,8 +120,8 @@
                         </td>
                         <td>
                             <select id="cboToHour">
-                            </select><span id="loadingToHour" class="loading"></span> <span id="spanToDate">
-                                <input type="text" id="txtToDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;" /></span>
+                            </select><span id="loadingToHour" class="loading"></span> <span id="spanToDate" style="display: none;">
+                                <input type="text" id="txtToDate" class="datePicker" readonly="readonly" /></span>
                         </td>
                     </tr>
                     <tr>
@@ -140,16 +132,9 @@
                             <textarea id="txtNote" cols="10" rows="3" style="width: 100%;"></textarea>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="header" colspan="2">
-                            <input type="submit" value="Save" id="btnSave" style="float: left;" />
-                            <input type="submit" value="Cancel" id="btnCancel" style="float: left;" />
-                            <input type="submit" value="Delete" id="btnDelete" style="float: right;" />
-                        </td>
-                    </tr>
                 </table>
             </div>
-            <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 330px;'>
+            <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 600px;'>
                 <div class="dhx_cal_navline">
                     <div class="dhx_cal_prev_button">
                         &nbsp;</div>

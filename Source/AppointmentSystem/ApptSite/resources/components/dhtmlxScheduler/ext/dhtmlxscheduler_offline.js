@@ -1,79 +1,9 @@
 /*
-Copyright DHTMLX LTD. http://www.dhtmlx.com
-To use this component please contact sales@dhtmlx.com to obtain license
+This software is allowed to use under GPL or you need to obtain Commercial or Enterise License
+to use it in not GPL project. Please contact sales@dhtmlx.com for details
 */
-scheduler.load=function(url,call){
-	if (typeof call == "string"){
-		this._process=call;
-		var type = call;
-		call = arguments[2];
-	}
-
-	this._load_url=url;
-	this._after_call=call;
-	if (url.$proxy) {
-		url.load(this, typeof type == "string" ? type : null);
-		return;
-	}
-
-	this._load(url,this._date);
-};
-
-scheduler._dp_init_backup = scheduler._dp_init;
-scheduler._dp_init = function(dp) {
-	dp._sendData = function(a1,rowId){
-    	if (!a1) return; //nothing to send
-		if (!this.callEvent("onBeforeDataSending",rowId?[rowId,this.getState(rowId),a1]:[null, null, a1])) return false;				
-    	if (rowId)
-			this._in_progress[rowId]=(new Date()).valueOf();
-		if (this.serverProcessor.$proxy) {
-			var mode = this._tMode!="POST" ? 'get' : 'post';
-			var to_send = [];
-			for (var i in a1)
-				to_send.push({ id: i, data: a1[i], operation: this.getState(i)});
-			this.serverProcessor._send(to_send, mode, this);
-			return;
-		}
-
-		var a2=new dtmlXMLLoaderObject(this.afterUpdate,this,true);
-		var a3 = this.serverProcessor+(this._user?(getUrlSymbol(this.serverProcessor)+["dhx_user="+this._user,"dhx_version="+this.obj.getUserData(0,"version")].join("&")):"");
-		if (this._tMode!="POST")
-        	a2.loadXML(a3+((a3.indexOf("?")!=-1)?"&":"?")+this.serialize(a1,rowId));
-		else
-        	a2.loadXML(a3,true,this.serialize(a1,rowId));
-		this._waitMode++;
-    };
-	
-	dp._updatesToParams = function(items) {
-		var stack = {};
-		for (var i = 0; i < items.length; i++)
-			stack[items[i].id] = items[i].data;
-		return this.serialize(stack);
-	};
-
-	dp._processResult = function(text, xml, loader) {
-		if (loader.status != 200) {
-			for (var i in this._in_progress) {
-				var state = this.getState(i);
-				this.afterUpdateCallback(i, i, state, null);
-			}
-			return;
-		}
-		xml = new dtmlXMLLoaderObject(function() {},this,true);
-		xml.loadXMLString(text);
-		xml.xmlDoc = loader;
-
-		this.afterUpdate(this, null, null, null, xml);
-	};
-	this._dp_init_backup(dp);
-}
-
-if (window.dataProcessor)
-	dataProcessor.prototype.init=function(obj){
-		this.init_original(obj);
-		obj._dataprocessor=this;
-		
-		this.setTransactionMode("POST",true);
-		if (!this.serverProcessor.$proxy)
-			this.serverProcessor+=(this.serverProcessor.indexOf("?")!=-1?"&":"?")+"editing=true";
-	};
+scheduler._extra_xle=!1;scheduler.attachEvent("onXLE",function(){if(!scheduler._extra_xle){var a=!1,c;for(c in scheduler._events)if(scheduler._events[c].text){a=!0;break}if((localStorage._updated_events||!a)&&localStorage._events){scheduler._extra_xle=!0;scheduler.parse(localStorage._events,"json");scheduler._extra_xle=!1;var b=scheduler._dataprocessor,e=JSON.parse(localStorage._updated_events);b.setUpdateMode("off");for(var d in e)b.setUpdated(d,!0,e[d]);b.sendData();b.setUpdateMode("cell")}}});
+scheduler.attachEvent("onBeforeEventDelete",function(a){var c=scheduler._dataprocessor.getState(a);if(c=="inserted"&&localStorage._updated_events){var b=JSON.parse(localStorage._updated_events);delete b[a];for(a in b){localStorage._updated_events=JSON.stringify(b);break}}return!0});var old_delete_event=scheduler.deleteEvent;scheduler.deleteEvent=function(a,c){old_delete_event.apply(this,arguments);localStorage._events=scheduler.toJSON()};scheduler._offline={};
+scheduler._offline._after_update_events=[];var old_dp_init=scheduler._dp_init;
+scheduler._dp_init=function(a){old_dp_init.apply(this,arguments);a.attachEvent("onAfterUpdate",function(c){scheduler._offline._after_update_events.push(c);return!0});a.attachEvent("onAfterUpdateFinish",function(){localStorage._events=scheduler.toJSON();for(var c=JSON.parse(localStorage._updated_events),b=0;b<scheduler._offline._after_update_events.length;b++)delete c[scheduler._offline._after_update_events[b]];var a=!1,d;for(d in c){a=!0;break}a?(localStorage._updated_events=JSON.stringify(c),scheduler._offline._after_update_event=
+[]):delete localStorage._updated_events;return!0});a.attachEvent("onBeforeDataSending",function(a,b,e){var d={};localStorage._updated_events&&(d=JSON.parse(localStorage._updated_events));for(var f in e){var g=scheduler._dataprocessor.action_param;if(d[f]&&(d[f][g]=="inserted"||e[f][g]=="deleted")||!d[f])d[f]=e[f][g]}localStorage._events=scheduler.toJSON();localStorage._updated_events=JSON.stringify(d);return!0});dhtmlxError.catchError("LoadXML",function(){for(var a in scheduler._dataprocessor._in_progress)delete scheduler._dataprocessor._in_progress[a]})};

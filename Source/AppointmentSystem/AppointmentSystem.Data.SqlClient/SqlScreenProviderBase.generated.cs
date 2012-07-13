@@ -103,18 +103,19 @@ namespace AppointmentSystem.Data.SqlClient
 		/// <summary>
 		/// 	Deletes a row from the DataSource.
 		/// </summary>
-		/// <param name="_id">. Primary Key.</param>	
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment.... Primary Key.</param>	
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override bool Delete(TransactionManager transactionManager, System.Int32 _id)
+		public override bool Delete(TransactionManager transactionManager, System.String _screenCode)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Screen_Delete", _useStoredProcedure);
-			database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
+			database.AddInParameter(commandWrapper, "@ScreenCode", DbType.AnsiString, _screenCode);
 			
 			//Provider Data Requesting Command Event
 			OnDataRequesting(new CommandEventArgs(commandWrapper, "Delete")); 
@@ -134,7 +135,7 @@ namespace AppointmentSystem.Data.SqlClient
 			if (DataRepository.Provider.EnableEntityTracking)
 			{
 				string entityKey = EntityLocator.ConstructKeyFromPkItems(typeof(Screen)
-					,_id);
+					,_screenCode);
 				EntityManager.StopTracking(entityKey);
 			}
 			
@@ -175,7 +176,6 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
-		database.AddInParameter(commandWrapper, "@Id", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@ScreenCode", DbType.AnsiString, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@ScreenName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
@@ -197,12 +197,6 @@ namespace AppointmentSystem.Data.SqlClient
 			char[] singleQuote = {'\''};
 	   		foreach (string clause in clauses)
 			{
-				if (clause.Trim().StartsWith("id ") || clause.Trim().StartsWith("id="))
-				{
-					database.SetParameterValue(commandWrapper, "@Id", 
-						clause.Trim().Remove(0,2).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
-					continue;
-				}
 				if (clause.Trim().StartsWith("screencode ") || clause.Trim().StartsWith("screencode="))
 				{
 					database.SetParameterValue(commandWrapper, "@ScreenCode", 
@@ -519,13 +513,14 @@ namespace AppointmentSystem.Data.SqlClient
 	
 		#region Get By Index Functions
 
-		#region GetById
+		#region GetByScreenCode
 					
 		/// <summary>
 		/// 	Gets rows from the datasource based on the PK_Screen index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id"></param>
+		/// <param name="_screenCode">Link name of screen. 
+		/// 		/// Ex: Status, Appointment...</param>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">out parameter to get total records for query.</param>
@@ -534,19 +529,19 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override AppointmentSystem.Entities.Screen GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength, out int count)
+		public override AppointmentSystem.Entities.Screen GetByScreenCode(TransactionManager transactionManager, System.String _screenCode, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Screen_GetById", _useStoredProcedure);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Screen_GetByScreenCode", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
+				database.AddInParameter(commandWrapper, "@ScreenCode", DbType.AnsiString, _screenCode);
 			
 			IDataReader reader = null;
 			TList<Screen> tmp = new TList<Screen>();
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetById", tmp)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByScreenCode", tmp)); 
 
 				if (transactionManager != null)
 				{
@@ -569,7 +564,7 @@ namespace AppointmentSystem.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetById", tmp));
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByScreenCode", tmp));
 			}
 			finally 
 			{
@@ -630,24 +625,21 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.DestinationTableName = "Screen";
 			
 			DataTable dataTable = new DataTable();
-			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int32));
+			DataColumn col0 = dataTable.Columns.Add("ScreenCode", typeof(System.String));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("ScreenCode", typeof(System.String));
-			col1.AllowDBNull = false;		
-			DataColumn col2 = dataTable.Columns.Add("ScreenName", typeof(System.String));
-			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col3.AllowDBNull = false;		
-			DataColumn col4 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col5.AllowDBNull = false;		
-			DataColumn col6 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col7.AllowDBNull = false;		
+			DataColumn col1 = dataTable.Columns.Add("ScreenName", typeof(System.String));
+			col1.AllowDBNull = true;		
+			DataColumn col2 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col2.AllowDBNull = false;		
+			DataColumn col3 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col3.AllowDBNull = true;		
+			DataColumn col4 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col4.AllowDBNull = false;		
+			DataColumn col5 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col5.AllowDBNull = true;		
+			DataColumn col6 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col6.AllowDBNull = false;		
 			
-			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("ScreenCode", "ScreenCode");
 			bulkCopy.ColumnMappings.Add("ScreenName", "ScreenName");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
@@ -662,9 +654,6 @@ namespace AppointmentSystem.Data.SqlClient
 					continue;
 					
 				DataRow row = dataTable.NewRow();
-				
-					row["Id"] = entity.Id;
-							
 				
 					row["ScreenCode"] = entity.ScreenCode;
 							
@@ -721,7 +710,6 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Screen_Insert", _useStoredProcedure);
 			
-			database.AddOutParameter(commandWrapper, "@Id", DbType.Int32, 4);
 			database.AddInParameter(commandWrapper, "@ScreenCode", DbType.AnsiString, entity.ScreenCode );
 			database.AddInParameter(commandWrapper, "@ScreenName", DbType.String, entity.ScreenName );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
@@ -744,9 +732,8 @@ namespace AppointmentSystem.Data.SqlClient
 				results = Utility.ExecuteNonQuery(database,commandWrapper);
 			}
 					
-			object _id = database.GetParameterValue(commandWrapper, "@Id");
-			entity.Id = (System.Int32)_id;
 			
+			entity.OriginalScreenCode = entity.ScreenCode;
 			
 			entity.AcceptChanges();
 	
@@ -777,8 +764,8 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Screen_Update", _useStoredProcedure);
 			
-			database.AddInParameter(commandWrapper, "@Id", DbType.Int32, entity.Id );
 			database.AddInParameter(commandWrapper, "@ScreenCode", DbType.AnsiString, entity.ScreenCode );
+			database.AddInParameter(commandWrapper, "@OriginalScreenCode", DbType.AnsiString, entity.OriginalScreenCode);
 			database.AddInParameter(commandWrapper, "@ScreenName", DbType.String, entity.ScreenName );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -804,6 +791,7 @@ namespace AppointmentSystem.Data.SqlClient
 			if (DataRepository.Provider.EnableEntityTracking)
 				EntityManager.StopTracking(entity.EntityTrackingKey);
 			
+			entity.OriginalScreenCode = entity.ScreenCode;
 			
 			entity.AcceptChanges();
 			

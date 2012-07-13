@@ -82,7 +82,7 @@ namespace AppointmentSystem.Entities
 		/// Creates a new <see cref="RoleDetailBase"/> instance.
 		///</summary>
 		///<param name="_roleId"></param>
-		///<param name="_screenId">What screen role can access</param>
+		///<param name="_screenCode">What screen role can access</param>
 		///<param name="_crud">Define what action user can do.
 		/// 		/// C: Create
 		/// 		/// R: Read
@@ -93,7 +93,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public RoleDetailBase(System.Int32? _roleId, System.Int32? _screenId, System.String _crud, 
+		public RoleDetailBase(System.Int32? _roleId, System.String _screenCode, System.String _crud, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
 		{
@@ -101,7 +101,7 @@ namespace AppointmentSystem.Entities
 			this.backupData = null;
 
 			this.RoleId = _roleId;
-			this.ScreenId = _screenId;
+			this.ScreenCode = _screenCode;
 			this.Crud = _crud;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
@@ -114,7 +114,7 @@ namespace AppointmentSystem.Entities
 		/// A simple factory method to create a new <see cref="RoleDetail"/> instance.
 		///</summary>
 		///<param name="_roleId"></param>
-		///<param name="_screenId">What screen role can access</param>
+		///<param name="_screenCode">What screen role can access</param>
 		///<param name="_crud">Define what action user can do.
 		/// 		/// C: Create
 		/// 		/// R: Read
@@ -125,13 +125,13 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static RoleDetail CreateRoleDetail(System.Int32? _roleId, System.Int32? _screenId, System.String _crud, 
+		public static RoleDetail CreateRoleDetail(System.Int32? _roleId, System.String _screenCode, System.String _crud, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
 		{
 			RoleDetail newRoleDetail = new RoleDetail();
 			newRoleDetail.RoleId = _roleId;
-			newRoleDetail.ScreenId = _screenId;
+			newRoleDetail.ScreenCode = _screenCode;
 			newRoleDetail.Crud = _crud;
 			newRoleDetail.IsDisabled = _isDisabled;
 			newRoleDetail.CreateUser = _createUser;
@@ -220,39 +220,37 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or sets the ScreenId property. 
+		/// 	Gets or sets the ScreenCode property. 
 		///		What screen role can access
 		/// </summary>
-		/// <value>This type is int.</value>
+		/// <value>This type is varchar.</value>
 		/// <remarks>
 		/// This property can be set to null. 
-		/// If this column is null, this property will return (int)0. It is up to the developer
-		/// to check the value of IsScreenIdNull() and perform business logic appropriately.
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@"What screen role can access"), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true)]
-		public virtual System.Int32? ScreenId
+		[DataObjectField(false, false, true, 20)]
+		public virtual System.String ScreenCode
 		{
 			get
 			{
-				return this.entityData.ScreenId; 
+				return this.entityData.ScreenCode; 
 			}
 			
 			set
 			{
-				if (this.entityData.ScreenId == value)
+				if (this.entityData.ScreenCode == value)
 					return;
 					
-				OnColumnChanging(RoleDetailColumn.ScreenId, this.entityData.ScreenId);
-				this.entityData.ScreenId = value;
+				OnColumnChanging(RoleDetailColumn.ScreenCode, this.entityData.ScreenCode);
+				this.entityData.ScreenCode = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
-				OnColumnChanged(RoleDetailColumn.ScreenId, this.entityData.ScreenId);
-				OnPropertyChanged("ScreenId");
+				OnColumnChanged(RoleDetailColumn.ScreenCode, this.entityData.ScreenCode);
+				OnPropertyChanged("ScreenCode");
 			}
 		}
 		
@@ -488,13 +486,13 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Gets or sets the source <see cref="Screen"/>.
 		/// </summary>
-		/// <value>The source Screen for ScreenId.</value>
+		/// <value>The source Screen for ScreenCode.</value>
         [XmlIgnore()]
 		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual Screen ScreenIdSource
+		public virtual Screen ScreenCodeSource
       	{
-            get { return entityData.ScreenIdSource; }
-            set { entityData.ScreenIdSource = value; }
+            get { return entityData.ScreenCodeSource; }
+            set { entityData.ScreenCodeSource = value; }
       	}
 		#endregion
 		
@@ -511,6 +509,8 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("ScreenCode", "Screen Code", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Crud", "Crud", 4));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -538,7 +538,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "RoleId", "ScreenId", "Crud", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "RoleId", "ScreenCode", "Crud", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -688,7 +688,7 @@ namespace AppointmentSystem.Entities
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
 				copy.RoleId = this.RoleId;
-				copy.ScreenId = this.ScreenId;
+				copy.ScreenCode = this.ScreenCode;
 				copy.Crud = this.Crud;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -700,10 +700,10 @@ namespace AppointmentSystem.Entities
 				copy.RoleIdSource = existingCopies[this.RoleIdSource] as Role;
 			else
 				copy.RoleIdSource = MakeCopyOf(this.RoleIdSource, existingCopies) as Role;
-			if (this.ScreenIdSource != null && existingCopies.Contains(this.ScreenIdSource))
-				copy.ScreenIdSource = existingCopies[this.ScreenIdSource] as Screen;
+			if (this.ScreenCodeSource != null && existingCopies.Contains(this.ScreenCodeSource))
+				copy.ScreenCodeSource = existingCopies[this.ScreenCodeSource] as Screen;
 			else
-				copy.ScreenIdSource = MakeCopyOf(this.ScreenIdSource, existingCopies) as Screen;
+				copy.ScreenCodeSource = MakeCopyOf(this.ScreenCodeSource, existingCopies) as Screen;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -839,8 +839,8 @@ namespace AppointmentSystem.Entities
 					return entityData.Id != _originalData.Id;
 					case RoleDetailColumn.RoleId:
 					return entityData.RoleId != _originalData.RoleId;
-					case RoleDetailColumn.ScreenId:
-					return entityData.ScreenId != _originalData.ScreenId;
+					case RoleDetailColumn.ScreenCode:
+					return entityData.ScreenCode != _originalData.ScreenCode;
 					case RoleDetailColumn.Crud:
 					return entityData.Crud != _originalData.Crud;
 					case RoleDetailColumn.IsDisabled:
@@ -882,7 +882,7 @@ namespace AppointmentSystem.Entities
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.RoleId != _originalData.RoleId;
-			result = result || entityData.ScreenId != _originalData.ScreenId;
+			result = result || entityData.ScreenCode != _originalData.ScreenCode;
 			result = result || entityData.Crud != _originalData.Crud;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
@@ -900,7 +900,7 @@ namespace AppointmentSystem.Entities
 			if (_originalData != null)
 				return CreateRoleDetail(
 				_originalData.RoleId,
-				_originalData.ScreenId,
+				_originalData.ScreenCode,
 				_originalData.Crud,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
@@ -938,7 +938,7 @@ namespace AppointmentSystem.Entities
         {
 			return this.Id.GetHashCode() ^ 
 					((this.RoleId == null) ? string.Empty : this.RoleId.ToString()).GetHashCode() ^ 
-					((this.ScreenId == null) ? string.Empty : this.ScreenId.ToString()).GetHashCode() ^ 
+					((this.ScreenCode == null) ? string.Empty : this.ScreenCode.ToString()).GetHashCode() ^ 
 					((this.Crud == null) ? string.Empty : this.Crud.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -988,12 +988,12 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
-			if ( Object1.ScreenId != null && Object2.ScreenId != null )
+			if ( Object1.ScreenCode != null && Object2.ScreenCode != null )
 			{
-				if (Object1.ScreenId != Object2.ScreenId)
+				if (Object1.ScreenCode != Object2.ScreenCode)
 					equal = false;
 			}
-			else if (Object1.ScreenId == null ^ Object2.ScreenId == null )
+			else if (Object1.ScreenCode == null ^ Object2.ScreenCode == null )
 			{
 				equal = false;
 			}
@@ -1086,8 +1086,8 @@ namespace AppointmentSystem.Entities
             		                 
             	
             	
-            	case RoleDetailColumn.ScreenId:
-            		return this.ScreenId.Value.CompareTo(rhs.ScreenId.Value);
+            	case RoleDetailColumn.ScreenCode:
+            		return this.ScreenCode.CompareTo(rhs.ScreenCode);
             		
             		                 
             	
@@ -1260,10 +1260,10 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{10}{9}- Id: {0}{9}- RoleId: {1}{9}- ScreenId: {2}{9}- Crud: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
+				"{10}{9}- Id: {0}{9}- RoleId: {1}{9}- ScreenCode: {2}{9}- Crud: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
 				this.Id,
 				(this.RoleId == null) ? string.Empty : this.RoleId.ToString(),
-				(this.ScreenId == null) ? string.Empty : this.ScreenId.ToString(),
+				(this.ScreenCode == null) ? string.Empty : this.ScreenCode.ToString(),
 				(this.Crud == null) ? string.Empty : this.Crud.ToString(),
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -1310,9 +1310,9 @@ namespace AppointmentSystem.Entities
 		public System.Int32?		  RoleId = null;
 		
 		/// <summary>
-		/// ScreenId : What screen role can access
+		/// ScreenCode : What screen role can access
 		/// </summary>
-		public System.Int32?		  ScreenId = null;
+		public System.String		  ScreenCode = null;
 		
 		/// <summary>
 		/// Crud : Define what action user can do.
@@ -1364,18 +1364,18 @@ namespace AppointmentSystem.Entities
             get { return this._roleIdSource; }
             set { this._roleIdSource = value; }
       	}
-		private Screen _screenIdSource = null;
+		private Screen _screenCodeSource = null;
 		
 		/// <summary>
 		/// Gets or sets the source <see cref="Screen"/>.
 		/// </summary>
-		/// <value>The source Screen for ScreenId.</value>
+		/// <value>The source Screen for ScreenCode.</value>
 		[XmlIgnore()]
 		[Browsable(false)]
-		public virtual Screen ScreenIdSource
+		public virtual Screen ScreenCodeSource
       	{
-            get { return this._screenIdSource; }
-            set { this._screenIdSource = value; }
+            get { return this._screenCodeSource; }
+            set { this._screenCodeSource = value; }
       	}
 		#endregion
 		#endregion Variable Declarations
@@ -1397,7 +1397,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.RoleId = this.RoleId;
-			_tmp.ScreenId = this.ScreenId;
+			_tmp.ScreenCode = this.ScreenCode;
 			_tmp.Crud = this.Crud;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1408,8 +1408,8 @@ namespace AppointmentSystem.Entities
 			#region Source Parent Composite Entities
 			if (this.RoleIdSource != null)
 				_tmp.RoleIdSource = MakeCopyOf(this.RoleIdSource) as Role;
-			if (this.ScreenIdSource != null)
-				_tmp.ScreenIdSource = MakeCopyOf(this.ScreenIdSource) as Screen;
+			if (this.ScreenCodeSource != null)
+				_tmp.ScreenCodeSource = MakeCopyOf(this.ScreenCodeSource) as Screen;
 			#endregion
 		
 			#region Child Collections
@@ -1435,7 +1435,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.RoleId = this.RoleId;
-			_tmp.ScreenId = this.ScreenId;
+			_tmp.ScreenCode = this.ScreenCode;
 			_tmp.Crud = this.Crud;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1448,10 +1448,10 @@ namespace AppointmentSystem.Entities
 				_tmp.RoleIdSource = existingCopies[this.RoleIdSource] as Role;
 			else
 				_tmp.RoleIdSource = MakeCopyOf(this.RoleIdSource, existingCopies) as Role;
-			if (this.ScreenIdSource != null && existingCopies.Contains(this.ScreenIdSource))
-				_tmp.ScreenIdSource = existingCopies[this.ScreenIdSource] as Screen;
+			if (this.ScreenCodeSource != null && existingCopies.Contains(this.ScreenCodeSource))
+				_tmp.ScreenCodeSource = existingCopies[this.ScreenCodeSource] as Screen;
 			else
-				_tmp.ScreenIdSource = MakeCopyOf(this.ScreenIdSource, existingCopies) as Screen;
+				_tmp.ScreenCodeSource = MakeCopyOf(this.ScreenCodeSource, existingCopies) as Screen;
 			#endregion
 		
 			#region Child Collections
@@ -1836,11 +1836,11 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("RoleId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
 		RoleId = 2,
 		/// <summary>
-		/// ScreenId : What screen role can access
+		/// ScreenCode : What screen role can access
 		/// </summary>
-		[EnumTextValue("ScreenId")]
-		[ColumnEnum("ScreenId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
-		ScreenId = 3,
+		[EnumTextValue("ScreenCode")]
+		[ColumnEnum("ScreenCode", typeof(System.String), System.Data.DbType.AnsiString, false, false, true, 20)]
+		ScreenCode = 3,
 		/// <summary>
 		/// Crud : Define what action user can do.
 		/// 		/// C: Create

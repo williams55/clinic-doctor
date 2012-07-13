@@ -97,7 +97,7 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Role Id" DataNavigateUrlFormatString="RoleEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoleIdSource" DataTextField="Title" />
-				<data:HyperLinkField HeaderText="Screen Id" DataNavigateUrlFormatString="ScreenEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ScreenIdSource" DataTextField="ScreenCode" />
+				<data:HyperLinkField HeaderText="Screen Code" DataNavigateUrlFormatString="ScreenEdit.aspx?ScreenCode={0}" DataNavigateUrlFields="ScreenCode" DataContainer="ScreenCodeSource" DataTextField="ScreenName" />
 				<asp:BoundField DataField="Crud" HeaderText="Crud" SortExpression="[Crud]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				

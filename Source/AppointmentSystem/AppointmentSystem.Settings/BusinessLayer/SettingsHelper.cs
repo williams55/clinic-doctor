@@ -303,5 +303,26 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
         }
         #endregion
+
+        #region GetPaged All
+        // Max number can get all when using GetPaged
+        public int GetPagedLength
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("GET_PAGED_LENGTH", out result))
+                {
+                    throw new ApplicationException("Setting GET_PAGED_LENGTH was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("GET_PAGED_LENGTH", value);
+            }
+        }
+        #endregion
     }
 }

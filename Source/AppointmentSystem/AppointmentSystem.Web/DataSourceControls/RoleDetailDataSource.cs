@@ -161,7 +161,7 @@ namespace AppointmentSystem.Web.Data
 			
 			System.Int64 _id;
 			System.Int32? _roleId_nullable;
-			System.Int32? _screenId_nullable;
+			System.String _screenCode_nullable;
 
 			switch ( SelectMethod )
 			{
@@ -199,9 +199,9 @@ namespace AppointmentSystem.Web.Data
 					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
 					results = RoleDetailProvider.GetByRoleId(GetTransactionManager(), _roleId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
-				case RoleDetailSelectMethod.GetByScreenId:
-					_screenId_nullable = (System.Int32?) EntityUtil.ChangeType(values["ScreenId"], typeof(System.Int32?));
-					results = RoleDetailProvider.GetByScreenId(GetTransactionManager(), _screenId_nullable, this.StartIndex, this.PageSize, out count);
+				case RoleDetailSelectMethod.GetByScreenCode:
+					_screenCode_nullable = (System.String) EntityUtil.ChangeType(values["ScreenCode"], typeof(System.String));
+					results = RoleDetailProvider.GetByScreenCode(GetTransactionManager(), _screenCode_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				// M:M
 				// Custom
@@ -388,9 +388,9 @@ namespace AppointmentSystem.Web.Data
 		/// </summary>
 		GetByRoleId,
 		/// <summary>
-		/// Represents the GetByScreenId method.
+		/// Represents the GetByScreenCode method.
 		/// </summary>
-		GetByScreenId
+		GetByScreenCode
 	}
 	
 	#endregion RoleDetailSelectMethod

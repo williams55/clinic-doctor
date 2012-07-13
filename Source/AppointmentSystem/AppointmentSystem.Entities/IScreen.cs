@@ -12,18 +12,18 @@ namespace AppointmentSystem.Entities
 	public interface IScreen 
 	{
 		/// <summary>			
-		/// Id : 
-		/// </summary>
-		/// <remarks>Member of the primary key of the underlying table "Screen"</remarks>
-		System.Int32 Id { get; set; }
-				
-		
-		
-		/// <summary>
 		/// ScreenCode : Link name of screen. 
 		/// 		/// Ex: Status, Appointment...
 		/// </summary>
-		System.String  ScreenCode  { get; set; }
+		/// <remarks>Member of the primary key of the underlying table "Screen"</remarks>
+		System.String ScreenCode { get; set; }
+				
+		/// <summary>
+		/// keep a copy of the original so it can be used for editable primary keys.
+		/// </summary>
+		System.String OriginalScreenCode { get; set; }
+			
+		
 		
 		/// <summary>
 		/// ScreenName : 
@@ -66,7 +66,7 @@ namespace AppointmentSystem.Entities
 
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _roleDetailScreenId
+		///	which are related to this object through the relation _roleDetailScreenCode
 		/// </summary>	
 		TList<RoleDetail> RoleDetailCollection {  get;  set;}	
 

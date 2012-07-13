@@ -1,19 +1,19 @@
 /* path to the stylesheets for the color picker */
 var style_path = "resources/css/colors";
 
-$(document).ready(function () {
+$(document).ready(function() {
     /* messages fade away when dismiss is clicked */
-    $(".message > .dismiss > a").live("click", function (event) {
+    $(".message > .dismiss > a").live("click", function(event) {
         var value = $(this).attr("href");
         var id = value.substring(value.indexOf('#') + 1);
 
-        $("#" + id).fadeOut('slow', function () { });
+        $("#" + id).fadeOut('slow', function() { });
 
         return false;
     });
 
     /* color picker */
-    $("#colors-switcher > a").click(function () {
+    $("#colors-switcher > a").click(function() {
         var style = $("#color");
 
         style.attr("href", "" + style_path + "/" + $(this).attr("title").toLowerCase() + ".css");
@@ -21,7 +21,7 @@ $(document).ready(function () {
         return false;
     });
 
-    $("#menu h6 a").click(function () {
+    $("#menu h6 a").click(function() {
         var link = $(this);
         var value = link.attr("href");
         var id = value.substring(value.indexOf('#') + 1);
@@ -38,10 +38,10 @@ $(document).ready(function () {
         }
     });
 
-    $("#menu li[class~=collapsible]").click(function () {
+    $("#menu li[class~=collapsible]").click(function() {
         var element = $(this);
 
-        element.children("a:first-child").each(function () {
+        element.children("a:first-child").each(function() {
             var child = $(this);
 
             if (child.attr("class") == "plus") {
@@ -51,7 +51,7 @@ $(document).ready(function () {
             }
         });
 
-        element.children("ul").each(function () {
+        element.children("ul").each(function() {
             var child = $(this);
 
             if (child.attr("class") == "collapsed") {
@@ -62,3 +62,28 @@ $(document).ready(function () {
         });
     });
 });
+
+function ShowDialog(objId, title, message, url) {
+    $("#spanMessage-content").html(message);
+    if (title) {
+        $("#dialog-message-title").attr("title", title);
+    }
+    $("#dialog-message-title").dialog({
+        resizable: false,
+        modal: true,
+        buttons: {
+            Ok: function() {
+                $(this).dialog("close");
+                if (objId) {
+                    $('#' + objId).focus();
+                    $('#' + objId).select();
+                }
+            }
+        },
+        close: function() {
+            if (url) {
+                location.href = url;
+            }
+        }
+    });
+}

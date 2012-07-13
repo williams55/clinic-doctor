@@ -2,6 +2,7 @@
     CodeFile="Default.aspx.cs" Inherits="Admin_Room_Default" Title="Untitled Page" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
+    Room Management
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
 

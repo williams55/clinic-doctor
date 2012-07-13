@@ -6,7 +6,7 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataTitle" runat="server" Text="Title:" AssociatedControlID="dataTitle" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataTitle" Text='<%# Bind("Title") %>' MaxLength="10"></asp:TextBox>
+					<asp:TextBox runat="server" ID="dataTitle" Text='<%# Bind("Title") %>' MaxLength="50"></asp:TextBox>
 				</td>
 			</tr>
 			<tr>

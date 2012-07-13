@@ -49,6 +49,7 @@
     <Compile Include="InterfaceBO\IUserBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BO\UserBO.cs" />
+    <Compile Include="Util\RightAccess.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\freelance-dll\Framework\FCommon\Common.csproj">

@@ -11,10 +11,10 @@
 				</td>
 			</tr>
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataScreenId" runat="server" Text="Screen Id:" AssociatedControlID="dataScreenId" /></td>
+        <td class="literal"><asp:Label ID="lbldataScreenCode" runat="server" Text="Screen Code:" AssociatedControlID="dataScreenCode" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataScreenId" DataSourceID="ScreenIdScreenDataSource" DataTextField="ScreenCode" DataValueField="Id" SelectedValue='<%# Bind("ScreenId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
-					<data:ScreenDataSource ID="ScreenIdScreenDataSource" runat="server" SelectMethod="GetAll"  />
+					<data:EntityDropDownList runat="server" ID="dataScreenCode" DataSourceID="ScreenCodeScreenDataSource" DataTextField="ScreenName" DataValueField="ScreenCode" SelectedValue='<%# Bind("ScreenCode") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:ScreenDataSource ID="ScreenCodeScreenDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>

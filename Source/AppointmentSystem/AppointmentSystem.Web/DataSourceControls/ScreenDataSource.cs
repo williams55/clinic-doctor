@@ -159,7 +159,7 @@ namespace AppointmentSystem.Web.Data
 			Screen item;
 			count = 0;
 			
-			System.Int32 _id;
+			System.String _screenCode;
 
 			switch ( SelectMethod )
 			{
@@ -184,9 +184,9 @@ namespace AppointmentSystem.Web.Data
 						results = ScreenProvider.Find(GetTransactionManager(), WhereClause, StartIndex, PageSize, out count);
                     break;
 				// PK
-				case ScreenSelectMethod.GetById:
-					_id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
-					item = ScreenProvider.GetById(GetTransactionManager(), _id);
+				case ScreenSelectMethod.GetByScreenCode:
+					_screenCode = ( values["ScreenCode"] != null ) ? (System.String) EntityUtil.ChangeType(values["ScreenCode"], typeof(System.String)) : string.Empty;
+					item = ScreenProvider.GetByScreenCode(GetTransactionManager(), _screenCode);
 					results = new TList<Screen>();
 					if ( item != null ) results.Add(item);
 					count = results.Count;
@@ -223,7 +223,7 @@ namespace AppointmentSystem.Web.Data
 		/// <param name="values">An IDictionary object of name/value pairs.</param>
 		protected override void GetSelectParameters(IDictionary values)
 		{
-			if ( SelectMethod == ScreenSelectMethod.Get || SelectMethod == ScreenSelectMethod.GetById )
+			if ( SelectMethod == ScreenSelectMethod.Get || SelectMethod == ScreenSelectMethod.GetByScreenCode )
 			{
 				EntityId = GetEntityKey(values);
 			}
@@ -370,9 +370,9 @@ namespace AppointmentSystem.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
+		/// Represents the GetByScreenCode method.
 		/// </summary>
-		GetById
+		GetByScreenCode
 	}
 	
 	#endregion ScreenSelectMethod
