@@ -34,7 +34,7 @@ namespace AppointmentBusiness.Util
                 // Get list of role
                 if (lstUserRole.Select(userRole => DataRepository.RoleDetailProvider.GetPaged(
                     String.Format("IsDisabled = 'False' AND RoleId = {0} AND ScreenCode = '{1}'", userRole.RoleId, screen)
-                    , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count)).Any(lstRoleDetail => lstRoleDetail.Exists(x => x.ScreenCode.Contains(operation))))
+                    , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count)).Any(lstRoleDetail => lstRoleDetail.Exists(x => x.Crud.Contains(operation))))
                 {
                     return true;
                 }
