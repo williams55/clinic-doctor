@@ -22,15 +22,33 @@
 				</td>
 			</tr>
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataFirstname" runat="server" Text="Firstname:" AssociatedControlID="dataFirstname" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataFirstname" Text='<%# Bind("Firstname") %>' MaxLength="50"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataLastname" runat="server" Text="Lastname:" AssociatedControlID="dataLastname" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataLastname" Text='<%# Bind("Lastname") %>' MaxLength="50"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataDisplayName" runat="server" Text="Display Name:" AssociatedControlID="dataDisplayName" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataDisplayName" Text='<%# Bind("DisplayName") %>' MaxLength="200"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataDisplayName" runat="server" Display="Dynamic" ControlToValidate="dataDisplayName" ErrorMessage="Required"></asp:RequiredFieldValidator>
+					<asp:TextBox runat="server" ID="dataDisplayName" Text='<%# Bind("DisplayName") %>' MaxLength="50"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataDisplayName" runat="server" Display="Dynamic" ControlToValidate="dataDisplayName" ErrorMessage="Required"></asp:RequiredFieldValidator>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataCellPhone" runat="server" Text="Cell Phone:" AssociatedControlID="dataCellPhone" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataCellPhone" Text='<%# Bind("CellPhone") %>' MaxLength="20"></asp:TextBox>
 				</td>
 			</tr>
 			<tr>
         <td class="literal"><asp:Label ID="lbldataEmail" runat="server" Text="Email:" AssociatedControlID="dataEmail" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataEmail" Text='<%# Bind("Email") %>' MaxLength="100"></asp:TextBox>
+					<asp:TextBox runat="server" ID="dataEmail" Text='<%# Bind("Email") %>' MaxLength="50"></asp:TextBox>
 				</td>
 			</tr>
 			<tr>

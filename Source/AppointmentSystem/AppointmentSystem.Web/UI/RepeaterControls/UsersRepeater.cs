@@ -359,6 +359,24 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Title; }
 		}
         /// <summary>
+        /// Gets the Firstname
+        /// </summary>
+        /// <value>The Firstname.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String Firstname
+		{
+			get { return _entity.Firstname; }
+		}
+        /// <summary>
+        /// Gets the Lastname
+        /// </summary>
+        /// <value>The Lastname.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String Lastname
+		{
+			get { return _entity.Lastname; }
+		}
+        /// <summary>
         /// Gets the DisplayName
         /// </summary>
         /// <value>The DisplayName.</value>
@@ -366,6 +384,15 @@ namespace AppointmentSystem.Web.UI
 		public System.String DisplayName
 		{
 			get { return _entity.DisplayName; }
+		}
+        /// <summary>
+        /// Gets the CellPhone
+        /// </summary>
+        /// <value>The CellPhone.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String CellPhone
+		{
+			get { return _entity.CellPhone; }
 		}
         /// <summary>
         /// Gets the Email

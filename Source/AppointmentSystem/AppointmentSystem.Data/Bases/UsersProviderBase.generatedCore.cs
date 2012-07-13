@@ -302,7 +302,10 @@ namespace AppointmentSystem.Data.Bases
 					c.OriginalId = c.Id;
 					c.Username = (System.String)reader[((int)UsersColumn.Username - 1)];
 					c.Title = (reader.IsDBNull(((int)UsersColumn.Title - 1)))?null:(System.String)reader[((int)UsersColumn.Title - 1)];
+					c.Firstname = (reader.IsDBNull(((int)UsersColumn.Firstname - 1)))?null:(System.String)reader[((int)UsersColumn.Firstname - 1)];
+					c.Lastname = (reader.IsDBNull(((int)UsersColumn.Lastname - 1)))?null:(System.String)reader[((int)UsersColumn.Lastname - 1)];
 					c.DisplayName = (System.String)reader[((int)UsersColumn.DisplayName - 1)];
+					c.CellPhone = (reader.IsDBNull(((int)UsersColumn.CellPhone - 1)))?null:(System.String)reader[((int)UsersColumn.CellPhone - 1)];
 					c.Email = (reader.IsDBNull(((int)UsersColumn.Email - 1)))?null:(System.String)reader[((int)UsersColumn.Email - 1)];
 					c.Note = (reader.IsDBNull(((int)UsersColumn.Note - 1)))?null:(System.String)reader[((int)UsersColumn.Note - 1)];
 					c.UserGroupId = (System.String)reader[((int)UsersColumn.UserGroupId - 1)];
@@ -332,7 +335,10 @@ namespace AppointmentSystem.Data.Bases
 			entity.OriginalId = (System.String)reader["Id"];
 			entity.Username = (System.String)reader[((int)UsersColumn.Username - 1)];
 			entity.Title = (reader.IsDBNull(((int)UsersColumn.Title - 1)))?null:(System.String)reader[((int)UsersColumn.Title - 1)];
+			entity.Firstname = (reader.IsDBNull(((int)UsersColumn.Firstname - 1)))?null:(System.String)reader[((int)UsersColumn.Firstname - 1)];
+			entity.Lastname = (reader.IsDBNull(((int)UsersColumn.Lastname - 1)))?null:(System.String)reader[((int)UsersColumn.Lastname - 1)];
 			entity.DisplayName = (System.String)reader[((int)UsersColumn.DisplayName - 1)];
+			entity.CellPhone = (reader.IsDBNull(((int)UsersColumn.CellPhone - 1)))?null:(System.String)reader[((int)UsersColumn.CellPhone - 1)];
 			entity.Email = (reader.IsDBNull(((int)UsersColumn.Email - 1)))?null:(System.String)reader[((int)UsersColumn.Email - 1)];
 			entity.Note = (reader.IsDBNull(((int)UsersColumn.Note - 1)))?null:(System.String)reader[((int)UsersColumn.Note - 1)];
 			entity.UserGroupId = (System.String)reader[((int)UsersColumn.UserGroupId - 1)];
@@ -357,7 +363,10 @@ namespace AppointmentSystem.Data.Bases
 			entity.OriginalId = (System.String)dataRow["Id"];
 			entity.Username = (System.String)dataRow["Username"];
 			entity.Title = Convert.IsDBNull(dataRow["Title"]) ? null : (System.String)dataRow["Title"];
+			entity.Firstname = Convert.IsDBNull(dataRow["Firstname"]) ? null : (System.String)dataRow["Firstname"];
+			entity.Lastname = Convert.IsDBNull(dataRow["Lastname"]) ? null : (System.String)dataRow["Lastname"];
 			entity.DisplayName = (System.String)dataRow["DisplayName"];
+			entity.CellPhone = Convert.IsDBNull(dataRow["CellPhone"]) ? null : (System.String)dataRow["CellPhone"];
 			entity.Email = Convert.IsDBNull(dataRow["Email"]) ? null : (System.String)dataRow["Email"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.UserGroupId = (System.String)dataRow["UserGroupId"];

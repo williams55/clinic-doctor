@@ -178,7 +178,10 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Username", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Firstname", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Lastname", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@DisplayName", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@CellPhone", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Email", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, DBNull.Value);
@@ -219,10 +222,28 @@ namespace AppointmentSystem.Data.SqlClient
 						clause.Trim().Remove(0,5).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
+				if (clause.Trim().StartsWith("firstname ") || clause.Trim().StartsWith("firstname="))
+				{
+					database.SetParameterValue(commandWrapper, "@Firstname", 
+						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("lastname ") || clause.Trim().StartsWith("lastname="))
+				{
+					database.SetParameterValue(commandWrapper, "@Lastname", 
+						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
 				if (clause.Trim().StartsWith("displayname ") || clause.Trim().StartsWith("displayname="))
 				{
 					database.SetParameterValue(commandWrapper, "@DisplayName", 
 						clause.Trim().Remove(0,11).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("cellphone ") || clause.Trim().StartsWith("cellphone="))
+				{
+					database.SetParameterValue(commandWrapper, "@CellPhone", 
+						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("email ") || clause.Trim().StartsWith("email="))
@@ -743,29 +764,38 @@ namespace AppointmentSystem.Data.SqlClient
 			col1.AllowDBNull = false;		
 			DataColumn col2 = dataTable.Columns.Add("Title", typeof(System.String));
 			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("DisplayName", typeof(System.String));
-			col3.AllowDBNull = false;		
-			DataColumn col4 = dataTable.Columns.Add("Email", typeof(System.String));
+			DataColumn col3 = dataTable.Columns.Add("Firstname", typeof(System.String));
+			col3.AllowDBNull = true;		
+			DataColumn col4 = dataTable.Columns.Add("Lastname", typeof(System.String));
 			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("Note", typeof(System.String));
-			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("UserGroupId", typeof(System.String));
-			col6.AllowDBNull = false;		
-			DataColumn col7 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col7.AllowDBNull = false;		
-			DataColumn col8 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			DataColumn col5 = dataTable.Columns.Add("DisplayName", typeof(System.String));
+			col5.AllowDBNull = false;		
+			DataColumn col6 = dataTable.Columns.Add("CellPhone", typeof(System.String));
+			col6.AllowDBNull = true;		
+			DataColumn col7 = dataTable.Columns.Add("Email", typeof(System.String));
+			col7.AllowDBNull = true;		
+			DataColumn col8 = dataTable.Columns.Add("Note", typeof(System.String));
 			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			DataColumn col9 = dataTable.Columns.Add("UserGroupId", typeof(System.String));
 			col9.AllowDBNull = false;		
-			DataColumn col10 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col10.AllowDBNull = true;		
-			DataColumn col11 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col11.AllowDBNull = false;		
+			DataColumn col10 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col10.AllowDBNull = false;		
+			DataColumn col11 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col11.AllowDBNull = true;		
+			DataColumn col12 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col12.AllowDBNull = false;		
+			DataColumn col13 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col13.AllowDBNull = true;		
+			DataColumn col14 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col14.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("Username", "Username");
 			bulkCopy.ColumnMappings.Add("Title", "Title");
+			bulkCopy.ColumnMappings.Add("Firstname", "Firstname");
+			bulkCopy.ColumnMappings.Add("Lastname", "Lastname");
 			bulkCopy.ColumnMappings.Add("DisplayName", "DisplayName");
+			bulkCopy.ColumnMappings.Add("CellPhone", "CellPhone");
 			bulkCopy.ColumnMappings.Add("Email", "Email");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("UserGroupId", "UserGroupId");
@@ -791,7 +821,16 @@ namespace AppointmentSystem.Data.SqlClient
 					row["Title"] = entity.Title;
 							
 				
+					row["Firstname"] = entity.Firstname;
+							
+				
+					row["Lastname"] = entity.Lastname;
+							
+				
 					row["DisplayName"] = entity.DisplayName;
+							
+				
+					row["CellPhone"] = entity.CellPhone;
 							
 				
 					row["Email"] = entity.Email;
@@ -855,7 +894,10 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@Username", DbType.String, entity.Username );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
+			database.AddInParameter(commandWrapper, "@Firstname", DbType.String, entity.Firstname );
+			database.AddInParameter(commandWrapper, "@Lastname", DbType.String, entity.Lastname );
 			database.AddInParameter(commandWrapper, "@DisplayName", DbType.String, entity.DisplayName );
+			database.AddInParameter(commandWrapper, "@CellPhone", DbType.String, entity.CellPhone );
 			database.AddInParameter(commandWrapper, "@Email", DbType.String, entity.Email );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, entity.UserGroupId );
@@ -915,7 +957,10 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
 			database.AddInParameter(commandWrapper, "@Username", DbType.String, entity.Username );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
+			database.AddInParameter(commandWrapper, "@Firstname", DbType.String, entity.Firstname );
+			database.AddInParameter(commandWrapper, "@Lastname", DbType.String, entity.Lastname );
 			database.AddInParameter(commandWrapper, "@DisplayName", DbType.String, entity.DisplayName );
+			database.AddInParameter(commandWrapper, "@CellPhone", DbType.String, entity.CellPhone );
 			database.AddInParameter(commandWrapper, "@Email", DbType.String, entity.Email );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, entity.UserGroupId );
