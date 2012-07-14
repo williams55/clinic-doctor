@@ -75,6 +75,11 @@ namespace AppointmentSystem.Entities
 		System.String  UserGroupId  { get; set; }
 		
 		/// <summary>
+		/// IsFemale : 
+		/// </summary>
+		System.Boolean  IsFemale  { get; set; }
+		
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		System.Boolean  IsDisabled  { get; set; }

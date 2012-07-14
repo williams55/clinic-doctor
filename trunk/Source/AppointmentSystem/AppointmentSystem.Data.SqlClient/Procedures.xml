@@ -4057,6 +4057,7 @@
 					[Avatar],
 					[Note],
 					[UserGroupId],
+					[IsFemale],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -4126,7 +4127,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[IsFemale], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Users] O,
 				    #PageIndex PageIndex
@@ -4171,6 +4172,7 @@
 				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@UserGroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -4192,6 +4194,7 @@
 					,[Avatar]
 					,[Note]
 					,[UserGroupId]
+					,[IsFemale]
 					,[IsDisabled]
 					,[CreateUser]
 					,[CreateDate]
@@ -4211,6 +4214,7 @@
 					,@Avatar
 					,@Note
 					,@UserGroupId
+					,@IsFemale
 					,@IsDisabled
 					,@CreateUser
 					,@CreateDate
@@ -4245,6 +4249,7 @@
 				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@UserGroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -4269,6 +4274,7 @@
 					,[Avatar] = @Avatar
 					,[Note] = @Note
 					,[UserGroupId] = @UserGroupId
+					,[IsFemale] = @IsFemale
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
 					,[CreateDate] = @CreateDate
@@ -4324,6 +4330,7 @@
 					[Avatar],
 					[Note],
 					[UserGroupId],
+					[IsFemale],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -4363,6 +4370,7 @@
 					[Avatar],
 					[Note],
 					[UserGroupId],
+					[IsFemale],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -4400,6 +4408,7 @@
 				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@UserGroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
@@ -4422,6 +4431,7 @@
 	, [Avatar]
 	, [Note]
 	, [UserGroupId]
+	, [IsFemale]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -4441,6 +4451,7 @@
 	AND ([Avatar] = @Avatar OR @Avatar IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
 	AND ([UserGroupId] = @UserGroupId OR @UserGroupId IS NULL)
+	AND ([IsFemale] = @IsFemale OR @IsFemale IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
 	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
@@ -4462,6 +4473,7 @@
 	, [Avatar]
 	, [Note]
 	, [UserGroupId]
+	, [IsFemale]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -4481,6 +4493,7 @@
 	OR ([Avatar] = @Avatar AND @Avatar is not null)
 	OR ([Note] = @Note AND @Note is not null)
 	OR ([UserGroupId] = @UserGroupId AND @UserGroupId is not null)
+	OR ([IsFemale] = @IsFemale AND @IsFemale is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
 	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
@@ -4521,7 +4534,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[IsFemale], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Users] O,
 				    #PageIndex PageIndex

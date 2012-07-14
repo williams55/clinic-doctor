@@ -431,6 +431,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.UserGroupId; }
 		}
         /// <summary>
+        /// Gets the IsFemale
+        /// </summary>
+        /// <value>The IsFemale.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.Boolean IsFemale
+		{
+			get { return _entity.IsFemale; }
+		}
+        /// <summary>
         /// Gets the IsDisabled
         /// </summary>
         /// <value>The IsDisabled.</value>

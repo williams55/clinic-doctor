@@ -80,9 +80,6 @@ function initSchedule(weekday) {
         scheduler.attachEvent("onBeforeDrag", BlockReadonly);
         scheduler.attachEvent("onClick", BlockReadonly);
 
-        // When event changed, check and update
-        scheduler.attachEvent("onBeforeEventChanged", ValidatingBeforeEventChanged);
-
         // Save roster when resized or moved
         scheduler.attachEvent("onEventChanged", ValidatingResizeMove);
 
@@ -117,27 +114,34 @@ function BlockReadonly(id) {
     return !this.getEvent(id).readonly;
 }
 
-// Validate before changing event
-function ValidatingBeforeEventChanged(eventObject, nativeEvent, isNew) {
-    // If update roster
-    if (isNew == false) {
-        if (eventObject.start_date <= new Date()) {
-            alert("You can not change roster to passed or current date.");
-            return false;
-        }
-    }
-    return true;
-}
-
 // Validate when resize or move event
 function ValidatingResizeMove(eventId, objEvent) {
-    // Update roster
-    $("#dialog-modal").show();
-    DisableAllElements($("#tblContent"), false);
     var requestdata = JSON.stringify({ Id: objEvent.id, DoctorUsername: objEvent.section_id, RosterTypeId: objEvent.RosterTypeId
         , RosterTitle: objEvent.RosterTypeTitle, StartTime: objEvent.start_date, EndTime: objEvent.end_date, Note: objEvent.note
     });
-    UpdateRoster(requestdata, 'UpdateEventMove', objEvent.id);
+    var blResult = false;
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/UpdateEventMove",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(response) {
+            var obj = JSON.parse(response.d);
+            if (obj.result == "true") {
+                blResult = true;
+            }
+            else {
+                alert(obj.message);
+            }
+        },
+        fail: function() {
+            alert("Unknow error!");
+        }
+    })
+    .when.apply(function() {
+        return blResult;
+    });
 }
 
 scheduler.showLightbox = function(id) {
@@ -472,6 +476,7 @@ function SaveRoster() {
 }
 
 function UpdateRoster(requestdata, method, id) {
+    var blResult = false;
     $.ajax({
         type: "POST",
         url: "Default.aspx/" + method,
@@ -479,12 +484,13 @@ function UpdateRoster(requestdata, method, id) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            var obj = eval(response.d)[0];
+            var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 var evs = obj.data;
                 scheduler.deleteEvent(id);
                 addRoster(evs);
                 scheduler.endLightbox(false, html("RosterForm"));
+                blResult = true;
             }
             else {
                 alert(obj.message);
@@ -498,6 +504,9 @@ function UpdateRoster(requestdata, method, id) {
             $("#dialog-modal").hide();
             $("#RosterForm").dialog("close");
         }
+    })
+    .when.apply(function() {
+        return blResult;
     });
 }
 
