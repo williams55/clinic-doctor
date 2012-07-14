@@ -7,7 +7,7 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" Runat="Server">
     <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" DataSourceID="UserDatas"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" 
-        onrowinserting="gridUser_RowInserting">
+         OnInitNewRow="gridUser_OnInitNewRow" OnRowInserting="gridUser_OnRowInserting">
         <Settings ShowGroupPanel="True" />
         <SettingsEditing Mode="Inline" />
         <Columns>
