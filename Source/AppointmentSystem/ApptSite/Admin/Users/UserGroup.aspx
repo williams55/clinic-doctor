@@ -16,15 +16,14 @@
                 onrowinserting="GridUserGroup_RowInserting" 
                 onrowupdating="GridUserGroup_RowUpdating">
                 <Columns>
-                <dx:GridViewCommandColumn Caption="Control">
+                <dx:GridViewCommandColumn Caption="Control" VisibleIndex="4">
                     <NewButton Visible="true"></NewButton>
                     <EditButton Visible="true"></EditButton>
                 </dx:GridViewCommandColumn>
-                    <dx:GridViewDataColumn FieldName="Id" VisibleIndex="1"><EditFormSettings Visible="False"/></dx:GridViewDataColumn>                    
+                    <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0"><EditFormSettings Visible="False"/></dx:GridViewDataColumn>                    
                     <dx:GridViewDataColumn FieldName="Title" VisibleIndex="1"></dx:GridViewDataColumn>
-                    <dx:GridViewDataColumn FieldName="Note" VisibleIndex="1"></dx:GridViewDataColumn>
-                    <dx:GridViewDataColumn FieldName="Roles" VisibleIndex="1"></dx:GridViewDataColumn>
-                    <dx:GridViewDataCheckColumn FieldName="IsLocked" VisibleIndex="1"></dx:GridViewDataCheckColumn>
+                    <dx:GridViewDataColumn FieldName="Note" VisibleIndex="2"></dx:GridViewDataColumn>
+                    <dx:GridViewDataColumn FieldName="Roles" VisibleIndex="3"></dx:GridViewDataColumn>
                 </Columns>
          
                         <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
