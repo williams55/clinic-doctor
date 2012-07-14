@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using AppointmentBusiness.BO;
 using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
@@ -14,7 +10,6 @@ using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Util;
 using Log.Controller;
-using Newtonsoft.Json;
 
 public partial class Admin_Roster_Default : System.Web.UI.Page
 {
@@ -317,9 +312,6 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     // Update roster
     private static string UpdateEvent(string Id, string doctorId, string RosterTypeId, string RosterTitle, DateTime StartTime, DateTime EndTime, string Note)
     {
-        string result = string.Empty;
-        string message = string.Empty;
-
         // Check StaffId
         if (doctorId == null)
         {
@@ -333,10 +325,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             tm.BeginTransaction();
 
             // Validate current user have any right to operate this action
+            // Validate user right for reading
             string username = EntitiesUtilities.GetAuthName();
-            Users objUser;
-            if (!BoFactory.UserBO.ValidateCurrentUser(username, out objUser, out message))
-                return WebCommon.BuildFailedResult(message);
+            if (!RightAccess.CheckUserRight(username, ScreenCode, OperationConstant.Update.Key, out _message))
+            {
+                tm.Rollback();
+                return WebCommon.BuildFailedResult(_message);
+            }
 
             // Them phan kiem tra doctor Id co hop le hay khong
             // Se lam sau
@@ -344,12 +339,18 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             // Validate existed or expired roster
             Roster dr = DataRepository.RosterProvider.GetById(Id);
             if (dr == null || dr.IsDisabled)
+            {
+                tm.Rollback();
                 return WebCommon.BuildFailedResult("There is no roster to update or the roster is expired.");
+            }
 
             // Get Roster Type
             RosterType objRt = DataRepository.RosterTypeProvider.GetByIdIsDisabled(Convert.ToInt32(RosterTypeId), false);
             if (objRt == null)
+            {
+                tm.Rollback();
                 return WebCommon.BuildFailedResult("Roster Type is not exist.");
+            }
 
             dr.DoctorId = doctorId;
             dr.RosterTypeId = Convert.ToInt32(RosterTypeId);
@@ -363,7 +364,10 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             // Check if start time >= end time
             if (dr.StartTime >= dr.EndTime)
+            {
+                tm.Rollback();
                 return WebCommon.BuildFailedResult("To date must be greater than from date.");
+            }
 
             // If roster is created in a passed or current day
             if (Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd")) >= Convert.ToDateTime(dr.StartTime.ToString("yyyy/MM/dd")))
@@ -373,8 +377,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             }
 
             // Check roster before insert new roster
-            string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, dr.EndTime, dr.StartTime);
-            TList<Roster> lstRoster = DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out count);
+            string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", doctorId, dr.EndTime, dr.StartTime);
+            DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
             // If there is no roster -> insert new roster
             if (count > 1)
             {
@@ -407,16 +411,15 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 isnew = false
             });
             tm.Commit();
-            result = WebCommon.BuildSuccessfulResult(lstResult);
+            return WebCommon.BuildSuccessfulResult(lstResult);
         }
         catch (Exception ex)
         {
             //Write log cho nay
             tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult(ex.Message);
         }
-
-        return result;
     }
     #endregion
 
@@ -517,7 +520,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             return result;
         }
 
-    //StepResult:
+        //StepResult:
         return result;
     }
     #endregion

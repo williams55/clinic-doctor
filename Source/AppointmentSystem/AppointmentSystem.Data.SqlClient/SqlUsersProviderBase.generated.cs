@@ -186,6 +186,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@Avatar", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, DBNull.Value);
@@ -269,6 +270,12 @@ namespace AppointmentSystem.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@UserGroupId", 
 						clause.Trim().Remove(0,11).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("isfemale ") || clause.Trim().StartsWith("isfemale="))
+				{
+					database.SetParameterValue(commandWrapper, "@IsFemale", 
+						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("isdisabled ") || clause.Trim().StartsWith("isdisabled="))
@@ -787,16 +794,18 @@ namespace AppointmentSystem.Data.SqlClient
 			col9.AllowDBNull = true;		
 			DataColumn col10 = dataTable.Columns.Add("UserGroupId", typeof(System.String));
 			col10.AllowDBNull = false;		
-			DataColumn col11 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col11 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
 			col11.AllowDBNull = false;		
-			DataColumn col12 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col12.AllowDBNull = true;		
-			DataColumn col13 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col13.AllowDBNull = false;		
-			DataColumn col14 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col14.AllowDBNull = true;		
-			DataColumn col15 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col15.AllowDBNull = false;		
+			DataColumn col12 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col12.AllowDBNull = false;		
+			DataColumn col13 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col13.AllowDBNull = true;		
+			DataColumn col14 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col14.AllowDBNull = false;		
+			DataColumn col15 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col15.AllowDBNull = true;		
+			DataColumn col16 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col16.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("Username", "Username");
@@ -809,6 +818,7 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.ColumnMappings.Add("Avatar", "Avatar");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("UserGroupId", "UserGroupId");
+			bulkCopy.ColumnMappings.Add("IsFemale", "IsFemale");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
 			bulkCopy.ColumnMappings.Add("CreateDate", "CreateDate");
@@ -853,6 +863,9 @@ namespace AppointmentSystem.Data.SqlClient
 							
 				
 					row["UserGroupId"] = entity.UserGroupId;
+							
+				
+					row["IsFemale"] = entity.IsFemale;
 							
 				
 					row["IsDisabled"] = entity.IsDisabled;
@@ -915,6 +928,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Avatar", DbType.String, entity.Avatar );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, entity.UserGroupId );
+			database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, entity.IsFemale );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );
@@ -979,6 +993,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Avatar", DbType.String, entity.Avatar );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, entity.UserGroupId );
+			database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, entity.IsFemale );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );

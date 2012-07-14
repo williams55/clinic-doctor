@@ -92,6 +92,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_avatar"></param>
 		///<param name="_note"></param>
 		///<param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		///<param name="_isFemale"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
@@ -99,8 +100,8 @@ namespace AppointmentSystem.Entities
 		///<param name="_updateDate"></param>
 		public UsersBase(System.String _id, System.String _username, System.String _title, System.String _firstname, 
 			System.String _lastname, System.String _displayName, System.String _cellPhone, System.String _email, System.String _avatar, 
-			System.String _note, System.String _userGroupId, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.String _note, System.String _userGroupId, System.Boolean _isFemale, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new UsersEntityData();
 			this.backupData = null;
@@ -116,6 +117,7 @@ namespace AppointmentSystem.Entities
 			this.Avatar = _avatar;
 			this.Note = _note;
 			this.UserGroupId = _userGroupId;
+			this.IsFemale = _isFemale;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -137,6 +139,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_avatar"></param>
 		///<param name="_note"></param>
 		///<param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		///<param name="_isFemale"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
@@ -144,8 +147,8 @@ namespace AppointmentSystem.Entities
 		///<param name="_updateDate"></param>
 		public static Users CreateUsers(System.String _id, System.String _username, System.String _title, System.String _firstname, 
 			System.String _lastname, System.String _displayName, System.String _cellPhone, System.String _email, System.String _avatar, 
-			System.String _note, System.String _userGroupId, System.Boolean _isDisabled, System.String _createUser, 
-			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.String _note, System.String _userGroupId, System.Boolean _isFemale, System.Boolean _isDisabled, 
+			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			Users newUsers = new Users();
 			newUsers.Id = _id;
@@ -159,6 +162,7 @@ namespace AppointmentSystem.Entities
 			newUsers.Avatar = _avatar;
 			newUsers.Note = _note;
 			newUsers.UserGroupId = _userGroupId;
+			newUsers.IsFemale = _isFemale;
 			newUsers.IsDisabled = _isDisabled;
 			newUsers.CreateUser = _createUser;
 			newUsers.CreateDate = _createDate;
@@ -576,6 +580,41 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or sets the IsFemale property. 
+		///		
+		/// </summary>
+		/// <value>This type is bit.</value>
+		/// <remarks>
+		/// This property can not be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, false)]
+		public virtual System.Boolean IsFemale
+		{
+			get
+			{
+				return this.entityData.IsFemale; 
+			}
+			
+			set
+			{
+				if (this.entityData.IsFemale == value)
+					return;
+					
+				OnColumnChanging(UsersColumn.IsFemale, this.entityData.IsFemale);
+				this.entityData.IsFemale = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(UsersColumn.IsFemale, this.entityData.IsFemale);
+				OnPropertyChanged("IsFemale");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or sets the IsDisabled property. 
 		///		
 		/// </summary>
@@ -879,7 +918,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Username", "Title", "Firstname", "Lastname", "DisplayName", "CellPhone", "Email", "Avatar", "Note", "UserGroupId", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Username", "Title", "Firstname", "Lastname", "DisplayName", "CellPhone", "Email", "Avatar", "Note", "UserGroupId", "IsFemale", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1039,6 +1078,7 @@ namespace AppointmentSystem.Entities
 				copy.Avatar = this.Avatar;
 				copy.Note = this.Note;
 				copy.UserGroupId = this.UserGroupId;
+				copy.IsFemale = this.IsFemale;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
@@ -1204,6 +1244,8 @@ namespace AppointmentSystem.Entities
 					return entityData.Note != _originalData.Note;
 					case UsersColumn.UserGroupId:
 					return entityData.UserGroupId != _originalData.UserGroupId;
+					case UsersColumn.IsFemale:
+					return entityData.IsFemale != _originalData.IsFemale;
 					case UsersColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case UsersColumn.CreateUser:
@@ -1252,6 +1294,7 @@ namespace AppointmentSystem.Entities
 			result = result || entityData.Avatar != _originalData.Avatar;
 			result = result || entityData.Note != _originalData.Note;
 			result = result || entityData.UserGroupId != _originalData.UserGroupId;
+			result = result || entityData.IsFemale != _originalData.IsFemale;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -1278,6 +1321,7 @@ namespace AppointmentSystem.Entities
 				_originalData.Avatar,
 				_originalData.Note,
 				_originalData.UserGroupId,
+				_originalData.IsFemale,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -1323,6 +1367,7 @@ namespace AppointmentSystem.Entities
 					((this.Avatar == null) ? string.Empty : this.Avatar.ToString()).GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
 					this.UserGroupId.GetHashCode() ^ 
+					this.IsFemale.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
@@ -1430,6 +1475,8 @@ namespace AppointmentSystem.Entities
 				equal = false;
 			}
 			if (Object1.UserGroupId != Object2.UserGroupId)
+				equal = false;
+			if (Object1.IsFemale != Object2.IsFemale)
 				equal = false;
 			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
@@ -1561,6 +1608,12 @@ namespace AppointmentSystem.Entities
             	
             	case UsersColumn.UserGroupId:
             		return this.UserGroupId.CompareTo(rhs.UserGroupId);
+            		
+            		                 
+            	
+            	
+            	case UsersColumn.IsFemale:
+            		return this.IsFemale.CompareTo(rhs.IsFemale);
             		
             		                 
             	
@@ -1727,7 +1780,7 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{17}{16}- Id: {0}{16}- Username: {1}{16}- Title: {2}{16}- Firstname: {3}{16}- Lastname: {4}{16}- DisplayName: {5}{16}- CellPhone: {6}{16}- Email: {7}{16}- Avatar: {8}{16}- Note: {9}{16}- UserGroupId: {10}{16}- IsDisabled: {11}{16}- CreateUser: {12}{16}- CreateDate: {13}{16}- UpdateUser: {14}{16}- UpdateDate: {15}{16}{18}", 
+				"{18}{17}- Id: {0}{17}- Username: {1}{17}- Title: {2}{17}- Firstname: {3}{17}- Lastname: {4}{17}- DisplayName: {5}{17}- CellPhone: {6}{17}- Email: {7}{17}- Avatar: {8}{17}- Note: {9}{17}- UserGroupId: {10}{17}- IsFemale: {11}{17}- IsDisabled: {12}{17}- CreateUser: {13}{17}- CreateDate: {14}{17}- UpdateUser: {15}{17}- UpdateDate: {16}{17}{19}", 
 				this.Id,
 				this.Username,
 				(this.Title == null) ? string.Empty : this.Title.ToString(),
@@ -1739,6 +1792,7 @@ namespace AppointmentSystem.Entities
 				(this.Avatar == null) ? string.Empty : this.Avatar.ToString(),
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
 				this.UserGroupId,
+				this.IsFemale,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
@@ -1832,6 +1886,11 @@ namespace AppointmentSystem.Entities
 		/// UserGroupId : This user belongs what groups. It's seperated by semi-comma
 		/// </summary>
 		public System.String		  UserGroupId = "0";
+		
+		/// <summary>
+		/// IsFemale : 
+		/// </summary>
+		public System.Boolean		  IsFemale = false;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -2016,6 +2075,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Avatar = this.Avatar;
 			_tmp.Note = this.Note;
 			_tmp.UserGroupId = this.UserGroupId;
+			_tmp.IsFemale = this.IsFemale;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -2069,6 +2129,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Avatar = this.Avatar;
 			_tmp.Note = this.Note;
 			_tmp.UserGroupId = this.UserGroupId;
+			_tmp.IsFemale = this.IsFemale;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -2520,35 +2581,41 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("UserGroupId", typeof(System.String), System.Data.DbType.String, false, false, false, 20)]
 		UserGroupId = 11,
 		/// <summary>
+		/// IsFemale : 
+		/// </summary>
+		[EnumTextValue("IsFemale")]
+		[ColumnEnum("IsFemale", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
+		IsFemale = 12,
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 12,
+		IsDisabled = 13,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 13,
+		CreateUser = 14,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 14,
+		CreateDate = 15,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 15,
+		UpdateUser = 16,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 16
+		UpdateDate = 17
 	}//End enum
 
 	#endregion UsersColumn Enum

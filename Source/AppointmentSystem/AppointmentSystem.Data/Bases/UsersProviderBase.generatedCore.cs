@@ -310,6 +310,7 @@ namespace AppointmentSystem.Data.Bases
 					c.Avatar = (reader.IsDBNull(((int)UsersColumn.Avatar - 1)))?null:(System.String)reader[((int)UsersColumn.Avatar - 1)];
 					c.Note = (reader.IsDBNull(((int)UsersColumn.Note - 1)))?null:(System.String)reader[((int)UsersColumn.Note - 1)];
 					c.UserGroupId = (System.String)reader[((int)UsersColumn.UserGroupId - 1)];
+					c.IsFemale = (System.Boolean)reader[((int)UsersColumn.IsFemale - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)UsersColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)UsersColumn.CreateUser - 1)))?null:(System.String)reader[((int)UsersColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)UsersColumn.CreateDate - 1)];
@@ -344,6 +345,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.Avatar = (reader.IsDBNull(((int)UsersColumn.Avatar - 1)))?null:(System.String)reader[((int)UsersColumn.Avatar - 1)];
 			entity.Note = (reader.IsDBNull(((int)UsersColumn.Note - 1)))?null:(System.String)reader[((int)UsersColumn.Note - 1)];
 			entity.UserGroupId = (System.String)reader[((int)UsersColumn.UserGroupId - 1)];
+			entity.IsFemale = (System.Boolean)reader[((int)UsersColumn.IsFemale - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)UsersColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)UsersColumn.CreateUser - 1)))?null:(System.String)reader[((int)UsersColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)UsersColumn.CreateDate - 1)];
@@ -373,6 +375,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.Avatar = Convert.IsDBNull(dataRow["Avatar"]) ? null : (System.String)dataRow["Avatar"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.UserGroupId = (System.String)dataRow["UserGroupId"];
+			entity.IsFemale = (System.Boolean)dataRow["IsFemale"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];
