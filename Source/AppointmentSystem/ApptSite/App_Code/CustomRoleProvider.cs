@@ -9,7 +9,7 @@ using AppointmentSystem.Settings.BusinessLayer;
 /// <summary>
 /// Summary description for CustomRoleProvider
 /// </summary>
-public class CustomRoleProvider :RoleProvider
+public class CustomRoleProvider : RoleProvider
 {
     public CustomRoleProvider()
     {
@@ -52,28 +52,22 @@ public class CustomRoleProvider :RoleProvider
 
     public override string[] GetAllRoles()
     {
-        string roles = ServiceFacade.SettingsHelper.Roles;
-        return roles.Split(';');
-        //throw new NotImplementedException();
+        var lstRoles = DataRepository.UserGroupProvider.GetAll();
+        lstRoles = lstRoles.FindAll(x => !x.IsDisabled);
+        return lstRoles.Select(x => x.Title).ToArray();
     }
 
     public override string[] GetRolesForUser(string username)
     {
-        //string authUserName;
-        //authUserName = username.Split('\\')[1];
+        string authUserName = username.Split('\\')[1];
+        var user = DataRepository.UsersProvider.GetByUsername(authUserName);
+        if (user == null || user.IsDisabled)
+        {
+            return new string[] { };
+        }
 
-        //var obj = DataRepository.UserProvider.GetByUsername(authUserName);
-        //obj.
-
-        //if (obj == null)
-        //    return null;
-
-        //if (obj.Roles.Contains(';'))
-        //    return obj.Roles.Split(';');
-
-        string[] result = new string[1];
-        //result[0] = obj.Roles;
-        result[0] = "Admin";
+        var result = new string[1];
+        result[0] = user.UserGroupId;
         return result;
     }
 
