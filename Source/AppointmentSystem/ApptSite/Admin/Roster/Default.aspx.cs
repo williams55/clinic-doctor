@@ -18,9 +18,9 @@ using Newtonsoft.Json;
 
 public partial class Admin_Roster_Default : System.Web.UI.Page
 {
-    static string strSeperateStaff = " | ";
     private const string ScreenCode = "Roster";
     static string _message;
+    static readonly string Username = EntitiesUtilities.GetAuthName();
 
     #region Event
     protected void Page_Load(object sender, EventArgs e)
@@ -28,10 +28,14 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         try
         {
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key,
-                                       out _message))
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
+            }
+            else
+            {
+                // Show script
+                ClientScript.RegisterStartupScript(GetType(), "MainScript", @"<script src=""GRNEditt.js"" type=""text/javascript""></script>");
             }
         }
         catch (Exception ex)
@@ -47,8 +51,6 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     public static string NewRoster(string doctorId, string rosterTypeId, string startTime, string endTime,
         string startDate, string endDate, string note, string repeatRoster, string weekday)
     {
-        string username = EntitiesUtilities.GetAuthName();
-
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
@@ -56,7 +58,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             #region Validation and covert value
             // Validate user right for creating
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Create.Key, out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -111,7 +113,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             if (repeatRoster.Trim().ToLower() == "true")
             {
                 #region Validate Time
-                if (new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0) 
+                if (new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0)
                     >= new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intEndHour, intEndMinute, 0))
                 {
                     return WebCommon.BuildFailedResult("To time must be greater than from date.");
@@ -125,7 +127,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
                 }
                 #endregion
-                
+
                 // Get auto increasement id
                 string perfix = ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
                 int count;
@@ -164,8 +166,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                                               StartTime = dtTmpStart,
                                               EndTime = dtTmpEnd,
                                               Note = note,
-                                              CreateUser = username,
-                                              UpdateUser = username
+                                              CreateUser = Username,
+                                              UpdateUser = Username
                                           });
                     }
                 }
@@ -228,8 +230,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     StartTime = dtTmpStart,
                     EndTime = dtTmpEnd,
                     Note = note,
-                    CreateUser = username,
-                    UpdateUser = username
+                    CreateUser = Username,
+                    UpdateUser = Username
                 });
             }
             // Insert new rosters
@@ -291,8 +293,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             // Validate current user have any right to operate this action
             // Validate user right for reading
-            string username = EntitiesUtilities.GetAuthName();
-            if (!RightAccess.CheckUserRight(username, ScreenCode, OperationConstant.Update.Key, out _message))
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Update.Key, out _message))
             {
                 AddRoster(lstResult, rosterItem);
                 return WebCommon.BuildFailedResult(_message, lstResult);
@@ -338,7 +339,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             rosterItem.DoctorId = doctorId;
             rosterItem.StartTime = dtStart;
             rosterItem.EndTime = dtEnd;
-            rosterItem.UpdateUser = username;
+            rosterItem.UpdateUser = Username;
             rosterItem.UpdateDate = DateTime.Now;
 
             // Save roster
@@ -368,9 +369,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         {
             tm.BeginTransaction();
 
-            // Validate user right for creating
-            string username = EntitiesUtilities.GetAuthName();
-            if (!RightAccess.CheckUserRight(username, ScreenCode, OperationConstant.Update.Key, out _message))
+            // Validate user right for updating
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Update.Key, out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -470,7 +470,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             rosterItem.StartTime = dtStart;
             rosterItem.EndTime = dtEnd;
             rosterItem.Note = note;
-            rosterItem.UpdateUser = username;
+            rosterItem.UpdateUser = Username;
             rosterItem.UpdateDate = DateTime.Now;
 
             DataRepository.RosterProvider.Save(tm, rosterItem);
@@ -493,16 +493,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string LoadRoster(string mode, string currentDateView)
     {
-        string result = string.Empty;
-        string message = string.Empty;
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
             tm.BeginTransaction();
 
             // Validate user right for reading
-            string username = EntitiesUtilities.GetAuthName();
-            if (!RightAccess.CheckUserRight(username, ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -534,8 +531,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     isnew = false
                 });
             }
-            result = WebCommon.BuildSuccessfulResult(lstResult);
             tm.Commit();
+            return WebCommon.BuildSuccessfulResult(lstResult);
         }
         catch (Exception ex)
         {
@@ -544,8 +541,6 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult(ex.Message);
         }
-
-        return result;
     }
 
     [WebMethod]
@@ -556,8 +551,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         try
         {
             // Validate user right for deleting
-            string username = EntitiesUtilities.GetAuthName();
-            if (!RightAccess.CheckUserRight(username, ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -571,7 +565,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             }
 
             roster.IsDisabled = true;
-            roster.UpdateUser = username;
+            roster.UpdateUser = Username;
             roster.UpdateDate = DateTime.Now;
 
             DataRepository.RosterProvider.Save(tm, roster);
@@ -588,72 +582,39 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     }
     #endregion
 
-    #region "Function"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetRosterType()
     {
-        int count;
-        TList<RosterType> lst = DataRepository.RosterTypeProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, 10000, out count);
-
-        string result = "[]";
-        if (lst.Count > 0)
+        try
         {
-            result = string.Empty;
-            foreach (RosterType item in lst)
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
             {
-                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + (item.Title ?? "") + @"'" + "},";
+                return WebCommon.BuildFailedResult(_message);
             }
-            result = "[" + result.Substring(0, result.Length - 1) + "]";
+
+            int count;
+            TList<RosterType> lst = DataRepository.RosterTypeProvider.GetPaged("IsDisabled = 'False'", "Title ASC", 0,
+                                                                               ServiceFacade.SettingsHelper.GetPagedLength,
+                                                                               out count);
+            return WebCommon.BuildSuccessfulResult(lst.Select(x => new { x.Id, x.Title }));
         }
-
-        return result;
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetTime()
-    {
-        int step = ServiceFacade.SettingsHelper.MinuteStep;
-        int minute = ServiceFacade.SettingsHelper.MaxMinute;
-        int hour = ServiceFacade.SettingsHelper.MaxHour;
-
-        int count;
-        var lst = DataRepository.RosterProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, 10000, out count);
-
-        string result = string.Empty;
-        int m = 0;
-        string key = string.Empty;
-        string label = string.Empty;
-
-        for (int h = 0; h < hour; h++)
+        catch (Exception ex)
         {
-            m = 0;
-            while (m < minute)
-            {
-                key = h.ToString("00") + ":" + m.ToString("00") + ":00";
-                label = h.ToString("00") + ":" + m.ToString("00");
-                result += @"{'key' : '" + key + @"'" + "," + @"'label' : '" + label + @"'" + "},";
-                m += step;
-            }
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult(ex.Message);
         }
-        if (result.Length > 1)
-            result = "[" + result.Substring(0, result.Length - 1) + "]";
-
-        return result;
     }
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetDoctorTree()
     {
-        string result = string.Empty;
-
         try
         {
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key,
-                                       out _message))
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -667,40 +628,26 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             TList<DoctorService> lstDoctorService = DataRepository.DoctorServiceProvider.GetPaged("IsDisabled = 'False'"
                 , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
             DataRepository.DoctorServiceProvider.DeepLoad(lstDoctorService);
-            //lstDoctorService.Sort("DoctorShortName ASC");
 
-            // Declare list of object are returned
-            var lstResult = new List<object>();
-
-            foreach (Services item in lstService)
-            {
-                var lstDoctor = new List<object>();
-
-                lstDoctorService.FindAll(x => x.ServiceId == item.Id).ForEach(service => lstDoctor.Add(new
-                                                                                                           {
-                                                                                                               key = service.DoctorId,
-                                                                                                               label = service.DoctorIdSource.DisplayName
-                                                                                                           }));
-                lstResult.Add(new
-                                  {
-                                      key = item.Id,
-                                      label = item.Title,
-                                      open = true,
-                                      children = lstDoctor
-                                  });
-
-            }
-
-            result = WebCommon.BuildSuccessfulResult(lstResult);
+            return WebCommon.BuildSuccessfulResult(lstService.Select(item => new
+                                                                                 {
+                                                                                     key = item.Id,
+                                                                                     label = item.Title,
+                                                                                     open = true,
+                                                                                     children = lstDoctorService.FindAll(x => x.ServiceId == item.Id).Select(service => new
+                                                                                     {
+                                                                                         key = service.DoctorId,
+                                                                                         label = service.DoctorIdSource.DisplayName
+                                                                                     })  
+                                                                                 }));
         }
         catch (Exception ex)
         {
             return WebCommon.BuildFailedResult(ex.Message);
         }
-
-        return result;
     }
 
+    #region Methods
     /// <summary>
     /// Add roster to list
     /// </summary>
@@ -752,6 +699,12 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
             var doctor = DataRepository.UsersProvider.GetById(doctorId);
             object result = null;
             if (doctor != null)
@@ -781,6 +734,12 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
             return SearchDoctor(HttpContext.Current.Request["q"]);
         }
         catch (Exception ex)

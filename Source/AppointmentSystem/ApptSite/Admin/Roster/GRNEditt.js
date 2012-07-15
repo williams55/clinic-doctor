@@ -186,7 +186,7 @@ scheduler.showLightbox = function(id) {
         if (ev.RosterTypeId) {
             $("#cboRosterType").val(ev.RosterTypeId);
         }
-        
+
         $("#RosterForm").dialog({
             autoOpen: false,
             height: 300,
@@ -509,12 +509,12 @@ function LoadRosterType() {
         data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function(msg) {
-            var rosterType = eval(msg.d);
+        success: function(response) {
+            var rosterType = JSON.parse(response.d).data;
             $("#cboRosterType").find("option").remove();
 
             $.each(rosterType, function(i, item) {
-                $("#cboRosterType").append('<option value="' + item.key + '">' + item.label + '</option>');
+                $("#cboRosterType").append('<option value="' + item.Id + '">' + item.Title + '</option>');
             });
             blRosterType = true;
         },

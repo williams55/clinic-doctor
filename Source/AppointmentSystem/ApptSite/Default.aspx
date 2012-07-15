@@ -1,16 +1,18 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true"  CodeFile="Default.aspx.cs" Inherits="_Default" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
+    CodeFile="Default.aspx.cs" Inherits="_Default" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <div>
-    
+<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
+    Home
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
+    <div id="box-tabs" class="box">
+        <div class="title">
+            <h5>
+                Home</h5>
+        </div>
+        <div id="box-other" style="min-height: 500px;">
+        </div>
     </div>
-    </form>
-</body>
-</html>
+</asp:Content>

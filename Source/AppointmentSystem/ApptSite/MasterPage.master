@@ -57,21 +57,18 @@
             <!-- logo -->
             <div id="logo">
                 <h1>
-                    <a href="" title="Smooth Admin">
-                        <img src="<%= ResolveUrl("~/") %>Resources/images/logo.png" alt="Smooth Admin" /></a></h1>
+                    <a href="<%= ResolveUrl("~/") %>" title="Admin">
+                        <img src="<%= ResolveUrl("~/") %>Resources/images/logo.png" alt="Admin" /></a></h1>
             </div>
             <!-- end logo -->
             <!-- user -->
             <ul id="user">
-                <li class="first">Welcome <a href="">Abc</a></li>
-                <li><a href="">Messages (0)</a></li>
-                <li><a href="">Logout</a></li>
-                <li class="last highlight"><a href="">View Site</a></li>
+                <li class="first">Welcome <a href=""><%=EntitiesUtilities.GetAuthName() %></a></li>
             </ul>
             <!-- end user -->
             <div id="header-inner">
                 <div id="home">
-                    <a href=""></a>
+                    <a href="<%= ResolveUrl("~/") %>"></a>
                 </div>
                 <!-- quick -->
                 <ul id="quick">
