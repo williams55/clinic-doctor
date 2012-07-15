@@ -30,8 +30,12 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_tooltip.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/jquery.tokeninput.js") %>"></script>
+
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
 
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/styles/token-input.css") %>"
+        type="text/css" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler.css") %>"
         type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/scheduler.css") %>"
@@ -47,7 +51,7 @@
         var minuteStep = eval(<%=ServiceFacade.SettingsHelper.MinuteStep%>);
         var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
-   </script>
+    </script>
 
     <script src="GRNEditt.js" type="text/javascript"></script>
 
@@ -66,16 +70,11 @@
                 </div>
                 <table cellpadding="3" width="100%" id="tblContent">
                     <tr>
-                        <td colspan="2" class="title" id="tdTitle">
-                        </td>
-                    </tr>
-                    <tr>
                         <td class="header" width="80">
                             Doctor
                         </td>
                         <td>
-                            <select id="cboStaff" style="width: 200px;">
-                            </select>
+                            <input type="text" id="txtDoctor" style="width: 90%;" />
                         </td>
                     </tr>
                     <tr>
@@ -110,7 +109,8 @@
                         </td>
                         <td>
                             <select id="cboFromHour">
-                            </select><span id="loadingFromHour" class="loading"></span> <span id="spanFromDate" style="display: none;">
+                            </select><span id="loadingFromHour" class="loading"></span> <span id="spanFromDate"
+                                style="display: none;">
                                 <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" /></span>
                         </td>
                     </tr>

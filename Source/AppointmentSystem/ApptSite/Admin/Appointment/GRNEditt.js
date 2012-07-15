@@ -14,7 +14,6 @@ function ShowMinical() {
     });
 }
 
-
 // Init Schedule
 function initSchedule(weekday) {
     var currentDate = new Date();

@@ -103,11 +103,41 @@ public class WebCommon
     /// <summary>
     /// Build failed result to string for ajax with Json format
     /// </summary>
+    /// <param name="message"></param>
+    /// <param name="data">List of data</param>
+    /// <returns></returns>
+    public static string BuildFailedResult(object message, object data)
+    {
+        return BuildResult(false, message, data);
+    }
+
+    /// <summary>
+    /// Build failed result to string for ajax with Json format
+    /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
     public static string BuildSuccessfulResult(object obj)
     {
         return BuildResult(true, string.Empty, obj);
+    }
+
+    /// <summary>
+    /// Build failed result to string for ajax with Json format
+    /// </summary>
+    /// <returns></returns>
+    public static string BuildSuccessfulResult()
+    {
+        return BuildResult(true, string.Empty, new List<object>());
+    }
+
+    /// <summary>
+    /// Build failed result to string for ajax with Json format
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static string BuildSuccessfulResult(string message)
+    {
+        return BuildResult(true, message, new List<object>());
     }
     #endregion
 }
