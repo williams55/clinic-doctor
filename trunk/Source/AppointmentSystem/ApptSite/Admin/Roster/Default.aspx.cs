@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
 using AppointmentBusiness.BO;
@@ -10,6 +14,7 @@ using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Util;
 using Log.Controller;
+using Newtonsoft.Json;
 
 public partial class Admin_Roster_Default : System.Web.UI.Page
 {
@@ -39,136 +44,130 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     #region "Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string SaveEvent(string DoctorId, string RosterTypeId, string RosterTitle, string StartTime, string EndTime,
-        string StartDate, string EndDate, string Note, string RepeatRoster, string Weekday, string Month)
+    public static string NewRoster(string doctorId, string rosterTypeId, string startTime, string endTime,
+        string startDate, string endDate, string note, string repeatRoster, string weekday)
     {
-        string result = string.Empty;
-        string message = string.Empty;
         string username = EntitiesUtilities.GetAuthName();
-
-        // Check StaffId
-        if (DoctorId == null)
-        {
-            return WebCommon.BuildFailedResult("You must choose staff.");
-        }
 
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
             tm.BeginTransaction();
 
-            RightAccess.CheckUserRight(username, WebCommon.GetScreenCode(), OperationConstant.Create.Key, out message);
-
-            #region Validate current user
-            Users objUser;
-            if (!BoFactory.UserBO.ValidateCurrentUser(username, out objUser, out message))
+            #region Validation and covert value
+            // Validate user right for creating
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
             {
-                return WebCommon.BuildFailedResult(message);
+                return WebCommon.BuildFailedResult(_message);
             }
-            #endregion
+
+            // Check doctor
+            if (string.IsNullOrEmpty(doctorId))
+            {
+                return WebCommon.BuildFailedResult("You must choose doctor.");
+            }
 
             // Get Roster Type
-            RosterType objRt = DataRepository.RosterTypeProvider.GetById(Convert.ToInt32(RosterTypeId));
+            int intRosterTypeId;
+            // If rosterTypeId is not integer
+            if (!Int32.TryParse(rosterTypeId, out intRosterTypeId))
+            {
+                return WebCommon.BuildFailedResult("Roster Type is not exist.");
+            }
+
+            // If roster type is not existed
+            RosterType objRt = DataRepository.RosterTypeProvider.GetById(intRosterTypeId);
             if (objRt == null || objRt.IsDisabled)
             {
                 return WebCommon.BuildFailedResult("Roster Type is not exist.");
             }
 
-            // Get start time and end time
-            int intStartHour = Convert.ToInt32(StartTime.Split(':')[0]);
-            int intStartMinute = Convert.ToInt32(StartTime.Split(':')[1]);
-            int intEndHour = Convert.ToInt32(EndTime.Split(':')[0]);
-            int intEndMinute = Convert.ToInt32(EndTime.Split(':')[1]);
+            // Get start time and end time, validate all of them
+            int intStartHour, intStartMinute, intEndHour, intEndMinute;
+            if (!Int32.TryParse(startTime.Split(':')[0], out intStartHour)
+                || !Int32.TryParse(startTime.Split(':')[1], out intStartMinute)
+                || !Int32.TryParse(endTime.Split(':')[0], out intEndHour)
+                || !Int32.TryParse(endTime.Split(':')[1], out intEndMinute))
+            {
+                return WebCommon.BuildFailedResult("Time is invalid.");
+            }
+
+            // Get start date and end date, validate all of them
+            DateTime dtStart, dtEnd;
+            if (!DateTime.TryParse(startDate, out dtStart)
+                || !DateTime.TryParse(endDate, out dtEnd))
+            {
+                return WebCommon.BuildFailedResult("Date is invalid.");
+            }
+            #endregion
 
             // Declare list of object are returned
             var lstResult = new List<object>();
 
-            // Repeat roster
-            if (RepeatRoster == "true")
-            {
-                // Convert Month to right format
-                DateTime month = Convert.ToDateTime(Month);
-                DateTime item = new DateTime(month.Year, month.Month, 1);
+            // Declare list of roster in case repeat roster
+            var lstRoster = new TList<Roster>();
 
-                // Get auto increasement id
-                string Perfix = ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
-                int Count = 0;
-                string strNumber = "000";
-                TList<Roster> objPo = DataRepository.RosterProvider.GetPaged(tm, "Id like '" + Perfix + "' + '%'", "Id desc", 0, 1, out Count);
-                if (Count == 0)
-                    strNumber = "000";
-                else
+            // Repeat roster
+            if (repeatRoster.Trim().ToLower() == "true")
+            {
+                #region Validate Time
+                if (new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0) 
+                    >= new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intEndHour, intEndMinute, 0))
                 {
-                    strNumber = String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)));
+                    return WebCommon.BuildFailedResult("To time must be greater than from date.");
                 }
+
+                // If roster is created in a passed or current day
+                DateTime dtNow = DateTime.Now;
+                if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(dtStart.Year, dtStart.Month, dtStart.Day))
+                {
+                    tm.Rollback();
+                    return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
+                }
+                #endregion
+                
+                // Get auto increasement id
+                string perfix = ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
+                int count;
+                TList<Roster> objPo = DataRepository.RosterProvider.GetPaged(tm, "Id like '" + perfix + "' + '%'", "Id desc", 0, 1, out count);
+                string number = count == 0 ? "000" : String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)));
 
                 // Variable for error message if there is conflict roster
                 string errorMessage = string.Empty;
 
-                while (month.Month == item.Month)
+                dtStart = dtStart.AddDays(-1);
+                while (dtStart <= dtEnd)
                 {
-                    if (Weekday.Contains(item.DayOfWeek.ToString()))
+                    dtStart = dtStart.AddDays(1);
+                    if (weekday.Contains(dtStart.DayOfWeek.ToString()))
                     {
-                        var newObj = new Roster();
-                        strNumber = String.Format("{0:000}", int.Parse(strNumber) + 1);
+                        var dtTmpStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
+                        var dtTmpEnd = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intEndHour, intEndMinute, 0);
 
-                        newObj.Id = Perfix + strNumber;
-
-                        newObj.DoctorId = DoctorId;
-                        newObj.RosterTypeId = Convert.ToInt32(RosterTypeId);
-                        newObj.StartTime = new DateTime(item.Year, item.Month, item.Day, intStartHour, intStartMinute, 0);
-                        newObj.EndTime = new DateTime(item.Year, item.Month, item.Day, intEndHour, intEndMinute, 0);
-                        newObj.Note = Note;
-                        newObj.CreateUser = username;
-                        newObj.UpdateUser = username;
-
-                        DataRepository.RosterProvider.Insert(tm, newObj);
-
-                        // Check if start time >= end time
-                        if (newObj.StartTime >= newObj.EndTime)
-                        {
-                            tm.Rollback();
-                            return WebCommon.BuildFailedResult("To date must be greater than from date.");
-                        }
-
-                        // If roster is created in a passed or current day
-                        DateTime dtNow = DateTime.Now;
-                        if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(newObj.StartTime.Year, newObj.StartTime.Month, newObj.StartTime.Day))
-                        {
-                            tm.Rollback();
-                            return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
-                        }
-
-                        // Check roster before insert new roster
-                        string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, newObj.EndTime, newObj.StartTime);
-                        TList<Roster> lstRoster = DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
+                        // Check existed rosters
+                        string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+                            , doctorId, dtTmpEnd, dtTmpStart);
+                        DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
                         // If there is no roster -> insert new roster
-                        if (Count > 1)
+                        if (count > 0)
                         {
-                            errorMessage += newObj.StartTime.DayOfWeek.ToString() + " " + newObj.StartTime.ToString("dd MMM yyyy") + ", ";
+                            errorMessage += dtTmpStart.DayOfWeek.ToString() + " " + dtTmpStart.ToString("dd MMM yyyy") + ", ";
+                            continue;
                         }
 
-                        DataRepository.RosterProvider.DeepLoad(newObj);
-
-                        lstResult.Add(new
+                        number = String.Format("{0:000}", int.Parse(number) + 1);
+                        lstRoster.Add(new Roster
                                           {
-                                              id = newObj.Id,
-                                              start_date = newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
-                                              end_date = newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
-                                              section_id = newObj.DoctorId,
-                                              text = String.Format("{0}<br />Doctor: {1}<br />{2}"
-                                                      , newObj.RosterTypeIdSource.Title
-                                                      , newObj.DoctorIdSource.Username
-                                                      , newObj.Note),
-                                              DoctorUserName = newObj.DoctorIdSource.Username,
-                                              DoctorShortName = newObj.DoctorIdSource.DisplayName,
-                                              newObj.RosterTypeId,
-                                              RosterTypeTitle = newObj.RosterTypeIdSource.Title,
-                                              note = newObj.Note,
-                                              isnew = false
+                                              Id = perfix + number,
+                                              DoctorId = doctorId,
+                                              RosterTypeId = intRosterTypeId,
+                                              StartTime = dtTmpStart,
+                                              EndTime = dtTmpEnd,
+                                              Note = note,
+                                              CreateUser = username,
+                                              UpdateUser = username
                                           });
                     }
-                    item = item.AddDays(1);
                 }
 
                 if (errorMessage.Length > 0)
@@ -176,86 +175,75 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     tm.Rollback();
                     return WebCommon.BuildFailedResult(String.Format("There are some rosters conflicted: {0}", errorMessage.Substring(0, errorMessage.Length - 1)));
                 }
-
-                result = WebCommon.BuildSuccessfulResult(lstResult);
             }
             else
             {
-                var newObj = new Roster();
+                #region Validate Time
+                var dtTmpStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
+                var dtTmpEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
 
-                // Get start date and end date
-                DateTime dtStart = Convert.ToDateTime(StartDate);
-                DateTime dtEnd = Convert.ToDateTime(EndDate);
-
-                string Perfix = ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
-                int Count = 0;
-                TList<Roster> objPo = DataRepository.RosterProvider.GetPaged(tm, "Id like '" + Perfix + "' + '%'", "Id desc", 0, 1, out Count);
-                if (Count == 0)
-                    newObj.Id = Perfix + "001";
-                else
+                if (dtTmpStart >= dtTmpEnd)
                 {
-                    newObj.Id = Perfix + String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
+                    return WebCommon.BuildFailedResult("To time must be greater than from date.");
                 }
-
-                newObj.DoctorId = DoctorId;
-                newObj.RosterTypeId = Convert.ToInt32(RosterTypeId);
-                newObj.StartTime = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
-                newObj.EndTime = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
-                newObj.Note = Note;
-                newObj.CreateUser = username;
-                newObj.UpdateUser = username;
-
-                DataRepository.RosterProvider.Insert(tm, newObj);
-
-                // Check if start time >= end time
-                if (newObj.StartTime >= newObj.EndTime)
-                {
-                    tm.Rollback();
-                    return WebCommon.BuildFailedResult("To date must be greater than from date.");
-                }
-
                 // If roster is created in a passed or current day
                 DateTime dtNow = DateTime.Now;
-                if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(newObj.StartTime.Year, newObj.StartTime.Month, newObj.StartTime.Day))
+                if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(dtStart.Year, dtStart.Month, dtStart.Day))
                 {
                     tm.Rollback();
                     return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
                 }
+                #endregion
 
-                // Check roster before insert new roster
-                string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", objUser.Id, newObj.EndTime, newObj.StartTime);
-                TList<Roster> lstRoster = DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, 1, out Count);
-                // If there is no roster -> insert new roster
-                if (Count > 1)
+                var newObj = new Roster();
+
+                string perfix = ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
+                int count;
+                TList<Roster> objPo = DataRepository.RosterProvider.GetPaged(tm, "Id like '" + perfix + "' + '%'", "Id desc", 0, 1, out count);
+                string id;
+                if (count == 0)
+                    id = perfix + "001";
+                else
                 {
-                    tm.Rollback();
+                    id = perfix + String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
+                }
+
+                // Check existed rosters
+                string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+                    , doctorId, dtTmpEnd, dtTmpStart);
+                DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                // If there is no roster -> insert new roster
+                if (count > 0)
+                {
                     return WebCommon.BuildFailedResult(String.Format("There is roster conflicted: From {0} {1} to {2} {3}"
                         , newObj.StartTime.DayOfWeek, newObj.StartTime.ToString("dd MMM yyyy HH:mm")
                         , newObj.EndTime.DayOfWeek, newObj.EndTime.ToString("dd MMM yyyy HH:mm")));
                 }
 
-                DataRepository.RosterProvider.DeepLoad(newObj);
-                lstResult.Add(new
+                lstRoster.Add(new Roster
                 {
-                    id = newObj.Id,
-                    start_date = newObj.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
-                    end_date = newObj.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
-                    section_id = newObj.DoctorId,
-                    text = String.Format("{0}<br />Doctor: {1}<br />{2}"
-                            , newObj.RosterTypeIdSource.Title
-                            , newObj.DoctorIdSource.Username
-                            , newObj.Note),
-                    DoctorUserName = newObj.DoctorIdSource.Username,
-                    DoctorShortName = newObj.DoctorIdSource.DisplayName,
-                    newObj.RosterTypeId,
-                    RosterTypeTitle = newObj.RosterTypeIdSource.Title,
-                    note = newObj.Note,
-                    isnew = false
+                    Id = id,
+                    DoctorId = doctorId,
+                    RosterTypeId = intRosterTypeId,
+                    StartTime = dtTmpStart,
+                    EndTime = dtTmpEnd,
+                    Note = note,
+                    CreateUser = username,
+                    UpdateUser = username
                 });
             }
+            // Insert new rosters
+            DataRepository.RosterProvider.Insert(tm, lstRoster);
+
+            // Load relation data
+            DataRepository.RosterProvider.DeepLoad(lstRoster);
+
+            // Add all roster to result list
+            AddRoster(lstResult, lstRoster);
+
             tm.Commit();
 
-            result = WebCommon.BuildSuccessfulResult(lstResult);
+            return WebCommon.BuildSuccessfulResult(lstResult);
         }
         catch (Exception ex)
         {
@@ -263,153 +251,101 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             tm.Rollback();
             return WebCommon.BuildFailedResult(ex.Message);
         }
-
-        return result;
     }
+    #endregion
 
     #region "Update Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateEventSave(string Id, string DoctorUsername, string RosterTypeId, string RosterTitle, string StartTime, string EndTime,
-        string StartDate, string EndDate, string Note)
+    public static string MoveRoster(string id, string doctorId, string startTime, string endTime)
     {
-        try
-        {
-            // Get start time and end time
-            int intStartHour = Convert.ToInt32(StartTime.Split(':')[0]);
-            int intStartMinute = Convert.ToInt32(StartTime.Split(':')[1]);
-            int intEndHour = Convert.ToInt32(EndTime.Split(':')[0]);
-            int intEndMinute = Convert.ToInt32(EndTime.Split(':')[1]);
-
-            // Get start date and end date
-            DateTime dtStart = Convert.ToDateTime(StartDate);
-            DateTime dtEnd = Convert.ToDateTime(EndDate);
-
-            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
-            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
-
-            return UpdateEvent(Id, DoctorUsername, RosterTypeId, RosterTitle, dtStart, dtEnd, Note);
-        }
-        catch (Exception ex)
-        {
-            //Write log cho nay
-
-            return @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-        }
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateEventMove(string Id, string DoctorUsername, string RosterTypeId, string RosterTitle, string StartTime, string EndTime, string Note)
-    {
-        // Get start date and end date
-        DateTime dtStart = Convert.ToDateTime(StartTime);
-        DateTime dtEnd = Convert.ToDateTime(EndTime);
-
-        return UpdateEvent(Id, DoctorUsername, RosterTypeId, RosterTitle, dtStart, dtEnd, Note);
-    }
-
-    // Update roster
-    private static string UpdateEvent(string Id, string doctorId, string RosterTypeId, string RosterTitle, DateTime StartTime, DateTime EndTime, string Note)
-    {
-        // Check StaffId
-        if (doctorId == null)
-        {
-            return WebCommon.BuildFailedResult("You must choose staff.");
-        }
-
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
-            int count;
             tm.BeginTransaction();
+
+            // Declare list of object are returned
+            var lstResult = new List<object>();
+
+            #region Validation
+            // Get roster by id
+            Roster rosterItem = DataRepository.RosterProvider.GetById(id);
+
+            // Validate if roster's not existed
+            // return message, nothing more
+            if (rosterItem == null)
+            {
+                return WebCommon.BuildFailedResult("There is no roster to update or the roster is expired.");
+            }
+
+            // Load relation
+            DataRepository.RosterProvider.DeepLoad(rosterItem);
+
+            // Validate if roster's expired
+            // return message with roster, this will be used to rollback roster to previous location, before moved
+            if (rosterItem.IsDisabled)
+            {
+                AddRoster(lstResult, rosterItem);
+                return WebCommon.BuildFailedResult("Roster is expired.", lstResult);
+            }
 
             // Validate current user have any right to operate this action
             // Validate user right for reading
             string username = EntitiesUtilities.GetAuthName();
             if (!RightAccess.CheckUserRight(username, ScreenCode, OperationConstant.Update.Key, out _message))
             {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult(_message);
+                AddRoster(lstResult, rosterItem);
+                return WebCommon.BuildFailedResult(_message, lstResult);
             }
 
-            // Them phan kiem tra doctor Id co hop le hay khong
-            // Se lam sau
-
-            // Validate existed or expired roster
-            Roster dr = DataRepository.RosterProvider.GetById(Id);
-            if (dr == null || dr.IsDisabled)
+            // Check StaffId
+            if (doctorId == null)
             {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult("There is no roster to update or the roster is expired.");
+                AddRoster(lstResult, rosterItem);
+                return WebCommon.BuildFailedResult("You must choose staff.", lstResult);
             }
 
-            // Get Roster Type
-            RosterType objRt = DataRepository.RosterTypeProvider.GetByIdIsDisabled(Convert.ToInt32(RosterTypeId), false);
-            if (objRt == null)
-            {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult("Roster Type is not exist.");
-            }
-
-            dr.DoctorId = doctorId;
-            dr.RosterTypeId = Convert.ToInt32(RosterTypeId);
-            dr.StartTime = StartTime;
-            dr.EndTime = EndTime;
-            dr.Note = Note;
-            dr.UpdateUser = username;
-            dr.UpdateDate = DateTime.Now;
-
-            DataRepository.RosterProvider.Save(tm, dr);
-
-            // Check if start time >= end time
-            if (dr.StartTime >= dr.EndTime)
-            {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult("To date must be greater than from date.");
-            }
+            // Get start date and end date
+            DateTime dtStart = Convert.ToDateTime(startTime);
+            DateTime dtEnd = Convert.ToDateTime(endTime);
 
             // If roster is created in a passed or current day
-            if (Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd")) >= Convert.ToDateTime(dr.StartTime.ToString("yyyy/MM/dd")))
+            if (DateTime.Now >= dtStart)
             {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
+                AddRoster(lstResult, rosterItem);
+                return WebCommon.BuildFailedResult("You can not change roster to passed or current date.", lstResult);
+            }
+
+            if (dtStart >= dtEnd)
+            {
+                return WebCommon.BuildFailedResult("To time must be greater than from date.");
             }
 
             // Check roster before insert new roster
-            string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'", doctorId, dr.EndTime, dr.StartTime);
-            DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
-            // If there is no roster -> insert new roster
-            if (count > 1)
+            int count;
+            DataRepository.RosterProvider.GetPaged(String.Format("Id <> '{3}' AND DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+                , doctorId, dtEnd, dtStart, id), string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+            if (count > 0)
             {
-                tm.Rollback();
+                AddRoster(lstResult, rosterItem);
                 return WebCommon.BuildFailedResult(String.Format("There is roster conflicted: From {0} {1} to {2} {3}"
-                    , dr.StartTime.DayOfWeek.ToString(), dr.StartTime.ToString("dd MMM yyyy HH:mm")
-                    , dr.EndTime.DayOfWeek.ToString(), dr.EndTime.ToString("dd MMM yyyy HH:mm")));
+                    , rosterItem.StartTime.DayOfWeek.ToString(), rosterItem.StartTime.ToString("dd MMM yyyy HH:mm")
+                    , rosterItem.EndTime.DayOfWeek.ToString(), rosterItem.EndTime.ToString("dd MMM yyyy HH:mm")), lstResult);
             }
+            #endregion
 
-            // Declare list of object are returned
-            var lstResult = new List<object>();
+            // Set new value
+            rosterItem.DoctorId = doctorId;
+            rosterItem.StartTime = dtStart;
+            rosterItem.EndTime = dtEnd;
+            rosterItem.UpdateUser = username;
+            rosterItem.UpdateDate = DateTime.Now;
 
-            DataRepository.RosterProvider.DeepLoad(dr);
+            // Save roster
+            DataRepository.RosterProvider.Save(tm, rosterItem);
+            DataRepository.RosterProvider.DeepLoad(rosterItem);
 
-            lstResult.Add(new
-            {
-                id = dr.Id,
-                start_date = dr.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
-                end_date = dr.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
-                section_id = dr.DoctorId,
-                text = String.Format("{0}<br />Doctor: {1}<br />{2}"
-                        , dr.RosterTypeIdSource.Title
-                        , dr.DoctorIdSource.Username
-                        , dr.Note),
-                DoctorUserName = dr.DoctorIdSource.Username,
-                DoctorShortName = dr.DoctorIdSource.DisplayName,
-                dr.RosterTypeId,
-                RosterTypeTitle = dr.RosterTypeIdSource.Title,
-                note = dr.Note,
-                isnew = false
-            });
+            AddRoster(lstResult, rosterItem);
             tm.Commit();
             return WebCommon.BuildSuccessfulResult(lstResult);
         }
@@ -421,7 +357,137 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             return WebCommon.BuildFailedResult(ex.Message);
         }
     }
-    #endregion
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string UpdateRoster(string id, string doctorId, string rosterTypeId, string startTime, string endTime,
+        string startDate, string endDate, string note)
+    {
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        try
+        {
+            tm.BeginTransaction();
+
+            // Validate user right for creating
+            string username = EntitiesUtilities.GetAuthName();
+            if (!RightAccess.CheckUserRight(username, ScreenCode, OperationConstant.Update.Key, out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            // Declare list of object are returned
+            var lstResult = new List<object>();
+
+            #region Validation and convert value
+            // Get roster by id
+            Roster rosterItem = DataRepository.RosterProvider.GetById(id);
+
+            // Validate if roster's not existed
+            // return message, nothing more
+            if (rosterItem == null)
+            {
+                return WebCommon.BuildFailedResult("There is no roster to update or the roster is expired.");
+            }
+
+            // Validate if roster's expired
+            // return message with roster, this will be used to rollback roster to previous location, before moved
+            if (rosterItem.IsDisabled)
+            {
+                return WebCommon.BuildFailedResult("Roster is expired.");
+            }
+
+            // Check doctor
+            if (string.IsNullOrEmpty(doctorId))
+            {
+                return WebCommon.BuildFailedResult("You must choose doctor.");
+            }
+
+            // Get Roster Type
+            int intRosterTypeId;
+            // If rosterTypeId is not integer
+            if (!Int32.TryParse(rosterTypeId, out intRosterTypeId))
+            {
+                return WebCommon.BuildFailedResult("Roster Type is not exist.");
+            }
+
+            // If roster type is not existed
+            RosterType objRt = DataRepository.RosterTypeProvider.GetById(intRosterTypeId);
+            if (objRt == null || objRt.IsDisabled)
+            {
+                return WebCommon.BuildFailedResult("Roster Type is not exist.");
+            }
+
+            // Get start time and end time, validate all of them
+            int intStartHour, intStartMinute, intEndHour, intEndMinute;
+            if (!Int32.TryParse(startTime.Split(':')[0], out intStartHour)
+                || !Int32.TryParse(startTime.Split(':')[1], out intStartMinute)
+                || !Int32.TryParse(endTime.Split(':')[0], out intEndHour)
+                || !Int32.TryParse(endTime.Split(':')[1], out intEndMinute))
+            {
+                return WebCommon.BuildFailedResult("Time is invalid.");
+            }
+
+            // Get start date and end date, validate all of them
+            DateTime dtStart, dtEnd;
+            if (!DateTime.TryParse(startDate, out dtStart)
+                || !DateTime.TryParse(endDate, out dtEnd))
+            {
+                return WebCommon.BuildFailedResult("Date is invalid.");
+            }
+
+            // Get datetime
+            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
+            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
+
+            // If roster is created in a passed or current day
+            if (DateTime.Now >= dtStart)
+            {
+                AddRoster(lstResult, rosterItem);
+                return WebCommon.BuildFailedResult("You can not change roster to passed or current date.", lstResult);
+            }
+
+            if (dtStart >= dtEnd)
+            {
+                return WebCommon.BuildFailedResult("To time must be greater than from date.");
+            }
+
+            // Check existed rosters
+            int count;
+            string query = string.Format("DoctorId = '{0}' AND Id <> '{3}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+                , doctorId, dtEnd, dtStart, id);
+            DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+            // If there is no roster -> insert new roster
+            if (count > 0)
+            {
+                return WebCommon.BuildFailedResult(String.Format("There is roster conflicted: From {0} {1} to {2} {3}"
+                    , dtStart.DayOfWeek, dtStart.ToString("dd MMM yyyy HH:mm")
+                    , dtEnd.DayOfWeek, dtEnd.ToString("dd MMM yyyy HH:mm")));
+            }
+            #endregion
+
+            rosterItem.DoctorId = doctorId;
+            rosterItem.RosterTypeId = intRosterTypeId;
+            rosterItem.StartTime = dtStart;
+            rosterItem.EndTime = dtEnd;
+            rosterItem.Note = note;
+            rosterItem.UpdateUser = username;
+            rosterItem.UpdateDate = DateTime.Now;
+
+            DataRepository.RosterProvider.Save(tm, rosterItem);
+            DataRepository.RosterProvider.DeepLoad(rosterItem);
+
+            AddRoster(lstResult, rosterItem);
+            tm.Commit();
+            return WebCommon.BuildSuccessfulResult(lstResult);
+        }
+        catch (Exception ex)
+        {
+            //Write log cho nay
+            tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult(ex.Message);
+        }
+    }
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
@@ -434,11 +500,11 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         {
             tm.BeginTransaction();
 
+            // Validate user right for reading
             string username = EntitiesUtilities.GetAuthName();
-            Users objUser;
-            if (!BoFactory.UserBO.ValidateCurrentUser(username, out objUser, out message))
+            if (!RightAccess.CheckUserRight(username, ScreenCode, OperationConstant.Read.Key, out _message))
             {
-                return WebCommon.BuildFailedResult(message);
+                return WebCommon.BuildFailedResult(_message);
             }
 
             int count;
@@ -448,7 +514,6 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             // Declare list of object are returned
             var lstResult = new List<object>();
 
-            string color = string.Empty;
             foreach (Roster item in lstObj)
             {
                 lstResult.Add(new
@@ -476,6 +541,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         {
             //Write log cho nay
             tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult(ex.Message);
         }
 
@@ -484,44 +550,41 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string DeleteEvent(string Id)
+    public static string DeleteRoster(string id)
     {
-        string result = string.Empty;
-
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
-            tm.BeginTransaction();
-
+            // Validate user right for deleting
             string username = EntitiesUtilities.GetAuthName();
-
-            Roster dr = DataRepository.RosterProvider.GetById(Id);
-            if (dr == null || dr.IsDisabled)
+            if (!RightAccess.CheckUserRight(username, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
-                result = @"[{ 'result': 'false', 'message': 'There is no roster to delete or roster is expired.', 'data': [] }]";
-                return result;
+                return WebCommon.BuildFailedResult(_message);
             }
 
-            dr.IsDisabled = true;
-            dr.UpdateUser = username;
-            dr.UpdateDate = DateTime.Now;
+            tm.BeginTransaction();
 
-            DataRepository.RosterProvider.Save(tm, dr);
+            Roster roster = DataRepository.RosterProvider.GetById(id);
+            if (roster == null || roster.IsDisabled)
+            {
+                return WebCommon.BuildFailedResult("There is no roster to delete or roster is expired.");
+            }
 
-            result = @"[{ 'result': 'true', 'message': '', 'data': [] }]";
+            roster.IsDisabled = true;
+            roster.UpdateUser = username;
+            roster.UpdateDate = DateTime.Now;
+
+            DataRepository.RosterProvider.Save(tm, roster);
             tm.Commit();
+
+            return WebCommon.BuildSuccessfulResult("Roster is deleted");
         }
         catch (Exception ex)
         {
-            //Write log cho nay
             tm.Rollback();
-
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            return result;
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult(ex.Message);
         }
-
-        //StepResult:
-        return result;
     }
     #endregion
 
@@ -539,7 +602,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             result = string.Empty;
             foreach (RosterType item in lst)
             {
-                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + ((item.Title == null) ? "" : item.Title) + @"'" + "},";
+                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + (item.Title ?? "") + @"'" + "},";
             }
             result = "[" + result.Substring(0, result.Length - 1) + "]";
         }
@@ -588,106 +651,175 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
         try
         {
-            // Get all functionalities
-            int count;
-            var lstService = DataRepository.ServicesProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, 10000, out count);
-
-            // If there is no functionality, return empty data
-            if (lstService.Count == 0)
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key,
+                                       out _message))
             {
-                result = @"[{ 'result': 'false', 'message': 'There is no group. Please contact Administrator.', 'data': [] }]";
-                goto StepResult;
+                return WebCommon.BuildFailedResult(_message);
             }
 
+            // Get all services
+            int count;
+            var lstService = DataRepository.ServicesProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0
+                , ServiceFacade.SettingsHelper.GetPagedLength, out count);
+
             // Get all available staffs
-            TList<DoctorService> lstDoctorService = DataRepository.DoctorServiceProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, 10000, out count);
+            TList<DoctorService> lstDoctorService = DataRepository.DoctorServiceProvider.GetPaged("IsDisabled = 'False'"
+                , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
             DataRepository.DoctorServiceProvider.DeepLoad(lstDoctorService);
-            bool hasItem = false;
             //lstDoctorService.Sort("DoctorShortName ASC");
+
+            // Declare list of object are returned
+            var lstResult = new List<object>();
 
             foreach (Services item in lstService)
             {
-                result += @"{'key' : '" + item.Id + @"'" + "," + @"'label' : '" + item.Title + @"', open: true, children: [";
-                hasItem = false;
+                var lstDoctor = new List<object>();
 
-                // Get staff by functionality then remove it from list
-                for (int j = 0; j < lstDoctorService.Count; j++)
-                {
-                    if (lstDoctorService[j].ServiceId == item.Id)
-                    {
-                        result += @"{'key' : '" + lstDoctorService[j].DoctorId + @"'" + "," + @"'label' : '"
-                            + lstDoctorService[j].DoctorIdSource.DisplayName + @"'" + "},";
-                        lstDoctorService.RemoveAt(j);
-                        j--;
-                        hasItem = true;
-                    }
-                }
+                lstDoctorService.FindAll(x => x.ServiceId == item.Id).ForEach(service => lstDoctor.Add(new
+                                                                                                           {
+                                                                                                               key = service.DoctorId,
+                                                                                                               label = service.DoctorIdSource.DisplayName
+                                                                                                           }));
+                lstResult.Add(new
+                                  {
+                                      key = item.Id,
+                                      label = item.Title,
+                                      open = true,
+                                      children = lstDoctor
+                                  });
 
-                if (hasItem)
-                    result = result.Substring(0, result.Length - 1);
-                result += @"]},";
             }
-            if (result.Length > 1)
-                result = result.Substring(0, result.Length - 1);
 
-            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
+            result = WebCommon.BuildSuccessfulResult(lstResult);
         }
         catch (Exception ex)
         {
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
+            return WebCommon.BuildFailedResult(ex.Message);
         }
-    StepResult:
+
         return result;
     }
 
+    /// <summary>
+    /// Add roster to list
+    /// </summary>
+    /// <param name="lst"></param>
+    /// <param name="item"></param>
+    private static void AddRoster(List<object> lst, Roster item)
+    {
+        lst.Add(new
+        {
+            id = item.Id,
+            start_date = item.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
+            end_date = item.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
+            section_id = item.DoctorId,
+            text = String.Format("{0}<br />Doctor: {1}<br />{2}"
+                    , item.RosterTypeIdSource.Title
+                    , item.DoctorIdSource.Username
+                    , item.Note),
+            DoctorUserName = item.DoctorIdSource.Username,
+            DoctorShortName = item.DoctorIdSource.DisplayName,
+            item.RosterTypeId,
+            RosterTypeTitle = item.RosterTypeIdSource.Title,
+            note = item.Note,
+            isnew = false
+        });
+    }
+
+    /// <summary>
+    /// Add roster to list
+    /// </summary>
+    /// <param name="lst"></param>
+    /// <param name="lstItem"></param>
+    private static void AddRoster(List<object> lst, IEnumerable<Roster> lstItem)
+    {
+        foreach (var roster in lstItem)
+        {
+            AddRoster(lst, roster);
+        }
+    }
+    #endregion
+
+    #region Doctor
+    /// <summary>
+    /// Search doctor by keyword
+    /// </summary>
+    /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetStaffs()
+    public static string GetDoctorById(string doctorId)
     {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *          key: name of roles,
-         *          label: name of roles,
-         *          }, {}, {}]
-         *  }]
-         */
-        string result = string.Empty;
-
         try
         {
-            // Get all available staffs
-            int count;
-            TList<DoctorService> lstDoctorService = DataRepository.DoctorServiceProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, 10000, out count);
-            DataRepository.DoctorServiceProvider.DeepLoad(lstDoctorService);
-
-            // If there is no roles, return empty data
-            if (lstDoctorService.Count == 0)
+            var doctor = DataRepository.UsersProvider.GetById(doctorId);
+            object result = null;
+            if (doctor != null)
             {
-                result = @"[{ 'result': 'true', 'message': 'There is no group or no doctor. Please contact Administrator.', 'data': [] }]";
-                goto StepResult;
+                result = new
+                             {
+                                 DoctorId = doctor.Id,
+                                 doctor.DisplayName
+                             };
             }
-
-            //lstDoctorService.Sort("FuncTitle ASC, DoctorShortName ASC");
-            foreach (var item in lstDoctorService)
-            {
-                result += @"{'key' : '" + item.DoctorId + @"'" + "," + @"'label' : '" + item.ServiceIdSource.Title + strSeperateStaff + item.DoctorIdSource.DisplayName + @"'},";
-            }
-
-            if (result.Length > 1)
-                result = result.Substring(0, result.Length - 1);
-
-            result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
-            goto StepResult;
+            return WebCommon.BuildSuccessfulResult(result);
         }
         catch (Exception ex)
         {
-            result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-            goto StepResult;
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult(ex.Message);
         }
-    StepResult:
-        return result;
+    }
+
+    /// <summary>
+    /// Search doctor by keyword
+    /// </summary>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static string SearchDoctor()
+    {
+        try
+        {
+            return SearchDoctor(HttpContext.Current.Request["q"]);
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// Search Doctor with conditions
+    /// </summary>
+    /// <param name="keyword"> </param>
+    /// <returns></returns>
+    private static string SearchDoctor(string keyword)
+    {
+        try
+        {
+            // Se them cai vu chi tim theo bac si sau
+            int count;
+            string query = string.Format("(Id LIKE '%{0}%' OR Firstname LIKE '%{0}%' OR Lastname LIKE '%{0}%' OR DisplayName LIKE '%{0}%') AND IsDisabled = 'False'", keyword);
+            var lstDoctor = DataRepository.UsersProvider.GetPaged(query, string.Empty, 0
+                , 10, out count);
+
+            var lst = (from Users item in lstDoctor
+                       select new
+                       {
+                           id = item.Id,
+                           item.DisplayName
+                       });
+
+            return JsonConvert.SerializeObject(lst);
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return string.Empty;
+        }
     }
     #endregion
 }

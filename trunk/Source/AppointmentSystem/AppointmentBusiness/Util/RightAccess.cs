@@ -29,12 +29,16 @@ namespace AppointmentBusiness.Util
                 var objUserRole = DataRepository.UsersProvider.GetByUsername(username);
                 DataRepository.UsersProvider.DeepLoad(objUserRole);
                 var lstUserRole = objUserRole.UserRoleCollection;
-                
+
                 int count;
+                var abc = lstUserRole.Select(userRole => DataRepository.RoleDetailProvider.GetPaged(
+                    String.Format("IsDisabled = 'False' AND RoleId = {0} AND ScreenCode = '{1}'", userRole.RoleId,
+                                  screen)
+                    , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count));
                 // Get list of role
                 if (lstUserRole.Select(userRole => DataRepository.RoleDetailProvider.GetPaged(
                     String.Format("IsDisabled = 'False' AND RoleId = {0} AND ScreenCode = '{1}'", userRole.RoleId, screen)
-                    , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count)).Any(lstRoleDetail => lstRoleDetail.Exists(x => x.Crud.Contains(operation))))
+                    , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count)).Any(lstRoleDetail => lstRoleDetail.Exists(x => x.Crud.ToLower().Contains(operation.ToLower()))))
                 {
                     return true;
                 }
