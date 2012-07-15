@@ -52,9 +52,6 @@
         var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
     </script>
-
-    <script src="GRNEditt.js" type="text/javascript"></script>
-
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div id="box-tabs" class="box">
