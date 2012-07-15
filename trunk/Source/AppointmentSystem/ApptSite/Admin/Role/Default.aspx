@@ -14,13 +14,13 @@
             <dx:ASPxGridView ID="gridRole" ClientInstanceName="grid" runat="server" DataSourceID="RoleDataSource"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRole_RowInserting"
                 OnCustomButtonCallback="gridRole_CustomButtonCallback" 
-                onrowvalidating="gridRole_RowValidating">
-                <Columns>
-                    <dx:GridViewCommandColumn VisibleIndex="3" Caption="#">
-                        <EditButton Visible="true" />
-                        <NewButton Visible="true" />
-                        <CustomButtons>
-                            <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
+              >
+                    <Columns>
+                        <dx:GridViewCommandColumn VisibleIndex="3" Caption="#">
+                            <EditButton Visible="true" />
+                            <NewButton Visible="true" />
+                            <CustomButtons>
+                                <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
                             </dx:GridViewCommandColumnCustomButton>
                         </CustomButtons>
                     </dx:GridViewCommandColumn>
@@ -31,8 +31,8 @@
                 <Templates>
                     <DetailRow>
                            <dx:ASPxGridView runat="server" ID="Gridroledetail" 
-                                DataSourceID="RoledetailDataS" KeyFieldName="Id" 
-                                 OnBeforePerformDataSelect="Gridroledetail_OnBeforePerformDataSelect">
+                                DataSourceID="RoledetailDataS" KeyFieldName="Id"                               
+                                OnBeforePerformDataSelect="Gridroledetail_OnBeforePerformDataSelect">
                                 <Columns>
                                     <dx:GridViewCommandColumn Caption="Control" VisibleIndex="4">
                                         <EditButton Visible="true"></EditButton>
@@ -47,9 +47,6 @@
                                 </Columns>
                                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
                                 </ClientSideEvents>
-                                <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
-                                </SettingsPager>
-                                <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
                           </dx:ASPxGridView>
                     </DetailRow>
                     <EditForm>
