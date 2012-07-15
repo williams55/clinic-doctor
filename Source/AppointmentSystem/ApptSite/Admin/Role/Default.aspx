@@ -16,7 +16,7 @@
                 OnCustomButtonCallback="gridRole_CustomButtonCallback" 
                 onrowvalidating="gridRole_RowValidating">
                 <Columns>
-                    <dx:GridViewCommandColumn VisibleIndex="3" Caption="Process">
+                    <dx:GridViewCommandColumn VisibleIndex="3" Caption="#">
                         <EditButton Visible="true" />
                         <NewButton Visible="true" />
                         <CustomButtons>
@@ -29,6 +29,29 @@
                     <dx:GridViewDataColumn FieldName="Note" VisibleIndex="2" />                   
                 </Columns>
                 <Templates>
+                    <DetailRow>
+                           <dx:ASPxGridView runat="server" ID="Gridroledetail" 
+                                DataSourceID="RoledetailDataS" KeyFieldName="Id" 
+                                 OnBeforePerformDataSelect="Gridroledetail_OnBeforePerformDataSelect">
+                                <Columns>
+                                    <dx:GridViewCommandColumn Caption="Control" VisibleIndex="4">
+                                        <EditButton Visible="true"></EditButton>
+                                        <NewButton Visible="true"></NewButton>
+                                    </dx:GridViewCommandColumn>                                     
+                                    <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0"  ReadOnly="true">                                     
+                                    </dx:GridViewDataColumn>
+                                    <dx:GridViewDataComboBoxColumn FieldName="ScreenCode" VisibleIndex="2">
+                                        <PropertiesComboBox TextField="ScreenName" ValueField="ScreenCode" DataSourceID="ScreenDatas"></PropertiesComboBox>                                       
+                                    </dx:GridViewDataComboBoxColumn>
+                                    <dx:GridViewDataColumn FieldName="Crud" Visible="true" VisibleIndex="3" ></dx:GridViewDataColumn>
+                                </Columns>
+                                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
+                                </ClientSideEvents>
+                                <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
+                                </SettingsPager>
+                                <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
+                          </dx:ASPxGridView>
+                    </DetailRow>
                     <EditForm>
                          <div id="devexpress-form">
                             <dx:ContentControl ID="ContentControl1" runat="server">
@@ -63,6 +86,7 @@
                             runat="server"></dx:ASPxGridViewTemplateReplacement>
                     </EditForm>
                 </Templates>
+                <SettingsDetail ShowDetailRow="true" AllowOnlyOneMasterRowExpanded="True" />
                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
                 </ClientSideEvents>
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
@@ -72,7 +96,7 @@
             <data:RoleDataSource ID="RoleDataSource" runat="server" SelectMethod="GetPaged" EnablePaging="True"
                 EnableSorting="True" InsertMethod="Insert" UpdateMethod="Update">
                     <DeepLoadProperties Method="IncludeChildren" Recursive="False"></DeepLoadProperties>
-                <Parameters>
+                    <Parameters>
                     <data:CustomParameter Name="WhereClause" Value="IsDisabled = 'false'" ConvertEmptyStringToNull="false" />
                     <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
                     <asp:ControlParameter Name="PageIndex" ControlID="gridRole" PropertyName="PageIndex"
@@ -80,6 +104,17 @@
                     <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
                 </Parameters>
             </data:RoleDataSource>
+            <data:RoleDetailDataSource runat="server" ID="RoledetailDataS" SelectMethod="GetPaged">
+                <Parameters>
+                    <data:CustomParameter  Name="OrderByClause" Value="" ConvertEmptyStringToNull="false"/>
+                    <asp:ControlParameter Name="PageIndex" ConvertEmptyStringToNull="false" ControlId="gridRole" PropertyName="PageIndex"  />
+                </Parameters>
+            </data:RoleDetailDataSource>
+             <data:ScreenDataSource runat="server" ID="ScreenDatas">
+                 <Parameters>
+                    <data:CustomParameter Name="whereClause" Value="IsDisabled='false'" ConvertEmptyStringToNull="false" />
+                </Parameters>
+            </data:ScreenDataSource>
         </div>
     </div>
 </asp:Content>
