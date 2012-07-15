@@ -1,43 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
 
-  <siteMapNode title="Admin" roles="*">
+  <siteMapNode title="Admin" roles="Admin,Doctor,Manager">
 
     <siteMapNode title="Status" url="~/Admin/Status" roles="Admin,Manager" />
-    <siteMapNode title="Staff" roles="Admin,Manager">
-      <siteMapNode url="~/Admin/Staff/Staff.aspx" title="Manage Staff"  description="" />
-      <siteMapNode url="~/Admin/Staff/StaffEdit.aspx" title="Add New Staff"  description="" />
-
-      <siteMapNode url="~/Admin/Staff/Functionality.aspx" title="Manage Functionality"  description="" />
-      <siteMapNode url="~/Admin/Staff/FunctionalityEdit.aspx" title="Add New Functionality"  description="" />
-    </siteMapNode>
-    <siteMapNode title="Customer" roles="Admin,Manager,Receptionist">
-      <siteMapNode url="~/Admin/Customer/Customer.aspx" title="Manage Customer"  description="" />
-      <siteMapNode url="~/Admin/Customer/CustomerEdit.aspx" title="Add New Customer"  description="" />
-    </siteMapNode>
-    <siteMapNode title="Room" roles="Admin,Manager">
-      <siteMapNode url="~/Admin/Room/Room.aspx" title="Manage Room"  description="" />
-      <siteMapNode url="~/Admin/Room/RoomEdit.aspx" title="Add New Room"  description="" />
-      <siteMapNode url="~/Admin/Room/RoomFunc.aspx" title="Manage Room Function"  description="" />
-      <siteMapNode url="~/Admin/Room/RoomFuncEdit.aspx" title="Add New Room Function"  description="" />
-    </siteMapNode>
-    <siteMapNode title="Appointment" url="~/Admin/Appointment" />
-    <siteMapNode title="Appointment Group" url="~/Admin/AppointmentGroup" />
+    <siteMapNode title="Room" url="~/Admin/Room" roles="Admin,Manager" />
+    <siteMapNode title="Appointment" url="~/Admin/Appointment" roles="Admin,Manager" />
+    <siteMapNode title="Appointment Group" url="~/Admin/AppointmentGroup" roles="Admin,Manager" />
     <siteMapNode title="Roster" url="~/Admin/Roster" roles="Admin,Manager,Doctor" />
-
-    <siteMapNode title="Doctor" roles="Admin,Manager,Doctor">
-      <siteMapNode url="~/Admin/Doctor/DoctorRoom.aspx" title="Manage Doctor Room"  description="" />
-      <siteMapNode url="~/Admin/Doctor/DoctorRoomEdit.aspx" title="Add New Doctor Room"  description="" />
-      <siteMapNode url="~/Admin/Doctor/DoctorFunc.aspx" title="Manage Doctor Function"  description="" roles="Admin,Manager" />
-      <siteMapNode url="~/Admin/Doctor/DoctorFuncEdit.aspx" title="Add New Doctor Function"  description=""  roles="Admin,Manager" />
-      <siteMapNode url="~/Admin/Doctor/Roster.aspx" title="Manage Roster"  description=""  roles="Admin,Manager" />
-      <siteMapNode url="~/Admin/Doctor/WatchRoster.aspx" title="Watch Roster"  description=""  roles="Admin,Manager,Doctor" />
-      <siteMapNode url="~/Admin/Doctor/RosterType.aspx" title="Manage Roster Type"  description="" roles="Admin,Manager" />
-      <siteMapNode url="~/Admin/Doctor/RosterTypeEdit.aspx" title="Add New Roster Type"  description=""  roles="Admin,Manager" />
-      <siteMapNode url="~/Admin/Doctor/Content.aspx" title="Manage Content"  description="" roles="Admin,Manager" />
-      <siteMapNode url="~/Admin/Doctor/ContentEdit.aspx" title="Add New Content"  description=""  roles="Admin,Manager" />
-
-    </siteMapNode>
     <siteMapNode title="Settings" url="~/Admin/Setting" roles="Admin,Manager" />
 
   </siteMapNode>
