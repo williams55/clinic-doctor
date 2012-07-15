@@ -52,11 +52,6 @@ public partial class Admin_Role_Default : System.Web.UI.Page
         e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
-    protected void gridRole_RowValidating(object sender, DevExpress.Web.Data.ASPxDataValidationEventArgs e)
-    {
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-        e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
-    }
     protected void Gridroledetail_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
     {
         e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
