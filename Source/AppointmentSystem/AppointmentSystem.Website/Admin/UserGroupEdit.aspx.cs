@@ -27,6 +27,11 @@ public partial class UserGroupEdit : System.Web.UI.Page
 		string urlParams = string.Format("Id={0}", GridViewGroupRole1.SelectedDataKey.Values[0]);
 		Response.Redirect("GroupRoleEdit.aspx?" + urlParams, true);		
 	}	
+	protected void GridViewUsers2_SelectedIndexChanged(object sender, EventArgs e)
+	{
+		string urlParams = string.Format("Id={0}", GridViewUsers2.SelectedDataKey.Values[0]);
+		Response.Redirect("UsersEdit.aspx?" + urlParams, true);		
+	}	
 }
 
 

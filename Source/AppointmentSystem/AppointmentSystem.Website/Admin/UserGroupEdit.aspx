@@ -83,6 +83,67 @@
 		</data:GroupRoleDataSource>		
 		
 		<br />
+		<data:EntityGridView ID="GridViewUsers2" runat="server"
+			AutoGenerateColumns="False"	
+			OnSelectedIndexChanged="GridViewUsers2_SelectedIndexChanged"			 			 
+			DataSourceID="UsersDataSource2"
+			DataKeyNames="Id"
+			AllowMultiColumnSorting="false"
+			DefaultSortColumnName="" 
+			DefaultSortDirection="Ascending"	
+			ExcelExportFileName="Export_Users.xls"  		
+			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
+			>
+			<Columns>
+				<asp:CommandField ShowSelectButton="True" />
+				<asp:BoundField DataField="Username" HeaderText="Username" SortExpression="[Username]" />				
+				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]" />				
+				<asp:BoundField DataField="Firstname" HeaderText="Firstname" SortExpression="[Firstname]" />				
+				<asp:BoundField DataField="Lastname" HeaderText="Lastname" SortExpression="[Lastname]" />				
+				<asp:BoundField DataField="DisplayName" HeaderText="Display Name" SortExpression="[DisplayName]" />				
+				<asp:BoundField DataField="CellPhone" HeaderText="Cell Phone" SortExpression="[CellPhone]" />				
+				<asp:BoundField DataField="Email" HeaderText="Email" SortExpression="[Email]" />				
+				<asp:BoundField DataField="Avatar" HeaderText="Avatar" SortExpression="[Avatar]" />				
+				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
+				<data:HyperLinkField HeaderText="User Group Id" DataNavigateUrlFormatString="UserGroupEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="UserGroupIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="IsFemale" HeaderText="Is Female" SortExpression="[IsFemale]" />				
+				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
+				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
+				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
+				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />				
+				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
+			</Columns>
+			<EmptyDataTemplate>
+				<b>No Users Found! </b>
+				<asp:HyperLink runat="server" ID="hypUsers" NavigateUrl="~/admin/UsersEdit.aspx">Add New</asp:HyperLink>
+			</EmptyDataTemplate>
+		</data:EntityGridView>					
+		
+		<data:UsersDataSource ID="UsersDataSource2" runat="server" SelectMethod="Find"
+			EnableDeepLoad="True"
+			>
+			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
+	            <Types>
+					<data:UsersProperty Name="UserGroup"/> 
+					<%--<data:UsersProperty Name="UserRoleCollection" />--%>
+					<%--<data:UsersProperty Name="DoctorRoomCollection" />--%>
+					<%--<data:UsersProperty Name="AppointmentCollection" />--%>
+					<%--<data:UsersProperty Name="RosterCollection" />--%>
+					<%--<data:UsersProperty Name="DoctorServiceCollection" />--%>
+				</Types>
+			</DeepLoadProperties>
+			
+		    <Parameters>
+				<data:SqlParameter Name="Parameters">
+					<Filters>
+						<data:UsersFilter  Column="UserGroupId" QueryStringField="Id" /> 
+					</Filters>
+				</data:SqlParameter>
+				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
+		    </Parameters>
+		</data:UsersDataSource>		
+		
+		<br />
 		
 
 </asp:Content>

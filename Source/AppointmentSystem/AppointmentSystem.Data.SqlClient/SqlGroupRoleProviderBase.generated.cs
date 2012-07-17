@@ -176,7 +176,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@GroupId", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -595,12 +595,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<GroupRole> GetByGroupId(TransactionManager transactionManager, System.Int32 _groupId, int start, int pageLength, out int count)
+		public override TList<GroupRole> GetByGroupId(TransactionManager transactionManager, System.String _groupId, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.GroupRole_GetByGroupId", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, _groupId);
+				database.AddInParameter(commandWrapper, "@GroupId", DbType.String, _groupId);
 			
 			IDataReader reader = null;
 			TList<GroupRole> rows = new TList<GroupRole>();
@@ -760,7 +760,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DataTable dataTable = new DataTable();
 			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int64));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("GroupId", typeof(System.Int32));
+			DataColumn col1 = dataTable.Columns.Add("GroupId", typeof(System.String));
 			col1.AllowDBNull = false;		
 			DataColumn col2 = dataTable.Columns.Add("RoleId", typeof(System.Int32));
 			col2.AllowDBNull = true;		
@@ -850,7 +850,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.GroupRole_Insert", _useStoredProcedure);
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
-			database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, entity.GroupId );
+			database.AddInParameter(commandWrapper, "@GroupId", DbType.String, entity.GroupId );
 			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -906,7 +906,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.GroupRole_Update", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
-			database.AddInParameter(commandWrapper, "@GroupId", DbType.Int32, entity.GroupId );
+			database.AddInParameter(commandWrapper, "@GroupId", DbType.String, entity.GroupId );
 			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );

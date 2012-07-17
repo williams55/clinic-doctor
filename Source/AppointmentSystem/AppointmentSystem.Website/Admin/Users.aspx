@@ -27,7 +27,7 @@
 				<asp:BoundField DataField="Email" HeaderText="Email" SortExpression="[Email]"  />
 				<asp:BoundField DataField="Avatar" HeaderText="Avatar" SortExpression="[Avatar]"  />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
-				<asp:BoundField DataField="UserGroupId" HeaderText="User Group Id" SortExpression="[UserGroupId]"  />
+				<data:HyperLinkField HeaderText="User Group Id" DataNavigateUrlFormatString="UserGroupEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="UserGroupIdSource" DataTextField="Title" />
 				<data:BoundRadioButtonField DataField="IsFemale" HeaderText="Is Female" SortExpression="[IsFemale]"  />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]"  />
@@ -45,7 +45,18 @@
 			SelectMethod="GetPaged"
 			EnablePaging="True"
 			EnableSorting="True"
-		>
+			EnableDeepLoad="True"
+			>
+			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
+	            <Types>
+					<data:UsersProperty Name="UserGroup"/> 
+					<%--<data:UsersProperty Name="UserRoleCollection" />--%>
+					<%--<data:UsersProperty Name="DoctorRoomCollection" />--%>
+					<%--<data:UsersProperty Name="AppointmentCollection" />--%>
+					<%--<data:UsersProperty Name="RosterCollection" />--%>
+					<%--<data:UsersProperty Name="DoctorServiceCollection" />--%>
+				</Types>
+			</DeepLoadProperties>
 			<Parameters>
 				<data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />

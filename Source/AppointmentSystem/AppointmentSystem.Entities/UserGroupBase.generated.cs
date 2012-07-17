@@ -81,6 +81,7 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="UserGroupBase"/> instance.
 		///</summary>
+		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_roles">Roles of user group. A group can have many roles, they is seperated by semi-comma [;]
@@ -91,13 +92,14 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public UserGroupBase(System.String _title, System.String _note, System.String _roles, 
-			System.Boolean _isLocked, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+		public UserGroupBase(System.String _id, System.String _title, System.String _note, 
+			System.String _roles, System.Boolean _isLocked, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new UserGroupEntityData();
 			this.backupData = null;
 
+			this.Id = _id;
 			this.Title = _title;
 			this.Note = _note;
 			this.Roles = _roles;
@@ -112,6 +114,7 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="UserGroup"/> instance.
 		///</summary>
+		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
 		///<param name="_roles">Roles of user group. A group can have many roles, they is seperated by semi-comma [;]
@@ -122,11 +125,12 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static UserGroup CreateUserGroup(System.String _title, System.String _note, System.String _roles, 
-			System.Boolean _isLocked, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+		public static UserGroup CreateUserGroup(System.String _id, System.String _title, System.String _note, 
+			System.String _roles, System.Boolean _isLocked, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			UserGroup newUserGroup = new UserGroup();
+			newUserGroup.Id = _id;
 			newUserGroup.Title = _title;
 			newUserGroup.Note = _note;
 			newUserGroup.Roles = _roles;
@@ -148,17 +152,18 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the Id property. 
 		///		
 		/// </summary>
-		/// <value>This type is int.</value>
+		/// <value>This type is nvarchar.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
-		[ReadOnlyAttribute(false)/*, XmlIgnoreAttribute()*/, DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, true, false)]
-		public virtual System.Int32 Id
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(true, false, false, 20)]
+		public virtual System.String Id
 		{
 			get
 			{
@@ -181,6 +186,19 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
+		/// 	Get the original value of the Id property.
+		///		
+		/// </summary>
+		/// <remarks>This is the original value of the Id property.</remarks>
+		/// <value>This type is nvarchar</value>
+		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
+		public  virtual System.String OriginalId
+		{
+			get { return this.entityData.OriginalId; }
+			set { this.entityData.OriginalId = value; }
+		}
+		
+		/// <summary>
 		/// 	Gets or sets the Title property. 
 		///		
 		/// </summary>
@@ -193,7 +211,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 200)]
+		[DataObjectField(false, false, true, 20)]
 		public virtual System.String Title
 		{
 			get
@@ -514,6 +532,17 @@ namespace AppointmentSystem.Entities
 			get { return entityData.GroupRoleCollection; }
 			set { entityData.GroupRoleCollection = value; }	
 		}
+	
+		/// <summary>
+		///	Holds a collection of Users objects
+		///	which are related to this object through the relation FK_Users_UserGroup
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<Users> UsersCollection
+		{
+			get { return entityData.UsersCollection; }
+			set { entityData.UsersCollection = value; }	
+		}
 		#endregion Children Collections
 		
 		#endregion
@@ -526,8 +555,12 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
+			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("Id", "Id"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
+				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("Title", "Title", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -706,6 +739,7 @@ namespace AppointmentSystem.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
+					copy.OriginalId = this.OriginalId;
 				copy.Title = this.Title;
 				copy.Note = this.Note;
 				copy.Roles = this.Roles;
@@ -719,6 +753,7 @@ namespace AppointmentSystem.Entities
 		
 			//deep copy nested objects
 			copy.GroupRoleCollection = (TList<GroupRole>) MakeCopyOf(this.GroupRoleCollection, existingCopies); 
+			copy.UsersCollection = (TList<Users>) MakeCopyOf(this.UsersCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
 			return copy;
@@ -916,6 +951,7 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreateUserGroup(
+				_originalData.Id,
 				_originalData.Title,
 				_originalData.Note,
 				_originalData.Roles,
@@ -1325,8 +1361,13 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "UserGroup"</remarks>
-		public System.Int32 Id;
+		public System.String Id;
 			
+		/// <summary>
+		/// keep a copy of the original so it can be used for editable primary keys.
+		/// </summary>
+		public System.String OriginalId;
+		
 		#endregion
 		
 		#region Non Primary key(s)
@@ -1411,6 +1452,31 @@ namespace AppointmentSystem.Entities
 		
 		#endregion
 
+		#region UsersCollection
+		
+		private TList<Users> _usersUserGroupId;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _usersUserGroupId
+		/// </summary>
+		
+		public TList<Users> UsersCollection
+		{
+			get
+			{
+				if (_usersUserGroupId == null)
+				{
+				_usersUserGroupId = new TList<Users>();
+				}
+	
+				return _usersUserGroupId;
+			}
+			set { _usersUserGroupId = value; }
+		}
+		
+		#endregion
+
 		#endregion Data Properties
 		
 		#region Clone Method
@@ -1424,6 +1490,7 @@ namespace AppointmentSystem.Entities
 			UserGroupEntityData _tmp = new UserGroupEntityData();
 						
 			_tmp.Id = this.Id;
+			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1442,6 +1509,8 @@ namespace AppointmentSystem.Entities
 			//deep copy nested objects
 			if (this._groupRoleGroupId != null)
 				_tmp.GroupRoleCollection = (TList<GroupRole>) MakeCopyOf(this.GroupRoleCollection); 
+			if (this._usersUserGroupId != null)
+				_tmp.UsersCollection = (TList<Users>) MakeCopyOf(this.UsersCollection); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -1462,6 +1531,7 @@ namespace AppointmentSystem.Entities
 			UserGroupEntityData _tmp = new UserGroupEntityData();
 						
 			_tmp.Id = this.Id;
+			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
@@ -1479,6 +1549,7 @@ namespace AppointmentSystem.Entities
 			#region Child Collections
 			//deep copy nested objects
 			_tmp.GroupRoleCollection = (TList<GroupRole>) MakeCopyOf(this.GroupRoleCollection, existingCopies); 
+			_tmp.UsersCollection = (TList<Users>) MakeCopyOf(this.UsersCollection, existingCopies); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -1741,7 +1812,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Initializes a new instance of the UserGroupKey class.
 		/// </summary>
-		public UserGroupKey(System.Int32 _id)
+		public UserGroupKey(System.String _id)
 		{
 			#region Init Properties
 
@@ -1767,12 +1838,12 @@ namespace AppointmentSystem.Entities
 		}
 		
 		// member variable for the Id property
-		private System.Int32 _id;
+		private System.String _id;
 		
 		/// <summary>
 		/// Gets or sets the Id property.
 		/// </summary>
-		public System.Int32 Id
+		public System.String Id
 		{
 			get { return _id; }
 			set
@@ -1800,7 +1871,7 @@ namespace AppointmentSystem.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+				Id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
 			}
 
 			#endregion
@@ -1851,13 +1922,13 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.Int32), System.Data.DbType.Int32, true, true, false)]
+		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
 		Id = 1,
 		/// <summary>
 		/// Title : 
 		/// </summary>
 		[EnumTextValue("Title")]
-		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
+		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
 		Title = 2,
 		/// <summary>
 		/// Note : 

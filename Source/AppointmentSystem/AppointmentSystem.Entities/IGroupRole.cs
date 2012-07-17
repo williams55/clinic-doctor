@@ -22,7 +22,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// GroupId : 
 		/// </summary>
-		System.Int32  GroupId  { get; set; }
+		System.String  GroupId  { get; set; }
 		
 		/// <summary>
 		/// RoleId : 

@@ -3,7 +3,7 @@
 
   <siteMapNode title="Admin" roles="Admin,Doctor,Manager">
 
-    <siteMapNode title="Status" url="~/Admin/Status" roles="Admin,Manager" />
+    <siteMapNode title="Status" url="~/Admin/Status" roles="Admin,Manager" description="Status" />
     <siteMapNode title="Room" url="~/Admin/Room" roles="Admin,Manager" />
     <siteMapNode title="Appointment" url="~/Admin/Appointment" roles="Admin,Manager" />
     <siteMapNode title="Appointment Group" url="~/Admin/AppointmentGroup" roles="Admin,Manager" />

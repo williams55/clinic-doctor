@@ -58,6 +58,91 @@ namespace AppointmentSystem.Data.Bases
 		#endregion Delete Methods
 		
 		#region Get By Foreign Key Functions
+	
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Users_UserGroup key.
+		///		FK_Users_UserGroup Description: 
+		/// </summary>
+		/// <param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Users objects.</returns>
+		public TList<Users> GetByUserGroupId(System.String _userGroupId)
+		{
+			int count = -1;
+			return GetByUserGroupId(_userGroupId, 0,int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Users_UserGroup key.
+		///		FK_Users_UserGroup Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Users objects.</returns>
+		/// <remarks></remarks>
+		public TList<Users> GetByUserGroupId(TransactionManager transactionManager, System.String _userGroupId)
+		{
+			int count = -1;
+			return GetByUserGroupId(transactionManager, _userGroupId, 0, int.MaxValue, out count);
+		}
+		
+			/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Users_UserGroup key.
+		///		FK_Users_UserGroup Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		///  <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Users objects.</returns>
+		public TList<Users> GetByUserGroupId(TransactionManager transactionManager, System.String _userGroupId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByUserGroupId(transactionManager, _userGroupId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Users_UserGroup key.
+		///		fkUsersUserGroup Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Users objects.</returns>
+		public TList<Users> GetByUserGroupId(System.String _userGroupId, int start, int pageLength)
+		{
+			int count =  -1;
+			return GetByUserGroupId(null, _userGroupId, start, pageLength,out count);	
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Users_UserGroup key.
+		///		fkUsersUserGroup Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Users objects.</returns>
+		public TList<Users> GetByUserGroupId(System.String _userGroupId, int start, int pageLength,out int count)
+		{
+			return GetByUserGroupId(null, _userGroupId, start, pageLength, out count);	
+		}
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Users_UserGroup key.
+		///		FK_Users_UserGroup Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Users objects.</returns>
+		public abstract TList<Users> GetByUserGroupId(TransactionManager transactionManager, System.String _userGroupId, int start, int pageLength, out int count);
+		
 		#endregion
 
 		#region Get By Index Functions
@@ -405,6 +490,32 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if(entity == null)
 				return;
+
+			#region UserGroupIdSource	
+			if (CanDeepLoad(entity, "UserGroup|UserGroupIdSource", deepLoadType, innerList) 
+				&& entity.UserGroupIdSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = entity.UserGroupId;
+				UserGroup tmpEntity = EntityManager.LocateEntity<UserGroup>(EntityLocator.ConstructKeyFromPkItems(typeof(UserGroup), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.UserGroupIdSource = tmpEntity;
+				else
+					entity.UserGroupIdSource = DataRepository.UserGroupProvider.GetById(transactionManager, entity.UserGroupId);		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'UserGroupIdSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.UserGroupIdSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.UserGroupProvider.DeepLoad(transactionManager, entity.UserGroupIdSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion UserGroupIdSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -544,6 +655,15 @@ namespace AppointmentSystem.Data.Bases
 			#region Composite Parent Properties
 			//Save Source Composite Properties, however, don't call deep save on them.  
 			//So they only get saved a single level deep.
+			
+			#region UserGroupIdSource
+			if (CanDeepSave(entity, "UserGroup|UserGroupIdSource", deepSaveType, innerList) 
+				&& entity.UserGroupIdSource != null)
+			{
+				DataRepository.UserGroupProvider.Save(transactionManager, entity.UserGroupIdSource);
+				entity.UserGroupId = entity.UserGroupIdSource.Id;
+			}
+			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -728,7 +848,13 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum UsersChildEntityTypes
 	{
-
+		
+		///<summary>
+		/// Composite Property for <c>UserGroup</c> at UserGroupIdSource
+		///</summary>
+		[ChildEntityType(typeof(UserGroup))]
+		UserGroup,
+	
 		///<summary>
 		/// Collection of <c>Users</c> as OneToMany for UserRoleCollection
 		///</summary>
