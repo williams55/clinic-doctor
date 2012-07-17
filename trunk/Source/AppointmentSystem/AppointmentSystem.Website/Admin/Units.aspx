@@ -19,7 +19,7 @@
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
-				<asp:BoundField DataField="Users" HeaderText="Users" SortExpression="[Users]"  />
+				<asp:BoundField DataField="PriorityIndex" HeaderText="Priority Index" SortExpression="[PriorityIndex]"  />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]"  />
 				<asp:BoundField DataField="CreateDate" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Create Date" SortExpression="[CreateDate]"  />

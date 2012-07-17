@@ -83,6 +83,7 @@ namespace AppointmentSystem.Entities
 		///</summary>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
+		///<param name="_priorityIndex"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
@@ -91,15 +92,16 @@ namespace AppointmentSystem.Entities
 		///<param name="_unitId">Define current unit belongs to what tab.
 		/// 		/// It's seperated by semi-comma [;]
 		/// 		/// Ex: 1stFloor;2ndFloor</param>
-		public AppointmentGroupBase(System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate, System.Int32? _unitId)
+		public AppointmentGroupBase(System.String _title, System.String _note, System.Int32 _priorityIndex, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate, System.Int32? _unitId)
 		{
 			this.entityData = new AppointmentGroupEntityData();
 			this.backupData = null;
 
 			this.Title = _title;
 			this.Note = _note;
+			this.PriorityIndex = _priorityIndex;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -113,6 +115,7 @@ namespace AppointmentSystem.Entities
 		///</summary>
 		///<param name="_title"></param>
 		///<param name="_note"></param>
+		///<param name="_priorityIndex"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
@@ -121,13 +124,14 @@ namespace AppointmentSystem.Entities
 		///<param name="_unitId">Define current unit belongs to what tab.
 		/// 		/// It's seperated by semi-comma [;]
 		/// 		/// Ex: 1stFloor;2ndFloor</param>
-		public static AppointmentGroup CreateAppointmentGroup(System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate, System.Int32? _unitId)
+		public static AppointmentGroup CreateAppointmentGroup(System.String _title, System.String _note, System.Int32 _priorityIndex, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate, System.Int32? _unitId)
 		{
 			AppointmentGroup newAppointmentGroup = new AppointmentGroup();
 			newAppointmentGroup.Title = _title;
 			newAppointmentGroup.Note = _note;
+			newAppointmentGroup.PriorityIndex = _priorityIndex;
 			newAppointmentGroup.IsDisabled = _isDisabled;
 			newAppointmentGroup.CreateUser = _createUser;
 			newAppointmentGroup.CreateDate = _createDate;
@@ -245,6 +249,41 @@ namespace AppointmentSystem.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(AppointmentGroupColumn.Note, this.entityData.Note);
 				OnPropertyChanged("Note");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the PriorityIndex property. 
+		///		
+		/// </summary>
+		/// <value>This type is int.</value>
+		/// <remarks>
+		/// This property can not be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, false)]
+		public virtual System.Int32 PriorityIndex
+		{
+			get
+			{
+				return this.entityData.PriorityIndex; 
+			}
+			
+			set
+			{
+				if (this.entityData.PriorityIndex == value)
+					return;
+					
+				OnColumnChanging(AppointmentGroupColumn.PriorityIndex, this.entityData.PriorityIndex);
+				this.entityData.PriorityIndex = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(AppointmentGroupColumn.PriorityIndex, this.entityData.PriorityIndex);
+				OnPropertyChanged("PriorityIndex");
 			}
 		}
 		
@@ -532,7 +571,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Title", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate", "UnitId"};
+				return new string[] {"Id", "Title", "Note", "PriorityIndex", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate", "UnitId"};
 			}
 		}
 		#endregion 
@@ -683,6 +722,7 @@ namespace AppointmentSystem.Entities
 				copy.Id = this.Id;
 				copy.Title = this.Title;
 				copy.Note = this.Note;
+				copy.PriorityIndex = this.PriorityIndex;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
@@ -833,6 +873,8 @@ namespace AppointmentSystem.Entities
 					return entityData.Title != _originalData.Title;
 					case AppointmentGroupColumn.Note:
 					return entityData.Note != _originalData.Note;
+					case AppointmentGroupColumn.PriorityIndex:
+					return entityData.PriorityIndex != _originalData.PriorityIndex;
 					case AppointmentGroupColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case AppointmentGroupColumn.CreateUser:
@@ -875,6 +917,7 @@ namespace AppointmentSystem.Entities
 			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.Title != _originalData.Title;
 			result = result || entityData.Note != _originalData.Note;
+			result = result || entityData.PriorityIndex != _originalData.PriorityIndex;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -893,6 +936,7 @@ namespace AppointmentSystem.Entities
 				return CreateAppointmentGroup(
 				_originalData.Title,
 				_originalData.Note,
+				_originalData.PriorityIndex,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -931,6 +975,7 @@ namespace AppointmentSystem.Entities
 			return this.Id.GetHashCode() ^ 
 					((this.Title == null) ? string.Empty : this.Title.ToString()).GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
+					this.PriorityIndex.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
@@ -989,6 +1034,8 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
+			if (Object1.PriorityIndex != Object2.PriorityIndex)
+				equal = false;
 			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
 			if ( Object1.CreateUser != null && Object2.CreateUser != null )
@@ -1080,6 +1127,12 @@ namespace AppointmentSystem.Entities
             	
             	case AppointmentGroupColumn.Note:
             		return this.Note.CompareTo(rhs.Note);
+            		
+            		                 
+            	
+            	
+            	case AppointmentGroupColumn.PriorityIndex:
+            		return this.PriorityIndex.CompareTo(rhs.PriorityIndex);
             		
             		                 
             	
@@ -1252,10 +1305,11 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{10}{9}- Id: {0}{9}- Title: {1}{9}- Note: {2}{9}- IsDisabled: {3}{9}- CreateUser: {4}{9}- CreateDate: {5}{9}- UpdateUser: {6}{9}- UpdateDate: {7}{9}- UnitId: {8}{9}{11}", 
+				"{11}{10}- Id: {0}{10}- Title: {1}{10}- Note: {2}{10}- PriorityIndex: {3}{10}- IsDisabled: {4}{10}- CreateUser: {5}{10}- CreateDate: {6}{10}- UpdateUser: {7}{10}- UpdateDate: {8}{10}- UnitId: {9}{10}{12}", 
 				this.Id,
 				(this.Title == null) ? string.Empty : this.Title.ToString(),
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
+				this.PriorityIndex,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
@@ -1305,6 +1359,11 @@ namespace AppointmentSystem.Entities
 		/// Note : 
 		/// </summary>
 		public System.String		  Note = null;
+		
+		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		public System.Int32		  PriorityIndex = (int)1;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1400,6 +1459,7 @@ namespace AppointmentSystem.Entities
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
+			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1439,6 +1499,7 @@ namespace AppointmentSystem.Entities
 			
 			_tmp.Title = this.Title;
 			_tmp.Note = this.Note;
+			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1843,35 +1904,41 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
 		Note = 3,
 		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		[EnumTextValue("PriorityIndex")]
+		[ColumnEnum("PriorityIndex", typeof(System.Int32), System.Data.DbType.Int32, false, false, false)]
+		PriorityIndex = 4,
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 4,
+		IsDisabled = 5,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 5,
+		CreateUser = 6,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 6,
+		CreateDate = 7,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 7,
+		UpdateUser = 8,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 8,
+		UpdateDate = 9,
 		/// <summary>
 		/// UnitId : Define current unit belongs to what tab.
 		/// 		/// It's seperated by semi-comma [;]
@@ -1879,7 +1946,7 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		[EnumTextValue("UnitId")]
 		[ColumnEnum("UnitId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
-		UnitId = 9
+		UnitId = 10
 	}//End enum
 
 	#endregion AppointmentGroupColumn Enum

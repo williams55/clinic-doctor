@@ -30,6 +30,11 @@ namespace AppointmentSystem.Entities
 		System.String  Note  { get; set; }
 		
 		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		System.Int32  PriorityIndex  { get; set; }
+		
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		System.Boolean  IsDisabled  { get; set; }

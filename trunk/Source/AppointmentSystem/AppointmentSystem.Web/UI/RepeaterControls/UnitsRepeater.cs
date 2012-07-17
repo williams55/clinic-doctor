@@ -359,13 +359,13 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Note; }
 		}
         /// <summary>
-        /// Gets the Users
+        /// Gets the PriorityIndex
         /// </summary>
-        /// <value>The Users.</value>
+        /// <value>The PriorityIndex.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String Users
+		public System.Int32 PriorityIndex
 		{
-			get { return _entity.Users; }
+			get { return _entity.PriorityIndex; }
 		}
         /// <summary>
         /// Gets the IsDisabled

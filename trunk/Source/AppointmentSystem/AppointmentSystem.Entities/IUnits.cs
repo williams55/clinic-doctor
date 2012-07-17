@@ -30,11 +30,9 @@ namespace AppointmentSystem.Entities
 		System.String  Note  { get; set; }
 		
 		/// <summary>
-		/// Users : This unit include what user.
-		/// 		/// It's seperated by semi-comma [;]
-		/// 		/// Ex: DrSeuss;DrGreen
+		/// PriorityIndex : 
 		/// </summary>
-		System.String  Users  { get; set; }
+		System.Int32  PriorityIndex  { get; set; }
 		
 		/// <summary>
 		/// IsDisabled : 
