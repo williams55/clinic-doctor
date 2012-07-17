@@ -12,8 +12,15 @@
                 onrowupdating="gridRoom_RowUpdating">
         <Settings ShowGroupPanel="True" />
         <SettingsEditing Mode="Inline" />
-        <Columns>
-            <dx:GridViewCommandColumn VisibleIndex="0">
+        <Columns>            
+            <dx:GridViewDataColumn VisibleIndex="0" FieldName="Id"><EditFormSettings Visible="False" /></dx:GridViewDataColumn>
+            <dx:GridViewDataColumn VisibleIndex="3" FieldName="Note"> </dx:GridViewDataColumn>
+            <dx:GridViewDataColumn VisibleIndex="1" FieldName="Title"> </dx:GridViewDataColumn>
+            <dx:GridViewDataComboBoxColumn FieldName="ServicesId" VisibleIndex="1">
+                <PropertiesComboBox TextField="Title" ValueField="Id" DataSourceID="ServicesDatas">
+                </PropertiesComboBox>
+            </dx:GridViewDataComboBoxColumn>
+            <dx:GridViewCommandColumn VisibleIndex="4">
                 <EditButton Visible="True"></EditButton>
                 <NewButton Visible="true"></NewButton> 
                 <CustomButtons>
@@ -21,15 +28,6 @@
                     </dx:GridViewCommandColumnCustomButton>
                 </CustomButtons>           
             </dx:GridViewCommandColumn>
-            <dx:GridViewDataColumn VisibleIndex="1" FieldName="Id">
-                <EditFormSettings Visible="False" />
-             </dx:GridViewDataColumn>
-            <dx:GridViewDataColumn VisibleIndex="2" FieldName="Title"> </dx:GridViewDataColumn>
-            <dx:GridViewDataColumn VisibleIndex="3" FieldName="Note"> </dx:GridViewDataColumn>
-            <dx:GridViewDataComboBoxColumn FieldName="ServicesId" VisibleIndex="4">
-                <PropertiesComboBox TextField="Title" ValueField="Id" DataSourceID="ServicesDatas">
-                </PropertiesComboBox>
-            </dx:GridViewDataComboBoxColumn>
         </Columns>
        <%-- <Templates>
                 <EditForm>                 
@@ -98,7 +96,6 @@
         </Parameters>    
     </data:RoomDataSource>
     <data:ServicesDataSource SelectMethod="GetAll" runat="server" ID="ServicesDatas" >
-
 </data:ServicesDataSource>
 </asp:Content>
 
