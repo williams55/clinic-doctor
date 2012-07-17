@@ -25,8 +25,7 @@
                     </dx:GridViewCommandColumn>
                     <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" ReadOnly="true" />
                     <dx:GridViewDataColumn FieldName="Title" VisibleIndex="1" />
-                    <dx:GridViewDataColumn FieldName="Note" VisibleIndex="2" />
-                   
+                    <dx:GridViewDataColumn FieldName="Note" VisibleIndex="2" />                   
                 </Columns>
                 <Templates>
                     <EditForm>
@@ -34,14 +33,7 @@
                             <dx:ContentControl ID="ContentControl1" runat="server">
                                 <table class="edit-form">
                                     <tbody>
-                                        <tr>
-                                            <td class="title-row">
-                                                Id
-                                            </td>
-                                            <td class="content-row textid">
-                                                <dx:ASPxTextBox runat="server" ReadOnly="true" ID="txtTitle" Text='<%# Bind("Id") %>' CssClass="text-form" Width="80px">
-                                                </dx:ASPxTextBox>
-                                            </td>
+                                        <tr>                                           
                                             <td class="title-row">
                                                 Title
                                             </td>
@@ -55,10 +47,8 @@
                                             <td class="content-row" rowspan="2">
                                                <dx:ASPxTextBox runat="server" ID="txtNote" Text='<%# Bind("Note")%>' CssClass="text-form">
                                                 </dx:ASPxTextBox>
-                                            </td>
-                                           
-                                        </tr>
-                                       
+                                            </td>                                           
+                                        </tr>                                       
                                     </tbody>
                                 </table>
                             </dx:ContentControl>
