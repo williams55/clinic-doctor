@@ -319,6 +319,7 @@ namespace AppointmentSystem.Data.Bases
 					c.Id = (System.Int32)reader[((int)AppointmentGroupColumn.Id - 1)];
 					c.Title = (reader.IsDBNull(((int)AppointmentGroupColumn.Title - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.Title - 1)];
 					c.Note = (reader.IsDBNull(((int)AppointmentGroupColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.Note - 1)];
+					c.PriorityIndex = (System.Int32)reader[((int)AppointmentGroupColumn.PriorityIndex - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)AppointmentGroupColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)AppointmentGroupColumn.CreateUser - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)AppointmentGroupColumn.CreateDate - 1)];
@@ -345,6 +346,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.Id = (System.Int32)reader[((int)AppointmentGroupColumn.Id - 1)];
 			entity.Title = (reader.IsDBNull(((int)AppointmentGroupColumn.Title - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.Title - 1)];
 			entity.Note = (reader.IsDBNull(((int)AppointmentGroupColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.Note - 1)];
+			entity.PriorityIndex = (System.Int32)reader[((int)AppointmentGroupColumn.PriorityIndex - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)AppointmentGroupColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)AppointmentGroupColumn.CreateUser - 1)))?null:(System.String)reader[((int)AppointmentGroupColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)AppointmentGroupColumn.CreateDate - 1)];
@@ -366,6 +368,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.Id = (System.Int32)dataRow["Id"];
 			entity.Title = Convert.IsDBNull(dataRow["Title"]) ? null : (System.String)dataRow["Title"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
+			entity.PriorityIndex = (System.Int32)dataRow["PriorityIndex"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];
