@@ -793,6 +793,17 @@ namespace AppointmentSystem.Entities
 
 		#region Source Foreign Key Property
 				
+		/// <summary>
+		/// Gets or sets the source <see cref="UserGroup"/>.
+		/// </summary>
+		/// <value>The source UserGroup for UserGroupId.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual UserGroup UserGroupIdSource
+      	{
+            get { return entityData.UserGroupIdSource; }
+            set { entityData.UserGroupIdSource = value; }
+      	}
 		#endregion
 		
 		#region Children Collections
@@ -1085,6 +1096,10 @@ namespace AppointmentSystem.Entities
 				copy.UpdateUser = this.UpdateUser;
 				copy.UpdateDate = this.UpdateDate;
 			
+			if (this.UserGroupIdSource != null && existingCopies.Contains(this.UserGroupIdSource))
+				copy.UserGroupIdSource = existingCopies[this.UserGroupIdSource] as UserGroup;
+			else
+				copy.UserGroupIdSource = MakeCopyOf(this.UserGroupIdSource, existingCopies) as UserGroup;
 		
 			//deep copy nested objects
 			copy.UserRoleCollection = (TList<UserRole>) MakeCopyOf(this.UserRoleCollection, existingCopies); 
@@ -1920,6 +1935,19 @@ namespace AppointmentSystem.Entities
 			
 		#region Source Foreign Key Property
 				
+		private UserGroup _userGroupIdSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="UserGroup"/>.
+		/// </summary>
+		/// <value>The source UserGroup for UserGroupId.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual UserGroup UserGroupIdSource
+      	{
+            get { return this._userGroupIdSource; }
+            set { this._userGroupIdSource = value; }
+      	}
 		#endregion
 		#endregion Variable Declarations
 	
@@ -2083,6 +2111,8 @@ namespace AppointmentSystem.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.UserGroupIdSource != null)
+				_tmp.UserGroupIdSource = MakeCopyOf(this.UserGroupIdSource) as UserGroup;
 			#endregion
 		
 			#region Child Collections
@@ -2137,6 +2167,10 @@ namespace AppointmentSystem.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.UserGroupIdSource != null && existingCopies.Contains(this.UserGroupIdSource))
+				_tmp.UserGroupIdSource = existingCopies[this.UserGroupIdSource] as UserGroup;
+			else
+				_tmp.UserGroupIdSource = MakeCopyOf(this.UserGroupIdSource, existingCopies) as UserGroup;
 			#endregion
 		
 			#region Child Collections

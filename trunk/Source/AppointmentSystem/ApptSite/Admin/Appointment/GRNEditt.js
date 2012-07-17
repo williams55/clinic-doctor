@@ -713,6 +713,52 @@ $(document).ready(function() {
     });
 
     initEvents();
+
+    // Call init input token
+    GetToken();
+
+    $("#dialog:ui-dialog").dialog("destroy");
+
+    var txtFirstName = $("#txtFirstName"),
+                txtLastName = $("#txtLastName"),
+                radSex = $("input[name=radSex]:checked"),
+                txtCellPhone = $("#txtCellPhone"),
+                txtAddress = $("#txtAddress"),
+                allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone).add(txtAddress);
+
+    $("#dialog-form").dialog({
+        autoOpen: false,
+        height: 350,
+        width: 550,
+        modal: true,
+        zIndex: $.maxZIndex() + 1,
+        resizable: false,
+        buttons: {
+            "Create a patient": function() {
+                var bValid = true;
+                allFields.removeClass("ui-state-error");
+
+                bValid = bValid && checkRegexp(txtFirstName, /^[a-z]([0-9a-z_])+$/i, "Firstname may consist of a-z.");
+                bValid = bValid && checkRegexp(txtLastName, /^[a-z]([0-9a-z_])+$/i, "Lastname may consist of a-z.");
+
+                if (bValid) {
+                    CreateSimplePatient(radSex, txtFirstName, txtLastName, txtCellPhone, txtAddress, this);
+                }
+            },
+            Cancel: function() {
+                $(this).dialog("close");
+            }
+        },
+        close: function() {
+            allFields.val("").removeClass("ui-state-error");
+        }
+    });
+
+    $("#create-user")
+			    .click(function() {
+			        $("#dialog-form").dialog("open");
+			        $("#frm").reset();
+			    });
 });
 
 //
@@ -809,4 +855,40 @@ function initEvents() {
         loadRooms();
     });
 
+    $(".dhx_cal_today_button:not(#btnToday)").click(function() {
+        $("#btnToday").click();
+        scheduler.updateCalendar(miniCalendar, scheduler._date);
+    });
 }
+
+/****************************Methods - Start******************************/
+function updateTips(t) {
+    $(".validateTips")
+				    .text(t)
+				    .addClass("ui-state-highlight");
+    setTimeout(function() {
+        $(".validateTips").removeClass("ui-state-highlight", 1500);
+    }, 500);
+}
+
+function checkLength(o, n, min, max) {
+    if (o.val().length > max || o.val().length < min) {
+        o.addClass("ui-state-error");
+        updateTips("Length of " + n + " must be between " +
+					    min + " and " + max + ".");
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function checkRegexp(o, regexp, n) {
+    if (!(regexp.test(o.val()))) {
+        o.addClass("ui-state-error");
+        updateTips(n);
+        return false;
+    } else {
+        return true;
+    }
+}
+/****************************Methods - End******************************/

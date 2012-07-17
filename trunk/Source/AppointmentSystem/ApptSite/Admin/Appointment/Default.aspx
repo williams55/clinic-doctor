@@ -18,9 +18,6 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_timeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
-    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_units.js") %>"
-        type="text/javascript" charset="utf-8"></script>
-
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_treetimeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
@@ -33,25 +30,15 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_tooltip.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
-    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_collision.js") %>"
-        type="text/javascript" charset="utf-8"></script>
-
-    <script src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/analogclock.js") %>"
-        type="text/javascript" charset="utf-8"></script>
-
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/jquery.tokeninput.js") %>"></script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
 
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/styles/token-input.css") %>"
         type="text/css" />
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/styles/token-input-facebook.css") %>"
-        type="text/css" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler.css") %>"
         type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/scheduler.css") %>"
-        type="text/css" media="screen" title="no title" />
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/ui-lightness/jquery-ui-1.7.3.custom.css") %>"
         type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/dialog-form.css") %>"
         type="text/css" media="screen" title="no title" />
@@ -69,88 +56,6 @@
         var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
 
-  		    function updateTips( t ) {
-			    $( ".validateTips" )
-				    .text( t )
-				    .addClass( "ui-state-highlight" );
-			    setTimeout(function() {
-				    $( ".validateTips" ).removeClass( "ui-state-highlight", 1500 );
-			    }, 500 );
-		    }
-
-		    function checkLength( o, n, min, max ) {
-			    if ( o.val().length > max || o.val().length < min ) {
-				    o.addClass( "ui-state-error" );
-				    updateTips( "Length of " + n + " must be between " +
-					    min + " and " + max + "." );
-				    return false;
-			    } else {
-				    return true;
-			    }
-		    }
-
-		    function checkRegexp( o, regexp, n ) {
-			    if ( !( regexp.test( o.val() ) ) ) {
-				    o.addClass( "ui-state-error" );
-				    updateTips( n );
-				    return false;
-			    } else {
-				    return true;
-			    }
-		    }
-		    
-      $(document).ready(function () {
-            $(".dhx_cal_today_button:not(#btnToday)").click(function() {
-                $("#btnToday").click();
-                scheduler.updateCalendar(miniCalendar, scheduler._date);
-            });
-
-            // Call init input token
-            GetToken();
-          
-            $( "#dialog:ui-dialog" ).dialog( "destroy" );
-
-            var txtFirstName = $("#txtFirstName"),
-                txtLastName = $("#txtLastName"),
-                radSex = $("input[name=radSex]:checked"),
-                txtCellPhone = $("#txtCellPhone"),
-                txtAddress = $("#txtAddress"),
-                allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone).add(txtAddress);
-
-            $( "#dialog-form" ).dialog({
-			    autoOpen: false,
-			    height: 350,
-			    width: 550,
-			    modal: true,
-			    zIndex: $.maxZIndex()+ 1,
-			    resizable: false,
-			    buttons: {
-				    "Create a patient": function() {
-					    var bValid = true;
-					    allFields.removeClass( "ui-state-error" );
-
-					    bValid = bValid && checkRegexp( txtFirstName, /^[a-z]([0-9a-z_])+$/i, "Firstname may consist of a-z." );
-					    bValid = bValid && checkRegexp( txtLastName, /^[a-z]([0-9a-z_])+$/i, "Lastname may consist of a-z." );
-
-                        if(bValid) {
-                            CreateSimplePatient(radSex, txtFirstName, txtLastName, txtCellPhone, txtAddress, this);
-                        }
-				    },
-				    Cancel: function() {
-					    $( this ).dialog( "close" );
-				    }
-			    },
-			    close: function() {
-				    allFields.val( "" ).removeClass( "ui-state-error" );
-			    }
-		    });
-
-		    $( "#create-user" )
-			    .click(function() {
-			        $("#dialog-form").dialog("open");
-			        $("#frm").reset();
-			    });
-        });
     </script>
 
     <script src="GRNEditt.js" type="text/javascript"></script>

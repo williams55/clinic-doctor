@@ -345,7 +345,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The GroupId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int32 GroupId
+		public System.String GroupId
 		{
 			get { return _entity.GroupId; }
 		}

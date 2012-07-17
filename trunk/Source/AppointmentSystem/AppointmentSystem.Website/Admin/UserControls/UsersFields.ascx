@@ -66,7 +66,8 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataUserGroupId" runat="server" Text="User Group Id:" AssociatedControlID="dataUserGroupId" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataUserGroupId" Text='<%# Bind("UserGroupId") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataUserGroupId" runat="server" Display="Dynamic" ControlToValidate="dataUserGroupId" ErrorMessage="Required"></asp:RequiredFieldValidator>
+					<data:EntityDropDownList runat="server" ID="dataUserGroupId" DataSourceID="UserGroupIdUserGroupDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("UserGroupId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:UserGroupDataSource ID="UserGroupIdUserGroupDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>

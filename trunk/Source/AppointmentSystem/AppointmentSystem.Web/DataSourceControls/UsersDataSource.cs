@@ -161,6 +161,7 @@ namespace AppointmentSystem.Web.Data
 			
 			System.String _username;
 			System.String _id;
+			System.String _userGroupId;
 
 			switch ( SelectMethod )
 			{
@@ -201,6 +202,10 @@ namespace AppointmentSystem.Web.Data
 					count = results.Count;
 					break;
 				// FK
+				case UsersSelectMethod.GetByUserGroupId:
+					_userGroupId = ( values["UserGroupId"] != null ) ? (System.String) EntityUtil.ChangeType(values["UserGroupId"], typeof(System.String)) : "0";
+					results = UsersProvider.GetByUserGroupId(GetTransactionManager(), _userGroupId, this.StartIndex, this.PageSize, out count);
+					break;
 				// M:M
 				// Custom
 				default:
@@ -384,7 +389,11 @@ namespace AppointmentSystem.Web.Data
 		/// <summary>
 		/// Represents the GetById method.
 		/// </summary>
-		GetById
+		GetById,
+		/// <summary>
+		/// Represents the GetByUserGroupId method.
+		/// </summary>
+		GetByUserGroupId
 	}
 	
 	#endregion UsersSelectMethod

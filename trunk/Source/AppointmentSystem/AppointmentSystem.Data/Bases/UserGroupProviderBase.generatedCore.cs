@@ -41,7 +41,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public bool Delete(System.Int32 _id)
+		public bool Delete(System.String _id)
 		{
 			return Delete(null, _id);
 		}
@@ -53,7 +53,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public abstract bool Delete(TransactionManager transactionManager, System.Int32 _id);		
+		public abstract bool Delete(TransactionManager transactionManager, System.String _id);		
 		
 		#endregion Delete Methods
 		
@@ -80,7 +80,7 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="_id"></param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.UserGroup"/> class.</returns>
-		public AppointmentSystem.Entities.UserGroup GetById(System.Int32 _id)
+		public AppointmentSystem.Entities.UserGroup GetById(System.String _id)
 		{
 			int count = -1;
 			return GetById(null,_id, 0, int.MaxValue, out count);
@@ -94,7 +94,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.UserGroup"/> class.</returns>
-		public AppointmentSystem.Entities.UserGroup GetById(System.Int32 _id, int start, int pageLength)
+		public AppointmentSystem.Entities.UserGroup GetById(System.String _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(null, _id, start, pageLength, out count);
@@ -107,7 +107,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_id"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.UserGroup"/> class.</returns>
-		public AppointmentSystem.Entities.UserGroup GetById(TransactionManager transactionManager, System.Int32 _id)
+		public AppointmentSystem.Entities.UserGroup GetById(TransactionManager transactionManager, System.String _id)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, 0, int.MaxValue, out count);
@@ -122,7 +122,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.UserGroup"/> class.</returns>
-		public AppointmentSystem.Entities.UserGroup GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength)
+		public AppointmentSystem.Entities.UserGroup GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength)
 		{
 			int count = -1;
 			return GetById(transactionManager, _id, start, pageLength, out count);
@@ -137,7 +137,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.UserGroup"/> class.</returns>
-		public AppointmentSystem.Entities.UserGroup GetById(System.Int32 _id, int start, int pageLength, out int count)
+		public AppointmentSystem.Entities.UserGroup GetById(System.String _id, int start, int pageLength, out int count)
 		{
 			return GetById(null, _id, start, pageLength, out count);
 		}
@@ -152,7 +152,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.UserGroup"/> class.</returns>
-		public abstract AppointmentSystem.Entities.UserGroup GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength, out int count);
+		public abstract AppointmentSystem.Entities.UserGroup GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count);
 						
 		#endregion "Get By Index Functions"
 	
@@ -196,7 +196,7 @@ namespace AppointmentSystem.Data.Bases
 				if (useEntityFactory)
 				{
 					key = new System.Text.StringBuilder("UserGroup")
-					.Append("|").Append((System.Int32)reader[((int)UserGroupColumn.Id - 1)]).ToString();
+					.Append("|").Append((System.String)reader[((int)UserGroupColumn.Id - 1)]).ToString();
 					c = EntityManager.LocateOrCreate<UserGroup>(
 					key.ToString(), // EntityTrackingKey
 					"UserGroup",  //Creational Type
@@ -219,7 +219,8 @@ namespace AppointmentSystem.Data.Bases
 					))
 				{
 					c.SuppressEntityEvents = true;
-					c.Id = (System.Int32)reader[((int)UserGroupColumn.Id - 1)];
+					c.Id = (System.String)reader[((int)UserGroupColumn.Id - 1)];
+					c.OriginalId = c.Id;
 					c.Title = (reader.IsDBNull(((int)UserGroupColumn.Title - 1)))?null:(System.String)reader[((int)UserGroupColumn.Title - 1)];
 					c.Note = (reader.IsDBNull(((int)UserGroupColumn.Note - 1)))?null:(System.String)reader[((int)UserGroupColumn.Note - 1)];
 					c.Roles = (reader.IsDBNull(((int)UserGroupColumn.Roles - 1)))?null:(System.String)reader[((int)UserGroupColumn.Roles - 1)];
@@ -246,7 +247,8 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if (!reader.Read()) return;
 			
-			entity.Id = (System.Int32)reader[((int)UserGroupColumn.Id - 1)];
+			entity.Id = (System.String)reader[((int)UserGroupColumn.Id - 1)];
+			entity.OriginalId = (System.String)reader["Id"];
 			entity.Title = (reader.IsDBNull(((int)UserGroupColumn.Title - 1)))?null:(System.String)reader[((int)UserGroupColumn.Title - 1)];
 			entity.Note = (reader.IsDBNull(((int)UserGroupColumn.Note - 1)))?null:(System.String)reader[((int)UserGroupColumn.Note - 1)];
 			entity.Roles = (reader.IsDBNull(((int)UserGroupColumn.Roles - 1)))?null:(System.String)reader[((int)UserGroupColumn.Roles - 1)];
@@ -268,7 +270,8 @@ namespace AppointmentSystem.Data.Bases
 		{
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
-			entity.Id = (System.Int32)dataRow["Id"];
+			entity.Id = (System.String)dataRow["Id"];
+			entity.OriginalId = (System.String)dataRow["Id"];
 			entity.Title = Convert.IsDBNull(dataRow["Title"]) ? null : (System.String)dataRow["Title"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.Roles = Convert.IsDBNull(dataRow["Roles"]) ? null : (System.String)dataRow["Roles"];
@@ -322,6 +325,27 @@ namespace AppointmentSystem.Data.Bases
 					deepHandles.Add("GroupRoleCollection",
 						new KeyValuePair<Delegate, object>((DeepLoadHandle<GroupRole>) DataRepository.GroupRoleProvider.DeepLoad,
 						new object[] { transactionManager, entity.GroupRoleCollection, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
+			
+			#region UsersCollection
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<Users>|UsersCollection", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'UsersCollection' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.UsersCollection = DataRepository.UsersProvider.GetByUserGroupId(transactionManager, entity.Id);
+
+				if (deep && entity.UsersCollection.Count > 0)
+				{
+					deepHandles.Add("UsersCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<Users>) DataRepository.UsersProvider.DeepLoad,
+						new object[] { transactionManager, entity.UsersCollection, deep, deepLoadType, childTypes, innerList }
 					));
 				}
 			}		
@@ -395,6 +419,36 @@ namespace AppointmentSystem.Data.Bases
 				} 
 			#endregion 
 				
+	
+			#region List<Users>
+				if (CanDeepSave(entity.UsersCollection, "List<Users>|UsersCollection", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(Users child in entity.UsersCollection)
+					{
+						if(child.UserGroupIdSource != null)
+						{
+							child.UserGroupId = child.UserGroupIdSource.Id;
+						}
+						else
+						{
+							child.UserGroupId = entity.Id;
+						}
+
+					}
+
+					if (entity.UsersCollection.Count > 0 || entity.UsersCollection.DeletedItems.Count > 0)
+					{
+						//DataRepository.UsersProvider.Save(transactionManager, entity.UsersCollection);
+						
+						deepHandles.Add("UsersCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< Users >) DataRepository.UsersProvider.DeepSave,
+							new object[] { transactionManager, entity.UsersCollection, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
 			//Fire all DeepSave Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
 		    {
@@ -427,6 +481,12 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(TList<GroupRole>))]
 		GroupRoleCollection,
+
+		///<summary>
+		/// Collection of <c>UserGroup</c> as OneToMany for UsersCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<Users>))]
+		UsersCollection,
 	}
 	
 	#endregion UserGroupChildEntityTypes

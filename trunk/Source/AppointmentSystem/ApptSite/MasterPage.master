@@ -63,7 +63,8 @@
             <!-- end logo -->
             <!-- user -->
             <ul id="user">
-                <li class="first">Welcome <a href=""><%=EntitiesUtilities.GetAuthName() %></a></li>
+                <li class="first">Welcome <a href="">
+                    <%=EntitiesUtilities.GetAuthName() %></a></li>
             </ul>
             <!-- end user -->
             <div id="header-inner">

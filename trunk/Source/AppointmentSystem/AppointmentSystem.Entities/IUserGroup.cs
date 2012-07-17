@@ -15,8 +15,13 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "UserGroup"</remarks>
-		System.Int32 Id { get; set; }
+		System.String Id { get; set; }
 				
+		/// <summary>
+		/// keep a copy of the original so it can be used for editable primary keys.
+		/// </summary>
+		System.String OriginalId { get; set; }
+			
 		
 		
 		/// <summary>
@@ -79,6 +84,13 @@ namespace AppointmentSystem.Entities
 		///	which are related to this object through the relation _groupRoleGroupId
 		/// </summary>	
 		TList<GroupRole> GroupRoleCollection {  get;  set;}	
+
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _usersUserGroupId
+		/// </summary>	
+		TList<Users> UsersCollection {  get;  set;}	
 
 		#endregion Data Properties
 

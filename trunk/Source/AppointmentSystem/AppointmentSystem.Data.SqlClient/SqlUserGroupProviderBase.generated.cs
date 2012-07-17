@@ -110,11 +110,11 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override bool Delete(TransactionManager transactionManager, System.Int32 _id)
+		public override bool Delete(TransactionManager transactionManager, System.String _id)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.UserGroup_Delete", _useStoredProcedure);
-			database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
+			database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
 			
 			//Provider Data Requesting Command Event
 			OnDataRequesting(new CommandEventArgs(commandWrapper, "Delete")); 
@@ -175,7 +175,7 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
-		database.AddInParameter(commandWrapper, "@Id", DbType.Int32, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Roles", DbType.String, DBNull.Value);
@@ -548,12 +548,12 @@ namespace AppointmentSystem.Data.SqlClient
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override AppointmentSystem.Entities.UserGroup GetById(TransactionManager transactionManager, System.Int32 _id, int start, int pageLength, out int count)
+		public override AppointmentSystem.Entities.UserGroup GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.UserGroup_GetById", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@Id", DbType.Int32, _id);
+				database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
 			
 			IDataReader reader = null;
 			TList<UserGroup> tmp = new TList<UserGroup>();
@@ -644,7 +644,7 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.DestinationTableName = "UserGroup";
 			
 			DataTable dataTable = new DataTable();
-			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int32));
+			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.String));
 			col0.AllowDBNull = false;		
 			DataColumn col1 = dataTable.Columns.Add("Title", typeof(System.String));
 			col1.AllowDBNull = true;		
@@ -747,7 +747,7 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.UserGroup_Insert", _useStoredProcedure);
 			
-			database.AddOutParameter(commandWrapper, "@Id", DbType.Int32, 4);
+			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@Roles", DbType.String, entity.Roles );
@@ -772,9 +772,8 @@ namespace AppointmentSystem.Data.SqlClient
 				results = Utility.ExecuteNonQuery(database,commandWrapper);
 			}
 					
-			object _id = database.GetParameterValue(commandWrapper, "@Id");
-			entity.Id = (System.Int32)_id;
 			
+			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 	
@@ -805,7 +804,8 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.UserGroup_Update", _useStoredProcedure);
 			
-			database.AddInParameter(commandWrapper, "@Id", DbType.Int32, entity.Id );
+			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
+			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@Roles", DbType.String, entity.Roles );
@@ -834,6 +834,7 @@ namespace AppointmentSystem.Data.SqlClient
 			if (DataRepository.Provider.EnableEntityTracking)
 				EntityManager.StopTracking(entity.EntityTrackingKey);
 			
+			entity.OriginalId = entity.Id;
 			
 			entity.AcceptChanges();
 			

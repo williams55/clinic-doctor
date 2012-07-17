@@ -88,7 +88,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public GroupRoleBase(System.Int32 _groupId, System.Int32? _roleId, System.Boolean _isDisabled, 
+		public GroupRoleBase(System.String _groupId, System.Int32? _roleId, System.Boolean _isDisabled, 
 			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new GroupRoleEntityData();
@@ -113,7 +113,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static GroupRole CreateGroupRole(System.Int32 _groupId, System.Int32? _roleId, System.Boolean _isDisabled, 
+		public static GroupRole CreateGroupRole(System.String _groupId, System.Int32? _roleId, System.Boolean _isDisabled, 
 			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			GroupRole newGroupRole = new GroupRole();
@@ -172,17 +172,18 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the GroupId property. 
 		///		
 		/// </summary>
-		/// <value>This type is int.</value>
+		/// <value>This type is nvarchar.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false)]
-		public virtual System.Int32 GroupId
+		[DataObjectField(false, false, false, 20)]
+		public virtual System.String GroupId
 		{
 			get
 			{
@@ -456,6 +457,10 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
+			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("GroupId", "Group Id"));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("GroupId", "Group Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -1221,7 +1226,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// GroupId : 
 		/// </summary>
-		public System.Int32		  GroupId = (int)0;
+		public System.String		  GroupId = string.Empty;
 		
 		/// <summary>
 		/// RoleId : 
@@ -1736,7 +1741,7 @@ namespace AppointmentSystem.Entities
 		/// GroupId : 
 		/// </summary>
 		[EnumTextValue("GroupId")]
-		[ColumnEnum("GroupId", typeof(System.Int32), System.Data.DbType.Int32, false, false, false)]
+		[ColumnEnum("GroupId", typeof(System.String), System.Data.DbType.String, false, false, false, 20)]
 		GroupId = 2,
 		/// <summary>
 		/// RoleId : 

@@ -10,7 +10,9 @@ using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.UserDefine;
 using System.Data;
 using System.Data.SqlClient;
+using Common.Util;
 using Log;
+using Log.Controller;
 using Newtonsoft.Json;
 
 public partial class Admin_Appointment_Default : System.Web.UI.Page
@@ -26,7 +28,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     #region Events
     protected void Page_Load(object sender, EventArgs e)
     {
-        BindFloor();
+        BindTabs();
         BindStatus();
     }
     #endregion
@@ -35,25 +37,27 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <summary>
     /// Get floor list
     /// </summary>
-    private void BindFloor()
+    private void BindTabs()
     {
         try
         {
-            TList<AppointmentGroup> lst = DataRepository.AppointmentGroupProvider.GetAll();
-            var lstFloor = from floor in lst
-                           select new
-                           {
-                               Id = floor.Id,
-                               Title = floor.Title
-                           };
-            StrFloors = JsonConvert.SerializeObject(lstFloor);
+            int count;
+            var lst = DataRepository.UnitsProvider.GetPaged("IsDisabled = 'False'"
+                                                            , "PriorityIndex ASC", 0,
+                                                            ServiceFacade.SettingsHelper.GetPagedLength, out count)
+                .Select(x => new
+                                 {
+                                     x.Id,
+                                     x.Title
+                                 });
+            StrFloors = JsonConvert.SerializeObject(lst);
 
-            rptFloor.DataSource = lstFloor;
+            rptFloor.DataSource = lst;
             rptFloor.DataBind();
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.BindFloor", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 
@@ -1512,5 +1516,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     StepResult:
         return blResult;
     }
+    #endregion
+
+    #region Tab and Column in scheduler
     #endregion
 }
