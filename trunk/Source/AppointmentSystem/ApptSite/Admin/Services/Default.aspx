@@ -15,7 +15,7 @@
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridServices_RowInserting"
                 OnCustomButtonCallback="gridServices_CustomButtonCallback">
                 <Columns>
-                    <dx:GridViewCommandColumn VisibleIndex="3">
+                    <dx:GridViewCommandColumn VisibleIndex="3" Name="#">
                         <EditButton Visible="true" />
                         <NewButton Visible="true" />
                         <CustomButtons>
@@ -60,7 +60,7 @@
                             runat="server"></dx:ASPxGridViewTemplateReplacement>
                     </EditForm>
                 </Templates>
-                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
+                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
                 </ClientSideEvents>
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>

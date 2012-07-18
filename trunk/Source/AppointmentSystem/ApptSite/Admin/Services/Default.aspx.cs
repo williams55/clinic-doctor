@@ -28,59 +28,138 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridServices.Visible = false;
+                return;
             }
+
+            // Lay cot co chua cac nut thao tac
+            var gridViewCommandColumn = gridServices.Columns["#"] as GridViewCommandColumn;
+
+            // Neu khong co cot do thi khong can lam tiep
+            if (gridViewCommandColumn == null) return;
+             
+            // Gan visible cho nut new, edit bang cach kiem tra quyen
+            gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+                                                                                  ScreenCode,
+                                                                                  OperationConstant.Update.Key,
+                                                                                  out _message);
+            gridViewCommandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+                                                                                  ScreenCode,
+                                                                                  OperationConstant.Create.Key,
+                                                                                  out _message);
+
+            // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
+            var btnDelete = gridViewCommandColumn.CustomButtons.Find(x => x.ID == "btnDelete");
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+                                                                                  ScreenCode,
+                                                                                  OperationConstant.Delete.Key,
+                                                                                  out _message))
+            {
+                btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
+            }
+
+            // Tat ca cot neu 3 thao tac deu khong hien thi
+            gridViewCommandColumn.Visible = gridViewCommandColumn.EditButton.Visible
+                || gridViewCommandColumn.NewButton.Visible
+                || (btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
-    
-        
     }
+
     protected void gridServices_RowInserting(object sender, ASPxDataInsertingEventArgs e)
     {
         try
         {
-            // Validate user right for inserting
-            if (!AppointmentBusiness.Util.RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key,
+            // Kiem tra xem user co quyen them hay khong
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key,
                                        out _message))
             {
-                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
-                gridServices.Visible = false;
+                // Cau lenh nay se quang ra exception va DevExpress se nhan duoc exception de thong bao loi cho nguoi dung
+                WebCommon.AlertGridView(sender, _message);
+                
+                // Cau lenh nay se dung thuc thi
+                e.Cancel = true;
+
+                return;
             }
+
+            // Gan cac gia tri cho dong duoc them
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-        e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
+
     protected void gridServices_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
         {
-            // Validate user right for reading
+            // Neu truong hop khong phai la xoa mot item thi dung ket thuc
+            // Phai kiem tra cai nay vi o day minh chi dung cai custom button de xoa, khong lam gi khac
+            if (e.ButtonID != "btnDelete") return;
+
+            // Kiem tra xem user co quyen xoa mot service hay khong
+            // Neu khong co quyen thi quang ra loi va cancel cai thao tac dang thuc thi
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
-                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
-                gridServices.Visible = false;
+                // Cau lenh nay se quang ra exception va DevExpress se nhan duoc exception de thong bao loi cho nguoi dung
+                WebCommon.AlertGridView(sender, _message);
+                return;
+            }
+
+            // Truong hop ma user co quyen thi tien hanh kiem tra xem service nay co thang con nao khong
+            // neu co thi thong bao loi la service dang duoc su dung, khong the xoa
+            // neu service hoan toan ko duoc su dung thi xoa no
+            int id; // Khai bao bien id de parse gia tri id cua service tu chuoi sang so
+
+            // Kiem tra xem id cua service co phai la so khong
+            if (Int32.TryParse(gridServices.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
+            {
+                // Neu id la so thi tien hanh kiem tra xem service co duoc su dung khong
+
+                // Lay thong tin cua service
+                var obj = DataRepository.ServicesProvider.GetById(id);
+
+                // Kiem tra xem service co ton tai hay khong
+                // neu khong ton tai thi bao loi
+                if (obj == null || obj.IsDisabled)
+                {
+                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Service is not existed. You cannot delete it.";
+                    return;
+                }
+
+                // O day dung deepload de load toan bo du lieu lien quan
+                DataRepository.ServicesProvider.DeepLoad(obj);
+
+                // Tien hanh kiem tra xem no co dang duoc su dung hay khong
+                // luu y la cac thong tin lien ket voi no phai co gia tri IsDisabled la false thi moi tinh la ton tai
+                // neu IsDisabled co gia tri True thi nghia la no khong con ton tai
+                if (obj.RoomCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co phong nao dang co dich vu nay hay khong
+                    && obj.DoctorServiceCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co bac si nao duoc gan vao dich vu nay hay khong
+                    && obj.AppointmentCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co appointment nao da co dich vu nay hay khong
+                    )
+                {
+                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] 
+                        = String.Format("Service {0} is using, you cannot delete it.", obj.Title);
+                    return;
+                }
+                // Neu service dang trong tinh trang hoan toan khong duoc su dung thi tien hanh xoa
+                // viec xoa chi o day chi la doi gia tri cua IsDisabled thanh True
+                obj.IsDisabled = true;
+                obj.UpdateUser = WebCommon.GetAuthUsername();
+                obj.UpdateDate = DateTime.Now;
+                DataRepository.ServicesProvider.Update(obj);
             }
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-        }
-        if (e.ButtonID != "btnDelete") return;
-        long id;
-        if (Int64.TryParse(gridServices.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
-        {
-
-            var obj = (Services)DataRepository.ServicesProvider.GetById(int.Parse(id.ToString()));
-            obj.IsDisabled = true;
-            obj.UpdateUser = WebCommon.GetAuthUsername();
-            obj.UpdateDate = DateTime.Now;
-            DataRepository.ServicesProvider.Update(obj);
+            ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "There is system error. Please contact Administrator.";
         }
     }
 }
