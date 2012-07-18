@@ -4,6 +4,10 @@ using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Web.UI;
+using Appt.Common.Constants;
+using Common.Util;
+using DevExpress.Web.ASPxGridView;
+using Log.Controller;
 using Newtonsoft.Json;
 
 /// <summary>
@@ -69,6 +73,25 @@ public class WebCommon
     public static void ShowDialog(Page page, string message, string returnUrl)
     {
         ShowDialog(page, string.Empty, "Message", message, returnUrl);
+    }
+    #endregion
+
+    #region Alert in ASPxGridView
+    /// <summary>
+    /// Alert message for ASPxGridView
+    /// </summary>
+    /// <param name="sender">ASPxGridView object</param>
+    /// <param name="message"></param>
+    public static void AlertGridView(object sender, string message)
+    {
+        try
+        {
+            ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = message;
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
     }
     #endregion
 

@@ -9,3 +9,11 @@ function RefreshGrid() {
         gridObject = null;
     }
 }
+
+function AlertMessage() {
+    // Alert if there is have message
+    if (grid.cpApptMessage && grid.cpApptMessage != "") {
+        alert(grid.cpApptMessage);
+        grid.cpApptMessage = "";
+    }
+}

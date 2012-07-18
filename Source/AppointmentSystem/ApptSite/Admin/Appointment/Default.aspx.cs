@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.Script.Services;
+using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
+using Appt.Common.Constants;
 using Appt.Common.UserDefine;
 using System.Data;
 using System.Data.SqlClient;
@@ -23,13 +25,34 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
     // Contain list of floor with Json format
     protected string StrFloors = string.Empty;
+
+    private const string ScreenCode = "Appointment";
+    static string _message;
+    static readonly string Username = EntitiesUtilities.GetAuthName();
     #endregion
 
     #region Events
     protected void Page_Load(object sender, EventArgs e)
     {
-        BindTabs();
-        BindStatus();
+        try
+        {
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
+            {
+                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
+            }
+            else
+            {
+                // Show script
+                ClientScript.RegisterStartupScript(GetType(), "MainScript", @"<script src=""GRNEditt.js"" type=""text/javascript""></script>");
+            }
+            BindTabs();
+            BindStatus();
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
     }
     #endregion
 
@@ -68,8 +91,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
-            var lst = DataRepository.StatusProvider.GetAll().Where(x => x.IsDisabled == false).ToList();
-            lst.Sort((p1, p2) => p1.PriorityIndex.CompareTo(p2.PriorityIndex));
+            int count;
+            var lst = DataRepository.StatusProvider.GetPaged("IsDisabled = 'False'"
+                                                            , "PriorityIndex ASC", 0,
+                                                            ServiceFacade.SettingsHelper.GetPagedLength, out count);
 
             cboStatus.DataSource = lst;
             cboStatus.DataTextField = "Title";
@@ -86,7 +111,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetStatus", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
     #endregion
@@ -105,11 +130,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         try
         {
             int count;
-            var lst = DataRepository.CustomerProvider.GetPaged(String.Format("FirstName LIKE '%{0}%' OR LastName LIKE '%{0}%'" +
+            var lst = DataRepository.PatientProvider.GetPaged(String.Format("FirstName LIKE '%{0}%' OR LastName LIKE '%{0}%'" +
                                                                              " OR Address LIKE '%{0}%' OR HomePhone LIKE '%{0}%'" +
                                                                              " OR WorkPhone LIKE '%{0}%' OR CellPhone LIKE '%{0}%'" +
                                                                              " OR Birthdate LIKE '%{0}%'", keyword)
-                , string.Empty, 0, 10000, out count);
+                , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
 
             lstTk = lst.Select(x => new JPatientToken()
             {
@@ -130,7 +155,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("home_recharge_Default.aspx.Search", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
 
         return JsonConvert.SerializeObject(lstTk);
@@ -141,7 +166,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    private static string ParsePatientInfo(Customer obj)
+    private static string ParsePatientInfo(Patient obj)
     {
         string strResult = string.Empty;
         try
@@ -170,7 +195,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("home_recharge_Default.aspx.Search", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
         return strResult;
     }
@@ -193,7 +218,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("home_recharge_Default.aspx.SearchDoctor", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
 
         return string.Empty;
@@ -252,7 +277,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetStaffs", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             result = string.Empty;
         }
     StepResult:
@@ -274,7 +299,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("home_recharge_Default.aspx.SearchRoom", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
 
         return string.Empty;
@@ -294,15 +319,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     private static string SearchRoom(string keyword, string appointmentId, string doctorUserName
         , string startTime, string endTime, string startDate, string endDate)
     {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *          key: name of roles,
-         *          label: name of roles,
-         *          }, {}, {}]
-         *  }]
-         */
         string result = string.Empty;
 
         try
@@ -350,7 +366,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetRoom", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             result = string.Empty;
         }
     StepResult:
@@ -370,8 +386,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
         try
         {
-            Room obj = DataRepository.RoomProvider.GetByIdIsDisabled(Convert.ToInt64(roomId), false);
-            if (obj == null)
+            Room obj = DataRepository.RoomProvider.GetById(Convert.ToInt32(roomId));
+            if (obj == null || obj.IsDisabled)
             {
                 result = @"[{ 'result': 'true', 'message': 'Cannot find room.', 'data': '' }]";
                 goto StepResult;
@@ -386,7 +402,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetRoom", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             result = string.Empty;
         }
     StepResult:
@@ -404,28 +420,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetAppointment(string appointmentId)
     {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data:  [{
-         *              Id: Id of appointment,
-         *              PatientId: Patient Id,
-         *              PatientInfo: Patient propertyToSearch,
-         *              DoctorUserName: Doctor UserName,
-         *              DoctorInfo: Doctor propertyToSearch,
-         *              RoomId: Room Id,
-         *              RoomInfo: Room propertyToSearch,
-         *              start_date: start date,
-         *              end_date: end date,
-         *              note: note
-         *          }, {}, {}]
-         *  }
-         */
         string result;
 
         try
         {
-            var obj = DataRepository.AppointmentProvider.GetByIdIsDisabled(appointmentId, false);
+            var obj = DataRepository.AppointmentProvider.GetById(appointmentId);
             if (obj == null)
             {
                 result = @"[{ 'result': 'true', 'message': 'Cannot find appointment.', 'data': '' }]";
@@ -436,19 +435,20 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             DataRepository.AppointmentProvider.DeepLoad(obj);
 
             // Get Specialty [Functionality]
-            var lstFunc = DataRepository.DoctorFuncProvider.GetByDoctorUserName(obj.DoctorUsername);
-            DoctorFunc objFunc = null;
-            if (lstFunc.Any()) objFunc = lstFunc.First();
+            var lstDoctorService = DataRepository.DoctorServiceProvider.GetByDoctorId(obj.Id);
+            DataRepository.DoctorServiceProvider.DeepLoad(lstDoctorService);
+            Services service = null;
+            if (lstDoctorService.Any()) service = lstDoctorService.First().ServiceIdSource;
 
             result = JsonConvert.SerializeObject(new
             {
-                Id = obj.Id,
-                PatientId = obj.CustomerId,
-                PatientInfo = ParsePatientInfo(obj.CustomerIdSource),
-                DoctorUserName = obj.DoctorUsername,
+                obj.Id,
+                obj.PatientId,
+                PatientInfo = ParsePatientInfo(obj.PatientIdSource),
+                DoctorUserName = obj.DoctorIdSource.Username,
                 DoctorInfo = String.Format("Dr. {0}. {1}"
-                    , obj.DoctorUsernameSource.ShortName, objFunc == null ? string.Empty : String.Format("Specialty: {0}. ", objFunc.FuncTitle)),
-                RoomId = obj.RoomId,
+                    , obj.DoctorIdSource.DisplayName, service == null ? string.Empty : String.Format("Specialty: {0}. ", service.Title)),
+                obj.RoomId,
                 RoomInfo = obj.RoomIdSource.Title,
                 note = obj.Note
             });
@@ -456,7 +456,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            //SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetAppointment", ex);
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             result = string.Empty;
         }
     StepResult:

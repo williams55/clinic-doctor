@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\GeneralConstants.cs" />
     <Compile Include="Constants\OperationConstant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserDefine\JDoctor.cs" />
