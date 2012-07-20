@@ -102,7 +102,6 @@ function initSchedule(weekday) {
         LoadRoster(currentMode, currentDate);
     });
 }
-
 /****************************DHTMLX - End******************************/
 
 /****************************Scheduler - End******************************/
@@ -113,7 +112,6 @@ function BlockReadonly(id) {
 }
 
 // Function will be raise when event changed
-
 function EventChanged(eventId, objEvent) {
     // Case move event
     if (scheduler._drag_mode && scheduler._drag_mode == 'move') {
@@ -405,6 +403,8 @@ function MoveRoster(eventId, objEvent) {
         },
         fail: function() {
             alert("Unknow error!");
+            scheduler.deleteEvent(eventId);
+            scheduler.addEvent(objEvent);
         }
     });
 }
