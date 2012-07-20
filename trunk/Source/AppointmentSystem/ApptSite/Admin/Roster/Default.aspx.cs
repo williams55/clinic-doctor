@@ -319,6 +319,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             if (dtStart >= dtEnd)
             {
+                AddRoster(lstResult, rosterItem);
                 return WebCommon.BuildFailedResult("To time must be greater than from date.");
             }
 

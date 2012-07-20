@@ -14,6 +14,9 @@ function ShowMinical() {
     });
 }
 
+// Refesh current view for mark_now can auto update
+setInterval(function() { scheduler.setCurrentView(); }, 60000);
+
 // Init Schedule
 function initSchedule(weekday) {
     var currentDate = new Date();
@@ -33,7 +36,7 @@ function initSchedule(weekday) {
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function(response) {
-                var obj = eval(response.d)[0];
+                var obj = JSON.parse(response.d);
 
                 if (obj.result == "true") {
                     var elements = obj.data;
@@ -56,90 +59,12 @@ function initSchedule(weekday) {
         }));
     });
     $.when.apply($, arrAjax).done(function() {
-        // OnClick event, get patient's info
-        function blockReadonly(id) {
-            GetPatientInfo(id);
-            if (!id) return true;
-            return this.getEvent(id).ReadOnly == "false";
-        }
-
-        scheduler.attachEvent("onBeforeDrag", blockReadonly);
-        scheduler.attachEvent("onClick", blockReadonly);
-
-        // When event changed, check and update
-        scheduler.attachEvent("onBeforeEventChanged", function(event_object, native_event, is_new) {
-            // If update roster
-            if (is_new == false) {
-                if (event_object.start_date <= new Date()) {
-                    alert("You can not change appointment to passed or current date.");
-                    return false;
-                }
-            }
-            return true;
-        });
+        scheduler.attachEvent("onBeforeDrag", BlockReadonly);
+        scheduler.attachEvent("onClick", BlockReadonly);
+        scheduler.attachEvent("onEventChanged", EventChanged);
 
         scheduler.attachEvent("onViewChange", function(mode, date) {
             LoadRoster(mode, date);
-        });
-
-        // Save roster when resized or moved
-        scheduler.attachEvent("onEventChanged", function(event_id, event_object) {
-            //any custom logic here
-            var _id = event_object.id;
-            var _doctorUserName = event_object.DoctorUserName;
-            var _rosterType = event_object.RosterTypeId;
-            var _rosterTitle = event_object.RosterTypeTitle;
-            var _fromTime = event_object.start_date;
-            var _toTime = event_object.end_date;
-            var _note = event_object.note;
-            var _room = event_object.section_id;
-
-            var requestdata = JSON.stringify({ Id: _id, DoctorUsername: _doctorUserName, StartTime: _fromTime
-                , EndTime: _toTime, RoomId: _room
-            });
-            $.ajax({
-                type: "POST",
-                url: "Default.aspx/UpdateEventMove",
-                async: true,
-                data: requestdata,
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function(response) {
-                    var obj = eval(response.d)[0];
-
-                    var evs = obj.data;
-
-                    if (obj.result == "false") {
-                        alert(obj.message);
-                    }
-
-                    scheduler.deleteEvent(_id);
-                    addRoster(evs);
-                },
-                fail: function() {
-                    alert("Unknow error!");
-                    return false;
-                },
-                complete: function() {
-                }
-            });
-        });
-
-        dhtmlxEvent(document, (_isOpera ? "keypress" : "keydown"), function(e) {
-
-            if (e.keyCode == 37) {
-                //left
-                scheduler.matrix.timeline.x_start -= 1;
-                if (scheduler.matrix.timeline.x_start < 0)
-                    scheduler.matrix.timeline.x_start = 0;
-                scheduler.callEvent("onOptionsLoad", []);
-            } else if (e.keyCode == 39) {
-                //right
-                scheduler.matrix.timeline.x_start += 1;
-                if (scheduler.matrix.timeline.x_start > 24)
-                    scheduler.matrix.timeline.x_start = 24;
-                scheduler.callEvent("onOptionsLoad", []);
-            }
         });
 
         // Load roster
@@ -149,6 +74,24 @@ function initSchedule(weekday) {
             ShowMinical();
         }
     });
+}
+/****************************DHTMLX - End******************************/
+
+/****************************Scheduler - Start******************************/
+// Set readonly property for event
+// Get patient's info and fill in form info
+function BlockReadonly(id) {
+    GetPatientInfo(id);
+    if (!id) return true;
+    return !this.getEvent(id).readonly;
+}
+
+// Function will be raise when event changed
+function EventChanged(eventId, objEvent) {
+    // Case move event
+    if (scheduler._drag_mode && scheduler._drag_mode == 'move') {
+        MoveRoster(eventId, objEvent);
+    }
 }
 
 scheduler.showLightbox = function(id) {
@@ -179,74 +122,117 @@ scheduler.showLightbox = function(id) {
     $("#txtFromDate").datepicker("setDate", new Date(ev.start_date.getFullYear(), ev.start_date.getMonth(), ev.start_date.getDate()));
     $("#txtToDate").datepicker("setDate", new Date(ev.end_date.getFullYear(), ev.end_date.getMonth(), ev.end_date.getDate()));
 
-    var arrAjax = [];
     $("#hdId").val(id);
     // Load data
-    var requestdata;
-    if (ev.isnew == "false") {
+    if (ev.isnew == false) {
         // Update case, get info from server
         $("#tdTitle").text("Edit Appointment");
-        requestdata = JSON.stringify({ appointmentId: id });
-        arrAjax.push($.ajax({
-            type: "POST",
-            url: "Default.aspx/GetAppointment",
-            data: requestdata,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function(response) {
-                var obj = eval(response.d)[0];
-                if (obj.result == "true") {
-                    var data = obj.data;
-                    if (data) {
-                        $("#txtPatient").tokenInput("add", { id: data.PatientId, propertyToSearch: data.PatientInfo });
-                        $("#txtDoctor").tokenInput("add", { id: data.DoctorUserName, propertyToSearch: data.DoctorInfo });
-                        $("#txtRoom").tokenInput("add", { id: data.RoomId, propertyToSearch: data.RoomInfo });
-                        $("#txtNote").val(data.note);
-                    }
-                } else {
-                    alert(obj.message);
+
+        $("#RosterForm").dialog({
+            autoOpen: false,
+            height: 300,
+            width: 550,
+            modal: true,
+            zIndex: $.maxZIndex() + 1,
+            resizable: false,
+            buttons: {
+                Delete: function() {
+                    DeleteRoster(id);
+                },
+                Cancel: function() {
+                    $(this).dialog("close");
+                },
+                Save: function() {
+                    UpdateRoster();
                 }
             },
-            fail: function() {
-                alert("Unknow error!");
-            },
-            complete: function() {
+            close: function() {
+                CancelRoster();
             }
-        }));
+        });
+
+        //        requestdata = JSON.stringify({ appointmentId: id });
+        //        arrAjax.push($.ajax({
+        //            type: "POST",
+        //            url: "Default.aspx/GetAppointment",
+        //            data: requestdata,
+        //            dataType: "json",
+        //            contentType: "application/json; charset=utf-8",
+        //            success: function(response) {
+        //                var obj = eval(response.d)[0];
+        //                if (obj.result == "true") {
+        //                    var data = obj.data;
+        //                    if (data) {
+        //                        $("#txtPatient").tokenInput("add", { id: data.PatientId, propertyToSearch: data.PatientInfo });
+        //                        $("#txtDoctor").tokenInput("add", { id: data.DoctorUserName, propertyToSearch: data.DoctorInfo });
+        //                        $("#txtRoom").tokenInput("add", { id: data.RoomId, propertyToSearch: data.RoomInfo });
+        //                        $("#txtNote").val(data.note);
+        //                    }
+        //                } else {
+        //                    alert(obj.message);
+        //                }
+        //            },
+        //            fail: function() {
+        //                alert("Unknow error!");
+        //            },
+        //            complete: function() {
+        //            }
+        //        }));
     }
     else {
-        // Get room id then call server to get room info
-        if (ev.section_id) {
-            requestdata = JSON.stringify({ roomId: ev.section_id });
-            arrAjax.push($.ajax({
-                type: "POST",
-                url: "Default.aspx/GetRoom",
-                data: requestdata,
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function(response) {
-                    var obj = eval(response.d)[0];
-                    if (obj.result == "true") {
-                        $("#txtRoom").tokenInput("add", obj.data);
-                    } else {
-                        alert(obj.message);
-                    }
+        // New mode
+        $("#RosterForm").dialog({
+            autoOpen: false,
+            height: 350,
+            width: 550,
+            modal: true,
+            zIndex: $.maxZIndex() + 1,
+            resizable: false,
+            buttons: {
+                Cancel: function() {
+                    $(this).dialog("close");
                 },
-                fail: function() {
-                    alert("Unknow error!");
-                },
-                complete: function() {
+                Save: function() {
+                    NewRoster();
                 }
-            }));
-        }
+            },
+            close: function() {
+                CancelRoster();
+            }
+        });
+        //        // Get room id then call server to get room info
+        //        if (ev.section_id) {
+        //            requestdata = JSON.stringify({ roomId: ev.section_id });
+        //            arrAjax.push($.ajax({
+        //                type: "POST",
+        //                url: "Default.aspx/GetRoom",
+        //                data: requestdata,
+        //                dataType: "json",
+        //                contentType: "application/json; charset=utf-8",
+        //                success: function(response) {
+        //                    var obj = JSON.parse(response.d);
+        //                    if (obj.result == "true") {
+        //                        $("#txtRoom").tokenInput("add", obj.data);
+        //                    } else {
+        //                        alert(obj.message);
+        //                    }
+        //                },
+        //                fail: function() {
+        //                    alert("Unknow error!");
+        //                },
+        //                complete: function() {
+        //                }
+        //            }));
+        //        }
     }
 
-    $.when.apply($, arrAjax).done(function() {
-        scheduler.startLightbox(id, html("RosterForm"));
-    });
+    $("#RosterForm").dialog("open");
+    $(".token-input-dropdown").css("z-index", $.maxZIndex() + 1); // Bring to front
+
+    scheduler.startLightbox(id, html("RosterForm"));
     return true;
 };
-/****************************DHTMLX - End******************************/
+/****************************Scheduler - End******************************/
 
 /****************************Form - Start******************************/
 function buildURIDoctor() {
@@ -393,36 +379,38 @@ function BindTime() {
 /****************************Patient - Start******************************/
 // Get Patient's info by appointment id
 function GetPatientInfo(currentId) {
-    var requestdata = JSON.stringify({ appointmentId: currentId });
-    $.ajax({
-        type: "POST",
-        url: "Default.aspx/GetPatientByAppointmentId",
-        data: requestdata,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(response) {
-            var obj = eval(response.d)[0];
-            if (obj.result == "true") {
-                if (obj.data) {
-                    var arr = eval(obj.data)[0]; // Get first item
-                    $("#divFirstname").html(arr.FirstName);
-                    $("#divLastname").html(arr.LastName);
-                    $("#divCellPhone").html(arr.CellPhone);
-                    $("#divBirthday").html(arr.Birthday);
-                    $("#divAddress").html(arr.Address);
+    if (currentId) {
+        var requestdata = JSON.stringify({ appointmentId: currentId });
+        $.ajax({
+            type: "POST",
+            url: "Default.aspx/GetPatientByAppointmentId",
+            data: requestdata,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(response) {
+                var obj = JSON.parse(response.d);
+                if (obj.result == "true") {
+                    if (obj.data) {
+                        var arr = obj.data[0]; // Get first item
+                        $("#divFirstname").html(arr.FirstName);
+                        $("#divLastname").html(arr.LastName);
+                        $("#divCellPhone").html(arr.CellPhone);
+                        $("#divBirthday").html(arr.Birthday);
+                        $("#divAddress").html(arr.Address);
+                    }
                 }
+                else {
+                    alert(obj.message);
+                }
+                blStaff = true;
+            },
+            fail: function() {
+                alert("Cannot load Patient's info. Please try again or contact Administrator.");
+            },
+            complete: function() {
             }
-            else {
-                alert(obj.message);
-            }
-            blStaff = true;
-        },
-        fail: function() {
-            alert("Cannot load Patient's info. Please try again or contact Administrator.");
-        },
-        complete: function() {
-        }
-    });
+        });
+    }
 }
 
 // Create new patient
@@ -455,6 +443,37 @@ function CreateSimplePatient(radSex, firstname, lastname, cellPhone, adddress, d
 }
 /****************************Patient - End******************************/
 
+/****************************Appointment - Start******************************/
+// Save moved appointment
+function MoveAppointment(eventId, objEvent) {
+    var requestdata = JSON.stringify({ id: eventId, startTime: objEvent.start_date
+                , endTime: objEvent.end_date, aGroupId: objEvent.section_id
+    });
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/MoveAppointment",
+        async: true,
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(response) {
+            var obj = eval(response.d)[0];
+
+            if (obj.result != "true") {
+                alert(obj.message);
+                scheduler.deleteEvent(eventId);
+                AddRoster(obj.data);
+            }
+        },
+        fail: function() {
+            alert("Unknow error!");
+            scheduler.deleteEvent(eventId);
+            scheduler.addEvent(objEvent);
+        }
+    });
+}
+/****************************Appointment - Start******************************/
+
 function LoadRoster(mode, date) {
     var requestdata = JSON.stringify({ mode: mode, currentDateView: date });
     scheduler.clearAll();
@@ -465,7 +484,7 @@ function LoadRoster(mode, date) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            var obj = eval(response.d)[0];
+            var obj = JSON.parse(response.d);
 
             if (obj.result == "true") {
                 var evs = obj.data;
@@ -691,7 +710,7 @@ $(document).ready(function() {
 
     $(".datePicker").datepicker({
         showOn: "button",
-        buttonImage: "../resources/css/ui-lightness/images/calendar.gif",
+        buttonImage: "../../resources/css/ui-lightness/images/calendar.gif",
         buttonImageOnly: true, changeMonth: true,
         changeYear: true,
         showOtherMonths: true,
@@ -703,7 +722,7 @@ $(document).ready(function() {
     var _nextMonth = new Date(_currentMonth.getFullYear(), _currentMonth.getMonth() + 1, 1);
     $("#txtMonth").datepicker({
         showOn: "button",
-        buttonImage: "../resources/css/ui-lightness/images/calendar.gif",
+        buttonImage: "../../resources/css/ui-lightness/images/calendar.gif",
         buttonImageOnly: true, changeMonth: true,
         changeYear: true,
         showOtherMonths: true,

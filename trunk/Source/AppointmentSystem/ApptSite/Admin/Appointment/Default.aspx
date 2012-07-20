@@ -18,6 +18,9 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_timeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
+    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_units.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_treetimeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
@@ -28,6 +31,9 @@
         type="text/javascript" charset="utf-8"></script>
 
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_tooltip.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_collision.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/jquery.tokeninput.js") %>"></script>
@@ -57,8 +63,6 @@
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
 
     </script>
-
-    <script src="GRNEditt.js" type="text/javascript"></script>
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
@@ -168,8 +172,11 @@
                 <div class="clear">
                 </div>
             </div>
-            <div id="RosterForm" class="schedulerForm" style="width: 650px;">
+            <div id="RosterForm" class="dialog-form" title="Appointment" style="display: none;">
                 <input type="hidden" id="hdId" value="" />
+                <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
+                    <span class="loading"></span>
+                </div>
                 <table cellpadding="3" width="100%" id="tblContent">
                     <tr>
                         <td colspan="4" class="title" id="tdTitle">
