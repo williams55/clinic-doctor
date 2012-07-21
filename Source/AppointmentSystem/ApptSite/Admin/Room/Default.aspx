@@ -29,57 +29,6 @@
                 </CustomButtons>           
             </dx:GridViewCommandColumn>
         </Columns>
-       <%-- <Templates>
-                <EditForm>                 
-                        <div style="text-align: right; padding: 2px 2px 2px 2px">
-                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" ReplacementType="EditFormUpdateButton"
-                                runat="server">
-                            </dx:ASPxGridViewTemplateReplacement>
-                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
-                                runat="server">
-                            </dx:ASPxGridViewTemplateReplacement>
-                        </div>
-                        <div id="devexpress-form">
-                                <table class="edit-form">
-                                    <tbody>
-                                        <tr>
-                                            <td class="title-row">
-                                               Room Id
-                                            </td>
-                                            <td class="content-row">
-                                                <dx:ASPxTextBox  runat="server" ReadOnly="false" ID="txtTitle" Text='<%# Bind("Id") %>' CssClass="text-form">
-                                                </dx:ASPxTextBox>
-                                            </td>
-                                            <td class="title-row">
-                                                Title
-                                            </td>
-                                            <td class="content-row">
-                                                 <dx:ASPxTextBox runat="server" ID="ASPxTextBox1" Text='<%# Bind("Title") %>' CssClass="text-form">
-                                                </dx:ASPxTextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title-row">
-                                                Note
-                                            </td>
-                                            <td class="content-row">
-                                               <dx:ASPxTextBox runat="server" ID="txtNote" Text='<%# Bind("Note")%>' CssClass="text-form">
-                                                </dx:ASPxTextBox>
-                                            </td>
-                                            <td class="title-row">
-                                               Services
-                                            </td>
-                                            <td class="content-row">                                            
-                                               <dx:ASPxComboBox  runat="server" ID="ListServicesId"  TextField="Title" ValueField="Id"   Value='<%# Bind("ServicesId") %>' DataSourceID="ServicesDataSource">                                                   
-                                               </dx:ASPxComboBox>                                                 
-                                               <data:ServicesDataSource runat="server" ID="ServicesDataSource" SelectMethod="GetAll"></data:ServicesDataSource>                                    
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                        </div> 
-                    </EditForm>
-        </Templates>--%>
         <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
         </ClientSideEvents>
         <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
@@ -95,7 +44,12 @@
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />                   
         </Parameters>    
     </data:RoomDataSource>
-    <data:ServicesDataSource SelectMethod="GetAll" runat="server" ID="ServicesDatas" >
-</data:ServicesDataSource>
+    <data:ServicesDataSource SelectMethod="GetPaged" runat="server" ID="ServicesDatas" >
+         <Parameters>
+            <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />                   
+        </Parameters>    
+    </data:ServicesDataSource>
 </asp:Content>
 
