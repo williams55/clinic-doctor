@@ -3,17 +3,27 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" Runat="Server">
-<script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
+
+    <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#ctl00_ContentContent_gridServices_ef0_ASPxTextBox1_I').focus();
+        });
+    
+    </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" Runat="Server">
- <div id="box-tabs" class="box">
+    <div id="box-tabs" class="box">
         <div class="title">
             <h5>Room</h5>
         </div>
         <div id="box-order">
             <dx:ASPxGridView ID="gridServices" ClientInstanceName="grid" runat="server" DataSourceID="ServicesDataSource"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridServices_RowInserting"
-                OnCustomButtonCallback="gridServices_CustomButtonCallback">
+                OnCustomButtonCallback="gridServices_CustomButtonCallback" 
+                onrowupdating="gridServices_RowUpdating" 
+                onrowvalidating="gridServices_RowValidating">
                 <Columns>
                     <dx:GridViewCommandColumn VisibleIndex="3" Name="#">
                         <EditButton Visible="true" />

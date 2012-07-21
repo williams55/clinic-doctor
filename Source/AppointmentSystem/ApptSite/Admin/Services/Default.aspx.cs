@@ -31,12 +31,12 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                 return;
             }
 
-            // Lay cot co chua cac nut thao tac
+            // Lay cot co chua cac nut thao tac trong grid role
             var gridViewCommandColumn = gridServices.Columns["#"] as GridViewCommandColumn;
 
             // Neu khong co cot do thi khong can lam tiep
             if (gridViewCommandColumn == null) return;
-             
+
             // Gan visible cho nut new, edit bang cach kiem tra quyen
             gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
                                                                                   ScreenCode,
@@ -78,7 +78,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             {
                 // Cau lenh nay se quang ra exception va DevExpress se nhan duoc exception de thong bao loi cho nguoi dung
                 WebCommon.AlertGridView(sender, _message);
-                
+
                 // Cau lenh nay se dung thuc thi
                 e.Cancel = true;
 
@@ -94,7 +94,6 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
-
     protected void gridServices_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
@@ -140,11 +139,11 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                 // luu y la cac thong tin lien ket voi no phai co gia tri IsDisabled la false thi moi tinh la ton tai
                 // neu IsDisabled co gia tri True thi nghia la no khong con ton tai
                 if (obj.RoomCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co phong nao dang co dich vu nay hay khong
-                    && obj.DoctorServiceCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co bac si nao duoc gan vao dich vu nay hay khong
-                    && obj.AppointmentCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co appointment nao da co dich vu nay hay khong
+                    || obj.DoctorServiceCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co bac si nao duoc gan vao dich vu nay hay khong
+                    || obj.AppointmentCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co appointment nao da co dich vu nay hay khong
                     )
                 {
-                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] 
+                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage]
                         = String.Format("Service {0} is using, you cannot delete it.", obj.Title);
                     return;
                 }
@@ -161,5 +160,31 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "There is system error. Please contact Administrator.";
         }
+    }
+    protected void gridServices_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
+    {
+        try
+        {
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message))//Kiem tra xem user co quyen cap nhat hay khong
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+    protected void gridServices_RowValidating(object sender, ASPxDataValidationEventArgs e)
+    {
+        if (e.NewValues["Title"].ToString().Trim() == "")//check field Title if empty, then stop
+        {
+            e.RowError = "Field Title not be empty";
+        }
+        
     }
 }
