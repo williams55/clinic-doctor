@@ -68,8 +68,6 @@ public partial class Admin_Role_Default : System.Web.UI.Page
     }
     protected void Gridroledetail_OnBeforePerformDataSelect(object sender, EventArgs e)
     {
-        var param = RoledetailDataS.Parameters["WhereClause"];
-        string ss = (sender as ASPxGridView).GetMasterRowKeyValue().ToString();
         ASPxGridView girdroledetail = (ASPxGridView)(sender as ASPxGridView);
         var gridViewCommandColumn = girdroledetail.Columns["Controlcommand"] as GridViewCommandColumn;
         if (gridViewCommandColumn == null) return;
@@ -88,6 +86,7 @@ public partial class Admin_Role_Default : System.Web.UI.Page
         gridViewCommandColumn.Visible = gridViewCommandColumn.EditButton.Visible
             || gridViewCommandColumn.NewButton.Visible
             || (btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
+        var param = RoledetailDataS.Parameters["WhereClause"];
         if (param == null)
         {
             RoledetailDataS.Parameters.Add("WhereClause"
@@ -107,56 +106,33 @@ public partial class Admin_Role_Default : System.Web.UI.Page
 
         try
         {
-            // Neu truong hop khong phai la xoa mot item thi dung ket thuc
-            // Phai kiem tra cai nay vi o day minh chi dung cai custom button de xoa, khong lam gi khac
             if (e.ButtonID != "btnDelete") return;
-
-            // Kiem tra xem user co quyen xoa mot service hay khong
-            // Neu khong co quyen thi quang ra loi va cancel cai thao tac dang thuc thi
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 // Cau lenh nay se quang ra exception va DevExpress se nhan duoc exception de thong bao loi cho nguoi dung
                 WebCommon.AlertGridView(sender, _message);
                 return;
             }
-
-            // Truong hop ma user co quyen thi tien hanh kiem tra xem service nay co thang con nao khong
-            // neu co thi thong bao loi la service dang duoc su dung, khong the xoa
-            // neu service hoan toan ko duoc su dung thi xoa no
             int id; // Khai bao bien id de parse gia tri id cua service tu chuoi sang so
 
             // Kiem tra xem id cua service co phai la so khong
             if (Int32.TryParse(gridRole.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
-                // Neu id la so thi tien hanh kiem tra xem service co duoc su dung khong
 
-                // Lay thong tin cua service
-               // var obj = DataRepository.ServicesProvider.GetById(id);
                 var obj = DataRepository.RoleProvider.GetById(id);
-
-                // Kiem tra xem service co ton tai hay khong
-                // neu khong ton tai thi bao loi
                 if (obj == null || obj.IsDisabled)
                 {
                     ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Service is not existed. You cannot delete it.";
                     return;
                 }
 
-                // O day dung deepload de load toan bo du lieu lien quan
-                //DataRepository.ServicesProvider.DeepLoad(obj);
                 DataRepository.RoleProvider.DeepLoad(obj);
-
-                // Tien hanh kiem tra xem no co dang duoc su dung hay khong
-                // luu y la cac thong tin lien ket voi no phai co gia tri IsDisabled la false thi moi tinh la ton tai
-                // neu IsDisabled co gia tri True thi nghia la no khong con ton tai
-                if(obj.GroupRoleCollection.Exists(x=>!x.IsDisabled)&& obj.UserRoleCollection.Exists(x=>!x.IsDisabled))
+                if(obj.GroupRoleCollection.Exists(x=>!x.IsDisabled)|| obj.UserRoleCollection.Exists(x=>!x.IsDisabled))
                 {
                     ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = String.Format("Role {0} is using, you cannot delete it.", obj.Title);
                     
                    return;
                 }
-                // Neu service dang trong tinh trang hoan toan khong duoc su dung thi tien hanh xoa
-                // viec xoa chi o day chi la doi gia tri cua IsDisabled thanh True
                 obj.IsDisabled = true;
                 obj.UpdateUser = WebCommon.GetAuthUsername();
                 obj.UpdateDate = DateTime.Now;
