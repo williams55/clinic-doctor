@@ -3,11 +3,25 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" Runat="Server">
+<script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
+<script type="text/javascript">
+    function OnUpdateClick(editor) {
+        if(ASPxClientEdit.ValidateGroup("EditForm"))
+            grid.UpdateEdit();
+    }
+</script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" Runat="Server">
 
   <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" DataSourceID="UserDatas"
-        Width="100%" KeyFieldName="Id" >
+        Width="100%" KeyFieldName="Id" 
+        oninitnewrow="gridUser_InitNewRow" 
+        onrowinserting="gridUser_RowInserting" 
+        onrowupdating="gridUser_RowUpdating" 
+        onhtmlrowprepared="gridUser_HtmlRowPrepared" 
+        onrowvalidating="gridUser_RowValidating" 
+        onrowinserted="gridUser_RowInserted" >
         <Columns>
             <dx:GridViewDataColumn FieldName="Id" VisibleIndex="1" />
             <dx:GridViewDataColumn FieldName="Username" VisibleIndex="2" />
@@ -67,84 +81,124 @@
                     </dx:ASPxPageControl>
                 </div>
             </DetailRow> 
-            <EditForm>
-                <table width="100%" cellpadding="2" cellspacing="0">
-                    <tr>
-                        <% if(!gridUser.IsNewRowEditing) { %>
-                        <td rowspan="4">
-                            <div style="border: solid 1px #C2D4DA; padding: 2px;">
-                                <dx:ASPxImage Height="100" Width="100" ID="ImageUser" runat="server" ImageUrl='http://localhost:18015/ApptSite/Admin/Images/<%#Eval("Avatar")%>'>
-                                    
-                                </dx:ASPxImage>
-                            </div>
-                        </td>
-                        <% } %>
-                        <td style="white-space: nowrap">
-                            First Name
-                        </td>
-                        <td style="width: 50%">
-                            <dx:ASPxTextBox runat="server" ID="edFirst" Text='<%# Bind("Firstname") %>' Width="100%">
-                            </dx:ASPxTextBox>
-                        </td>
-                        <td style="white-space: nowrap">
-                            Last Name
-                        </td>
-                        <td style="width: 50%">
-                            <dx:ASPxTextBox runat="server" ID="edLast" Text='<%# Bind("Lastname") %>' Width="100%">
-                            </dx:ASPxTextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                     <td>
-                           User Name
-                        </td>
-                        <td style="width: 50%">
-                            <dx:ASPxTextBox runat="server" ID="ASPxTextBox3" Text='<%# Bind("Username") %>' Width="100%">
-                            </dx:ASPxTextBox>
-                        </td>
-                        <td>
-                            Cell Phone
-                        </td>
-                        <td style="width: 50%">
-                            <dx:ASPxTextBox runat="server" ID="edTitle" Text='<%# Bind("CellPhone") %>' Width="100%">
-                            </dx:ASPxTextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="white-space: nowrap">
-                            Email
-                        </td>
-                        <td style="width: 50%">
-                            <dx:ASPxTextBox runat="server" ID="ASPxTextBox1" Text='<%# Bind("Email") %>' Width="100%">
-                            </dx:ASPxTextBox>
-                        </td>
-                        <td style="white-space: nowrap">
-                            Group ID
-                        </td>
-                        <td style="width: 50%">
-                             <dx:ASPxTextBox runat="server" ID="ASPxTextBox2" Text='<%# Bind("UserGroupId") %>' Width="100%">
-                            </dx:ASPxTextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> Note</td>
-                        <td colspan="4">
-                            <dx:ASPxMemo runat="server" ID="edNotes" Text='<%# Bind("Note")%>' Width="100%"
-                                Height="100px">
-                            </dx:ASPxMemo>
-                        </td>
-                    </tr>
-                </table>
-                <div style="text-align: right; padding: 2px">
-                    <dx:ASPxGridViewTemplateReplacement ID="UpdateButton" ReplacementType="EditFormUpdateButton"
-                        runat="server">
-                    </dx:ASPxGridViewTemplateReplacement>
-                    <dx:ASPxGridViewTemplateReplacement ID="CancelButton" ReplacementType="EditFormCancelButton"
-                        runat="server">
-                    </dx:ASPxGridViewTemplateReplacement>
-                </div> 
-                
-            </EditForm>
+            <EditForm>                 
+                        <div style="text-align: right; padding: 2px 2px 2px 2px">
+                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" ReplacementType="EditFormUpdateButton"
+                                runat="server">
+                            </dx:ASPxGridViewTemplateReplacement>
+                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
+                                runat="server">
+                            </dx:ASPxGridViewTemplateReplacement>
+                        </div>
+                        <div id="devexpress-form">
+                                <table class="edit-form">
+                                    <tbody>
+                                        <tr>
+                                            <td class="title-row">
+                                               User Id
+                                            </td>
+                                            <td class="content-row">
+                                                <dx:ASPxTextBox  runat="server" ReadOnly="true" ID="txtTitle" Text='<%# Bind("Id") %>' CssClass="text-form">
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                            <td class="title-row">
+                                               Title
+                                            </td>
+                                            <td class="content-row">
+                                                 <dx:ASPxTextBox runat="server" ID="ASPxTextBox1" Text='<%# Bind("Title") %>' CssClass="text-form">
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                              First name
+                                            </td>
+                                            <td class="content-row">
+                                                <dx:ASPxTextBox  runat="server"  ID="ASPxTextBox2" Text='<%# Bind("Firstname") %>' CssClass="text-form">
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                            <td class="title-row">
+                                                Last name
+                                            </td>
+                                            <td class="content-row">
+                                                 <dx:ASPxTextBox runat="server" ID="ASPxTextBox3" Text='<%# Bind("Lastname") %>' CssClass="text-form">
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                               Display name
+                                            </td>
+                                            <td class="content-row">
+                                                <dx:ASPxTextBox  runat="server" ID="ASPxTextBox4" Text='<%# Bind("DisplayName") %>' CssClass="text-form" Width="100%">
+                                                    <ValidationSettings ValidationGroup="editForm" Display="Dynamic" ErrorText="*" >
+                                                        <RequiredField IsRequired="True" />
+                                                    </ValidationSettings>
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                            <td class="title-row">
+                                                User name
+                                            </td>
+                                            <td class="content-row">
+                                                 <dx:ASPxTextBox runat="server" ID="ASPxTextBox5" Text='<%# Bind("Username") %>' CssClass="text-form" Width="100%">
+                                                    <ValidationSettings ValidationGroup="editForm" Display="Dynamic">
+                                                        <RequiredField IsRequired="True" />
+                                                    </ValidationSettings>
+                                                    
+                                                </dx:ASPxTextBox>
+                                                
+                                            </td>
+                                           
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                               Cell phone
+                                            </td>
+                                            <td class="content-row">
+                                                <dx:ASPxTextBox  runat="server" ReadOnly="false" ID="ASPxTextBox7" Text='<%# Bind("CellPhone") %>' CssClass="text-form">
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                            <td class="title-row">
+                                                Email
+                                            </td>
+                                            <td class="content-row">
+                                                 <dx:ASPxTextBox runat="server" ID="ASPxTextBox8" Text='<%# Bind("Email") %>' CssClass="text-form">
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                           
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                                Female
+                                            </td>
+                                            <td class="content-row">
+                                             
+                                                <dx:ASPxCheckBox runat="server" ID="ckcR" Text='<%# Eval("IsFemale")%>'>
+                                                
+                                                </dx:ASPxCheckBox>
+                                            </td>
+                                            <td class="title-row">
+                                               User Group
+                                            </td>
+                                            <td class="content-row">                                            
+                                               <dx:ASPxComboBox  runat="server" ID="ListServicesId" SelectedIndex="0"  TextField="Title" ValueField="Id"   Value='<%# Bind("UserGroupId") %>' DataSourceID="UserGroupDatas" Width="100%">                                                   
+                                               </dx:ASPxComboBox>                                                 
+                                               <data:ServicesDataSource runat="server" ID="ServicesDataSource" SelectMethod="GetAll"></data:ServicesDataSource>                                    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                             <td class="title-row">
+                                                Note
+                                            </td>
+                                            <td class="content-row" colspan="4">
+                                               <dx:ASPxMemo runat="server" ID="ASPxTextBox6" Text='<%# Bind("Note")%>' CssClass="text-form">
+                                                </dx:ASPxMemo>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div> 
+                    </EditForm>
         </Templates>
         <SettingsDetail ShowDetailRow="true" />
         <Settings ShowGroupPanel="True" />
