@@ -543,12 +543,8 @@ function InitForm() {
     $("#spanMonth").hide();
 
     $("#cboFromHour").show();
-    $("#loadingFromHour").hide();
-    $('#spanFromDate').show();
 
     $("#cboToHour").show();
-    $("#loadingToHour").hide();
-    $('#spanToDate').show();
 
     $("#trRepeat").show();
 

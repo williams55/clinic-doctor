@@ -84,19 +84,22 @@ namespace AppointmentSystem.Entities
 		///<param name="_screenCode">Link name of screen. 
 		/// 		/// Ex: Status, Appointment...</param>
 		///<param name="_screenName"></param>
+		///<param name="_priorityIndex"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public ScreenBase(System.String _screenCode, System.String _screenName, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public ScreenBase(System.String _screenCode, System.String _screenName, System.Int32 _priorityIndex, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			this.entityData = new ScreenEntityData();
 			this.backupData = null;
 
 			this.ScreenCode = _screenCode;
 			this.ScreenName = _screenName;
+			this.PriorityIndex = _priorityIndex;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -110,17 +113,20 @@ namespace AppointmentSystem.Entities
 		///<param name="_screenCode">Link name of screen. 
 		/// 		/// Ex: Status, Appointment...</param>
 		///<param name="_screenName"></param>
+		///<param name="_priorityIndex"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Screen CreateScreen(System.String _screenCode, System.String _screenName, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public static Screen CreateScreen(System.String _screenCode, System.String _screenName, System.Int32 _priorityIndex, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			Screen newScreen = new Screen();
 			newScreen.ScreenCode = _screenCode;
 			newScreen.ScreenName = _screenName;
+			newScreen.PriorityIndex = _priorityIndex;
 			newScreen.IsDisabled = _isDisabled;
 			newScreen.CreateUser = _createUser;
 			newScreen.CreateDate = _createDate;
@@ -218,6 +224,41 @@ namespace AppointmentSystem.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(ScreenColumn.ScreenName, this.entityData.ScreenName);
 				OnPropertyChanged("ScreenName");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the PriorityIndex property. 
+		///		
+		/// </summary>
+		/// <value>This type is int.</value>
+		/// <remarks>
+		/// This property can not be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, false)]
+		public virtual System.Int32 PriorityIndex
+		{
+			get
+			{
+				return this.entityData.PriorityIndex; 
+			}
+			
+			set
+			{
+				if (this.entityData.PriorityIndex == value)
+					return;
+					
+				OnColumnChanging(ScreenColumn.PriorityIndex, this.entityData.PriorityIndex);
+				this.entityData.PriorityIndex = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(ScreenColumn.PriorityIndex, this.entityData.PriorityIndex);
+				OnPropertyChanged("PriorityIndex");
 			}
 		}
 		
@@ -457,7 +498,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"ScreenCode", "ScreenName", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"ScreenCode", "ScreenName", "PriorityIndex", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -608,6 +649,7 @@ namespace AppointmentSystem.Entities
 				copy.ScreenCode = this.ScreenCode;
 					copy.OriginalScreenCode = this.OriginalScreenCode;
 				copy.ScreenName = this.ScreenName;
+				copy.PriorityIndex = this.PriorityIndex;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
@@ -751,6 +793,8 @@ namespace AppointmentSystem.Entities
 					return entityData.ScreenCode != _originalData.ScreenCode;
 					case ScreenColumn.ScreenName:
 					return entityData.ScreenName != _originalData.ScreenName;
+					case ScreenColumn.PriorityIndex:
+					return entityData.PriorityIndex != _originalData.PriorityIndex;
 					case ScreenColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case ScreenColumn.CreateUser:
@@ -790,6 +834,7 @@ namespace AppointmentSystem.Entities
 			bool result = false;
 			result = result || entityData.ScreenCode != _originalData.ScreenCode;
 			result = result || entityData.ScreenName != _originalData.ScreenName;
+			result = result || entityData.PriorityIndex != _originalData.PriorityIndex;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -807,6 +852,7 @@ namespace AppointmentSystem.Entities
 				return CreateScreen(
 				_originalData.ScreenCode,
 				_originalData.ScreenName,
+				_originalData.PriorityIndex,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -843,6 +889,7 @@ namespace AppointmentSystem.Entities
         {
 			return this.ScreenCode.GetHashCode() ^ 
 					((this.ScreenName == null) ? string.Empty : this.ScreenName.ToString()).GetHashCode() ^ 
+					this.PriorityIndex.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
@@ -891,6 +938,8 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
+			if (Object1.PriorityIndex != Object2.PriorityIndex)
+				equal = false;
 			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
 			if ( Object1.CreateUser != null && Object2.CreateUser != null )
@@ -967,6 +1016,12 @@ namespace AppointmentSystem.Entities
             	
             	case ScreenColumn.ScreenName:
             		return this.ScreenName.CompareTo(rhs.ScreenName);
+            		
+            		                 
+            	
+            	
+            	case ScreenColumn.PriorityIndex:
+            		return this.PriorityIndex.CompareTo(rhs.PriorityIndex);
             		
             		                 
             	
@@ -1133,9 +1188,10 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{8}{7}- ScreenCode: {0}{7}- ScreenName: {1}{7}- IsDisabled: {2}{7}- CreateUser: {3}{7}- CreateDate: {4}{7}- UpdateUser: {5}{7}- UpdateDate: {6}{7}{9}", 
+				"{9}{8}- ScreenCode: {0}{8}- ScreenName: {1}{8}- PriorityIndex: {2}{8}- IsDisabled: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
 				this.ScreenCode,
 				(this.ScreenName == null) ? string.Empty : this.ScreenName.ToString(),
+				this.PriorityIndex,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
@@ -1185,6 +1241,11 @@ namespace AppointmentSystem.Entities
 		/// ScreenName : 
 		/// </summary>
 		public System.String		  ScreenName = null;
+		
+		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		public System.Int32		  PriorityIndex = (int)1;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1260,6 +1321,7 @@ namespace AppointmentSystem.Entities
 			_tmp.OriginalScreenCode = this.OriginalScreenCode;
 			
 			_tmp.ScreenName = this.ScreenName;
+			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1296,6 +1358,7 @@ namespace AppointmentSystem.Entities
 			_tmp.OriginalScreenCode = this.OriginalScreenCode;
 			
 			_tmp.ScreenName = this.ScreenName;
+			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1690,35 +1753,41 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("ScreenName", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		ScreenName = 2,
 		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		[EnumTextValue("PriorityIndex")]
+		[ColumnEnum("PriorityIndex", typeof(System.Int32), System.Data.DbType.Int32, false, false, false)]
+		PriorityIndex = 3,
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 3,
+		IsDisabled = 4,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 4,
+		CreateUser = 5,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 5,
+		CreateDate = 6,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 6,
+		UpdateUser = 7,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 7
+		UpdateDate = 8
 	}//End enum
 
 	#endregion ScreenColumn Enum

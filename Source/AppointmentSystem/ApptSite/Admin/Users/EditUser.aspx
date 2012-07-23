@@ -21,7 +21,7 @@
         onrowupdating="gridUser_RowUpdating" 
         onhtmlrowprepared="gridUser_HtmlRowPrepared" 
         onrowvalidating="gridUser_RowValidating" 
-        onrowinserted="gridUser_RowInserted" >
+        onrowinserted="gridUser_RowInserted" OnAfterPerformCallback="gridUser_AfterPerformCallback" >
         <Columns>
             <dx:GridViewDataColumn FieldName="Id" VisibleIndex="1" />
             <dx:GridViewDataColumn FieldName="Username" VisibleIndex="2" />

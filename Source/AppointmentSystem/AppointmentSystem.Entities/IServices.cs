@@ -25,9 +25,19 @@ namespace AppointmentSystem.Entities
 		System.String  Title  { get; set; }
 		
 		/// <summary>
+		/// ShortTitle : 
+		/// </summary>
+		System.String  ShortTitle  { get; set; }
+		
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		System.String  Note  { get; set; }
+		
+		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		System.Int32  PriorityIndex  { get; set; }
 		
 		/// <summary>
 		/// IsDisabled : 

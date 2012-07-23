@@ -17,6 +17,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
+				<asp:BoundField DataField="PriorityIndex" HeaderText="Priority Index" SortExpression="[PriorityIndex]"  />
 				<asp:BoundField DataField="ScreenCode" HeaderText="Screen Code" SortExpression="[ScreenCode]" ReadOnly="True" />
 				<asp:BoundField DataField="ScreenName" HeaderText="Screen Name" SortExpression="[ScreenName]"  />
 				<data:BoundRadioButtonField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]"  />

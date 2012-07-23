@@ -350,6 +350,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.ScreenName; }
 		}
         /// <summary>
+        /// Gets the PriorityIndex
+        /// </summary>
+        /// <value>The PriorityIndex.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.Int32 PriorityIndex
+		{
+			get { return _entity.PriorityIndex; }
+		}
+        /// <summary>
         /// Gets the IsDisabled
         /// </summary>
         /// <value>The IsDisabled.</value>

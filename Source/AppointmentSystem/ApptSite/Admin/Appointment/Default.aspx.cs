@@ -20,7 +20,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 {
     #region Variables
     // Contain list of floor with Json format
-    protected string StrFloors = string.Empty;
+    protected string ListServices = string.Empty;
 
     private const string ScreenCode = "Appointment";
     static string _message;
@@ -61,15 +61,16 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         try
         {
             int count;
-            var lst = DataRepository.UnitsProvider.GetPaged("IsDisabled = 'False'"
+            var lst = DataRepository.ServicesProvider.GetPaged("IsDisabled = 'False'"
                                                             , "PriorityIndex ASC", 0,
                                                             ServiceFacade.SettingsHelper.GetPagedLength, out count)
                 .Select(x => new
                                  {
                                      x.Id,
-                                     x.Title
+                                     x.Title,
+                                     x.ShortTitle
                                  });
-            StrFloors = JsonConvert.SerializeObject(lst);
+            ListServices = JsonConvert.SerializeObject(lst);
 
             rptFloor.DataSource = lst;
             rptFloor.DataBind();
@@ -209,6 +210,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         try
         {
             return SearchDoctor(HttpContext.Current.Request["q"], HttpContext.Current.Request["appointmentId"]
+                , HttpContext.Current.Request["serviceId"]
                 , HttpContext.Current.Request["fromTime"], HttpContext.Current.Request["toTime"]
                 , HttpContext.Current.Request["fromDate"], HttpContext.Current.Request["toDate"]);
         }
@@ -225,17 +227,35 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// </summary>
     /// <param name="keyword"> </param>
     /// <param name="appointmentId"> </param>
+    /// <param name="serviceId"> </param>
     /// <param name="startTime"></param>
     /// <param name="endTime"></param>
     /// <param name="startDate"></param>
     /// <param name="endDate"></param>
     /// <returns></returns>
-    private static string SearchDoctor(string keyword, string appointmentId, string startTime, string endTime, string startDate, string endDate)
+    private static string SearchDoctor(string keyword, string appointmentId, string serviceId
+        , string startTime, string endTime, string startDate, string endDate)
     {
-        string result = string.Empty;
-
         try
         {
+            keyword = keyword.ToLower().Trim();
+
+            #region Validation
+            // Validate appointment Id value
+            long lAppointmentId;
+            if (!Int64.TryParse(appointmentId, out lAppointmentId))
+            {
+                return string.Empty;
+            }
+
+            // Validate service Id value
+            int iServiceId;
+            if (!Int32.TryParse(serviceId, out iServiceId))
+            {
+                return string.Empty;
+            }
+            #endregion
+
             // Get start time and end time
             int intStartHour = Convert.ToInt32(startTime.Split(':')[0]);
             int intStartMinute = Convert.ToInt32(startTime.Split(':')[1]);
@@ -249,76 +269,100 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
             dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
 
-            var cmd = new SqlCommand { CommandText = "GetAvailableStaffsForAppointment", CommandType = CommandType.StoredProcedure };
-            cmd.Parameters.Add(new SqlParameter("@AppointmentId", appointmentId));
-            cmd.Parameters.Add(new SqlParameter("@Keyword", keyword));
-            cmd.Parameters.Add(new SqlParameter("@StartTime", dtStart));
-            cmd.Parameters.Add(new SqlParameter("@EndTime", dtEnd));
-            cmd.CommandTimeout = 0;
+            int count;
 
-            DataSet ds = DataRepository.Provider.ExecuteDataSet(cmd);
-            DataTable objTable = ds.Tables[0];
+            // Lay danh sach bac si da duoc dang ky roster co khoang thoi gian trung voi khoan thoi gian cua Appointment
+            var lstRoster =
+                DataRepository.RosterProvider.GetPaged(
+                    String.Format("N'{0}' >= StartTime AND N'{1}' <= EndTime AND IsDisabled = 'False'"
+                                  , dtStart.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                                  dtEnd.ToString("yyyy-MM-dd HH:mm:ss.000")), string.Empty, 0,
+                    ServiceFacade.SettingsHelper.GetPagedLength, out count);
+            DataRepository.RosterProvider.DeepLoad(lstRoster);
+            var lstDoctorRoster = lstRoster.Select(x => x.DoctorIdSource).Distinct().ToList();
 
-            if (objTable == null) goto StepResult;
+            // Lay danh sach bac si co appointment trong cung thoi diem
+            var lstAppointment =
+                DataRepository.AppointmentProvider.GetPaged(
+                    String.Format("((N'{0}' < StartTime AND N'{1}' > StartTime) OR (N'{0}' < EndTime AND N'{1}' > EndTime))"
+                                  + " AND IsDisabled = 'False' AND Id <> {2}"
+                                  , dtStart.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                                  dtEnd.ToString("yyyy-MM-dd HH:mm:ss.000"), appointmentId), string.Empty, 0,
+                    ServiceFacade.SettingsHelper.GetPagedLength, out count);
 
-            var lst = (from DataRow dr in objTable.Rows
-                       select new JDoctorToken()
-                       {
-                           id = dr["DoctorUserName"].ToString(),
-                           ShortName = dr["DoctorShortName"].ToString(),
-                           propertyToSearch = String.Format("Dr. {0}. {1}", dr["DoctorShortName"], String.Format("Specialty: {0}. ", dr["FuncTitle"]))
-                       }).ToList();
+            // Lay danh sach bac si bang keyword voi nhung bac si khong bi trung va co serviceId
+            var lstDoctor = lstDoctorRoster.FindAll(x =>
+                                                        {
+                                                            var firstOrDefault = x.DoctorServiceCollection.FirstOrDefault();
+                                                            return firstOrDefault != null && (((!string.IsNullOrEmpty(x.DisplayName) && x.DisplayName.ToLower().Contains(keyword))
+                                                                                                || (!string.IsNullOrEmpty(x.Firstname) && x.Firstname.ToLower().Contains(keyword))
+                                                                                                || (!string.IsNullOrEmpty(x.Lastname) && x.Lastname.ToLower().Contains(keyword))
+                                                                                                || string.IsNullOrEmpty(keyword))
+                                                                                               && firstOrDefault.ServiceId == iServiceId
+                                                                                               && !lstAppointment.Exists(y => y.DoctorId == x.Id));
+                                                        });
 
-            result = JsonConvert.SerializeObject(lst);
+            return JsonConvert.SerializeObject(lstDoctor.Select(x => new
+                                                                       {
+                                                                           id = x.Id,
+                                                                           x.DisplayName,
+                                                                           propertyToSearch = String.Format("{0}. {1}", x.Title, x.DisplayName)
+                                                                       }));
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            result = string.Empty;
+            return string.Empty;
         }
-    StepResult:
-        return result;
     }
     #endregion
 
     #region Room
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-    public static string SearchRoom()
-    {
-        try
-        {
-            return SearchRoom(HttpContext.Current.Request["q"], HttpContext.Current.Request["appointmentId"]
-                , HttpContext.Current.Request["doctorUserName"]
-                , HttpContext.Current.Request["fromTime"], HttpContext.Current.Request["toTime"]
-                , HttpContext.Current.Request["fromDate"], HttpContext.Current.Request["toDate"]);
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-        }
-
-        return string.Empty;
-    }
-
     /// <summary>
     /// Search room by condition
     /// </summary>
     /// <param name="keyword"> </param>
     /// <param name="appointmentId"></param>
-    /// <param name="doctorUserName"></param>
+    /// <param name="doctorId"></param>
     /// <param name="startTime"></param>
     /// <param name="endTime"></param>
     /// <param name="startDate"></param>
     /// <param name="endDate"></param>
     /// <returns></returns>
-    private static string SearchRoom(string keyword, string appointmentId, string doctorUserName
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetRoom(string appointmentId, string doctorId
         , string startTime, string endTime, string startDate, string endDate)
     {
-        string result = string.Empty;
-
         try
         {
+            #region Validation
+            // Validate appointment Id value
+            long lAppointmentId;
+            if (!Int64.TryParse(appointmentId, out lAppointmentId))
+            {
+                return WebCommon.BuildFailedResult("Appointment is invalid");
+            }
+            #endregion
+
+            // Get service base on doctorId
+            var doctorService = DataRepository.DoctorServiceProvider.GetByDoctorId(doctorId).Find(x => !x.IsDisabled);
+            // Validate available doctor
+            if (doctorService == null)
+            {
+                return WebCommon.BuildFailedResult("Doctor or service is not available to get list of available room.");
+            }
+            // Deepload to get doctor's info
+            DataRepository.DoctorServiceProvider.DeepLoad(doctorService);
+            // Validate available doctor
+            if (doctorService.DoctorIdSource.IsDisabled || doctorService.ServiceIdSource.IsDisabled)
+            {
+                return WebCommon.BuildFailedResult("Doctor or service is not available to get list of available room.");
+            }
+
+            // Set value for service Id
+            int iServiceId = doctorService.ServiceId;
+
             // Get start time and end time
             int intStartHour = Convert.ToInt32(startTime.Split(':')[0]);
             int intStartMinute = Convert.ToInt32(startTime.Split(':')[1]);
@@ -332,69 +376,55 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
             dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
 
-            var cmd = new SqlCommand
-            {
-                CommandText = "GetAvailableRoomsForAppointment",
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.Add(new SqlParameter("@AppointmentId", appointmentId));
-            cmd.Parameters.Add(new SqlParameter("@DoctorUserName", doctorUserName));
-            cmd.Parameters.Add(new SqlParameter("@StartTime", dtStart));
-            cmd.Parameters.Add(new SqlParameter("@EndTime", dtEnd));
-            cmd.Parameters.Add(new SqlParameter("@Keyword", keyword));
-            cmd.CommandTimeout = 0;
+            int count;
 
-            DataSet ds = DataRepository.Provider.ExecuteDataSet(cmd);
-            DataTable objTable = ds.Tables[0];
+            // Lay danh sach phong co appointment trong cung thoi diem
+            var lstAppointment =
+                DataRepository.AppointmentProvider.GetPaged(
+                    String.Format(
+                        "((N'{0}' < StartTime AND N'{1}' > StartTime) OR (N'{0}' < EndTime AND N'{1}' > EndTime))"
+                        + " AND IsDisabled = 'False' AND Id <> '{2}'"
+                        , dtStart.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                        dtEnd.ToString("yyyy-MM-dd HH:mm:ss.000"), appointmentId), string.Empty, 0,
+                    ServiceFacade.SettingsHelper.GetPagedLength, out count);
 
-            if (objTable == null) goto StepResult;
+            // Lay danh sach phong
+            var lstRoom =
+                DataRepository.RoomProvider.GetPaged(
+                    String.Format("ServicesId = {0} AND IsDisabled = 'False'", iServiceId), string.Empty, 0,
+                    ServiceFacade.SettingsHelper.GetPagedLength, out count);
+            DataRepository.RoomProvider.DeepLoad(lstRoom);
 
-            var lst = (from DataRow dr in objTable.Rows
-                       select new JRoomToken()
-                       {
-                           id = dr["Id"].ToString(),
-                           PriorityIndex = Convert.ToInt32(dr["PriorityIndex"].ToString()),
-                           propertyToSearch = dr["Title"].ToString()
-                       }).ToList();
-            lst.Sort((p1, p2) => p2.PriorityIndex.CompareTo(p1.PriorityIndex));
+            // Lay danh sach phong co the su dung
+            // Danh sach nay se tro sang bang DoctorRoom de lay Priority, neu bang nay khong chua du lieu thi lay so lon nhat, cai nay de sort
+            var lstAvailableRoom = lstRoom.FindAll(x => !lstAppointment.Exists(y => y.RoomId == x.Id))
+                // Phong dang free => Phong khong duoc ton tai trong Appointment
+                .Select(x =>
+                            {
+                                var firstOrDefault = x.DoctorRoomCollection.FirstOrDefault();
+                                return new
+                                           {
+                                               x.Id,
+                                               x.Title,
+                                               Priority =
+                                                   // Lay Priority neu no ton tai voi Doctor, neu khong thi lay mot so lon
+                                                   (firstOrDefault != null &&
+                                                    (string.IsNullOrEmpty(
+                                                        doctorId) ||
+                                                     firstOrDefault.DoctorId ==
+                                                     doctorId)
+                                                        ? firstOrDefault.
+                                                              Priority
+                                                        : ServiceFacade.
+                                                              SettingsHelper.
+                                                              GetPagedLength)
+                                           };
+                            })
+                .ToList();
 
-            result = JsonConvert.SerializeObject(lst);
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            result = string.Empty;
-        }
-    StepResult:
-        return result;
-    }
+            lstAvailableRoom.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));
 
-    /// <summary>
-    /// Get a room info
-    /// </summary>
-    /// <param name="roomId"></param>
-    /// <returns></returns>
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetRoom(string roomId)
-    {
-        try
-        {
-            Room obj = DataRepository.RoomProvider.GetById(Convert.ToInt32(roomId));
-            if (obj == null || obj.IsDisabled)
-            {
-                return WebCommon.BuildFailedResult("Cannot find room.");
-            }
-
-            return WebCommon.BuildSuccessfulResult(new List<object>
-                                                       {
-                                                           new
-                                                               {
-                                                                   id = obj.Id,
-                                                                   propertyToSearch = obj.Title
-                                                               }
-                                                       }
-                );
+            return WebCommon.BuildSuccessfulResult(lstAvailableRoom);
         }
         catch (Exception ex)
         {
@@ -581,29 +611,58 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     #region "Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string SaveEvent(string PatientId, string Note, string StartTime, string EndTime, string StartDate, string EndDate
-        , string DoctorUsername, string RoomId, string Status)
+    public static string NewAppointment(string patientId, string note, string startTime, string endTime, string startDate, string endDate
+        , string doctorId, string roomId, string status)
     {
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
+            #region Validate
+            patientId = patientId.Trim();
+            note = note.Trim();
+            startTime = startTime.Trim();
+            endTime = endTime.Trim();
+            startDate = startDate.Trim();
+            endDate = endDate.Trim();
+            doctorId = doctorId.Trim();
+            roomId = roomId.Trim();
+            status = status.Trim();
 
-            #region "Validate"
+            // Validate current user have any right to operate this action
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Create.Key, out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            // Check Status
+            int statusId;
+            if (!Int32.TryParse(status, out statusId))
+            {
+                return WebCommon.BuildFailedResult("You must choose status.");
+            }
+
+            // Check Doctor
+            if (string.IsNullOrEmpty(doctorId))
+            {
+                return WebCommon.BuildFailedResult("You must choose doctor.");
+            }
+
             // Check Patient
-            if (string.IsNullOrEmpty(PatientId))
+            if (string.IsNullOrEmpty(patientId))
             {
                 return WebCommon.BuildFailedResult("You must choose patient.");
             }
 
             // Get start time and end time
-            int intStartHour = Convert.ToInt32(StartTime.Split(':')[0]);
-            int intStartMinute = Convert.ToInt32(StartTime.Split(':')[1]);
-            int intEndHour = Convert.ToInt32(EndTime.Split(':')[0]);
-            int intEndMinute = Convert.ToInt32(EndTime.Split(':')[1]);
+            int intStartHour = Convert.ToInt32(startTime.Split(':')[0]);
+            int intStartMinute = Convert.ToInt32(startTime.Split(':')[1]);
+            int intEndHour = Convert.ToInt32(endTime.Split(':')[0]);
+            int intEndMinute = Convert.ToInt32(endTime.Split(':')[1]);
 
             // Get start date and end date
-            DateTime dtStart = Convert.ToDateTime(StartDate);
-            DateTime dtEnd = Convert.ToDateTime(EndDate);
+            DateTime dtStart = Convert.ToDateTime(startDate);
+            DateTime dtEnd = Convert.ToDateTime(endDate);
 
             dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
             dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
@@ -621,48 +680,33 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
             }
 
-            // Check Doctor
-            if (string.IsNullOrEmpty(DoctorUsername))
-            {
-                return WebCommon.BuildFailedResult("You must choose doctor.");
-            }
-
             // Check Room
-            if (string.IsNullOrEmpty(RoomId))
+            int iRoomId;
+            if (!Int32.TryParse(roomId, out iRoomId))
             {
                 return WebCommon.BuildFailedResult("You must choose room.");
             }
-
-            // Check Status
-            int statusId;
-            if (!Int32.TryParse(Status, out statusId))
-            {
-                return WebCommon.BuildFailedResult("You must choose status.");
-            }
             #endregion
-
-            string strPatientId = PatientId;
-            int roomId = Convert.ToInt32(RoomId);
 
             tm.BeginTransaction();
 
-            #region "Check infomation"
+            #region Check infomation
             // Check exists Patient
-            Patient objPatient = DataRepository.PatientProvider.GetById(strPatientId);
+            Patient objPatient = DataRepository.PatientProvider.GetById(patientId);
             if (objPatient == null || objPatient.IsDisabled)
             {
                 return WebCommon.BuildFailedResult("Patient is not exist.");
             }
 
             // Check exists Doctor
-            Users objDoctor = DataRepository.UsersProvider.GetByUsername(DoctorUsername);
+            Users objDoctor = DataRepository.UsersProvider.GetById(doctorId);
             if (objDoctor == null || objDoctor.IsDisabled)
             {
                 return WebCommon.BuildFailedResult("Doctor is not exist.");
             }
 
             // Check exists Room
-            Room objRoom = DataRepository.RoomProvider.GetById(roomId);
+            Room objRoom = DataRepository.RoomProvider.GetById(iRoomId);
             if (objRoom == null || objRoom.IsDisabled)
             {
                 tm.Rollback();
@@ -676,12 +720,27 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 tm.Rollback();
                 return WebCommon.BuildFailedResult("Status is not exist.");
             }
+
+            // Get service base on doctorId
+            var doctorService = DataRepository.DoctorServiceProvider.GetByDoctorId(doctorId).Find(x => !x.IsDisabled);
+            // Validate available doctor
+            if (doctorService == null)
+            {
+                return WebCommon.BuildFailedResult("Doctor or service is not available to get list of available room.");
+            }
+            // Deepload to get doctor's info
+            DataRepository.DoctorServiceProvider.DeepLoad(doctorService);
+            // Validate available doctor
+            if (doctorService.DoctorIdSource.IsDisabled || doctorService.ServiceIdSource.IsDisabled)
+            {
+                return WebCommon.BuildFailedResult("Doctor or service is not available to get list of available room.");
+            }
             #endregion
 
-            #region "Check Conflict"
+            #region Check Conflict
             int intCompareValue = 0;
             // Check conflict Patient
-            if (!CheckConflict("CustomerId", strPatientId, string.IsNullOrEmpty(objPatient.Title) ? "patient" : objPatient.Title + ".",
+            if (!CheckConflict("PatientId", patientId, string.IsNullOrEmpty(objPatient.Title) ? "patient" : objPatient.Title + ".",
                 String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName), dtStart, dtEnd, intCompareValue, ref _message))
             {
                 tm.Rollback();
@@ -689,14 +748,14 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Check conflict Doctor
-            if (!CheckConflict("DoctorUserName", DoctorUsername, "Dr.", objDoctor.DisplayName, dtStart, dtEnd, intCompareValue, ref _message))
+            if (!CheckConflict("DoctorId", doctorId, "Dr.", objDoctor.DisplayName, dtStart, dtEnd, intCompareValue, ref _message))
             {
                 tm.Rollback();
                 return WebCommon.BuildFailedResult(_message);
             }
 
             // Check conflict Room
-            if (!CheckConflict("RoomId", roomId.ToString(), "Room", objRoom.Title, dtStart, dtEnd, intCompareValue, ref _message))
+            if (!CheckConflict("RoomId", roomId, "Room", objRoom.Title, dtStart, dtEnd, intCompareValue, ref _message))
             {
                 tm.Rollback();
                 return WebCommon.BuildFailedResult(_message);
@@ -716,10 +775,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 newObj.Id = perfix + String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
             }
 
-            newObj.PatientId = strPatientId;
+            newObj.PatientId = patientId;
             newObj.DoctorId = objDoctor.Id;
-            newObj.RoomId = roomId;
-            newObj.Note = Note;
+            newObj.RoomId = iRoomId;
+            newObj.ServicesId = doctorService.ServiceId;
+            newObj.Note = note;
             newObj.StatusId = statusId;
             newObj.StartTime = dtStart;
             newObj.EndTime = dtEnd;
@@ -730,15 +790,37 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             #endregion
 
             #region "Send Appointment"
-            string strSubject = String.Format("New Appointment: {0} - {1}. {2} {3}", newObj.ServicesIdSource.Title
-            , newObj.PatientIdSource.Title, newObj.PatientIdSource.FirstName, newObj.PatientIdSource.LastName);
+            DataRepository.AppointmentProvider.DeepLoad(newObj);
+            string strSubject = String.Format("New Appointment: {0}{1}{2}{3}",
+                                              string.IsNullOrEmpty(newObj.ServicesIdSource.Title)
+                                                  ? string.Empty
+                                                  : newObj.ServicesIdSource.Title + " - "
+                                              ,
+                                              string.IsNullOrEmpty(newObj.PatientIdSource.Title)
+                                                  ? string.Empty
+                                                  : newObj.PatientIdSource.Title + ". ",
+                                              string.IsNullOrEmpty(newObj.PatientIdSource.FirstName)
+                                                  ? string.Empty
+                                                  : newObj.PatientIdSource.FirstName + " ",
+                                              string.IsNullOrEmpty(newObj.PatientIdSource.LastName)
+                                                  ? string.Empty
+                                                  : newObj.PatientIdSource.LastName);
             string strBody = String.Format("You have a new appointment");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
-            string strLocation = String.Format("Room {0}", newObj.RoomIdSource.Title);
+            string strLocation = String.Format("Room {0}", string.IsNullOrEmpty(newObj.RoomIdSource.Title)
+                                                  ? string.Empty
+                                                  : newObj.RoomIdSource.Title);
             string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}. {2} {3}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, newObj.PatientIdSource.Title
-                , newObj.PatientIdSource.FirstName, newObj.PatientIdSource.LastName);
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, string.IsNullOrEmpty(newObj.PatientIdSource.Title)
+                                                  ? string.Empty
+                                                  : newObj.PatientIdSource.Title + ". ",
+                                              string.IsNullOrEmpty(newObj.PatientIdSource.FirstName)
+                                                  ? string.Empty
+                                                  : newObj.PatientIdSource.FirstName + " ",
+                                              string.IsNullOrEmpty(newObj.PatientIdSource.LastName)
+                                                  ? string.Empty
+                                                  : newObj.PatientIdSource.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(newObj.StartTime), Convert.ToDateTime(newObj.EndTime));
             objMail.AddMailAddress(newObj.DoctorIdSource.Email, newObj.DoctorIdSource.DisplayName);
@@ -798,7 +880,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             {
                 return WebCommon.BuildFailedResult("There is no appointment to change or appointment is expired.");
             }
-            
+
             // Load relational info
             DataRepository.AppointmentProvider.DeepLoad(appointment);
 
@@ -1036,7 +1118,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             #region "Check Conflict"
             int intCompareValue = 1;
             // Check conflict Patient
-            if (!CheckConflict("CustomerId", strPatientId, "",
+            if (!CheckConflict("PatientId", strPatientId, "",
                 String.Format("{2}. {0} {1}", objPatient.FirstName, objPatient.LastName, objPatient.Title)
                 , dtStart, dtEnd, intCompareValue, ref _message))
             {
@@ -1289,90 +1371,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         return result;
     }
 
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string CreateSimplePatient(string FirstName, string LastName, string CellPhone, string Address, string IsFemale)
-    {
-        try
-        {
-            #region "Validate"
-            if (string.IsNullOrEmpty(FirstName))
-            {
-                return WebCommon.BuildFailedResult("Please input First name.");
-            }
-            if (string.IsNullOrEmpty(LastName))
-            {
-                return WebCommon.BuildFailedResult("Please input Last name.");
-            }
-            #endregion
-
-            #region "Insert"
-            var newObj = new Patient();
-            bool blIsFemale = Convert.ToBoolean(IsFemale);
-            string perfix = "C" + ServiceFacade.SettingsHelper.PatientPrefix + DateTime.Now.ToString("yyMMdd");
-            int count;
-            TList<Patient> objPo = DataRepository.PatientProvider.GetPaged("Id like '" + perfix + "' + '%'", "Id desc", 0, 1, out count);
-            if (count == 0)
-                newObj.Id = perfix + "001";
-            else
-            {
-                newObj.Id = perfix + String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
-            }
-
-            newObj.FirstName = FirstName;
-            newObj.LastName = LastName;
-            newObj.CellPhone = CellPhone;
-            newObj.Address = Address;
-            newObj.IsFemale = blIsFemale;
-            newObj.CreateUser = Username;
-            newObj.UpdateUser = Username;
-
-            DataRepository.PatientProvider.Insert(newObj);
-
-            var patient = new
-            {
-                id = newObj.Id,
-                propertyToSearch = String.Format("{0}{1} {2}. {3}{4}{5}{6}{7}"
-                                                 ,
-                                                 string.IsNullOrEmpty(newObj.Title)
-                                                     ? string.Empty
-                                                     : String.Format("{0}. ", newObj.Title)
-                                                 , newObj.FirstName, newObj.LastName
-                                                 ,
-                                                 newObj.Birthdate == null
-                                                     ? string.Empty
-                                                     : String.Format("Birthday: {0}. ",
-                                                                     ((DateTime)newObj.Birthdate).ToString
-                                                                         ("dd-MM-yyyy"))
-                                                 ,
-                                                 string.IsNullOrEmpty(newObj.HomePhone)
-                                                     ? string.Empty
-                                                     : String.Format("Home Phone: {0}. ", newObj.HomePhone)
-                                                 ,
-                                                 string.IsNullOrEmpty(newObj.CellPhone)
-                                                     ? string.Empty
-                                                     : String.Format("Cell Phone: {0}. ", newObj.CellPhone)
-                                                 ,
-                                                 string.IsNullOrEmpty(newObj.WorkPhone)
-                                                     ? string.Empty
-                                                     : String.Format("Work Phone: {0}. ", newObj.WorkPhone)
-                                                 ,
-                                                 string.IsNullOrEmpty(newObj.Address)
-                                                     ? string.Empty
-                                                     : String.Format("Address: {0}. ", newObj.Address)
-                    )
-            };
-            #endregion
-
-            return WebCommon.BuildSuccessfulResult(new List<object> { patient });
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return WebCommon.BuildFailedResult("Cannot create new patient. Please try again.");
-        }
-    }
-
     /// <summary>
     /// Get Patient's info by AppointmentId
     /// </summary>
@@ -1439,21 +1437,34 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <summary>
     /// Get Room list by floor
     /// </summary>
-    /// <param name="floorId"></param>
+    /// <param name="serviceId"></param>
     /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetRoomByFloor(string floorId)
+    public static string GetDoctorList(string serviceId)
     {
         try
         {
-            var lstRoom = DataRepository.AppointmentGroupProvider.GetByUnitId(Convert.ToInt32(floorId)).FindAll(x => !x.IsDisabled);
-            return WebCommon.BuildSuccessfulResult(lstRoom.Select(x => new { key = x.Id, label = x.Title }));
+            // Validate serviceId
+            int iServiceId;
+            if (!Int32.TryParse(serviceId, out iServiceId))
+            {
+                return WebCommon.BuildFailedResult("Service is invalid.");
+            }
+
+            var lstDoctorService = DataRepository.DoctorServiceProvider.GetByServiceId(iServiceId).FindAll(x => !x.IsDisabled);
+            DataRepository.DoctorServiceProvider.DeepLoad(lstDoctorService);
+
+            // Return a list with condition is Doctor and Service must be available
+            return
+                WebCommon.BuildSuccessfulResult(
+                    lstDoctorService.FindAll(x => !x.DoctorIdSource.IsDisabled && !x.ServiceIdSource.IsDisabled).Select(
+                        x => new { key = x.DoctorIdSource.Id, label = x.DoctorIdSource.DisplayName }));
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return WebCommon.BuildFailedResult("Cannot load room list. Please try again.");
+            return WebCommon.BuildFailedResult("Cannot load doctor list. Please try again.");
         }
     }
     #endregion
@@ -1500,6 +1511,109 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     }
     #endregion
 
-    #region Tab and Column in scheduler
+    #region Patient
+    /// <summary>
+    /// Create patient with simple information
+    /// </summary>
+    /// <param name="firstname"></param>
+    /// <param name="lastname"></param>
+    /// <param name="cellPhone"></param>
+    /// <param name="address"></param>
+    /// <param name="isFemale"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string CreateSimplePatient(string firstname, string lastname, string cellPhone, string address, string isFemale)
+    {
+        try
+        {
+            #region Validate
+            // Validate empty value for Firstname field
+            if (string.IsNullOrEmpty(firstname))
+            {
+                return WebCommon.BuildFailedResult("Please input Firstname.");
+            }
+
+            // Validate empty value for Lastname field
+            if (string.IsNullOrEmpty(lastname))
+            {
+                return WebCommon.BuildFailedResult("Please input Lastname.");
+            }
+
+            // Validate value of IsFemale
+            bool blIsFemale;
+            if (!Boolean.TryParse(isFemale, out blIsFemale))
+            {
+                return WebCommon.BuildFailedResult("Value of Sex field is invalid.");
+            }
+            #endregion
+
+            #region "Insert"
+            var newObj = new Patient();
+            string perfix = ServiceFacade.SettingsHelper.PatientPrefix + DateTime.Now.ToString("yyMMdd");
+            int count;
+            TList<Patient> objPo = DataRepository.PatientProvider.GetPaged("Id like '" + perfix + "' + '%'", "Id desc", 0, 1, out count);
+            if (count == 0)
+                newObj.Id = perfix + "001";
+            else
+            {
+                newObj.Id = perfix + String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
+            }
+
+            newObj.FirstName = firstname;
+            newObj.LastName = lastname;
+            newObj.CellPhone = cellPhone;
+            newObj.Address = address;
+            newObj.IsFemale = blIsFemale;
+            newObj.CreateUser = Username;
+            newObj.UpdateUser = Username;
+
+            DataRepository.PatientProvider.Insert(newObj);
+
+            var patient = new
+            {
+                newObj.FirstName,
+                newObj.LastName,
+                id = newObj.Id,
+                propertyToSearch = String.Format("{0}{1} {2}. {3}{4}{5}{6}{7}"
+                                                 ,
+                                                 string.IsNullOrEmpty(newObj.Title)
+                                                     ? string.Empty
+                                                     : String.Format("{0}. ", newObj.Title)
+                                                 , newObj.FirstName, newObj.LastName
+                                                 ,
+                                                 newObj.Birthdate == null
+                                                     ? string.Empty
+                                                     : String.Format("Birthday: {0}. ",
+                                                                     ((DateTime)newObj.Birthdate).ToString
+                                                                         ("dd-MM-yyyy"))
+                                                 ,
+                                                 string.IsNullOrEmpty(newObj.HomePhone)
+                                                     ? string.Empty
+                                                     : String.Format("Home Phone: {0}. ", newObj.HomePhone)
+                                                 ,
+                                                 string.IsNullOrEmpty(newObj.CellPhone)
+                                                     ? string.Empty
+                                                     : String.Format("Cell Phone: {0}. ", newObj.CellPhone)
+                                                 ,
+                                                 string.IsNullOrEmpty(newObj.WorkPhone)
+                                                     ? string.Empty
+                                                     : String.Format("Work Phone: {0}. ", newObj.WorkPhone)
+                                                 ,
+                                                 string.IsNullOrEmpty(newObj.Address)
+                                                     ? string.Empty
+                                                     : String.Format("Address: {0}. ", newObj.Address)
+                    )
+            };
+            #endregion
+
+            return WebCommon.BuildSuccessfulResult(new List<object> { patient });
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult("Cannot create new patient. Please try again.");
+        }
+    }
     #endregion
 }
