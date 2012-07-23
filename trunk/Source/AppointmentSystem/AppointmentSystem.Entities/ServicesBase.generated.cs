@@ -82,20 +82,25 @@ namespace AppointmentSystem.Entities
 		/// Creates a new <see cref="ServicesBase"/> instance.
 		///</summary>
 		///<param name="_title"></param>
+		///<param name="_shortTitle"></param>
 		///<param name="_note"></param>
+		///<param name="_priorityIndex"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public ServicesBase(System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public ServicesBase(System.String _title, System.String _shortTitle, System.String _note, 
+			System.Int32 _priorityIndex, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new ServicesEntityData();
 			this.backupData = null;
 
 			this.Title = _title;
+			this.ShortTitle = _shortTitle;
 			this.Note = _note;
+			this.PriorityIndex = _priorityIndex;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -107,18 +112,23 @@ namespace AppointmentSystem.Entities
 		/// A simple factory method to create a new <see cref="Services"/> instance.
 		///</summary>
 		///<param name="_title"></param>
+		///<param name="_shortTitle"></param>
 		///<param name="_note"></param>
+		///<param name="_priorityIndex"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Services CreateServices(System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public static Services CreateServices(System.String _title, System.String _shortTitle, System.String _note, 
+			System.Int32 _priorityIndex, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			Services newServices = new Services();
 			newServices.Title = _title;
+			newServices.ShortTitle = _shortTitle;
 			newServices.Note = _note;
+			newServices.PriorityIndex = _priorityIndex;
 			newServices.IsDisabled = _isDisabled;
 			newServices.CreateUser = _createUser;
 			newServices.CreateDate = _createDate;
@@ -204,6 +214,41 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or sets the ShortTitle property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 20)]
+		public virtual System.String ShortTitle
+		{
+			get
+			{
+				return this.entityData.ShortTitle; 
+			}
+			
+			set
+			{
+				if (this.entityData.ShortTitle == value)
+					return;
+					
+				OnColumnChanging(ServicesColumn.ShortTitle, this.entityData.ShortTitle);
+				this.entityData.ShortTitle = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(ServicesColumn.ShortTitle, this.entityData.ShortTitle);
+				OnPropertyChanged("ShortTitle");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or sets the Note property. 
 		///		
 		/// </summary>
@@ -235,6 +280,41 @@ namespace AppointmentSystem.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(ServicesColumn.Note, this.entityData.Note);
 				OnPropertyChanged("Note");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the PriorityIndex property. 
+		///		
+		/// </summary>
+		/// <value>This type is int.</value>
+		/// <remarks>
+		/// This property can not be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, false)]
+		public virtual System.Int32 PriorityIndex
+		{
+			get
+			{
+				return this.entityData.PriorityIndex; 
+			}
+			
+			set
+			{
+				if (this.entityData.PriorityIndex == value)
+					return;
+					
+				OnColumnChanging(ServicesColumn.PriorityIndex, this.entityData.PriorityIndex);
+				this.entityData.PriorityIndex = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(ServicesColumn.PriorityIndex, this.entityData.PriorityIndex);
+				OnPropertyChanged("PriorityIndex");
 			}
 		}
 		
@@ -468,6 +548,8 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("ShortTitle", "Short Title", 20));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
@@ -494,7 +576,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Title", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Title", "ShortTitle", "Note", "PriorityIndex", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -644,7 +726,9 @@ namespace AppointmentSystem.Entities
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
 				copy.Title = this.Title;
+				copy.ShortTitle = this.ShortTitle;
 				copy.Note = this.Note;
+				copy.PriorityIndex = this.PriorityIndex;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
@@ -790,8 +874,12 @@ namespace AppointmentSystem.Entities
 					return entityData.Id != _originalData.Id;
 					case ServicesColumn.Title:
 					return entityData.Title != _originalData.Title;
+					case ServicesColumn.ShortTitle:
+					return entityData.ShortTitle != _originalData.ShortTitle;
 					case ServicesColumn.Note:
 					return entityData.Note != _originalData.Note;
+					case ServicesColumn.PriorityIndex:
+					return entityData.PriorityIndex != _originalData.PriorityIndex;
 					case ServicesColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case ServicesColumn.CreateUser:
@@ -831,7 +919,9 @@ namespace AppointmentSystem.Entities
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.Title != _originalData.Title;
+			result = result || entityData.ShortTitle != _originalData.ShortTitle;
 			result = result || entityData.Note != _originalData.Note;
+			result = result || entityData.PriorityIndex != _originalData.PriorityIndex;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -848,7 +938,9 @@ namespace AppointmentSystem.Entities
 			if (_originalData != null)
 				return CreateServices(
 				_originalData.Title,
+				_originalData.ShortTitle,
 				_originalData.Note,
+				_originalData.PriorityIndex,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -885,7 +977,9 @@ namespace AppointmentSystem.Entities
         {
 			return this.Id.GetHashCode() ^ 
 					((this.Title == null) ? string.Empty : this.Title.ToString()).GetHashCode() ^ 
+					((this.ShortTitle == null) ? string.Empty : this.ShortTitle.ToString()).GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
+					this.PriorityIndex.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
@@ -934,6 +1028,15 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
+			if ( Object1.ShortTitle != null && Object2.ShortTitle != null )
+			{
+				if (Object1.ShortTitle != Object2.ShortTitle)
+					equal = false;
+			}
+			else if (Object1.ShortTitle == null ^ Object2.ShortTitle == null )
+			{
+				equal = false;
+			}
 			if ( Object1.Note != null && Object2.Note != null )
 			{
 				if (Object1.Note != Object2.Note)
@@ -943,6 +1046,8 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
+			if (Object1.PriorityIndex != Object2.PriorityIndex)
+				equal = false;
 			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
 			if ( Object1.CreateUser != null && Object2.CreateUser != null )
@@ -1023,8 +1128,20 @@ namespace AppointmentSystem.Entities
             		                 
             	
             	
+            	case ServicesColumn.ShortTitle:
+            		return this.ShortTitle.CompareTo(rhs.ShortTitle);
+            		
+            		                 
+            	
+            	
             	case ServicesColumn.Note:
             		return this.Note.CompareTo(rhs.Note);
+            		
+            		                 
+            	
+            	
+            	case ServicesColumn.PriorityIndex:
+            		return this.PriorityIndex.CompareTo(rhs.PriorityIndex);
             		
             		                 
             	
@@ -1191,10 +1308,12 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{9}{8}- Id: {0}{8}- Title: {1}{8}- Note: {2}{8}- IsDisabled: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
+				"{11}{10}- Id: {0}{10}- Title: {1}{10}- ShortTitle: {2}{10}- Note: {3}{10}- PriorityIndex: {4}{10}- IsDisabled: {5}{10}- CreateUser: {6}{10}- CreateDate: {7}{10}- UpdateUser: {8}{10}- UpdateDate: {9}{10}{12}", 
 				this.Id,
 				(this.Title == null) ? string.Empty : this.Title.ToString(),
+				(this.ShortTitle == null) ? string.Empty : this.ShortTitle.ToString(),
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
+				this.PriorityIndex,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
@@ -1240,9 +1359,19 @@ namespace AppointmentSystem.Entities
 		public System.String		  Title = null;
 		
 		/// <summary>
+		/// ShortTitle : 
+		/// </summary>
+		public System.String		  ShortTitle = null;
+		
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		public System.String		  Note = null;
+		
+		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		public System.Int32		  PriorityIndex = (int)1;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1367,7 +1496,9 @@ namespace AppointmentSystem.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.Title = this.Title;
+			_tmp.ShortTitle = this.ShortTitle;
 			_tmp.Note = this.Note;
+			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1407,7 +1538,9 @@ namespace AppointmentSystem.Entities
 			_tmp.Id = this.Id;
 			
 			_tmp.Title = this.Title;
+			_tmp.ShortTitle = this.ShortTitle;
 			_tmp.Note = this.Note;
+			_tmp.PriorityIndex = this.PriorityIndex;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1803,41 +1936,53 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
 		Title = 2,
 		/// <summary>
+		/// ShortTitle : 
+		/// </summary>
+		[EnumTextValue("ShortTitle")]
+		[ColumnEnum("ShortTitle", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
+		ShortTitle = 3,
+		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 3,
+		Note = 4,
+		/// <summary>
+		/// PriorityIndex : 
+		/// </summary>
+		[EnumTextValue("PriorityIndex")]
+		[ColumnEnum("PriorityIndex", typeof(System.Int32), System.Data.DbType.Int32, false, false, false)]
+		PriorityIndex = 5,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 4,
+		IsDisabled = 6,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 5,
+		CreateUser = 7,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 6,
+		CreateDate = 8,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 7,
+		UpdateUser = 9,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 8
+		UpdateDate = 10
 	}//End enum
 
 	#endregion ServicesColumn Enum

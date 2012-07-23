@@ -177,7 +177,9 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ShortTitle", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@PriorityIndex", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, DBNull.Value);
@@ -209,10 +211,22 @@ namespace AppointmentSystem.Data.SqlClient
 						clause.Trim().Remove(0,5).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
+				if (clause.Trim().StartsWith("shorttitle ") || clause.Trim().StartsWith("shorttitle="))
+				{
+					database.SetParameterValue(commandWrapper, "@ShortTitle", 
+						clause.Trim().Remove(0,10).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
 				if (clause.Trim().StartsWith("note ") || clause.Trim().StartsWith("note="))
 				{
 					database.SetParameterValue(commandWrapper, "@Note", 
 						clause.Trim().Remove(0,4).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("priorityindex ") || clause.Trim().StartsWith("priorityindex="))
+				{
+					database.SetParameterValue(commandWrapper, "@PriorityIndex", 
+						clause.Trim().Remove(0,13).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("isdisabled ") || clause.Trim().StartsWith("isdisabled="))
@@ -634,22 +648,28 @@ namespace AppointmentSystem.Data.SqlClient
 			col0.AllowDBNull = false;		
 			DataColumn col1 = dataTable.Columns.Add("Title", typeof(System.String));
 			col1.AllowDBNull = true;		
-			DataColumn col2 = dataTable.Columns.Add("Note", typeof(System.String));
+			DataColumn col2 = dataTable.Columns.Add("ShortTitle", typeof(System.String));
 			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col3.AllowDBNull = false;		
-			DataColumn col4 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			DataColumn col3 = dataTable.Columns.Add("Note", typeof(System.String));
+			col3.AllowDBNull = true;		
+			DataColumn col4 = dataTable.Columns.Add("PriorityIndex", typeof(System.Int32));
+			col4.AllowDBNull = false;		
+			DataColumn col5 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
 			col5.AllowDBNull = false;		
-			DataColumn col6 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			DataColumn col6 = dataTable.Columns.Add("CreateUser", typeof(System.String));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			DataColumn col7 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
 			col7.AllowDBNull = false;		
+			DataColumn col8 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col8.AllowDBNull = true;		
+			DataColumn col9 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col9.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("Title", "Title");
+			bulkCopy.ColumnMappings.Add("ShortTitle", "ShortTitle");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
+			bulkCopy.ColumnMappings.Add("PriorityIndex", "PriorityIndex");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
 			bulkCopy.ColumnMappings.Add("CreateDate", "CreateDate");
@@ -669,7 +689,13 @@ namespace AppointmentSystem.Data.SqlClient
 					row["Title"] = entity.Title;
 							
 				
+					row["ShortTitle"] = entity.ShortTitle;
+							
+				
 					row["Note"] = entity.Note;
+							
+				
+					row["PriorityIndex"] = entity.PriorityIndex;
 							
 				
 					row["IsDisabled"] = entity.IsDisabled;
@@ -723,7 +749,9 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int32, 4);
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
+			database.AddInParameter(commandWrapper, "@ShortTitle", DbType.String, entity.ShortTitle );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
+			database.AddInParameter(commandWrapper, "@PriorityIndex", DbType.Int32, entity.PriorityIndex );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );
@@ -779,7 +807,9 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int32, entity.Id );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
+			database.AddInParameter(commandWrapper, "@ShortTitle", DbType.String, entity.ShortTitle );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
+			database.AddInParameter(commandWrapper, "@PriorityIndex", DbType.Int32, entity.PriorityIndex );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );

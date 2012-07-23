@@ -350,6 +350,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Title; }
 		}
         /// <summary>
+        /// Gets the ShortTitle
+        /// </summary>
+        /// <value>The ShortTitle.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String ShortTitle
+		{
+			get { return _entity.ShortTitle; }
+		}
+        /// <summary>
         /// Gets the Note
         /// </summary>
         /// <value>The Note.</value>
@@ -357,6 +366,15 @@ namespace AppointmentSystem.Web.UI
 		public System.String Note
 		{
 			get { return _entity.Note; }
+		}
+        /// <summary>
+        /// Gets the PriorityIndex
+        /// </summary>
+        /// <value>The PriorityIndex.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.Int32 PriorityIndex
+		{
+			get { return _entity.PriorityIndex; }
 		}
         /// <summary>
         /// Gets the IsDisabled

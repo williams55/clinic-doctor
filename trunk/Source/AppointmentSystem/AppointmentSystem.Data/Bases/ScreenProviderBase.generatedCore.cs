@@ -230,6 +230,7 @@ namespace AppointmentSystem.Data.Bases
 					c.ScreenCode = (System.String)reader[((int)ScreenColumn.ScreenCode - 1)];
 					c.OriginalScreenCode = c.ScreenCode;
 					c.ScreenName = (reader.IsDBNull(((int)ScreenColumn.ScreenName - 1)))?null:(System.String)reader[((int)ScreenColumn.ScreenName - 1)];
+					c.PriorityIndex = (System.Int32)reader[((int)ScreenColumn.PriorityIndex - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)ScreenColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)ScreenColumn.CreateUser - 1)))?null:(System.String)reader[((int)ScreenColumn.CreateUser - 1)];
 					c.CreateDate = (System.DateTime)reader[((int)ScreenColumn.CreateDate - 1)];
@@ -255,6 +256,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.ScreenCode = (System.String)reader[((int)ScreenColumn.ScreenCode - 1)];
 			entity.OriginalScreenCode = (System.String)reader["ScreenCode"];
 			entity.ScreenName = (reader.IsDBNull(((int)ScreenColumn.ScreenName - 1)))?null:(System.String)reader[((int)ScreenColumn.ScreenName - 1)];
+			entity.PriorityIndex = (System.Int32)reader[((int)ScreenColumn.PriorityIndex - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)ScreenColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)ScreenColumn.CreateUser - 1)))?null:(System.String)reader[((int)ScreenColumn.CreateUser - 1)];
 			entity.CreateDate = (System.DateTime)reader[((int)ScreenColumn.CreateDate - 1)];
@@ -275,6 +277,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.ScreenCode = (System.String)dataRow["ScreenCode"];
 			entity.OriginalScreenCode = (System.String)dataRow["ScreenCode"];
 			entity.ScreenName = Convert.IsDBNull(dataRow["ScreenName"]) ? null : (System.String)dataRow["ScreenName"];
+			entity.PriorityIndex = (System.Int32)dataRow["PriorityIndex"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
 			entity.CreateDate = (System.DateTime)dataRow["CreateDate"];

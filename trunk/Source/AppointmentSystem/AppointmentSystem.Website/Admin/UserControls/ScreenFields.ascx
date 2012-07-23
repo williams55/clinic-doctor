@@ -4,6 +4,12 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataPriorityIndex" runat="server" Text="Priority Index:" AssociatedControlID="dataPriorityIndex" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataPriorityIndex" Text='<%# Bind("PriorityIndex") %>'></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataPriorityIndex" runat="server" Display="Dynamic" ControlToValidate="dataPriorityIndex" ErrorMessage="Required"></asp:RequiredFieldValidator><asp:RangeValidator ID="RangeVal_dataPriorityIndex" runat="server" Display="Dynamic" ControlToValidate="dataPriorityIndex" ErrorMessage="Invalid value" MaximumValue="2147483647" MinimumValue="-2147483648" Type="Integer"></asp:RangeValidator>
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataScreenCode" runat="server" Text="Screen Code:" AssociatedControlID="dataScreenCode" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataScreenCode" Text='<%# Bind("ScreenCode") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataScreenCode" runat="server" Display="Dynamic" ControlToValidate="dataScreenCode" ErrorMessage="Required"></asp:RequiredFieldValidator>

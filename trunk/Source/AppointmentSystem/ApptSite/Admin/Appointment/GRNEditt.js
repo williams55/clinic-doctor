@@ -28,11 +28,11 @@ function initSchedule(weekday) {
 
     var arrAjax = [];
     $.each(floors, function(i, item) {
-        scheduler.locale.labels[item.Id + "_tab"] = item.Title;
+        scheduler.locale.labels[item.Id + "_tab"] = item.ShortTitle;
         arrAjax.push($.ajax({
             type: "POST",
-            url: "Default.aspx/GetRoomByFloor",
-            data: "{floorId: '" + item.Id + "'}",
+            url: "Default.aspx/GetDoctorList",
+            data: "{serviceId: '" + item.Id + "'}",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function(response) {
@@ -95,17 +95,37 @@ function EventChanged(eventId, objEvent) {
 }
 
 scheduler.showLightbox = function(id) {
-    // Clear all value
-    $("#hdId").val("");
-    $("#tdTitle").text("New appointment");
-    $("#txtNote").val("");
-    $("#txtPatient").tokenInput("clear");
-    $("#txtDoctor").tokenInput("clear");
-    $("#txtRoom").tokenInput("clear");
-
     // Get current appointmentId
     var ev = scheduler.getEvent(id);
     CurrentEventId = id;
+
+    // Clear all value
+    $("#hdId").val("");
+    $("#txtNote").val("");
+    $("#lblDoctor").val("");
+    $("#txtPatient").tokenInput("clear");
+
+    // Get doctor's info
+    $("#hdfDoctor").val(ev.section_id);
+    $.each(scheduler._props[scheduler._mode].options, function(i, item) {
+        // Get name of doctor by key
+        if (item.key == ev.section_id) {
+            $("#lblDoctor").html("Dr. " + item.label);
+            return;
+        }
+    });
+
+    // Set room, do not get info
+    SetTime(ev);
+    // Set init value
+    $("#txtFromDate").datepicker("setDate", new Date(ev.start_date.getFullYear(), ev.start_date.getMonth(), ev.start_date.getDate()));
+    $("#txtToDate").datepicker("setDate", new Date(ev.end_date.getFullYear(), ev.end_date.getMonth(), ev.end_date.getDate()));
+
+    $("#hdId").val(id);
+
+    // Get available room list
+    GetRoom();
+
     if (ev.start_date < new Date()) {
         if (ev.isnew == "false") {
             alert("You cannot change a passed appointment.");
@@ -116,40 +136,31 @@ scheduler.showLightbox = function(id) {
         return false;
     }
 
-    // Set room, do not get info
-    SetTime(ev);
-    // Set init value
-    $("#txtFromDate").datepicker("setDate", new Date(ev.start_date.getFullYear(), ev.start_date.getMonth(), ev.start_date.getDate()));
-    $("#txtToDate").datepicker("setDate", new Date(ev.end_date.getFullYear(), ev.end_date.getMonth(), ev.end_date.getDate()));
-
-    $("#hdId").val(id);
     // Load data
     if (ev.isnew == false) {
         // Update case, get info from server
-        $("#tdTitle").text("Edit Appointment");
-
-        $("#RosterForm").dialog({
-            autoOpen: false,
-            height: 300,
-            width: 550,
-            modal: true,
-            zIndex: $.maxZIndex() + 1,
-            resizable: false,
-            buttons: {
-                Delete: function() {
-                    DeleteRoster(id);
-                },
-                Cancel: function() {
-                    $(this).dialog("close");
-                },
-                Save: function() {
-                    UpdateRoster();
-                }
-            },
-            close: function() {
-                CancelRoster();
-            }
-        });
+//        $("#RosterForm").dialog({
+//            autoOpen: false,
+//            height: 320,
+//            width: 550,
+//            modal: true,
+//            zIndex: $.maxZIndex() + 1,
+//            resizable: false,
+//            buttons: {
+//                Delete: function() {
+//                    DeleteRoster(id);
+//                },
+//                Cancel: function() {
+//                    $(this).dialog("close");
+//                },
+//                Save: function() {
+//                    UpdateRoster();
+//                }
+//            },
+//            close: function() {
+//                CancelAppointment();
+//            }
+//        });
 
         //        requestdata = JSON.stringify({ appointmentId: id });
         //        arrAjax.push($.ajax({
@@ -183,7 +194,7 @@ scheduler.showLightbox = function(id) {
         // New mode
         $("#RosterForm").dialog({
             autoOpen: false,
-            height: 350,
+            height: 320,
             width: 550,
             modal: true,
             zIndex: $.maxZIndex() + 1,
@@ -193,37 +204,13 @@ scheduler.showLightbox = function(id) {
                     $(this).dialog("close");
                 },
                 Save: function() {
-                    NewRoster();
+                    NewAppointment();
                 }
             },
             close: function() {
-                CancelRoster();
+                CancelAppointment();
             }
         });
-        //        // Get room id then call server to get room info
-        //        if (ev.section_id) {
-        //            requestdata = JSON.stringify({ roomId: ev.section_id });
-        //            arrAjax.push($.ajax({
-        //                type: "POST",
-        //                url: "Default.aspx/GetRoom",
-        //                data: requestdata,
-        //                dataType: "json",
-        //                contentType: "application/json; charset=utf-8",
-        //                success: function(response) {
-        //                    var obj = JSON.parse(response.d);
-        //                    if (obj.result == "true") {
-        //                        $("#txtRoom").tokenInput("add", obj.data);
-        //                    } else {
-        //                        alert(obj.message);
-        //                    }
-        //                },
-        //                fail: function() {
-        //                    alert("Unknow error!");
-        //                },
-        //                complete: function() {
-        //                }
-        //            }));
-        //        }
     }
 
     $("#RosterForm").dialog("open");
@@ -235,34 +222,11 @@ scheduler.showLightbox = function(id) {
 /****************************Scheduler - End******************************/
 
 /****************************Form - Start******************************/
-function buildURIDoctor() {
-    return 'Default.aspx/SearchDoctor?fromDate=' + $("#txtFromDate").val()
-                        + '&toDate=' + $("#txtToDate").val()
-                        + '&fromTime=' + $("#cboFromHour").val()
-                        + '&toTime=' + $("#cboToHour").val()
-                        + '&appointmentId=' + CurrentEventId;
-}
-
-function buildURIRoom() {
-    var doctorUsername = "";
-    var doctor = $("#txtDoctor").tokenInput("get");
-    if (doctor.length > 0) {
-        doctorUsername = doctor[0].id;
-    }
-    return 'Default.aspx/SearchRoom?fromDate=' + $("#txtFromDate").val()
-                        + '&toDate=' + $("#txtToDate").val()
-                        + '&fromTime=' + $("#cboFromHour").val()
-                        + '&toTime=' + $("#cboToHour").val()
-                        + '&doctorUserName=' + doctorUsername
-                        + '&appointmentId=' + CurrentEventId;
-}
-
 // Init input token for searching patient, doctor, room
 function GetToken() {
     $("#txtPatient").tokenInput(
         'Default.aspx/SearchPatient',
         {
-            theme: "facebook",
             preventDuplicates: true,
             tokenLimit: 1,
             resultsFormatter: function(item) { return "<li>" + item.propertyToSearch + "</li>"; },
@@ -273,53 +237,21 @@ function GetToken() {
             hintText: "Name, Birthday, Address, Phone"
         }
     );
-
-    $("#txtDoctor").tokenInput(
-        buildURIDoctor,
-        {
-            theme: "facebook",
-            preventDuplicates: true,
-            tokenLimit: 1,
-            resultsFormatter: function(item) { return "<li>" + item.propertyToSearch + "</li>"; },
-            tokenFormatter: function(item) { return "<li>" + item.propertyToSearch + "</li>"; },
-            propertyToSearch: "propertyToSearch",
-            noResultsText: "Cannot find doctor",
-            searchingText: "Searching...",
-            hintText: "Shortname, Specialty",
-            onAdd: function() {
-                GetRoom();
-            }
-        }
-    );
-
-    $("#txtRoom").tokenInput(
-        buildURIRoom,
-        {
-            theme: "facebook",
-            preventDuplicates: true,
-            tokenLimit: 1,
-            resultsFormatter: function(item) { return "<li>" + item.propertyToSearch + "</li>"; },
-            tokenFormatter: function(item) { return "<li>" + item.propertyToSearch + "</li>"; },
-            propertyToSearch: "propertyToSearch",
-            noResultsText: "Cannot find room",
-            searchingText: "Searching...",
-            hintText: "Room name"
-        }
-    );
 }
 
-// Get a room fill into room token input after choose a doctor
+// Get available rooms
 function GetRoom() {
-    var doctorId = "";
-    var doctor = $("#txtDoctor").tokenInput("get");
-    if (doctor.length > 0) {
-        doctorId = doctor[0].id;
-    }
-
-    var requestdata = JSON.stringify({ appointmentId: CurrentEventId, doctorUserName: doctorId,
+    var requestdata = JSON.stringify({ appointmentId: CurrentEventId, doctorId: $("#hdfDoctor").val(),
         startTime: $("#cboFromHour").val(), endTime: $("#cboToHour").val(),
         startDate: $("#txtFromDate").val(), endDate: $("#txtToDate").val()
+
     });
+
+    $("#cboRoom").html("");
+    $("#cboRoom").append("<option value=''>--Choose Room--</option>");
+    $("#cboRoom").attr("disabled", "disabled");
+    $("#loadingRoom").show();
+
     $.ajax({
         type: "POST",
         url: "Default.aspx/GetRoom",
@@ -327,12 +259,19 @@ function GetRoom() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            var obj = eval(response.d)[0];
+            var obj = JSON.parse(response.d);
 
             if (obj.result == "true") {
-                var evs = obj.data;
-                if (evs) {
-                    $("#txtRoom").tokenInput("add", obj.data); ;
+                if (obj.data) {
+                    $.each(obj.data, function(i, item) {
+                        var option = document.createElement("option");
+                        $(option).val(item.Id);
+                        $(option).text(item.Title);
+                        if ($("#hdfRoom").val() == item.Id) {
+                            $(option).attr("selected", "selected");
+                        }
+                        $("#cboRoom").append(option);
+                    });
                 }
             }
             else {
@@ -343,6 +282,8 @@ function GetRoom() {
             alert("Unknow error!");
         },
         complete: function() {
+            $("#cboRoom").removeAttr("disabled");
+            $("#loadingRoom").hide();
         }
     });
 }
@@ -414,9 +355,13 @@ function GetPatientInfo(currentId) {
 }
 
 // Create new patient
-function CreateSimplePatient(radSex, firstname, lastname, cellPhone, adddress, dialog) {
-    var requestdata = JSON.stringify({ FirstName: $(firstname).val(), LastName: $(lastname).val(), CellPhone: $(cellPhone).val()
-        , Address: $(adddress).val(), IsFemale: $(radSex).val()
+function CreateSimplePatient(firstname, lastname, cellPhone, adddress, dialog) {
+    var requestdata = JSON.stringify({
+        firstname: $(firstname).val(),
+        lastname: $(lastname).val(),
+        cellPhone: $(cellPhone).val(),
+        address: $(adddress).val(),
+        isFemale: $('input[name=radSex]:checked').val()
     });
     $.ajax({
         type: "POST",
@@ -425,10 +370,10 @@ function CreateSimplePatient(radSex, firstname, lastname, cellPhone, adddress, d
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            var obj = eval(response.d)[0];
+            var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 $("#txtPatient").tokenInput("clear");
-                $("#txtPatient").tokenInput("add", obj.data);
+                $("#txtPatient").tokenInput("add", obj.data[0]);
                 $(dialog).dialog("close");
             } else {
                 updateTips(obj.message);
@@ -436,8 +381,6 @@ function CreateSimplePatient(radSex, firstname, lastname, cellPhone, adddress, d
         },
         fail: function() {
             updateTips("Error");
-        },
-        complete: function() {
         }
     });
 }
@@ -472,7 +415,7 @@ function MoveAppointment(eventId, objEvent) {
         }
     });
 }
-/****************************Appointment - Start******************************/
+/****************************Appointment - End******************************/
 
 function LoadRoster(mode, date) {
     var requestdata = JSON.stringify({ mode: mode, currentDateView: date });
@@ -489,7 +432,7 @@ function LoadRoster(mode, date) {
             if (obj.result == "true") {
                 var evs = obj.data;
                 if (evs) {
-                    addRoster(evs);
+                    AddAppointment(evs);
                 }
             }
             else {
@@ -500,6 +443,57 @@ function LoadRoster(mode, date) {
             alert("Unknow error!");
         },
         complete: function() {
+        }
+    });
+}
+
+// Add new appointment
+function NewAppointment() {
+    // Check if patient is not selected
+    var patient = $("#txtPatient").tokenInput("get");
+    if (patient.length <= 0) {
+        alert("You must choose patient.");
+        $("#txtPatient").focus();
+        return;
+    }
+
+    $("#dialog-modal").show();
+    DisableAllElements($("#tblContent"), false);
+
+    var requestdata = JSON.stringify({
+        patientId: patient[0].id,
+        note: $("#txtNote").val(),
+        startTime: $("#cboFromHour").val(),
+        endTime: $("#cboToHour").val(),
+        startDate: $("#txtFromDate").datepicker("getDate"),
+        endDate: $("#txtToDate").datepicker("getDate"),
+        doctorId: $("#hdfDoctor").val(),
+        roomId: $("#cboRoom").val(),
+        status: $("[id$=cboStatus]").val()
+    });
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/NewAppointment",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(response) {
+            var obj = JSON.parse(response.d);
+            if (obj.result == "true") {
+                $("#RosterForm").dialog("close");
+                scheduler.endLightbox(false, html("RosterForm"));
+                AddAppointment(obj.data);
+            }
+            else {
+                ShowDialog("", "", obj.message, "");
+            }
+        },
+        fail: function() {
+            ShowDialog("", "", "Unknow error!", "");
+        },
+        complete: function() {
+            DisableAllElements($("#tblContent"), true);
+            $("#dialog-modal").hide();
         }
     });
 }
@@ -515,7 +509,7 @@ function AppointmentBusiness(patient) {
     var _note = $("#txtNote").val();
     var _doctor = $("#txtDoctor").tokenInput("get");
     var _doctorUserName = '';
-    var _room = $("#txtRoom").tokenInput("get");
+    var _room = $("#cboToHour").val();
     var _roomId = '';
 
     if (_doctor.length > 0) _doctorUserName = _doctor[0].id;
@@ -563,46 +557,6 @@ function AppointmentBusiness(patient) {
         UpdateRoster(requestdata, 'UpdateEventSave', _id);
     }
     else {
-        // Add new 
-        $("#dialog-modal").show();
-        DisableAllElements($("#tblContent"), false);
-
-        requestdata = JSON.stringify({
-            PatientId: patient,
-            Note: _note,
-            StartTime: _fromTime,
-            EndTime: _toTime,
-            StartDate: _fromDate,
-            EndDate: _toDate,
-            DoctorUsername: _doctorUserName,
-            RoomId: _roomId,
-            Status: status
-        });
-        $.ajax({
-            type: "POST",
-            url: "Default.aspx/SaveEvent",
-            data: requestdata,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function(response) {
-                var obj = eval(response.d)[0];
-                if (obj.result == "true") {
-                    var evs = obj.data;
-                    addRoster(evs);
-                    scheduler.endLightbox(false, html("RosterForm"));
-                }
-                else {
-                    alert(obj.message);
-                }
-            },
-            fail: function() {
-                alert("Unknow error!");
-            },
-            complete: function() {
-                DisableAllElements($("#tblContent"), true);
-                $("#dialog-modal").hide();
-            }
-        });
     }
 }
 
@@ -629,7 +583,7 @@ function UpdateRoster(requestdata, method, _id) {
             if (obj.result == "true") {
                 var evs = obj.data;
                 scheduler.deleteEvent(_id);
-                addRoster(evs);
+                AddAppointment(evs);
                 scheduler.endLightbox(false, html("RosterForm"));
             }
             else {
@@ -646,7 +600,7 @@ function UpdateRoster(requestdata, method, _id) {
     });
 }
 
-function addRoster(evs) {
+function AddAppointment(evs) {
     $.each(evs, function(i, item) {
         $.each(scheduler._props[scheduler._mode].options, function(j, option) {
             if (option.key == item.section_id)
@@ -655,7 +609,8 @@ function addRoster(evs) {
     });
 }
 
-function CancelRoster() {
+// Cancel appointment
+function CancelAppointment() {
     scheduler.endLightbox(false, html("RosterForm"));
 }
 
@@ -699,13 +654,6 @@ function DeleteRoster() {
 $(document).ready(function() {
     BindTime();
 
-    $("input, textarea").addClass("idle");
-    $("input, textarea").focus(function() {
-        $(this).addClass("activeField").removeClass("idle");
-    }).blur(function() {
-        $(this).removeClass("activeField").addClass("idle");
-    });
-
     initSchedule(weekday);
 
     $(".datePicker").datepicker({
@@ -714,12 +662,11 @@ $(document).ready(function() {
         buttonImageOnly: true, changeMonth: true,
         changeYear: true,
         showOtherMonths: true,
-        selectOtherMonths: true,
-        dateFormat: "yy-mm-dd"
+        selectOtherMonths: true
     });
 
-    var _currentMonth = new Date();
-    var _nextMonth = new Date(_currentMonth.getFullYear(), _currentMonth.getMonth() + 1, 1);
+    var currentMonth = new Date();
+    var nextMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
     $("#txtMonth").datepicker({
         showOn: "button",
         buttonImage: "../../resources/css/ui-lightness/images/calendar.gif",
@@ -728,7 +675,7 @@ $(document).ready(function() {
         showOtherMonths: true,
         selectOtherMonths: true,
         dateFormat: "mm-yy",
-        minDate: _nextMonth
+        minDate: nextMonth
     });
 
     initEvents();
@@ -740,7 +687,7 @@ $(document).ready(function() {
 
     var txtFirstName = $("#txtFirstName"),
                 txtLastName = $("#txtLastName"),
-                radSex = $("input[name=radSex]:checked"),
+                radSex = $("input[name=radSex]"),
                 txtCellPhone = $("#txtCellPhone"),
                 txtAddress = $("#txtAddress"),
                 allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone).add(txtAddress);
@@ -753,19 +700,19 @@ $(document).ready(function() {
         zIndex: $.maxZIndex() + 1,
         resizable: false,
         buttons: {
-            "Create a patient": function() {
+            Cancel: function() {
+                $(this).dialog("close");
+            },
+            "Create patient": function() {
                 var bValid = true;
                 allFields.removeClass("ui-state-error");
 
-                bValid = bValid && checkRegexp(txtFirstName, /^[a-z]([0-9a-z_])+$/i, "Firstname may consist of a-z.");
-                bValid = bValid && checkRegexp(txtLastName, /^[a-z]([0-9a-z_])+$/i, "Lastname may consist of a-z.");
+                //bValid = bValid && checkRegexp(txtFirstName, /^[a-z]([0-9a-z_])+$/i, "Firstname may consist of a-z.");
+                //bValid = bValid && checkRegexp(txtLastName, /^[a-z]([0-9a-z_])+$/i, "Lastname may consist of a-z.");
 
                 if (bValid) {
-                    CreateSimplePatient(radSex, txtFirstName, txtLastName, txtCellPhone, txtAddress, this);
+                    CreateSimplePatient(txtFirstName, txtLastName, txtCellPhone, txtAddress, this);
                 }
-            },
-            Cancel: function() {
-                $(this).dialog("close");
             }
         },
         close: function() {
@@ -774,13 +721,19 @@ $(document).ready(function() {
     });
 
     $("#create-user")
-			    .click(function() {
-			        $("#dialog-form").dialog("open");
-			        $("#frm").reset();
-			    });
+        .click(function() {
+            $("#dialog-form").dialog("open");
+            $(txtFirstName).val("");
+            $(txtLastName).val("");
+            $(txtCellPhone).val("");
+            $(txtAddress).val("");
+            $("#radMale").val("false");
+            $("#radFemale").val("true");
+            $("#radMale").attr("checked", "checked");
+        });
 });
 
-//
+// Initialize form, clear value, set default value
 function InitForm() {
     $("#dialog-modal").hide();
 
@@ -792,7 +745,6 @@ function InitForm() {
 
     // Set empty
     $("#hdId").val("");
-    $("#tdTitle").text("New appointment");
     $("#txtNote").val("");
 
     DisableAllElements($("#tblContent"), true);
@@ -823,60 +775,13 @@ function checkDateTime() {
 }
 
 function initEvents() {
-    $("#btnSave").click(function() {
-        SaveRoster();
-    });
-
-    $("#btnCancel").click(function() {
-        CancelRoster();
-    });
-
-    $("#btnDelete").click(function() {
-        DeleteRoster();
-    });
-
-    $("#btnDelete").keydown(function(e) {
-        var key;
-
-        if (window.event)
-            key = window.event.keyCode;     //IE
-        else
-            key = e.which;     //firefox
-
-        if (key == 9) {
-            $("#chkNewPatient").focus();
-            return false;
-        }
-    });
-
-    $("#cboFromHour, #txtFromDate").change(function() {
-        if (!checkDateTime()) {
-            $("#cboToHour").val($("#cboFromHour").val());
-            $("#txtToDate").val($("#txtFromDate").val());
-        }
-
-        $("#cboStaff").change();
-        GetDoctorList();
-    });
-
-    $("#cboToHour, #txtToDate").change(function() {
-        if (!checkDateTime()) {
-            $("#cboFromHour").val($("#cboToHour").val());
-            $("#txtFromDate").val($("#txtToDate").val());
-        }
-
-        $("#cboStaff").change();
-        GetDoctorList();
-    });
-
-    // Call Load room function
-    $("#cboStaff").change(function() {
-        loadRooms();
-    });
-
     $(".dhx_cal_today_button:not(#btnToday)").click(function() {
         $("#btnToday").click();
         scheduler.updateCalendar(miniCalendar, scheduler._date);
+    });
+
+    $("#cboFromHour, #txtFromDate, #cboToHour, #txtToDate").change(function() {
+        GetRoom();
     });
 }
 

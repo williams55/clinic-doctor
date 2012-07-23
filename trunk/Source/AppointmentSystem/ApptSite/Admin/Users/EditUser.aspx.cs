@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AppointmentSystem.Settings.BusinessLayer;
 using DevExpress.Web.ASPxGridView;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Data;
@@ -26,7 +27,6 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridUser.Visible = false;
             }
-
         }
         catch (Exception ex)
         {
@@ -131,26 +131,32 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
     protected void gridUser_RowInserted(object sender, DevExpress.Web.Data.ASPxDataInsertedEventArgs e)
     {
         string id = e.NewValues["Id"].ToString();
-        int count;
-        string UserGroupId = e.NewValues["UserGroupId"].ToString();
-        TList<GroupRole> grouprole = DataRepository.GroupRoleProvider.GetPaged("GroupId='" + UserGroupId + " ' and IsDisabled='false'", "RoleId desc", 0, 10, out count);
-        TList<UserRole> luserrole = new TList<UserRole>();
-        if (count > 0)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                UserRole userrole = new UserRole();
-                userrole.UserId = id;
-                userrole.RoleId = grouprole[i].RoleId;
-                userrole.UpdateDate = userrole.CreateDate = DateTime.Now;
-                userrole.UpdateUser = userrole.CreateUser = WebCommon.GetAuthUsername();
-                userrole.IsDisabled = false;
-                luserrole.Add(userrole);
+        string userGroupId = e.NewValues["UserGroupId"].ToString();
 
-            }
-            DataRepository.UserRoleProvider.Insert(luserrole);
-            var abc = "";
+        int count;
+        TList<GroupRole> grouprole =
+            DataRepository.GroupRoleProvider.GetPaged("GroupId='" + userGroupId + " ' and IsDisabled='false'",
+                                                      "RoleId desc", 0, ServiceFacade.SettingsHelper.GetPagedLength,
+                                                      out count);
+        var luserrole = new TList<UserRole>();
+
+        foreach (var groupRole in grouprole)
+        {
+            DataRepository.UserRoleProvider.Insert(new UserRole
+            {
+                UserId = id,
+                RoleId = groupRole.RoleId,
+                UpdateDate = DateTime.Now,
+                UpdateUser = EntitiesUtilities.GetAuthName()
+            });
         }
-        
+    }
+    protected void gridUser_AfterPerformCallback(object sender, ASPxGridViewAfterPerformCallbackEventArgs e)
+    {
+        if (e.CallbackName == "ABC")
+        {
+            int index = ((ASPxGridView)sender).EditingRowVisibleIndex;
+            string val = ((ASPxGridView)sender).GetRowValues(index, "Description").ToString();
+        }
     }
 }

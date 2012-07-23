@@ -56,7 +56,7 @@
         var weekday = <%=Constants.Weekdays %>;
         var stepTime = <%=ServiceFacade.SettingsHelper.MinuteStep %>;
         var html = function (id) { return document.getElementById(id); }; //just a helper
-        var floors = eval(<%=StrFloors%>);
+        var floors = eval(<%=ListServices%>);
         
         var minuteStep = eval(<%=ServiceFacade.SettingsHelper.MinuteStep%>);
         var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
@@ -177,81 +177,71 @@
                 <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
                     <span class="loading"></span>
                 </div>
-                <table cellpadding="3" width="100%" id="tblContent">
+                <table class="table-form" id="tblContent">
                     <tr>
-                        <td colspan="4" class="title" id="tdTitle">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
+                        <td class="header" style="width: 150px;">
                             Status
                         </td>
-                        <td colspan="3">
+                        <td colspan="2">
                             <asp:DropDownList runat="server" ID="cboStatus">
                             </asp:DropDownList>
                         </td>
                     </tr>
                     <tr>
                         <td class="header">
-                            Patient
-                        </td>
-                        <td colspan="3">
-                            <input type="text" id="txtPatient" style="width: 80%;" />
-                            <input type="button" id="create-user" style="width: 80%;" value="Create new patient" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Note
-                        </td>
-                        <td colspan="3">
-                            <textarea id="txtNote" cols="10" rows="2" style="width: 95%;" tabindex="108"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header" width="100">
-                            From Time
-                        </td>
-                        <td width="220">
-                            <select id="cboFromHour" style="float: left;" tabindex="109">
-                                <option value="">Set status to Deleted</option>
-                            </select><span id="loadingFromHour" class="loading" style="float: left;"></span>
-                            <span id="spanFromDate" style="float: left;">
-                                <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;"
-                                    tabindex="110" /></span>
-                        </td>
-                        <td class="header" width="70">
-                            To Time
-                        </td>
-                        <td>
-                            <select id="cboToHour" style="float: left;" tabindex="111">
-                            </select><span id="loadingToHour" class="loading" style="float: left;"></span> <span
-                                id="spanToDate" style="float: left;">
-                                <input type="text" id="txtToDate" class="datePicker" readonly="readonly" style="padding: 4px 2px 4px 2px;"
-                                    tabindex="112" /></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
                             Doctor
                         </td>
-                        <td colspan="3">
-                            <input type="text" id="txtDoctor" style="width: 80%;" />
+                        <td colspan="2">
+                            <span id="lblDoctor" style="font-weight: bold;"></span>
+                            <input type="hidden" id="hdfDoctor"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="header">
+                            Patient
+                        </td>
+                        <td>
+                            <input type="text" id="txtPatient" />
+                        </td>
+                        <td>
+                            <input type="button" id="create-user" value="New" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="header">
+                            From
+                        </td>
+                        <td colspan="2">
+                            <select id="cboFromHour">
+                            </select><input type="text" id="txtFromDate" class="datePicker" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="header">
+                            To
+                        </td>
+                        <td colspan="2">
+                            <select id="cboToHour">
+                            </select><input type="text" id="txtToDate" class="datePicker" readonly="readonly" />
                         </td>
                     </tr>
                     <tr>
                         <td class="header">
                             Room
                         </td>
-                        <td colspan="3">
-                            <input type="text" id="txtRoom" style="width: 80%;" />
+                        <td colspan="2">
+                            <select id="cboRoom">
+                            </select>
+                            <input type="hidden" id="hdfRoom"/>
+                            <span id="loadingRoom" class="loading"></span>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4">
-                            <input type="submit" value="Save" id="btnSave" style="float: left;" tabindex="115" />
-                            <input type="submit" value="Cancel" id="btnCancel" style="float: left;" tabindex="116" />
-                            <input type="submit" value="Delete" id="btnDelete" style="float: right;" tabindex="117" />
+                        <td class="header">
+                            Note
+                        </td>
+                        <td colspan="2">
+                            <textarea id="txtNote" cols="10" rows="3" style="width: 100%;"></textarea>
                         </td>
                     </tr>
                 </table>

@@ -20,6 +20,7 @@
 				SELECT
 					[ScreenCode],
 					[ScreenName],
+					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -89,7 +90,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[ScreenCode], O.[ScreenName], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[ScreenCode], O.[ScreenName], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Screen] O,
 				    #PageIndex PageIndex
@@ -125,6 +126,7 @@
 			<parameters>
 				<parameter name="@ScreenCode" type="varchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@ScreenName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -137,6 +139,7 @@
 					(
 					[ScreenCode]
 					,[ScreenName]
+					,[PriorityIndex]
 					,[IsDisabled]
 					,[CreateUser]
 					,[CreateDate]
@@ -147,6 +150,7 @@
 					(
 					@ScreenCode
 					,@ScreenName
+					,@PriorityIndex
 					,@IsDisabled
 					,@CreateUser
 					,@CreateDate
@@ -172,6 +176,7 @@
 				<parameter name="@ScreenCode" type="varchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@OriginalScreenCode" type="varchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@ScreenName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -187,6 +192,7 @@
 				SET
 					[ScreenCode] = @ScreenCode
 					,[ScreenName] = @ScreenName
+					,[PriorityIndex] = @PriorityIndex
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
 					,[CreateDate] = @CreateDate
@@ -233,6 +239,7 @@
 				SELECT
 					[ScreenCode],
 					[ScreenName],
+					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -261,6 +268,7 @@
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@ScreenCode" type="varchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@ScreenName" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
+				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
@@ -274,6 +282,7 @@
     SELECT
 	  [ScreenCode]
 	, [ScreenName]
+	, [PriorityIndex]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -284,6 +293,7 @@
     WHERE 
 	 ([ScreenCode] = @ScreenCode OR @ScreenCode IS NULL)
 	AND ([ScreenName] = @ScreenName OR @ScreenName IS NULL)
+	AND ([PriorityIndex] = @PriorityIndex OR @PriorityIndex IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
 	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
@@ -296,6 +306,7 @@
     SELECT
 	  [ScreenCode]
 	, [ScreenName]
+	, [PriorityIndex]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -306,6 +317,7 @@
     WHERE 
 	 ([ScreenCode] = @ScreenCode AND @ScreenCode is not null)
 	OR ([ScreenName] = @ScreenName AND @ScreenName is not null)
+	OR ([PriorityIndex] = @PriorityIndex AND @PriorityIndex is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
 	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
@@ -346,7 +358,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[ScreenCode], O.[ScreenName], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[ScreenCode], O.[ScreenName], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Screen] O,
 				    #PageIndex PageIndex
@@ -820,7 +832,9 @@
 				SELECT
 					[Id],
 					[Title],
+					[ShortTitle],
 					[Note],
+					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -890,7 +904,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[ShortTitle], O.[Note], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Services] O,
 				    #PageIndex PageIndex
@@ -926,7 +940,9 @@
 			<parameters>
 				<parameter name="@Id" type="int" direction="Output" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ShortTitle" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
+				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -938,7 +954,9 @@
 				INSERT INTO [dbo].[Services]
 					(
 					[Title]
+					,[ShortTitle]
 					,[Note]
+					,[PriorityIndex]
 					,[IsDisabled]
 					,[CreateUser]
 					,[CreateDate]
@@ -948,7 +966,9 @@
 				VALUES
 					(
 					@Title
+					,@ShortTitle
 					,@Note
+					,@PriorityIndex
 					,@IsDisabled
 					,@CreateUser
 					,@CreateDate
@@ -975,7 +995,9 @@
 			<parameters>
 				<parameter name="@Id" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@ShortTitle" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
+				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -990,7 +1012,9 @@
 					[dbo].[Services]
 				SET
 					[Title] = @Title
+					,[ShortTitle] = @ShortTitle
 					,[Note] = @Note
+					,[PriorityIndex] = @PriorityIndex
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
 					,[CreateDate] = @CreateDate
@@ -1037,7 +1061,9 @@
 				SELECT
 					[Id],
 					[Title],
+					[ShortTitle],
 					[Note],
+					[PriorityIndex],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -1066,7 +1092,9 @@
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@ShortTitle" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
+				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
@@ -1080,7 +1108,9 @@
     SELECT
 	  [Id]
 	, [Title]
+	, [ShortTitle]
 	, [Note]
+	, [PriorityIndex]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -1091,7 +1121,9 @@
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
 	AND ([Title] = @Title OR @Title IS NULL)
+	AND ([ShortTitle] = @ShortTitle OR @ShortTitle IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
+	AND ([PriorityIndex] = @PriorityIndex OR @PriorityIndex IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
 	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
@@ -1104,7 +1136,9 @@
     SELECT
 	  [Id]
 	, [Title]
+	, [ShortTitle]
 	, [Note]
+	, [PriorityIndex]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -1115,7 +1149,9 @@
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
 	OR ([Title] = @Title AND @Title is not null)
+	OR ([ShortTitle] = @ShortTitle AND @ShortTitle is not null)
 	OR ([Note] = @Note AND @Note is not null)
+	OR ([PriorityIndex] = @PriorityIndex AND @PriorityIndex is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
 	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
@@ -1156,7 +1192,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Title], O.[ShortTitle], O.[Note], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Services] O,
 				    #PageIndex PageIndex

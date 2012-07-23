@@ -65,7 +65,7 @@
                 <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
                     <span class="loading"></span>
                 </div>
-                <table cellpadding="3" width="100%" id="tblContent">
+                <table class="table-form" id="tblContent">
                     <tr>
                         <td class="header" width="80">
                             Doctor
@@ -106,9 +106,7 @@
                         </td>
                         <td>
                             <select id="cboFromHour">
-                            </select><span id="loadingFromHour" class="loading"></span> <span id="spanFromDate"
-                                style="display: none;">
-                                <input type="text" id="txtFromDate" class="datePicker" readonly="readonly" /></span>
+                            </select><input type="text" id="txtFromDate" class="datePicker" readonly="readonly" />
                         </td>
                     </tr>
                     <tr>
@@ -117,8 +115,7 @@
                         </td>
                         <td>
                             <select id="cboToHour">
-                            </select><span id="loadingToHour" class="loading"></span> <span id="spanToDate" style="display: none;">
-                                <input type="text" id="txtToDate" class="datePicker" readonly="readonly" /></span>
+                            </select><input type="text" id="txtToDate" class="datePicker" readonly="readonly" />
                         </td>
                     </tr>
                     <tr>
