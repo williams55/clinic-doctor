@@ -48,7 +48,7 @@
     <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
     </asp:ContentPlaceHolder>
     <div id="dialog-message-title" title="Message">
-        <p>
+        <p style="text-align: left; font-size: 12px;">
             <span id="spanMessage-content"></span>
         </p>
     </div>
