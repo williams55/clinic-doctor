@@ -1,4 +1,5 @@
 ﻿var CurrentEventId = "-1";
+var CurrentAppointment;
 var miniCalendar;
 
 /****************************DHTMLX - Start******************************/
@@ -59,12 +60,12 @@ function initSchedule(weekday) {
         }));
     });
     $.when.apply($, arrAjax).done(function() {
-        scheduler.attachEvent("onBeforeDrag", BlockReadonly);
+        scheduler.attachEvent("onBeforeDrag", BeforeDrag);
         scheduler.attachEvent("onClick", BlockReadonly);
         scheduler.attachEvent("onEventChanged", EventChanged);
 
         scheduler.attachEvent("onViewChange", function(mode, date) {
-            LoadRoster(mode, date);
+            LoadAppointment(mode, date);
         });
 
         // Load roster
@@ -83,14 +84,21 @@ function initSchedule(weekday) {
 function BlockReadonly(id) {
     GetPatientInfo(id);
     if (!id) return true;
-    return !this.getEvent(id).readonly;
+    return !scheduler.getEvent(id).readonly;
+}
+
+// Function will be raise when event changed
+function BeforeDrag(id) {
+    // Get event and clone it before drag, it's useful in case failure drag
+    CurrentAppointment = $.extend(true, {}, scheduler.getEvent(id));
+    return BlockReadonly(id);
 }
 
 // Function will be raise when event changed
 function EventChanged(eventId, objEvent) {
     // Case move event
     if (scheduler._drag_mode && scheduler._drag_mode == 'move') {
-        MoveRoster(eventId, objEvent);
+        MoveAppointment(eventId, objEvent);
     }
 }
 
@@ -139,28 +147,28 @@ scheduler.showLightbox = function(id) {
     // Load data
     if (ev.isnew == false) {
         // Update case, get info from server
-//        $("#RosterForm").dialog({
-//            autoOpen: false,
-//            height: 320,
-//            width: 550,
-//            modal: true,
-//            zIndex: $.maxZIndex() + 1,
-//            resizable: false,
-//            buttons: {
-//                Delete: function() {
-//                    DeleteRoster(id);
-//                },
-//                Cancel: function() {
-//                    $(this).dialog("close");
-//                },
-//                Save: function() {
-//                    UpdateRoster();
-//                }
-//            },
-//            close: function() {
-//                CancelAppointment();
-//            }
-//        });
+        //        $("#RosterForm").dialog({
+        //            autoOpen: false,
+        //            height: 320,
+        //            width: 550,
+        //            modal: true,
+        //            zIndex: $.maxZIndex() + 1,
+        //            resizable: false,
+        //            buttons: {
+        //                Delete: function() {
+        //                    DeleteRoster(id);
+        //                },
+        //                Cancel: function() {
+        //                    $(this).dialog("close");
+        //                },
+        //                Save: function() {
+        //                    UpdateRoster();
+        //                }
+        //            },
+        //            close: function() {
+        //                CancelAppointment();
+        //            }
+        //        });
 
         //        requestdata = JSON.stringify({ appointmentId: id });
         //        arrAjax.push($.ajax({
@@ -390,8 +398,10 @@ function CreateSimplePatient(firstname, lastname, cellPhone, adddress, dialog) {
 // Save moved appointment
 function MoveAppointment(eventId, objEvent) {
     var requestdata = JSON.stringify({ id: eventId, startTime: objEvent.start_date
-                , endTime: objEvent.end_date, aGroupId: objEvent.section_id
+                , endTime: objEvent.end_date, doctorId: objEvent.section_id
     });
+    console.log(CurrentAppointment);
+    console.log(objEvent);
     $.ajax({
         type: "POST",
         url: "Default.aspx/MoveAppointment",
@@ -400,24 +410,26 @@ function MoveAppointment(eventId, objEvent) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            var obj = eval(response.d)[0];
+            var obj = JSON.parse(response.d);
 
             if (obj.result != "true") {
-                alert(obj.message);
+                ShowDialog("", "", obj.message, "");
                 scheduler.deleteEvent(eventId);
-                AddRoster(obj.data);
+                scheduler.addEvent(CurrentAppointment);
+                CurrentAppointment = null; // set null after use
             }
         },
         fail: function() {
-            alert("Unknow error!");
+            ShowDialog("", "", "Unknow error!", "");
             scheduler.deleteEvent(eventId);
-            scheduler.addEvent(objEvent);
+            scheduler.addEvent(CurrentAppointment);
+            CurrentAppointment = null; // set null after use
         }
     });
 }
 /****************************Appointment - End******************************/
 
-function LoadRoster(mode, date) {
+function LoadAppointment(mode, date) {
     var requestdata = JSON.stringify({ mode: mode, currentDateView: date });
     scheduler.clearAll();
     $.ajax({
@@ -436,11 +448,11 @@ function LoadRoster(mode, date) {
                 }
             }
             else {
-                alert(obj.message);
+                ShowDialog("", "", obj.message, "");
             }
         },
         fail: function() {
-            alert("Unknow error!");
+            ShowDialog("", "", "Unknow error!", "");
         },
         complete: function() {
         }
@@ -602,10 +614,7 @@ function UpdateRoster(requestdata, method, _id) {
 
 function AddAppointment(evs) {
     $.each(evs, function(i, item) {
-        $.each(scheduler._props[scheduler._mode].options, function(j, option) {
-            if (option.key == item.section_id)
-                scheduler.addEvent(item);
-        });
+        scheduler.addEvent(item);
     });
 }
 

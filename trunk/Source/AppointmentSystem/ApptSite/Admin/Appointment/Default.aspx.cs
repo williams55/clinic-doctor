@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -33,7 +34,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         try
         {
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!CheckReading(out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
             }
@@ -382,7 +383,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             var lstAppointment =
                 DataRepository.AppointmentProvider.GetPaged(
                     String.Format(
-                        "((N'{0}' < StartTime AND N'{1}' > StartTime) OR (N'{0}' < EndTime AND N'{1}' > EndTime))"
+                        "((N'{0}' > StartTime AND N'{0}' < EndTime) OR (N'{1}' > StartTime AND N'{1}' < EndTime) OR (N'{0}' <= StartTime AND N'{1}' >= EndTime))"
                         + " AND IsDisabled = 'False' AND Id <> '{2}'"
                         , dtStart.ToString("yyyy-MM-dd HH:mm:ss.000"),
                         dtEnd.ToString("yyyy-MM-dd HH:mm:ss.000"), appointmentId), string.Empty, 0,
@@ -504,35 +505,35 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             // Load all relational info
             DataRepository.AppointmentProvider.DeepLoad(obj);
 
-            return new
-                       {
-                           id = obj.Id,
-                           start_date = obj.StartTime.Value.ToString("dd-MM-yyyy HH:mm"),
-                           end_date = obj.EndTime.Value.ToString("dd-MM-yyyy HH:mm"),
-                           section_id = obj.RoomId,
-                           text =
-                               String.Format("Patient: {3}. {0} {1}.<br />Note: {2}", obj.PatientIdSource.FirstName,
-                                             obj.PatientIdSource.LastName,
-                                             obj.Note, obj.PatientIdSource.Title),
-                           DoctorUsername = obj.DoctorIdSource.Username,
-                           DoctorDisplayname = obj.DoctorIdSource.DisplayName,
-                           obj.PatientId,
-                           PatientName = obj.PatientIdSource.FirstName,
-                           obj.ServicesId,
-                           ServicesTitle = obj.ServicesIdSource.Title,
-                           obj.RoomId,
-                           RoomTitle = obj.RoomIdSource.Title,
-                           note = obj.Note,
-                           ReadOnly = (obj.StartTime <= DateTime.Now),
-                           color = obj.StatusIdSource.ColorCode,
-                           isnew = false
-                       };
+            if (obj.StartTime != null && obj.EndTime != null)
+                return new
+                           {
+                               id = obj.Id,
+                               start_date = obj.StartTime.Value.ToString("dd-MM-yyyy HH:mm"),
+                               end_date = obj.EndTime.Value.ToString("dd-MM-yyyy HH:mm"),
+                               section_id = obj.DoctorId,
+                               text =
+                                   String.Format("Patient: {0}<br />Note: {1}",
+                                                 FullNameOfPatient(obj.PatientIdSource),
+                                                 obj.Note),
+                               DoctorDisplayname = obj.DoctorIdSource.DisplayName,
+                               obj.PatientId,
+                               PatientName = obj.PatientIdSource.FirstName,
+                               obj.ServicesId,
+                               ServicesTitle = obj.ServicesIdSource.Title,
+                               obj.RoomId,
+                               RoomTitle = obj.RoomIdSource.Title,
+                               note = obj.Note,
+                               ReadOnly = (obj.StartTime <= DateTime.Now),
+                               color = obj.StatusIdSource.ColorCode,
+                               isnew = false
+                           };
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return null;
         }
+        return null;
     }
 
     /// <summary>
@@ -575,7 +576,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             // Load all relational info
             DataRepository.AppointmentProvider.DeepLoad(lst);
 
-            lstEvent.AddRange(from appointment in lst where appointment != null && appointment.StartTime == null && appointment.EndTime == null select BuildAppointment(appointment));
+            lstEvent.AddRange(from appointment in lst where appointment != null && appointment.StartTime != null && appointment.EndTime != null select BuildAppointment(appointment));
         }
         catch (Exception ex)
         {
@@ -617,150 +618,25 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
-            #region Validate
-            patientId = patientId.Trim();
-            note = note.Trim();
-            startTime = startTime.Trim();
-            endTime = endTime.Trim();
-            startDate = startDate.Trim();
-            endDate = endDate.Trim();
-            doctorId = doctorId.Trim();
-            roomId = roomId.Trim();
-            status = status.Trim();
-
             // Validate current user have any right to operate this action
-            // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Create.Key, out _message))
+            // Validate user right for creating
+            if (!CheckCreating(out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
 
-            // Check Status
-            int statusId;
-            if (!Int32.TryParse(status, out statusId))
+            // Validate all fields
+            var dtStart = new DateTime();
+            var dtEnd = new DateTime();
+            int serviceId = 0;
+            if (!ValidateAppointmentFields(0, ref patientId, ref note, ref startTime, ref endTime
+                , ref startDate, ref endDate, ref doctorId, ref roomId, ref status
+                , ref dtStart, ref dtEnd, ref _message, ref serviceId))
             {
-                return WebCommon.BuildFailedResult("You must choose status.");
+                return WebCommon.BuildFailedResult(_message);
             }
-
-            // Check Doctor
-            if (string.IsNullOrEmpty(doctorId))
-            {
-                return WebCommon.BuildFailedResult("You must choose doctor.");
-            }
-
-            // Check Patient
-            if (string.IsNullOrEmpty(patientId))
-            {
-                return WebCommon.BuildFailedResult("You must choose patient.");
-            }
-
-            // Get start time and end time
-            int intStartHour = Convert.ToInt32(startTime.Split(':')[0]);
-            int intStartMinute = Convert.ToInt32(startTime.Split(':')[1]);
-            int intEndHour = Convert.ToInt32(endTime.Split(':')[0]);
-            int intEndMinute = Convert.ToInt32(endTime.Split(':')[1]);
-
-            // Get start date and end date
-            DateTime dtStart = Convert.ToDateTime(startDate);
-            DateTime dtEnd = Convert.ToDateTime(endDate);
-
-            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
-            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
-
-            // If appointment From Date >= To Date
-            if (dtStart >= dtEnd)
-            {
-                return WebCommon.BuildFailedResult("From date, time must be less than to date, time.");
-            }
-
-            // If appointment is created in a passed or current day
-            DateTime dtNow = DateTime.Now;
-            if (dtNow >= dtStart)
-            {
-                return WebCommon.BuildFailedResult("You can not change roster to passed or current date.");
-            }
-
-            // Check Room
-            int iRoomId;
-            if (!Int32.TryParse(roomId, out iRoomId))
-            {
-                return WebCommon.BuildFailedResult("You must choose room.");
-            }
-            #endregion
 
             tm.BeginTransaction();
-
-            #region Check infomation
-            // Check exists Patient
-            Patient objPatient = DataRepository.PatientProvider.GetById(patientId);
-            if (objPatient == null || objPatient.IsDisabled)
-            {
-                return WebCommon.BuildFailedResult("Patient is not exist.");
-            }
-
-            // Check exists Doctor
-            Users objDoctor = DataRepository.UsersProvider.GetById(doctorId);
-            if (objDoctor == null || objDoctor.IsDisabled)
-            {
-                return WebCommon.BuildFailedResult("Doctor is not exist.");
-            }
-
-            // Check exists Room
-            Room objRoom = DataRepository.RoomProvider.GetById(iRoomId);
-            if (objRoom == null || objRoom.IsDisabled)
-            {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult("Room is not exist.");
-            }
-
-            // Check exists Room
-            Status objStatus = DataRepository.StatusProvider.GetById(statusId);
-            if (objStatus == null || objStatus.IsDisabled)
-            {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult("Status is not exist.");
-            }
-
-            // Get service base on doctorId
-            var doctorService = DataRepository.DoctorServiceProvider.GetByDoctorId(doctorId).Find(x => !x.IsDisabled);
-            // Validate available doctor
-            if (doctorService == null)
-            {
-                return WebCommon.BuildFailedResult("Doctor or service is not available to get list of available room.");
-            }
-            // Deepload to get doctor's info
-            DataRepository.DoctorServiceProvider.DeepLoad(doctorService);
-            // Validate available doctor
-            if (doctorService.DoctorIdSource.IsDisabled || doctorService.ServiceIdSource.IsDisabled)
-            {
-                return WebCommon.BuildFailedResult("Doctor or service is not available to get list of available room.");
-            }
-            #endregion
-
-            #region Check Conflict
-            int intCompareValue = 0;
-            // Check conflict Patient
-            if (!CheckConflict("PatientId", patientId, string.IsNullOrEmpty(objPatient.Title) ? "patient" : objPatient.Title + ".",
-                String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName), dtStart, dtEnd, intCompareValue, ref _message))
-            {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult(_message);
-            }
-
-            // Check conflict Doctor
-            if (!CheckConflict("DoctorId", doctorId, "Dr.", objDoctor.DisplayName, dtStart, dtEnd, intCompareValue, ref _message))
-            {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult(_message);
-            }
-
-            // Check conflict Room
-            if (!CheckConflict("RoomId", roomId, "Room", objRoom.Title, dtStart, dtEnd, intCompareValue, ref _message))
-            {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult(_message);
-            }
-            #endregion
 
             #region "Insert Appointment"
             var newObj = new Appointment();
@@ -776,11 +652,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             newObj.PatientId = patientId;
-            newObj.DoctorId = objDoctor.Id;
-            newObj.RoomId = iRoomId;
-            newObj.ServicesId = doctorService.ServiceId;
+            newObj.DoctorId = doctorId;
+            newObj.RoomId = Convert.ToInt32(roomId);
+            newObj.ServicesId = serviceId;
             newObj.Note = note;
-            newObj.StatusId = statusId;
+            newObj.StatusId = Convert.ToInt32(status);
             newObj.StartTime = dtStart;
             newObj.EndTime = dtEnd;
             newObj.CreateUser = Username;
@@ -868,137 +744,60 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
     }
 
+    /// <summary>
+    /// Save data after move appointment
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="startTime"></param>
+    /// <param name="endTime"></param>
+    /// <param name="doctorId"></param>
+    /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string MoveAppointment(string id, string startTime, string endTime, string aGroupId)
+    public static string MoveAppointment(string id, string startTime, string endTime, string doctorId)
     {
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
-            Appointment appointment = DataRepository.AppointmentProvider.GetById(id);
-            if (appointment == null || appointment.IsComplete || appointment.IsDisabled)
-            {
-                return WebCommon.BuildFailedResult("There is no appointment to change or appointment is expired.");
-            }
-
-            // Load relational info
-            DataRepository.AppointmentProvider.DeepLoad(appointment);
-
-            // Declare list of object are returned
-            var lstResult = new List<object>();
-
-            // Validate if roster's expired
-            // return message with roster, this will be used to rollback roster to previous location, before moved
-            if (appointment.IsDisabled)
-            {
-                AddAppointment(lstResult, appointment);
-                return WebCommon.BuildFailedResult("Appointment is expired.", lstResult);
-            }
-
             // Validate current user have any right to operate this action
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Update.Key, out _message))
+            if (!CheckUpdating(out _message))
             {
-                AddAppointment(lstResult, appointment);
-                return WebCommon.BuildFailedResult(_message, lstResult);
+                return WebCommon.BuildFailedResult(_message);
             }
-
-            // Check AppointmentGroupId
-            if (string.IsNullOrEmpty(aGroupId))
+            
+            // Get appointment by Id
+            Appointment appointment = DataRepository.AppointmentProvider.GetById(id);
+            var dtStart = new DateTime();
+            var dtEnd = new DateTime();
+            if (!ValidateAppointmentFields(doctorId, startTime, endTime, appointment, ref dtStart, ref dtEnd, ref _message))
             {
-                AddAppointment(lstResult, appointment);
-                return WebCommon.BuildFailedResult("You must choose appointment group.", lstResult);
-            }
-
-            // Validate AppointmentGroupId
-            int appointmentGroupId;
-            if (!Int32.TryParse(aGroupId, out appointmentGroupId))
-            {
-                AddAppointment(lstResult, appointment);
-                return WebCommon.BuildFailedResult("Appointment group is invalid.", lstResult);
-            }
-
-            #region "Check infomation"
-            // Check exists Patient
-            var appointmentGroup = DataRepository.AppointmentGroupProvider.GetById(appointmentGroupId);
-            if (appointmentGroup == null || appointmentGroup.IsDisabled)
-            {
-                return WebCommon.BuildFailedResult("Appointment group is not exist.");
-            }
-            #endregion
-
-            // Get start date and end date
-            DateTime dtStart = Convert.ToDateTime(startTime);
-            DateTime dtEnd = Convert.ToDateTime(endTime);
-
-            // If roster is created in a passed or current day
-            if (DateTime.Now >= dtStart)
-            {
-                AddAppointment(lstResult, appointment);
-                return WebCommon.BuildFailedResult("You can not change roster to passed or current date.", lstResult);
-            }
-
-            if (dtStart >= dtEnd)
-            {
-                AddAppointment(lstResult, appointment);
-                return WebCommon.BuildFailedResult("To time must be greater than from date.");
-            }
-
-            #region "Check Conflict"
-            int intCompareValue = 1;
-            // Check conflict Patient
-            if (!CheckConflict("PatientId", appointment.PatientId, "",
-                String.Format("{2}. {0} {1}", appointment.PatientIdSource.FirstName, appointment.PatientIdSource.LastName, appointment.PatientIdSource.Title)
-                , dtStart, dtEnd, intCompareValue, ref _message))
-            {
-                tm.Rollback();
                 return WebCommon.BuildFailedResult(_message);
             }
 
-            // Check conflict Doctor
-            if (!CheckConflict("DoctorId", appointment.DoctorId, "Doctor", appointment.DoctorIdSource.DisplayName, dtStart, dtEnd, intCompareValue, ref _message))
-            {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult(_message);
-            }
-
-            // Check conflict Room
-            if (!CheckConflict("RoomId", appointment.RoomId.ToString(), "Room", appointment.RoomIdSource.Title, dtStart, dtEnd, intCompareValue, ref _message))
-            {
-                tm.Rollback();
-                return WebCommon.BuildFailedResult(_message);
-            }
-            #endregion
-
+            tm.BeginTransaction();
             #region "Update Appointment"
-            Appointment obj = DataRepository.AppointmentProvider.GetById(id);
-            if (obj == null || obj.IsComplete || obj.IsDisabled)
-            {
-                return WebCommon.BuildFailedResult("There is no appointment to change or appointment is expired.");
-            }
-
-            obj.AppointmentGroupId = appointmentGroupId;
-            obj.StartTime = dtStart;
-            obj.EndTime = dtEnd;
-            obj.UpdateUser = Username;
-            obj.UpdateDate = DateTime.Now;
-
-            DataRepository.AppointmentProvider.Save(tm, obj);
+            appointment.DoctorId = doctorId;
+            appointment.StartTime = dtStart;
+            appointment.EndTime = dtEnd;
+            appointment.UpdateUser = Username;
+            appointment.UpdateDate = DateTime.Now;
+            DataRepository.AppointmentProvider.Save(tm, appointment);
             #endregion
 
             #region "Send Appointment"
-            string strSubject = String.Format("Change Appointment: {0} - {1}. {2} {3}", obj.ServicesIdSource.Title
-                , obj.PatientIdSource.Title, obj.PatientIdSource.FirstName, obj.PatientIdSource.LastName);
+            string strSubject = String.Format("Change Appointment: {0} - {1}. {2} {3}", appointment.ServicesIdSource.Title
+                , appointment.PatientIdSource.Title, appointment.PatientIdSource.FirstName, appointment.PatientIdSource.LastName);
             string strBody = String.Format("You have a new change for appointment");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
-            string strLocation = String.Format("Room {0}", obj.RoomIdSource.Title);
+            string strLocation = String.Format("Room {0}", appointment.RoomIdSource.Title);
             string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}. {2} {3}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, obj.PatientIdSource.Title
-                , obj.PatientIdSource.FirstName, obj.PatientIdSource.LastName);
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, appointment.PatientIdSource.Title
+                , appointment.PatientIdSource.FirstName, appointment.PatientIdSource.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
-                Convert.ToDateTime(obj.StartTime), Convert.ToDateTime(obj.EndTime));
-            objMail.AddMailAddress(obj.DoctorIdSource.Email, obj.DoctorIdSource.DisplayName);
+                Convert.ToDateTime(appointment.StartTime), Convert.ToDateTime(appointment.EndTime));
+            objMail.AddMailAddress(appointment.DoctorIdSource.Email, appointment.DoctorIdSource.DisplayName);
             if (!objMail.SendMail())
             {
 
@@ -1006,7 +805,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             #endregion
 
             tm.Commit();
-            return WebCommon.BuildSuccessfulResult(BuildListAppointment(obj));
+            return WebCommon.BuildSuccessfulResult(BuildListAppointment(appointment));
         }
         catch (Exception ex)
         {
@@ -1614,6 +1413,318 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("Cannot create new patient. Please try again.");
         }
+    }
+    #endregion
+
+    #region Check user right
+    /// <summary>
+    /// Checking user right for reading
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private static bool CheckReading(out string message)
+    {
+        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out message);
+    }
+
+    /// <summary>
+    /// Checking user right for deleting
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private static bool CheckDeleting(out string message)
+    {
+        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Delete.Key, out message);
+    }
+
+    /// <summary>
+    /// Checking user right for updating
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private static bool CheckUpdating(out string message)
+    {
+        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Update.Key, out message);
+    }
+
+    /// <summary>
+    /// Checking user right for creating
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private static bool CheckCreating(out string message)
+    {
+        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Create.Key, out message);
+    }
+    #endregion
+
+    #region Validating
+
+    /// <summary>
+    /// Check conflict of doctor, room, patient
+    /// </summary>
+    /// <param name="doctorId"> </param>
+    /// <param name="endTime"> </param>
+    /// <param name="appointment"></param>
+    /// <param name="dtEnd"> </param>
+    /// <param name="message"> </param>
+    /// <param name="dtStart"> </param>
+    /// <param name="startTime"> </param>
+    /// <returns></returns>
+    private static bool ValidateAppointmentFields(string doctorId, string startTime, string endTime, Appointment appointment
+        , ref DateTime dtStart, ref DateTime dtEnd, ref string message)
+    {
+        try
+        {
+            // Check available appointment
+            if (appointment == null || appointment.IsComplete || appointment.IsDisabled)
+            {
+                message = "There is no appointment to change or appointment is expired.";
+                return false;
+            }
+
+            // Validate startTime and endTime
+            if (!DateTime.TryParse(startTime, out dtStart))
+            {
+                message = "Start time is invalid.";
+                return false;
+            }
+            if (!DateTime.TryParse(endTime, out dtEnd))
+            {
+                message = "End time is invalid.";
+                return false;
+            }
+
+            DataRepository.AppointmentProvider.DeepLoad(appointment);
+
+            // Validate all fields
+            string patientId = appointment.PatientId;
+            string note = appointment.Note;
+            string startDate = dtStart.ToString("MM/dd/yyyy");
+            string endDate = dtEnd.ToString("MM/dd/yyyy");
+            string tmpStartTime = dtStart.ToString("HH:mm':00'");
+            string tmpEndTime = dtEnd.ToString("HH:mm':00'");
+            string roomId = Convert.ToString(appointment.RoomId);
+            string status = Convert.ToString(appointment.StatusId);
+            int serviceId = 0;
+            if (!ValidateAppointmentFields(1, ref patientId, ref note, ref tmpStartTime, ref tmpEndTime
+            , ref startDate, ref endDate, ref doctorId, ref roomId, ref status
+            , ref dtStart, ref dtEnd, ref message, ref serviceId))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            message = ex.Message;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Validate all of field: Doctor, room, patient, status, datetime
+    /// </summary>
+    /// <param name="compareValue"> </param>
+    /// <param name="patientId"></param>
+    /// <param name="note"></param>
+    /// <param name="startTime"></param>
+    /// <param name="endTime"></param>
+    /// <param name="startDate"></param>
+    /// <param name="endDate"></param>
+    /// <param name="doctorId"></param>
+    /// <param name="roomId"></param>
+    /// <param name="status"></param>
+    /// <param name="dtEnd"> </param>
+    /// <param name="message"> </param>
+    /// <param name="dtStart"> </param>
+    /// <param name="serviceId"> </param>
+    /// <returns></returns>
+    private static bool ValidateAppointmentFields(int compareValue, ref string patientId, ref string note, ref string startTime, ref string endTime
+        , ref string startDate, ref string endDate, ref string doctorId, ref string roomId, ref string status
+        , ref DateTime dtStart, ref DateTime dtEnd, ref string message, ref int serviceId)
+    {
+        try
+        {
+            patientId = patientId.Trim();
+            note = note.Trim();
+            startTime = startTime.Trim();
+            endTime = endTime.Trim();
+            startDate = startDate.Trim();
+            endDate = endDate.Trim();
+            doctorId = doctorId.Trim();
+            roomId = roomId.Trim();
+            status = status.Trim();
+
+            #region Validate
+            // Check Status
+            int statusId;
+            if (!Int32.TryParse(status, out statusId))
+            {
+                message = "You must choose status.";
+                return false;
+            }
+
+            // Check Doctor
+            if (string.IsNullOrEmpty(doctorId))
+            {
+                message = "You must choose doctor.";
+                return false;
+            }
+
+            // Check Patient
+            if (string.IsNullOrEmpty(patientId))
+            {
+                message = "You must choose patient.";
+                return false;
+            }
+
+            // Get start time and end time
+            int intStartHour = Convert.ToInt32(startTime.Split(':')[0]);
+            int intStartMinute = Convert.ToInt32(startTime.Split(':')[1]);
+            int intEndHour = Convert.ToInt32(endTime.Split(':')[0]);
+            int intEndMinute = Convert.ToInt32(endTime.Split(':')[1]);
+
+            // Get start date and end date
+            dtStart = Convert.ToDateTime(startDate);
+            dtEnd = Convert.ToDateTime(endDate);
+
+            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intStartHour, intStartMinute, 0);
+            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, intEndHour, intEndMinute, 0);
+
+            // If appointment From Date >= To Date
+            if (dtStart >= dtEnd)
+            {
+                message = "From date, time must be less than to date, time.";
+                return false;
+            }
+
+            // If appointment is created in a passed or current day
+            DateTime dtNow = DateTime.Now;
+            if (dtNow >= dtStart)
+            {
+                message = "You can not change roster to passed or current date.";
+                return false;
+            }
+
+            // Check Room
+            int iRoomId;
+            if (!Int32.TryParse(roomId, out iRoomId))
+            {
+                message = "You must choose room.";
+                return false;
+            }
+            #endregion
+
+            #region Check information
+            // Check exists Patient
+            Patient objPatient = DataRepository.PatientProvider.GetById(patientId);
+            if (objPatient == null || objPatient.IsDisabled)
+            {
+                message = "Patient is not exist.";
+                return false;
+            }
+
+            // Check exists Doctor
+            Users objDoctor = DataRepository.UsersProvider.GetById(doctorId);
+            if (objDoctor == null || objDoctor.IsDisabled)
+            {
+                message = "Doctor is not exist.";
+                return false;
+            }
+
+            // Check exists Room
+            Room objRoom = DataRepository.RoomProvider.GetById(iRoomId);
+            if (objRoom == null || objRoom.IsDisabled)
+            {
+                message = "Room is not exist.";
+                return false;
+            }
+
+            // Check exists Room
+            Status objStatus = DataRepository.StatusProvider.GetById(statusId);
+            if (objStatus == null || objStatus.IsDisabled)
+            {
+                message = "Status is not exist.";
+                return false;
+            }
+
+            // Get service base on doctorId
+            var doctorService = DataRepository.DoctorServiceProvider.GetByDoctorId(doctorId).Find(x => !x.IsDisabled);
+            // Validate available doctor
+            if (doctorService == null)
+            {
+                message = "Doctor or service is not available to get list of available room.";
+                return false;
+            }
+            // Deepload to get doctor's info
+            DataRepository.DoctorServiceProvider.DeepLoad(doctorService);
+            // Validate available doctor
+            if (doctorService.DoctorIdSource.IsDisabled || doctorService.ServiceIdSource.IsDisabled)
+            {
+                message = "Doctor or service is not available to get list of available room.";
+                return false;
+            }
+            
+            // Set value for service Id
+            serviceId = doctorService.ServiceId;
+            #endregion
+
+            #region Check Conflict
+            // Check conflict Patient
+            if (!CheckConflict("PatientId", patientId, string.IsNullOrEmpty(objPatient.Title) ? "patient" : objPatient.Title + ".",
+                String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName), dtStart, dtEnd, compareValue, ref message))
+            {
+                message = String.Format("Cannot create appointment because {0} has another appointment from {1} {2} to {3} {4}."
+                    , FullNameOfPatient(objPatient), dtStart.DayOfWeek.ToString(), dtStart.ToString("dd MMM yyyy HH:mm")
+                    , dtEnd.DayOfWeek.ToString(), dtEnd.ToString("dd MMM yyyy HH:mm"));
+                return false;
+            }
+
+            // Check conflict Doctor
+            if (!CheckConflict("DoctorId", doctorId, "Dr.", objDoctor.DisplayName, dtStart, dtEnd, compareValue, ref message))
+            {
+                return false;
+            }
+
+            // Check conflict Room
+            if (!CheckConflict("RoomId", roomId, "Room", objRoom.Title, dtStart, dtEnd, compareValue, ref message))
+            {
+                return false;
+            }
+            #endregion
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            message = ex.Message;
+            return false;
+        }
+    }
+    #endregion
+
+    #region Build string
+    /// <summary>
+    /// Build fullname with title for patient
+    /// </summary>
+    /// <param name="patient"></param>
+    /// <returns></returns>
+    private static string FullNameOfPatient(Patient patient)
+    {
+        return String.Format("{2}{0}{1}",
+                             string.IsNullOrEmpty(patient.FirstName)
+                                 ? string.Empty
+                                 : patient.FirstName + " ",
+                             string.IsNullOrEmpty(patient.LastName)
+                                 ? string.Empty
+                                 : patient.LastName,
+                             string.IsNullOrEmpty(patient.Title)
+                                 ? string.Empty
+                                 : patient.Title + ". ");
     }
     #endregion
 }
