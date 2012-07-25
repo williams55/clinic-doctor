@@ -4,21 +4,21 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataMemberType" runat="server" Text="Member Type:" AssociatedControlID="dataMemberType" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataMemberType" Text='<%# Bind("MemberType") %>' MaxLength="50"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
+        <td class="literal"><asp:Label ID="lbldataCompanyCode" runat="server" Text="Company Code:" AssociatedControlID="dataCompanyCode" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataCompanyCode" Text='<%# Bind("CompanyCode") %>' MaxLength="200"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataPatientCode" runat="server" Text="Patient Code:" AssociatedControlID="dataPatientCode" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataPatientCode" Text='<%# Bind("PatientCode") %>' MaxLength="20"></asp:TextBox>
-				</td>
-			</tr>
-			<tr>
-        <td class="literal"><asp:Label ID="lbldataCompany" runat="server" Text="Company:" AssociatedControlID="dataCompany" /></td>
-        <td>
-					<asp:TextBox runat="server" ID="dataCompany" Text='<%# Bind("Company") %>' MaxLength="200"></asp:TextBox>
-				</td>
-			</tr>
-			<tr>
-        <td class="literal"><asp:Label ID="lbldataId" runat="server" Text="Id:" AssociatedControlID="dataId" /></td>
-        <td>
-					<asp:TextBox runat="server" ID="dataId" Text='<%# Bind("Id") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataId" runat="server" Display="Dynamic" ControlToValidate="dataId" ErrorMessage="Required"></asp:RequiredFieldValidator>
+					<asp:TextBox runat="server" ID="dataPatientCode" Text='<%# Bind("PatientCode") %>' MaxLength="10"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataPatientCode" runat="server" Display="Dynamic" ControlToValidate="dataPatientCode" ErrorMessage="Required"></asp:RequiredFieldValidator>
 				</td>
 			</tr>
 			<tr>
@@ -31,12 +31,6 @@
         <td class="literal"><asp:Label ID="lbldataLastName" runat="server" Text="Last Name:" AssociatedControlID="dataLastName" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataLastName" Text='<%# Bind("LastName") %>' MaxLength="200"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataLastName" runat="server" Display="Dynamic" ControlToValidate="dataLastName" ErrorMessage="Required"></asp:RequiredFieldValidator>
-				</td>
-			</tr>
-			<tr>
-        <td class="literal"><asp:Label ID="lbldataAddress" runat="server" Text="Address:" AssociatedControlID="dataAddress" /></td>
-        <td>
-					<asp:TextBox runat="server" ID="dataAddress" Text='<%# Bind("Address") %>'  TextMode="MultiLine"  Width="250px" Rows="5"></asp:TextBox>
 				</td>
 			</tr>
 			<tr>

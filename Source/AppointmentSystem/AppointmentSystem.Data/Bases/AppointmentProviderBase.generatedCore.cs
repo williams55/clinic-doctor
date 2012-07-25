@@ -870,7 +870,7 @@ namespace AppointmentSystem.Data.Bases
 				if (tmpEntity != null)
 					entity.PatientIdSource = tmpEntity;
 				else
-					entity.PatientIdSource = DataRepository.PatientProvider.GetById(transactionManager, entity.PatientId);		
+					entity.PatientIdSource = DataRepository.PatientProvider.GetByPatientCode(transactionManager, entity.PatientId);		
 				
 				#if NETTIERS_DEBUG
 				System.Diagnostics.Debug.WriteLine("- property 'PatientIdSource' loaded. key " + entity.EntityTrackingKey);
@@ -1037,7 +1037,7 @@ namespace AppointmentSystem.Data.Bases
 				&& entity.PatientIdSource != null)
 			{
 				DataRepository.PatientProvider.Save(transactionManager, entity.PatientIdSource);
-				entity.PatientId = entity.PatientIdSource.Id;
+				entity.PatientId = entity.PatientIdSource.PatientCode;
 			}
 			#endregion 
 			

@@ -20,7 +20,7 @@ public partial class PatientEdit : System.Web.UI.Page
 		FormUtil.RedirectAfterInsertUpdate(FormView1, "PatientEdit.aspx?{0}", PatientDataSource);
 		FormUtil.RedirectAfterAddNew(FormView1, "PatientEdit.aspx");
 		FormUtil.RedirectAfterCancel(FormView1, "Patient.aspx");
-		FormUtil.SetDefaultMode(FormView1, "Id");
+		FormUtil.SetDefaultMode(FormView1, "PatientCode");
 	}
 	protected void GridViewAppointment1_SelectedIndexChanged(object sender, EventArgs e)
 	{

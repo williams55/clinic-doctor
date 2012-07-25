@@ -228,7 +228,7 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the PatientId property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is nchar.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
@@ -238,7 +238,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false, 20)]
+		[DataObjectField(false, false, false, 10)]
 		public virtual System.String PatientId
 		{
 			get
@@ -853,7 +853,7 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("PatientId", "Patient Id"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("PatientId", "Patient Id", 20));
+				new CommonRules.MaxLengthRuleArgs("PatientId", "Patient Id", 10));
 			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("DoctorId", "Doctor Id"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -2461,7 +2461,7 @@ namespace AppointmentSystem.Entities
 		/// PatientId : 
 		/// </summary>
 		[EnumTextValue("PatientId")]
-		[ColumnEnum("PatientId", typeof(System.String), System.Data.DbType.String, false, false, false, 20)]
+		[ColumnEnum("PatientId", typeof(System.String), System.Data.DbType.StringFixedLength, false, false, false, 10)]
 		PatientId = 2,
 		/// <summary>
 		/// DoctorId : 

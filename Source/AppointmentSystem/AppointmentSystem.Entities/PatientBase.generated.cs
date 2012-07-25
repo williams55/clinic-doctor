@@ -81,16 +81,15 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="PatientBase"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_patientCode"></param>
 		///<param name="_firstName"></param>
 		///<param name="_lastName"></param>
-		///<param name="_address"></param>
+		///<param name="_memberType"></param>
 		///<param name="_homePhone"></param>
 		///<param name="_workPhone"></param>
 		///<param name="_cellPhone"></param>
 		///<param name="_avatar"></param>
-		///<param name="_company"></param>
+		///<param name="_companyCode"></param>
 		///<param name="_birthdate"></param>
 		///<param name="_isFemale"></param>
 		///<param name="_title"></param>
@@ -100,25 +99,24 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public PatientBase(System.String _id, System.String _patientCode, System.String _firstName, 
-			System.String _lastName, System.String _address, System.String _homePhone, System.String _workPhone, 
-			System.String _cellPhone, System.String _avatar, System.String _company, System.DateTime? _birthdate, 
-			System.Boolean _isFemale, System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public PatientBase(System.String _patientCode, System.String _firstName, System.String _lastName, 
+			System.String _memberType, System.String _homePhone, System.String _workPhone, System.String _cellPhone, 
+			System.String _avatar, System.String _companyCode, System.DateTime? _birthdate, System.Boolean _isFemale, 
+			System.String _title, System.String _note, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new PatientEntityData();
 			this.backupData = null;
 
-			this.Id = _id;
 			this.PatientCode = _patientCode;
 			this.FirstName = _firstName;
 			this.LastName = _lastName;
-			this.Address = _address;
+			this.MemberType = _memberType;
 			this.HomePhone = _homePhone;
 			this.WorkPhone = _workPhone;
 			this.CellPhone = _cellPhone;
 			this.Avatar = _avatar;
-			this.Company = _company;
+			this.CompanyCode = _companyCode;
 			this.Birthdate = _birthdate;
 			this.IsFemale = _isFemale;
 			this.Title = _title;
@@ -133,16 +131,15 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="Patient"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_patientCode"></param>
 		///<param name="_firstName"></param>
 		///<param name="_lastName"></param>
-		///<param name="_address"></param>
+		///<param name="_memberType"></param>
 		///<param name="_homePhone"></param>
 		///<param name="_workPhone"></param>
 		///<param name="_cellPhone"></param>
 		///<param name="_avatar"></param>
-		///<param name="_company"></param>
+		///<param name="_companyCode"></param>
 		///<param name="_birthdate"></param>
 		///<param name="_isFemale"></param>
 		///<param name="_title"></param>
@@ -152,23 +149,22 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Patient CreatePatient(System.String _id, System.String _patientCode, System.String _firstName, 
-			System.String _lastName, System.String _address, System.String _homePhone, System.String _workPhone, 
-			System.String _cellPhone, System.String _avatar, System.String _company, System.DateTime? _birthdate, 
-			System.Boolean _isFemale, System.String _title, System.String _note, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+		public static Patient CreatePatient(System.String _patientCode, System.String _firstName, System.String _lastName, 
+			System.String _memberType, System.String _homePhone, System.String _workPhone, System.String _cellPhone, 
+			System.String _avatar, System.String _companyCode, System.DateTime? _birthdate, System.Boolean _isFemale, 
+			System.String _title, System.String _note, System.Boolean _isDisabled, System.String _createUser, 
+			System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			Patient newPatient = new Patient();
-			newPatient.Id = _id;
 			newPatient.PatientCode = _patientCode;
 			newPatient.FirstName = _firstName;
 			newPatient.LastName = _lastName;
-			newPatient.Address = _address;
+			newPatient.MemberType = _memberType;
 			newPatient.HomePhone = _homePhone;
 			newPatient.WorkPhone = _workPhone;
 			newPatient.CellPhone = _cellPhone;
 			newPatient.Avatar = _avatar;
-			newPatient.Company = _company;
+			newPatient.CompanyCode = _companyCode;
 			newPatient.Birthdate = _birthdate;
 			newPatient.IsFemale = _isFemale;
 			newPatient.Title = _title;
@@ -187,10 +183,10 @@ namespace AppointmentSystem.Entities
 		
 		#region Data Properties		
 		/// <summary>
-		/// 	Gets or sets the Id property. 
+		/// 	Gets or sets the PatientCode property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is nchar.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
@@ -200,56 +196,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, false, false, 20)]
-		public virtual System.String Id
-		{
-			get
-			{
-				return this.entityData.Id; 
-			}
-			
-			set
-			{
-				if (this.entityData.Id == value)
-					return;
-					
-				OnColumnChanging(PatientColumn.Id, this.entityData.Id);
-				this.entityData.Id = value;
-				this.EntityId.Id = value;
-				if (this.EntityState == EntityState.Unchanged)
-					this.EntityState = EntityState.Changed;
-				OnColumnChanged(PatientColumn.Id, this.entityData.Id);
-				OnPropertyChanged("Id");
-			}
-		}
-		
-		/// <summary>
-		/// 	Get the original value of the Id property.
-		///		
-		/// </summary>
-		/// <remarks>This is the original value of the Id property.</remarks>
-		/// <value>This type is nvarchar</value>
-		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
-		public  virtual System.String OriginalId
-		{
-			get { return this.entityData.OriginalId; }
-			set { this.entityData.OriginalId = value; }
-		}
-		
-		/// <summary>
-		/// 	Gets or sets the PatientCode property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar.</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// </remarks>
-
-
-
-
-		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 20)]
+		[DataObjectField(true, false, false, 10)]
 		public virtual System.String PatientCode
 		{
 			get
@@ -264,11 +211,25 @@ namespace AppointmentSystem.Entities
 					
 				OnColumnChanging(PatientColumn.PatientCode, this.entityData.PatientCode);
 				this.entityData.PatientCode = value;
+				this.EntityId.PatientCode = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(PatientColumn.PatientCode, this.entityData.PatientCode);
 				OnPropertyChanged("PatientCode");
 			}
+		}
+		
+		/// <summary>
+		/// 	Get the original value of the PatientCode property.
+		///		
+		/// </summary>
+		/// <remarks>This is the original value of the PatientCode property.</remarks>
+		/// <value>This type is nchar</value>
+		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
+		public  virtual System.String OriginalPatientCode
+		{
+			get { return this.entityData.OriginalPatientCode; }
+			set { this.entityData.OriginalPatientCode = value; }
 		}
 		
 		/// <summary>
@@ -344,7 +305,7 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or sets the Address property. 
+		/// 	Gets or sets the MemberType property. 
 		///		
 		/// </summary>
 		/// <value>This type is nvarchar.</value>
@@ -356,25 +317,25 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 500)]
-		public virtual System.String Address
+		[DataObjectField(false, false, true, 50)]
+		public virtual System.String MemberType
 		{
 			get
 			{
-				return this.entityData.Address; 
+				return this.entityData.MemberType; 
 			}
 			
 			set
 			{
-				if (this.entityData.Address == value)
+				if (this.entityData.MemberType == value)
 					return;
 					
-				OnColumnChanging(PatientColumn.Address, this.entityData.Address);
-				this.entityData.Address = value;
+				OnColumnChanging(PatientColumn.MemberType, this.entityData.MemberType);
+				this.entityData.MemberType = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
-				OnColumnChanged(PatientColumn.Address, this.entityData.Address);
-				OnPropertyChanged("Address");
+				OnColumnChanged(PatientColumn.MemberType, this.entityData.MemberType);
+				OnPropertyChanged("MemberType");
 			}
 		}
 		
@@ -519,7 +480,7 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or sets the Company property. 
+		/// 	Gets or sets the CompanyCode property. 
 		///		
 		/// </summary>
 		/// <value>This type is nvarchar.</value>
@@ -532,24 +493,24 @@ namespace AppointmentSystem.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, true, 200)]
-		public virtual System.String Company
+		public virtual System.String CompanyCode
 		{
 			get
 			{
-				return this.entityData.Company; 
+				return this.entityData.CompanyCode; 
 			}
 			
 			set
 			{
-				if (this.entityData.Company == value)
+				if (this.entityData.CompanyCode == value)
 					return;
 					
-				OnColumnChanging(PatientColumn.Company, this.entityData.Company);
-				this.entityData.Company = value;
+				OnColumnChanging(PatientColumn.CompanyCode, this.entityData.CompanyCode);
+				this.entityData.CompanyCode = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
-				OnColumnChanged(PatientColumn.Company, this.entityData.Company);
-				OnPropertyChanged("Company");
+				OnColumnChanged(PatientColumn.CompanyCode, this.entityData.CompanyCode);
+				OnPropertyChanged("CompanyCode");
 			}
 		}
 		
@@ -901,11 +862,9 @@ namespace AppointmentSystem.Entities
 		{
 			//Validation rules based on database schema.
 			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("Id", "Id"));
+				new ValidationRuleArgs("PatientCode", "Patient Code"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("PatientCode", "Patient Code", 20));
+				new CommonRules.MaxLengthRuleArgs("PatientCode", "Patient Code", 10));
 			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("FirstName", "First Name"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -915,7 +874,7 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("LastName", "Last Name", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Address", "Address", 500));
+				new CommonRules.MaxLengthRuleArgs("MemberType", "Member Type", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("HomePhone", "Home Phone", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -925,7 +884,7 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Avatar", "Avatar", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Company", "Company", 200));
+				new CommonRules.MaxLengthRuleArgs("CompanyCode", "Company Code", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 10));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -955,7 +914,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "PatientCode", "FirstName", "LastName", "Address", "HomePhone", "WorkPhone", "CellPhone", "Avatar", "Company", "Birthdate", "IsFemale", "Title", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"PatientCode", "FirstName", "LastName", "MemberType", "HomePhone", "WorkPhone", "CellPhone", "Avatar", "CompanyCode", "Birthdate", "IsFemale", "Title", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1103,17 +1062,16 @@ namespace AppointmentSystem.Entities
 			Patient copy = new Patient();
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
-				copy.Id = this.Id;
-					copy.OriginalId = this.OriginalId;
 				copy.PatientCode = this.PatientCode;
+					copy.OriginalPatientCode = this.OriginalPatientCode;
 				copy.FirstName = this.FirstName;
 				copy.LastName = this.LastName;
-				copy.Address = this.Address;
+				copy.MemberType = this.MemberType;
 				copy.HomePhone = this.HomePhone;
 				copy.WorkPhone = this.WorkPhone;
 				copy.CellPhone = this.CellPhone;
 				copy.Avatar = this.Avatar;
-				copy.Company = this.Company;
+				copy.CompanyCode = this.CompanyCode;
 				copy.Birthdate = this.Birthdate;
 				copy.IsFemale = this.IsFemale;
 				copy.Title = this.Title;
@@ -1257,16 +1215,14 @@ namespace AppointmentSystem.Entities
 		{
 			switch(column)
 			{
-					case PatientColumn.Id:
-					return entityData.Id != _originalData.Id;
 					case PatientColumn.PatientCode:
 					return entityData.PatientCode != _originalData.PatientCode;
 					case PatientColumn.FirstName:
 					return entityData.FirstName != _originalData.FirstName;
 					case PatientColumn.LastName:
 					return entityData.LastName != _originalData.LastName;
-					case PatientColumn.Address:
-					return entityData.Address != _originalData.Address;
+					case PatientColumn.MemberType:
+					return entityData.MemberType != _originalData.MemberType;
 					case PatientColumn.HomePhone:
 					return entityData.HomePhone != _originalData.HomePhone;
 					case PatientColumn.WorkPhone:
@@ -1275,8 +1231,8 @@ namespace AppointmentSystem.Entities
 					return entityData.CellPhone != _originalData.CellPhone;
 					case PatientColumn.Avatar:
 					return entityData.Avatar != _originalData.Avatar;
-					case PatientColumn.Company:
-					return entityData.Company != _originalData.Company;
+					case PatientColumn.CompanyCode:
+					return entityData.CompanyCode != _originalData.CompanyCode;
 					case PatientColumn.Birthdate:
 					return entityData.Birthdate != _originalData.Birthdate;
 					case PatientColumn.IsFemale:
@@ -1322,16 +1278,15 @@ namespace AppointmentSystem.Entities
 		public bool HasDataChanged()
 		{
 			bool result = false;
-			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.PatientCode != _originalData.PatientCode;
 			result = result || entityData.FirstName != _originalData.FirstName;
 			result = result || entityData.LastName != _originalData.LastName;
-			result = result || entityData.Address != _originalData.Address;
+			result = result || entityData.MemberType != _originalData.MemberType;
 			result = result || entityData.HomePhone != _originalData.HomePhone;
 			result = result || entityData.WorkPhone != _originalData.WorkPhone;
 			result = result || entityData.CellPhone != _originalData.CellPhone;
 			result = result || entityData.Avatar != _originalData.Avatar;
-			result = result || entityData.Company != _originalData.Company;
+			result = result || entityData.CompanyCode != _originalData.CompanyCode;
 			result = result || entityData.Birthdate != _originalData.Birthdate;
 			result = result || entityData.IsFemale != _originalData.IsFemale;
 			result = result || entityData.Title != _originalData.Title;
@@ -1351,16 +1306,15 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreatePatient(
-				_originalData.Id,
 				_originalData.PatientCode,
 				_originalData.FirstName,
 				_originalData.LastName,
-				_originalData.Address,
+				_originalData.MemberType,
 				_originalData.HomePhone,
 				_originalData.WorkPhone,
 				_originalData.CellPhone,
 				_originalData.Avatar,
-				_originalData.Company,
+				_originalData.CompanyCode,
 				_originalData.Birthdate,
 				_originalData.IsFemale,
 				_originalData.Title,
@@ -1399,16 +1353,15 @@ namespace AppointmentSystem.Entities
         /// <returns>number (hash code) that corresponds to the value of an object</returns>
         public override int GetHashCode()
         {
-			return this.Id.GetHashCode() ^ 
-					((this.PatientCode == null) ? string.Empty : this.PatientCode.ToString()).GetHashCode() ^ 
+			return this.PatientCode.GetHashCode() ^ 
 					this.FirstName.GetHashCode() ^ 
 					this.LastName.GetHashCode() ^ 
-					((this.Address == null) ? string.Empty : this.Address.ToString()).GetHashCode() ^ 
+					((this.MemberType == null) ? string.Empty : this.MemberType.ToString()).GetHashCode() ^ 
 					((this.HomePhone == null) ? string.Empty : this.HomePhone.ToString()).GetHashCode() ^ 
 					((this.WorkPhone == null) ? string.Empty : this.WorkPhone.ToString()).GetHashCode() ^ 
 					((this.CellPhone == null) ? string.Empty : this.CellPhone.ToString()).GetHashCode() ^ 
 					((this.Avatar == null) ? string.Empty : this.Avatar.ToString()).GetHashCode() ^ 
-					((this.Company == null) ? string.Empty : this.Company.ToString()).GetHashCode() ^ 
+					((this.CompanyCode == null) ? string.Empty : this.CompanyCode.ToString()).GetHashCode() ^ 
 					((this.Birthdate == null) ? string.Empty : this.Birthdate.ToString()).GetHashCode() ^ 
 					this.IsFemale.GetHashCode() ^ 
 					((this.Title == null) ? string.Empty : this.Title.ToString()).GetHashCode() ^ 
@@ -1450,27 +1403,18 @@ namespace AppointmentSystem.Entities
 				return false;
 				
 			bool equal = true;
-			if (Object1.Id != Object2.Id)
+			if (Object1.PatientCode != Object2.PatientCode)
 				equal = false;
-			if ( Object1.PatientCode != null && Object2.PatientCode != null )
-			{
-				if (Object1.PatientCode != Object2.PatientCode)
-					equal = false;
-			}
-			else if (Object1.PatientCode == null ^ Object2.PatientCode == null )
-			{
-				equal = false;
-			}
 			if (Object1.FirstName != Object2.FirstName)
 				equal = false;
 			if (Object1.LastName != Object2.LastName)
 				equal = false;
-			if ( Object1.Address != null && Object2.Address != null )
+			if ( Object1.MemberType != null && Object2.MemberType != null )
 			{
-				if (Object1.Address != Object2.Address)
+				if (Object1.MemberType != Object2.MemberType)
 					equal = false;
 			}
-			else if (Object1.Address == null ^ Object2.Address == null )
+			else if (Object1.MemberType == null ^ Object2.MemberType == null )
 			{
 				equal = false;
 			}
@@ -1510,12 +1454,12 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
-			if ( Object1.Company != null && Object2.Company != null )
+			if ( Object1.CompanyCode != null && Object2.CompanyCode != null )
 			{
-				if (Object1.Company != Object2.Company)
+				if (Object1.CompanyCode != Object2.CompanyCode)
 					equal = false;
 			}
-			else if (Object1.Company == null ^ Object2.Company == null )
+			else if (Object1.CompanyCode == null ^ Object2.CompanyCode == null )
 			{
 				equal = false;
 			}
@@ -1616,12 +1560,6 @@ namespace AppointmentSystem.Entities
             {
             	
             	
-            	case PatientColumn.Id:
-            		return this.Id.CompareTo(rhs.Id);
-            		
-            		                 
-            	
-            	
             	case PatientColumn.PatientCode:
             		return this.PatientCode.CompareTo(rhs.PatientCode);
             		
@@ -1640,8 +1578,8 @@ namespace AppointmentSystem.Entities
             		                 
             	
             	
-            	case PatientColumn.Address:
-            		return this.Address.CompareTo(rhs.Address);
+            	case PatientColumn.MemberType:
+            		return this.MemberType.CompareTo(rhs.MemberType);
             		
             		                 
             	
@@ -1670,8 +1608,8 @@ namespace AppointmentSystem.Entities
             		                 
             	
             	
-            	case PatientColumn.Company:
-            		return this.Company.CompareTo(rhs.Company);
+            	case PatientColumn.CompanyCode:
+            		return this.CompanyCode.CompareTo(rhs.CompanyCode);
             		
             		                 
             	
@@ -1843,7 +1781,7 @@ namespace AppointmentSystem.Entities
 			{
 				if(entityTrackingKey == null)
 					entityTrackingKey = new System.Text.StringBuilder("Patient")
-					.Append("|").Append( this.Id.ToString()).ToString();
+					.Append("|").Append( this.PatientCode.ToString()).ToString();
 				return entityTrackingKey;
 			}
 			set
@@ -1862,17 +1800,16 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{20}{19}- Id: {0}{19}- PatientCode: {1}{19}- FirstName: {2}{19}- LastName: {3}{19}- Address: {4}{19}- HomePhone: {5}{19}- WorkPhone: {6}{19}- CellPhone: {7}{19}- Avatar: {8}{19}- Company: {9}{19}- Birthdate: {10}{19}- IsFemale: {11}{19}- Title: {12}{19}- Note: {13}{19}- IsDisabled: {14}{19}- CreateUser: {15}{19}- CreateDate: {16}{19}- UpdateUser: {17}{19}- UpdateDate: {18}{19}{21}", 
-				this.Id,
-				(this.PatientCode == null) ? string.Empty : this.PatientCode.ToString(),
+				"{19}{18}- PatientCode: {0}{18}- FirstName: {1}{18}- LastName: {2}{18}- MemberType: {3}{18}- HomePhone: {4}{18}- WorkPhone: {5}{18}- CellPhone: {6}{18}- Avatar: {7}{18}- CompanyCode: {8}{18}- Birthdate: {9}{18}- IsFemale: {10}{18}- Title: {11}{18}- Note: {12}{18}- IsDisabled: {13}{18}- CreateUser: {14}{18}- CreateDate: {15}{18}- UpdateUser: {16}{18}- UpdateDate: {17}{18}{20}", 
+				this.PatientCode,
 				this.FirstName,
 				this.LastName,
-				(this.Address == null) ? string.Empty : this.Address.ToString(),
+				(this.MemberType == null) ? string.Empty : this.MemberType.ToString(),
 				(this.HomePhone == null) ? string.Empty : this.HomePhone.ToString(),
 				(this.WorkPhone == null) ? string.Empty : this.WorkPhone.ToString(),
 				(this.CellPhone == null) ? string.Empty : this.CellPhone.ToString(),
 				(this.Avatar == null) ? string.Empty : this.Avatar.ToString(),
-				(this.Company == null) ? string.Empty : this.Company.ToString(),
+				(this.CompanyCode == null) ? string.Empty : this.CompanyCode.ToString(),
 				(this.Birthdate == null) ? string.Empty : this.Birthdate.ToString(),
 				this.IsFemale,
 				(this.Title == null) ? string.Empty : this.Title.ToString(),
@@ -1906,25 +1843,20 @@ namespace AppointmentSystem.Entities
 		
 		#region Primary key(s)
 		/// <summary>			
-		/// Id : 
+		/// PatientCode : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Patient"</remarks>
-		public System.String Id;
+		public System.String PatientCode;
 			
 		/// <summary>
 		/// keep a copy of the original so it can be used for editable primary keys.
 		/// </summary>
-		public System.String OriginalId;
+		public System.String OriginalPatientCode;
 		
 		#endregion
 		
 		#region Non Primary key(s)
 		
-		
-		/// <summary>
-		/// PatientCode : 
-		/// </summary>
-		public System.String		  PatientCode = null;
 		
 		/// <summary>
 		/// FirstName : 
@@ -1937,9 +1869,9 @@ namespace AppointmentSystem.Entities
 		public System.String		  LastName = string.Empty;
 		
 		/// <summary>
-		/// Address : 
+		/// MemberType : 
 		/// </summary>
-		public System.String		  Address = null;
+		public System.String		  MemberType = null;
 		
 		/// <summary>
 		/// HomePhone : 
@@ -1962,9 +1894,9 @@ namespace AppointmentSystem.Entities
 		public System.String		  Avatar = null;
 		
 		/// <summary>
-		/// Company : 
+		/// CompanyCode : 
 		/// </summary>
-		public System.String		  Company = null;
+		public System.String		  CompanyCode = null;
 		
 		/// <summary>
 		/// Birthdate : 
@@ -2056,18 +1988,17 @@ namespace AppointmentSystem.Entities
 		{
 			PatientEntityData _tmp = new PatientEntityData();
 						
-			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
-			
 			_tmp.PatientCode = this.PatientCode;
+			_tmp.OriginalPatientCode = this.OriginalPatientCode;
+			
 			_tmp.FirstName = this.FirstName;
 			_tmp.LastName = this.LastName;
-			_tmp.Address = this.Address;
+			_tmp.MemberType = this.MemberType;
 			_tmp.HomePhone = this.HomePhone;
 			_tmp.WorkPhone = this.WorkPhone;
 			_tmp.CellPhone = this.CellPhone;
 			_tmp.Avatar = this.Avatar;
-			_tmp.Company = this.Company;
+			_tmp.CompanyCode = this.CompanyCode;
 			_tmp.Birthdate = this.Birthdate;
 			_tmp.IsFemale = this.IsFemale;
 			_tmp.Title = this.Title;
@@ -2104,18 +2035,17 @@ namespace AppointmentSystem.Entities
 				
 			PatientEntityData _tmp = new PatientEntityData();
 						
-			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
-			
 			_tmp.PatientCode = this.PatientCode;
+			_tmp.OriginalPatientCode = this.OriginalPatientCode;
+			
 			_tmp.FirstName = this.FirstName;
 			_tmp.LastName = this.LastName;
-			_tmp.Address = this.Address;
+			_tmp.MemberType = this.MemberType;
 			_tmp.HomePhone = this.HomePhone;
 			_tmp.WorkPhone = this.WorkPhone;
 			_tmp.CellPhone = this.CellPhone;
 			_tmp.Avatar = this.Avatar;
-			_tmp.Company = this.Company;
+			_tmp.CompanyCode = this.CompanyCode;
 			_tmp.Birthdate = this.Birthdate;
 			_tmp.IsFemale = this.IsFemale;
 			_tmp.Title = this.Title;
@@ -2385,7 +2315,7 @@ namespace AppointmentSystem.Entities
 
 			if ( entity != null )
 			{
-				this.Id = entity.Id;
+				this.PatientCode = entity.PatientCode;
 			}
 
 			#endregion
@@ -2394,11 +2324,11 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Initializes a new instance of the PatientKey class.
 		/// </summary>
-		public PatientKey(System.String _id)
+		public PatientKey(System.String _patientCode)
 		{
 			#region Init Properties
 
-			this.Id = _id;
+			this.PatientCode = _patientCode;
 
 			#endregion
 		}
@@ -2419,21 +2349,21 @@ namespace AppointmentSystem.Entities
 			set { _entity = value; }
 		}
 		
-		// member variable for the Id property
-		private System.String _id;
+		// member variable for the PatientCode property
+		private System.String _patientCode;
 		
 		/// <summary>
-		/// Gets or sets the Id property.
+		/// Gets or sets the PatientCode property.
 		/// </summary>
-		public System.String Id
+		public System.String PatientCode
 		{
-			get { return _id; }
+			get { return _patientCode; }
 			set
 			{
 				if ( this.Entity != null )
-					this.Entity.Id = value;
+					this.Entity.PatientCode = value;
 				
-				_id = value;
+				_patientCode = value;
 			}
 		}
 		
@@ -2453,7 +2383,7 @@ namespace AppointmentSystem.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
+				PatientCode = ( values["PatientCode"] != null ) ? (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String)) : string.Empty;
 			}
 
 			#endregion
@@ -2470,7 +2400,7 @@ namespace AppointmentSystem.Entities
 
 			#region Init Dictionary
 
-			values.Add("Id", Id);
+			values.Add("PatientCode", PatientCode);
 
 			#endregion Init Dictionary
 
@@ -2482,8 +2412,8 @@ namespace AppointmentSystem.Entities
 		///</summary>
 		public override string ToString()
 		{
-			return String.Format("Id: {0}{1}",
-								Id,
+			return String.Format("PatientCode: {0}{1}",
+								PatientCode,
 								System.Environment.NewLine);
 		}
 
@@ -2501,119 +2431,113 @@ namespace AppointmentSystem.Entities
 	public enum PatientColumn : int
 	{
 		/// <summary>
-		/// Id : 
-		/// </summary>
-		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
-		Id = 1,
-		/// <summary>
 		/// PatientCode : 
 		/// </summary>
 		[EnumTextValue("PatientCode")]
-		[ColumnEnum("PatientCode", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		PatientCode = 2,
+		[ColumnEnum("PatientCode", typeof(System.String), System.Data.DbType.StringFixedLength, true, false, false, 10)]
+		PatientCode = 1,
 		/// <summary>
 		/// FirstName : 
 		/// </summary>
 		[EnumTextValue("FirstName")]
 		[ColumnEnum("FirstName", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
-		FirstName = 3,
+		FirstName = 2,
 		/// <summary>
 		/// LastName : 
 		/// </summary>
 		[EnumTextValue("LastName")]
 		[ColumnEnum("LastName", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
-		LastName = 4,
+		LastName = 3,
 		/// <summary>
-		/// Address : 
+		/// MemberType : 
 		/// </summary>
-		[EnumTextValue("Address")]
-		[ColumnEnum("Address", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Address = 5,
+		[EnumTextValue("MemberType")]
+		[ColumnEnum("MemberType", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		MemberType = 4,
 		/// <summary>
 		/// HomePhone : 
 		/// </summary>
 		[EnumTextValue("HomePhone")]
 		[ColumnEnum("HomePhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		HomePhone = 6,
+		HomePhone = 5,
 		/// <summary>
 		/// WorkPhone : 
 		/// </summary>
 		[EnumTextValue("WorkPhone")]
 		[ColumnEnum("WorkPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		WorkPhone = 7,
+		WorkPhone = 6,
 		/// <summary>
 		/// CellPhone : 
 		/// </summary>
 		[EnumTextValue("CellPhone")]
 		[ColumnEnum("CellPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		CellPhone = 8,
+		CellPhone = 7,
 		/// <summary>
 		/// Avatar : 
 		/// </summary>
 		[EnumTextValue("Avatar")]
 		[ColumnEnum("Avatar", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		Avatar = 9,
+		Avatar = 8,
 		/// <summary>
-		/// Company : 
+		/// CompanyCode : 
 		/// </summary>
-		[EnumTextValue("Company")]
-		[ColumnEnum("Company", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		Company = 10,
+		[EnumTextValue("CompanyCode")]
+		[ColumnEnum("CompanyCode", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
+		CompanyCode = 9,
 		/// <summary>
 		/// Birthdate : 
 		/// </summary>
 		[EnumTextValue("Birthdate")]
 		[ColumnEnum("Birthdate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		Birthdate = 11,
+		Birthdate = 10,
 		/// <summary>
 		/// IsFemale : 
 		/// </summary>
 		[EnumTextValue("IsFemale")]
 		[ColumnEnum("IsFemale", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsFemale = 12,
+		IsFemale = 11,
 		/// <summary>
 		/// Title : 
 		/// </summary>
 		[EnumTextValue("Title")]
 		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
-		Title = 13,
+		Title = 12,
 		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 14,
+		Note = 13,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 15,
+		IsDisabled = 14,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 16,
+		CreateUser = 15,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 17,
+		CreateDate = 16,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 18,
+		UpdateUser = 17,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 19
+		UpdateDate = 18
 	}//End enum
 
 	#endregion PatientColumn Enum

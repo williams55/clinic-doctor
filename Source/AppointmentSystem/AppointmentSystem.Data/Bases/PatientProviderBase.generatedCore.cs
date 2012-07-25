@@ -32,28 +32,28 @@ namespace AppointmentSystem.Data.Bases
 		/// <returns>Returns true if operation suceeded.</returns>
 		public override bool Delete(TransactionManager transactionManager, AppointmentSystem.Entities.PatientKey key)
 		{
-			return Delete(transactionManager, key.Id);
+			return Delete(transactionManager, key.PatientCode);
 		}
 		
 		/// <summary>
 		/// 	Deletes a row from the DataSource.
 		/// </summary>
-		/// <param name="_id">. Primary Key.</param>
+		/// <param name="_patientCode">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public bool Delete(System.String _id)
+		public bool Delete(System.String _patientCode)
 		{
-			return Delete(null, _id);
+			return Delete(null, _patientCode);
 		}
 		
 		/// <summary>
 		/// 	Deletes a row from the DataSource.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id">. Primary Key.</param>
+		/// <param name="_patientCode">. Primary Key.</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
-		public abstract bool Delete(TransactionManager transactionManager, System.String _id);		
+		public abstract bool Delete(TransactionManager transactionManager, System.String _patientCode);		
 		
 		#endregion Delete Methods
 		
@@ -72,74 +72,74 @@ namespace AppointmentSystem.Data.Bases
 		/// <returns>Returns an instance of the Entity class.</returns>
 		public override AppointmentSystem.Entities.Patient Get(TransactionManager transactionManager, AppointmentSystem.Entities.PatientKey key, int start, int pageLength)
 		{
-			return GetById(transactionManager, key.Id, start, pageLength);
+			return GetByPatientCode(transactionManager, key.PatientCode, start, pageLength);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the primary key PK_Patient index.
 		/// </summary>
-		/// <param name="_id"></param>
+		/// <param name="_patientCode"></param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Patient"/> class.</returns>
-		public AppointmentSystem.Entities.Patient GetById(System.String _id)
+		public AppointmentSystem.Entities.Patient GetByPatientCode(System.String _patientCode)
 		{
 			int count = -1;
-			return GetById(null,_id, 0, int.MaxValue, out count);
+			return GetByPatientCode(null,_patientCode, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the PK_Patient index.
 		/// </summary>
-		/// <param name="_id"></param>
+		/// <param name="_patientCode"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Patient"/> class.</returns>
-		public AppointmentSystem.Entities.Patient GetById(System.String _id, int start, int pageLength)
+		public AppointmentSystem.Entities.Patient GetByPatientCode(System.String _patientCode, int start, int pageLength)
 		{
 			int count = -1;
-			return GetById(null, _id, start, pageLength, out count);
+			return GetByPatientCode(null, _patientCode, start, pageLength, out count);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the PK_Patient index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id"></param>
+		/// <param name="_patientCode"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Patient"/> class.</returns>
-		public AppointmentSystem.Entities.Patient GetById(TransactionManager transactionManager, System.String _id)
+		public AppointmentSystem.Entities.Patient GetByPatientCode(TransactionManager transactionManager, System.String _patientCode)
 		{
 			int count = -1;
-			return GetById(transactionManager, _id, 0, int.MaxValue, out count);
+			return GetByPatientCode(transactionManager, _patientCode, 0, int.MaxValue, out count);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the PK_Patient index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id"></param>
+		/// <param name="_patientCode"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Patient"/> class.</returns>
-		public AppointmentSystem.Entities.Patient GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength)
+		public AppointmentSystem.Entities.Patient GetByPatientCode(TransactionManager transactionManager, System.String _patientCode, int start, int pageLength)
 		{
 			int count = -1;
-			return GetById(transactionManager, _id, start, pageLength, out count);
+			return GetByPatientCode(transactionManager, _patientCode, start, pageLength, out count);
 		}
 		
 		/// <summary>
 		/// 	Gets rows from the datasource based on the PK_Patient index.
 		/// </summary>
-		/// <param name="_id"></param>
+		/// <param name="_patientCode"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Patient"/> class.</returns>
-		public AppointmentSystem.Entities.Patient GetById(System.String _id, int start, int pageLength, out int count)
+		public AppointmentSystem.Entities.Patient GetByPatientCode(System.String _patientCode, int start, int pageLength, out int count)
 		{
-			return GetById(null, _id, start, pageLength, out count);
+			return GetByPatientCode(null, _patientCode, start, pageLength, out count);
 		}
 		
 				
@@ -147,12 +147,12 @@ namespace AppointmentSystem.Data.Bases
 		/// 	Gets rows from the datasource based on the PK_Patient index.
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id"></param>
+		/// <param name="_patientCode"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Patient"/> class.</returns>
-		public abstract AppointmentSystem.Entities.Patient GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count);
+		public abstract AppointmentSystem.Entities.Patient GetByPatientCode(TransactionManager transactionManager, System.String _patientCode, int start, int pageLength, out int count);
 						
 		#endregion "Get By Index Functions"
 	
@@ -196,7 +196,7 @@ namespace AppointmentSystem.Data.Bases
 				if (useEntityFactory)
 				{
 					key = new System.Text.StringBuilder("Patient")
-					.Append("|").Append((System.String)reader[((int)PatientColumn.Id - 1)]).ToString();
+					.Append("|").Append((System.String)reader[((int)PatientColumn.PatientCode - 1)]).ToString();
 					c = EntityManager.LocateOrCreate<Patient>(
 					key.ToString(), // EntityTrackingKey
 					"Patient",  //Creational Type
@@ -219,17 +219,16 @@ namespace AppointmentSystem.Data.Bases
 					))
 				{
 					c.SuppressEntityEvents = true;
-					c.Id = (System.String)reader[((int)PatientColumn.Id - 1)];
-					c.OriginalId = c.Id;
-					c.PatientCode = (reader.IsDBNull(((int)PatientColumn.PatientCode - 1)))?null:(System.String)reader[((int)PatientColumn.PatientCode - 1)];
+					c.PatientCode = (System.String)reader[((int)PatientColumn.PatientCode - 1)];
+					c.OriginalPatientCode = c.PatientCode;
 					c.FirstName = (System.String)reader[((int)PatientColumn.FirstName - 1)];
 					c.LastName = (System.String)reader[((int)PatientColumn.LastName - 1)];
-					c.Address = (reader.IsDBNull(((int)PatientColumn.Address - 1)))?null:(System.String)reader[((int)PatientColumn.Address - 1)];
+					c.MemberType = (reader.IsDBNull(((int)PatientColumn.MemberType - 1)))?null:(System.String)reader[((int)PatientColumn.MemberType - 1)];
 					c.HomePhone = (reader.IsDBNull(((int)PatientColumn.HomePhone - 1)))?null:(System.String)reader[((int)PatientColumn.HomePhone - 1)];
 					c.WorkPhone = (reader.IsDBNull(((int)PatientColumn.WorkPhone - 1)))?null:(System.String)reader[((int)PatientColumn.WorkPhone - 1)];
 					c.CellPhone = (reader.IsDBNull(((int)PatientColumn.CellPhone - 1)))?null:(System.String)reader[((int)PatientColumn.CellPhone - 1)];
 					c.Avatar = (reader.IsDBNull(((int)PatientColumn.Avatar - 1)))?null:(System.String)reader[((int)PatientColumn.Avatar - 1)];
-					c.Company = (reader.IsDBNull(((int)PatientColumn.Company - 1)))?null:(System.String)reader[((int)PatientColumn.Company - 1)];
+					c.CompanyCode = (reader.IsDBNull(((int)PatientColumn.CompanyCode - 1)))?null:(System.String)reader[((int)PatientColumn.CompanyCode - 1)];
 					c.Birthdate = (reader.IsDBNull(((int)PatientColumn.Birthdate - 1)))?null:(System.DateTime?)reader[((int)PatientColumn.Birthdate - 1)];
 					c.IsFemale = (System.Boolean)reader[((int)PatientColumn.IsFemale - 1)];
 					c.Title = (reader.IsDBNull(((int)PatientColumn.Title - 1)))?null:(System.String)reader[((int)PatientColumn.Title - 1)];
@@ -256,17 +255,16 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if (!reader.Read()) return;
 			
-			entity.Id = (System.String)reader[((int)PatientColumn.Id - 1)];
-			entity.OriginalId = (System.String)reader["Id"];
-			entity.PatientCode = (reader.IsDBNull(((int)PatientColumn.PatientCode - 1)))?null:(System.String)reader[((int)PatientColumn.PatientCode - 1)];
+			entity.PatientCode = (System.String)reader[((int)PatientColumn.PatientCode - 1)];
+			entity.OriginalPatientCode = (System.String)reader["PatientCode"];
 			entity.FirstName = (System.String)reader[((int)PatientColumn.FirstName - 1)];
 			entity.LastName = (System.String)reader[((int)PatientColumn.LastName - 1)];
-			entity.Address = (reader.IsDBNull(((int)PatientColumn.Address - 1)))?null:(System.String)reader[((int)PatientColumn.Address - 1)];
+			entity.MemberType = (reader.IsDBNull(((int)PatientColumn.MemberType - 1)))?null:(System.String)reader[((int)PatientColumn.MemberType - 1)];
 			entity.HomePhone = (reader.IsDBNull(((int)PatientColumn.HomePhone - 1)))?null:(System.String)reader[((int)PatientColumn.HomePhone - 1)];
 			entity.WorkPhone = (reader.IsDBNull(((int)PatientColumn.WorkPhone - 1)))?null:(System.String)reader[((int)PatientColumn.WorkPhone - 1)];
 			entity.CellPhone = (reader.IsDBNull(((int)PatientColumn.CellPhone - 1)))?null:(System.String)reader[((int)PatientColumn.CellPhone - 1)];
 			entity.Avatar = (reader.IsDBNull(((int)PatientColumn.Avatar - 1)))?null:(System.String)reader[((int)PatientColumn.Avatar - 1)];
-			entity.Company = (reader.IsDBNull(((int)PatientColumn.Company - 1)))?null:(System.String)reader[((int)PatientColumn.Company - 1)];
+			entity.CompanyCode = (reader.IsDBNull(((int)PatientColumn.CompanyCode - 1)))?null:(System.String)reader[((int)PatientColumn.CompanyCode - 1)];
 			entity.Birthdate = (reader.IsDBNull(((int)PatientColumn.Birthdate - 1)))?null:(System.DateTime?)reader[((int)PatientColumn.Birthdate - 1)];
 			entity.IsFemale = (System.Boolean)reader[((int)PatientColumn.IsFemale - 1)];
 			entity.Title = (reader.IsDBNull(((int)PatientColumn.Title - 1)))?null:(System.String)reader[((int)PatientColumn.Title - 1)];
@@ -288,17 +286,16 @@ namespace AppointmentSystem.Data.Bases
 		{
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
-			entity.Id = (System.String)dataRow["Id"];
-			entity.OriginalId = (System.String)dataRow["Id"];
-			entity.PatientCode = Convert.IsDBNull(dataRow["PatientCode"]) ? null : (System.String)dataRow["PatientCode"];
+			entity.PatientCode = (System.String)dataRow["PatientCode"];
+			entity.OriginalPatientCode = (System.String)dataRow["PatientCode"];
 			entity.FirstName = (System.String)dataRow["FirstName"];
 			entity.LastName = (System.String)dataRow["LastName"];
-			entity.Address = Convert.IsDBNull(dataRow["Address"]) ? null : (System.String)dataRow["Address"];
+			entity.MemberType = Convert.IsDBNull(dataRow["MemberType"]) ? null : (System.String)dataRow["MemberType"];
 			entity.HomePhone = Convert.IsDBNull(dataRow["HomePhone"]) ? null : (System.String)dataRow["HomePhone"];
 			entity.WorkPhone = Convert.IsDBNull(dataRow["WorkPhone"]) ? null : (System.String)dataRow["WorkPhone"];
 			entity.CellPhone = Convert.IsDBNull(dataRow["CellPhone"]) ? null : (System.String)dataRow["CellPhone"];
 			entity.Avatar = Convert.IsDBNull(dataRow["Avatar"]) ? null : (System.String)dataRow["Avatar"];
-			entity.Company = Convert.IsDBNull(dataRow["Company"]) ? null : (System.String)dataRow["Company"];
+			entity.CompanyCode = Convert.IsDBNull(dataRow["CompanyCode"]) ? null : (System.String)dataRow["CompanyCode"];
 			entity.Birthdate = Convert.IsDBNull(dataRow["Birthdate"]) ? null : (System.DateTime?)dataRow["Birthdate"];
 			entity.IsFemale = (System.Boolean)dataRow["IsFemale"];
 			entity.Title = Convert.IsDBNull(dataRow["Title"]) ? null : (System.String)dataRow["Title"];
@@ -335,7 +332,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
-			// Deep load child collections  - Call GetById methods when available
+			// Deep load child collections  - Call GetByPatientCode methods when available
 			
 			#region AppointmentCollection
 			//Relationship Type One : Many
@@ -345,7 +342,7 @@ namespace AppointmentSystem.Data.Bases
 				System.Diagnostics.Debug.WriteLine("- property 'AppointmentCollection' loaded. key " + entity.EntityTrackingKey);
 				#endif 
 
-				entity.AppointmentCollection = DataRepository.AppointmentProvider.GetByPatientId(transactionManager, entity.Id);
+				entity.AppointmentCollection = DataRepository.AppointmentProvider.GetByPatientId(transactionManager, entity.PatientCode);
 
 				if (deep && entity.AppointmentCollection.Count > 0)
 				{
@@ -404,11 +401,11 @@ namespace AppointmentSystem.Data.Bases
 					{
 						if(child.PatientIdSource != null)
 						{
-							child.PatientId = child.PatientIdSource.Id;
+							child.PatientId = child.PatientIdSource.PatientCode;
 						}
 						else
 						{
-							child.PatientId = entity.Id;
+							child.PatientId = entity.PatientCode;
 						}
 
 					}

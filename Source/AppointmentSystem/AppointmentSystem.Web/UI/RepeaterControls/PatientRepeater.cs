@@ -332,15 +332,6 @@ namespace AppointmentSystem.Web.UI
 		}
 		
         /// <summary>
-        /// Gets the Id
-        /// </summary>
-        /// <value>The Id.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String Id
-		{
-			get { return _entity.Id; }
-		}
-        /// <summary>
         /// Gets the PatientCode
         /// </summary>
         /// <value>The PatientCode.</value>
@@ -368,13 +359,13 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.LastName; }
 		}
         /// <summary>
-        /// Gets the Address
+        /// Gets the MemberType
         /// </summary>
-        /// <value>The Address.</value>
+        /// <value>The MemberType.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String Address
+		public System.String MemberType
 		{
-			get { return _entity.Address; }
+			get { return _entity.MemberType; }
 		}
         /// <summary>
         /// Gets the HomePhone
@@ -413,13 +404,13 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Avatar; }
 		}
         /// <summary>
-        /// Gets the Company
+        /// Gets the CompanyCode
         /// </summary>
-        /// <value>The Company.</value>
+        /// <value>The CompanyCode.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String Company
+		public System.String CompanyCode
 		{
-			get { return _entity.Company; }
+			get { return _entity.CompanyCode; }
 		}
         /// <summary>
         /// Gets the Birthdate
