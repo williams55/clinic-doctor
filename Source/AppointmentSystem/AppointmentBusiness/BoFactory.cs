@@ -8,5 +8,6 @@ namespace AppointmentBusiness.BO
     public static class BoFactory
     {
         public static IUserBO UserBO { get { return new UserBO(); } }
+        public static IStatusBO StatusBO { get { return new StatusBO(); } }
     }
 }

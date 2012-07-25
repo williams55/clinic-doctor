@@ -12,7 +12,7 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataPatientId" runat="server" Text="Patient Id:" AssociatedControlID="dataPatientId" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataPatientId" DataSourceID="PatientIdPatientDataSource" DataTextField="FirstName" DataValueField="Id" SelectedValue='<%# Bind("PatientId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:EntityDropDownList runat="server" ID="dataPatientId" DataSourceID="PatientIdPatientDataSource" DataTextField="PatientCode" DataValueField="Id" SelectedValue='<%# Bind("PatientId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
 					<data:PatientDataSource ID="PatientIdPatientDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>

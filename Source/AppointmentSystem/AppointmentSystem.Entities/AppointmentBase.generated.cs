@@ -98,7 +98,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public AppointmentBase(System.String _id, System.String _patientId, System.String _doctorId, 
-			System.Int32? _roomId, System.Int32? _servicesId, System.Int32? _statusId, System.Int32? _appointmentGroupId, 
+			System.Int32? _roomId, System.Int32? _servicesId, System.String _statusId, System.Int32? _appointmentGroupId, 
 			System.String _note, System.DateTime? _startTime, System.DateTime? _endTime, System.Boolean _isComplete, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
@@ -144,7 +144,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
 		public static Appointment CreateAppointment(System.String _id, System.String _patientId, System.String _doctorId, 
-			System.Int32? _roomId, System.Int32? _servicesId, System.Int32? _statusId, System.Int32? _appointmentGroupId, 
+			System.Int32? _roomId, System.Int32? _servicesId, System.String _statusId, System.Int32? _appointmentGroupId, 
 			System.String _note, System.DateTime? _startTime, System.DateTime? _endTime, System.Boolean _isComplete, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
@@ -374,19 +374,17 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the StatusId property. 
 		///		
 		/// </summary>
-		/// <value>This type is int.</value>
+		/// <value>This type is varchar.</value>
 		/// <remarks>
 		/// This property can be set to null. 
-		/// If this column is null, this property will return (int)0. It is up to the developer
-		/// to check the value of IsStatusIdNull() and perform business logic appropriately.
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true)]
-		public virtual System.Int32? StatusId
+		[DataObjectField(false, false, true, 20)]
+		public virtual System.String StatusId
 		{
 			get
 			{
@@ -602,7 +600,7 @@ namespace AppointmentSystem.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, false)]
-		public override System.Boolean IsDisabled
+		public virtual System.Boolean IsDisabled
 		{
 			get
 			{
@@ -860,6 +858,8 @@ namespace AppointmentSystem.Entities
 				new ValidationRuleArgs("DoctorId", "Doctor Id"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("DoctorId", "Doctor Id", 20));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("StatusId", "Status Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -1556,7 +1556,7 @@ namespace AppointmentSystem.Entities
             	
             	
             	case AppointmentColumn.StatusId:
-            		return this.StatusId.Value.CompareTo(rhs.StatusId.Value);
+            		return this.StatusId.CompareTo(rhs.StatusId);
             		
             		                 
             	
@@ -1832,7 +1832,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// StatusId : 
 		/// </summary>
-		public System.Int32?		  StatusId = null;
+		public System.String		  StatusId = null;
 		
 		/// <summary>
 		/// AppointmentGroupId : 
@@ -2485,7 +2485,7 @@ namespace AppointmentSystem.Entities
 		/// StatusId : 
 		/// </summary>
 		[EnumTextValue("StatusId")]
-		[ColumnEnum("StatusId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
+		[ColumnEnum("StatusId", typeof(System.String), System.Data.DbType.AnsiString, false, false, true, 20)]
 		StatusId = 6,
 		/// <summary>
 		/// AppointmentGroupId : 

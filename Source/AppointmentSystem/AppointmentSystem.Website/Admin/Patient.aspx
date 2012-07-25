@@ -17,6 +17,8 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
+				<asp:BoundField DataField="PatientCode" HeaderText="Patient Code" SortExpression="[PatientCode]"  />
+				<asp:BoundField DataField="Company" HeaderText="Company" SortExpression="[Company]"  />
 				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
 				<asp:BoundField DataField="FirstName" HeaderText="First Name" SortExpression="[FirstName]"  />
 				<asp:BoundField DataField="LastName" HeaderText="Last Name" SortExpression="[LastName]"  />

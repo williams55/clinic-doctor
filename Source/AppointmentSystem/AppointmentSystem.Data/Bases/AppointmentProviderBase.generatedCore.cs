@@ -405,7 +405,7 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="_statusId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByStatusId(System.Int32? _statusId)
+		public TList<Appointment> GetByStatusId(System.String _statusId)
 		{
 			int count = -1;
 			return GetByStatusId(_statusId, 0,int.MaxValue, out count);
@@ -419,7 +419,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_statusId"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
 		/// <remarks></remarks>
-		public TList<Appointment> GetByStatusId(TransactionManager transactionManager, System.Int32? _statusId)
+		public TList<Appointment> GetByStatusId(TransactionManager transactionManager, System.String _statusId)
 		{
 			int count = -1;
 			return GetByStatusId(transactionManager, _statusId, 0, int.MaxValue, out count);
@@ -435,7 +435,7 @@ namespace AppointmentSystem.Data.Bases
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByStatusId(TransactionManager transactionManager, System.Int32? _statusId, int start, int pageLength)
+		public TList<Appointment> GetByStatusId(TransactionManager transactionManager, System.String _statusId, int start, int pageLength)
 		{
 			int count = -1;
 			return GetByStatusId(transactionManager, _statusId, start, pageLength, out count);
@@ -450,7 +450,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="_statusId"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByStatusId(System.Int32? _statusId, int start, int pageLength)
+		public TList<Appointment> GetByStatusId(System.String _statusId, int start, int pageLength)
 		{
 			int count =  -1;
 			return GetByStatusId(null, _statusId, start, pageLength,out count);	
@@ -466,7 +466,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByStatusId(System.Int32? _statusId, int start, int pageLength,out int count)
+		public TList<Appointment> GetByStatusId(System.String _statusId, int start, int pageLength,out int count)
 		{
 			return GetByStatusId(null, _statusId, start, pageLength, out count);	
 		}
@@ -481,7 +481,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public abstract TList<Appointment> GetByStatusId(TransactionManager transactionManager, System.Int32? _statusId, int start, int pageLength, out int count);
+		public abstract TList<Appointment> GetByStatusId(TransactionManager transactionManager, System.String _statusId, int start, int pageLength, out int count);
 		
 	
 		/// <summary>
@@ -735,7 +735,7 @@ namespace AppointmentSystem.Data.Bases
 					c.DoctorId = (System.String)reader[((int)AppointmentColumn.DoctorId - 1)];
 					c.RoomId = (reader.IsDBNull(((int)AppointmentColumn.RoomId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.RoomId - 1)];
 					c.ServicesId = (reader.IsDBNull(((int)AppointmentColumn.ServicesId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.ServicesId - 1)];
-					c.StatusId = (reader.IsDBNull(((int)AppointmentColumn.StatusId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.StatusId - 1)];
+					c.StatusId = (reader.IsDBNull(((int)AppointmentColumn.StatusId - 1)))?null:(System.String)reader[((int)AppointmentColumn.StatusId - 1)];
 					c.AppointmentGroupId = (reader.IsDBNull(((int)AppointmentColumn.AppointmentGroupId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.AppointmentGroupId - 1)];
 					c.Note = (reader.IsDBNull(((int)AppointmentColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentColumn.Note - 1)];
 					c.StartTime = (reader.IsDBNull(((int)AppointmentColumn.StartTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.StartTime - 1)];
@@ -769,7 +769,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.DoctorId = (System.String)reader[((int)AppointmentColumn.DoctorId - 1)];
 			entity.RoomId = (reader.IsDBNull(((int)AppointmentColumn.RoomId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.RoomId - 1)];
 			entity.ServicesId = (reader.IsDBNull(((int)AppointmentColumn.ServicesId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.ServicesId - 1)];
-			entity.StatusId = (reader.IsDBNull(((int)AppointmentColumn.StatusId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.StatusId - 1)];
+			entity.StatusId = (reader.IsDBNull(((int)AppointmentColumn.StatusId - 1)))?null:(System.String)reader[((int)AppointmentColumn.StatusId - 1)];
 			entity.AppointmentGroupId = (reader.IsDBNull(((int)AppointmentColumn.AppointmentGroupId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.AppointmentGroupId - 1)];
 			entity.Note = (reader.IsDBNull(((int)AppointmentColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentColumn.Note - 1)];
 			entity.StartTime = (reader.IsDBNull(((int)AppointmentColumn.StartTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.StartTime - 1)];
@@ -798,7 +798,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.DoctorId = (System.String)dataRow["DoctorId"];
 			entity.RoomId = Convert.IsDBNull(dataRow["RoomId"]) ? null : (System.Int32?)dataRow["RoomId"];
 			entity.ServicesId = Convert.IsDBNull(dataRow["ServicesId"]) ? null : (System.Int32?)dataRow["ServicesId"];
-			entity.StatusId = Convert.IsDBNull(dataRow["StatusId"]) ? null : (System.Int32?)dataRow["StatusId"];
+			entity.StatusId = Convert.IsDBNull(dataRow["StatusId"]) ? null : (System.String)dataRow["StatusId"];
 			entity.AppointmentGroupId = Convert.IsDBNull(dataRow["AppointmentGroupId"]) ? null : (System.Int32?)dataRow["AppointmentGroupId"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.StartTime = Convert.IsDBNull(dataRow["StartTime"]) ? null : (System.DateTime?)dataRow["StartTime"];
@@ -943,12 +943,12 @@ namespace AppointmentSystem.Data.Bases
 				&& entity.StatusIdSource == null)
 			{
 				object[] pkItems = new object[1];
-				pkItems[0] = (entity.StatusId ?? (int)0);
+				pkItems[0] = (entity.StatusId ?? string.Empty);
 				Status tmpEntity = EntityManager.LocateEntity<Status>(EntityLocator.ConstructKeyFromPkItems(typeof(Status), pkItems), DataRepository.Provider.EnableEntityTracking);
 				if (tmpEntity != null)
 					entity.StatusIdSource = tmpEntity;
 				else
-					entity.StatusIdSource = DataRepository.StatusProvider.GetById(transactionManager, (entity.StatusId ?? (int)0));		
+					entity.StatusIdSource = DataRepository.StatusProvider.GetById(transactionManager, (entity.StatusId ?? string.Empty));		
 				
 				#if NETTIERS_DEBUG
 				System.Diagnostics.Debug.WriteLine("- property 'StatusIdSource' loaded. key " + entity.EntityTrackingKey);

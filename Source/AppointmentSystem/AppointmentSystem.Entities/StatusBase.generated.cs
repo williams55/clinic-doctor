@@ -81,27 +81,25 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="StatusBase"/> instance.
 		///</summary>
+		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_colorCode"></param>
 		///<param name="_priorityIndex"></param>
-		///<param name="_note"></param>
-		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public StatusBase(System.String _title, System.String _colorCode, System.Int32 _priorityIndex, 
-			System.String _note, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+		public StatusBase(System.String _id, System.String _title, System.String _colorCode, 
+			System.Int32 _priorityIndex, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			this.entityData = new StatusEntityData();
 			this.backupData = null;
 
+			this.Id = _id;
 			this.Title = _title;
 			this.ColorCode = _colorCode;
 			this.PriorityIndex = _priorityIndex;
-			this.Note = _note;
-			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
 			this.UpdateUser = _updateUser;
@@ -111,25 +109,23 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="Status"/> instance.
 		///</summary>
+		///<param name="_id"></param>
 		///<param name="_title"></param>
 		///<param name="_colorCode"></param>
 		///<param name="_priorityIndex"></param>
-		///<param name="_note"></param>
-		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Status CreateStatus(System.String _title, System.String _colorCode, System.Int32 _priorityIndex, 
-			System.String _note, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
-			System.String _updateUser, System.DateTime _updateDate)
+		public static Status CreateStatus(System.String _id, System.String _title, System.String _colorCode, 
+			System.Int32 _priorityIndex, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			Status newStatus = new Status();
+			newStatus.Id = _id;
 			newStatus.Title = _title;
 			newStatus.ColorCode = _colorCode;
 			newStatus.PriorityIndex = _priorityIndex;
-			newStatus.Note = _note;
-			newStatus.IsDisabled = _isDisabled;
 			newStatus.CreateUser = _createUser;
 			newStatus.CreateDate = _createDate;
 			newStatus.UpdateUser = _updateUser;
@@ -146,17 +142,18 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the Id property. 
 		///		
 		/// </summary>
-		/// <value>This type is int.</value>
+		/// <value>This type is varchar.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
-		[ReadOnlyAttribute(false)/*, XmlIgnoreAttribute()*/, DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, true, false)]
-		public virtual System.Int32 Id
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(true, false, false, 20)]
+		public virtual System.String Id
 		{
 			get
 			{
@@ -176,6 +173,19 @@ namespace AppointmentSystem.Entities
 				OnColumnChanged(StatusColumn.Id, this.entityData.Id);
 				OnPropertyChanged("Id");
 			}
+		}
+		
+		/// <summary>
+		/// 	Get the original value of the Id property.
+		///		
+		/// </summary>
+		/// <remarks>This is the original value of the Id property.</remarks>
+		/// <value>This type is varchar</value>
+		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
+		public  virtual System.String OriginalId
+		{
+			get { return this.entityData.OriginalId; }
+			set { this.entityData.OriginalId = value; }
 		}
 		
 		/// <summary>
@@ -282,76 +292,6 @@ namespace AppointmentSystem.Entities
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(StatusColumn.PriorityIndex, this.entityData.PriorityIndex);
 				OnPropertyChanged("PriorityIndex");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or sets the Note property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar.</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// </remarks>
-
-
-
-
-		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 500)]
-		public virtual System.String Note
-		{
-			get
-			{
-				return this.entityData.Note; 
-			}
-			
-			set
-			{
-				if (this.entityData.Note == value)
-					return;
-					
-				OnColumnChanging(StatusColumn.Note, this.entityData.Note);
-				this.entityData.Note = value;
-				if (this.EntityState == EntityState.Unchanged)
-					this.EntityState = EntityState.Changed;
-				OnColumnChanged(StatusColumn.Note, this.entityData.Note);
-				OnPropertyChanged("Note");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or sets the IsDisabled property. 
-		///		
-		/// </summary>
-		/// <value>This type is bit.</value>
-		/// <remarks>
-		/// This property can not be set to null. 
-		/// </remarks>
-
-
-
-
-		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false)]
-		public override System.Boolean IsDisabled
-		{
-			get
-			{
-				return this.entityData.IsDisabled; 
-			}
-			
-			set
-			{
-				if (this.entityData.IsDisabled == value)
-					return;
-					
-				OnColumnChanging(StatusColumn.IsDisabled, this.entityData.IsDisabled);
-				this.entityData.IsDisabled = value;
-				if (this.EntityState == EntityState.Unchanged)
-					this.EntityState = EntityState.Changed;
-				OnColumnChanged(StatusColumn.IsDisabled, this.entityData.IsDisabled);
-				OnPropertyChanged("IsDisabled");
 			}
 		}
 		
@@ -526,6 +466,10 @@ namespace AppointmentSystem.Entities
 		{
 			//Validation rules based on database schema.
 			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("Id", "Id"));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
+			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("Title", "Title"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
@@ -533,8 +477,6 @@ namespace AppointmentSystem.Entities
 				new ValidationRuleArgs("ColorCode", "Color Code"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("ColorCode", "Color Code", 10));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -560,7 +502,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Title", "ColorCode", "PriorityIndex", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Title", "ColorCode", "PriorityIndex", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -709,11 +651,10 @@ namespace AppointmentSystem.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
+					copy.OriginalId = this.OriginalId;
 				copy.Title = this.Title;
 				copy.ColorCode = this.ColorCode;
 				copy.PriorityIndex = this.PriorityIndex;
-				copy.Note = this.Note;
-				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
 				copy.UpdateUser = this.UpdateUser;
@@ -860,10 +801,6 @@ namespace AppointmentSystem.Entities
 					return entityData.ColorCode != _originalData.ColorCode;
 					case StatusColumn.PriorityIndex:
 					return entityData.PriorityIndex != _originalData.PriorityIndex;
-					case StatusColumn.Note:
-					return entityData.Note != _originalData.Note;
-					case StatusColumn.IsDisabled:
-					return entityData.IsDisabled != _originalData.IsDisabled;
 					case StatusColumn.CreateUser:
 					return entityData.CreateUser != _originalData.CreateUser;
 					case StatusColumn.CreateDate:
@@ -903,8 +840,6 @@ namespace AppointmentSystem.Entities
 			result = result || entityData.Title != _originalData.Title;
 			result = result || entityData.ColorCode != _originalData.ColorCode;
 			result = result || entityData.PriorityIndex != _originalData.PriorityIndex;
-			result = result || entityData.Note != _originalData.Note;
-			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
 			result = result || entityData.UpdateUser != _originalData.UpdateUser;
@@ -919,11 +854,10 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreateStatus(
+				_originalData.Id,
 				_originalData.Title,
 				_originalData.ColorCode,
 				_originalData.PriorityIndex,
-				_originalData.Note,
-				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
 				_originalData.UpdateUser,
@@ -961,8 +895,6 @@ namespace AppointmentSystem.Entities
 					this.Title.GetHashCode() ^ 
 					this.ColorCode.GetHashCode() ^ 
 					this.PriorityIndex.GetHashCode() ^ 
-					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
-					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
 					((this.UpdateUser == null) ? string.Empty : this.UpdateUser.ToString()).GetHashCode() ^ 
@@ -1006,17 +938,6 @@ namespace AppointmentSystem.Entities
 			if (Object1.ColorCode != Object2.ColorCode)
 				equal = false;
 			if (Object1.PriorityIndex != Object2.PriorityIndex)
-				equal = false;
-			if ( Object1.Note != null && Object2.Note != null )
-			{
-				if (Object1.Note != Object2.Note)
-					equal = false;
-			}
-			else if (Object1.Note == null ^ Object2.Note == null )
-			{
-				equal = false;
-			}
-			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
 			if ( Object1.CreateUser != null && Object2.CreateUser != null )
 			{
@@ -1104,18 +1025,6 @@ namespace AppointmentSystem.Entities
             	
             	case StatusColumn.PriorityIndex:
             		return this.PriorityIndex.CompareTo(rhs.PriorityIndex);
-            		
-            		                 
-            	
-            	
-            	case StatusColumn.Note:
-            		return this.Note.CompareTo(rhs.Note);
-            		
-            		                 
-            	
-            	
-            	case StatusColumn.IsDisabled:
-            		return this.IsDisabled.CompareTo(rhs.IsDisabled);
             		
             		                 
             	
@@ -1276,13 +1185,11 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{11}{10}- Id: {0}{10}- Title: {1}{10}- ColorCode: {2}{10}- PriorityIndex: {3}{10}- Note: {4}{10}- IsDisabled: {5}{10}- CreateUser: {6}{10}- CreateDate: {7}{10}- UpdateUser: {8}{10}- UpdateDate: {9}{10}{12}", 
+				"{9}{8}- Id: {0}{8}- Title: {1}{8}- ColorCode: {2}{8}- PriorityIndex: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
 				this.Id,
 				this.Title,
 				this.ColorCode,
 				this.PriorityIndex,
-				(this.Note == null) ? string.Empty : this.Note.ToString(),
-				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
 				(this.UpdateUser == null) ? string.Empty : this.UpdateUser.ToString(),
@@ -1314,8 +1221,13 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Status"</remarks>
-		public System.Int32 Id;
+		public System.String Id;
 			
+		/// <summary>
+		/// keep a copy of the original so it can be used for editable primary keys.
+		/// </summary>
+		public System.String OriginalId;
+		
 		#endregion
 		
 		#region Non Primary key(s)
@@ -1335,16 +1247,6 @@ namespace AppointmentSystem.Entities
 		/// PriorityIndex : 
 		/// </summary>
 		public System.Int32		  PriorityIndex = (int)1;
-		
-		/// <summary>
-		/// Note : 
-		/// </summary>
-		public System.String		  Note = null;
-		
-		/// <summary>
-		/// IsDisabled : 
-		/// </summary>
-		public System.Boolean		  IsDisabled = false;
 		
 		/// <summary>
 		/// CreateUser : 
@@ -1412,12 +1314,11 @@ namespace AppointmentSystem.Entities
 			StatusEntityData _tmp = new StatusEntityData();
 						
 			_tmp.Id = this.Id;
+			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.ColorCode = this.ColorCode;
 			_tmp.PriorityIndex = this.PriorityIndex;
-			_tmp.Note = this.Note;
-			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
 			_tmp.UpdateUser = this.UpdateUser;
@@ -1450,12 +1351,11 @@ namespace AppointmentSystem.Entities
 			StatusEntityData _tmp = new StatusEntityData();
 						
 			_tmp.Id = this.Id;
+			_tmp.OriginalId = this.OriginalId;
 			
 			_tmp.Title = this.Title;
 			_tmp.ColorCode = this.ColorCode;
 			_tmp.PriorityIndex = this.PriorityIndex;
-			_tmp.Note = this.Note;
-			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
 			_tmp.UpdateUser = this.UpdateUser;
@@ -1729,7 +1629,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Initializes a new instance of the StatusKey class.
 		/// </summary>
-		public StatusKey(System.Int32 _id)
+		public StatusKey(System.String _id)
 		{
 			#region Init Properties
 
@@ -1755,12 +1655,12 @@ namespace AppointmentSystem.Entities
 		}
 		
 		// member variable for the Id property
-		private System.Int32 _id;
+		private System.String _id;
 		
 		/// <summary>
 		/// Gets or sets the Id property.
 		/// </summary>
-		public System.Int32 Id
+		public System.String Id
 		{
 			get { return _id; }
 			set
@@ -1788,7 +1688,7 @@ namespace AppointmentSystem.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["Id"], typeof(System.Int32)) : (int)0;
+				Id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
 			}
 
 			#endregion
@@ -1839,7 +1739,7 @@ namespace AppointmentSystem.Entities
 		/// Id : 
 		/// </summary>
 		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.Int32), System.Data.DbType.Int32, true, true, false)]
+		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.AnsiString, true, false, false, 20)]
 		Id = 1,
 		/// <summary>
 		/// Title : 
@@ -1860,41 +1760,29 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("PriorityIndex", typeof(System.Int32), System.Data.DbType.Int32, false, false, false)]
 		PriorityIndex = 4,
 		/// <summary>
-		/// Note : 
-		/// </summary>
-		[EnumTextValue("Note")]
-		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 5,
-		/// <summary>
-		/// IsDisabled : 
-		/// </summary>
-		[EnumTextValue("IsDisabled")]
-		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 6,
-		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 7,
+		CreateUser = 5,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 8,
+		CreateDate = 6,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 9,
+		UpdateUser = 7,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 10
+		UpdateDate = 8
 	}//End enum
 
 	#endregion StatusColumn Enum

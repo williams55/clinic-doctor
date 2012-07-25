@@ -47,7 +47,7 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// StatusId : 
 		/// </summary>
-		System.Int32?  StatusId  { get; set; }
+		System.String  StatusId  { get; set; }
 		
 		/// <summary>
 		/// AppointmentGroupId : 

@@ -341,6 +341,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Id; }
 		}
         /// <summary>
+        /// Gets the PatientCode
+        /// </summary>
+        /// <value>The PatientCode.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String PatientCode
+		{
+			get { return _entity.PatientCode; }
+		}
+        /// <summary>
         /// Gets the FirstName
         /// </summary>
         /// <value>The FirstName.</value>
@@ -402,6 +411,15 @@ namespace AppointmentSystem.Web.UI
 		public System.String Avatar
 		{
 			get { return _entity.Avatar; }
+		}
+        /// <summary>
+        /// Gets the Company
+        /// </summary>
+        /// <value>The Company.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String Company
+		{
+			get { return _entity.Company; }
 		}
         /// <summary>
         /// Gets the Birthdate
