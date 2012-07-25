@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Patient - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="PatientDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="PatientCode" runat="server" DataSourceID="PatientDataSource">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/PatientFields.ascx" />
@@ -25,10 +25,10 @@
 		</data:MultiFormView>
 		
 		<data:PatientDataSource ID="PatientDataSource" runat="server"
-			SelectMethod="GetById"
+			SelectMethod="GetByPatientCode"
 		>
 			<Parameters>
-				<asp:QueryStringParameter Name="Id" QueryStringField="Id" Type="String" />
+				<asp:QueryStringParameter Name="PatientCode" QueryStringField="PatientCode" Type="String" />
 
 			</Parameters>
 		</data:PatientDataSource>
@@ -48,7 +48,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Patient Id" DataNavigateUrlFormatString="PatientEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="PatientIdSource" DataTextField="PatientCode" />
+				<data:HyperLinkField HeaderText="Patient Id" DataNavigateUrlFormatString="PatientEdit.aspx?PatientCode={0}" DataNavigateUrlFields="PatientCode" DataContainer="PatientIdSource" DataTextField="FirstName" />
 				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Services Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServicesIdSource" DataTextField="Title" />
@@ -87,7 +87,7 @@
 		    <Parameters>
 				<data:SqlParameter Name="Parameters">
 					<Filters>
-						<data:AppointmentFilter  Column="PatientId" QueryStringField="Id" /> 
+						<data:AppointmentFilter  Column="PatientId" QueryStringField="PatientCode" /> 
 					</Filters>
 				</data:SqlParameter>
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 

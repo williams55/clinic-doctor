@@ -9,7 +9,7 @@
 				AutoGenerateColumns="False"					
 				OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
 				DataSourceID="PatientDataSource"
-				DataKeyNames="Id"
+				DataKeyNames="PatientCode"
 				AllowMultiColumnSorting="false"
 				DefaultSortColumnName="" 
 				DefaultSortDirection="Ascending"	
@@ -17,12 +17,11 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
-				<asp:BoundField DataField="PatientCode" HeaderText="Patient Code" SortExpression="[PatientCode]"  />
-				<asp:BoundField DataField="Company" HeaderText="Company" SortExpression="[Company]"  />
-				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
+				<asp:BoundField DataField="MemberType" HeaderText="Member Type" SortExpression="[MemberType]"  />
+				<asp:BoundField DataField="CompanyCode" HeaderText="Company Code" SortExpression="[CompanyCode]"  />
+				<asp:BoundField DataField="PatientCode" HeaderText="Patient Code" SortExpression="[PatientCode]" ReadOnly="True" />
 				<asp:BoundField DataField="FirstName" HeaderText="First Name" SortExpression="[FirstName]"  />
 				<asp:BoundField DataField="LastName" HeaderText="Last Name" SortExpression="[LastName]"  />
-				<asp:BoundField DataField="Address" HeaderText="Address" SortExpression="[Address]"  />
 				<asp:BoundField DataField="HomePhone" HeaderText="Home Phone" SortExpression="[HomePhone]"  />
 				<asp:BoundField DataField="WorkPhone" HeaderText="Work Phone" SortExpression="[WorkPhone]"  />
 				<asp:BoundField DataField="CellPhone" HeaderText="Cell Phone" SortExpression="[CellPhone]"  />

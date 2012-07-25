@@ -159,7 +159,7 @@ namespace AppointmentSystem.Web.Data
 			Patient item;
 			count = 0;
 			
-			System.String _id;
+			System.String _patientCode;
 
 			switch ( SelectMethod )
 			{
@@ -184,9 +184,9 @@ namespace AppointmentSystem.Web.Data
 						results = PatientProvider.Find(GetTransactionManager(), WhereClause, StartIndex, PageSize, out count);
                     break;
 				// PK
-				case PatientSelectMethod.GetById:
-					_id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
-					item = PatientProvider.GetById(GetTransactionManager(), _id);
+				case PatientSelectMethod.GetByPatientCode:
+					_patientCode = ( values["PatientCode"] != null ) ? (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String)) : string.Empty;
+					item = PatientProvider.GetByPatientCode(GetTransactionManager(), _patientCode);
 					results = new TList<Patient>();
 					if ( item != null ) results.Add(item);
 					count = results.Count;
@@ -223,7 +223,7 @@ namespace AppointmentSystem.Web.Data
 		/// <param name="values">An IDictionary object of name/value pairs.</param>
 		protected override void GetSelectParameters(IDictionary values)
 		{
-			if ( SelectMethod == PatientSelectMethod.Get || SelectMethod == PatientSelectMethod.GetById )
+			if ( SelectMethod == PatientSelectMethod.Get || SelectMethod == PatientSelectMethod.GetByPatientCode )
 			{
 				EntityId = GetEntityKey(values);
 			}
@@ -370,9 +370,9 @@ namespace AppointmentSystem.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetById method.
+		/// Represents the GetByPatientCode method.
 		/// </summary>
-		GetById
+		GetByPatientCode
 	}
 	
 	#endregion PatientSelectMethod

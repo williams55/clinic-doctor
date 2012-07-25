@@ -12,22 +12,17 @@ namespace AppointmentSystem.Entities
 	public interface IPatient 
 	{
 		/// <summary>			
-		/// Id : 
+		/// PatientCode : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Patient"</remarks>
-		System.String Id { get; set; }
+		System.String PatientCode { get; set; }
 				
 		/// <summary>
 		/// keep a copy of the original so it can be used for editable primary keys.
 		/// </summary>
-		System.String OriginalId { get; set; }
+		System.String OriginalPatientCode { get; set; }
 			
 		
-		
-		/// <summary>
-		/// PatientCode : 
-		/// </summary>
-		System.String  PatientCode  { get; set; }
 		
 		/// <summary>
 		/// FirstName : 
@@ -40,9 +35,9 @@ namespace AppointmentSystem.Entities
 		System.String  LastName  { get; set; }
 		
 		/// <summary>
-		/// Address : 
+		/// MemberType : 
 		/// </summary>
-		System.String  Address  { get; set; }
+		System.String  MemberType  { get; set; }
 		
 		/// <summary>
 		/// HomePhone : 
@@ -65,9 +60,9 @@ namespace AppointmentSystem.Entities
 		System.String  Avatar  { get; set; }
 		
 		/// <summary>
-		/// Company : 
+		/// CompanyCode : 
 		/// </summary>
-		System.String  Company  { get; set; }
+		System.String  CompanyCode  { get; set; }
 		
 		/// <summary>
 		/// Birthdate : 

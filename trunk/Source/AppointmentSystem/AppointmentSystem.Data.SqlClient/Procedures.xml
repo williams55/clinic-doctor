@@ -6404,16 +6404,15 @@
 			<body><![CDATA[
 				
 				SELECT
-					[Id],
 					[PatientCode],
 					[FirstName],
 					[LastName],
-					[Address],
+					[MemberType],
 					[HomePhone],
 					[WorkPhone],
 					[CellPhone],
 					[Avatar],
-					[Company],
+					[CompanyCode],
 					[Birthdate],
 					[IsFemale],
 					[Title],
@@ -6460,18 +6459,18 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] nvarchar(20) COLLATE database_default  
+				    [PatientCode] nchar(10) COLLATE database_default  
 				)
 				
 				-- Insert into the temp table
 				DECLARE @SQL AS nvarchar(4000)
-				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
+				SET @SQL = 'INSERT INTO #PageIndex ([PatientCode])'
 				SET @SQL = @SQL + ' SELECT'
 				IF @PageSize > 0
 				BEGIN
 					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
 				END
-				SET @SQL = @SQL + ' [Id]'
+				SET @SQL = @SQL + ' [PatientCode]'
 				SET @SQL = @SQL + ' FROM [dbo].[Patient]'
 				IF LEN(@WhereClause) > 0
 				BEGIN
@@ -6486,13 +6485,13 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[PatientCode], O.[FirstName], O.[LastName], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[Company], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[PatientCode], O.[FirstName], O.[LastName], O.[MemberType], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[CompanyCode], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Patient] O,
 				    #PageIndex PageIndex
 				WHERE
 				    PageIndex.IndexId > @PageLowerBound
-					AND O.[Id] = PageIndex.[Id]
+					AND O.[PatientCode] = PageIndex.[PatientCode]
 				ORDER BY
 				    PageIndex.IndexId
 				
@@ -6519,16 +6518,15 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@PatientCode" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@Address" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
+				<parameter name="@MemberType" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@Company" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CompanyCode" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
@@ -6543,16 +6541,15 @@
 				
 				INSERT INTO [dbo].[Patient]
 					(
-					[Id]
-					,[PatientCode]
+					[PatientCode]
 					,[FirstName]
 					,[LastName]
-					,[Address]
+					,[MemberType]
 					,[HomePhone]
 					,[WorkPhone]
 					,[CellPhone]
 					,[Avatar]
-					,[Company]
+					,[CompanyCode]
 					,[Birthdate]
 					,[IsFemale]
 					,[Title]
@@ -6565,16 +6562,15 @@
 					)
 				VALUES
 					(
-					@Id
-					,@PatientCode
+					@PatientCode
 					,@FirstName
 					,@LastName
-					,@Address
+					,@MemberType
 					,@HomePhone
 					,@WorkPhone
 					,@CellPhone
 					,@Avatar
-					,@Company
+					,@CompanyCode
 					,@Birthdate
 					,@IsFemale
 					,@Title
@@ -6600,17 +6596,16 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@OriginalId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@PatientCode" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@OriginalPatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@Address" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
+				<parameter name="@MemberType" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@Company" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CompanyCode" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
@@ -6628,16 +6623,15 @@
 				UPDATE
 					[dbo].[Patient]
 				SET
-					[Id] = @Id
-					,[PatientCode] = @PatientCode
+					[PatientCode] = @PatientCode
 					,[FirstName] = @FirstName
 					,[LastName] = @LastName
-					,[Address] = @Address
+					,[MemberType] = @MemberType
 					,[HomePhone] = @HomePhone
 					,[WorkPhone] = @WorkPhone
 					,[CellPhone] = @CellPhone
 					,[Avatar] = @Avatar
-					,[Company] = @Company
+					,[CompanyCode] = @CompanyCode
 					,[Birthdate] = @Birthdate
 					,[IsFemale] = @IsFemale
 					,[Title] = @Title
@@ -6648,7 +6642,7 @@
 					,[UpdateUser] = @UpdateUser
 					,[UpdateDate] = @UpdateDate
 				WHERE
-[Id] = @OriginalId 
+[PatientCode] = @OriginalPatientCode 
 				
 			]]></body>
 		</procedure>
@@ -6662,16 +6656,16 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				DELETE FROM [dbo].[Patient] WITH (ROWLOCK) 
 				WHERE
-					[Id] = @Id
+					[PatientCode] = @PatientCode
 					
 			]]></body>
 		</procedure>
-		<procedure owner="dbo" name="Patient_GetById" >
+		<procedure owner="dbo" name="Patient_GetByPatientCode" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -6681,20 +6675,19 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SELECT
-					[Id],
 					[PatientCode],
 					[FirstName],
 					[LastName],
-					[Address],
+					[MemberType],
 					[HomePhone],
 					[WorkPhone],
 					[CellPhone],
 					[Avatar],
-					[Company],
+					[CompanyCode],
 					[Birthdate],
 					[IsFemale],
 					[Title],
@@ -6707,7 +6700,7 @@
 				FROM
 					[dbo].[Patient]
 				WHERE
-					[Id] = @Id
+					[PatientCode] = @PatientCode
 				SELECT @@ROWCOUNT
 					
 			]]></body>
@@ -6724,16 +6717,15 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
-				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@PatientCode" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
 				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@Address" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
+				<parameter name="@MemberType" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@Company" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@CompanyCode" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
 				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
@@ -6749,16 +6741,15 @@
   IF ISNULL(@SearchUsingOR, 0) <> 1
   BEGIN
     SELECT
-	  [Id]
-	, [PatientCode]
+	  [PatientCode]
 	, [FirstName]
 	, [LastName]
-	, [Address]
+	, [MemberType]
 	, [HomePhone]
 	, [WorkPhone]
 	, [CellPhone]
 	, [Avatar]
-	, [Company]
+	, [CompanyCode]
 	, [Birthdate]
 	, [IsFemale]
 	, [Title]
@@ -6771,16 +6762,15 @@
     FROM
 	[dbo].[Patient]
     WHERE 
-	 ([Id] = @Id OR @Id IS NULL)
-	AND ([PatientCode] = @PatientCode OR @PatientCode IS NULL)
+	 ([PatientCode] = @PatientCode OR @PatientCode IS NULL)
 	AND ([FirstName] = @FirstName OR @FirstName IS NULL)
 	AND ([LastName] = @LastName OR @LastName IS NULL)
-	AND ([Address] = @Address OR @Address IS NULL)
+	AND ([MemberType] = @MemberType OR @MemberType IS NULL)
 	AND ([HomePhone] = @HomePhone OR @HomePhone IS NULL)
 	AND ([WorkPhone] = @WorkPhone OR @WorkPhone IS NULL)
 	AND ([CellPhone] = @CellPhone OR @CellPhone IS NULL)
 	AND ([Avatar] = @Avatar OR @Avatar IS NULL)
-	AND ([Company] = @Company OR @Company IS NULL)
+	AND ([CompanyCode] = @CompanyCode OR @CompanyCode IS NULL)
 	AND ([Birthdate] = @Birthdate OR @Birthdate IS NULL)
 	AND ([IsFemale] = @IsFemale OR @IsFemale IS NULL)
 	AND ([Title] = @Title OR @Title IS NULL)
@@ -6795,16 +6785,15 @@
   ELSE
   BEGIN
     SELECT
-	  [Id]
-	, [PatientCode]
+	  [PatientCode]
 	, [FirstName]
 	, [LastName]
-	, [Address]
+	, [MemberType]
 	, [HomePhone]
 	, [WorkPhone]
 	, [CellPhone]
 	, [Avatar]
-	, [Company]
+	, [CompanyCode]
 	, [Birthdate]
 	, [IsFemale]
 	, [Title]
@@ -6817,16 +6806,15 @@
     FROM
 	[dbo].[Patient]
     WHERE 
-	 ([Id] = @Id AND @Id is not null)
-	OR ([PatientCode] = @PatientCode AND @PatientCode is not null)
+	 ([PatientCode] = @PatientCode AND @PatientCode is not null)
 	OR ([FirstName] = @FirstName AND @FirstName is not null)
 	OR ([LastName] = @LastName AND @LastName is not null)
-	OR ([Address] = @Address AND @Address is not null)
+	OR ([MemberType] = @MemberType AND @MemberType is not null)
 	OR ([HomePhone] = @HomePhone AND @HomePhone is not null)
 	OR ([WorkPhone] = @WorkPhone AND @WorkPhone is not null)
 	OR ([CellPhone] = @CellPhone AND @CellPhone is not null)
 	OR ([Avatar] = @Avatar AND @Avatar is not null)
-	OR ([Company] = @Company AND @Company is not null)
+	OR ([CompanyCode] = @CompanyCode AND @CompanyCode is not null)
 	OR ([Birthdate] = @Birthdate AND @Birthdate is not null)
 	OR ([IsFemale] = @IsFemale AND @IsFemale is not null)
 	OR ([Title] = @Title AND @Title is not null)
@@ -6860,23 +6848,23 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] nvarchar(20) COLLATE database_default  
+				    [PatientCode] nchar(10) COLLATE database_default  
 				)
 				
 				-- Insert into the temp table
-				INSERT INTO #PageIndex ( [Id] )
-				SELECT TOP {3} [Id]
+				INSERT INTO #PageIndex ( [PatientCode] )
+				SELECT TOP {3} [PatientCode]
 				FROM [dbo].[Patient] {0}
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[PatientCode], O.[FirstName], O.[LastName], O.[Address], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[Company], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[PatientCode], O.[FirstName], O.[LastName], O.[MemberType], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[CompanyCode], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Patient] O,
 				    #PageIndex PageIndex
 				WHERE
 				    PageIndex.IndexId > {2}
-				    AND O.[Id] = PageIndex.[Id]
+				    AND O.[PatientCode] = PageIndex.[PatientCode]
 				ORDER BY
 				    PageIndex.IndexId
 				
@@ -7542,7 +7530,7 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@PatientId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@PatientId" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@DoctorId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@RoomId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@ServicesId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
@@ -7615,7 +7603,7 @@
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@OriginalId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@PatientId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@PatientId" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@DoctorId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@RoomId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@ServicesId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
@@ -7729,7 +7717,7 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@PatientId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@PatientId" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SET ANSI_NULLS OFF
@@ -7975,7 +7963,7 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@PatientId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@PatientId" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
 				<parameter name="@DoctorId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@RoomId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@ServicesId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>

@@ -24,7 +24,7 @@ public partial class Admin_Patient : System.Web.UI.Page
 
 	protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		string urlParams = string.Format("Id={0}", GridView1.SelectedDataKey.Values[0]);
+		string urlParams = string.Format("PatientCode={0}", GridView1.SelectedDataKey.Values[0]);
 		Response.Redirect("PatientEdit.aspx?" + urlParams, true);
 	}
 	
