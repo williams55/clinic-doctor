@@ -84,7 +84,7 @@ function initSchedule(weekday) {
 function BlockReadonly(id) {
     GetPatientInfo(id);
     if (!id) return true;
-    return !scheduler.getEvent(id).readonly;
+    return !scheduler.getEvent(id).ReadOnly;
 }
 
 // Function will be raise when event changed
@@ -97,7 +97,7 @@ function BeforeDrag(id) {
 // Function will be raise when event changed
 function EventChanged(eventId, objEvent) {
     // Case move event
-    if (scheduler._drag_mode && scheduler._drag_mode == 'move') {
+    if (scheduler._drag_mode && (scheduler._drag_mode == 'move' || scheduler._drag_mode == 'resize')) {
         MoveAppointment(eventId, objEvent);
     }
 }
@@ -242,7 +242,7 @@ function GetToken() {
             propertyToSearch: "propertyToSearch",
             noResultsText: "Cannot find patient",
             searchingText: "Searching...",
-            hintText: "Name, Birthday, Address, Phone"
+            hintText: "Name, Birthday, Phone"
         }
     );
 }
@@ -395,13 +395,11 @@ function CreateSimplePatient(firstname, lastname, cellPhone, adddress, dialog) {
 /****************************Patient - End******************************/
 
 /****************************Appointment - Start******************************/
-// Save moved appointment
+// Save moved, resize appointment
 function MoveAppointment(eventId, objEvent) {
     var requestdata = JSON.stringify({ id: eventId, startTime: objEvent.start_date
                 , endTime: objEvent.end_date, doctorId: objEvent.section_id
     });
-    console.log(CurrentAppointment);
-    console.log(objEvent);
     $.ajax({
         type: "POST",
         url: "Default.aspx/MoveAppointment",
@@ -492,9 +490,8 @@ function NewAppointment() {
         success: function(response) {
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
-                $("#RosterForm").dialog("close");
-                scheduler.endLightbox(false, html("RosterForm"));
                 AddAppointment(obj.data);
+                $("#RosterForm").dialog("close");
             }
             else {
                 ShowDialog("", "", obj.message, "");

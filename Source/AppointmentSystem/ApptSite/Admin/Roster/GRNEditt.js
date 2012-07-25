@@ -351,8 +351,16 @@ function NewRoster() {
     }
 
     DisableAllElements($("#tblContent"), false);
-    var requestdata = JSON.stringify({ doctorId: doctor[0].id, rosterTypeId: rosterType, startTime: fromTime, endTime: toTime,
-        startDate: fromDate, endDate: toDate, note: note, repeatRoster: repeat, weekday: weekday
+    var requestdata = JSON.stringify({
+        doctorId: doctor[0].id,
+        rosterTypeId: rosterType,
+        startTime: fromTime,
+        endTime: toTime,
+        startDate: fromDate,
+        endDate: toDate,
+        note: note,
+        repeatRoster: repeat,
+        weekday: weekday
     });
     $.ajax({
         type: "POST",
@@ -488,7 +496,6 @@ function DeleteRoster(id) {
             if (obj.result == "true") {
                 scheduler.deleteEvent(id);
                 $("#RosterForm").dialog("close");
-                scheduler.endLightbox(false, html("RosterForm"));
             }
             alert(obj.message);
         },

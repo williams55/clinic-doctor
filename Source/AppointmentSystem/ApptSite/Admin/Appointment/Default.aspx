@@ -40,6 +40,8 @@
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
 
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/analogclock.js") %>"></script>
+
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/styles/token-input.css") %>"
         type="text/css" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler.css") %>"
@@ -193,7 +195,7 @@
                         </td>
                         <td colspan="2">
                             <span id="lblDoctor" style="font-weight: bold;"></span>
-                            <input type="hidden" id="hdfDoctor"/>
+                            <input type="hidden" id="hdfDoctor" />
                         </td>
                     </tr>
                     <tr>
@@ -232,7 +234,7 @@
                         <td colspan="2">
                             <select id="cboRoom">
                             </select>
-                            <input type="hidden" id="hdfRoom"/>
+                            <input type="hidden" id="hdfRoom" />
                             <span id="loadingRoom" class="loading"></span>
                         </td>
                     </tr>
