@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.Script.Services;
+using AppointmentBusiness.BO;
 using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
@@ -89,21 +90,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
-            int count;
-            var lst = DataRepository.StatusProvider.GetPaged("IsDisabled = 'False'"
-                                                            , "PriorityIndex ASC", 0,
-                                                            ServiceFacade.SettingsHelper.GetPagedLength, out count);
+            var lst = DataRepository.StatusProvider.GetAll();
 
             cboStatus.DataSource = lst;
             cboStatus.DataTextField = "Title";
             cboStatus.DataValueField = "Id";
             cboStatus.DataBind();
 
-            lst.Add(new Status
-            {
-                Title = "Out of date",
-                ColorCode = ServiceFacade.SettingsHelper.CompleteColor
-            });
             rptStatus.DataSource = lst;
             rptStatus.DataBind();
         }
@@ -656,7 +649,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             newObj.RoomId = Convert.ToInt32(roomId);
             newObj.ServicesId = serviceId;
             newObj.Note = note;
-            newObj.StatusId = Convert.ToInt32(status);
+            newObj.StatusId = status;
             newObj.StartTime = dtStart;
             newObj.EndTime = dtEnd;
             newObj.CreateUser = Username;
@@ -765,7 +758,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             {
                 return WebCommon.BuildFailedResult(_message);
             }
-            
+
             // Get appointment by Id
             Appointment appointment = DataRepository.AppointmentProvider.GetById(id);
             var dtStart = new DateTime();
@@ -858,20 +851,19 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Check Doctor
-            if (string.IsNullOrEmpty(DoctorUsername) || DoctorUsername == "")
+            if (string.IsNullOrEmpty(DoctorUsername))
             {
                 return WebCommon.BuildFailedResult("You must choose doctor.");
             }
 
             // Check Room
-            if (string.IsNullOrEmpty(RoomId) || RoomId == "")
+            if (string.IsNullOrEmpty(RoomId))
             {
                 return WebCommon.BuildFailedResult("You must choose room.");
             }
 
             // Check Status
-            int statusId;
-            if (!Int32.TryParse(Status, out statusId))
+            if (string.IsNullOrEmpty(Status))
             {
                 return WebCommon.BuildFailedResult("You must choose status.");
             }
@@ -906,8 +898,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Check exists Room
-            Status objStatus = DataRepository.StatusProvider.GetById(statusId);
-            if (objStatus == null || objStatus.IsDisabled)
+            Status objStatus = DataRepository.StatusProvider.GetById(Status);
+            if (objStatus == null)
             {
                 tm.Rollback();
                 return WebCommon.BuildFailedResult("Status is not exist.");
@@ -952,7 +944,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             obj.DoctorId = objDoctor.Id;
             obj.RoomId = roomId;
             obj.Note = Note;
-            obj.StatusId = statusId;
+            obj.StatusId = Status;
             obj.StartTime = dtStart;
             obj.EndTime = dtEnd;
             obj.UpdateUser = Username;
@@ -995,7 +987,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <summary>
     /// Get list of appointment in day
     /// </summary>
-    /// <param name="mode">Floor Id</param>
+    /// <param name="mode"></param>
     /// <param name="currentDateView">Date</param>
     /// <returns></returns>
     [WebMethod]
@@ -1005,13 +997,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
-            tm.BeginTransaction();
-
             // Check active user
-            Users objDoctor = DataRepository.UsersProvider.GetByUsername(Username);
-            if (objDoctor == null || objDoctor.IsDisabled)
+            if (!CheckReading(out _message))
             {
-                return WebCommon.BuildFailedResult("Doctor is not exist.");
+                return WebCommon.BuildFailedResult(_message);
             }
 
             #region "Load appointment"
@@ -1022,17 +1011,23 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             int count;
 
             // Get appointment
-            TList<Appointment> lstAppt = DataRepository.AppointmentProvider.GetPaged(String.Format("StartTime BETWEEN N'{0}' AND N'{1}'"
-                , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"), toDate.ToString("yyyy-MM-dd HH:mm:ss.000")), string.Empty, 0, 10000, out count);
-            //TList<Appointment> lstAppt = DataRepository.AppointmentProvider.GetPaged(0, 10000, out count); // Good performance later
+            TList<Appointment> lstAppt =
+                DataRepository.AppointmentProvider.GetPaged(String.Format("StartTime BETWEEN N'{0}' AND N'{1}'"
+                                                                          , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                                                                          toDate.ToString("yyyy-MM-dd HH:mm:ss.000")),
+                                                            string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength,
+                                                            out count);
 
+            tm.BeginTransaction();
             // Set out of date for passed appointment
-            //lstAppt.ForEach(x =>
-            //{
-            //    x.ColorCode = x.StartTime <= DateTime.Now
-            //                      ? ServiceFacade.SettingsHelper.CompleteColor
-            //                      : x.ColorCode;
-            //});
+            lstAppt.ForEach(x =>
+                                {
+                                    x.StatusId = x.StartTime <= DateTime.Now &&
+                                                 x.StatusId != BoFactory.StatusBO.Complete &&
+                                                 x.StatusId != BoFactory.StatusBO.Cancel
+                                                     ? BoFactory.StatusBO.Complete
+                                                     : x.StatusId;
+                                });
             DataRepository.AppointmentProvider.Save(lstAppt);
             #endregion
 
@@ -1560,8 +1555,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             #region Validate
             // Check Status
-            int statusId;
-            if (!Int32.TryParse(status, out statusId))
+            if (string.IsNullOrEmpty(status))
             {
                 message = "You must choose status.";
                 return false;
@@ -1644,8 +1638,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Check exists Room
-            Status objStatus = DataRepository.StatusProvider.GetById(statusId);
-            if (objStatus == null || objStatus.IsDisabled)
+            Status objStatus = DataRepository.StatusProvider.GetById(status);
+            if (objStatus == null)
             {
                 message = "Status is not exist.";
                 return false;
@@ -1667,7 +1661,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 message = "Doctor or service is not available to get list of available room.";
                 return false;
             }
-            
+
             // Set value for service Id
             serviceId = doctorService.ServiceId;
             #endregion

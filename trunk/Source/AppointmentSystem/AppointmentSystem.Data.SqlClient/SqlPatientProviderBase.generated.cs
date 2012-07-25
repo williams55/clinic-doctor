@@ -176,6 +176,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@PatientCode", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@FirstName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@LastName", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Address", DbType.String, DBNull.Value);
@@ -183,6 +184,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@WorkPhone", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CellPhone", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Avatar", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Company", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Birthdate", DbType.DateTime, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
@@ -210,6 +212,12 @@ namespace AppointmentSystem.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@Id", 
 						clause.Trim().Remove(0,2).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("patientcode ") || clause.Trim().StartsWith("patientcode="))
+				{
+					database.SetParameterValue(commandWrapper, "@PatientCode", 
+						clause.Trim().Remove(0,11).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("firstname ") || clause.Trim().StartsWith("firstname="))
@@ -252,6 +260,12 @@ namespace AppointmentSystem.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@Avatar", 
 						clause.Trim().Remove(0,6).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("company ") || clause.Trim().StartsWith("company="))
+				{
+					database.SetParameterValue(commandWrapper, "@Company", 
+						clause.Trim().Remove(0,7).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("birthdate ") || clause.Trim().StartsWith("birthdate="))
@@ -695,40 +709,45 @@ namespace AppointmentSystem.Data.SqlClient
 			DataTable dataTable = new DataTable();
 			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.String));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("FirstName", typeof(System.String));
-			col1.AllowDBNull = false;		
-			DataColumn col2 = dataTable.Columns.Add("LastName", typeof(System.String));
+			DataColumn col1 = dataTable.Columns.Add("PatientCode", typeof(System.String));
+			col1.AllowDBNull = true;		
+			DataColumn col2 = dataTable.Columns.Add("FirstName", typeof(System.String));
 			col2.AllowDBNull = false;		
-			DataColumn col3 = dataTable.Columns.Add("Address", typeof(System.String));
-			col3.AllowDBNull = true;		
-			DataColumn col4 = dataTable.Columns.Add("HomePhone", typeof(System.String));
+			DataColumn col3 = dataTable.Columns.Add("LastName", typeof(System.String));
+			col3.AllowDBNull = false;		
+			DataColumn col4 = dataTable.Columns.Add("Address", typeof(System.String));
 			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("WorkPhone", typeof(System.String));
+			DataColumn col5 = dataTable.Columns.Add("HomePhone", typeof(System.String));
 			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("CellPhone", typeof(System.String));
+			DataColumn col6 = dataTable.Columns.Add("WorkPhone", typeof(System.String));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("Avatar", typeof(System.String));
+			DataColumn col7 = dataTable.Columns.Add("CellPhone", typeof(System.String));
 			col7.AllowDBNull = true;		
-			DataColumn col8 = dataTable.Columns.Add("Birthdate", typeof(System.DateTime));
+			DataColumn col8 = dataTable.Columns.Add("Avatar", typeof(System.String));
 			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
-			col9.AllowDBNull = false;		
-			DataColumn col10 = dataTable.Columns.Add("Title", typeof(System.String));
+			DataColumn col9 = dataTable.Columns.Add("Company", typeof(System.String));
+			col9.AllowDBNull = true;		
+			DataColumn col10 = dataTable.Columns.Add("Birthdate", typeof(System.DateTime));
 			col10.AllowDBNull = true;		
-			DataColumn col11 = dataTable.Columns.Add("Note", typeof(System.String));
-			col11.AllowDBNull = true;		
-			DataColumn col12 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col12.AllowDBNull = false;		
-			DataColumn col13 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			DataColumn col11 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
+			col11.AllowDBNull = false;		
+			DataColumn col12 = dataTable.Columns.Add("Title", typeof(System.String));
+			col12.AllowDBNull = true;		
+			DataColumn col13 = dataTable.Columns.Add("Note", typeof(System.String));
 			col13.AllowDBNull = true;		
-			DataColumn col14 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			DataColumn col14 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
 			col14.AllowDBNull = false;		
-			DataColumn col15 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			DataColumn col15 = dataTable.Columns.Add("CreateUser", typeof(System.String));
 			col15.AllowDBNull = true;		
-			DataColumn col16 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			DataColumn col16 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
 			col16.AllowDBNull = false;		
+			DataColumn col17 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col17.AllowDBNull = true;		
+			DataColumn col18 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col18.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
+			bulkCopy.ColumnMappings.Add("PatientCode", "PatientCode");
 			bulkCopy.ColumnMappings.Add("FirstName", "FirstName");
 			bulkCopy.ColumnMappings.Add("LastName", "LastName");
 			bulkCopy.ColumnMappings.Add("Address", "Address");
@@ -736,6 +755,7 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.ColumnMappings.Add("WorkPhone", "WorkPhone");
 			bulkCopy.ColumnMappings.Add("CellPhone", "CellPhone");
 			bulkCopy.ColumnMappings.Add("Avatar", "Avatar");
+			bulkCopy.ColumnMappings.Add("Company", "Company");
 			bulkCopy.ColumnMappings.Add("Birthdate", "Birthdate");
 			bulkCopy.ColumnMappings.Add("IsFemale", "IsFemale");
 			bulkCopy.ColumnMappings.Add("Title", "Title");
@@ -754,6 +774,9 @@ namespace AppointmentSystem.Data.SqlClient
 				DataRow row = dataTable.NewRow();
 				
 					row["Id"] = entity.Id;
+							
+				
+					row["PatientCode"] = entity.PatientCode;
 							
 				
 					row["FirstName"] = entity.FirstName;
@@ -775,6 +798,9 @@ namespace AppointmentSystem.Data.SqlClient
 							
 				
 					row["Avatar"] = entity.Avatar;
+							
+				
+					row["Company"] = entity.Company;
 							
 				
 					row["Birthdate"] = entity.Birthdate.HasValue ? (object) entity.Birthdate  : System.DBNull.Value;
@@ -839,6 +865,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Patient_Insert", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
+			database.AddInParameter(commandWrapper, "@PatientCode", DbType.String, entity.PatientCode );
 			database.AddInParameter(commandWrapper, "@FirstName", DbType.String, entity.FirstName );
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@Address", DbType.String, entity.Address );
@@ -846,6 +873,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@WorkPhone", DbType.String, entity.WorkPhone );
 			database.AddInParameter(commandWrapper, "@CellPhone", DbType.String, entity.CellPhone );
 			database.AddInParameter(commandWrapper, "@Avatar", DbType.String, entity.Avatar );
+			database.AddInParameter(commandWrapper, "@Company", DbType.String, entity.Company );
 			database.AddInParameter(commandWrapper, "@Birthdate", DbType.DateTime, (entity.Birthdate.HasValue ? (object) entity.Birthdate  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, entity.IsFemale );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
@@ -904,6 +932,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
+			database.AddInParameter(commandWrapper, "@PatientCode", DbType.String, entity.PatientCode );
 			database.AddInParameter(commandWrapper, "@FirstName", DbType.String, entity.FirstName );
 			database.AddInParameter(commandWrapper, "@LastName", DbType.String, entity.LastName );
 			database.AddInParameter(commandWrapper, "@Address", DbType.String, entity.Address );
@@ -911,6 +940,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@WorkPhone", DbType.String, entity.WorkPhone );
 			database.AddInParameter(commandWrapper, "@CellPhone", DbType.String, entity.CellPhone );
 			database.AddInParameter(commandWrapper, "@Avatar", DbType.String, entity.Avatar );
+			database.AddInParameter(commandWrapper, "@Company", DbType.String, entity.Company );
 			database.AddInParameter(commandWrapper, "@Birthdate", DbType.DateTime, (entity.Birthdate.HasValue ? (object) entity.Birthdate : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, entity.IsFemale );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );

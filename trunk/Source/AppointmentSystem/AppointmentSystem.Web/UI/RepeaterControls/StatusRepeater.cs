@@ -336,7 +336,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The Id.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int32 Id
+		public System.String Id
 		{
 			get { return _entity.Id; }
 		}
@@ -366,24 +366,6 @@ namespace AppointmentSystem.Web.UI
 		public System.Int32 PriorityIndex
 		{
 			get { return _entity.PriorityIndex; }
-		}
-        /// <summary>
-        /// Gets the Note
-        /// </summary>
-        /// <value>The Note.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String Note
-		{
-			get { return _entity.Note; }
-		}
-        /// <summary>
-        /// Gets the IsDisabled
-        /// </summary>
-        /// <value>The IsDisabled.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.Boolean IsDisabled
-		{
-			get { return _entity.IsDisabled; }
 		}
         /// <summary>
         /// Gets the CreateUser

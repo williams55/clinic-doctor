@@ -381,7 +381,7 @@ namespace AppointmentSystem.Web.UI
         /// </summary>
         /// <value>The StatusId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int32? StatusId
+		public System.String StatusId
 		{
 			get { return _entity.StatusId; }
 		}

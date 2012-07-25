@@ -25,6 +25,11 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
+		/// PatientCode : 
+		/// </summary>
+		System.String  PatientCode  { get; set; }
+		
+		/// <summary>
 		/// FirstName : 
 		/// </summary>
 		System.String  FirstName  { get; set; }
@@ -58,6 +63,11 @@ namespace AppointmentSystem.Entities
 		/// Avatar : 
 		/// </summary>
 		System.String  Avatar  { get; set; }
+		
+		/// <summary>
+		/// Company : 
+		/// </summary>
+		System.String  Company  { get; set; }
 		
 		/// <summary>
 		/// Birthdate : 

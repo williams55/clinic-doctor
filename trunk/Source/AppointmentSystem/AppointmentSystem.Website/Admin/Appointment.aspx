@@ -18,7 +18,7 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
 				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
-				<data:HyperLinkField HeaderText="Patient Id" DataNavigateUrlFormatString="PatientEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="PatientIdSource" DataTextField="FirstName" />
+				<data:HyperLinkField HeaderText="Patient Id" DataNavigateUrlFormatString="PatientEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="PatientIdSource" DataTextField="PatientCode" />
 				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Services Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServicesIdSource" DataTextField="Title" />
