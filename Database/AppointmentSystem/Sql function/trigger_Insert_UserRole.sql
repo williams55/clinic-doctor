@@ -1,6 +1,6 @@
 --trigger add role for user when create user
 alter trigger add_rolegroup_user 
-on Users after Insert,Update
+on Users after Insert
 as
 	SET NOCOUNT ON
 	declare @UserId nvarchar(50),
