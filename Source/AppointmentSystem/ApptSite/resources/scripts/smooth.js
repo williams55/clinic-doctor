@@ -65,11 +65,13 @@ $(document).ready(function() {
 
 function ShowDialog(objId, title, message, url) {
     $("#spanMessage-content").html(message);
+    $("#dialog-message-title").attr("title", "Message");
     if (title) {
         $("#dialog-message-title").attr("title", title);
     }
     $("#dialog-message-title").dialog({
         resizable: false,
+        height: 150,
         modal: true,
         buttons: {
             Ok: function() {
@@ -86,4 +88,22 @@ function ShowDialog(objId, title, message, url) {
             }
         }
     });
+}
+
+function ShowProgress() {
+    $("#spanMessage-content").html('<div id="progressbar"></div>');
+    $("#dialog-message-title").attr("title", "Loading");
+    $("#progressbar").progressbar({
+        value: 100
+    });
+    $("#dialog-message-title").dialog({
+        resizable: false,
+        height: 120,
+        modal: true,
+        buttons: {}
+    });
+}
+
+function CloseProgress() {
+    $("#dialog-message-title").dialog("close");
 }

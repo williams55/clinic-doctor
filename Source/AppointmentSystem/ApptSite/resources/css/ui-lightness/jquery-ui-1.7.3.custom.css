@@ -401,5 +401,5 @@
     height: 200px; /*must have*/
 }/* Progressbar
 ----------------------------------*/
-.ui-progressbar { height:2em; text-align: left; }
-.ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
+.ui-progressbar { height:19px; text-align: left;border: 0px; background-color: transparent; }
+.ui-progressbar .ui-progressbar-value {border: 0px; margin: -1px; height:100%; background: url(images/loading-bar.gif) top center no-repeat transparent; }
