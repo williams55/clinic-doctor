@@ -17,3 +17,7 @@ function AlertMessage() {
         grid.cpApptMessage = "";
     }
 }
+function confirmDelete() { // confirm again user when delete patient
+   
+     return confirm("Are you sure want to delete?");
+    }
