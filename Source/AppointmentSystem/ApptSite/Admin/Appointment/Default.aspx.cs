@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -11,9 +10,6 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
-using Appt.Common.UserDefine;
-using System.Data;
-using System.Data.SqlClient;
 using Common.Util;
 using Log.Controller;
 using Newtonsoft.Json;
@@ -25,6 +21,9 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     protected string ListServices = string.Empty;
 
     private const string ScreenCode = "Appointment";
+    private const string PatientScreenCode = "Patient";
+    private const string UserScreenCode = "User";
+    private const string RoomScreenCode = "Room";
     static string _message;
     static readonly string Username = EntitiesUtilities.GetAuthName();
     #endregion
@@ -44,6 +43,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 // Show script
                 ClientScript.RegisterStartupScript(GetType(), "MainScript", @"<script src=""GRNEditt.js"" type=""text/javascript""></script>");
             }
+
+            // Validate current user have any right to operate this action to display button
+            changeUser.Visible = RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Update.Key, out _message);
+            createUser.Visible = RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Create.Key, out _message);
+
             BindTabs();
             BindStatus();
         }
@@ -119,6 +123,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate current user have any right to operate this action
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Read.Key, out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
             // Get patient by patient code
             var patient = DataRepository.PatientProvider.GetByPatientCode(id);
 
@@ -166,6 +177,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
     public static string SearchPatient()
     {
+        // Validate current user have any right to operate this action
+        // Validate user right for reading
+        if (!RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Read.Key, out _message))
+        {
+            return string.Empty;
+        }
+
         var keyword = HttpContext.Current.Request["q"];
         var lstTk = new List<object>();
         try
@@ -216,6 +234,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate current user have any right to operate this action
+            // Validate user right for creating
+            if (!RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Create.Key, out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
             // Validate patient's fields
             if (!ValidatePatient(firstname, lastname, isFemale, ref _message))
             {
@@ -261,7 +286,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     }
 
     /// <summary>
-    /// Create patient with simple information
+    /// Update patient with simple information
     /// </summary>
     /// <param name="id"> </param>
     /// <param name="firstname"></param>
@@ -275,6 +300,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate current user have any right to operate this action
+            // Validate user right for updating
+            if (!RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Update.Key, out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
             // Validate patient's fields
             if (!ValidatePatient(firstname, lastname, isFemale, ref _message))
             {
@@ -436,6 +468,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate current user have any right to operate this action
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(Username, UserScreenCode, OperationConstant.Read.Key, out _message))
+            {
+                return string.Empty;
+            }
+
             return SearchDoctor(HttpContext.Current.Request["q"], HttpContext.Current.Request["appointmentId"]
                 , HttpContext.Current.Request["serviceId"]
                 , HttpContext.Current.Request["fromTime"], HttpContext.Current.Request["toTime"]
@@ -562,6 +601,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate current user have any right to operate this action
+            // Validate user right for reading
+            if (!RightAccess.CheckUserRight(Username, RoomScreenCode, OperationConstant.Read.Key, out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
             // Get service base on doctorId
             var doctorService = DataRepository.DoctorServiceProvider.GetByDoctorId(doctorId).Find(x => !x.IsDisabled);
             // Validate available doctor
@@ -663,6 +709,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate current user have any right to operate this action
+            // Validate user right for reading
+            if (!CheckReading(out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
             var obj = DataRepository.AppointmentProvider.GetById(appointmentId);
             if (obj == null)
             {
@@ -1042,7 +1095,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             var dtStart = new DateTime();
             var dtEnd = new DateTime();
             int serviceId = 0;
-            if (!ValidateAppointmentFields(0, ref patientCode, ref note, ref startTime, ref endTime
+            if (!ValidateAppointmentFields(1, ref patientCode, ref note, ref startTime, ref endTime
                 , ref startDate, ref endDate, ref doctorId, ref roomId, ref status
                 , ref dtStart, ref dtEnd, ref _message, ref serviceId))
             {
@@ -1067,6 +1120,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             #endregion
 
             #region "Send Appointment"
+            DataRepository.AppointmentProvider.DeepLoad(appointment);
             string strSubject = String.Format("Change Appointment: {0} - {1}. {2} {3}", appointment.ServicesIdSource.Title
                 , appointment.PatientCodeSource.Title, appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
             string strBody = String.Format("You have a new change for appointment");
@@ -1218,95 +1272,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     #endregion
 
     #region "Function"
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetContents()
-    {
-        string result = string.Empty;
-
-        //try
-    //{
-    //    TList<Content> lstObj = DataRepository.ContentProvider.GetByIsDisabled(false);
-
-        //    result = @"{'key': '-1', 'label': 'Select Content'}";
-    //    if (lstObj.Count == 0)
-    //    {
-    //        result = @"[{ 'result': 'true', 'message': 'There is no content. Please contact Administrator.', 'data': [" + result + "] }]";
-    //        goto StepResult;
-    //    }
-
-        //    lstObj.Sort("FuncTitle ASC, Title ASC");
-    //    foreach (Content item in lstObj)
-    //    {
-    //        result += @", {'key' : '" + item.FuncId + ChrSeperateStaff.ToString() + item.Id.ToString() + @"'" + "," + @"'label' : '"
-    //            + item.FuncTitle + StrSeperateStaff + item.Title + @"'}";
-    //    }
-
-        //    result = @"[{ 'result': 'true', 'message': '', 'data':[" + result + @"] }]";
-    //    goto StepResult;
-    //}
-    //catch (Exception ex)
-    //{
-    //    //SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetContents", ex);
-
-        //    result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-    //    goto StepResult;
-    //}
-    StepResult:
-        return result;
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetCurrentContents(string DoctorUserName)
-    {
-        /* Return Structure
-         * { result: true [success], false [fail],
-         *   message: message content [will be showed when fail]
-         *   data: string content id
-         *  }
-         */
-        string result = string.Empty;
-
-        //try
-        //{
-        //    TList<DoctorFunc> lstDrFu = DataRepository.DoctorFuncProvider.GetByDoctorUserNameIsDisabled(DoctorUserName, false);
-        //    TList<Content> lstObj = DataRepository.ContentProvider.GetByIsDisabled(false);
-
-        //    if (lstObj.Count == 0)
-        //    {
-        //        result = @"[{ 'result': 'true', 'message': 'There is no content. Please contact Administrator.', 'data': [] }]";
-        //        goto StepResult;
-        //    }
-
-        //    // Lay dong dau tien
-        //    lstObj.Sort("FuncTitle ASC, Title ASC");
-        //    foreach (Content item in lstObj)
-        //    {
-        //        foreach (DoctorFunc itemDr in lstDrFu)
-        //        {
-        //            if (item.FuncId == itemDr.FuncId)
-        //            {
-        //                result = item.FuncId.ToString() + ChrSeperateStaff.ToString() + item.Id.ToString();
-        //                goto StepString;
-        //            }
-        //        }
-        //    }
-
-        //StepString:
-        //    result = @"[{ 'result': 'true', 'message': '', 'data':['" + result + @"'] }]";
-        //    goto StepResult;
-        //}
-        //catch (Exception ex)
-        //{
-        //    //SingletonLogger.Instance.Error("Admin_Appointment_AppointmentIframe.GetCurrentContents", ex);
-
-        //    result = @"[{ 'result': 'false', 'message': '" + ex.Message + "', 'data': [] }]";
-        //    goto StepResult;
-        //}
-        return result;
-    }
-
     /// <summary>
     /// Get Patient's info by AppointmentId
     /// </summary>
@@ -1318,8 +1283,15 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate current user have any right to operate this action
+            // Validate user right for reading
+            if (!CheckReading(out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
             // If there is no appointment, return
-            if (appointmentId == null)
+            if (string.IsNullOrEmpty(appointmentId))
             {
                 return WebCommon.BuildFailedResult("There is no appointment.");
             }
@@ -1354,7 +1326,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                          objPatient.Birthdate == null
                                              ? "&nbsp;"
                                              : ((DateTime) objPatient.Birthdate).ToString("MM-dd-yyyy"),
-                                             IsFemale = objPatient.IsFemale,
+                                             objPatient.IsFemale,
                                              Title = objPatient.Title ?? "&nbsp;",
                                              Note = objPatient.Note ?? "&nbsp;"
                                          }
@@ -1380,6 +1352,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
+            // Validate current user have any right to operate this action
+            // Validate user right for updating
+            if (!CheckReading(out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
             // Validate serviceId
             int iServiceId;
             if (!Int32.TryParse(serviceId, out iServiceId))
@@ -1404,7 +1383,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     }
     #endregion
 
-    #region "Private Function"
+    #region Private Function
     /// <summary>
     /// Check conflict for appointment follow column
     /// </summary>
