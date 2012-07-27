@@ -55,8 +55,8 @@
                                    <dx:GridViewDataColumn FieldName="Crud" VisibleIndex="2"  ReadOnly="true">                                     
                                     </dx:GridViewDataColumn>
                               </Columns>
-                                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
-                                </ClientSideEvents>
+                                  <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
+                                     </ClientSideEvents>
                                 <Templates>
                                         <EditForm>                 
                                                 <div style="text-align: right; padding: 2px 2px 2px 2px">
@@ -94,17 +94,7 @@
                                                                         
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td class="title-row">
-                                                                        Note
-                                                                    </td>
-                                                                    <td class="content-row">
-                                                                      <dx:ASPxCheckBoxList runat="server" ID="chkRight">
-                                                                       
-                                                                      </dx:ASPxCheckBoxList>
-                                                                    </td>
-                                                                   
-                                                                </tr>
+                                                               
                                                             </tbody>
                                                         </table>
                                                 </div> 
