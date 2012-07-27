@@ -47,7 +47,16 @@ public partial class Admin_Role_Default : System.Web.UI.Page
                                                                                   OperationConstant.Create.Key,
                                                                                   out _message);
             // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
-            var btnDelete = gridViewCommandColumn.CustomButtons.Find(x => x.ID == "btnDelete");
+          
+            GridViewCommandColumnCustomButton btnDelete = null;
+            foreach (GridViewCommandColumnCustomButton customButton in gridViewCommandColumn.CustomButtons)
+            {
+                if (customButton.ID == "btnDelete")
+                {
+                    btnDelete = customButton;
+                    break;
+                }
+            }
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,
@@ -76,7 +85,16 @@ public partial class Admin_Role_Default : System.Web.UI.Page
         gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,OperationConstant.Update.Key,out _message);
         gridViewCommandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),ScreenCode,OperationConstant.Create.Key,out _message);
         // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
-        var btnDelete = gridViewCommandColumn.CustomButtons.Find(x => x.ID == "btnDelete");
+        //var btnDelete = gridViewCommandColumn.CustomButtons.Find(x => x.ID == "btnDelete");
+        GridViewCommandColumnCustomButton btnDelete = null;
+        foreach (GridViewCommandColumnCustomButton customButton in gridViewCommandColumn.CustomButtons)
+        {
+            if (customButton.ID == "btnDelete")
+            {
+                btnDelete = customButton;
+                break;
+            }
+        }
         if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),ScreenCode,OperationConstant.Delete.Key,out _message))
         {
             btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
@@ -86,11 +104,12 @@ public partial class Admin_Role_Default : System.Web.UI.Page
         gridViewCommandColumn.Visible = gridViewCommandColumn.EditButton.Visible
             || gridViewCommandColumn.NewButton.Visible
             || (btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
+        int roleid=int.Parse((sender as ASPxGridView).GetMasterRowKeyValue().ToString());
         var param = RoledetailDataS.Parameters["WhereClause"];
         if (param == null)
         {
             RoledetailDataS.Parameters.Add("WhereClause"
-                , String.Format("IsDisabled = 'false' AND RoleId = {0}", (sender as ASPxGridView).GetMasterRowKeyValue()));
+                , String.Format("IsDisabled = 'false' AND RoleId = {0}",roleid));
         }
         else
         {
@@ -98,6 +117,7 @@ public partial class Admin_Role_Default : System.Web.UI.Page
                                   (sender as ASPxGridView).GetMasterRowKeyValue());
         }
 
+      
     }
     #endregion
     #region // edit role
@@ -256,7 +276,7 @@ public partial class Admin_Role_Default : System.Web.UI.Page
         if (chkd.Checked == true) crud += "D";
         return crud;
     }
-    protected string GetStringCrudUpdate(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
+    protected string GetStringCrudUpdate(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)//lay du lieu trong checkbox khi cap nhat
     {
         string crud = string.Empty;
         ASPxCheckBox chkr = (ASPxCheckBox)(sender as ASPxGridView).FindEditFormTemplateControl("ckcR");
@@ -268,7 +288,7 @@ public partial class Admin_Role_Default : System.Web.UI.Page
         if (chku.Checked == true) crud += "U";
         if (chkd.Checked == true) crud += "D";
         return crud;
-    }//lay du lieu trong checkbox khi cap nhat
+    }
     public bool Getcheckbox(string crud,string chars)//danh dau check box xem co quyen khong dua vao ky tu truyen vao 
     {
         if (crud != null)
