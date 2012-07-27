@@ -33,12 +33,17 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                                                                                   ScreenCode,
                                                                                   OperationConstant.Update.Key,
                                                                                   out _message);
-            gridViewCommandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
-                                                                                  ScreenCode,
-                                                                                  OperationConstant.Create.Key,
+            gridViewCommandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),ScreenCode, OperationConstant.Create.Key,
                                                                                   out _message);
-
-            var btnDelete = gridViewCommandColumn.CustomButtons.Find(x => x.ID == "btnDelete");
+            GridViewCommandColumnCustomButton btnDelete = null;
+            foreach (GridViewCommandColumnCustomButton customButton in gridViewCommandColumn.CustomButtons)
+            {
+                if (customButton.ID == "btnDelete")
+                {
+                    btnDelete = customButton;
+                    break;
+                }
+            }
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,
@@ -160,5 +165,22 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
+    protected void GridAppointment_BeforePerformDataSelect(object sender, EventArgs e)
+    {
+        var parameter = AppointmentDatas.Parameters["whereClause"];
+        if (parameter == null)
+        {
 
+            this.AppointmentDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND PatientId = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
+        }
+        else
+        {
+            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND PatientId = '{0}'",
+                                  (sender as ASPxGridView).GetMasterRowKeyValue());
+        }
+    }
+    protected void gridPatient_BeforePerformDataSelect(object sender, EventArgs e)
+    {
+
+    }
 }
