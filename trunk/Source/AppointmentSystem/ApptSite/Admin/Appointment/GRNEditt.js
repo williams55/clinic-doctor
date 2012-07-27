@@ -124,8 +124,8 @@ scheduler.showLightbox = function(id) {
     $("#txtPatient").tokenInput("clear");
 
     // Button create user and change user
-    $("#create-user").show();
-    $("#change-user").hide();
+    $("[id$=createUser]").show();
+    $("[id$=changeUser]").hide();
 
     // Get doctor's info
     $("#hdfDoctor").val(ev.section_id);
@@ -155,8 +155,8 @@ scheduler.showLightbox = function(id) {
 
     // Load data
     if (ev.isnew == false) {
-        $("#create-user").hide();
-        $("#change-user").show();
+        $("[id$=createUser]").hide();
+        $("[id$=changeUser]").show();
 
         // Set current user to global variable
         CurrentAppointment = ev;
@@ -231,12 +231,12 @@ function GetToken() {
             searchingText: "Searching...",
             hintText: "Name, Birthday, Phone",
             onAdd: function() {
-                $("#create-user").hide();
-                $("#change-user").show();
+                $("[id$=createUser]").hide();
+                $("[id$=changeUser]").show();
             },
             onDelete: function() {
-                $("#create-user").show();
-                $("#change-user").hide();
+                $("[id$=createUser]").show();
+                $("[id$=changeUser]").hide();
             }
         }
     );
@@ -322,7 +322,9 @@ function BindTime() {
 /****************************Patient - Start******************************/
 // Get Patient's info by appointment id
 function GetPatientInfo(currentId) {
-    if (currentId) {
+    var ev = scheduler.getEvent(currentId);
+    if (currentId && ev) {
+        $("#divNote").html(ev.note + " &nbsp;");
         var requestdata = JSON.stringify({ appointmentId: currentId });
         $.ajax({
             type: "POST",
@@ -335,11 +337,10 @@ function GetPatientInfo(currentId) {
                 if (obj.result == "true") {
                     if (obj.data) {
                         var arr = obj.data[0]; // Get first item
-                        $("#divFirstname").html(arr.FirstName);
-                        $("#divLastname").html(arr.LastName);
-                        $("#divCellPhone").html(arr.CellPhone);
+                        $("#divFirstname").html(arr.FirstName + " &nbsp;");
+                        $("#divLastname").html(arr.LastName + " &nbsp;");
+                        $("#divCellPhone").html(arr.CellPhone + " &nbsp;");
                         $("#divBirthday").html(arr.Birthday);
-                        $("#divNote").html(arr.Address);
                     }
                 }
                 else {
@@ -370,6 +371,7 @@ function CreateSimplePatient(firstname, lastname, cellPhone, dialog) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
+            CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 $("#txtPatient").tokenInput("clear");
@@ -380,10 +382,8 @@ function CreateSimplePatient(firstname, lastname, cellPhone, dialog) {
             }
         },
         fail: function() {
-            ShowDialog("", "", "Cannot create patient. Please contact Administrator", "");
-        },
-        complete: function() {
             CloseProgress();
+            ShowDialog("", "", "Cannot create patient. Please contact Administrator", "");
         }
     });
 }
@@ -406,6 +406,7 @@ function UpdateSimplePatient(id, firstname, lastname, cellPhone, dialog) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
+            CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 $("#txtPatient").tokenInput("clear");
@@ -421,10 +422,8 @@ function UpdateSimplePatient(id, firstname, lastname, cellPhone, dialog) {
             }
         },
         fail: function() {
-            ShowDialog("", "", "Cannot update patient's info. Please contact Administrator", "");
-        },
-        complete: function() {
             CloseProgress();
+            ShowDialog("", "", "Cannot update patient's info. Please contact Administrator", "");
         }
     });
 }
@@ -747,7 +746,7 @@ function checkRegexp(o, regexp, n) {
 /****************************Methods - End******************************/
 
 /****************************Events - Start******************************/
-$("#create-user").click(function() {
+$("[id$=createUser]").click(function() {
     $("#dialog:ui-dialog").dialog("destroy");
 
     var txtFirstName = $("#txtFirstName"),
@@ -790,7 +789,7 @@ $("#create-user").click(function() {
     $("#dialog-form").dialog("open");
 });
 
-$("#change-user").click(function() {
+$("[id$=changeUser]").click(function() {
     $("#dialog:ui-dialog").dialog("destroy");
 
     // Check if patient is not selected

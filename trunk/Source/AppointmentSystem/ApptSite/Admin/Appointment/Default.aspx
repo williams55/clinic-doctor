@@ -74,36 +74,48 @@
                 Appointment</h5>
         </div>
         <div id="box-other">
-            <div id="dialog-form" title="Create new patient" class="dialog-form">
-                <p class="validateTips">
-                </p>
-                <form id="frm">
-                <label for="name" class="title">
-                    Sex</label>
-                <input type="radio" name="radSex" id="radMale" value="false" checked="checked" />
-                <label for="radMale">
-                    Male</label>
-                <input type="radio" name="radSex" id="radFemale" value="true" />
-                <label for="radFemale">
-                    Female</label>
-                <div class="clear">
-                </div>
-                <label for="name" class="title">
-                    Firstname</label>
-                <input type="text" name="txtFirstName" id="txtFirstName" class="content-input ui-widget-content ui-corner-all" />
-                <div class="clear">
-                </div>
-                <label for="email" class="title">
-                    Lastname</label>
-                <input type="text" name="txtLastName" id="txtLastName" value="" class="content-input ui-widget-content ui-corner-all" />
-                <div class="clear">
-                </div>
-                <label for="txtCellPhone" class="title">
-                    Cell Phone</label>
-                <input type="text" name="txtCellPhone" id="txtCellPhone" value="" class="content-input ui-widget-content ui-corner-all" />
-                <div class="clear">
-                </div>
-                </form>
+            <div id="dialog-form" title="Patient" class="dialog-form">
+                <table class="table-form" style="width: 100%">
+                    <tr>
+                        <td class="header" style="width: 80px;">
+                            Sex
+                        </td>
+                        <td>
+                            <input type="radio" name="radSex" id="radMale" value="false" checked="checked" />
+                            <label for="radMale">
+                                Male</label>
+                            <input type="radio" name="radSex" id="radFemale" value="true" />
+                            <label for="radFemale">
+                                Female</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="header">
+                            Firstname
+                        </td>
+                        <td>
+                            <input type="text" name="txtFirstName" id="txtFirstName" style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="header">
+                            Lastname
+                        </td>
+                        <td>
+                            <input type="text" name="txtLastName" id="txtLastName" value="" style="width: 100%"
+                                class="content-input ui-widget-content ui-corner-all" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="header">
+                            Cell Phone
+                        </td>
+                        <td>
+                            <input type="text" name="txtCellPhone" id="txtCellPhone" value="" style="width: 100%"
+                                class="content-input ui-widget-content ui-corner-all" />
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div style="padding: 10px;">
                 <div class="appt-info">
@@ -176,7 +188,7 @@
                 </div>
                 <table class="table-form" id="tblContent">
                     <tr>
-                        <td class="header" style="width: 150px;">
+                        <td class="header">
                             Status
                         </td>
                         <td colspan="2">
@@ -201,8 +213,8 @@
                             <input type="text" id="txtPatient" />
                         </td>
                         <td>
-                            <input type="button" id="create-user" value="New" style="width: 50px;" />
-                            <input type="button" id="change-user" value="Change" style="width: 50px;" />
+                            <input type="button" ID="createUser" value="New" style="width: 50px;" runat="server" />
+                            <input type="button" ID="changeUser" value="Change" style="width: 50px;" runat="server" />
                         </td>
                     </tr>
                     <tr>

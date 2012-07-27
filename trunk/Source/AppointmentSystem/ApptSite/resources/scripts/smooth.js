@@ -92,7 +92,6 @@ function ShowDialog(objId, title, message, url) {
 
 function ShowProgress() {
     $("#spanMessage-content").html('<div id="progressbar"></div>');
-    $("#dialog-message-title").attr("title", "Loading");
     $("#progressbar").progressbar({
         value: 100
     });
