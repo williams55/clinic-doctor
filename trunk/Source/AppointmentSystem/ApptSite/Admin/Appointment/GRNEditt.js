@@ -123,6 +123,10 @@ scheduler.showLightbox = function(id) {
     $("#lblDoctor").val("");
     $("#txtPatient").tokenInput("clear");
 
+    // Button create user and change user
+    $("#create-user").show();
+    $("#change-user").hide();
+
     // Get doctor's info
     $("#hdfDoctor").val(ev.section_id);
     $.each(scheduler._props[scheduler._mode].options, function(i, item) {
@@ -151,6 +155,9 @@ scheduler.showLightbox = function(id) {
 
     // Load data
     if (ev.isnew == false) {
+        $("#create-user").hide();
+        $("#change-user").show();
+
         // Update case, get info from server
         $("#RosterForm").dialog({
             autoOpen: false,
@@ -219,7 +226,15 @@ function GetToken() {
             propertyToSearch: "propertyToSearch",
             noResultsText: "Cannot find patient",
             searchingText: "Searching...",
-            hintText: "Name, Birthday, Phone"
+            hintText: "Name, Birthday, Phone",
+            onAdd: function() {
+                $("#create-user").hide();
+                $("#change-user").show();
+            },
+            onDelete: function() {
+                $("#create-user").show();
+                $("#change-user").hide();
+            }
         }
     );
 }
@@ -601,6 +616,7 @@ function DeleteAppointment(id) {
 }
 /****************************Appointment - End******************************/
 
+/****************************Initialize - Start******************************/
 $(document).ready(function() {
     BindTime();
 
@@ -666,36 +682,7 @@ $(document).ready(function() {
             allFields.val("").removeClass("ui-state-error");
         }
     });
-
-    $("#create-user")
-        .click(function() {
-            $("#dialog-form").dialog("open");
-            $(txtFirstName).val("");
-            $(txtLastName).val("");
-            $(txtCellPhone).val("");
-            $(txtAddress).val("");
-            $("#radMale").val("false");
-            $("#radFemale").val("true");
-            $("#radMale").attr("checked", "checked");
-        });
 });
-
-// Initialize form, clear value, set default value
-function InitForm() {
-    $("#dialog-modal").hide();
-
-    $("#cboFromHour").show();
-    $('#spanFromDate').show();
-
-    $("#cboToHour").show();
-    $('#spanToDate').show();
-
-    // Set empty
-    $("#hdId").val("");
-    $("#txtNote").val("");
-
-    DisableAllElements($("#tblContent"), true);
-}
 
 function DisableAllElements(obj, disabled) {
     if (disabled) {
@@ -704,21 +691,6 @@ function DisableAllElements(obj, disabled) {
     else {
         $("input, textarea, select", obj).attr('disabled', true);
     }
-}
-
-function checkDateTime() {
-    var _fromTime = $("#cboFromHour").val();
-    var _toTime = $("#cboToHour").val();
-    var _fromDate = $("#txtFromDate").datepicker("getDate");
-    var _toDate = $("#txtToDate").datepicker("getDate");
-
-    // Check datetime
-    var _validateFromTime = _fromDate.format("yyyy/mm/dd ") + _fromTime;
-    var _validateToTime = _toDate.format("yyyy/mm/dd ") + _toTime;
-    if (_validateFromTime >= _validateToTime) {
-        return false;
-    }
-    return true;
 }
 
 function initEvents() {
@@ -731,6 +703,7 @@ function initEvents() {
         GetRoom();
     });
 }
+/****************************Initialize - End******************************/
 
 /****************************Methods - Start******************************/
 function updateTips(t) {
@@ -763,3 +736,17 @@ function checkRegexp(o, regexp, n) {
     }
 }
 /****************************Methods - End******************************/
+
+/****************************Events - Start******************************/
+$("#create-user")
+    .click(function() {
+        $("#dialog-form").dialog("open");
+        $(txtFirstName).val("");
+        $(txtLastName).val("");
+        $(txtCellPhone).val("");
+        $(txtAddress).val("");
+        $("#radMale").val("false");
+        $("#radFemale").val("true");
+        $("#radMale").attr("checked", "checked");
+    });
+/****************************Events - End******************************/

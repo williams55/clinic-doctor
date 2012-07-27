@@ -206,7 +206,8 @@
                             <input type="text" id="txtPatient" />
                         </td>
                         <td>
-                            <input type="button" id="create-user" value="New" />
+                            <input type="button" id="create-user" value="New" style="width: 50px;" />
+                            <input type="button" id="change-user" value="Change" style="width: 50px;" />
                         </td>
                     </tr>
                     <tr>

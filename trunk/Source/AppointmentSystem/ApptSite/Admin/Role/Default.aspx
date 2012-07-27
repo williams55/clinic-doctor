@@ -98,7 +98,7 @@
                                                                     <td class="title-row">
                                                                         Note
                                                                     </td>
-                                                                    <td class="content-row"
+                                                                    <td class="content-row">
                                                                       <dx:ASPxCheckBoxList runat="server" ID="chkRight">
                                                                        
                                                                       </dx:ASPxCheckBoxList>
@@ -118,7 +118,7 @@
                                 <table class="edit-form">
                                     <tbody>
                                         <tr>
-                                            <td "title-row">
+                                            <td class="title-row">
                                                 Title
                                             </td>
                                             <td class="content-row" rowspan="2">
