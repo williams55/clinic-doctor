@@ -56,7 +56,8 @@
                                     </dx:GridViewDataColumn>
                               </Columns>
                                   <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
-                                     </ClientSideEvents>
+                                  </ClientSideEvents>
+                                  <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                                 <Templates>
                                         <EditForm>                 
                                                 <div style="text-align: right; padding: 2px 2px 2px 2px">

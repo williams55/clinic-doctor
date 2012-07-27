@@ -48,7 +48,16 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                                                                                   out _message);
 
             // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
-            var btnDelete = gridViewCommandColumn.CustomButtons.Find(x => x.ID == "btnDelete");
+           //var btnDelete = gridViewCommandColumn.CustomButtons.Find(x => x.ID == "btnDelete");
+           GridViewCommandColumnCustomButton btnDelete = null;
+            foreach (GridViewCommandColumnCustomButton customButton in gridViewCommandColumn.CustomButtons)
+            {
+                if (customButton.ID == "btnDelete")
+                {
+                    btnDelete = customButton;
+                    break;
+                }
+            }
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,

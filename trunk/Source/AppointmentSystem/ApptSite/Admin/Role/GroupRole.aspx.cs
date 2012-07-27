@@ -30,7 +30,16 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
             if (gridcolums == null) return;
             gridcolums.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
             gridcolums.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
-            var btnDelete = gridcolums.CustomButtons.Find(x => x.ID == "btnDelete");
+            //var btnDelete = gridcolums.CustomButtons.Find(x => x.ID == "btnDelete");
+            GridViewCommandColumnCustomButton btnDelete = null;
+            foreach (GridViewCommandColumnCustomButton customButton in gridcolums.CustomButtons)
+            {
+                if (customButton.ID == "btnDelete")
+                {
+                    btnDelete = customButton;
+                    break;
+                }
+            }
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,OperationConstant.Delete.Key,out _message))
             {
                 btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
@@ -109,7 +118,16 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
         gridColunms.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
         gridColunms.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
         // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
-        var btnDelete = gridColunms.CustomButtons.Find(x => x.ID == "btnDeleteRolegroup");
+       //var btnDelete = gridColunms.CustomButtons.Find(x => x.ID == "btnDeleteRolegroup");
+        GridViewCommandColumnCustomButton btnDelete = null;
+        foreach (GridViewCommandColumnCustomButton customButton in gridColunms.CustomButtons)
+        {
+            if (customButton.ID == "btnDelete")
+            {
+                btnDelete = customButton;
+                break;
+            }
+        }
         if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
         {
             btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;

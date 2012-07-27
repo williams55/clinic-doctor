@@ -6,6 +6,9 @@
 <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" Runat="Server">
+<div class="box">
+    <div class="title"><h5>Room</h5></div>
+
     <dx:ASPxGridView ID="gridRoom" ClientInstanceName="grid" runat="server" DataSourceID="RoomDatas"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoom_RowInserting"
                 OnCustomButtonCallback="gridRoom_CustomButtonCallback"
@@ -29,8 +32,9 @@
                 </CustomButtons>           
             </dx:GridViewCommandColumn>
         </Columns>
-        <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
+        <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
         </ClientSideEvents>
+        <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
         <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
         </SettingsPager>                
         <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
@@ -51,5 +55,7 @@
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />                   
         </Parameters>    
     </data:ServicesDataSource>
+    
+</div>
 </asp:Content>
 

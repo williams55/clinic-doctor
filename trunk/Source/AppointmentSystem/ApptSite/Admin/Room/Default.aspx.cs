@@ -72,13 +72,13 @@ public partial class Admin_Room_edit : System.Web.UI.Page
                 var obj = DataRepository.RoomProvider.GetById(int.Parse(id.ToString()));
                 if (obj == null||obj.IsDisabled)
                 {
-                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Service is not existed. You cannot delete it.";
+                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Room is Using. You cannot delete it.";
                     return;
                 }
                 DataRepository.RoomProvider.DeepLoad(obj);
                 if (obj.RosterCollection.Exists(x => !x.IsDisabled) || obj.DoctorRoomCollection.Exists(x => !x.IsDisabled) )
                 {
-                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = String.Format("Service {0} is using, you cannot delete it.", obj.Title);
+                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = String.Format("Room {0} is using, you cannot delete it.", obj.Title);
                     return;
                 }
                 obj.IsDisabled = true;

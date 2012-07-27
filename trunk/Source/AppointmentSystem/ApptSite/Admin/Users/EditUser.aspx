@@ -13,7 +13,8 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" Runat="Server">
-
+<div id="box-tabs" class="box">
+<div class="title"><h5>Manager User</h5></div>
   <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" DataSourceID="UserDatas"
         Width="100%" KeyFieldName="Id" 
         oninitnewrow="gridUser_InitNewRow" 
@@ -21,7 +22,7 @@
         onrowupdating="gridUser_RowUpdating" 
         onhtmlrowprepared="gridUser_HtmlRowPrepared" 
         onrowvalidating="gridUser_RowValidating" 
-        onrowinserted="gridUser_RowInserted" OnAfterPerformCallback="gridUser_AfterPerformCallback" >
+        oncustombuttoncallback="gridUser_CustomButtonCallback" >
         <Columns>
             <dx:GridViewDataColumn FieldName="Id" VisibleIndex="1" />
             <dx:GridViewDataColumn FieldName="Username" VisibleIndex="2" />
@@ -34,7 +35,9 @@
             <dx:GridViewCommandColumn VisibleIndex="9">
                 <EditButton Visible="true"></EditButton>
                 <NewButton Visible="true"></NewButton>
-                <CustomButtons>                   
+                <CustomButtons>  
+                         <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
+                         </dx:GridViewCommandColumnCustomButton>             
                 </CustomButtons>
             </dx:GridViewCommandColumn>
         </Columns>
@@ -47,19 +50,57 @@
                                 <ContentCollection>
                                     <dx:ContentControl ID="ContentControl1" runat="server">
                                         <dx:ASPxGridView ID="UserRoleGrid" runat="server" DataSourceID="UserRoleDatas"
-                                            KeyFieldName="Id" Width="100%" OnBeforePerformDataSelect="UserRoleGrid_DataSelect">
+                                            KeyFieldName="UserId" Width="100%" OnBeforePerformDataSelect="UserRoleGrid_DataSelect"
+                                            OnCustomButtonCallback="UserRoleGrid_CustomButtonCallback" OnRowInserting ="UserRoleGrid_RowInserting">
                                             <Columns>
-                                                <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" />
-                                                <dx:GridViewDataColumn FieldName="UserId" VisibleIndex="1" />
-                                                <dx:GridViewDataColumn FieldName="RoleId" VisibleIndex="2" />
+                                                <dx:GridViewDataColumn FieldName="RoleId" VisibleIndex="1" />
+                                                <dx:GridViewDataColumn FieldName="RoleIdSource.Title" VisibleIndex="2" />
+                                                <dx:GridViewDataColumn FieldName="RoleIdSource.Note" VisibleIndex="3" />
+                                                
+                                                <dx:GridViewCommandColumn VisibleIndex="4">
+                                                    <NewButton Visible="true"></NewButton>
+                                                    <CustomButtons>  
+                                                             <dx:GridViewCommandColumnCustomButton ID="btnDeleteRole" Text="Delete">
+                                                             </dx:GridViewCommandColumnCustomButton>             
+                                                    </CustomButtons>
+                                                </dx:GridViewCommandColumn>                                              
                                             </Columns>
-                                            <SettingsDetail ShowDetailRow="true" />
-                                            <Settings ShowFooter="True" />
+                                            <Templates>
+                                                <EditForm>                 
+                                                    <div style="text-align: right; padding: 2px 2px 2px 2px">
+                                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" ReplacementType="EditFormUpdateButton"
+                                                            runat="server">
+                                                        </dx:ASPxGridViewTemplateReplacement>
+                                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
+                                                            runat="server">
+                                                        </dx:ASPxGridViewTemplateReplacement>
+                                                    </div>
+                                                    <div id="devexpress-form">
+                                                            <table class="edit-form">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                           Role
+                                                                        </td>
+                                                                        <td colspan="3" style=" text-align: left">
+                                                                           <dx:ASPxComboBox Width="200" runat="server" ID="cboroleid" DataSourceID="RoleDatas" Value="<%#Bind('RoleId') %>"  ValueField="Id" TextField="Title">
+                                                                            
+                                                                           </dx:ASPxComboBox>
+                                                                        </td>                                                                  
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                    </div> 
+                                                </EditForm>
+                                            </Templates>
+                                                   <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
+                                                    </ClientSideEvents>
+                                            <Settings ShowFooter="True" />                                             
                                         </dx:ASPxGridView>
                                     </dx:ContentControl>
                                 </ContentCollection>
                             </dx:TabPage>
-                            <dx:TabPage Text="Group" Visible="true">
+                            <dx:TabPage Text="Group" Visible="false">
                                 <ContentCollection>
                                     <dx:ContentControl ID="ContentControl2" runat="server">
                                         <dx:ASPxGridView ID="UserGroupGrid" runat="server" DataSourceID="UserGroupDatas"
@@ -71,25 +112,16 @@
                                                  <dx:GridViewDataColumn FieldName="Roles" VisibleIndex="2" />
                                             </Columns>
                                             <SettingsDetail ShowDetailRow="true" />
-                                            <Settings ShowFooter="True" />
                                         </dx:ASPxGridView>
                                     </dx:ContentControl>
                                     </ContentCollection>
-                            </dx:TabPage>
-                        
+                            </dx:TabPage>                        
                         </TabPages>
                     </dx:ASPxPageControl>
                 </div>
             </DetailRow> 
             <EditForm>                 
-                        <div style="text-align: right; padding: 2px 2px 2px 2px">
-                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" ReplacementType="EditFormUpdateButton"
-                                runat="server">
-                            </dx:ASPxGridViewTemplateReplacement>
-                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
-                                runat="server">
-                            </dx:ASPxGridViewTemplateReplacement>
-                        </div>
+          
                         <div id="devexpress-form">
                                 <table class="edit-form">
                                     <tbody>
@@ -173,9 +205,10 @@
                                             </td>
                                             <td class="content-row">
                                              
-                                                <dx:ASPxCheckBox runat="server" ID="ckcR" Text='<%# Eval("IsFemale")%>'>
-                                                
+                                                <dx:ASPxCheckBox runat="server" value='<%#Bind("IsFemale")%>' ID="ckcR">
+                                                 
                                                 </dx:ASPxCheckBox>
+                                                
                                             </td>
                                             <td class="title-row">
                                                User Group
@@ -198,20 +231,36 @@
                                     </tbody>
                                 </table>
                         </div> 
+                                      <div style="text-align: right; padding: 2px 2px 2px 2px">
+                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" ReplacementType="EditFormUpdateButton"
+                                runat="server">
+                            </dx:ASPxGridViewTemplateReplacement>
+                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
+                                runat="server">
+                            </dx:ASPxGridViewTemplateReplacement>
+                        </div>
                     </EditForm>
         </Templates>
+         <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}"></ClientSideEvents>
+         <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+        <SettingsDetail ShowDetailRow="true" />
         <SettingsDetail ShowDetailRow="true" />
         <Settings ShowGroupPanel="True" />
     </dx:ASPxGridView>
     <data:UsersDataSource ID="UserDatas" runat="server" SelectMethod="GetPaged" EnablePaging="true">
         <Parameters>
-            <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
-            <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
-            <asp:ControlParameter Name="PageIndex" ControlID="gridUser" PropertyName="PageIndex"  Type="Int32" />
+            <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'"/>
+            <data:CustomParameter Name="OrderByClause" Value="UserId" />
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />  
         </Parameters>
     </data:UsersDataSource>
-    <data:UserRoleDataSource runat="server" ID="UserRoleDatas" SelectMethod="GetPaged" >
+    <data:UserRoleDataSource runat="server" ID="UserRoleDatas" SelectMethod="GetPaged" EnableDeepLoad="true" >
+    <DeepLoadProperties>
+        <Types>
+            <data:RoleDetailProperty Name="Role"  />
+            <data:RoleDetailProperty Name="Screen" />            
+        </Types>
+    </DeepLoadProperties>
        <Parameters>
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
        </Parameters>
@@ -221,5 +270,12 @@
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
        </Parameters>
     </data:UserGroupDataSource>
+    <data:RoleDataSource ID="RoleDatas" runat="server">
+        <Parameters>
+            <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />  
+        </Parameters>
+    </data:RoleDataSource>
+    </div>
 </asp:Content>
 

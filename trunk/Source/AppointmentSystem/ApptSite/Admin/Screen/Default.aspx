@@ -6,66 +6,34 @@
 <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" Runat="Server">
- <div id="box-tabs" class="box">
+ <div class="box">
         <div class="title">
-            <h5>Room</h5>
+            <h5>Screen</h5>
         </div>
         <div id="box-order">
-            <dx:ASPxGridView ID="gridScreen" ClientInstanceName="grid" runat="server" DataSourceID="ScreenDataSource"
-                KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridScreen_RowInserting"
+            <dx:ASPxGridView ID="gridScreen" ClientInstanceName="grid"  runat="server" DataSourceID="ScreenDataSource"
+                KeyFieldName="ScreenCode" Width="100%" EnableRowsCache="False" OnRowInserting="gridScreen_RowInserting"
                 OnCustomButtonCallback="gridScreen_CustomButtonCallback" 
                 onrowupdating="gridScreen_RowUpdating">
-                <Columns>
-                    <dx:GridViewCommandColumn VisibleIndex="3">
+                <Columns>                    
+                    <dx:GridViewDataColumn FieldName="ScreenCode"  VisibleIndex="1">
+                        <EditFormSettings Visible="False" />
+                    </dx:GridViewDataColumn>
+                    <dx:GridViewDataColumn FieldName="ScreenName" VisibleIndex="2" />  
+                    <dx:GridViewDataColumn FieldName="PriorityIndex" VisibleIndex="3" />      
+                    <dx:GridViewCommandColumn VisibleIndex="4">
                         <EditButton Visible="true" />
                         <NewButton Visible="true" />
                         <CustomButtons>
                             <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
                             </dx:GridViewCommandColumnCustomButton>
                         </CustomButtons>
-                    </dx:GridViewCommandColumn>
-                    <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" ReadOnly="true" />
-                    <dx:GridViewDataColumn FieldName="ScreenCode" VisibleIndex="1" />
-                    <dx:GridViewDataColumn FieldName="ScreenName" VisibleIndex="2" />                   
+                    </dx:GridViewCommandColumn>           
                 </Columns>
-                <Templates>
-                    <EditForm>
-                         <div id="devexpress-form">
-                            <dx:ContentControl ID="ContentControl1" runat="server">
-                                <table class="edit-form">
-                                    <tbody>
-                                        <tr>
-                                            
-                                            <td class="title-row">
-                                                Title
-                                            </td>
-                                            <td class="content-row" rowspan="2">
-                                                 <dx:ASPxTextBox runat="server" ID="txtScreenCode" Text='<%# Bind("ScreenCode") %>' CssClass="text-form">
-                                                </dx:ASPxTextBox>
-                                            </td>
-                                            <td class="title-row">
-                                                Note
-                                            </td>
-                                            <td class="content-row" rowspan="2">
-                                               <dx:ASPxTextBox runat="server" ID="txtNote" Text='<%# Bind("ScreenName")%>' CssClass="text-form">
-                                                </dx:ASPxTextBox>
-                                            </td>
-                                           
-                                        </tr>
-                                       
-                                    </tbody>
-                                </table>
-                            </dx:ContentControl>
-                        </div>
-                        <div style="text-align: right; padding: 2px 50px 2px 2px">
-                        <dx:ASPxGridViewTemplateReplacement ID="UpdateButton" ReplacementType="EditFormUpdateButton"
-                            runat="server"></dx:ASPxGridViewTemplateReplacement>
-                        <dx:ASPxGridViewTemplateReplacement ID="CancelButton" ReplacementType="EditFormCancelButton"
-                            runat="server"></dx:ASPxGridViewTemplateReplacement>
-                    </EditForm>
-                </Templates>
-                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
+              
+                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();AlertMessage();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
                 </ClientSideEvents>
+                <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>
                 <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />

@@ -16,8 +16,7 @@
                 KeyFieldName="Id" Width="100%" 
                 OnRowInserting="gridGroupRole_OnRowInserting"
                 oncustombuttoncallback="gridGroupRole_CustomButtonCallback"
-                OnRowValidating="gridGroupRole_OnRowValidating" onrowupdating="gridGroupRole_RowUpdating"
-                     >
+                OnRowValidating="gridGroupRole_OnRowValidating" onrowupdating="gridGroupRole_RowUpdating">
                     <Columns>
                         <dx:GridViewCommandColumn VisibleIndex="3" Caption="#" Name="btnCommand">
                             <EditButton Visible="true" />
@@ -122,13 +121,13 @@
                                             </div> 
                                         </EditForm>
                                       </Templates> 
-                                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
+                                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
                                 </ClientSideEvents>
                           </dx:ASPxGridView>
                     </DetailRow>
                 </Templates>
                 <SettingsDetail ShowDetailRow="true" AllowOnlyOneMasterRowExpanded="True" />
-                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();}" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
+                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid();AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
                 </ClientSideEvents>
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>
