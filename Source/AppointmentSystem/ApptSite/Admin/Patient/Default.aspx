@@ -13,7 +13,9 @@
 <dx:ASPxGridView ID="gridPatient" ClientInstanceName="grid" runat="server" DataSourceID="PatientDatas"
         Width="100%" KeyFieldName="PatientCode" 
         oncustombuttoncallback="gridPatient_CustomButtonCallback" 
-        oninitnewrow="gridPatient_InitNewRow" onrowinserting="gridPatient_RowInserting" onrowupdating="gridPatient_RowUpdating" 
+        oninitnewrow="gridPatient_InitNewRow" 
+        onrowinserting="gridPatient_RowInserting" 
+        onrowupdating="gridPatient_RowUpdating" onbeforeperformdataselect="gridPatient_BeforePerformDataSelect" 
         >
         <Columns>
             <dx:GridViewDataColumn FieldName="PatientCode" VisibleIndex="1" />
@@ -71,7 +73,7 @@
                                                IsFemale
                                             </td>
                                             <td class="content-row">
-                                                 <dx:ASPxCheckBox runat="server" value='<%#Bind("IsFemale")%>' ID="ckcR">                                                 
+                                                 <dx:ASPxCheckBox  TextAlign ="Left" runat="server" value='<%#Bind("IsFemale")%>' ID="ckcR">                                                 
                                                 </dx:ASPxCheckBox>
                                             </td>
                                         </tr>
@@ -154,15 +156,49 @@
                         </div> 
                         <div style="text-align: right; padding: 2px 2px 2px 2px">
                             <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" ReplacementType="EditFormUpdateButton"
-                                runat="server" CssClass="btn-update" >
+                                runat="server">
                                 
                             </dx:ASPxGridViewTemplateReplacement>
                             <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
-                                runat="server" CssClass="btn-cancel">
+                                runat="server">
                             </dx:ASPxGridViewTemplateReplacement>
                         </div>
                     </EditForm>
-        </Templates>
+             <DetailRow>
+                            <div style="padding: 3px 3px 2px 3px">
+                                <dx:ASPxPageControl runat="server" ID="pageControl" Width="100%" EnableCallBacks="true">
+                                    <TabPages>
+                                        <dx:TabPage Text="Appointtment" Visible="true">
+                                            <ContentCollection>
+                                                <dx:ContentControl ID="ContentControl1" runat="server">
+                                                    <dx:ASPxGridView ID="GridAppointment" runat="server" DataSourceID="AppointmentDatas"
+                                                        KeyFieldName="Id" Width="100%" OnBeforePerformDataSelect="GridAppointment_BeforePerformDataSelect"
+                                                        >
+                                                        <Columns>
+                                                            <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" />
+                                                            <dx:GridViewDataColumn FieldName="DoctorId" VisibleIndex="1" />
+                                                            <dx:GridViewDataColumn FieldName="RoomId" VisibleIndex="3" />
+                                                            <dx:GridViewDataColumn FieldName="ServicesId" VisibleIndex="4" />
+                                                            <dx:GridViewDataColumn FieldName="StatusId" VisibleIndex="5" />
+                                                            <dx:GridViewDataColumn FieldName="AppointmentGroupId" VisibleIndex="6" />  
+                                                            <dx:GridViewDataColumn FieldName="StartTime" VisibleIndex="7" />
+                                                            <dx:GridViewDataColumn FieldName="EndTime" VisibleIndex="8" />                                    
+                                                        </Columns>                                                       
+                                                               <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
+                                                                </ClientSideEvents>
+                                                        <Settings ShowFooter="True" />                                             
+                                                    </dx:ASPxGridView>
+                                                </dx:ContentControl>
+                                            </ContentCollection>
+                                        </dx:TabPage>
+                                        <dx:TabPage Text="Group" Visible="false">
+                                            
+                                        </dx:TabPage>                        
+                                    </TabPages>
+                                </dx:ASPxPageControl>
+                            </div>
+                        </DetailRow> 
+                    </Templates>
           <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
                                 </ClientSideEvents>
          <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
@@ -176,6 +212,12 @@
              <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
     </Parameters>
 </data:PatientDataSource>
+<data:AppointmentDataSource ID="AppointmentDatas" runat="server" SelectMethod="GetPaged">
+    <Parameters >
+             <asp:ControlParameter Name="PageIndex" ControlID="gridPatient" PropertyName="PageIndex"  Type="Int32" />
+             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+    </Parameters>
+</data:AppointmentDataSource>
 </div>
 </asp:Content>
 
