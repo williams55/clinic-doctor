@@ -36,15 +36,9 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             gridcolums.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
 
             // Get delete button
-            GridViewCommandColumnCustomButton btnDelete = null;
-            foreach (GridViewCommandColumnCustomButton customButton in gridcolums.CustomButtons)
-            {
-                if (customButton.ID == "btnDelete")
-                {
-                    btnDelete = customButton;
-                    break;
-                }
-            }
+            GridViewCommandColumnCustomButton btnDelete =
+                gridcolums.CustomButtons.Cast<GridViewCommandColumnCustomButton>().FirstOrDefault(
+                    customButton => customButton.ID == "btnDelete");
 
             // Check delete right, if user has no right to delete => invisible delete button
             if (btnDelete != null && !RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
