@@ -25,9 +25,9 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
-		/// PatientId : 
+		/// PatientCode : 
 		/// </summary>
-		System.String  PatientId  { get; set; }
+		System.String  PatientCode  { get; set; }
 		
 		/// <summary>
 		/// DoctorId : 

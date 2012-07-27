@@ -7418,7 +7418,7 @@
 				
 				SELECT
 					[Id],
-					[PatientId],
+					[PatientCode],
 					[DoctorId],
 					[RoomId],
 					[ServicesId],
@@ -7496,7 +7496,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[PatientId], O.[DoctorId], O.[RoomId], O.[ServicesId], O.[StatusId], O.[AppointmentGroupId], O.[Note], O.[StartTime], O.[EndTime], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[PatientCode], O.[DoctorId], O.[RoomId], O.[ServicesId], O.[StatusId], O.[AppointmentGroupId], O.[Note], O.[StartTime], O.[EndTime], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Appointment] O,
 				    #PageIndex PageIndex
@@ -7530,7 +7530,7 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@PatientId" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@DoctorId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@RoomId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@ServicesId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
@@ -7551,7 +7551,7 @@
 				INSERT INTO [dbo].[Appointment]
 					(
 					[Id]
-					,[PatientId]
+					,[PatientCode]
 					,[DoctorId]
 					,[RoomId]
 					,[ServicesId]
@@ -7570,7 +7570,7 @@
 				VALUES
 					(
 					@Id
-					,@PatientId
+					,@PatientCode
 					,@DoctorId
 					,@RoomId
 					,@ServicesId
@@ -7603,7 +7603,7 @@
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@OriginalId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@PatientId" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@DoctorId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@RoomId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@ServicesId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
@@ -7627,7 +7627,7 @@
 					[dbo].[Appointment]
 				SET
 					[Id] = @Id
-					,[PatientId] = @PatientId
+					,[PatientCode] = @PatientCode
 					,[DoctorId] = @DoctorId
 					,[RoomId] = @RoomId
 					,[ServicesId] = @ServicesId
@@ -7683,7 +7683,7 @@
 				
 				SELECT
 					[Id],
-					[PatientId],
+					[PatientCode],
 					[DoctorId],
 					[RoomId],
 					[ServicesId],
@@ -7707,7 +7707,7 @@
 				SET ANSI_NULLS ON
 			]]></body>
 		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByPatientId" >
+		<procedure owner="dbo" name="Appointment_GetByPatientCode" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
 
@@ -7717,14 +7717,14 @@
 */
 ]]></comment>
 			<parameters>
-				<parameter name="@PatientId" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
 				SET ANSI_NULLS OFF
 				
 				SELECT
 					[Id],
-					[PatientId],
+					[PatientCode],
 					[DoctorId],
 					[RoomId],
 					[ServicesId],
@@ -7742,7 +7742,7 @@
 				FROM
 					[dbo].[Appointment]
 				WHERE
-					[PatientId] = @PatientId
+					[PatientCode] = @PatientCode
 				
 				SELECT @@ROWCOUNT
 				SET ANSI_NULLS ON
@@ -7765,7 +7765,7 @@
 				
 				SELECT
 					[Id],
-					[PatientId],
+					[PatientCode],
 					[DoctorId],
 					[RoomId],
 					[ServicesId],
@@ -7806,7 +7806,7 @@
 				
 				SELECT
 					[Id],
-					[PatientId],
+					[PatientCode],
 					[DoctorId],
 					[RoomId],
 					[ServicesId],
@@ -7847,7 +7847,7 @@
 				
 				SELECT
 					[Id],
-					[PatientId],
+					[PatientCode],
 					[DoctorId],
 					[RoomId],
 					[ServicesId],
@@ -7888,7 +7888,7 @@
 				
 				SELECT
 					[Id],
-					[PatientId],
+					[PatientCode],
 					[DoctorId],
 					[RoomId],
 					[ServicesId],
@@ -7927,7 +7927,7 @@
 			<body><![CDATA[
 				SELECT
 					[Id],
-					[PatientId],
+					[PatientCode],
 					[DoctorId],
 					[RoomId],
 					[ServicesId],
@@ -7963,7 +7963,7 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@PatientId" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
 				<parameter name="@DoctorId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@RoomId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@ServicesId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
@@ -7985,7 +7985,7 @@
   BEGIN
     SELECT
 	  [Id]
-	, [PatientId]
+	, [PatientCode]
 	, [DoctorId]
 	, [RoomId]
 	, [ServicesId]
@@ -8004,7 +8004,7 @@
 	[dbo].[Appointment]
     WHERE 
 	 ([Id] = @Id OR @Id IS NULL)
-	AND ([PatientId] = @PatientId OR @PatientId IS NULL)
+	AND ([PatientCode] = @PatientCode OR @PatientCode IS NULL)
 	AND ([DoctorId] = @DoctorId OR @DoctorId IS NULL)
 	AND ([RoomId] = @RoomId OR @RoomId IS NULL)
 	AND ([ServicesId] = @ServicesId OR @ServicesId IS NULL)
@@ -8025,7 +8025,7 @@
   BEGIN
     SELECT
 	  [Id]
-	, [PatientId]
+	, [PatientCode]
 	, [DoctorId]
 	, [RoomId]
 	, [ServicesId]
@@ -8044,7 +8044,7 @@
 	[dbo].[Appointment]
     WHERE 
 	 ([Id] = @Id AND @Id is not null)
-	OR ([PatientId] = @PatientId AND @PatientId is not null)
+	OR ([PatientCode] = @PatientCode AND @PatientCode is not null)
 	OR ([DoctorId] = @DoctorId AND @DoctorId is not null)
 	OR ([RoomId] = @RoomId AND @RoomId is not null)
 	OR ([ServicesId] = @ServicesId AND @ServicesId is not null)
@@ -8093,7 +8093,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[PatientId], O.[DoctorId], O.[RoomId], O.[ServicesId], O.[StatusId], O.[AppointmentGroupId], O.[Note], O.[StartTime], O.[EndTime], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[PatientCode], O.[DoctorId], O.[RoomId], O.[ServicesId], O.[StatusId], O.[AppointmentGroupId], O.[Note], O.[StartTime], O.[EndTime], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Appointment] O,
 				    #PageIndex PageIndex

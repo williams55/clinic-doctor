@@ -1953,25 +1953,25 @@ namespace AppointmentSystem.Entities
 
 		#region AppointmentCollection
 		
-		private TList<Appointment> _appointmentPatientId;
+		private TList<Appointment> _appointmentPatientCode;
 		
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentPatientId
+		///	which are related to this object through the relation _appointmentPatientCode
 		/// </summary>
 		
 		public TList<Appointment> AppointmentCollection
 		{
 			get
 			{
-				if (_appointmentPatientId == null)
+				if (_appointmentPatientCode == null)
 				{
-				_appointmentPatientId = new TList<Appointment>();
+				_appointmentPatientCode = new TList<Appointment>();
 				}
 	
-				return _appointmentPatientId;
+				return _appointmentPatientCode;
 			}
-			set { _appointmentPatientId = value; }
+			set { _appointmentPatientCode = value; }
 		}
 		
 		#endregion
@@ -2014,7 +2014,7 @@ namespace AppointmentSystem.Entities
 		
 			#region Child Collections
 			//deep copy nested objects
-			if (this._appointmentPatientId != null)
+			if (this._appointmentPatientCode != null)
 				_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection); 
 			#endregion Child Collections
 			

@@ -146,8 +146,8 @@ scheduler.showLightbox = function(id) {
     if (ev.RoomId) {
         $("#hdfRoom").val(ev.RoomId);
     }
-    if (ev.PatientId) {
-        $("#txtPatient").tokenInput("add", { id: ev.PatientId, PatientInfo: ev.PatientInfo });
+    if (ev.PatientCode) {
+        $("#txtPatient").tokenInput("add", { id: ev.PatientCode, PatientInfo: ev.PatientInfo });
     }
 
     // Get available room list
@@ -157,6 +157,9 @@ scheduler.showLightbox = function(id) {
     if (ev.isnew == false) {
         $("#create-user").hide();
         $("#change-user").show();
+
+        // Set current user to global variable
+        CurrentAppointment = ev;
 
         // Update case, get info from server
         $("#RosterForm").dialog({
@@ -336,7 +339,7 @@ function GetPatientInfo(currentId) {
                         $("#divLastname").html(arr.LastName);
                         $("#divCellPhone").html(arr.CellPhone);
                         $("#divBirthday").html(arr.Birthday);
-                        $("#divAddress").html(arr.Address);
+                        $("#divNote").html(arr.Address);
                     }
                 }
                 else {
@@ -352,12 +355,11 @@ function GetPatientInfo(currentId) {
 }
 
 // Create new patient
-function CreateSimplePatient(firstname, lastname, cellPhone, adddress, dialog) {
+function CreateSimplePatient(firstname, lastname, cellPhone, dialog) {
     var requestdata = JSON.stringify({
         firstname: $(firstname).val(),
         lastname: $(lastname).val(),
         cellPhone: $(cellPhone).val(),
-        address: $(adddress).val(),
         isFemale: $('input[name=radSex]:checked').val()
     });
     ShowProgress();
@@ -371,14 +373,55 @@ function CreateSimplePatient(firstname, lastname, cellPhone, adddress, dialog) {
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 $("#txtPatient").tokenInput("clear");
-                $("#txtPatient").tokenInput("add", obj.data[0]);
+                $("#txtPatient").tokenInput("add", { id: obj.data[0].PatientCode, PatientInfo: obj.data[0].PatientInfo });
                 $(dialog).dialog("close");
             } else {
-                updateTips(obj.message);
+                ShowDialog("", "", obj.message, "");
             }
         },
         fail: function() {
-            updateTips("Error");
+            ShowDialog("", "", "Cannot create patient. Please contact Administrator", "");
+        },
+        complete: function() {
+            CloseProgress();
+        }
+    });
+}
+
+// Create new patient
+function UpdateSimplePatient(id, firstname, lastname, cellPhone, dialog) {
+    var requestdata = JSON.stringify({
+        id: id,
+        firstname: $(firstname).val(),
+        lastname: $(lastname).val(),
+        cellPhone: $(cellPhone).val(),
+        isFemale: $('input[name=radSex]:checked').val()
+    });
+    ShowProgress();
+
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/UpdateSimplePatient",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(response) {
+            var obj = JSON.parse(response.d);
+            if (obj.result == "true") {
+                $("#txtPatient").tokenInput("clear");
+                $("#txtPatient").tokenInput("add", { id: obj.data[0].PatientCode, PatientInfo: obj.data[0].PatientInfo });
+
+                // Set new value for patient's info in appointment
+                CurrentAppointment.PatientInfo = obj.data[0].PatientInfo;
+                CurrentAppointment.PatientCode = obj.data[0].PatientCode;
+
+                $(dialog).dialog("close");
+            } else {
+                ShowDialog("", "", obj.message, "");
+            }
+        },
+        fail: function() {
+            ShowDialog("", "", "Cannot update patient's info. Please contact Administrator", "");
         },
         complete: function() {
             CloseProgress();
@@ -463,7 +506,7 @@ function NewAppointment() {
     DisableAllElements($("#tblContent"), false);
 
     var requestdata = JSON.stringify({
-        patientId: patient[0].id,
+        patientCode: patient[0].id,
         note: $("#txtNote").val(),
         startTime: $("#cboFromHour").val(),
         endTime: $("#cboToHour").val(),
@@ -514,7 +557,7 @@ function UpdateAppointment(id) {
 
     var requestdata = JSON.stringify({
         id: id,
-        patientId: patient[0].id,
+        patientCode: patient[0].id,
         note: $("#txtNote").val(),
         startTime: $("#cboFromHour").val(),
         endTime: $("#cboToHour").val(),
@@ -648,40 +691,6 @@ $(document).ready(function() {
 
     // Call init input token
     GetToken();
-
-    $("#dialog:ui-dialog").dialog("destroy");
-
-    var txtFirstName = $("#txtFirstName"),
-                txtLastName = $("#txtLastName"),
-                radSex = $("input[name=radSex]"),
-                txtCellPhone = $("#txtCellPhone"),
-                txtAddress = $("#txtAddress"),
-                allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone).add(txtAddress);
-
-    $("#dialog-form").dialog({
-        autoOpen: false,
-        height: 350,
-        width: 550,
-        modal: true,
-        zIndex: $.maxZIndex() + 1,
-        resizable: false,
-        buttons: {
-            Cancel: function() {
-                $(this).dialog("close");
-            },
-            "Create patient": function() {
-                var bValid = true;
-                allFields.removeClass("ui-state-error");
-
-                if (bValid) {
-                    CreateSimplePatient(txtFirstName, txtLastName, txtCellPhone, txtAddress, this);
-                }
-            }
-        },
-        close: function() {
-            allFields.val("").removeClass("ui-state-error");
-        }
-    });
 });
 
 function DisableAllElements(obj, disabled) {
@@ -738,15 +747,126 @@ function checkRegexp(o, regexp, n) {
 /****************************Methods - End******************************/
 
 /****************************Events - Start******************************/
-$("#create-user")
-    .click(function() {
-        $("#dialog-form").dialog("open");
-        $(txtFirstName).val("");
-        $(txtLastName).val("");
-        $(txtCellPhone).val("");
-        $(txtAddress).val("");
-        $("#radMale").val("false");
-        $("#radFemale").val("true");
-        $("#radMale").attr("checked", "checked");
+$("#create-user").click(function() {
+    $("#dialog:ui-dialog").dialog("destroy");
+
+    var txtFirstName = $("#txtFirstName"),
+        txtLastName = $("#txtLastName"),
+        radSex = $("input[name=radSex]"),
+        txtCellPhone = $("#txtCellPhone"),
+        allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone);
+
+    $("#dialog-form").dialog({
+        autoOpen: false,
+        height: 230,
+        width: 550,
+        modal: true,
+        zIndex: $.maxZIndex() + 1,
+        resizable: false,
+        buttons: {
+            Cancel: function() {
+                $(this).dialog("close");
+            },
+            Create: function() {
+                var bValid = true;
+                allFields.removeClass("ui-state-error");
+
+                if (bValid) {
+                    CreateSimplePatient(txtFirstName, txtLastName, txtCellPhone, this);
+                }
+            }
+        },
+        close: function() {
+            allFields.val("").removeClass("ui-state-error");
+        }
     });
+
+    $(txtFirstName).val("");
+    $(txtLastName).val("");
+    $(txtCellPhone).val("");
+    $("#radMale").val("false");
+    $("#radFemale").val("true");
+    $("#radMale").attr("checked", "checked");
+    $("#dialog-form").dialog("open");
+});
+
+$("#change-user").click(function() {
+    $("#dialog:ui-dialog").dialog("destroy");
+
+    // Check if patient is not selected
+    var patient = $("#txtPatient").tokenInput("get");
+    if (patient.length <= 0) {
+        ShowDialog("", "", "You must choose patient.", "");
+        $("#txtPatient").focus();
+        return;
+    }
+
+    var txtFirstName = $("#txtFirstName"),
+        txtLastName = $("#txtLastName"),
+        radSex = $("input[name=radSex]"),
+        txtCellPhone = $("#txtCellPhone"),
+        allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone);
+
+    ShowProgress();
+    var requestdata = JSON.stringify({ id: patient[0].id });
+
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/GetPatient",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(response) {
+            CloseProgress();
+            var obj = JSON.parse(response.d);
+            if (obj.result == "true") {
+                $("#dialog-form").dialog({
+                    autoOpen: false,
+                    height: 230,
+                    width: 550,
+                    modal: true,
+                    zIndex: $.maxZIndex() + 1,
+                    resizable: false,
+                    buttons: {
+                        Cancel: function() {
+                            $(this).dialog("close");
+                        },
+                        Save: function() {
+                            var bValid = true;
+                            allFields.removeClass("ui-state-error");
+
+                            if (bValid) {
+                                UpdateSimplePatient(patient[0].id, txtFirstName, txtLastName, txtCellPhone, this);
+                            }
+                        }
+                    },
+                    close: function() {
+                        allFields.val("").removeClass("ui-state-error");
+                    }
+                });
+
+                $(txtFirstName).val(obj.data[0].FirstName);
+                $(txtLastName).val(obj.data[0].LastName);
+                $(txtCellPhone).val(obj.data[0].CellPhone);
+                $("#radMale").val("false");
+                $("#radFemale").val("true");
+                if (obj.data[0].IsFemale == false) {
+                    $("#radMale").attr("checked", "checked");
+                    $("#radFemale").removeAttr("checked");
+                } else {
+                    $("#radFemale").attr("checked", "checked");
+                    $("#radMale").removeAttr("checked");
+                }
+                $("#dialog-form").dialog("open");
+
+            } else {
+                ShowDialog("", "", obj.message, "");
+            }
+        },
+        fail: function() {
+            CloseProgress();
+            ShowDialog("", "", "Unknow error!", "");
+        }
+    });
+});
 /****************************Events - End******************************/

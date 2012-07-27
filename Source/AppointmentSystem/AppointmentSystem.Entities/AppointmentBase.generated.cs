@@ -82,7 +82,7 @@ namespace AppointmentSystem.Entities
 		/// Creates a new <see cref="AppointmentBase"/> instance.
 		///</summary>
 		///<param name="_id"></param>
-		///<param name="_patientId"></param>
+		///<param name="_patientCode"></param>
 		///<param name="_doctorId"></param>
 		///<param name="_roomId"></param>
 		///<param name="_servicesId">What do patient wanna be served</param>
@@ -97,7 +97,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public AppointmentBase(System.String _id, System.String _patientId, System.String _doctorId, 
+		public AppointmentBase(System.String _id, System.String _patientCode, System.String _doctorId, 
 			System.Int32? _roomId, System.Int32? _servicesId, System.String _statusId, System.Int32? _appointmentGroupId, 
 			System.String _note, System.DateTime? _startTime, System.DateTime? _endTime, System.Boolean _isComplete, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
@@ -107,7 +107,7 @@ namespace AppointmentSystem.Entities
 			this.backupData = null;
 
 			this.Id = _id;
-			this.PatientId = _patientId;
+			this.PatientCode = _patientCode;
 			this.DoctorId = _doctorId;
 			this.RoomId = _roomId;
 			this.ServicesId = _servicesId;
@@ -128,7 +128,7 @@ namespace AppointmentSystem.Entities
 		/// A simple factory method to create a new <see cref="Appointment"/> instance.
 		///</summary>
 		///<param name="_id"></param>
-		///<param name="_patientId"></param>
+		///<param name="_patientCode"></param>
 		///<param name="_doctorId"></param>
 		///<param name="_roomId"></param>
 		///<param name="_servicesId">What do patient wanna be served</param>
@@ -143,7 +143,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Appointment CreateAppointment(System.String _id, System.String _patientId, System.String _doctorId, 
+		public static Appointment CreateAppointment(System.String _id, System.String _patientCode, System.String _doctorId, 
 			System.Int32? _roomId, System.Int32? _servicesId, System.String _statusId, System.Int32? _appointmentGroupId, 
 			System.String _note, System.DateTime? _startTime, System.DateTime? _endTime, System.Boolean _isComplete, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
@@ -151,7 +151,7 @@ namespace AppointmentSystem.Entities
 		{
 			Appointment newAppointment = new Appointment();
 			newAppointment.Id = _id;
-			newAppointment.PatientId = _patientId;
+			newAppointment.PatientCode = _patientCode;
 			newAppointment.DoctorId = _doctorId;
 			newAppointment.RoomId = _roomId;
 			newAppointment.ServicesId = _servicesId;
@@ -225,7 +225,7 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or sets the PatientId property. 
+		/// 	Gets or sets the PatientCode property. 
 		///		
 		/// </summary>
 		/// <value>This type is nchar.</value>
@@ -239,24 +239,24 @@ namespace AppointmentSystem.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, false, 10)]
-		public virtual System.String PatientId
+		public virtual System.String PatientCode
 		{
 			get
 			{
-				return this.entityData.PatientId; 
+				return this.entityData.PatientCode; 
 			}
 			
 			set
 			{
-				if (this.entityData.PatientId == value)
+				if (this.entityData.PatientCode == value)
 					return;
 					
-				OnColumnChanging(AppointmentColumn.PatientId, this.entityData.PatientId);
-				this.entityData.PatientId = value;
+				OnColumnChanging(AppointmentColumn.PatientCode, this.entityData.PatientCode);
+				this.entityData.PatientCode = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
-				OnColumnChanged(AppointmentColumn.PatientId, this.entityData.PatientId);
-				OnPropertyChanged("PatientId");
+				OnColumnChanged(AppointmentColumn.PatientCode, this.entityData.PatientCode);
+				OnPropertyChanged("PatientCode");
 			}
 		}
 		
@@ -779,13 +779,13 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Gets or sets the source <see cref="Patient"/>.
 		/// </summary>
-		/// <value>The source Patient for PatientId.</value>
+		/// <value>The source Patient for PatientCode.</value>
         [XmlIgnore()]
 		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual Patient PatientIdSource
+		public virtual Patient PatientCodeSource
       	{
-            get { return entityData.PatientIdSource; }
-            set { entityData.PatientIdSource = value; }
+            get { return entityData.PatientCodeSource; }
+            set { entityData.PatientCodeSource = value; }
       	}
 		/// <summary>
 		/// Gets or sets the source <see cref="Services"/>.
@@ -851,9 +851,9 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
 			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("PatientId", "Patient Id"));
+				new ValidationRuleArgs("PatientCode", "Patient Code"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("PatientId", "Patient Id", 10));
+				new CommonRules.MaxLengthRuleArgs("PatientCode", "Patient Code", 10));
 			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("DoctorId", "Doctor Id"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -887,7 +887,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "PatientId", "DoctorId", "RoomId", "ServicesId", "StatusId", "AppointmentGroupId", "Note", "StartTime", "EndTime", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "PatientCode", "DoctorId", "RoomId", "ServicesId", "StatusId", "AppointmentGroupId", "Note", "StartTime", "EndTime", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1037,7 +1037,7 @@ namespace AppointmentSystem.Entities
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
 					copy.OriginalId = this.OriginalId;
-				copy.PatientId = this.PatientId;
+				copy.PatientCode = this.PatientCode;
 				copy.DoctorId = this.DoctorId;
 				copy.RoomId = this.RoomId;
 				copy.ServicesId = this.ServicesId;
@@ -1057,10 +1057,10 @@ namespace AppointmentSystem.Entities
 				copy.AppointmentGroupIdSource = existingCopies[this.AppointmentGroupIdSource] as AppointmentGroup;
 			else
 				copy.AppointmentGroupIdSource = MakeCopyOf(this.AppointmentGroupIdSource, existingCopies) as AppointmentGroup;
-			if (this.PatientIdSource != null && existingCopies.Contains(this.PatientIdSource))
-				copy.PatientIdSource = existingCopies[this.PatientIdSource] as Patient;
+			if (this.PatientCodeSource != null && existingCopies.Contains(this.PatientCodeSource))
+				copy.PatientCodeSource = existingCopies[this.PatientCodeSource] as Patient;
 			else
-				copy.PatientIdSource = MakeCopyOf(this.PatientIdSource, existingCopies) as Patient;
+				copy.PatientCodeSource = MakeCopyOf(this.PatientCodeSource, existingCopies) as Patient;
 			if (this.ServicesIdSource != null && existingCopies.Contains(this.ServicesIdSource))
 				copy.ServicesIdSource = existingCopies[this.ServicesIdSource] as Services;
 			else
@@ -1210,8 +1210,8 @@ namespace AppointmentSystem.Entities
 			{
 					case AppointmentColumn.Id:
 					return entityData.Id != _originalData.Id;
-					case AppointmentColumn.PatientId:
-					return entityData.PatientId != _originalData.PatientId;
+					case AppointmentColumn.PatientCode:
+					return entityData.PatientCode != _originalData.PatientCode;
 					case AppointmentColumn.DoctorId:
 					return entityData.DoctorId != _originalData.DoctorId;
 					case AppointmentColumn.RoomId:
@@ -1268,7 +1268,7 @@ namespace AppointmentSystem.Entities
 		{
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
-			result = result || entityData.PatientId != _originalData.PatientId;
+			result = result || entityData.PatientCode != _originalData.PatientCode;
 			result = result || entityData.DoctorId != _originalData.DoctorId;
 			result = result || entityData.RoomId != _originalData.RoomId;
 			result = result || entityData.ServicesId != _originalData.ServicesId;
@@ -1294,7 +1294,7 @@ namespace AppointmentSystem.Entities
 			if (_originalData != null)
 				return CreateAppointment(
 				_originalData.Id,
-				_originalData.PatientId,
+				_originalData.PatientCode,
 				_originalData.DoctorId,
 				_originalData.RoomId,
 				_originalData.ServicesId,
@@ -1339,7 +1339,7 @@ namespace AppointmentSystem.Entities
         public override int GetHashCode()
         {
 			return this.Id.GetHashCode() ^ 
-					this.PatientId.GetHashCode() ^ 
+					this.PatientCode.GetHashCode() ^ 
 					this.DoctorId.GetHashCode() ^ 
 					((this.RoomId == null) ? string.Empty : this.RoomId.ToString()).GetHashCode() ^ 
 					((this.ServicesId == null) ? string.Empty : this.ServicesId.ToString()).GetHashCode() ^ 
@@ -1388,7 +1388,7 @@ namespace AppointmentSystem.Entities
 			bool equal = true;
 			if (Object1.Id != Object2.Id)
 				equal = false;
-			if (Object1.PatientId != Object2.PatientId)
+			if (Object1.PatientCode != Object2.PatientCode)
 				equal = false;
 			if (Object1.DoctorId != Object2.DoctorId)
 				equal = false;
@@ -1531,8 +1531,8 @@ namespace AppointmentSystem.Entities
             		                 
             	
             	
-            	case AppointmentColumn.PatientId:
-            		return this.PatientId.CompareTo(rhs.PatientId);
+            	case AppointmentColumn.PatientCode:
+            		return this.PatientCode.CompareTo(rhs.PatientCode);
             		
             		                 
             	
@@ -1753,9 +1753,9 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{17}{16}- Id: {0}{16}- PatientId: {1}{16}- DoctorId: {2}{16}- RoomId: {3}{16}- ServicesId: {4}{16}- StatusId: {5}{16}- AppointmentGroupId: {6}{16}- Note: {7}{16}- StartTime: {8}{16}- EndTime: {9}{16}- IsComplete: {10}{16}- IsDisabled: {11}{16}- CreateUser: {12}{16}- CreateDate: {13}{16}- UpdateUser: {14}{16}- UpdateDate: {15}{16}{18}", 
+				"{17}{16}- Id: {0}{16}- PatientCode: {1}{16}- DoctorId: {2}{16}- RoomId: {3}{16}- ServicesId: {4}{16}- StatusId: {5}{16}- AppointmentGroupId: {6}{16}- Note: {7}{16}- StartTime: {8}{16}- EndTime: {9}{16}- IsComplete: {10}{16}- IsDisabled: {11}{16}- CreateUser: {12}{16}- CreateDate: {13}{16}- UpdateUser: {14}{16}- UpdateDate: {15}{16}{18}", 
 				this.Id,
-				this.PatientId,
+				this.PatientCode,
 				this.DoctorId,
 				(this.RoomId == null) ? string.Empty : this.RoomId.ToString(),
 				(this.ServicesId == null) ? string.Empty : this.ServicesId.ToString(),
@@ -1810,9 +1810,9 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
-		/// PatientId : 
+		/// PatientCode : 
 		/// </summary>
-		public System.String		  PatientId = string.Empty;
+		public System.String		  PatientCode = string.Empty;
 		
 		/// <summary>
 		/// DoctorId : 
@@ -1900,18 +1900,18 @@ namespace AppointmentSystem.Entities
             get { return this._appointmentGroupIdSource; }
             set { this._appointmentGroupIdSource = value; }
       	}
-		private Patient _patientIdSource = null;
+		private Patient _patientCodeSource = null;
 		
 		/// <summary>
 		/// Gets or sets the source <see cref="Patient"/>.
 		/// </summary>
-		/// <value>The source Patient for PatientId.</value>
+		/// <value>The source Patient for PatientCode.</value>
 		[XmlIgnore()]
 		[Browsable(false)]
-		public virtual Patient PatientIdSource
+		public virtual Patient PatientCodeSource
       	{
-            get { return this._patientIdSource; }
-            set { this._patientIdSource = value; }
+            get { return this._patientCodeSource; }
+            set { this._patientCodeSource = value; }
       	}
 		private Services _servicesIdSource = null;
 		
@@ -1985,7 +1985,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Id = this.Id;
 			_tmp.OriginalId = this.OriginalId;
 			
-			_tmp.PatientId = this.PatientId;
+			_tmp.PatientCode = this.PatientCode;
 			_tmp.DoctorId = this.DoctorId;
 			_tmp.RoomId = this.RoomId;
 			_tmp.ServicesId = this.ServicesId;
@@ -2004,8 +2004,8 @@ namespace AppointmentSystem.Entities
 			#region Source Parent Composite Entities
 			if (this.AppointmentGroupIdSource != null)
 				_tmp.AppointmentGroupIdSource = MakeCopyOf(this.AppointmentGroupIdSource) as AppointmentGroup;
-			if (this.PatientIdSource != null)
-				_tmp.PatientIdSource = MakeCopyOf(this.PatientIdSource) as Patient;
+			if (this.PatientCodeSource != null)
+				_tmp.PatientCodeSource = MakeCopyOf(this.PatientCodeSource) as Patient;
 			if (this.ServicesIdSource != null)
 				_tmp.ServicesIdSource = MakeCopyOf(this.ServicesIdSource) as Services;
 			if (this.RoomIdSource != null)
@@ -2039,7 +2039,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Id = this.Id;
 			_tmp.OriginalId = this.OriginalId;
 			
-			_tmp.PatientId = this.PatientId;
+			_tmp.PatientCode = this.PatientCode;
 			_tmp.DoctorId = this.DoctorId;
 			_tmp.RoomId = this.RoomId;
 			_tmp.ServicesId = this.ServicesId;
@@ -2060,10 +2060,10 @@ namespace AppointmentSystem.Entities
 				_tmp.AppointmentGroupIdSource = existingCopies[this.AppointmentGroupIdSource] as AppointmentGroup;
 			else
 				_tmp.AppointmentGroupIdSource = MakeCopyOf(this.AppointmentGroupIdSource, existingCopies) as AppointmentGroup;
-			if (this.PatientIdSource != null && existingCopies.Contains(this.PatientIdSource))
-				_tmp.PatientIdSource = existingCopies[this.PatientIdSource] as Patient;
+			if (this.PatientCodeSource != null && existingCopies.Contains(this.PatientCodeSource))
+				_tmp.PatientCodeSource = existingCopies[this.PatientCodeSource] as Patient;
 			else
-				_tmp.PatientIdSource = MakeCopyOf(this.PatientIdSource, existingCopies) as Patient;
+				_tmp.PatientCodeSource = MakeCopyOf(this.PatientCodeSource, existingCopies) as Patient;
 			if (this.ServicesIdSource != null && existingCopies.Contains(this.ServicesIdSource))
 				_tmp.ServicesIdSource = existingCopies[this.ServicesIdSource] as Services;
 			else
@@ -2458,11 +2458,11 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
 		Id = 1,
 		/// <summary>
-		/// PatientId : 
+		/// PatientCode : 
 		/// </summary>
-		[EnumTextValue("PatientId")]
-		[ColumnEnum("PatientId", typeof(System.String), System.Data.DbType.StringFixedLength, false, false, false, 10)]
-		PatientId = 2,
+		[EnumTextValue("PatientCode")]
+		[ColumnEnum("PatientCode", typeof(System.String), System.Data.DbType.StringFixedLength, false, false, false, 10)]
+		PatientCode = 2,
 		/// <summary>
 		/// DoctorId : 
 		/// </summary>

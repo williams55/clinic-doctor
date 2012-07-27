@@ -148,12 +148,12 @@ namespace AppointmentSystem.Data.Bases
 		/// 	Gets rows from the datasource based on the FK_Appointment_Patient key.
 		///		FK_Appointment_Patient Description: 
 		/// </summary>
-		/// <param name="_patientId"></param>
+		/// <param name="_patientCode"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByPatientId(System.String _patientId)
+		public TList<Appointment> GetByPatientCode(System.String _patientCode)
 		{
 			int count = -1;
-			return GetByPatientId(_patientId, 0,int.MaxValue, out count);
+			return GetByPatientCode(_patientCode, 0,int.MaxValue, out count);
 		}
 		
 		/// <summary>
@@ -161,13 +161,13 @@ namespace AppointmentSystem.Data.Bases
 		///		FK_Appointment_Patient Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_patientId"></param>
+		/// <param name="_patientCode"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
 		/// <remarks></remarks>
-		public TList<Appointment> GetByPatientId(TransactionManager transactionManager, System.String _patientId)
+		public TList<Appointment> GetByPatientCode(TransactionManager transactionManager, System.String _patientCode)
 		{
 			int count = -1;
-			return GetByPatientId(transactionManager, _patientId, 0, int.MaxValue, out count);
+			return GetByPatientCode(transactionManager, _patientCode, 0, int.MaxValue, out count);
 		}
 		
 			/// <summary>
@@ -175,15 +175,15 @@ namespace AppointmentSystem.Data.Bases
 		///		FK_Appointment_Patient Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_patientId"></param>
+		/// <param name="_patientCode"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByPatientId(TransactionManager transactionManager, System.String _patientId, int start, int pageLength)
+		public TList<Appointment> GetByPatientCode(TransactionManager transactionManager, System.String _patientCode, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByPatientId(transactionManager, _patientId, start, pageLength, out count);
+			return GetByPatientCode(transactionManager, _patientCode, start, pageLength, out count);
 		}
 		
 		/// <summary>
@@ -192,13 +192,13 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_patientId"></param>
+		/// <param name="_patientCode"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByPatientId(System.String _patientId, int start, int pageLength)
+		public TList<Appointment> GetByPatientCode(System.String _patientCode, int start, int pageLength)
 		{
 			int count =  -1;
-			return GetByPatientId(null, _patientId, start, pageLength,out count);	
+			return GetByPatientCode(null, _patientCode, start, pageLength,out count);	
 		}
 		
 		/// <summary>
@@ -207,13 +207,13 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_patientId"></param>
+		/// <param name="_patientCode"></param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByPatientId(System.String _patientId, int start, int pageLength,out int count)
+		public TList<Appointment> GetByPatientCode(System.String _patientCode, int start, int pageLength,out int count)
 		{
-			return GetByPatientId(null, _patientId, start, pageLength, out count);	
+			return GetByPatientCode(null, _patientCode, start, pageLength, out count);	
 		}
 						
 		/// <summary>
@@ -221,12 +221,12 @@ namespace AppointmentSystem.Data.Bases
 		///		FK_Appointment_Patient Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_patientId"></param>
+		/// <param name="_patientCode"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public abstract TList<Appointment> GetByPatientId(TransactionManager transactionManager, System.String _patientId, int start, int pageLength, out int count);
+		public abstract TList<Appointment> GetByPatientCode(TransactionManager transactionManager, System.String _patientCode, int start, int pageLength, out int count);
 		
 	
 		/// <summary>
@@ -731,7 +731,7 @@ namespace AppointmentSystem.Data.Bases
 					c.SuppressEntityEvents = true;
 					c.Id = (System.String)reader[((int)AppointmentColumn.Id - 1)];
 					c.OriginalId = c.Id;
-					c.PatientId = (System.String)reader[((int)AppointmentColumn.PatientId - 1)];
+					c.PatientCode = (System.String)reader[((int)AppointmentColumn.PatientCode - 1)];
 					c.DoctorId = (System.String)reader[((int)AppointmentColumn.DoctorId - 1)];
 					c.RoomId = (reader.IsDBNull(((int)AppointmentColumn.RoomId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.RoomId - 1)];
 					c.ServicesId = (reader.IsDBNull(((int)AppointmentColumn.ServicesId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.ServicesId - 1)];
@@ -765,7 +765,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.String)reader[((int)AppointmentColumn.Id - 1)];
 			entity.OriginalId = (System.String)reader["Id"];
-			entity.PatientId = (System.String)reader[((int)AppointmentColumn.PatientId - 1)];
+			entity.PatientCode = (System.String)reader[((int)AppointmentColumn.PatientCode - 1)];
 			entity.DoctorId = (System.String)reader[((int)AppointmentColumn.DoctorId - 1)];
 			entity.RoomId = (reader.IsDBNull(((int)AppointmentColumn.RoomId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.RoomId - 1)];
 			entity.ServicesId = (reader.IsDBNull(((int)AppointmentColumn.ServicesId - 1)))?null:(System.Int32?)reader[((int)AppointmentColumn.ServicesId - 1)];
@@ -794,7 +794,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.String)dataRow["Id"];
 			entity.OriginalId = (System.String)dataRow["Id"];
-			entity.PatientId = (System.String)dataRow["PatientId"];
+			entity.PatientCode = (System.String)dataRow["PatientCode"];
 			entity.DoctorId = (System.String)dataRow["DoctorId"];
 			entity.RoomId = Convert.IsDBNull(dataRow["RoomId"]) ? null : (System.Int32?)dataRow["RoomId"];
 			entity.ServicesId = Convert.IsDBNull(dataRow["ServicesId"]) ? null : (System.Int32?)dataRow["ServicesId"];
@@ -860,31 +860,31 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion AppointmentGroupIdSource
 
-			#region PatientIdSource	
-			if (CanDeepLoad(entity, "Patient|PatientIdSource", deepLoadType, innerList) 
-				&& entity.PatientIdSource == null)
+			#region PatientCodeSource	
+			if (CanDeepLoad(entity, "Patient|PatientCodeSource", deepLoadType, innerList) 
+				&& entity.PatientCodeSource == null)
 			{
 				object[] pkItems = new object[1];
-				pkItems[0] = entity.PatientId;
+				pkItems[0] = entity.PatientCode;
 				Patient tmpEntity = EntityManager.LocateEntity<Patient>(EntityLocator.ConstructKeyFromPkItems(typeof(Patient), pkItems), DataRepository.Provider.EnableEntityTracking);
 				if (tmpEntity != null)
-					entity.PatientIdSource = tmpEntity;
+					entity.PatientCodeSource = tmpEntity;
 				else
-					entity.PatientIdSource = DataRepository.PatientProvider.GetByPatientCode(transactionManager, entity.PatientId);		
+					entity.PatientCodeSource = DataRepository.PatientProvider.GetByPatientCode(transactionManager, entity.PatientCode);		
 				
 				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'PatientIdSource' loaded. key " + entity.EntityTrackingKey);
+				System.Diagnostics.Debug.WriteLine("- property 'PatientCodeSource' loaded. key " + entity.EntityTrackingKey);
 				#endif 
 				
-				if (deep && entity.PatientIdSource != null)
+				if (deep && entity.PatientCodeSource != null)
 				{
 					innerList.SkipChildren = true;
-					DataRepository.PatientProvider.DeepLoad(transactionManager, entity.PatientIdSource, deep, deepLoadType, childTypes, innerList);
+					DataRepository.PatientProvider.DeepLoad(transactionManager, entity.PatientCodeSource, deep, deepLoadType, childTypes, innerList);
 					innerList.SkipChildren = false;
 				}
 					
 			}
-			#endregion PatientIdSource
+			#endregion PatientCodeSource
 
 			#region ServicesIdSource	
 			if (CanDeepLoad(entity, "Services|ServicesIdSource", deepLoadType, innerList) 
@@ -1032,12 +1032,12 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion 
 			
-			#region PatientIdSource
-			if (CanDeepSave(entity, "Patient|PatientIdSource", deepSaveType, innerList) 
-				&& entity.PatientIdSource != null)
+			#region PatientCodeSource
+			if (CanDeepSave(entity, "Patient|PatientCodeSource", deepSaveType, innerList) 
+				&& entity.PatientCodeSource != null)
 			{
-				DataRepository.PatientProvider.Save(transactionManager, entity.PatientIdSource);
-				entity.PatientId = entity.PatientIdSource.PatientCode;
+				DataRepository.PatientProvider.Save(transactionManager, entity.PatientCodeSource);
+				entity.PatientCode = entity.PatientCodeSource.PatientCode;
 			}
 			#endregion 
 			
@@ -1118,7 +1118,7 @@ namespace AppointmentSystem.Data.Bases
 		AppointmentGroup,
 			
 		///<summary>
-		/// Composite Property for <c>Patient</c> at PatientIdSource
+		/// Composite Property for <c>Patient</c> at PatientCodeSource
 		///</summary>
 		[ChildEntityType(typeof(Patient))]
 		Patient,
