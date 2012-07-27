@@ -120,7 +120,7 @@ namespace AppointmentSystem.Entities
 
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentPatientId
+		///	which are related to this object through the relation _appointmentPatientCode
 		/// </summary>	
 		TList<Appointment> AppointmentCollection {  get;  set;}	
 

@@ -341,13 +341,13 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Id; }
 		}
         /// <summary>
-        /// Gets the PatientId
+        /// Gets the PatientCode
         /// </summary>
-        /// <value>The PatientId.</value>
+        /// <value>The PatientCode.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String PatientId
+		public System.String PatientCode
 		{
-			get { return _entity.PatientId; }
+			get { return _entity.PatientCode; }
 		}
         /// <summary>
         /// Gets the DoctorId

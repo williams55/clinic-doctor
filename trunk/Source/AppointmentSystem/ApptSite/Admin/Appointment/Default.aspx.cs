@@ -110,6 +110,55 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
     #region Patient
     /// <summary>
+    /// Get patient by patient code
+    /// </summary>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetPatient(string id)
+    {
+        try
+        {
+            // Get patient by patient code
+            var patient = DataRepository.PatientProvider.GetByPatientCode(id);
+
+            if (patient == null || patient.IsDisabled)
+            {
+                return WebCommon.BuildFailedResult("Cannot find patient");
+            }
+
+            return WebCommon.BuildSuccessfulResult(new List<object>
+                                                       {
+                                                           new
+                                                               {
+                                                                   patient.PatientCode,
+                                                                   patient.FirstName,
+                                                                   patient.LastName,
+                                                                   patient.HomePhone,
+                                                                   patient.WorkPhone,
+                                                                   patient.CellPhone,
+                                                                   Birthdate = patient.Birthdate == null
+                                                                   ? string.Empty
+                                                                   : ((DateTime) patient.Birthdate).ToString(
+                                                                       "dd-MM-yyyy"),
+                                                                   patient.Title,
+                                                                   patient.IsFemale,
+                                                                   patient.Note,
+                                                                   propertyToSearch = ParsePatientInfo(patient),
+                                                                   PatientInfo = ParsePatientName(patient)
+                                                               }
+                                                       }
+                );
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult(ex.Message);
+        }
+
+    }
+
+    /// <summary>
     /// Search patient by keyword
     /// </summary>
     /// <returns></returns>
@@ -142,7 +191,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 x.Note,
                 propertyToSearch = ParsePatientInfo(x),
                 PatientInfo = ParsePatientName(x)
-          });
+            });
             return JsonConvert.SerializeObject(lstResult);
         }
         catch (Exception ex)
@@ -151,6 +200,163 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
 
         return JsonConvert.SerializeObject(lstTk);
+    }
+
+    /// <summary>
+    /// Create patient with simple information
+    /// </summary>
+    /// <param name="firstname"></param>
+    /// <param name="lastname"></param>
+    /// <param name="cellPhone"></param>
+    /// <param name="isFemale"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string CreateSimplePatient(string firstname, string lastname, string cellPhone, string isFemale)
+    {
+        try
+        {
+            // Validate patient's fields
+            if (!ValidatePatient(firstname, lastname, isFemale, ref _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            #region "Insert"
+            var patient = new Patient();
+            string perfix = ServiceFacade.SettingsHelper.PatientPrefix;
+            int count;
+            TList<Patient> objPo = DataRepository.PatientProvider.GetPaged("Id like '" + perfix + "' + '%'", "Id desc", 0, 1, out count);
+            if (count == 0)
+                patient.PatientCode = perfix + "001";
+            else
+            {
+                patient.PatientCode = perfix + String.Format("{0:000}", int.Parse(objPo[0].PatientCode.Substring(objPo[0].PatientCode.Length - 3)) + 1);
+            }
+
+            patient.FirstName = firstname;
+            patient.LastName = lastname;
+            patient.CellPhone = cellPhone;
+            patient.IsFemale = Convert.ToBoolean(isFemale);
+            patient.CreateUser = Username;
+            patient.UpdateUser = Username;
+
+            DataRepository.PatientProvider.Insert(patient);
+
+            #endregion
+
+            return WebCommon.BuildSuccessfulResult(new List<object> {  new
+                              {
+                                  patient.FirstName,
+                                  patient.LastName,
+                                  patient.PatientCode,
+                                  PatientInfo = ParsePatientName(patient)
+                              } });
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult("Cannot create new patient. Please try again.");
+        }
+    }
+
+    /// <summary>
+    /// Create patient with simple information
+    /// </summary>
+    /// <param name="id"> </param>
+    /// <param name="firstname"></param>
+    /// <param name="lastname"></param>
+    /// <param name="cellPhone"></param>
+    /// <param name="isFemale"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string UpdateSimplePatient(string id, string firstname, string lastname, string cellPhone, string isFemale)
+    {
+        try
+        {
+            // Validate patient's fields
+            if (!ValidatePatient(firstname, lastname, isFemale, ref _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            var patient = DataRepository.PatientProvider.GetByPatientCode(id);
+            if (patient == null || patient.IsDisabled)
+            {
+                return WebCommon.BuildFailedResult("Cannot find patient");
+            }
+
+            #region Update
+            patient.FirstName = firstname;
+            patient.LastName = lastname;
+            patient.CellPhone = cellPhone;
+            patient.IsFemale = Convert.ToBoolean(isFemale);
+            patient.CreateUser = Username;
+            patient.UpdateUser = Username;
+
+            DataRepository.PatientProvider.Save(patient);
+            #endregion
+
+            return WebCommon.BuildSuccessfulResult(new List<object> { new
+            {
+                patient.FirstName,
+                patient.LastName,
+                patient.PatientCode,
+                PatientInfo = ParsePatientName(patient)
+            } });
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult("Cannot update patient. Please try again.");
+        }
+    }
+
+    /// <summary>
+    /// Validate patient's fields
+    /// </summary>
+    /// <param name="firstname"></param>
+    /// <param name="lastname"></param>
+    /// <param name="isFemale"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private static bool ValidatePatient(string firstname, string lastname, string isFemale, ref string message)
+    {
+        try
+        {
+            #region Validate
+            // Validate empty value for Firstname field
+            if (string.IsNullOrEmpty(firstname))
+            {
+                message = "Please input Firstname.";
+                return false;
+            }
+
+            // Validate empty value for Lastname field
+            if (string.IsNullOrEmpty(lastname))
+            {
+                message = "Please input Lastname.";
+                return false;
+            }
+
+            // Validate value of IsFemale
+            bool blIsFemale;
+            if (!Boolean.TryParse(isFemale, out blIsFemale))
+            {
+                message = "Value of Sex field is invalid.";
+                return false;
+            }
+            #endregion
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            message = ex.Message;
+            return false;
+        }
     }
 
     /// <summary>
@@ -342,7 +548,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <summary>
     /// Search room by condition
     /// </summary>
-    /// <param name="keyword"> </param>
     /// <param name="appointmentId"></param>
     /// <param name="doctorId"></param>
     /// <param name="startTime"></param>
@@ -478,8 +683,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                                            new
                                                                {
                                                                    obj.Id,
-                                                                   obj.PatientId,
-                                                                   PatientInfo = ParsePatientName(obj.PatientIdSource),
+                                                                   obj.PatientCode,
+                                                                   PatientInfo = ParsePatientName(obj.PatientCodeSource),
                                                                    DoctorUserName = obj.DoctorIdSource.Username,
                                                                    DoctorInfo = String.Format("Dr. {0}. {1}"
                                                                                               ,
@@ -525,12 +730,12 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                section_id = obj.DoctorId,
                                text =
                                    String.Format("Patient: {0}<br />Note: {1}",
-                                                 FullNameOfPatient(obj.PatientIdSource),
+                                                 FullNameOfPatient(obj.PatientCodeSource),
                                                  obj.Note),
                                DoctorDisplayname = obj.DoctorIdSource.DisplayName,
-                               obj.PatientId,
-                               PatientName = obj.PatientIdSource.FirstName,
-                               PatientInfo = ParsePatientName(obj.PatientIdSource),
+                               obj.PatientCode,
+                               PatientName = obj.PatientCodeSource.FirstName,
+                               PatientInfo = ParsePatientName(obj.PatientCodeSource),
                                obj.ServicesId,
                                ServicesTitle = obj.ServicesIdSource.Title,
                                obj.RoomId,
@@ -621,10 +826,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
     #endregion
 
-    #region "Roster"
+    #region Appointment
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string NewAppointment(string patientId, string note, string startTime, string endTime, string startDate, string endDate
+    public static string NewAppointment(string patientCode, string note, string startTime, string endTime, string startDate, string endDate
         , string doctorId, string roomId, string status)
     {
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
@@ -641,7 +846,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             var dtStart = new DateTime();
             var dtEnd = new DateTime();
             int serviceId = 0;
-            if (!ValidateAppointmentFields(0, ref patientId, ref note, ref startTime, ref endTime
+            if (!ValidateAppointmentFields(0, ref patientCode, ref note, ref startTime, ref endTime
                 , ref startDate, ref endDate, ref doctorId, ref roomId, ref status
                 , ref dtStart, ref dtEnd, ref _message, ref serviceId))
             {
@@ -663,7 +868,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 newObj.Id = perfix + String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
             }
 
-            newObj.PatientId = patientId;
+            newObj.PatientCode = patientCode;
             newObj.DoctorId = doctorId;
             newObj.RoomId = Convert.ToInt32(roomId);
             newObj.ServicesId = serviceId;
@@ -684,15 +889,15 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                                   ? string.Empty
                                                   : newObj.ServicesIdSource.Title + " - "
                                               ,
-                                              string.IsNullOrEmpty(newObj.PatientIdSource.Title)
+                                              string.IsNullOrEmpty(newObj.PatientCodeSource.Title)
                                                   ? string.Empty
-                                                  : newObj.PatientIdSource.Title + ". ",
-                                              string.IsNullOrEmpty(newObj.PatientIdSource.FirstName)
+                                                  : newObj.PatientCodeSource.Title + ". ",
+                                              string.IsNullOrEmpty(newObj.PatientCodeSource.FirstName)
                                                   ? string.Empty
-                                                  : newObj.PatientIdSource.FirstName + " ",
-                                              string.IsNullOrEmpty(newObj.PatientIdSource.LastName)
+                                                  : newObj.PatientCodeSource.FirstName + " ",
+                                              string.IsNullOrEmpty(newObj.PatientCodeSource.LastName)
                                                   ? string.Empty
-                                                  : newObj.PatientIdSource.LastName);
+                                                  : newObj.PatientCodeSource.LastName);
             string strBody = String.Format("You have a new appointment");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
@@ -700,15 +905,15 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                                   ? string.Empty
                                                   : newObj.RoomIdSource.Title);
             string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}. {2} {3}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, string.IsNullOrEmpty(newObj.PatientIdSource.Title)
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, string.IsNullOrEmpty(newObj.PatientCodeSource.Title)
                                                   ? string.Empty
-                                                  : newObj.PatientIdSource.Title + ". ",
-                                              string.IsNullOrEmpty(newObj.PatientIdSource.FirstName)
+                                                  : newObj.PatientCodeSource.Title + ". ",
+                                              string.IsNullOrEmpty(newObj.PatientCodeSource.FirstName)
                                                   ? string.Empty
-                                                  : newObj.PatientIdSource.FirstName + " ",
-                                              string.IsNullOrEmpty(newObj.PatientIdSource.LastName)
+                                                  : newObj.PatientCodeSource.FirstName + " ",
+                                              string.IsNullOrEmpty(newObj.PatientCodeSource.LastName)
                                                   ? string.Empty
-                                                  : newObj.PatientIdSource.LastName);
+                                                  : newObj.PatientCodeSource.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(newObj.StartTime), Convert.ToDateTime(newObj.EndTime));
             objMail.AddMailAddress(newObj.DoctorIdSource.Email, newObj.DoctorIdSource.DisplayName);
@@ -769,14 +974,14 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             #region "Send Appointment"
             string strSubject = String.Format("Change Appointment: {0} - {1}. {2} {3}", appointment.ServicesIdSource.Title
-                , appointment.PatientIdSource.Title, appointment.PatientIdSource.FirstName, appointment.PatientIdSource.LastName);
+                , appointment.PatientCodeSource.Title, appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
             string strBody = String.Format("You have a new change for appointment");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
             string strLocation = String.Format("Room {0}", appointment.RoomIdSource.Title);
             string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}. {2} {3}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, appointment.PatientIdSource.Title
-                , appointment.PatientIdSource.FirstName, appointment.PatientIdSource.LastName);
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, appointment.PatientCodeSource.Title
+                , appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(appointment.StartTime), Convert.ToDateTime(appointment.EndTime));
             objMail.AddMailAddress(appointment.DoctorIdSource.Email, appointment.DoctorIdSource.DisplayName);
@@ -801,7 +1006,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// Update an appointment
     /// </summary>
     /// <param name="id"> </param>
-    /// <param name="patientId"></param>
+    /// <param name="patientCode"></param>
     /// <param name="note"></param>
     /// <param name="startTime"></param>
     /// <param name="endTime"></param>
@@ -813,7 +1018,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateAppointment(string id, string patientId, string note, string startTime, string endTime, string startDate, string endDate
+    public static string UpdateAppointment(string id, string patientCode, string note, string startTime, string endTime, string startDate, string endDate
         , string doctorId, string roomId, string status)
     {
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
@@ -833,11 +1038,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             {
                 return WebCommon.BuildFailedResult("There is no appointment to change or appointment is expired.");
             }
-            
+
             var dtStart = new DateTime();
             var dtEnd = new DateTime();
             int serviceId = 0;
-            if (!ValidateAppointmentFields(0, ref patientId, ref note, ref startTime, ref endTime
+            if (!ValidateAppointmentFields(0, ref patientCode, ref note, ref startTime, ref endTime
                 , ref startDate, ref endDate, ref doctorId, ref roomId, ref status
                 , ref dtStart, ref dtEnd, ref _message, ref serviceId))
             {
@@ -847,7 +1052,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             tm.BeginTransaction();
 
             #region "Update Appointment"
-            appointment.PatientId = patientId;
+            appointment.PatientCode = patientCode;
             appointment.DoctorId = doctorId;
             appointment.RoomId = Convert.ToInt32(roomId);
             appointment.ServicesId = serviceId;
@@ -863,14 +1068,14 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             #region "Send Appointment"
             string strSubject = String.Format("Change Appointment: {0} - {1}. {2} {3}", appointment.ServicesIdSource.Title
-                , appointment.PatientIdSource.Title, appointment.PatientIdSource.FirstName, appointment.PatientIdSource.LastName);
+                , appointment.PatientCodeSource.Title, appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
             string strBody = String.Format("You have a new change for appointment");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
             string strLocation = String.Format("Room {0}", appointment.RoomIdSource.Title);
             string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}. {2} {3}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, appointment.PatientIdSource.Title
-                , appointment.PatientIdSource.FirstName, appointment.PatientIdSource.LastName);
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, appointment.PatientCodeSource.Title
+                , appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(appointment.StartTime), Convert.ToDateTime(appointment.EndTime));
             objMail.AddMailAddress(appointment.DoctorIdSource.Email, appointment.DoctorIdSource.DisplayName);
@@ -985,7 +1190,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             #region "Send Appointment"
             DataRepository.AppointmentProvider.DeepLoad(appointment);
             string strSubject = String.Format("Delete Appointment: {0} - {1}. {2} {3}", appointment.ServicesIdSource.Title
-                , appointment.PatientIdSource.Title, appointment.PatientIdSource.FirstName, appointment.PatientIdSource.LastName);
+                , appointment.PatientCodeSource.Title, appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
             string strBody = String.Format("Appointment has been deleted.");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
@@ -999,7 +1204,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             }
             #endregion
-            
+
             tm.Commit();
             return WebCommon.BuildSuccessfulResult();
         }
@@ -1129,7 +1334,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Check exists Patient
-            Patient objPatient = DataRepository.PatientProvider.GetByPatientCode(objAppt.PatientId);
+            Patient objPatient = DataRepository.PatientProvider.GetByPatientCode(objAppt.PatientCode);
             if (objPatient == null || objPatient.IsDisabled)
             {
                 return WebCommon.BuildFailedResult("Patient is not exist.");
@@ -1241,107 +1446,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     }
     #endregion
 
-    #region Patient
-    /// <summary>
-    /// Create patient with simple information
-    /// </summary>
-    /// <param name="firstname"></param>
-    /// <param name="lastname"></param>
-    /// <param name="cellPhone"></param>
-    /// <param name="address"></param>
-    /// <param name="isFemale"></param>
-    /// <returns></returns>
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string CreateSimplePatient(string firstname, string lastname, string cellPhone, string address, string isFemale)
-    {
-        try
-        {
-            #region Validate
-            // Validate empty value for Firstname field
-            if (string.IsNullOrEmpty(firstname))
-            {
-                return WebCommon.BuildFailedResult("Please input Firstname.");
-            }
-
-            // Validate empty value for Lastname field
-            if (string.IsNullOrEmpty(lastname))
-            {
-                return WebCommon.BuildFailedResult("Please input Lastname.");
-            }
-
-            // Validate value of IsFemale
-            bool blIsFemale;
-            if (!Boolean.TryParse(isFemale, out blIsFemale))
-            {
-                return WebCommon.BuildFailedResult("Value of Sex field is invalid.");
-            }
-            #endregion
-
-            #region "Insert"
-            var newObj = new Patient();
-            string perfix = ServiceFacade.SettingsHelper.PatientPrefix;
-            int count;
-            TList<Patient> objPo = DataRepository.PatientProvider.GetPaged("Id like '" + perfix + "' + '%'", "Id desc", 0, 1, out count);
-            if (count == 0)
-                newObj.PatientCode = perfix + "001";
-            else
-            {
-                newObj.PatientCode = perfix + String.Format("{0:000}", int.Parse(objPo[0].PatientCode.Substring(objPo[0].PatientCode.Length - 3)) + 1);
-            }
-
-            newObj.FirstName = firstname;
-            newObj.LastName = lastname;
-            newObj.CellPhone = cellPhone;
-            newObj.IsFemale = blIsFemale;
-            newObj.CreateUser = Username;
-            newObj.UpdateUser = Username;
-
-            DataRepository.PatientProvider.Insert(newObj);
-
-            var patient = new
-            {
-                newObj.FirstName,
-                newObj.LastName,
-                id = newObj.PatientCode,
-                propertyToSearch = String.Format("{0}{1} {2}. {3}{4}{5}{6}{7}"
-                                                 ,
-                                                 string.IsNullOrEmpty(newObj.Title)
-                                                     ? string.Empty
-                                                     : String.Format("{0}. ", newObj.Title)
-                                                 , newObj.FirstName, newObj.LastName
-                                                 ,
-                                                 newObj.Birthdate == null
-                                                     ? string.Empty
-                                                     : String.Format("Birthday: {0}. ",
-                                                                     ((DateTime)newObj.Birthdate).ToString
-                                                                         ("dd-MM-yyyy"))
-                                                 ,
-                                                 string.IsNullOrEmpty(newObj.HomePhone)
-                                                     ? string.Empty
-                                                     : String.Format("Home Phone: {0}. ", newObj.HomePhone)
-                                                 ,
-                                                 string.IsNullOrEmpty(newObj.CellPhone)
-                                                     ? string.Empty
-                                                     : String.Format("Cell Phone: {0}. ", newObj.CellPhone)
-                                                 ,
-                                                 string.IsNullOrEmpty(newObj.WorkPhone)
-                                                     ? string.Empty
-                                                     : String.Format("Work Phone: {0}. ", newObj.WorkPhone)
-                    )
-            };
-            #endregion
-
-            return WebCommon.BuildSuccessfulResult(new List<object> { patient });
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return WebCommon.BuildFailedResult("Cannot create new patient. Please try again.");
-        }
-    }
-    #endregion
-
     #region Check user right
     /// <summary>
     /// Checking user right for reading
@@ -1424,7 +1528,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             DataRepository.AppointmentProvider.DeepLoad(appointment);
 
             // Validate all fields
-            string patientId = appointment.PatientId;
+            string patientCode = appointment.PatientCode;
             string note = appointment.Note;
             string startDate = dtStart.ToString("MM/dd/yyyy");
             string endDate = dtEnd.ToString("MM/dd/yyyy");
@@ -1433,7 +1537,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             string roomId = Convert.ToString(appointment.RoomId);
             string status = Convert.ToString(appointment.StatusId);
             int serviceId = 0;
-            if (!ValidateAppointmentFields(1, ref patientId, ref note, ref tmpStartTime, ref tmpEndTime
+            if (!ValidateAppointmentFields(1, ref patientCode, ref note, ref tmpStartTime, ref tmpEndTime
             , ref startDate, ref endDate, ref doctorId, ref roomId, ref status
             , ref dtStart, ref dtEnd, ref message, ref serviceId))
             {
@@ -1454,7 +1558,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// Validate all of field: Doctor, room, patient, status, datetime
     /// </summary>
     /// <param name="compareValue"> </param>
-    /// <param name="patientId"></param>
+    /// <param name="patientCode"></param>
     /// <param name="note"></param>
     /// <param name="startTime"></param>
     /// <param name="endTime"></param>
@@ -1468,13 +1572,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <param name="dtStart"> </param>
     /// <param name="serviceId"> </param>
     /// <returns></returns>
-    private static bool ValidateAppointmentFields(int compareValue, ref string patientId, ref string note, ref string startTime, ref string endTime
+    private static bool ValidateAppointmentFields(int compareValue, ref string patientCode, ref string note, ref string startTime, ref string endTime
         , ref string startDate, ref string endDate, ref string doctorId, ref string roomId, ref string status
         , ref DateTime dtStart, ref DateTime dtEnd, ref string message, ref int serviceId)
     {
         try
         {
-            patientId = patientId.Trim();
+            patientCode = patientCode.Trim();
             note = note.Trim();
             startTime = startTime.Trim();
             endTime = endTime.Trim();
@@ -1500,7 +1604,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Check Patient
-            if (string.IsNullOrEmpty(patientId))
+            if (string.IsNullOrEmpty(patientCode))
             {
                 message = "You must choose patient.";
                 return false;
@@ -1545,7 +1649,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             #region Check information
             // Check exists Patient
-            Patient objPatient = DataRepository.PatientProvider.GetByPatientCode(patientId);
+            Patient objPatient = DataRepository.PatientProvider.GetByPatientCode(patientCode);
             if (objPatient == null || objPatient.IsDisabled)
             {
                 message = "Patient is not exist.";
@@ -1630,7 +1734,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             #region Check Conflict
             // Check conflict Patient
-            if (!CheckConflict("PatientId", patientId, string.IsNullOrEmpty(objPatient.Title) ? "patient" : objPatient.Title + ".",
+            if (!CheckConflict("PatientCode", patientCode, string.IsNullOrEmpty(objPatient.Title) ? "patient" : objPatient.Title + ".",
                 String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName), dtStart, dtEnd, compareValue, ref message))
             {
                 message = String.Format("Cannot create appointment because {0} has another appointment from {1} {2} to {3} {4}."

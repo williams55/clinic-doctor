@@ -103,11 +103,6 @@
                 <input type="text" name="txtCellPhone" id="txtCellPhone" value="" class="content-input ui-widget-content ui-corner-all" />
                 <div class="clear">
                 </div>
-                <label for="txtAddress" class="title">
-                    Address</label>
-                <input type="text" name="txtAddress" id="txtAddress" value="" class="content-input ui-widget-content ui-corner-all" />
-                <div class="clear">
-                </div>
                 </form>
             </div>
             <div style="padding: 10px;">
@@ -139,8 +134,8 @@
                     <div class="clear">
                     </div>
                     <div class="title-info">
-                        Address</div>
-                    <div class="content-info" id="divAddress" style="width: 435px;">
+                        Note</div>
+                    <div class="content-info" id="divNote" style="width: 435px;">
                         &nbsp;
                     </div>
                     <div class="clear">

@@ -176,7 +176,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@PatientId", DbType.StringFixedLength, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, DBNull.Value);
@@ -211,10 +211,10 @@ namespace AppointmentSystem.Data.SqlClient
 						clause.Trim().Remove(0,2).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
-				if (clause.Trim().StartsWith("patientid ") || clause.Trim().StartsWith("patientid="))
+				if (clause.Trim().StartsWith("patientcode ") || clause.Trim().StartsWith("patientcode="))
 				{
-					database.SetParameterValue(commandWrapper, "@PatientId", 
-						clause.Trim().Remove(0,9).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					database.SetParameterValue(commandWrapper, "@PatientCode", 
+						clause.Trim().Remove(0,11).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("doctorid ") || clause.Trim().StartsWith("doctorid="))
@@ -636,7 +636,7 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 	
 
-		#region GetByPatientId
+		#region GetByPatientCode
 		/// <summary>
 		/// 	Gets rows from the datasource based on the FK_Appointment_Patient key.
 		///		FK_Appointment_Patient Description: 
@@ -644,26 +644,26 @@ namespace AppointmentSystem.Data.SqlClient
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_patientId"></param>
+		/// <param name="_patientCode"></param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<Appointment> GetByPatientId(TransactionManager transactionManager, System.String _patientId, int start, int pageLength, out int count)
+		public override TList<Appointment> GetByPatientCode(TransactionManager transactionManager, System.String _patientCode, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByPatientId", _useStoredProcedure);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByPatientCode", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@PatientId", DbType.StringFixedLength, _patientId);
+				database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength, _patientCode);
 			
 			IDataReader reader = null;
 			TList<Appointment> rows = new TList<Appointment>();
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByPatientId", rows)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByPatientCode", rows)); 
 
 				if (transactionManager != null)
 				{
@@ -686,7 +686,7 @@ namespace AppointmentSystem.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByPatientId", rows)); 
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByPatientCode", rows)); 
 			}
 			finally
 			{
@@ -1072,7 +1072,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DataTable dataTable = new DataTable();
 			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.String));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("PatientId", typeof(System.String));
+			DataColumn col1 = dataTable.Columns.Add("PatientCode", typeof(System.String));
 			col1.AllowDBNull = false;		
 			DataColumn col2 = dataTable.Columns.Add("DoctorId", typeof(System.String));
 			col2.AllowDBNull = false;		
@@ -1104,7 +1104,7 @@ namespace AppointmentSystem.Data.SqlClient
 			col15.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
-			bulkCopy.ColumnMappings.Add("PatientId", "PatientId");
+			bulkCopy.ColumnMappings.Add("PatientCode", "PatientCode");
 			bulkCopy.ColumnMappings.Add("DoctorId", "DoctorId");
 			bulkCopy.ColumnMappings.Add("RoomId", "RoomId");
 			bulkCopy.ColumnMappings.Add("ServicesId", "ServicesId");
@@ -1130,7 +1130,7 @@ namespace AppointmentSystem.Data.SqlClient
 					row["Id"] = entity.Id;
 							
 				
-					row["PatientId"] = entity.PatientId;
+					row["PatientCode"] = entity.PatientCode;
 							
 				
 					row["DoctorId"] = entity.DoctorId;
@@ -1210,7 +1210,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_Insert", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
-			database.AddInParameter(commandWrapper, "@PatientId", DbType.StringFixedLength, entity.PatientId );
+			database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength, entity.PatientCode );
 			database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, entity.DoctorId );
 			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, (entity.RoomId.HasValue ? (object) entity.RoomId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, (entity.ServicesId.HasValue ? (object) entity.ServicesId  : System.DBNull.Value));
@@ -1274,7 +1274,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
-			database.AddInParameter(commandWrapper, "@PatientId", DbType.StringFixedLength, entity.PatientId );
+			database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength, entity.PatientCode );
 			database.AddInParameter(commandWrapper, "@DoctorId", DbType.String, entity.DoctorId );
 			database.AddInParameter(commandWrapper, "@RoomId", DbType.Int32, (entity.RoomId.HasValue ? (object) entity.RoomId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, (entity.ServicesId.HasValue ? (object) entity.ServicesId : System.DBNull.Value) );

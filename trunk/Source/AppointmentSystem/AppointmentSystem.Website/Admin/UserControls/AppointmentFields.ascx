@@ -4,16 +4,16 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataId" runat="server" Text="Id:" AssociatedControlID="dataId" /></td>
+        <td class="literal"><asp:Label ID="lbldataPatientCode" runat="server" Text="Patient Code:" AssociatedControlID="dataPatientCode" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataId" Text='<%# Bind("Id") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataId" runat="server" Display="Dynamic" ControlToValidate="dataId" ErrorMessage="Required"></asp:RequiredFieldValidator>
+					<data:EntityDropDownList runat="server" ID="dataPatientCode" DataSourceID="PatientCodePatientDataSource" DataTextField="FirstName" DataValueField="PatientCode" SelectedValue='<%# Bind("PatientCode") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:PatientDataSource ID="PatientCodePatientDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataPatientId" runat="server" Text="Patient Id:" AssociatedControlID="dataPatientId" /></td>
+        <td class="literal"><asp:Label ID="lbldataId" runat="server" Text="Id:" AssociatedControlID="dataId" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataPatientId" DataSourceID="PatientIdPatientDataSource" DataTextField="FirstName" DataValueField="PatientCode" SelectedValue='<%# Bind("PatientId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
-					<data:PatientDataSource ID="PatientIdPatientDataSource" runat="server" SelectMethod="GetAll"  />
+					<asp:TextBox runat="server" ID="dataId" Text='<%# Bind("Id") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataId" runat="server" Display="Dynamic" ControlToValidate="dataId" ErrorMessage="Required"></asp:RequiredFieldValidator>
 				</td>
 			</tr>
 			<tr>

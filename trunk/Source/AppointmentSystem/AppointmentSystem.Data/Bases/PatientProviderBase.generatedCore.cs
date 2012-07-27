@@ -342,7 +342,7 @@ namespace AppointmentSystem.Data.Bases
 				System.Diagnostics.Debug.WriteLine("- property 'AppointmentCollection' loaded. key " + entity.EntityTrackingKey);
 				#endif 
 
-				entity.AppointmentCollection = DataRepository.AppointmentProvider.GetByPatientId(transactionManager, entity.PatientCode);
+				entity.AppointmentCollection = DataRepository.AppointmentProvider.GetByPatientCode(transactionManager, entity.PatientCode);
 
 				if (deep && entity.AppointmentCollection.Count > 0)
 				{
@@ -399,13 +399,13 @@ namespace AppointmentSystem.Data.Bases
 					// update each child parent id with the real parent id (mostly used on insert)
 					foreach(Appointment child in entity.AppointmentCollection)
 					{
-						if(child.PatientIdSource != null)
+						if(child.PatientCodeSource != null)
 						{
-							child.PatientId = child.PatientIdSource.PatientCode;
+							child.PatientCode = child.PatientCodeSource.PatientCode;
 						}
 						else
 						{
-							child.PatientId = entity.PatientCode;
+							child.PatientCode = entity.PatientCode;
 						}
 
 					}
