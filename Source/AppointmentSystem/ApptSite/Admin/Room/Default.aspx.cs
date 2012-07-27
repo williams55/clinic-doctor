@@ -34,13 +34,28 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             if (gridcolums == null) return;
             gridcolums.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
             gridcolums.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
-            var btnDelete = gridcolums.CustomButtons.Find(x => x.ID == "btnDelete");
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+
+            // Get delete button
+            GridViewCommandColumnCustomButton btnDelete = null;
+            foreach (GridViewCommandColumnCustomButton customButton in gridcolums.CustomButtons)
+            {
+                if (customButton.ID == "btnDelete")
+                {
+                    btnDelete = customButton;
+                    break;
+                }
+            }
+
+            // Check delete right, if user has no right to delete => invisible delete button
+            if (btnDelete != null && !RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
 
-            gridcolums.Visible = gridcolums.EditButton.Visible || gridcolums.NewButton.Visible || (btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
+            // Check visibility of button in button column
+            // If there is no button is displayed => invisible column
+            gridcolums.Visible = gridcolums.EditButton.Visible || gridcolums.NewButton.Visible ||
+                                 (btnDelete != null && btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
         }
         catch (Exception ex)
         {
