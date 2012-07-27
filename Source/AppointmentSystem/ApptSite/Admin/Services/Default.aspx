@@ -3,14 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" Runat="Server">
-
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-
-            $('#ctl00_ContentContent_gridServices_ef0_ASPxTextBox1_I').focus();
-        });
-    
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" Runat="Server">
@@ -24,54 +18,29 @@
                 OnCustomButtonCallback="gridServices_CustomButtonCallback" 
                 onrowupdating="gridServices_RowUpdating" 
                 onrowvalidating="gridServices_RowValidating">
-                <Columns>
-                    <dx:GridViewCommandColumn VisibleIndex="3" Name="#">
+                <Columns>                    
+                    <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" ReadOnly="true" >
+                        <EditFormSettings  Visible="False"/>
+                    </dx:GridViewDataColumn>
+                    <dx:GridViewDataColumn FieldName="Title" VisibleIndex="1" />
+                    <dx:GridViewDataColumn FieldName="ShortTitle" VisibleIndex="2" />
+                    <dx:GridViewDataColumn FieldName="PriorityIndex" VisibleIndex="3" />
+                    <dx:GridViewDataColumn FieldName="Note" VisibleIndex="4" />
+                    <dx:GridViewCommandColumn VisibleIndex="5" Name="#">
                         <EditButton Visible="true" />
                         <NewButton Visible="true" />
                         <CustomButtons>
                             <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
                             </dx:GridViewCommandColumnCustomButton>
                         </CustomButtons>
-                    </dx:GridViewCommandColumn>
-                    <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" ReadOnly="true" />
-                    <dx:GridViewDataColumn FieldName="Title" VisibleIndex="1" />
-                    <dx:GridViewDataColumn FieldName="Note" VisibleIndex="2" />                   
+                    </dx:GridViewCommandColumn>                   
                 </Columns>
                 <Templates>
-                    <EditForm>
-                         <div id="devexpress-form">
-                            <dx:ContentControl ID="ContentControl1" runat="server">
-                                <table class="edit-form">
-                                    <tbody>
-                                        <tr>                                           
-                                            <td class="title-row">
-                                                Title
-                                            </td>
-                                            <td class="content-row" rowspan="2">
-                                                 <dx:ASPxTextBox runat="server" ID="ASPxTextBox1" Text='<%# Bind("Title") %>' CssClass="text-form">
-                                                </dx:ASPxTextBox>
-                                            </td>
-                                            <td class="title-row">
-                                                Note
-                                            </td>
-                                            <td class="content-row" rowspan="2">
-                                               <dx:ASPxTextBox runat="server" ID="txtNote" Text='<%# Bind("Note")%>' CssClass="text-form">
-                                                </dx:ASPxTextBox>
-                                            </td>                                           
-                                        </tr>                                       
-                                    </tbody>
-                                </table>
-                            </dx:ContentControl>
-                        </div>
-                        <div style="text-align: right; padding: 2px 50px 2px 2px">
-                        <dx:ASPxGridViewTemplateReplacement ID="UpdateButton" ReplacementType="EditFormUpdateButton"
-                            runat="server"></dx:ASPxGridViewTemplateReplacement>
-                        <dx:ASPxGridViewTemplateReplacement ID="CancelButton" ReplacementType="EditFormCancelButton"
-                            runat="server"></dx:ASPxGridViewTemplateReplacement>
-                    </EditForm>
+                  
                 </Templates>
                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }" BeginCallback="function(s, e) {command = e.command; gridObject = s;}">
                 </ClientSideEvents>
+                <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>
                 <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
