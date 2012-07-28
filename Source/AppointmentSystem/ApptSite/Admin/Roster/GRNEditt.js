@@ -1,5 +1,5 @@
-﻿var blRosterType = false;
-var blStaff = false;
+﻿var blStaff = false;
+var CurrentRoster;
 
 /****************************DHTMLX - Start******************************/
 // Load calendar for Schedule
@@ -64,11 +64,11 @@ function initSchedule(weekday) {
                 }
             } else {
                 currentMode = "week";
-                alert(obj.message);
+                ShowDialog("", "", obj.message, "");
             }
         },
         fail: function() {
-            alert("Unknow error!");
+            ShowDialog("", "", "Unknow error!", "");
         },
         complete: function() {
         }
@@ -77,7 +77,7 @@ function initSchedule(weekday) {
     $.when.apply($, arrAjax).done(function() {
         scheduler.init('scheduler_here', currentDate, currentMode);
 
-        scheduler.attachEvent("onBeforeDrag", BlockReadonly);
+        scheduler.attachEvent("onBeforeDrag", BeforeDrag);
         scheduler.attachEvent("onClick", BlockReadonly);
         scheduler.attachEvent("onEventChanged", EventChanged);
 
@@ -108,7 +108,14 @@ function initSchedule(weekday) {
 // Set readonly property for event
 function BlockReadonly(id) {
     if (!id) return true;
-    return !this.getEvent(id).readonly;
+    return !scheduler.getEvent(id).readonly;
+}
+
+// Function will be raise when event changed
+function BeforeDrag(id) {
+    // Get event and clone it before drag, it's useful in case failure drag
+    CurrentRoster = $.extend(true, {}, scheduler.getEvent(id));
+    return BlockReadonly(id);
 }
 
 // Function will be raise when event changed
@@ -121,12 +128,6 @@ function EventChanged(eventId, objEvent) {
 
 scheduler.showLightbox = function(id) {
 
-    if (!blRosterType || !blRosterType) {
-        scheduler.deleteEvent(id);
-        alert("Loading data is not complete. Please wait for a few moment.");
-        return false;
-    }
-
     $("#txtDoctor").tokenInput("clear");
     InitForm();
 
@@ -134,11 +135,11 @@ scheduler.showLightbox = function(id) {
 
     if (ev.start_date <= new Date()) {
         if (ev.isnew == "false") {
-            alert("You cannot change a passed roster.");
+            ShowDialog("", "", "You cannot change a passed roster.", "");
         }
         else {
             scheduler.deleteEvent(id);
-            alert("You have to create new roster in the day after current date");
+            ShowDialog("", "", "You must create new roster in the day after current date.", "");
         }
         return false;
     }
@@ -168,11 +169,11 @@ scheduler.showLightbox = function(id) {
                 if (obj.result == "true" && obj.data) {
                     $("#txtDoctor").tokenInput("add", { id: obj.data.DoctorId, DisplayName: obj.data.DisplayName });
                 } else {
-                    alert(obj.message);
+                    ShowDialog("", "", obj.message, "");
                 }
             },
             fail: function() {
-                alert("Unknow error!");
+                ShowDialog("", "", "Unknow error!", "");
             }
         });
     }
@@ -182,7 +183,7 @@ scheduler.showLightbox = function(id) {
         $("#trRepeat").hide();
 
         if (ev.RosterTypeId) {
-            $("#cboRosterType").val(ev.RosterTypeId);
+            $("[id$=cboRosterType]").val(ev.RosterTypeId);
         }
 
         $("#RosterForm").dialog({
@@ -305,11 +306,11 @@ function LoadRoster(mode, date) {
                 }
             }
             else {
-                alert(obj.message);
+                ShowDialog("", "", obj.message, "");
             }
         },
         fail: function() {
-            alert("Unknow error!");
+            ShowDialog("", "", "Unknow error!", "");
         },
         complete: function() {
         }
@@ -318,7 +319,7 @@ function LoadRoster(mode, date) {
 
 // Save a new roster
 function NewRoster() {
-    var rosterType = $("#cboRosterType").val();
+    var rosterType = $("[id$=cboRosterType]").val();
     var fromTime = $("#cboFromHour").val();
     var toTime = $("#cboToHour").val();
     var fromDate = $("#txtFromDate").datepicker("getDate");
@@ -327,7 +328,7 @@ function NewRoster() {
     var doctor = $("#txtDoctor").tokenInput("get");
 
     if (doctor.length <= 0) {
-        alert("You must choose doctor.");
+        ShowDialog("", "", "You must choose doctor.", "");
         return;
     }
 
@@ -342,7 +343,7 @@ function NewRoster() {
         });
 
         if (allVals.length == 0) {
-            alert("You have to choose a weekday at least.");
+            ShowDialog("", "", "You must choose a weekday at least.", "");
             return;
         }
 
@@ -378,11 +379,11 @@ function NewRoster() {
                 scheduler.endLightbox(false, html("RosterForm"));
             }
             else {
-                alert(obj.message);
+                ShowDialog("", "", obj.message, "");
             }
         },
         fail: function() {
-            alert("Unknow error!");
+            ShowDialog("", "", "Unknow error!", "");
         },
         complete: function() {
             DisableAllElements($("#tblContent"), true);
@@ -402,17 +403,20 @@ function MoveRoster(eventId, objEvent) {
         contentType: "application/json; charset=utf-8",
         success: function(response) {
             var obj = JSON.parse(response.d);
-            if (obj.result == "true") {
-            } else {
-                alert(obj.message);
+
+            if (obj.result != "true") {
+                ShowDialog("", "", obj.message, "");
                 scheduler.deleteEvent(eventId);
-                AddRoster(obj.data);
+                scheduler.addEvent(CurrentRoster);
             }
         },
         fail: function() {
-            alert("Unknow error!");
+            ShowDialog("", "", "Unknow error!", "");
             scheduler.deleteEvent(eventId);
-            scheduler.addEvent(objEvent);
+            scheduler.addEvent(CurrentRoster);
+        },
+        complete: function() {
+            CurrentRoster = null; // set null after use
         }
     });
 }
@@ -420,7 +424,7 @@ function MoveRoster(eventId, objEvent) {
 // Update roster
 function UpdateRoster() {
     var id = $("#hdId").val();
-    var rosterType = $("#cboRosterType").val();
+    var rosterType = $("[id$=cboRosterType]").val();
     var fromTime = $("#cboFromHour").val();
     var toTime = $("#cboToHour").val();
     var fromDate = $("#txtFromDate").datepicker("getDate");
@@ -429,7 +433,7 @@ function UpdateRoster() {
     var doctor = $("#txtDoctor").tokenInput("get");
 
     if (doctor.length <= 0) {
-        alert("You must choose doctor.");
+        ShowDialog("", "", "You must choose doctor.", "");
         return;
     }
 
@@ -453,11 +457,11 @@ function UpdateRoster() {
                 $("#RosterForm").dialog("close");
                 scheduler.endLightbox(false, html("RosterForm"));
             } else {
-                alert(obj.message);
+                ShowDialog("", "", obj.message, "");
             }
         },
         fail: function() {
-            alert("Unknow error!");
+            ShowDialog("", "", "Unknow error!", "");
         },
         complete: function() {
             DisableAllElements($("#tblContent"), true);
@@ -483,7 +487,6 @@ function DeleteRoster(id) {
     if (!confirm("Do you want to delete this roster?"))
         return;
 
-    var ev = scheduler.getEvent(id);
     var requestdata = JSON.stringify({ id: id });
     $.ajax({
         type: "POST",
@@ -497,36 +500,12 @@ function DeleteRoster(id) {
                 scheduler.deleteEvent(id);
                 $("#RosterForm").dialog("close");
             }
-            alert(obj.message);
+            ShowDialog("", "", obj.message, "");
         },
         fail: function() {
-            alert("Unknow error!");
+            ShowDialog("", "", "Unknow error!", "");
         },
         complete: function() {
-        }
-    });
-}
-
-// Load roster type for roster form
-function LoadRosterType() {
-    // Load data
-    $.ajax({
-        type: "POST",
-        url: "Default.aspx/GetRosterType",
-        data: "{}",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(response) {
-            var rosterType = JSON.parse(response.d).data;
-            $("#cboRosterType").find("option").remove();
-
-            $.each(rosterType, function(i, item) {
-                $("#cboRosterType").append('<option value="' + item.Id + '">' + item.Title + '</option>');
-            });
-            blRosterType = true;
-        },
-        fail: function() {
-            alert("Cannot load Roster Type data. Please try again or contact Administrator.");
         }
     });
 }
@@ -542,9 +521,6 @@ function SetTime(ev) {
 
 function InitForm() {
     $("#dialog-modal").hide();
-
-    $("#cboRosterType").show();
-    $("#loadingRosterType").hide();
 
     $("#divWeekday").hide();
     $("#spanMonth").hide();
@@ -567,7 +543,6 @@ function InitForm() {
 
 $(document).ready(function() {
     BindTime();
-    LoadRosterType();
     GetToken();
 
     $("input, textarea").addClass("idle");

@@ -79,8 +79,8 @@
                             Roster Type
                         </td>
                         <td>
-                            <select id="cboRosterType">
-                            </select><span id="loadingRosterType" class="loading"></span>
+                            <asp:DropDownList runat="server" ID="cboRosterType">
+                            </asp:DropDownList>
                         </td>
                     </tr>
                     <tr id="trRepeat">

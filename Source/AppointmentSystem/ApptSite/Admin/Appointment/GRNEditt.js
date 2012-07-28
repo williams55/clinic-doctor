@@ -449,13 +449,14 @@ function MoveAppointment(eventId, objEvent) {
                 ShowDialog("", "", obj.message, "");
                 scheduler.deleteEvent(eventId);
                 scheduler.addEvent(CurrentAppointment);
-                CurrentAppointment = null; // set null after use
             }
         },
         fail: function() {
             ShowDialog("", "", "Unknow error!", "");
             scheduler.deleteEvent(eventId);
             scheduler.addEvent(CurrentAppointment);
+        },
+        complete: function() {
             CurrentAppointment = null; // set null after use
         }
     });
@@ -496,7 +497,7 @@ function NewAppointment() {
     // Check if patient is not selected
     var patient = $("#txtPatient").tokenInput("get");
     if (patient.length <= 0) {
-        alert("You must choose patient.");
+        ShowDialog("", "", "You must choose patient.", "");
         $("#txtPatient").focus();
         return;
     }
@@ -546,7 +547,7 @@ function UpdateAppointment(id) {
     // Check if patient is not selected
     var patient = $("#txtPatient").tokenInput("get");
     if (patient.length <= 0) {
-        alert("You must choose patient.");
+        ShowDialog("", "", "You must choose patient.", "");
         $("#txtPatient").focus();
         return;
     }
