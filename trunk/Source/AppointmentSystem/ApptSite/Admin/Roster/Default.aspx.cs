@@ -638,7 +638,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                                                                                      children = lstDoctorService.FindAll(x => x.ServiceId == item.Id).Select(service => new
                                                                                      {
                                                                                          key = service.DoctorId,
-                                                                                         label = service.DoctorIdSource.DisplayName
+                                                                                         label = "Dr. " + service.DoctorIdSource.DisplayName
                                                                                      })  
                                                                                  }));
         }
@@ -738,7 +738,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             // Validate user right for reading
             if (!CheckCreating(out _message) && !CheckUpdating(out _message))
             {
-                return WebCommon.BuildFailedResult("You have no right to get doctor's information");
+                return string.Empty;
             }
 
             return SearchDoctor(HttpContext.Current.Request["q"]);
@@ -762,7 +762,10 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         {
             // Se them cai vu chi tim theo bac si sau
             int count;
-            string query = string.Format("(Id LIKE '%{0}%' OR Firstname LIKE '%{0}%' OR Lastname LIKE '%{0}%' OR DisplayName LIKE '%{0}%') AND IsDisabled = 'False'", keyword);
+            string query =
+                string.Format(
+                    "(Id LIKE '%{0}%' OR Firstname LIKE '%{0}%' OR Lastname LIKE '%{0}%' OR DisplayName LIKE '%{0}%') AND IsDisabled = 'False'",
+                    keyword);
             var lstDoctor = DataRepository.UsersProvider.GetPaged(query, string.Empty, 0
                 , 10, out count);
 
@@ -770,7 +773,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                        select new
                        {
                            id = item.Id,
-                           item.DisplayName
+                           DisplayName = "Dr. " + item.DisplayName
                        });
 
             return JsonConvert.SerializeObject(lst);
