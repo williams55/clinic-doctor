@@ -17,15 +17,14 @@
                 onrowupdating="gridScreen_RowUpdating">
                 <Columns>                    
                     <dx:GridViewDataColumn FieldName="ScreenCode"  VisibleIndex="1">
-                        <EditFormSettings Visible="False" />
                     </dx:GridViewDataColumn>
                     <dx:GridViewDataColumn FieldName="ScreenName" VisibleIndex="2" />  
                     <dx:GridViewDataColumn FieldName="PriorityIndex" VisibleIndex="3" />      
                     <dx:GridViewCommandColumn VisibleIndex="4">
                         <EditButton Visible="true" />
                         <NewButton Visible="true" />
-                        <CustomButtons>
-                            <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
+                        <CustomButtons >
+                            <dx:GridViewCommandColumnCustomButton ID="btnDelete"   Text="Delete">
                             </dx:GridViewCommandColumnCustomButton>
                         </CustomButtons>
                     </dx:GridViewCommandColumn>           
@@ -43,8 +42,6 @@
                 <Parameters>
                     <data:CustomParameter Name="WhereClause" Value="IsDisabled = 'false'" ConvertEmptyStringToNull="false" />
                     <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
-                    <asp:ControlParameter Name="PageIndex" ControlID="gridScreen" PropertyName="PageIndex"
-                        Type="Int32" />
                     <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
                 </Parameters>
             </data:ScreenDataSource>
