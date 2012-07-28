@@ -156,26 +156,9 @@ scheduler.showLightbox = function(id) {
     $("#txtNote").val(ev.note);
 
     // Get doctor info and input into doctor field
-    if (ev.section_id) {
-        var requestdata = JSON.stringify({ doctorId: ev.section_id });
-        $.ajax({
-            type: "POST",
-            url: "Default.aspx/GetDoctorById",
-            data: requestdata,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function(response) {
-                var obj = JSON.parse(response.d);
-                if (obj.result == "true" && obj.data) {
-                    $("#txtDoctor").tokenInput("add", { id: obj.data.DoctorId, DisplayName: obj.data.DisplayName });
-                } else {
-                    ShowDialog("", "", obj.message, "");
-                }
-            },
-            fail: function() {
-                ShowDialog("", "", "Unknow error!", "");
-            }
-        });
+    var doctor = scheduler.getSection(ev.section_id);
+    if (ev.section_id && doctor) {
+        $("#txtDoctor").tokenInput("add", { id: doctor.key, DisplayName: doctor.label });
     }
 
     // If it's edit mode
