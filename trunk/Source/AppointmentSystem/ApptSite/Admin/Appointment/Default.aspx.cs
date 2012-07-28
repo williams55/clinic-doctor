@@ -21,9 +21,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     protected string ListServices = string.Empty;
 
     private const string ScreenCode = "Appointment";
-    private const string PatientScreenCode = "Patient";
-    private const string UserScreenCode = "User";
-    private const string RoomScreenCode = "Room";
     static string _message;
     static readonly string Username = EntitiesUtilities.GetAuthName();
     #endregion
@@ -45,8 +42,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Validate current user have any right to operate this action to display button
-            changeUser.Visible = RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Update.Key, out _message);
-            createUser.Visible = RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Create.Key, out _message);
+            changeUser.Visible = CheckCreating(out _message) || CheckUpdating(out _message);
+            createUser.Visible = CheckCreating(out _message) || CheckUpdating(out _message);
 
             BindTabs();
             BindStatus();
@@ -123,11 +120,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
-            // Validate current user have any right to operate this action
-            // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Read.Key, out _message))
+            // Validate current user have any right to create new patient
+            if (!CheckCreating(out _message) && !CheckUpdating(out _message))
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.BuildFailedResult("You have no right to get patient's information.");
             }
 
             // Get patient by patient code
@@ -177,11 +173,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
     public static string SearchPatient()
     {
-        // Validate current user have any right to operate this action
-        // Validate user right for reading
-        if (!RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Read.Key, out _message))
+        // Validate current user have any right to create new patient
+        if (!CheckCreating(out _message) && !CheckUpdating(out _message))
         {
-            return string.Empty;
+            return WebCommon.BuildFailedResult("You have no right to search patient.");
         }
 
         var keyword = HttpContext.Current.Request["q"];
@@ -234,11 +229,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
-            // Validate current user have any right to operate this action
-            // Validate user right for creating
-            if (!RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Create.Key, out _message))
+            // Validate current user have any right to create new patient
+            if (!CheckCreating(out _message) && !CheckUpdating(out _message))
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.BuildFailedResult("You have no right to create new patient.");
             }
 
             // Validate patient's fields
@@ -300,11 +294,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
-            // Validate current user have any right to operate this action
-            // Validate user right for updating
-            if (!RightAccess.CheckUserRight(Username, PatientScreenCode, OperationConstant.Update.Key, out _message))
+            // Validate current user have any right to update patien's info
+            if (!CheckCreating(out _message) && !CheckUpdating(out _message))
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.BuildFailedResult("You have no right to update patient's information.");
             }
 
             // Validate patient's fields
@@ -468,11 +461,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
-            // Validate current user have any right to operate this action
-            // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, UserScreenCode, OperationConstant.Read.Key, out _message))
+            // Validate current user have any right to get doctor list
+            if (!CheckCreating(out _message) && !CheckUpdating(out _message))
             {
-                return string.Empty;
+                return WebCommon.BuildFailedResult("You have no right to get doctor list");
             }
 
             return SearchDoctor(HttpContext.Current.Request["q"], HttpContext.Current.Request["appointmentId"]
@@ -601,11 +593,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
-            // Validate current user have any right to operate this action
-            // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, RoomScreenCode, OperationConstant.Read.Key, out _message))
+            // Validate current user have any right to get room list
+            if (!CheckCreating(out _message) && !CheckUpdating(out _message))
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.BuildFailedResult("You have no right to get room");
             }
 
             // Get service base on doctorId
@@ -698,70 +689,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     #endregion
 
     #region Appointment
-    /// <summary>
-    /// Get a room info
-    /// </summary>
-    /// <param name="appointmentId"></param>
-    /// <returns></returns>
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetAppointment(string appointmentId)
-    {
-        try
-        {
-            // Validate current user have any right to operate this action
-            // Validate user right for reading
-            if (!CheckReading(out _message))
-            {
-                return WebCommon.BuildFailedResult(_message);
-            }
-
-            var obj = DataRepository.AppointmentProvider.GetById(appointmentId);
-            if (obj == null)
-            {
-                return WebCommon.BuildFailedResult("Cannot find appointment");
-            }
-
-            // Deep load appointment
-            DataRepository.AppointmentProvider.DeepLoad(obj);
-
-            // Get Specialty [Functionality]
-            var lstDoctorService = DataRepository.DoctorServiceProvider.GetByDoctorId(obj.Id);
-            DataRepository.DoctorServiceProvider.DeepLoad(lstDoctorService);
-            Services service = null;
-            if (lstDoctorService.Any()) service = lstDoctorService.First().ServiceIdSource;
-
-            return WebCommon.BuildSuccessfulResult(new List<object>
-                                                       {
-                                                           new
-                                                               {
-                                                                   obj.Id,
-                                                                   obj.PatientCode,
-                                                                   PatientInfo = ParsePatientName(obj.PatientCodeSource),
-                                                                   DoctorUserName = obj.DoctorIdSource.Username,
-                                                                   DoctorInfo = String.Format("Dr. {0}. {1}"
-                                                                                              ,
-                                                                                              obj.DoctorIdSource.
-                                                                                                  DisplayName,
-                                                                                              service == null
-                                                                                                  ? string.Empty
-                                                                                                  : String.Format(
-                                                                                                      "Specialty: {0}. ",
-                                                                                                      service.Title)),
-                                                                   obj.RoomId,
-                                                                   RoomInfo = obj.RoomIdSource.Title,
-                                                                   note = obj.Note
-                                                               }
-                                                       }
-                );
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return WebCommon.BuildFailedResult(ex.Message);
-        }
-    }
-
     /// <summary>
     /// Build Appointment to returned object
     /// </summary>

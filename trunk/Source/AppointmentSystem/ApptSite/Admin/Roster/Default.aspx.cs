@@ -37,6 +37,33 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 // Show script
                 ClientScript.RegisterStartupScript(GetType(), "MainScript", @"<script src=""GRNEditt.js"" type=""text/javascript""></script>");
             }
+
+            BindStatus();
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+    #endregion
+
+    #region Methods
+    /// <summary>
+    /// Get roster type
+    /// </summary>
+    private void BindStatus()
+    {
+        try
+        {
+            int count;
+            var lst = DataRepository.RosterTypeProvider.GetPaged("IsDisabled = 'False'", "Title ASC", 0,
+                                                                 ServiceFacade.SettingsHelper.GetPagedLength,
+                                                                 out count);
+
+            cboRosterType.DataSource = lst;
+            cboRosterType.DataTextField = "Title";
+            cboRosterType.DataValueField = "Id";
+            cboRosterType.DataBind();
         }
         catch (Exception ex)
         {
@@ -58,7 +85,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             #region Validation and covert value
             // Validate user right for creating
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Create.Key, out _message))
+            if (!CheckCreating(out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -264,6 +291,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
+            // Validate current user have any right to operate this action
+            // Validate user right for updating roster
+            if (!CheckUpdating(out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+            
             tm.BeginTransaction();
 
             // Declare list of object are returned
@@ -289,14 +323,6 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             {
                 AddRoster(lstResult, rosterItem);
                 return WebCommon.BuildFailedResult("Roster is expired.", lstResult);
-            }
-
-            // Validate current user have any right to operate this action
-            // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Update.Key, out _message))
-            {
-                AddRoster(lstResult, rosterItem);
-                return WebCommon.BuildFailedResult(_message, lstResult);
             }
 
             // Check StaffId
@@ -368,13 +394,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
-            tm.BeginTransaction();
-
             // Validate user right for updating
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Update.Key, out _message))
+            if (!CheckUpdating(out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
+
+            tm.BeginTransaction();
 
             // Declare list of object are returned
             var lstResult = new List<object>();
@@ -494,13 +520,10 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string LoadRoster(string mode, string currentDateView)
     {
-        TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
-            tm.BeginTransaction();
-
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!CheckReading(out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -532,18 +555,20 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     isnew = false
                 });
             }
-            tm.Commit();
             return WebCommon.BuildSuccessfulResult(lstResult);
         }
         catch (Exception ex)
         {
-            //Write log cho nay
-            tm.Rollback();
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult(ex.Message);
         }
     }
 
+    /// <summary>
+    /// Delete roster
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string DeleteRoster(string id)
@@ -552,7 +577,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         try
         {
             // Validate user right for deleting
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!CheckDeleting(out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -585,37 +610,12 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetRosterType()
-    {
-        try
-        {
-            // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
-            {
-                return WebCommon.BuildFailedResult(_message);
-            }
-
-            int count;
-            TList<RosterType> lst = DataRepository.RosterTypeProvider.GetPaged("IsDisabled = 'False'", "Title ASC", 0,
-                                                                               ServiceFacade.SettingsHelper.GetPagedLength,
-                                                                               out count);
-            return WebCommon.BuildSuccessfulResult(lst.Select(x => new { x.Id, x.Title }));
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return WebCommon.BuildFailedResult(ex.Message);
-        }
-    }
-
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string GetDoctorTree()
     {
         try
         {
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!CheckReading(out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -701,9 +701,9 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         try
         {
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!CheckCreating(out _message) && !CheckUpdating(out _message))
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.BuildFailedResult("You have no right to get doctor's information");
             }
 
             var doctor = DataRepository.UsersProvider.GetById(doctorId);
@@ -736,9 +736,9 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         try
         {
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!CheckCreating(out _message) && !CheckUpdating(out _message))
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.BuildFailedResult("You have no right to get doctor's information");
             }
 
             return SearchDoctor(HttpContext.Current.Request["q"]);
@@ -780,6 +780,48 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return string.Empty;
         }
+    }
+    #endregion
+
+    #region Check user right
+    /// <summary>
+    /// Checking user right for reading
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private static bool CheckReading(out string message)
+    {
+        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out message);
+    }
+
+    /// <summary>
+    /// Checking user right for deleting
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private static bool CheckDeleting(out string message)
+    {
+        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Delete.Key, out message);
+    }
+
+    /// <summary>
+    /// Checking user right for updating
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private static bool CheckUpdating(out string message)
+    {
+        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Update.Key, out message);
+    }
+
+    /// <summary>
+    /// Checking user right for creating
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    private static bool CheckCreating(out string message)
+    {
+        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Create.Key, out message);
     }
     #endregion
 }
