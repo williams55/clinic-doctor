@@ -55,11 +55,26 @@ public partial class Admin_Screen_Default : System.Web.UI.Page
     }
     protected void gridScreen_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
     {
+
+        if ( e.NewValues["ScreenCode"]==null||e.NewValues["ScreenCode"].ToString().Trim().Length < 1)
+        {
+            ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field ScreenCode can not be empty";
+            e.Cancel = true;
+            return;
+
+        }
         e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
     protected void gridScreen_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
     {
+        if (e.NewValues["ScreenCode"] == null || e.NewValues["ScreenCode"].ToString().Trim().Length < 1)
+        {
+            ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Last name can not be empty";
+            e.Cancel = true;
+            return;
+
+        }
         e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
