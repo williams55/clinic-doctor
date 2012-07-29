@@ -304,7 +304,7 @@ namespace AppointmentSystem.Settings.BusinessLayer
         }
         #endregion
 
-        #region GetPaged All
+        #region Number setting
         // Max number can get all when using GetPaged
         public int GetPagedLength
         {
@@ -321,6 +321,44 @@ namespace AppointmentSystem.Settings.BusinessLayer
             set
             {
                 ServiceFacade.SettingsService.SaveSetting("GET_PAGED_LENGTH", value);
+            }
+        }
+
+        // Page size
+        public int PageSize
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("PAGE_SIZE", out result))
+                {
+                    throw new ApplicationException("Setting PAGE_SIZE was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("PAGE_SIZE", value);
+            }
+        }
+
+        // Max priority index
+        public int MaxPriorityIndex
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("MAX_PRIORITY_INDEX", out result))
+                {
+                    throw new ApplicationException("Setting MAX_PRIORITY_INDEX was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("MAX_PRIORITY_INDEX", value);
             }
         }
         #endregion

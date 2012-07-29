@@ -24,16 +24,6 @@ public class WebCommon
     /// Get Screen code of current page
     /// </summary>
     /// <returns></returns>
-    public static string GetScreenCode()
-    {
-        string sPagePath = HttpContext.Current.Request.Url.AbsolutePath;
-        return HttpContext.Current.User.Identity.Name.Split('\\')[1];
-    }
-
-    /// <summary>
-    /// Get Screen code of current page
-    /// </summary>
-    /// <returns></returns>
     public static string GetHomepageUrl(Page page)
     {
         return String.Format("http://{0}{1}", HttpContext.Current.Request.Url.Authority, page.ResolveUrl("~/"));
@@ -76,7 +66,7 @@ public class WebCommon
     }
     #endregion
 
-    #region Alert in ASPxGridView
+    #region ASPxGridView
     /// <summary>
     /// Alert message for ASPxGridView
     /// </summary>
@@ -93,6 +83,33 @@ public class WebCommon
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
+
+    /// <summary>
+    /// Validate empty string
+    /// </summary>
+    /// <param name="title"> </param>
+    /// <param name="input"></param>
+    /// <param name="message"></param>
+    public static bool ValidateEmpty(string title, object input, out string message)
+    {
+        message = string.Empty;
+        try
+        {
+            if (input == null || string.IsNullOrEmpty(input.ToString().Trim()))
+            {
+                message = String.Format("{0} cannot be empty.", title);
+                return false;
+            }
+            return true;
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            message = "System error. Please contact administrator.";
+        }
+        return false;
+    }
+
     #endregion
 
     #region Build Result for Ajax call with Json format
