@@ -5,7 +5,9 @@
     Status
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
+
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div id="box-tabs" class="box">
@@ -28,14 +30,18 @@
                         <EditFormSettings Visible="False" />
                     </dx:GridViewDataColumn>
                     <dx:GridViewDataColumn FieldName="Title" VisibleIndex="2" />
-                    <dx:GridViewDataColumn FieldName="ColorCode" VisibleIndex="3" Width="100" />
-                    <dx:GridViewDataColumn FieldName="PriorityIndex" VisibleIndex="4" Width="80">
+                    <dx:GridViewDataColumn FieldName="ColorCode" VisibleIndex="3" Width="70" />
+                    <dx:GridViewDataColumn FieldName="PriorityIndex" Caption="Index" VisibleIndex="4"
+                        Width="80">
                         <CellStyle HorizontalAlign="Center">
                         </CellStyle>
                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                     </dx:GridViewDataColumn>
                     <dx:GridViewCommandColumn VisibleIndex="5" Caption="Operation" Width="70">
                         <EditButton Visible="true" />
+                        <CellStyle HorizontalAlign="Center">
+                        </CellStyle>
+                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                     </dx:GridViewCommandColumn>
                 </Columns>
                 <Templates>
@@ -63,9 +69,9 @@
                                             <td class="title-row" style="width: 80px;">
                                                 Color Code
                                             </td>
-                                            <td class="content-row" style="width: 120px;">
+                                            <td class="content-row" style="width: 150px;">
                                                 <dx:ASPxColorEdit runat="server" ID="ColorEditHeaderBackColor" Color='<%# System.Drawing.ColorTranslator.FromHtml(Eval("ColorCode").ToString()) %>'
-                                                    CssClass="text-form" Width="90px">
+                                                    CssClass="text-form" Width="120px">
                                                     <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                         ErrorText="Error">
                                                         <RequiredField IsRequired="True" ErrorText="Color Code is required" />
