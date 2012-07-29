@@ -103,6 +103,7 @@ public partial class Admin_Status_Default : System.Web.UI.Page
             }
             #endregion
 
+            // Set value
             e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
             e.NewValues["PriorityIndex"] = index.Value;
             e.NewValues["ColorCode"] = color.Text.Trim();
@@ -113,6 +114,7 @@ public partial class Admin_Status_Default : System.Web.UI.Page
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             e.Cancel = true;
+            WebCommon.AlertGridView(sender, "Cannot update service. Please contact Administrator");
         }
     }
 }
