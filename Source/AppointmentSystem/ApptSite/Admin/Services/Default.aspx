@@ -23,7 +23,7 @@
                 <Columns>
                     <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" ReadOnly="true" Visible="False">
                     </dx:GridViewDataColumn>
-                    <dx:GridViewDataColumn VisibleIndex="1" Caption="No." Width="50">
+                    <dx:GridViewDataColumn Caption="No." Width="50">
                         <DataItemTemplate>
                             <%# Container.ItemIndex + 1%>
                         </DataItemTemplate>
@@ -34,11 +34,14 @@
                     </dx:GridViewDataColumn>
                     <dx:GridViewDataColumn FieldName="Title" />
                     <dx:GridViewDataColumn FieldName="ShortTitle" />
-                    <dx:GridViewDataColumn FieldName="Note" />
+                    <dx:GridViewDataColumn FieldName="Note">
+                        <Settings AllowAutoFilter="False"></Settings>
+                    </dx:GridViewDataColumn>
                     <dx:GridViewDataColumn FieldName="PriorityIndex" Caption="Index" Width="70">
                         <CellStyle HorizontalAlign="Center">
                         </CellStyle>
                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                        <Settings AllowAutoFilter="False"></Settings>
                     </dx:GridViewDataColumn>
                     <dx:GridViewCommandColumn Caption="Operation" Width="100">
                         <EditButton Visible="true" />
@@ -135,6 +138,7 @@
                 <SettingsPager Mode="ShowPager" Position="Bottom">
                 </SettingsPager>
                 <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
+                <Settings ShowFilterRow="True" ShowFilterRowMenu="True" />
             </dx:ASPxGridView>
             <data:ServicesDataSource ID="ServicesDataSource" runat="server" SelectMethod="GetPaged"
                 EnablePaging="True" EnableSorting="True">
