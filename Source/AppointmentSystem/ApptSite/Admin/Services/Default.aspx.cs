@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using AppointmentSystem.Data;
-using AppointmentSystem.Entities;
-using AppointmentSystem.Settings.BusinessLayer;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
 using Log.Controller;
@@ -48,17 +41,10 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                                                                                   out _message);
 
             // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
-           //var btnDelete = gridViewCommandColumn.CustomButtons.Find(x => x.ID == "btnDelete");
-           GridViewCommandColumnCustomButton btnDelete = null;
-            foreach (GridViewCommandColumnCustomButton customButton in gridViewCommandColumn.CustomButtons)
-            {
-                if (customButton.ID == "btnDelete")
-                {
-                    btnDelete = customButton;
-                    break;
-                }
-            }
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+            GridViewCommandColumnCustomButton btnDelete =
+                gridViewCommandColumn.CustomButtons.Cast<GridViewCommandColumnCustomButton>().FirstOrDefault(
+                    customButton => customButton.ID == "btnDelete");
+            if (btnDelete != null && !RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,
                                                                                   out _message))
@@ -69,11 +55,12 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             // Tat ca cot neu 3 thao tac deu khong hien thi
             gridViewCommandColumn.Visible = gridViewCommandColumn.EditButton.Visible
                 || gridViewCommandColumn.NewButton.Visible
-                || (btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
+                || (btnDelete != null && btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.ShowDialog(this, "System is error. Please contact Administrator.");
         }
     }
 
@@ -88,9 +75,10 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                 // Cau lenh nay se quang ra exception va DevExpress se nhan duoc exception de thong bao loi cho nguoi dung
                 WebCommon.AlertGridView(sender, _message);
 
-                // Cau lenh nay se dung thuc thi
+                // Cancel operation
                 e.Cancel = true;
 
+                // Stop
                 return;
             }
 
@@ -101,6 +89,8 @@ public partial class Admin_Services_Default : System.Web.UI.Page
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            e.Cancel = true;
+            WebCommon.AlertGridView(sender, "Cannot insert new service. Please contact Administrator");
         }
     }
     protected void gridServices_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
@@ -137,7 +127,8 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                 // neu khong ton tai thi bao loi
                 if (obj == null || obj.IsDisabled)
                 {
-                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Service is not existed. You cannot delete it.";
+                    // Set returned message, then DevExpress will get it and show for end-user
+                    WebCommon.AlertGridView(sender, "Service is not existed. You cannot delete it.");
                     return;
                 }
 
@@ -152,8 +143,8 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                     || obj.AppointmentCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co appointment nao da co dich vu nay hay khong
                     )
                 {
-                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage]
-                        = String.Format("Service {0} is using, you cannot delete it.", obj.Title);
+                    // Set returned message, then DevExpress will get it and show for end-user
+                    WebCommon.AlertGridView(sender, String.Format("Service {0} is using, you cannot delete it.", obj.Title));
                     return;
                 }
                 // Neu service dang trong tinh trang hoan toan khong duoc su dung thi tien hanh xoa
@@ -167,7 +158,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "There is system error. Please contact Administrator.";
+            WebCommon.AlertGridView(sender, "Cannot delete service. Please contact Administrator");
         }
     }
     protected void gridServices_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
@@ -176,8 +167,13 @@ public partial class Admin_Services_Default : System.Web.UI.Page
         {
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message))//Kiem tra xem user co quyen cap nhat hay khong
             {
+                // Set returned message, then DevExpress will get it and show for end-user
                 WebCommon.AlertGridView(sender, _message);
+                
+                // Cancel operation
                 e.Cancel = true;
+
+                // Stop
                 return;
             }
             e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
@@ -186,13 +182,17 @@ public partial class Admin_Services_Default : System.Web.UI.Page
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            e.Cancel = true;
+            WebCommon.AlertGridView(sender, "Cannot update service. Please contact Administrator");
         }
     }
     protected void gridServices_RowValidating(object sender, ASPxDataValidationEventArgs e)
     {
-        if (e.NewValues["Title"].ToString().Trim() == "")//check field Title if empty, then stop
+        // Check field Title if empty, then stop
+        if (e.NewValues["Title"] == null || string.IsNullOrEmpty(e.NewValues["Title"].ToString().Trim()))
         {
-            e.RowError = "Field Title not be empty";
+            ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] =
+              "Title cannot be empty";
         }
         
     }
