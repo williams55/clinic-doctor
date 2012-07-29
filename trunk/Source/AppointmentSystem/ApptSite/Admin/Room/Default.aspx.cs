@@ -18,7 +18,7 @@ using Common.Util;
 
 public partial class Admin_Room_edit : System.Web.UI.Page
 {
-    string ScreenCode = "Room";
+    private const string ScreenCode = "Room";
     static string _message;
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -30,6 +30,10 @@ public partial class Admin_Room_edit : System.Web.UI.Page
                 gridRoom.Visible = false;
                 return;
             }
+
+            // Set page size
+            gridRoom.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
+            
             var gridcolums = gridRoom.Columns["btnCommand"] as GridViewCommandColumn;
             if (gridcolums == null) return;
             gridcolums.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
