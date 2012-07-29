@@ -77,7 +77,24 @@
                         runat="server">
                         <ItemTemplate>
                             <li><a href='<%#Eval("url") %>' title='<%#Eval("title") %>'><span class="normal">
-                                <%#Eval("title") %></span></a> </li>
+                                <%#Eval("title") %></span></a>
+                                <asp:Repeater ID="Repeater2" runat="server" DataSource='<%# ((SiteMapNode) Container.DataItem).ChildNodes %>'
+                                    EnableViewState="false">
+                                    <HeaderTemplate>
+                                        <ul class="sitemap-node">
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <li>
+                                            <asp:HyperLink ID="HyperLink1" runat="server" EnableViewState="false" NavigateUrl='<%# Eval("Url") %>'>
+                                                <%# Eval("Title") %>
+                                            </asp:HyperLink>
+                                        </li>
+                                    </ItemTemplate>
+                                    <FooterTemplate>
+                                        </ul>
+                                    </FooterTemplate>
+                                </asp:Repeater>
+                            </li>
                         </ItemTemplate>
                     </asp:Repeater>
                     <asp:SiteMapDataSource ID="SiteMapDataSource1" ShowStartingNode="false" runat="server" />
@@ -105,5 +122,17 @@
             Copyright &copy; 2000-2010 Your Company. All Rights Reserved.</p>
     </div>
     <!-- end footert -->
+
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            $.each($('.sitemap-node'), function(i, item) {
+                if ($(item).children().length <= 0) {
+                    $(item).remove();
+                } else {
+                    $('li:last', item).addClass('last');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
