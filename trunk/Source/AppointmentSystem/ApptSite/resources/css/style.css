@@ -1961,7 +1961,7 @@ div.form div.fields div.buttons div.highlight .ui-state-hover
 	overflow: hidden;
 }
 
-#content div.box table
+#content div.box table.smooth
 {
 	margin: 0;
 	padding: 0;
@@ -1969,7 +1969,7 @@ div.form div.fields div.buttons div.highlight .ui-state-hover
 	border-collapse: collapse;
 }
 
-#content div.box table th
+#content div.box table.smooth th
 {
 	padding: 10px;
 	background: #eeeeee;
@@ -1977,38 +1977,38 @@ div.form div.fields div.buttons div.highlight .ui-state-hover
 	border-bottom: 1px solid #cdcdcd;
 }
 
-#content div.box table th.last
+#content div.box table.smooth th.last
 {
 	border-right: none;	
 }
 
-#content div.box table th.left
+#content div.box table.smooth th.left
 {
 	text-align: left;   
 }
 
-#content div.box table th.right
+#content div.box table.smooth th.right
 {
 	text-align: right;   
 }
 
-#content div.box table th.center
+#content div.box table.smooth th.center
 {
 	text-align: center;   
 }
 
-#content div.box table th.selected
+#content div.box table.smooth th.selected
 {
 	padding: 0;
 	vertical-align: middle;
 }
 
-#content div.box table th.selected input
+#content div.box table.smooth th.selected input
 {
 	margin: 0;	
 }
 
-#content div.box table td
+#content div.box table.smooth td
 {
 	/*padding: 10px;
 	background: #ffffff;
@@ -2016,17 +2016,17 @@ div.form div.fields div.buttons div.highlight .ui-state-hover
 	border-bottom: 1px solid #cdcdcd;*/
 }
 
-#content div.box table td.last
+#content div.box table.smooth td.last
 {
 	border-right: none;	
 }
 
-#content div.box table tr.selected td
+#content div.box table.smooth tr.selected td
 {
 	background: #FFFFCC;
 }
 
-#content div.box table td.selected
+#content div.box table.smooth td.selected
 {
 	padding: 0;
 	width: 3%;
@@ -2034,30 +2034,30 @@ div.form div.fields div.buttons div.highlight .ui-state-hover
 	vertical-align: middle;
 }
 
-#content div.box table td.selected input
+#content div.box table.smooth td.selected input
 {
 	margin: 0;	
 }
 
-#content div.box table td.title
+#content div.box table.smooth td.title
 {
 	width: 45%;
 	text-align: left;
 }
 
-#content div.box table td.price
+#content div.box table.smooth td.price
 {
 	width: 10%;
 	text-align: center;
 }
 
-#content div.box table td.date
+#content div.box table.smooth td.date
 {
 	width: 33%;
 	text-align: center;
 }
 
-#content div.box table td.category
+#content div.box table.smooth td.category
 {
 	width: 10%;
 	text-align: center;
