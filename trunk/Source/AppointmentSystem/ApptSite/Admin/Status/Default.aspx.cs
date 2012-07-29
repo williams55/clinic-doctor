@@ -55,13 +55,8 @@ public partial class Admin_Status_Default : System.Web.UI.Page
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key,
                                        out _message))
             {
-                // Set returned message, then DevExpress will get it and show for end-user
                 WebCommon.AlertGridView(sender, _message);
-
-                // Cancel operation
                 e.Cancel = true;
-
-                // Stop
                 return;
             }
 
@@ -72,33 +67,22 @@ public partial class Admin_Status_Default : System.Web.UI.Page
             var index = (ASPxSpinEdit)((ASPxGridView)sender).FindEditFormTemplateControl("index");
 
             #region Validating
-            // Check field Title if empty, then stop
-            if (e.NewValues["Title"] == null || string.IsNullOrEmpty(e.NewValues["Title"].ToString().Trim()))
+            // Validate empty field
+            if (!WebCommon.ValidateEmpty("Title", e.NewValues["Title"], out _message)
+                || !WebCommon.ValidateEmpty("Color Code", color.Text, out _message)
+                || !WebCommon.ValidateEmpty("Index", index.Value, out _message))
             {
-                WebCommon.AlertGridView(sender, "Title cannot be empty");
+                WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
                 return;
             }
-
-            // Check field Text if empty, then stop
-            if (string.IsNullOrEmpty(color.Text))
-            {
-                WebCommon.AlertGridView(sender, "Title cannot be empty");
-                e.Cancel = true;
-                return;
-            }
-
+            
             // Validate integer value for priority index
             int iIndex;
-            if (!Int32.TryParse(index.Value.ToString(), out iIndex))
+            if (!Int32.TryParse(index.Value.ToString().Trim(), out iIndex))
             {
-                // Set returned message, then DevExpress will get it and show for end-user
                 WebCommon.AlertGridView(sender, "Index value is invalid.");
-
-                // Cancel operation
                 e.Cancel = true;
-
-                // Stop
                 return;
             }
             #endregion
@@ -109,6 +93,9 @@ public partial class Admin_Status_Default : System.Web.UI.Page
             e.NewValues["ColorCode"] = color.Text.Trim();
             e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
             e.NewValues["UpdateDate"] = DateTime.Now;
+
+            // Show message alert delete successfully
+            WebCommon.AlertGridView(sender, "Status is updated successfully.");
         }
         catch (Exception ex)
         {

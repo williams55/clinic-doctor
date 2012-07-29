@@ -32,7 +32,7 @@
                     <dx:GridViewDataColumn FieldName="Title" VisibleIndex="2" />
                     <dx:GridViewDataColumn FieldName="ColorCode" VisibleIndex="3" Width="70" />
                     <dx:GridViewDataColumn FieldName="PriorityIndex" Caption="Index" VisibleIndex="4"
-                        Width="80">
+                        Width="70">
                         <CellStyle HorizontalAlign="Center">
                         </CellStyle>
                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
@@ -97,7 +97,7 @@
                                             <td>
                                                 &nbsp;
                                             </td>
-                                            <td>
+                                            <td style="text-align: right;">
                                                 <dx:ASPxGridViewTemplateReplacement ID="UpdateButton" ReplacementType="EditFormUpdateButton"
                                                     runat="server">
                                                 </dx:ASPxGridViewTemplateReplacement>
@@ -114,8 +114,6 @@
                 </Templates>
                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
                     BeginCallback="function(s, e) {command = e.command; gridObject = s;}"></ClientSideEvents>
-                <SettingsPager Mode="ShowPager" PageSize="10" Position="Bottom">
-                </SettingsPager>
                 <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
             </dx:ASPxGridView>
             <data:StatusDataSource ID="AccessDataSource1" runat="server" SelectMethod="GetPaged"
