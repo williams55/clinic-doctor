@@ -939,14 +939,14 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="int" direction="Output" size="4" precision="10" scale="0" param="" nulldefault=""/>
-				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault=""/>
 				<parameter name="@ShortTitle" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
@@ -994,14 +994,14 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
-				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault=""/>
 				<parameter name="@ShortTitle" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 			</parameters>
 			<body><![CDATA[
@@ -1091,14 +1091,14 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
-				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="100" precision="0" scale="0" param="(100)" nulldefault="null"/>
 				<parameter name="@ShortTitle" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
-				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
-				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
 			</parameters>
 			<body><![CDATA[
@@ -2209,8 +2209,8 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="varchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@ColorCode" type="varchar" direction="Input" size="7" precision="0" scale="0" param="(7)" nulldefault=""/>
 				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -2258,8 +2258,8 @@
 			<parameters>
 				<parameter name="@Id" type="varchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@OriginalId" type="varchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@ColorCode" type="varchar" direction="Input" size="7" precision="0" scale="0" param="(7)" nulldefault=""/>
 				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -2348,8 +2348,8 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="varchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@Title" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@ColorCode" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
+				<parameter name="@ColorCode" type="varchar" direction="Input" size="7" precision="0" scale="0" param="(7)" nulldefault="null"/>
 				<parameter name="@PriorityIndex" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
