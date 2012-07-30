@@ -177,7 +177,7 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.AnsiString, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ColorCode", DbType.AnsiString, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@PriorityIndex", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, DBNull.Value);
@@ -723,7 +723,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.AnsiString, entity.Id );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
-			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.AnsiString, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@PriorityIndex", DbType.Int32, entity.PriorityIndex );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );
@@ -779,7 +779,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Id", DbType.AnsiString, entity.Id );
 			database.AddInParameter(commandWrapper, "@OriginalId", DbType.AnsiString, entity.OriginalId);
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
-			database.AddInParameter(commandWrapper, "@ColorCode", DbType.String, entity.ColorCode );
+			database.AddInParameter(commandWrapper, "@ColorCode", DbType.AnsiString, entity.ColorCode );
 			database.AddInParameter(commandWrapper, "@PriorityIndex", DbType.Int32, entity.PriorityIndex );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );

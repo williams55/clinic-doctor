@@ -202,7 +202,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false, 200)]
+		[DataObjectField(false, false, false, 50)]
 		public virtual System.String Title
 		{
 			get
@@ -228,7 +228,7 @@ namespace AppointmentSystem.Entities
 		/// 	Gets or sets the ColorCode property. 
 		///		
 		/// </summary>
-		/// <value>This type is nvarchar.</value>
+		/// <value>This type is varchar.</value>
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
@@ -238,7 +238,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false, 10)]
+		[DataObjectField(false, false, false, 7)]
 		public virtual System.String ColorCode
 		{
 			get
@@ -472,11 +472,11 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("Title", "Title"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
+				new CommonRules.MaxLengthRuleArgs("Title", "Title", 50));
 			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("ColorCode", "Color Code"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("ColorCode", "Color Code", 10));
+				new CommonRules.MaxLengthRuleArgs("ColorCode", "Color Code", 7));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -1745,13 +1745,13 @@ namespace AppointmentSystem.Entities
 		/// Title : 
 		/// </summary>
 		[EnumTextValue("Title")]
-		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, false, 200)]
+		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, false, 50)]
 		Title = 2,
 		/// <summary>
 		/// ColorCode : 
 		/// </summary>
 		[EnumTextValue("ColorCode")]
-		[ColumnEnum("ColorCode", typeof(System.String), System.Data.DbType.String, false, false, false, 10)]
+		[ColumnEnum("ColorCode", typeof(System.String), System.Data.DbType.AnsiString, false, false, false, 7)]
 		ColorCode = 3,
 		/// <summary>
 		/// PriorityIndex : 

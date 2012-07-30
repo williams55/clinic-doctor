@@ -191,7 +191,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 200)]
+		[DataObjectField(false, false, true, 100)]
 		public virtual System.String Title
 		{
 			get
@@ -366,7 +366,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 200)]
+		[DataObjectField(false, false, true, 50)]
 		public override System.String CreateUser
 		{
 			get
@@ -436,7 +436,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 200)]
+		[DataObjectField(false, false, true, 50)]
 		public override System.String UpdateUser
 		{
 			get
@@ -546,15 +546,15 @@ namespace AppointmentSystem.Entities
 		{
 			//Validation rules based on database schema.
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Title", "Title", 200));
+				new CommonRules.MaxLengthRuleArgs("Title", "Title", 100));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("ShortTitle", "Short Title", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
+				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("UpdateUser", "Update User", 200));
+				new CommonRules.MaxLengthRuleArgs("UpdateUser", "Update User", 50));
 		}
    		#endregion
 		
@@ -1933,7 +1933,7 @@ namespace AppointmentSystem.Entities
 		/// Title : 
 		/// </summary>
 		[EnumTextValue("Title")]
-		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
+		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 100)]
 		Title = 2,
 		/// <summary>
 		/// ShortTitle : 
@@ -1963,7 +1963,7 @@ namespace AppointmentSystem.Entities
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
-		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
+		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		CreateUser = 7,
 		/// <summary>
 		/// CreateDate : 
@@ -1975,7 +1975,7 @@ namespace AppointmentSystem.Entities
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
-		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
+		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		UpdateUser = 9,
 		/// <summary>
 		/// UpdateDate : 

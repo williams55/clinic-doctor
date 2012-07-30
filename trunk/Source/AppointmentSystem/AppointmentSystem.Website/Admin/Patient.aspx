@@ -17,15 +17,15 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
-				<asp:BoundField DataField="MemberType" HeaderText="Member Type" SortExpression="[MemberType]"  />
-				<asp:BoundField DataField="CompanyCode" HeaderText="Company Code" SortExpression="[CompanyCode]"  />
 				<asp:BoundField DataField="PatientCode" HeaderText="Patient Code" SortExpression="[PatientCode]" ReadOnly="True" />
 				<asp:BoundField DataField="FirstName" HeaderText="First Name" SortExpression="[FirstName]"  />
 				<asp:BoundField DataField="LastName" HeaderText="Last Name" SortExpression="[LastName]"  />
+				<asp:BoundField DataField="MemberType" HeaderText="Member Type" SortExpression="[MemberType]"  />
 				<asp:BoundField DataField="HomePhone" HeaderText="Home Phone" SortExpression="[HomePhone]"  />
 				<asp:BoundField DataField="WorkPhone" HeaderText="Work Phone" SortExpression="[WorkPhone]"  />
 				<asp:BoundField DataField="CellPhone" HeaderText="Cell Phone" SortExpression="[CellPhone]"  />
 				<asp:BoundField DataField="Avatar" HeaderText="Avatar" SortExpression="[Avatar]"  />
+				<asp:BoundField DataField="CompanyCode" HeaderText="Company Code" SortExpression="[CompanyCode]"  />
 				<asp:BoundField DataField="Birthdate" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Birthdate" SortExpression="[Birthdate]"  />
 				<data:BoundRadioButtonField DataField="IsFemale" HeaderText="Is Female" SortExpression="[IsFemale]"  />
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
