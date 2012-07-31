@@ -58,7 +58,7 @@
             <div id="logo">
                 <h1>
                     <a href="<%= ResolveUrl("~/") %>" title="Admin">
-                        <img src="<%= ResolveUrl("~/") %>Resources/images/logo.png" alt="Admin" /></a></h1>
+                        <img src="<%= ResolveUrl("~/") %>Resources/images/logo.jpg" alt="Admin" height="60px" /></a></h1>
             </div>
             <!-- end logo -->
             <!-- user -->
