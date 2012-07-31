@@ -1,45 +1,40 @@
-﻿*
+﻿#clockHolder
 {
-    margin: 0;
-    padding: 0;
-}
-
-#clock
-{
-    position: relative;
     width: 150px;
-    height: 150px;
-    background: url(images/clockface.jpg) top center no-repeat;
-    list-style: none;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    float: right;
+    margin: 10px 20px 10px 30px;
 }
 
 #sec, #min, #hour
 {
     position: absolute;
+    display: block;
+    width: 150px;
     height: 150px;
-    width: 100%;
 }
 
 #sec
 {
-    background: url(images/sechand.png) top center no-repeat;
     z-index: 3;
 }
-
 #min
 {
-    background: url(images/minhand.png) top center no-repeat;
     z-index: 2;
 }
-
 #hour
 {
-    background: url(images/hourhand.png) top center no-repeat;
     z-index: 1;
 }
 
-p
+.rotatingWrapper
 {
-    text-align: center;
-    padding: 10px 0 0 0;
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: 0px;
+    left: 0px;
 }
+

@@ -40,7 +40,7 @@
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
 
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/analogclock.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/jqueryRotate.js") %>"></script>
 
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/styles/token-input.css") %>"
         type="text/css" />
@@ -66,14 +66,130 @@
 
     </script>
 
+    <script type="text/javascript">
+        var angleSec = 0;
+        var angleMin = 0;
+        var angleHour = 0;
+
+        $(document).ready(function() {
+            $("#sec").rotate(angleSec);
+            $("#min").rotate(angleMin);
+            $("#hour").rotate(angleHour);
+        });
+
+        setInterval(function() {
+            var d = new Date;
+
+            angleSec = (d.getSeconds() * 6);
+            $("#sec").rotate(angleSec);
+
+            angleMin = (d.getMinutes() * 6);
+            $("#min").rotate(angleMin);
+
+            angleHour = ((d.getHours() * 5 + d.getMinutes() / 12) * 6);
+            $("#hour").rotate(angleHour);
+
+        }, 1000);
+    </script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
+    <div id="pleaseWait-darkBackground" style="width: 1366px; height: 2021px; display: none;
+        opacity: 0.5; visibility: visible;">
+    </div>
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
                 Appointment</h5>
         </div>
         <div id="box-other">
+            <div style="padding: 10px;">
+                <div class="appt-info">
+                    <h3>
+                        Patient's Information</h3>
+                    <div class="title-info">
+                        Firstname</div>
+                    <div class="content-info" id="divFirstname" style="margin-right: 35px;">
+                        &nbsp;
+                    </div>
+                    <div class="title-info">
+                        Lastname</div>
+                    <div class="content-info" id="divLastname">
+                        &nbsp;
+                    </div>
+                    <div class="clear">
+                    </div>
+                    <div class="title-info">
+                        Cell phone</div>
+                    <div class="content-info" id="divCellPhone" style="margin-right: 35px;">
+                        &nbsp;
+                    </div>
+                    <div class="title-info">
+                        Birthday</div>
+                    <div class="content-info" id="divBirthday">
+                        &nbsp;
+                    </div>
+                    <div class="clear">
+                    </div>
+                    <div class="title-info">
+                        Note</div>
+                    <div class="content-info" id="divNote" style="width: 435px;">
+                        &nbsp;
+                    </div>
+                    <div class="clear">
+                    </div>
+                </div>
+                <div id="clockHolder">
+                    <div class="rotatingWrapper">
+                        <img id="sec" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/second.png") %>"
+                            style="-webkit-transform: rotate(658.5deg);"></div>
+                    <div class="rotatingWrapper">
+                        <img id="hour" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/hour.png") %>"
+                            style="-webkit-transform: rotate(342deg);"></div>
+                    <div class="rotatingWrapper">
+                        <img id="min" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/minute.png") %>"
+                            style="-webkit-transform: rotate(228deg);"></div>
+                    <img id="clock" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/clockface.jpg") %>">
+                </div>
+                <div style="float: right; width: 251px; height: 205px;" id="datepicker">
+                    <div class="dhx_cal_today_button" style="margin-left: 90px; font-family: Tahoma;
+                        font-size: 11px;">
+                        Today
+                    </div>
+                </div>
+                <div class="status-info">
+                    <asp:Repeater ID="rptStatus" runat="server">
+                        <ItemTemplate>
+                            <div class="tinybox" style="background-color: <%# Eval("ColorCode") %>">
+                            </div>
+                            <span class="tinybox-info">
+                                <%# Eval("Title") %></span>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                    <div class="clear">
+                    </div>
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+            <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 330px;'>
+                <div class="dhx_cal_navline">
+                    <div class="dhx_cal_today_button" id="btnToday" style="display: none; float: right;">
+                    </div>
+                    <div class="dhx_cal_date" style="right: 10px; left: auto;">
+                    </div>
+                    <asp:Repeater ID="rptFloor" runat="server">
+                        <ItemTemplate>
+                            <div class="dhx_cal_tab" name="<%# Eval("Id") %>_tab" style="left: <%# (Container.ItemIndex * 70) + 10 %>px;">
+                            </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
+                <div class="dhx_cal_header">
+                </div>
+                <div class="dhx_cal_data">
+                </div>
+            </div>
             <div id="dialog-form" title="Patient" class="dialog-form">
                 <table class="table-form" style="width: 100%">
                     <tr>
@@ -117,70 +233,6 @@
                     </tr>
                 </table>
             </div>
-            <div style="padding: 10px;">
-                <div class="appt-info">
-                    <h3>
-                        Patient's Information</h3>
-                    <div class="title-info">
-                        Firstname</div>
-                    <div class="content-info" id="divFirstname" style="margin-right: 35px;">
-                        &nbsp;
-                    </div>
-                    <div class="title-info">
-                        Lastname</div>
-                    <div class="content-info" id="divLastname">
-                        &nbsp;
-                    </div>
-                    <div class="clear">
-                    </div>
-                    <div class="title-info">
-                        Cell phone</div>
-                    <div class="content-info" id="divCellPhone" style="margin-right: 35px;">
-                        &nbsp;
-                    </div>
-                    <div class="title-info">
-                        Birthday</div>
-                    <div class="content-info" id="divBirthday">
-                        &nbsp;
-                    </div>
-                    <div class="clear">
-                    </div>
-                    <div class="title-info">
-                        Note</div>
-                    <div class="content-info" id="divNote" style="width: 435px;">
-                        &nbsp;
-                    </div>
-                    <div class="clear">
-                    </div>
-                </div>
-                <div style="float: right; padding: 10px 20px 10px 30px;">
-                    <ul id="clock">
-                        <li id="sec"></li>
-                        <li id="hour"></li>
-                        <li id="min"></li>
-                    </ul>
-                </div>
-                <div style="float: right; width: 251px; height: 205px;" id="datepicker">
-                    <div class="dhx_cal_today_button" style="margin-left: 90px; font-family: Tahoma;
-                        font-size: 11px;">
-                        Today
-                    </div>
-                </div>
-                <div class="status-info">
-                    <asp:Repeater ID="rptStatus" runat="server">
-                        <ItemTemplate>
-                            <div class="tinybox" style="background-color: <%# Eval("ColorCode") %>">
-                            </div>
-                            <span class="tinybox-info">
-                                <%# Eval("Title") %></span>
-                        </ItemTemplate>
-                    </asp:Repeater>
-                    <div class="clear">
-                    </div>
-                </div>
-                <div class="clear">
-                </div>
-            </div>
             <div id="RosterForm" class="dialog-form" title="Appointment" style="display: none;">
                 <input type="hidden" id="hdId" value="" />
                 <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
@@ -213,8 +265,8 @@
                             <input type="text" id="txtPatient" />
                         </td>
                         <td>
-                            <input type="button" ID="createUser" value="New" style="width: 50px;" runat="server" />
-                            <input type="button" ID="changeUser" value="Change" style="width: 50px;" runat="server" />
+                            <input type="button" id="createUser" value="New" style="width: 50px;" runat="server" />
+                            <input type="button" id="changeUser" value="Change" style="width: 50px;" runat="server" />
                         </td>
                     </tr>
                     <tr>
@@ -255,24 +307,6 @@
                         </td>
                     </tr>
                 </table>
-            </div>
-            <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 330px;'>
-                <div class="dhx_cal_navline">
-                    <div class="dhx_cal_today_button" id="btnToday" style="display: none; float: right;">
-                    </div>
-                    <div class="dhx_cal_date" style="right: 10px; left: auto;">
-                    </div>
-                    <asp:Repeater ID="rptFloor" runat="server">
-                        <ItemTemplate>
-                            <div class="dhx_cal_tab" name="<%# Eval("Id") %>_tab" style="left: <%# (Container.ItemIndex * 70) + 10 %>px;">
-                            </div>
-                        </ItemTemplate>
-                    </asp:Repeater>
-                </div>
-                <div class="dhx_cal_header">
-                </div>
-                <div class="dhx_cal_data">
-                </div>
             </div>
         </div>
     </div>
