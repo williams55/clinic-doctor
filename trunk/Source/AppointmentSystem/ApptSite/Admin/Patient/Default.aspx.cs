@@ -171,11 +171,11 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         if (parameter == null)
         {
 
-            this.AppointmentDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND PatientId = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
+            this.AppointmentDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND PatientCode = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
         }
         else
         {
-            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND PatientId = '{0}'",
+            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND PatientCode = '{0}'",
                                   (sender as ASPxGridView).GetMasterRowKeyValue());
         }
     }

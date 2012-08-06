@@ -39,6 +39,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/jquery.tokeninput.js") %>"></script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
+    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/jquery.scrollTo-1.4.2-min.js") %>"></script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/jqueryRotate.js") %>"></script>
 

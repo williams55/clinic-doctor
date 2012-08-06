@@ -2,6 +2,9 @@
 var CurrentAppointment;
 var miniCalendar;
 
+// This variable use for scrolling to current time in current date
+var scrollToCurrent = true;
+
 /****************************DHTMLX - Start******************************/
 // Load calendar for Schedule
 function ShowMinical() {
@@ -65,6 +68,12 @@ function initSchedule(weekday) {
         scheduler.attachEvent("onEventChanged", EventChanged);
 
         scheduler.attachEvent("onViewChange", function(mode, date) {
+            if (scrollToCurrent && (new Date()).toLocaleDateString() == date.toLocaleDateString()) {
+                // Get y position
+                var top = date.getHours() * $('.dhx_scale_hour:first').outerHeight();
+                $('div.dhx_cal_data').scrollTo({ top: top + 'px', left: '0px' }, 800);
+                scrollToCurrent = false;
+            }
             LoadAppointment(mode, date);
         });
 
@@ -74,6 +83,9 @@ function initSchedule(weekday) {
             //LoadRoster(floors[0].Id, date);
             ShowMinical();
         }
+
+        var scroll = $('.dhx_cal_data:first');
+        scroll.scrollTop = 40;
     });
 }
 /****************************DHTMLX - End******************************/
