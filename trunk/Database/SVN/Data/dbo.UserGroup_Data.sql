@@ -1,0 +1,1 @@
+INSERT INTO [dbo].[UserGroup] ([Id], [Title], [Note], [Roles], [IsLocked], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (N'Doctor', N'Doctor', NULL, NULL, 0, 0, N'GOWU', '2012-07-15 21:05:13.560', N'GOWU', '2012-07-15 21:05:13.560')
