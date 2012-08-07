@@ -48,6 +48,25 @@
     <DataWriteAllFilesInOneDirectory>true</DataWriteAllFilesInOneDirectory>
   </WriteToFileOptions>
   <DataFileSet>
-    <Count>0</Count>
+    <Count>19</Count>
+    <DataFile>dbo.Patient_Data.sql</DataFile>
+    <DataFile>dbo.Role_Data.sql</DataFile>
+    <DataFile>dbo.RosterType_Data.sql</DataFile>
+    <DataFile>dbo.Screen_Data.sql</DataFile>
+    <DataFile>dbo.Services_Data.sql</DataFile>
+    <DataFile>dbo.Status_Data.sql</DataFile>
+    <DataFile>dbo.tblSettings_Data.sql</DataFile>
+    <DataFile>dbo.Units_Data.sql</DataFile>
+    <DataFile>dbo.UserGroup_Data.sql</DataFile>
+    <DataFile>dbo.AppointmentGroup_Data.sql</DataFile>
+    <DataFile>dbo.GroupRole_Data.sql</DataFile>
+    <DataFile>dbo.RoleDetail_Data.sql</DataFile>
+    <DataFile>dbo.Room_Data.sql</DataFile>
+    <DataFile>dbo.Appointment_Data.sql</DataFile>
+    <DataFile>dbo.DoctorRoom_Data.sql</DataFile>
+    <DataFile>dbo.DoctorService_Data.sql</DataFile>
+    <DataFile>dbo.Roster_Data.sql</DataFile>
+    <DataFile>dbo.UserRole_Data.sql</DataFile>
+    <DataFile>dbo.Users_Data.sql</DataFile>
   </DataFileSet>
 </DatabaseInformation>
