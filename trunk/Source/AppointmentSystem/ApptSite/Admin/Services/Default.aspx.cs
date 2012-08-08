@@ -236,10 +236,10 @@ public partial class Admin_Services_Default : System.Web.UI.Page
 
             // Set value
             e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
-            e.NewValues["ShortTitle"] = e.NewValues["Title"].ToString().Trim();
+            e.NewValues["ShortTitle"] = e.NewValues["ShortTitle"].ToString().Trim();
             e.NewValues["PriorityIndex"] = index.Value;
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+            e.NewValues["UpdateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["UpdateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert update successfully
             WebCommon.AlertGridView(sender, "Service is updated successfully.");
@@ -251,37 +251,4 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             WebCommon.AlertGridView(sender, "Cannot update service. Please contact Administrator");
         }
     }
-    /*private bool ValidateIndex(object sender, out ASPxSpinEdit spinEdit, out string message)
-    {
-        // Set default value
-        message = "System error. Please contact Administrator";
-        spinEdit = null;
-
-        try
-        {
-            // Get GridView object
-            var gridTmp = ((ASPxGridView)sender);
-            if (gridTmp == null)
-            {
-                return false;
-            }
-
-            // Get GridViewDataColumn object
-            var gridViewDataColumn = gridTmp.Columns["PriorityIndex"] as GridViewDataColumn;
-            if (gridViewDataColumn == null)
-            {
-                return false;
-            }
-
-            // Get SpinEdit object
-            spinEdit = (ASPxSpinEdit)gridTmp.FindEditRowCellTemplateControl(gridViewDataColumn, "index");
-
-            return spinEdit != null;
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return false;
-        }
-    }*/
 }
