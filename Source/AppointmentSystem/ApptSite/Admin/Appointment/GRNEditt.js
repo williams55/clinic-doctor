@@ -5,6 +5,9 @@ var miniCalendar;
 // This variable use for scrolling to current time in current date
 var scrollToCurrent = true;
 
+// True if lightbox is using, do not refesh page
+var isLightbox = false;
+
 /****************************DHTMLX - Start******************************/
 // Load calendar for Schedule
 function ShowMinical() {
@@ -19,7 +22,11 @@ function ShowMinical() {
 }
 
 // Refesh current view for mark_now can auto update
-setInterval(function() { scheduler.setCurrentView(); }, 60000);
+setInterval(function() {
+    if (!isLightbox) {
+        scheduler.setCurrentView();
+    }
+}, 60000);
 
 // Init Schedule
 function initSchedule(weekday) {
@@ -115,6 +122,8 @@ function EventChanged(eventId, objEvent) {
 }
 
 scheduler.showLightbox = function(id) {
+    isLightbox = true;
+
     // Get current appointmentId
     var ev = scheduler.getEvent(id);
     CurrentEventId = id;
@@ -123,6 +132,7 @@ scheduler.showLightbox = function(id) {
         if (ev.isnew == false) {
             ShowDialog("", "", "You cannot change a passed appointment.", "");
         } else {
+            DeleteAppointment("Lightbox");
             scheduler.deleteEvent(id);
             ShowDialog("", "", "You cannot create new appointment a passed day.", "");
         }
@@ -459,12 +469,14 @@ function MoveAppointment(eventId, objEvent) {
 
             if (obj.result != "true") {
                 ShowDialog("", "", obj.message, "");
+                alert("Move Appointment");
                 scheduler.deleteEvent(eventId);
                 scheduler.addEvent(CurrentAppointment);
             }
         },
         fail: function() {
             ShowDialog("", "", "Unknow error!", "");
+            alert("Move Appointment2");
             scheduler.deleteEvent(eventId);
             scheduler.addEvent(CurrentAppointment);
         },
@@ -590,6 +602,7 @@ function UpdateAppointment(id) {
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 var evs = obj.data;
+                alert("UpdateAppointment");
                 scheduler.deleteEvent(id);
                 AddAppointment(evs);
                 ShowDialog("", "", "Appointment has been updated.", "");
@@ -618,6 +631,7 @@ function AddAppointment(evs) {
 // Cancel appointment
 function CancelAppointment() {
     scheduler.endLightbox(false, html("RosterForm"));
+    isLightbox = false;    
 }
 
 function DeleteAppointment(id) {
@@ -649,6 +663,7 @@ function DeleteAppointment(id) {
                             CloseProgress();
                             var obj = JSON.parse(response.d);
                             if (obj.result == "true") {
+                                DeleteAppointment("UpdateAppointment");
                                 scheduler.deleteEvent(ev.id);
                                 ShowDialog("", "", "Appointment has been deleted.", "");
                                 $("#RosterForm").dialog("close");
