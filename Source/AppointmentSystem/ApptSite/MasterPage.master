@@ -56,20 +56,27 @@
         <div id="header-outer">
             <!-- logo -->
             <div id="logo">
-                <h1>
+                <%--<h1>
                     <a href="<%= ResolveUrl("~/") %>" title="Admin">
-                        <img src="<%= ResolveUrl("~/") %>Resources/images/logo.jpg" alt="Admin" height="60px" /></a></h1>
+                        <img src="<%= ResolveUrl("~/") %>Resources/images/logo.jpg" alt="Admin" height="60px" /></a></h1>--%>
             </div>
             <!-- end logo -->
             <!-- user -->
-            <ul id="user">
-                <li class="first">Welcome <a href="">
-                    <%=EntitiesUtilities.GetAuthName() %></a></li>
-            </ul>
             <!-- end user -->
             <div id="header-inner">
-                <div id="home">
-                    <a href="<%= ResolveUrl("~/") %>"></a>
+                <div id="home" style="float: left;">
+                    <h1>
+                        <a href="<%= ResolveUrl("~/") %>" title="Appointment System">
+                            <img src="<%= ResolveUrl("~/") %>Resources/images/logo.jpg" alt="Appointment System"
+                                height="50px" />
+                        </a>
+                    </h1>
+                    <%--<a href="<%= ResolveUrl("~/") %>"></a>--%>
+                </div>
+                <div id="user" style="float: left">
+                    <div class="welcome">
+                        Welcome <a href="">
+                            <%=EntitiesUtilities.GetAuthName() %></a></div>
                 </div>
                 <!-- quick -->
                 <ul id="quick">
@@ -119,7 +126,7 @@
     <!-- footer -->
     <div id="footer">
         <p>
-            Copyright &copy; 2000-2010 Your Company. All Rights Reserved.</p>
+            Copyright &copy; 2012 VCS. All Rights Reserved.</p>
     </div>
     <!-- end footert -->
 
@@ -134,5 +141,6 @@
             });
         });
     </script>
+
 </body>
 </html>
