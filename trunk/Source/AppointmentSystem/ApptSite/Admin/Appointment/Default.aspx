@@ -173,7 +173,7 @@
                 <div class="clear">
                 </div>
             </div>
-            <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 330px;'>
+            <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 530px;'>
                 <div class="dhx_cal_navline">
                     <div class="dhx_cal_today_button" id="btnToday" style="display: none; float: right;">
                     </div>
