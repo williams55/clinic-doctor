@@ -1,6 +1,5 @@
 CREATE TABLE [dbo].[Users]
 (
-[Id] [nvarchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [Username] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [Title] [nvarchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Firstname] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -11,6 +10,7 @@ CREATE TABLE [dbo].[Users]
 [Avatar] [nvarchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Note] [nvarchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [UserGroupId] [nvarchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL CONSTRAINT [DF_Table_1_IsLocked] DEFAULT ((0)),
+[ServicesId] [int] NULL CONSTRAINT [DF_Users_UserGroupId1] DEFAULT ((0)),
 [IsFemale] [bit] NOT NULL CONSTRAINT [DF_Users_IsFemale] DEFAULT ((0)),
 [IsDisabled] [bit] NOT NULL CONSTRAINT [DF_User_IsDisabled] DEFAULT ((0)),
 [CreateUser] [nvarchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -18,6 +18,14 @@ CREATE TABLE [dbo].[Users]
 [UpdateUser] [nvarchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [UpdateDate] [datetime] NOT NULL CONSTRAINT [DF_User_UpdateDate] DEFAULT (getdate())
 ) ON [PRIMARY]
+ALTER TABLE [dbo].[Users] ADD 
+CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED  ([Username]) ON [PRIMARY]
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'This user belongs what groups. It''s seperated by semi-comma', 'SCHEMA', N'dbo', 'TABLE', N'Users', 'COLUMN', N'ServicesId'
+GO
+
+ALTER TABLE [dbo].[Users] ADD
+CONSTRAINT [FK_Users_Services] FOREIGN KEY ([ServicesId]) REFERENCES [dbo].[Services] ([Id])
 GO
 SET QUOTED_IDENTIFIER ON
 GO
@@ -52,8 +60,7 @@ as
 	close cGroupRole
 	Deallocate cGroupRole
 GO
-ALTER TABLE [dbo].[Users] ADD CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED  ([Id]) ON [PRIMARY]
-GO
+
 ALTER TABLE [dbo].[Users] ADD CONSTRAINT [IX_User] UNIQUE NONCLUSTERED  ([Username]) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Users] ADD CONSTRAINT [FK_Users_UserGroup] FOREIGN KEY ([UserGroupId]) REFERENCES [dbo].[UserGroup] ([Id])

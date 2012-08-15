@@ -3,6 +3,7 @@ CREATE TABLE [dbo].[RosterType]
 [Id] [int] NOT NULL IDENTITY(1, 1),
 [Title] [nvarchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [IsBooked] [bit] NOT NULL CONSTRAINT [DF_RosterType_IsBooked] DEFAULT ((1)),
+[ColorCode] [varchar] (7) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Note] [nvarchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [IsDisabled] [bit] NOT NULL CONSTRAINT [DF_RosterType_IsDisabled] DEFAULT ((0)),
 [CreateUser] [nvarchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,

@@ -1,3 +1,6 @@
+INSERT INTO [dbo].[tblSettings] ([ID], [Type], [Code], [ValueString], [ValueBinary]) VALUES ('512bf1e8-d6fd-4aa4-aacd-3d4ba997557b', 0, N'MINUTE_PER_HOUR', N'60', NULL)
+INSERT INTO [dbo].[tblSettings] ([ID], [Type], [Code], [ValueString], [ValueBinary]) VALUES ('588d4060-f0e9-4539-89f5-72a161bfe6c4', 0, N'NOT_AVAILABLE_COLOR', N'#333', NULL)
+INSERT INTO [dbo].[tblSettings] ([ID], [Type], [Code], [ValueString], [ValueBinary]) VALUES ('fefe7909-5fa5-411c-a53e-78c50d2b5aa5', 0, N'ROSTER_MINUTE_STEP', N'60', NULL)
 INSERT INTO [dbo].[tblSettings] ([ID], [Type], [Code], [ValueString], [ValueBinary]) VALUES ('4fffcbbe-86ca-429e-a729-066ae17790d6', 0, N'TIME_LEFT_RMIND_APPOINTMENT', N'15', NULL)
 INSERT INTO [dbo].[tblSettings] ([ID], [Type], [Code], [ValueString], [ValueBinary]) VALUES ('44131fb2-5fba-4ed5-862a-286bff4a4cbc', 0, N'MINUTE_STEP', N'5', NULL)
 INSERT INTO [dbo].[tblSettings] ([ID], [Type], [Code], [ValueString], [ValueBinary]) VALUES ('c590be27-da4b-419b-9138-3987ff5ba767', 0, N'ROSTER_PREFIX', N'OST', NULL)
