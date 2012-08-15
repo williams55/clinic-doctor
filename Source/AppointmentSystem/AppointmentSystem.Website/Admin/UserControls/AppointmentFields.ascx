@@ -4,6 +4,13 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataUsername" runat="server" Text="Username:" AssociatedControlID="dataUsername" /></td>
+        <td>
+					<data:EntityDropDownList runat="server" ID="dataUsername" DataSourceID="UsernameUsersDataSource" DataTextField="Title" DataValueField="Username" SelectedValue='<%# Bind("Username") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:UsersDataSource ID="UsernameUsersDataSource" runat="server" SelectMethod="GetAll"  />
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataId" runat="server" Text="Id:" AssociatedControlID="dataId" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataId" Text='<%# Bind("Id") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataId" runat="server" Display="Dynamic" ControlToValidate="dataId" ErrorMessage="Required"></asp:RequiredFieldValidator>
@@ -14,13 +21,6 @@
         <td>
 					<data:EntityDropDownList runat="server" ID="dataPatientCode" DataSourceID="PatientCodePatientDataSource" DataTextField="FirstName" DataValueField="PatientCode" SelectedValue='<%# Bind("PatientCode") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
 					<data:PatientDataSource ID="PatientCodePatientDataSource" runat="server" SelectMethod="GetAll"  />
-				</td>
-			</tr>
-			<tr>
-        <td class="literal"><asp:Label ID="lbldataDoctorId" runat="server" Text="Doctor Id:" AssociatedControlID="dataDoctorId" /></td>
-        <td>
-					<data:EntityDropDownList runat="server" ID="dataDoctorId" DataSourceID="DoctorIdUsersDataSource" DataTextField="Username" DataValueField="Id" SelectedValue='<%# Bind("DoctorId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
-					<data:UsersDataSource ID="DoctorIdUsersDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>

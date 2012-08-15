@@ -9,7 +9,7 @@
 				AutoGenerateColumns="False"					
 				OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
 				DataSourceID="UsersDataSource"
-				DataKeyNames="Id"
+				DataKeyNames="Username"
 				AllowMultiColumnSorting="false"
 				DefaultSortColumnName="" 
 				DefaultSortDirection="Ascending"	
@@ -17,8 +17,8 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
-				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
-				<asp:BoundField DataField="Username" HeaderText="Username" SortExpression="[Username]"  />
+				<data:HyperLinkField HeaderText="Services Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServicesIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="Username" HeaderText="Username" SortExpression="[Username]" ReadOnly="True" />
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
 				<asp:BoundField DataField="Firstname" HeaderText="Firstname" SortExpression="[Firstname]"  />
 				<asp:BoundField DataField="Lastname" HeaderText="Lastname" SortExpression="[Lastname]"  />
@@ -49,12 +49,12 @@
 			>
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
+					<data:UsersProperty Name="Services"/> 
 					<data:UsersProperty Name="UserGroup"/> 
 					<%--<data:UsersProperty Name="UserRoleCollection" />--%>
 					<%--<data:UsersProperty Name="DoctorRoomCollection" />--%>
 					<%--<data:UsersProperty Name="AppointmentCollection" />--%>
 					<%--<data:UsersProperty Name="RosterCollection" />--%>
-					<%--<data:UsersProperty Name="DoctorServiceCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
 			<Parameters>

@@ -4,10 +4,10 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
-        <td class="literal"><asp:Label ID="lbldataUserId" runat="server" Text="User Id:" AssociatedControlID="dataUserId" /></td>
+        <td class="literal"><asp:Label ID="lbldataUsername" runat="server" Text="Username:" AssociatedControlID="dataUsername" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataUserId" DataSourceID="UserIdUsersDataSource" DataTextField="Username" DataValueField="Id" SelectedValue='<%# Bind("UserId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
-					<data:UsersDataSource ID="UserIdUsersDataSource" runat="server" SelectMethod="GetAll"  />
+					<data:EntityDropDownList runat="server" ID="dataUsername" DataSourceID="UsernameUsersDataSource" DataTextField="Title" DataValueField="Username" SelectedValue='<%# Bind("Username") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:UsersDataSource ID="UsernameUsersDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			<tr>

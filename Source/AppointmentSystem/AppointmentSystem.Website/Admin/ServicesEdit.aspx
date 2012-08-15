@@ -35,21 +35,30 @@
 		
 		<br />
 
-		<data:EntityGridView ID="GridViewDoctorService1" runat="server"
+		<data:EntityGridView ID="GridViewUsers1" runat="server"
 			AutoGenerateColumns="False"	
-			OnSelectedIndexChanged="GridViewDoctorService1_SelectedIndexChanged"			 			 
-			DataSourceID="DoctorServiceDataSource1"
-			DataKeyNames="Id"
+			OnSelectedIndexChanged="GridViewUsers1_SelectedIndexChanged"			 			 
+			DataSourceID="UsersDataSource1"
+			DataKeyNames="Username"
 			AllowMultiColumnSorting="false"
 			DefaultSortColumnName="" 
 			DefaultSortDirection="Ascending"	
-			ExcelExportFileName="Export_DoctorService.xls"  		
+			ExcelExportFileName="Export_Users.xls"  		
 			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
-				<data:HyperLinkField HeaderText="Service Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServiceIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]" />				
+				<asp:BoundField DataField="Firstname" HeaderText="Firstname" SortExpression="[Firstname]" />				
+				<asp:BoundField DataField="Lastname" HeaderText="Lastname" SortExpression="[Lastname]" />				
+				<asp:BoundField DataField="DisplayName" HeaderText="Display Name" SortExpression="[DisplayName]" />				
+				<asp:BoundField DataField="CellPhone" HeaderText="Cell Phone" SortExpression="[CellPhone]" />				
+				<asp:BoundField DataField="Email" HeaderText="Email" SortExpression="[Email]" />				
+				<asp:BoundField DataField="Avatar" HeaderText="Avatar" SortExpression="[Avatar]" />				
+				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
+				<data:HyperLinkField HeaderText="User Group Id" DataNavigateUrlFormatString="UserGroupEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="UserGroupIdSource" DataTextField="Title" />
+				<data:HyperLinkField HeaderText="Services Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServicesIdSource" DataTextField="Title" />
+				<asp:BoundField DataField="IsFemale" HeaderText="Is Female" SortExpression="[IsFemale]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
 				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
@@ -57,30 +66,34 @@
 				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
 			</Columns>
 			<EmptyDataTemplate>
-				<b>No Doctor Service Found! </b>
-				<asp:HyperLink runat="server" ID="hypDoctorService" NavigateUrl="~/admin/DoctorServiceEdit.aspx">Add New</asp:HyperLink>
+				<b>No Users Found! </b>
+				<asp:HyperLink runat="server" ID="hypUsers" NavigateUrl="~/admin/UsersEdit.aspx">Add New</asp:HyperLink>
 			</EmptyDataTemplate>
 		</data:EntityGridView>					
 		
-		<data:DoctorServiceDataSource ID="DoctorServiceDataSource1" runat="server" SelectMethod="Find"
+		<data:UsersDataSource ID="UsersDataSource1" runat="server" SelectMethod="Find"
 			EnableDeepLoad="True"
 			>
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
-					<data:DoctorServiceProperty Name="Services"/> 
-					<data:DoctorServiceProperty Name="Users"/> 
+					<data:UsersProperty Name="Services"/> 
+					<data:UsersProperty Name="UserGroup"/> 
+					<%--<data:UsersProperty Name="UserRoleCollection" />--%>
+					<%--<data:UsersProperty Name="DoctorRoomCollection" />--%>
+					<%--<data:UsersProperty Name="AppointmentCollection" />--%>
+					<%--<data:UsersProperty Name="RosterCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
 			
 		    <Parameters>
 				<data:SqlParameter Name="Parameters">
 					<Filters>
-						<data:DoctorServiceFilter  Column="ServiceId" QueryStringField="Id" /> 
+						<data:UsersFilter  Column="ServicesId" QueryStringField="Id" /> 
 					</Filters>
 				</data:SqlParameter>
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
 		    </Parameters>
-		</data:DoctorServiceDataSource>		
+		</data:UsersDataSource>		
 		
 		<br />
 		<data:EntityGridView ID="GridViewAppointment2" runat="server"
@@ -97,7 +110,7 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Patient Code" DataNavigateUrlFormatString="PatientEdit.aspx?PatientCode={0}" DataNavigateUrlFields="PatientCode" DataContainer="PatientCodeSource" DataTextField="FirstName" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
+				<data:HyperLinkField HeaderText="Username" DataNavigateUrlFormatString="UsersEdit.aspx?Username={0}" DataNavigateUrlFields="Username" DataContainer="UsernameSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Services Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServicesIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />

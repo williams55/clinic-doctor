@@ -87,7 +87,7 @@
 			AutoGenerateColumns="False"	
 			OnSelectedIndexChanged="GridViewUsers2_SelectedIndexChanged"			 			 
 			DataSourceID="UsersDataSource2"
-			DataKeyNames="Id"
+			DataKeyNames="Username"
 			AllowMultiColumnSorting="false"
 			DefaultSortColumnName="" 
 			DefaultSortDirection="Ascending"	
@@ -96,7 +96,6 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
-				<asp:BoundField DataField="Username" HeaderText="Username" SortExpression="[Username]" />				
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]" />				
 				<asp:BoundField DataField="Firstname" HeaderText="Firstname" SortExpression="[Firstname]" />				
 				<asp:BoundField DataField="Lastname" HeaderText="Lastname" SortExpression="[Lastname]" />				
@@ -106,6 +105,7 @@
 				<asp:BoundField DataField="Avatar" HeaderText="Avatar" SortExpression="[Avatar]" />				
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]" />				
 				<data:HyperLinkField HeaderText="User Group Id" DataNavigateUrlFormatString="UserGroupEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="UserGroupIdSource" DataTextField="Title" />
+				<data:HyperLinkField HeaderText="Services Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServicesIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="IsFemale" HeaderText="Is Female" SortExpression="[IsFemale]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
@@ -124,12 +124,12 @@
 			>
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
+					<data:UsersProperty Name="Services"/> 
 					<data:UsersProperty Name="UserGroup"/> 
 					<%--<data:UsersProperty Name="UserRoleCollection" />--%>
 					<%--<data:UsersProperty Name="DoctorRoomCollection" />--%>
 					<%--<data:UsersProperty Name="AppointmentCollection" />--%>
 					<%--<data:UsersProperty Name="RosterCollection" />--%>
-					<%--<data:UsersProperty Name="DoctorServiceCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
 			

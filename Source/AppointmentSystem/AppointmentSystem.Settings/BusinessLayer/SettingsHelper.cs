@@ -69,6 +69,25 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
         }
 
+        // Minute Step
+        public int RosterMinuteStep
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("ROSTER_MINUTE_STEP", out result))
+                {
+                    throw new ApplicationException("Setting ROSTER_MINUTE_STEP was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("ROSTER_MINUTE_STEP", value);
+            }
+        }
+
         // Max Minute
         public int MaxMinute
         {
@@ -107,6 +126,25 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
         }
 
+        // Max Minute
+        public int MinutePerHour
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("MINUTE_PER_HOUR", out result))
+                {
+                    throw new ApplicationException("Setting MINUTE_PER_HOUR was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("MINUTE_PER_HOUR", value);
+            }
+        }
+
         // Time [Minute] left to remind appointment
         public double TimeLeftRemindAppointment
         {
@@ -128,6 +166,24 @@ namespace AppointmentSystem.Settings.BusinessLayer
         #endregion
 
         #region "Status, Color"
+        // Bien nay dung de tao lop mau phu len cho nao trong appointment ma ko the tao
+        public string NotAvailableColor
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<string>("NOT_AVAILABLE_COLOR", out result))
+                {
+                    throw new ApplicationException("Setting NOT_AVAILABLE_COLOR was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<string>("NOT_AVAILABLE_COLOR", value);
+            }
+        }
         public string CompleteColor
         {
             get

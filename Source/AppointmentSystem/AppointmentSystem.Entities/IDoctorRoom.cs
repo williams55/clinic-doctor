@@ -20,14 +20,14 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
-		/// DoctorId : 
+		/// Username : 
 		/// </summary>
-		System.String  DoctorId  { get; set; }
+		System.String  Username  { get; set; }
 		
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
-		System.Int32?  RoomId  { get; set; }
+		System.Int32  RoomId  { get; set; }
 		
 		/// <summary>
 		/// Priority : 

@@ -20,7 +20,7 @@ public partial class UsersEdit : System.Web.UI.Page
 		FormUtil.RedirectAfterInsertUpdate(FormView1, "UsersEdit.aspx?{0}", UsersDataSource);
 		FormUtil.RedirectAfterAddNew(FormView1, "UsersEdit.aspx");
 		FormUtil.RedirectAfterCancel(FormView1, "Users.aspx");
-		FormUtil.SetDefaultMode(FormView1, "Id");
+		FormUtil.SetDefaultMode(FormView1, "Username");
 	}
 	protected void GridViewUserRole1_SelectedIndexChanged(object sender, EventArgs e)
 	{
@@ -41,11 +41,6 @@ public partial class UsersEdit : System.Web.UI.Page
 	{
 		string urlParams = string.Format("Id={0}", GridViewRoster4.SelectedDataKey.Values[0]);
 		Response.Redirect("RosterEdit.aspx?" + urlParams, true);		
-	}	
-	protected void GridViewDoctorService5_SelectedIndexChanged(object sender, EventArgs e)
-	{
-		string urlParams = string.Format("Id={0}", GridViewDoctorService5.SelectedDataKey.Values[0]);
-		Response.Redirect("DoctorServiceEdit.aspx?" + urlParams, true);		
 	}	
 }
 

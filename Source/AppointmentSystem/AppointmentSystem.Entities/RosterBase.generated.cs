@@ -82,7 +82,7 @@ namespace AppointmentSystem.Entities
 		/// Creates a new <see cref="RosterBase"/> instance.
 		///</summary>
 		///<param name="_id"></param>
-		///<param name="_doctorId"></param>
+		///<param name="_username"></param>
 		///<param name="_roomId"></param>
 		///<param name="_rosterTypeId"></param>
 		///<param name="_startTime"></param>
@@ -93,7 +93,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public RosterBase(System.String _id, System.String _doctorId, System.Int32? _roomId, 
+		public RosterBase(System.String _id, System.String _username, System.Int32? _roomId, 
 			System.Int32 _rosterTypeId, System.DateTime _startTime, System.DateTime _endTime, System.String _note, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
@@ -102,7 +102,7 @@ namespace AppointmentSystem.Entities
 			this.backupData = null;
 
 			this.Id = _id;
-			this.DoctorId = _doctorId;
+			this.Username = _username;
 			this.RoomId = _roomId;
 			this.RosterTypeId = _rosterTypeId;
 			this.StartTime = _startTime;
@@ -119,7 +119,7 @@ namespace AppointmentSystem.Entities
 		/// A simple factory method to create a new <see cref="Roster"/> instance.
 		///</summary>
 		///<param name="_id"></param>
-		///<param name="_doctorId"></param>
+		///<param name="_username"></param>
 		///<param name="_roomId"></param>
 		///<param name="_rosterTypeId"></param>
 		///<param name="_startTime"></param>
@@ -130,14 +130,14 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Roster CreateRoster(System.String _id, System.String _doctorId, System.Int32? _roomId, 
+		public static Roster CreateRoster(System.String _id, System.String _username, System.Int32? _roomId, 
 			System.Int32 _rosterTypeId, System.DateTime _startTime, System.DateTime _endTime, System.String _note, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
 		{
 			Roster newRoster = new Roster();
 			newRoster.Id = _id;
-			newRoster.DoctorId = _doctorId;
+			newRoster.Username = _username;
 			newRoster.RoomId = _roomId;
 			newRoster.RosterTypeId = _rosterTypeId;
 			newRoster.StartTime = _startTime;
@@ -207,7 +207,7 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or sets the DoctorId property. 
+		/// 	Gets or sets the Username property. 
 		///		
 		/// </summary>
 		/// <value>This type is nvarchar.</value>
@@ -220,25 +220,25 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false, 20)]
-		public virtual System.String DoctorId
+		[DataObjectField(false, false, false, 50)]
+		public virtual System.String Username
 		{
 			get
 			{
-				return this.entityData.DoctorId; 
+				return this.entityData.Username; 
 			}
 			
 			set
 			{
-				if (this.entityData.DoctorId == value)
+				if (this.entityData.Username == value)
 					return;
 					
-				OnColumnChanging(RosterColumn.DoctorId, this.entityData.DoctorId);
-				this.entityData.DoctorId = value;
+				OnColumnChanging(RosterColumn.Username, this.entityData.Username);
+				this.entityData.Username = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
-				OnColumnChanged(RosterColumn.DoctorId, this.entityData.DoctorId);
-				OnPropertyChanged("DoctorId");
+				OnColumnChanged(RosterColumn.Username, this.entityData.Username);
+				OnPropertyChanged("Username");
 			}
 		}
 		
@@ -623,13 +623,13 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Gets or sets the source <see cref="Users"/>.
 		/// </summary>
-		/// <value>The source Users for DoctorId.</value>
+		/// <value>The source Users for Username.</value>
         [XmlIgnore()]
 		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual Users DoctorIdSource
+		public virtual Users UsernameSource
       	{
-            get { return entityData.DoctorIdSource; }
-            set { entityData.DoctorIdSource = value; }
+            get { return entityData.UsernameSource; }
+            set { entityData.UsernameSource = value; }
       	}
 		#endregion
 		
@@ -651,9 +651,9 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
 			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("DoctorId", "Doctor Id"));
+				new ValidationRuleArgs("Username", "Username"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("DoctorId", "Doctor Id", 20));
+				new CommonRules.MaxLengthRuleArgs("Username", "Username", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -681,7 +681,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "DoctorId", "RoomId", "RosterTypeId", "StartTime", "EndTime", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Username", "RoomId", "RosterTypeId", "StartTime", "EndTime", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -831,7 +831,7 @@ namespace AppointmentSystem.Entities
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
 					copy.OriginalId = this.OriginalId;
-				copy.DoctorId = this.DoctorId;
+				copy.Username = this.Username;
 				copy.RoomId = this.RoomId;
 				copy.RosterTypeId = this.RosterTypeId;
 				copy.StartTime = this.StartTime;
@@ -851,10 +851,10 @@ namespace AppointmentSystem.Entities
 				copy.RosterTypeIdSource = existingCopies[this.RosterTypeIdSource] as RosterType;
 			else
 				copy.RosterTypeIdSource = MakeCopyOf(this.RosterTypeIdSource, existingCopies) as RosterType;
-			if (this.DoctorIdSource != null && existingCopies.Contains(this.DoctorIdSource))
-				copy.DoctorIdSource = existingCopies[this.DoctorIdSource] as Users;
+			if (this.UsernameSource != null && existingCopies.Contains(this.UsernameSource))
+				copy.UsernameSource = existingCopies[this.UsernameSource] as Users;
 			else
-				copy.DoctorIdSource = MakeCopyOf(this.DoctorIdSource, existingCopies) as Users;
+				copy.UsernameSource = MakeCopyOf(this.UsernameSource, existingCopies) as Users;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -988,8 +988,8 @@ namespace AppointmentSystem.Entities
 			{
 					case RosterColumn.Id:
 					return entityData.Id != _originalData.Id;
-					case RosterColumn.DoctorId:
-					return entityData.DoctorId != _originalData.DoctorId;
+					case RosterColumn.Username:
+					return entityData.Username != _originalData.Username;
 					case RosterColumn.RoomId:
 					return entityData.RoomId != _originalData.RoomId;
 					case RosterColumn.RosterTypeId:
@@ -1038,7 +1038,7 @@ namespace AppointmentSystem.Entities
 		{
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
-			result = result || entityData.DoctorId != _originalData.DoctorId;
+			result = result || entityData.Username != _originalData.Username;
 			result = result || entityData.RoomId != _originalData.RoomId;
 			result = result || entityData.RosterTypeId != _originalData.RosterTypeId;
 			result = result || entityData.StartTime != _originalData.StartTime;
@@ -1060,7 +1060,7 @@ namespace AppointmentSystem.Entities
 			if (_originalData != null)
 				return CreateRoster(
 				_originalData.Id,
-				_originalData.DoctorId,
+				_originalData.Username,
 				_originalData.RoomId,
 				_originalData.RosterTypeId,
 				_originalData.StartTime,
@@ -1101,7 +1101,7 @@ namespace AppointmentSystem.Entities
         public override int GetHashCode()
         {
 			return this.Id.GetHashCode() ^ 
-					this.DoctorId.GetHashCode() ^ 
+					this.Username.GetHashCode() ^ 
 					((this.RoomId == null) ? string.Empty : this.RoomId.ToString()).GetHashCode() ^ 
 					this.RosterTypeId.GetHashCode() ^ 
 					this.StartTime.GetHashCode() ^ 
@@ -1146,7 +1146,7 @@ namespace AppointmentSystem.Entities
 			bool equal = true;
 			if (Object1.Id != Object2.Id)
 				equal = false;
-			if (Object1.DoctorId != Object2.DoctorId)
+			if (Object1.Username != Object2.Username)
 				equal = false;
 			if ( Object1.RoomId != null && Object2.RoomId != null )
 			{
@@ -1246,8 +1246,8 @@ namespace AppointmentSystem.Entities
             		                 
             	
             	
-            	case RosterColumn.DoctorId:
-            		return this.DoctorId.CompareTo(rhs.DoctorId);
+            	case RosterColumn.Username:
+            		return this.Username.CompareTo(rhs.Username);
             		
             		                 
             	
@@ -1444,9 +1444,9 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{13}{12}- Id: {0}{12}- DoctorId: {1}{12}- RoomId: {2}{12}- RosterTypeId: {3}{12}- StartTime: {4}{12}- EndTime: {5}{12}- Note: {6}{12}- IsDisabled: {7}{12}- CreateUser: {8}{12}- CreateDate: {9}{12}- UpdateUser: {10}{12}- UpdateDate: {11}{12}{14}", 
+				"{13}{12}- Id: {0}{12}- Username: {1}{12}- RoomId: {2}{12}- RosterTypeId: {3}{12}- StartTime: {4}{12}- EndTime: {5}{12}- Note: {6}{12}- IsDisabled: {7}{12}- CreateUser: {8}{12}- CreateDate: {9}{12}- UpdateUser: {10}{12}- UpdateDate: {11}{12}{14}", 
 				this.Id,
-				this.DoctorId,
+				this.Username,
 				(this.RoomId == null) ? string.Empty : this.RoomId.ToString(),
 				this.RosterTypeId,
 				this.StartTime,
@@ -1497,9 +1497,9 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
-		/// DoctorId : 
+		/// Username : 
 		/// </summary>
-		public System.String		  DoctorId = string.Empty;
+		public System.String		  Username = string.Empty;
 		
 		/// <summary>
 		/// RoomId : 
@@ -1580,18 +1580,18 @@ namespace AppointmentSystem.Entities
             get { return this._rosterTypeIdSource; }
             set { this._rosterTypeIdSource = value; }
       	}
-		private Users _doctorIdSource = null;
+		private Users _usernameSource = null;
 		
 		/// <summary>
 		/// Gets or sets the source <see cref="Users"/>.
 		/// </summary>
-		/// <value>The source Users for DoctorId.</value>
+		/// <value>The source Users for Username.</value>
 		[XmlIgnore()]
 		[Browsable(false)]
-		public virtual Users DoctorIdSource
+		public virtual Users UsernameSource
       	{
-            get { return this._doctorIdSource; }
-            set { this._doctorIdSource = value; }
+            get { return this._usernameSource; }
+            set { this._usernameSource = value; }
       	}
 		#endregion
 		#endregion Variable Declarations
@@ -1613,7 +1613,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Id = this.Id;
 			_tmp.OriginalId = this.OriginalId;
 			
-			_tmp.DoctorId = this.DoctorId;
+			_tmp.Username = this.Username;
 			_tmp.RoomId = this.RoomId;
 			_tmp.RosterTypeId = this.RosterTypeId;
 			_tmp.StartTime = this.StartTime;
@@ -1630,8 +1630,8 @@ namespace AppointmentSystem.Entities
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource) as Room;
 			if (this.RosterTypeIdSource != null)
 				_tmp.RosterTypeIdSource = MakeCopyOf(this.RosterTypeIdSource) as RosterType;
-			if (this.DoctorIdSource != null)
-				_tmp.DoctorIdSource = MakeCopyOf(this.DoctorIdSource) as Users;
+			if (this.UsernameSource != null)
+				_tmp.UsernameSource = MakeCopyOf(this.UsernameSource) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -1657,7 +1657,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Id = this.Id;
 			_tmp.OriginalId = this.OriginalId;
 			
-			_tmp.DoctorId = this.DoctorId;
+			_tmp.Username = this.Username;
 			_tmp.RoomId = this.RoomId;
 			_tmp.RosterTypeId = this.RosterTypeId;
 			_tmp.StartTime = this.StartTime;
@@ -1678,10 +1678,10 @@ namespace AppointmentSystem.Entities
 				_tmp.RosterTypeIdSource = existingCopies[this.RosterTypeIdSource] as RosterType;
 			else
 				_tmp.RosterTypeIdSource = MakeCopyOf(this.RosterTypeIdSource, existingCopies) as RosterType;
-			if (this.DoctorIdSource != null && existingCopies.Contains(this.DoctorIdSource))
-				_tmp.DoctorIdSource = existingCopies[this.DoctorIdSource] as Users;
+			if (this.UsernameSource != null && existingCopies.Contains(this.UsernameSource))
+				_tmp.UsernameSource = existingCopies[this.UsernameSource] as Users;
 			else
-				_tmp.DoctorIdSource = MakeCopyOf(this.DoctorIdSource, existingCopies) as Users;
+				_tmp.UsernameSource = MakeCopyOf(this.UsernameSource, existingCopies) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -2060,11 +2060,11 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
 		Id = 1,
 		/// <summary>
-		/// DoctorId : 
+		/// Username : 
 		/// </summary>
-		[EnumTextValue("DoctorId")]
-		[ColumnEnum("DoctorId", typeof(System.String), System.Data.DbType.String, false, false, false, 20)]
-		DoctorId = 2,
+		[EnumTextValue("Username")]
+		[ColumnEnum("Username", typeof(System.String), System.Data.DbType.String, false, false, false, 50)]
+		Username = 2,
 		/// <summary>
 		/// RoomId : 
 		/// </summary>

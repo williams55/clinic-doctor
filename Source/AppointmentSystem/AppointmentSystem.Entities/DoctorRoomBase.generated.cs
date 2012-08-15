@@ -81,7 +81,7 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="DoctorRoomBase"/> instance.
 		///</summary>
-		///<param name="_doctorId"></param>
+		///<param name="_username"></param>
 		///<param name="_roomId"></param>
 		///<param name="_priority"></param>
 		///<param name="_isDisabled"></param>
@@ -89,14 +89,14 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public DoctorRoomBase(System.String _doctorId, System.Int32? _roomId, System.Int32 _priority, 
+		public DoctorRoomBase(System.String _username, System.Int32 _roomId, System.Int32 _priority, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
 		{
 			this.entityData = new DoctorRoomEntityData();
 			this.backupData = null;
 
-			this.DoctorId = _doctorId;
+			this.Username = _username;
 			this.RoomId = _roomId;
 			this.Priority = _priority;
 			this.IsDisabled = _isDisabled;
@@ -109,7 +109,7 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="DoctorRoom"/> instance.
 		///</summary>
-		///<param name="_doctorId"></param>
+		///<param name="_username"></param>
 		///<param name="_roomId"></param>
 		///<param name="_priority"></param>
 		///<param name="_isDisabled"></param>
@@ -117,12 +117,12 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static DoctorRoom CreateDoctorRoom(System.String _doctorId, System.Int32? _roomId, System.Int32 _priority, 
+		public static DoctorRoom CreateDoctorRoom(System.String _username, System.Int32 _roomId, System.Int32 _priority, 
 			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
 			System.DateTime _updateDate)
 		{
 			DoctorRoom newDoctorRoom = new DoctorRoom();
-			newDoctorRoom.DoctorId = _doctorId;
+			newDoctorRoom.Username = _username;
 			newDoctorRoom.RoomId = _roomId;
 			newDoctorRoom.Priority = _priority;
 			newDoctorRoom.IsDisabled = _isDisabled;
@@ -175,37 +175,38 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or sets the DoctorId property. 
+		/// 	Gets or sets the Username property. 
 		///		
 		/// </summary>
 		/// <value>This type is nvarchar.</value>
 		/// <remarks>
-		/// This property can be set to null. 
+		/// This property can not be set to null. 
 		/// </remarks>
+		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 20)]
-		public virtual System.String DoctorId
+		[DataObjectField(false, false, false, 50)]
+		public virtual System.String Username
 		{
 			get
 			{
-				return this.entityData.DoctorId; 
+				return this.entityData.Username; 
 			}
 			
 			set
 			{
-				if (this.entityData.DoctorId == value)
+				if (this.entityData.Username == value)
 					return;
 					
-				OnColumnChanging(DoctorRoomColumn.DoctorId, this.entityData.DoctorId);
-				this.entityData.DoctorId = value;
+				OnColumnChanging(DoctorRoomColumn.Username, this.entityData.Username);
+				this.entityData.Username = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
-				OnColumnChanged(DoctorRoomColumn.DoctorId, this.entityData.DoctorId);
-				OnPropertyChanged("DoctorId");
+				OnColumnChanged(DoctorRoomColumn.Username, this.entityData.Username);
+				OnPropertyChanged("Username");
 			}
 		}
 		
@@ -215,17 +216,15 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		/// <value>This type is int.</value>
 		/// <remarks>
-		/// This property can be set to null. 
-		/// If this column is null, this property will return (int)0. It is up to the developer
-		/// to check the value of IsRoomIdNull() and perform business logic appropriately.
+		/// This property can not be set to null. 
 		/// </remarks>
 
 
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true)]
-		public virtual System.Int32? RoomId
+		[DataObjectField(false, false, false)]
+		public virtual System.Int32 RoomId
 		{
 			get
 			{
@@ -474,13 +473,13 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Gets or sets the source <see cref="Users"/>.
 		/// </summary>
-		/// <value>The source Users for DoctorId.</value>
+		/// <value>The source Users for Username.</value>
         [XmlIgnore()]
 		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual Users DoctorIdSource
+		public virtual Users UsernameSource
       	{
-            get { return entityData.DoctorIdSource; }
-            set { entityData.DoctorIdSource = value; }
+            get { return entityData.UsernameSource; }
+            set { entityData.UsernameSource = value; }
       	}
 		#endregion
 		
@@ -497,8 +496,10 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
+			ValidationRules.AddRule( CommonRules.NotNull,
+				new ValidationRuleArgs("Username", "Username"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("DoctorId", "Doctor Id", 20));
+				new CommonRules.MaxLengthRuleArgs("Username", "Username", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -524,7 +525,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "DoctorId", "RoomId", "Priority", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Username", "RoomId", "Priority", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -673,7 +674,7 @@ namespace AppointmentSystem.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
-				copy.DoctorId = this.DoctorId;
+				copy.Username = this.Username;
 				copy.RoomId = this.RoomId;
 				copy.Priority = this.Priority;
 				copy.IsDisabled = this.IsDisabled;
@@ -686,10 +687,10 @@ namespace AppointmentSystem.Entities
 				copy.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				copy.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
-			if (this.DoctorIdSource != null && existingCopies.Contains(this.DoctorIdSource))
-				copy.DoctorIdSource = existingCopies[this.DoctorIdSource] as Users;
+			if (this.UsernameSource != null && existingCopies.Contains(this.UsernameSource))
+				copy.UsernameSource = existingCopies[this.UsernameSource] as Users;
 			else
-				copy.DoctorIdSource = MakeCopyOf(this.DoctorIdSource, existingCopies) as Users;
+				copy.UsernameSource = MakeCopyOf(this.UsernameSource, existingCopies) as Users;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -823,8 +824,8 @@ namespace AppointmentSystem.Entities
 			{
 					case DoctorRoomColumn.Id:
 					return entityData.Id != _originalData.Id;
-					case DoctorRoomColumn.DoctorId:
-					return entityData.DoctorId != _originalData.DoctorId;
+					case DoctorRoomColumn.Username:
+					return entityData.Username != _originalData.Username;
 					case DoctorRoomColumn.RoomId:
 					return entityData.RoomId != _originalData.RoomId;
 					case DoctorRoomColumn.Priority:
@@ -867,7 +868,7 @@ namespace AppointmentSystem.Entities
 		{
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
-			result = result || entityData.DoctorId != _originalData.DoctorId;
+			result = result || entityData.Username != _originalData.Username;
 			result = result || entityData.RoomId != _originalData.RoomId;
 			result = result || entityData.Priority != _originalData.Priority;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
@@ -885,7 +886,7 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreateDoctorRoom(
-				_originalData.DoctorId,
+				_originalData.Username,
 				_originalData.RoomId,
 				_originalData.Priority,
 				_originalData.IsDisabled,
@@ -923,8 +924,8 @@ namespace AppointmentSystem.Entities
         public override int GetHashCode()
         {
 			return this.Id.GetHashCode() ^ 
-					((this.DoctorId == null) ? string.Empty : this.DoctorId.ToString()).GetHashCode() ^ 
-					((this.RoomId == null) ? string.Empty : this.RoomId.ToString()).GetHashCode() ^ 
+					this.Username.GetHashCode() ^ 
+					this.RoomId.GetHashCode() ^ 
 					this.Priority.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -965,24 +966,10 @@ namespace AppointmentSystem.Entities
 			bool equal = true;
 			if (Object1.Id != Object2.Id)
 				equal = false;
-			if ( Object1.DoctorId != null && Object2.DoctorId != null )
-			{
-				if (Object1.DoctorId != Object2.DoctorId)
-					equal = false;
-			}
-			else if (Object1.DoctorId == null ^ Object2.DoctorId == null )
-			{
+			if (Object1.Username != Object2.Username)
 				equal = false;
-			}
-			if ( Object1.RoomId != null && Object2.RoomId != null )
-			{
-				if (Object1.RoomId != Object2.RoomId)
-					equal = false;
-			}
-			else if (Object1.RoomId == null ^ Object2.RoomId == null )
-			{
+			if (Object1.RoomId != Object2.RoomId)
 				equal = false;
-			}
 			if (Object1.Priority != Object2.Priority)
 				equal = false;
 			if (Object1.IsDisabled != Object2.IsDisabled)
@@ -1059,14 +1046,14 @@ namespace AppointmentSystem.Entities
             		                 
             	
             	
-            	case DoctorRoomColumn.DoctorId:
-            		return this.DoctorId.CompareTo(rhs.DoctorId);
+            	case DoctorRoomColumn.Username:
+            		return this.Username.CompareTo(rhs.Username);
             		
             		                 
             	
             	
             	case DoctorRoomColumn.RoomId:
-            		return this.RoomId.Value.CompareTo(rhs.RoomId.Value);
+            		return this.RoomId.CompareTo(rhs.RoomId);
             		
             		                 
             	
@@ -1239,10 +1226,10 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{10}{9}- Id: {0}{9}- DoctorId: {1}{9}- RoomId: {2}{9}- Priority: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
+				"{10}{9}- Id: {0}{9}- Username: {1}{9}- RoomId: {2}{9}- Priority: {3}{9}- IsDisabled: {4}{9}- CreateUser: {5}{9}- CreateDate: {6}{9}- UpdateUser: {7}{9}- UpdateDate: {8}{9}{11}", 
 				this.Id,
-				(this.DoctorId == null) ? string.Empty : this.DoctorId.ToString(),
-				(this.RoomId == null) ? string.Empty : this.RoomId.ToString(),
+				this.Username,
+				this.RoomId,
 				this.Priority,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -1284,14 +1271,14 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
-		/// DoctorId : 
+		/// Username : 
 		/// </summary>
-		public System.String		  DoctorId = null;
+		public System.String		  Username = string.Empty;
 		
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
-		public System.Int32?		  RoomId = null;
+		public System.Int32		  RoomId = (int)0;
 		
 		/// <summary>
 		/// Priority : 
@@ -1339,18 +1326,18 @@ namespace AppointmentSystem.Entities
             get { return this._roomIdSource; }
             set { this._roomIdSource = value; }
       	}
-		private Users _doctorIdSource = null;
+		private Users _usernameSource = null;
 		
 		/// <summary>
 		/// Gets or sets the source <see cref="Users"/>.
 		/// </summary>
-		/// <value>The source Users for DoctorId.</value>
+		/// <value>The source Users for Username.</value>
 		[XmlIgnore()]
 		[Browsable(false)]
-		public virtual Users DoctorIdSource
+		public virtual Users UsernameSource
       	{
-            get { return this._doctorIdSource; }
-            set { this._doctorIdSource = value; }
+            get { return this._usernameSource; }
+            set { this._usernameSource = value; }
       	}
 		#endregion
 		#endregion Variable Declarations
@@ -1371,7 +1358,7 @@ namespace AppointmentSystem.Entities
 						
 			_tmp.Id = this.Id;
 			
-			_tmp.DoctorId = this.DoctorId;
+			_tmp.Username = this.Username;
 			_tmp.RoomId = this.RoomId;
 			_tmp.Priority = this.Priority;
 			_tmp.IsDisabled = this.IsDisabled;
@@ -1383,8 +1370,8 @@ namespace AppointmentSystem.Entities
 			#region Source Parent Composite Entities
 			if (this.RoomIdSource != null)
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource) as Room;
-			if (this.DoctorIdSource != null)
-				_tmp.DoctorIdSource = MakeCopyOf(this.DoctorIdSource) as Users;
+			if (this.UsernameSource != null)
+				_tmp.UsernameSource = MakeCopyOf(this.UsernameSource) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -1409,7 +1396,7 @@ namespace AppointmentSystem.Entities
 						
 			_tmp.Id = this.Id;
 			
-			_tmp.DoctorId = this.DoctorId;
+			_tmp.Username = this.Username;
 			_tmp.RoomId = this.RoomId;
 			_tmp.Priority = this.Priority;
 			_tmp.IsDisabled = this.IsDisabled;
@@ -1423,10 +1410,10 @@ namespace AppointmentSystem.Entities
 				_tmp.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
-			if (this.DoctorIdSource != null && existingCopies.Contains(this.DoctorIdSource))
-				_tmp.DoctorIdSource = existingCopies[this.DoctorIdSource] as Users;
+			if (this.UsernameSource != null && existingCopies.Contains(this.UsernameSource))
+				_tmp.UsernameSource = existingCopies[this.UsernameSource] as Users;
 			else
-				_tmp.DoctorIdSource = MakeCopyOf(this.DoctorIdSource, existingCopies) as Users;
+				_tmp.UsernameSource = MakeCopyOf(this.UsernameSource, existingCopies) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -1805,16 +1792,16 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("Id", typeof(System.Int64), System.Data.DbType.Int64, true, true, false)]
 		Id = 1,
 		/// <summary>
-		/// DoctorId : 
+		/// Username : 
 		/// </summary>
-		[EnumTextValue("DoctorId")]
-		[ColumnEnum("DoctorId", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		DoctorId = 2,
+		[EnumTextValue("Username")]
+		[ColumnEnum("Username", typeof(System.String), System.Data.DbType.String, false, false, false, 50)]
+		Username = 2,
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
 		[EnumTextValue("RoomId")]
-		[ColumnEnum("RoomId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
+		[ColumnEnum("RoomId", typeof(System.Int32), System.Data.DbType.Int32, false, false, false)]
 		RoomId = 3,
 		/// <summary>
 		/// Priority : 

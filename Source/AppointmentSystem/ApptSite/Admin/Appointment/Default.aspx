@@ -24,6 +24,9 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_treetimeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
+    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/ext_limit.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_minical.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
@@ -39,6 +42,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/jquery.tokeninput.js") %>"></script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
+
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/jquery.scrollTo-1.4.2-min.js") %>"></script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/jqueryRotate.js") %>"></script>
@@ -65,9 +69,6 @@
         var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
 
-    </script>
-
-    <script type="text/javascript">
         var angleSec = 0;
         var angleMin = 0;
         var angleHour = 0;
@@ -188,7 +189,7 @@
                 </div>
                 <div class="dhx_cal_header">
                 </div>
-                <div class="dhx_cal_data">
+                <div class="dhx_cal_data" id="main-dhx">
                 </div>
             </div>
             <div id="dialog-form" title="Patient" class="dialog-form">

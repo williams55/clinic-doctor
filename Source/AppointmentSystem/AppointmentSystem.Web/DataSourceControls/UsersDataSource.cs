@@ -160,7 +160,7 @@ namespace AppointmentSystem.Web.Data
 			count = 0;
 			
 			System.String _username;
-			System.String _id;
+			System.Int32? _servicesId_nullable;
 			System.String _userGroupId;
 
 			switch ( SelectMethod )
@@ -186,14 +186,6 @@ namespace AppointmentSystem.Web.Data
 						results = UsersProvider.Find(GetTransactionManager(), WhereClause, StartIndex, PageSize, out count);
                     break;
 				// PK
-				case UsersSelectMethod.GetById:
-					_id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
-					item = UsersProvider.GetById(GetTransactionManager(), _id);
-					results = new TList<Users>();
-					if ( item != null ) results.Add(item);
-					count = results.Count;
-					break;
-				// IX
 				case UsersSelectMethod.GetByUsername:
 					_username = ( values["Username"] != null ) ? (System.String) EntityUtil.ChangeType(values["Username"], typeof(System.String)) : string.Empty;
 					item = UsersProvider.GetByUsername(GetTransactionManager(), _username);
@@ -201,7 +193,12 @@ namespace AppointmentSystem.Web.Data
 					if ( item != null ) results.Add(item);
 					count = results.Count;
 					break;
+				// IX
 				// FK
+				case UsersSelectMethod.GetByServicesId:
+					_servicesId_nullable = (System.Int32?) EntityUtil.ChangeType(values["ServicesId"], typeof(System.Int32?));
+					results = UsersProvider.GetByServicesId(GetTransactionManager(), _servicesId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
 				case UsersSelectMethod.GetByUserGroupId:
 					_userGroupId = ( values["UserGroupId"] != null ) ? (System.String) EntityUtil.ChangeType(values["UserGroupId"], typeof(System.String)) : "0";
 					results = UsersProvider.GetByUserGroupId(GetTransactionManager(), _userGroupId, this.StartIndex, this.PageSize, out count);
@@ -236,7 +233,7 @@ namespace AppointmentSystem.Web.Data
 		/// <param name="values">An IDictionary object of name/value pairs.</param>
 		protected override void GetSelectParameters(IDictionary values)
 		{
-			if ( SelectMethod == UsersSelectMethod.Get || SelectMethod == UsersSelectMethod.GetById )
+			if ( SelectMethod == UsersSelectMethod.Get || SelectMethod == UsersSelectMethod.GetByUsername )
 			{
 				EntityId = GetEntityKey(values);
 			}
@@ -387,9 +384,9 @@ namespace AppointmentSystem.Web.Data
 		/// </summary>
 		GetByUsername,
 		/// <summary>
-		/// Represents the GetById method.
+		/// Represents the GetByServicesId method.
 		/// </summary>
-		GetById,
+		GetByServicesId,
 		/// <summary>
 		/// Represents the GetByUserGroupId method.
 		/// </summary>

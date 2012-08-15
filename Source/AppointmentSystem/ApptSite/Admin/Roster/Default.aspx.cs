@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
-using AppointmentBusiness.BO;
 using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
@@ -174,7 +171,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                         var dtTmpEnd = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, intEndHour, intEndMinute, 0);
 
                         // Check existed rosters
-                        string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+                        string query = string.Format("Username = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
                             , doctorId, dtTmpEnd, dtTmpStart);
                         DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
                         // If there is no roster -> insert new roster
@@ -188,7 +185,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                         lstRoster.Add(new Roster
                                           {
                                               Id = perfix + number,
-                                              DoctorId = doctorId,
+                                              Username = doctorId,
                                               RosterTypeId = intRosterTypeId,
                                               StartTime = dtTmpStart,
                                               EndTime = dtTmpEnd,
@@ -238,7 +235,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 }
 
                 // Check existed rosters
-                string query = string.Format("DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+                string query = string.Format("Username = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
                     , doctorId, dtTmpEnd, dtTmpStart);
                 DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
                 // If there is no roster -> insert new roster
@@ -252,7 +249,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 lstRoster.Add(new Roster
                 {
                     Id = id,
-                    DoctorId = doctorId,
+                    Username = doctorId,
                     RosterTypeId = intRosterTypeId,
                     StartTime = dtTmpStart,
                     EndTime = dtTmpEnd,
@@ -297,7 +294,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             {
                 return WebCommon.BuildFailedResult(_message);
             }
-            
+
             tm.BeginTransaction();
 
             // Declare list of object are returned
@@ -351,7 +348,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             // Check roster before insert new roster
             int count;
-            DataRepository.RosterProvider.GetPaged(String.Format("Id <> '{3}' AND DoctorId = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+            DataRepository.RosterProvider.GetPaged(String.Format("Id <> '{3}' AND Username = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
                 , doctorId, dtEnd, dtStart, id), string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
             if (count > 0)
             {
@@ -363,7 +360,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             #endregion
 
             // Set new value
-            rosterItem.DoctorId = doctorId;
+            rosterItem.Username = doctorId;
             rosterItem.StartTime = dtStart;
             rosterItem.EndTime = dtEnd;
             rosterItem.UpdateUser = Username;
@@ -480,7 +477,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             // Check existed rosters
             int count;
-            string query = string.Format("DoctorId = '{0}' AND Id <> '{3}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+            string query = string.Format("Username = '{0}' AND Id <> '{3}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
                 , doctorId, dtEnd, dtStart, id);
             DataRepository.RosterProvider.GetPaged(tm, query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
             // If there is no roster -> insert new roster
@@ -492,7 +489,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             }
             #endregion
 
-            rosterItem.DoctorId = doctorId;
+            rosterItem.Username = doctorId;
             rosterItem.RosterTypeId = intRosterTypeId;
             rosterItem.StartTime = dtStart;
             rosterItem.EndTime = dtEnd;
@@ -542,13 +539,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     id = item.Id,
                     start_date = item.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
                     end_date = item.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
-                    section_id = item.DoctorId,
+                    section_id = item.Username,
                     text = String.Format("{0}<br />Doctor: {1}<br />{2}"
                             , item.RosterTypeIdSource.Title
-                            , item.DoctorIdSource.Username
+                            , item.Username
                             , item.Note),
-                    DoctorUserName = item.DoctorIdSource.Username,
-                    DoctorShortName = item.DoctorIdSource.DisplayName,
+                    DoctorUserName = item.Username,
+                    DoctorShortName = item.UsernameSource.DisplayName,
                     item.RosterTypeId,
                     RosterTypeTitle = item.RosterTypeIdSource.Title,
                     note = item.Note,
@@ -622,24 +619,22 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             // Get all services
             int count;
-            var lstService = DataRepository.ServicesProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0
-                , ServiceFacade.SettingsHelper.GetPagedLength, out count);
+            var lstService = DataRepository.ServicesProvider.GetAll().FindAll(x => !x.IsDisabled);
 
             // Get all available staffs
-            TList<DoctorService> lstDoctorService = DataRepository.DoctorServiceProvider.GetPaged("IsDisabled = 'False'"
+            var lstUsers = DataRepository.UsersProvider.GetPaged("IsDisabled = 'False' AND ServicesId IS NOT NULL"
                 , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
-            DataRepository.DoctorServiceProvider.DeepLoad(lstDoctorService);
 
             return WebCommon.BuildSuccessfulResult(lstService.Select(item => new
                                                                                  {
                                                                                      key = item.Id,
                                                                                      label = item.Title,
                                                                                      open = true,
-                                                                                     children = lstDoctorService.FindAll(x => x.ServiceId == item.Id).Select(service => new
+                                                                                     children = lstUsers.FindAll(x => x.ServicesId == item.Id).Select(user => new
                                                                                      {
-                                                                                         key = service.DoctorId,
-                                                                                         label = "Dr. " + service.DoctorIdSource.DisplayName
-                                                                                     })  
+                                                                                         key = user.Username,
+                                                                                         label = user.DisplayName
+                                                                                     })
                                                                                  }));
         }
         catch (Exception ex)
@@ -661,13 +656,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             id = item.Id,
             start_date = item.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
             end_date = item.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
-            section_id = item.DoctorId,
+            section_id = item.Username,
             text = String.Format("{0}<br />Doctor: {1}<br />{2}"
                     , item.RosterTypeIdSource.Title
-                    , item.DoctorIdSource.Username
+                    , item.Username
                     , item.Note),
-            DoctorUserName = item.DoctorIdSource.Username,
-            DoctorShortName = item.DoctorIdSource.DisplayName,
+            DoctorUserName = item.Username,
+            DoctorShortName = item.UsernameSource.DisplayName,
             item.RosterTypeId,
             RosterTypeTitle = item.RosterTypeIdSource.Title,
             note = item.Note,
@@ -706,13 +701,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult("You have no right to get doctor's information");
             }
 
-            var doctor = DataRepository.UsersProvider.GetById(doctorId);
+            var doctor = DataRepository.UsersProvider.GetByUsername(doctorId);
             object result = null;
             if (doctor != null)
             {
                 result = new
                              {
-                                 DoctorId = doctor.Id,
+                                 DoctorId = doctor.Username,
                                  doctor.DisplayName
                              };
             }
@@ -769,12 +764,11 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             var lstDoctor = DataRepository.UsersProvider.GetPaged(query, string.Empty, 0
                 , 10, out count);
 
-            var lst = (from Users item in lstDoctor
-                       select new
-                       {
-                           id = item.Id,
-                           DisplayName = "Dr. " + item.DisplayName
-                       });
+            var lst = lstDoctor.Select(item => new
+                {
+                    id = item.Username,
+                    item.DisplayName
+                });
 
             return JsonConvert.SerializeObject(lst);
         }

@@ -155,8 +155,6 @@
       <DependentUpon>SqlDoctorRoomProvider.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SqlDoctorServiceProvider.cs" />
-    <Compile Include="SqlDoctorServiceProviderBase.generated.cs" />
     <Compile Include="SqlGroupRoleProvider.cs">
       <SubType>Code</SubType>
     </Compile>

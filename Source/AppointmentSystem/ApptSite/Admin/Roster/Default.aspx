@@ -48,7 +48,7 @@
         var stepTime = <%=ServiceFacade.SettingsHelper.MinuteStep %>;
         var html = function (id) { return document.getElementById(id); }; //just a helper
         
-        var minuteStep = eval(<%=ServiceFacade.SettingsHelper.MinuteStep%>);
+        var minuteStep = eval(<%=ServiceFacade.SettingsHelper.RosterMinuteStep%>);
         var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
     </script>

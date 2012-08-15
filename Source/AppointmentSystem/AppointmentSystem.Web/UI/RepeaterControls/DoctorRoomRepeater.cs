@@ -341,20 +341,20 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Id; }
 		}
         /// <summary>
-        /// Gets the DoctorId
+        /// Gets the Username
         /// </summary>
-        /// <value>The DoctorId.</value>
+        /// <value>The Username.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String DoctorId
+		public System.String Username
 		{
-			get { return _entity.DoctorId; }
+			get { return _entity.Username; }
 		}
         /// <summary>
         /// Gets the RoomId
         /// </summary>
         /// <value>The RoomId.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Int32? RoomId
+		public System.Int32 RoomId
 		{
 			get { return _entity.RoomId; }
 		}

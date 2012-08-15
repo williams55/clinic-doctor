@@ -233,12 +233,12 @@ namespace AppointmentSystem.Data.Bases
 		/// 	Gets rows from the datasource based on the FK_Roster_Users key.
 		///		FK_Roster_Users Description: 
 		/// </summary>
-		/// <param name="_doctorId"></param>
+		/// <param name="_username"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Roster objects.</returns>
-		public TList<Roster> GetByDoctorId(System.String _doctorId)
+		public TList<Roster> GetByUsername(System.String _username)
 		{
 			int count = -1;
-			return GetByDoctorId(_doctorId, 0,int.MaxValue, out count);
+			return GetByUsername(_username, 0,int.MaxValue, out count);
 		}
 		
 		/// <summary>
@@ -246,13 +246,13 @@ namespace AppointmentSystem.Data.Bases
 		///		FK_Roster_Users Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_username"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Roster objects.</returns>
 		/// <remarks></remarks>
-		public TList<Roster> GetByDoctorId(TransactionManager transactionManager, System.String _doctorId)
+		public TList<Roster> GetByUsername(TransactionManager transactionManager, System.String _username)
 		{
 			int count = -1;
-			return GetByDoctorId(transactionManager, _doctorId, 0, int.MaxValue, out count);
+			return GetByUsername(transactionManager, _username, 0, int.MaxValue, out count);
 		}
 		
 			/// <summary>
@@ -260,15 +260,15 @@ namespace AppointmentSystem.Data.Bases
 		///		FK_Roster_Users Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_username"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Roster objects.</returns>
-		public TList<Roster> GetByDoctorId(TransactionManager transactionManager, System.String _doctorId, int start, int pageLength)
+		public TList<Roster> GetByUsername(TransactionManager transactionManager, System.String _username, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByDoctorId(transactionManager, _doctorId, start, pageLength, out count);
+			return GetByUsername(transactionManager, _username, start, pageLength, out count);
 		}
 		
 		/// <summary>
@@ -277,13 +277,13 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_username"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Roster objects.</returns>
-		public TList<Roster> GetByDoctorId(System.String _doctorId, int start, int pageLength)
+		public TList<Roster> GetByUsername(System.String _username, int start, int pageLength)
 		{
 			int count =  -1;
-			return GetByDoctorId(null, _doctorId, start, pageLength,out count);	
+			return GetByUsername(null, _username, start, pageLength,out count);	
 		}
 		
 		/// <summary>
@@ -292,13 +292,13 @@ namespace AppointmentSystem.Data.Bases
 		/// </summary>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_username"></param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Roster objects.</returns>
-		public TList<Roster> GetByDoctorId(System.String _doctorId, int start, int pageLength,out int count)
+		public TList<Roster> GetByUsername(System.String _username, int start, int pageLength,out int count)
 		{
-			return GetByDoctorId(null, _doctorId, start, pageLength, out count);	
+			return GetByUsername(null, _username, start, pageLength, out count);	
 		}
 						
 		/// <summary>
@@ -306,12 +306,12 @@ namespace AppointmentSystem.Data.Bases
 		///		FK_Roster_Users Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_doctorId"></param>
+		/// <param name="_username"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Roster objects.</returns>
-		public abstract TList<Roster> GetByDoctorId(TransactionManager transactionManager, System.String _doctorId, int start, int pageLength, out int count);
+		public abstract TList<Roster> GetByUsername(TransactionManager transactionManager, System.String _username, int start, int pageLength, out int count);
 		
 		#endregion
 
@@ -476,7 +476,7 @@ namespace AppointmentSystem.Data.Bases
 					c.SuppressEntityEvents = true;
 					c.Id = (System.String)reader[((int)RosterColumn.Id - 1)];
 					c.OriginalId = c.Id;
-					c.DoctorId = (System.String)reader[((int)RosterColumn.DoctorId - 1)];
+					c.Username = (System.String)reader[((int)RosterColumn.Username - 1)];
 					c.RoomId = (reader.IsDBNull(((int)RosterColumn.RoomId - 1)))?null:(System.Int32?)reader[((int)RosterColumn.RoomId - 1)];
 					c.RosterTypeId = (System.Int32)reader[((int)RosterColumn.RosterTypeId - 1)];
 					c.StartTime = (System.DateTime)reader[((int)RosterColumn.StartTime - 1)];
@@ -506,7 +506,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.String)reader[((int)RosterColumn.Id - 1)];
 			entity.OriginalId = (System.String)reader["Id"];
-			entity.DoctorId = (System.String)reader[((int)RosterColumn.DoctorId - 1)];
+			entity.Username = (System.String)reader[((int)RosterColumn.Username - 1)];
 			entity.RoomId = (reader.IsDBNull(((int)RosterColumn.RoomId - 1)))?null:(System.Int32?)reader[((int)RosterColumn.RoomId - 1)];
 			entity.RosterTypeId = (System.Int32)reader[((int)RosterColumn.RosterTypeId - 1)];
 			entity.StartTime = (System.DateTime)reader[((int)RosterColumn.StartTime - 1)];
@@ -531,7 +531,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Id = (System.String)dataRow["Id"];
 			entity.OriginalId = (System.String)dataRow["Id"];
-			entity.DoctorId = (System.String)dataRow["DoctorId"];
+			entity.Username = (System.String)dataRow["Username"];
 			entity.RoomId = Convert.IsDBNull(dataRow["RoomId"]) ? null : (System.Int32?)dataRow["RoomId"];
 			entity.RosterTypeId = (System.Int32)dataRow["RosterTypeId"];
 			entity.StartTime = (System.DateTime)dataRow["StartTime"];
@@ -619,31 +619,31 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion RosterTypeIdSource
 
-			#region DoctorIdSource	
-			if (CanDeepLoad(entity, "Users|DoctorIdSource", deepLoadType, innerList) 
-				&& entity.DoctorIdSource == null)
+			#region UsernameSource	
+			if (CanDeepLoad(entity, "Users|UsernameSource", deepLoadType, innerList) 
+				&& entity.UsernameSource == null)
 			{
 				object[] pkItems = new object[1];
-				pkItems[0] = entity.DoctorId;
+				pkItems[0] = entity.Username;
 				Users tmpEntity = EntityManager.LocateEntity<Users>(EntityLocator.ConstructKeyFromPkItems(typeof(Users), pkItems), DataRepository.Provider.EnableEntityTracking);
 				if (tmpEntity != null)
-					entity.DoctorIdSource = tmpEntity;
+					entity.UsernameSource = tmpEntity;
 				else
-					entity.DoctorIdSource = DataRepository.UsersProvider.GetById(transactionManager, entity.DoctorId);		
+					entity.UsernameSource = DataRepository.UsersProvider.GetByUsername(transactionManager, entity.Username);		
 				
 				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'DoctorIdSource' loaded. key " + entity.EntityTrackingKey);
+				System.Diagnostics.Debug.WriteLine("- property 'UsernameSource' loaded. key " + entity.EntityTrackingKey);
 				#endif 
 				
-				if (deep && entity.DoctorIdSource != null)
+				if (deep && entity.UsernameSource != null)
 				{
 					innerList.SkipChildren = true;
-					DataRepository.UsersProvider.DeepLoad(transactionManager, entity.DoctorIdSource, deep, deepLoadType, childTypes, innerList);
+					DataRepository.UsersProvider.DeepLoad(transactionManager, entity.UsernameSource, deep, deepLoadType, childTypes, innerList);
 					innerList.SkipChildren = false;
 				}
 					
 			}
-			#endregion DoctorIdSource
+			#endregion UsernameSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -696,12 +696,12 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion 
 			
-			#region DoctorIdSource
-			if (CanDeepSave(entity, "Users|DoctorIdSource", deepSaveType, innerList) 
-				&& entity.DoctorIdSource != null)
+			#region UsernameSource
+			if (CanDeepSave(entity, "Users|UsernameSource", deepSaveType, innerList) 
+				&& entity.UsernameSource != null)
 			{
-				DataRepository.UsersProvider.Save(transactionManager, entity.DoctorIdSource);
-				entity.DoctorId = entity.DoctorIdSource.Id;
+				DataRepository.UsersProvider.Save(transactionManager, entity.UsernameSource);
+				entity.Username = entity.UsernameSource.Username;
 			}
 			#endregion 
 			#endregion Composite Parent Properties
@@ -752,7 +752,7 @@ namespace AppointmentSystem.Data.Bases
 		RosterType,
 			
 		///<summary>
-		/// Composite Property for <c>Users</c> at DoctorIdSource
+		/// Composite Property for <c>Users</c> at UsernameSource
 		///</summary>
 		[ChildEntityType(typeof(Users))]
 		Users,

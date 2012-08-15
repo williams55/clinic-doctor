@@ -152,8 +152,6 @@
       <DependentUpon>DoctorRoomProviderBase.cs</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Bases\DoctorServiceProviderBase.cs" />
-    <Compile Include="Bases\DoctorServiceProviderBase.generatedCore.cs" />
     <Compile Include="Bases\GroupRoleProviderBase.cs">
       <SubType>Code</SubType>
     </Compile>

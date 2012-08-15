@@ -162,7 +162,7 @@ namespace AppointmentSystem.Web.Data
 			System.String _id;
 			System.Int32? _roomId_nullable;
 			System.Int32 _rosterTypeId;
-			System.String _doctorId;
+			System.String _username;
 
 			switch ( SelectMethod )
 			{
@@ -204,9 +204,9 @@ namespace AppointmentSystem.Web.Data
 					_rosterTypeId = ( values["RosterTypeId"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["RosterTypeId"], typeof(System.Int32)) : (int)0;
 					results = RosterProvider.GetByRosterTypeId(GetTransactionManager(), _rosterTypeId, this.StartIndex, this.PageSize, out count);
 					break;
-				case RosterSelectMethod.GetByDoctorId:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorId"], typeof(System.String)) : string.Empty;
-					results = RosterProvider.GetByDoctorId(GetTransactionManager(), _doctorId, this.StartIndex, this.PageSize, out count);
+				case RosterSelectMethod.GetByUsername:
+					_username = ( values["Username"] != null ) ? (System.String) EntityUtil.ChangeType(values["Username"], typeof(System.String)) : string.Empty;
+					results = RosterProvider.GetByUsername(GetTransactionManager(), _username, this.StartIndex, this.PageSize, out count);
 					break;
 				// M:M
 				// Custom
@@ -397,9 +397,9 @@ namespace AppointmentSystem.Web.Data
 		/// </summary>
 		GetByRosterTypeId,
 		/// <summary>
-		/// Represents the GetByDoctorId method.
+		/// Represents the GetByUsername method.
 		/// </summary>
-		GetByDoctorId
+		GetByUsername
 	}
 	
 	#endregion RosterSelectMethod

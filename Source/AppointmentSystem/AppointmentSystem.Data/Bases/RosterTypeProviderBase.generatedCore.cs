@@ -483,6 +483,7 @@ namespace AppointmentSystem.Data.Bases
 					c.Id = (System.Int32)reader[((int)RosterTypeColumn.Id - 1)];
 					c.Title = (System.String)reader[((int)RosterTypeColumn.Title - 1)];
 					c.IsBooked = (System.Boolean)reader[((int)RosterTypeColumn.IsBooked - 1)];
+					c.ColorCode = (reader.IsDBNull(((int)RosterTypeColumn.ColorCode - 1)))?null:(System.String)reader[((int)RosterTypeColumn.ColorCode - 1)];
 					c.Note = (reader.IsDBNull(((int)RosterTypeColumn.Note - 1)))?null:(System.String)reader[((int)RosterTypeColumn.Note - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)RosterTypeColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)RosterTypeColumn.CreateUser - 1)))?null:(System.String)reader[((int)RosterTypeColumn.CreateUser - 1)];
@@ -509,6 +510,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.Id = (System.Int32)reader[((int)RosterTypeColumn.Id - 1)];
 			entity.Title = (System.String)reader[((int)RosterTypeColumn.Title - 1)];
 			entity.IsBooked = (System.Boolean)reader[((int)RosterTypeColumn.IsBooked - 1)];
+			entity.ColorCode = (reader.IsDBNull(((int)RosterTypeColumn.ColorCode - 1)))?null:(System.String)reader[((int)RosterTypeColumn.ColorCode - 1)];
 			entity.Note = (reader.IsDBNull(((int)RosterTypeColumn.Note - 1)))?null:(System.String)reader[((int)RosterTypeColumn.Note - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)RosterTypeColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)RosterTypeColumn.CreateUser - 1)))?null:(System.String)reader[((int)RosterTypeColumn.CreateUser - 1)];
@@ -530,6 +532,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.Id = (System.Int32)dataRow["Id"];
 			entity.Title = (System.String)dataRow["Title"];
 			entity.IsBooked = (System.Boolean)dataRow["IsBooked"];
+			entity.ColorCode = Convert.IsDBNull(dataRow["ColorCode"]) ? null : (System.String)dataRow["ColorCode"];
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];

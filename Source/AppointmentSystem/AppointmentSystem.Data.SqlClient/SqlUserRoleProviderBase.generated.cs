@@ -176,7 +176,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
 		database.AddInParameter(commandWrapper, "@Id", DbType.Int64, DBNull.Value);
-		database.AddInParameter(commandWrapper, "@UserId", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Username", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -203,10 +203,10 @@ namespace AppointmentSystem.Data.SqlClient
 						clause.Trim().Remove(0,2).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
-				if (clause.Trim().StartsWith("userid ") || clause.Trim().StartsWith("userid="))
+				if (clause.Trim().StartsWith("username ") || clause.Trim().StartsWith("username="))
 				{
-					database.SetParameterValue(commandWrapper, "@UserId", 
-						clause.Trim().Remove(0,6).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					database.SetParameterValue(commandWrapper, "@Username", 
+						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("roleid ") || clause.Trim().StartsWith("roleid="))
@@ -580,34 +580,34 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 	
 
-		#region GetByUserId
+		#region GetByUsername
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_UserRole_User key.
-		///		FK_UserRole_User Description: 
+		/// 	Gets rows from the datasource based on the FK_UserRole_Users key.
+		///		FK_UserRole_Users Description: 
 		/// </summary>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_userId"></param>
+		/// <param name="_username"></param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override TList<UserRole> GetByUserId(TransactionManager transactionManager, System.String _userId, int start, int pageLength, out int count)
+		public override TList<UserRole> GetByUsername(TransactionManager transactionManager, System.String _username, int start, int pageLength, out int count)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.UserRole_GetByUserId", _useStoredProcedure);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.UserRole_GetByUsername", _useStoredProcedure);
 			
-				database.AddInParameter(commandWrapper, "@UserId", DbType.String, _userId);
+				database.AddInParameter(commandWrapper, "@Username", DbType.String, _username);
 			
 			IDataReader reader = null;
 			TList<UserRole> rows = new TList<UserRole>();
 			try
 			{
 				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByUserId", rows)); 
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByUsername", rows)); 
 
 				if (transactionManager != null)
 				{
@@ -630,7 +630,7 @@ namespace AppointmentSystem.Data.SqlClient
 				}
 				
 				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByUserId", rows)); 
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByUsername", rows)); 
 			}
 			finally
 			{
@@ -760,7 +760,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DataTable dataTable = new DataTable();
 			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.Int64));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("UserId", typeof(System.String));
+			DataColumn col1 = dataTable.Columns.Add("Username", typeof(System.String));
 			col1.AllowDBNull = false;		
 			DataColumn col2 = dataTable.Columns.Add("RoleId", typeof(System.Int32));
 			col2.AllowDBNull = true;		
@@ -776,7 +776,7 @@ namespace AppointmentSystem.Data.SqlClient
 			col7.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
-			bulkCopy.ColumnMappings.Add("UserId", "UserId");
+			bulkCopy.ColumnMappings.Add("Username", "Username");
 			bulkCopy.ColumnMappings.Add("RoleId", "RoleId");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
@@ -794,7 +794,7 @@ namespace AppointmentSystem.Data.SqlClient
 					row["Id"] = entity.Id;
 							
 				
-					row["UserId"] = entity.UserId;
+					row["Username"] = entity.Username;
 							
 				
 					row["RoleId"] = entity.RoleId.HasValue ? (object) entity.RoleId  : System.DBNull.Value;
@@ -850,7 +850,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.UserRole_Insert", _useStoredProcedure);
 			
 			database.AddOutParameter(commandWrapper, "@Id", DbType.Int64, 8);
-			database.AddInParameter(commandWrapper, "@UserId", DbType.String, entity.UserId );
+			database.AddInParameter(commandWrapper, "@Username", DbType.String, entity.Username );
 			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -906,7 +906,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.UserRole_Update", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Id", DbType.Int64, entity.Id );
-			database.AddInParameter(commandWrapper, "@UserId", DbType.String, entity.UserId );
+			database.AddInParameter(commandWrapper, "@Username", DbType.String, entity.Username );
 			database.AddInParameter(commandWrapper, "@RoleId", DbType.Int32, (entity.RoleId.HasValue ? (object) entity.RoleId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );

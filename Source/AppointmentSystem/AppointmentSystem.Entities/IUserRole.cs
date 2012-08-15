@@ -20,9 +20,9 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
-		/// UserId : 
+		/// Username : 
 		/// </summary>
-		System.String  UserId  { get; set; }
+		System.String  Username  { get; set; }
 		
 		/// <summary>
 		/// RoleId : 

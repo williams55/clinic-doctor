@@ -332,15 +332,6 @@ namespace AppointmentSystem.Web.UI
 		}
 		
         /// <summary>
-        /// Gets the Id
-        /// </summary>
-        /// <value>The Id.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String Id
-		{
-			get { return _entity.Id; }
-		}
-        /// <summary>
         /// Gets the Username
         /// </summary>
         /// <value>The Username.</value>
@@ -429,6 +420,15 @@ namespace AppointmentSystem.Web.UI
 		public System.String UserGroupId
 		{
 			get { return _entity.UserGroupId; }
+		}
+        /// <summary>
+        /// Gets the ServicesId
+        /// </summary>
+        /// <value>The ServicesId.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.Int32? ServicesId
+		{
+			get { return _entity.ServicesId; }
 		}
         /// <summary>
         /// Gets the IsFemale
