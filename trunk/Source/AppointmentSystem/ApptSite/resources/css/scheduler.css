@@ -1,17 +1,7 @@
 /*************************Start lightbox form for scheduler***************************/
 .schedulerForm
 {
-    /*position: absolute;
-    z-index: 10001;
-    display: none;
-    font-family: Arial, Sans-Serif;
-    background-color: #d6e5f4;
-    padding: 10px;
-    visibility: visible;
-    width: 320px;
-    top: 22px;
-    left: 0px;
-    border: 2px solid #3380CB;*/
+    /*position: absolute;     z-index: 10001;     display: none;     font-family: Arial, Sans-Serif;     background-color: #d6e5f4;     padding: 10px;     visibility: visible;     width: 320px;     top: 22px;     left: 0px;     border: 2px solid #3380CB;*/
 }
 .schedulerForm table tr td
 {
@@ -26,7 +16,7 @@
 {
     font-family: Arial, Sans-Serif;
     font-weight: bold;
-    font-size:16px;
+    font-size: 16px;
     padding-bottom: 10px;
     color: #FF0000;
 }
@@ -34,7 +24,7 @@
 {
     font-family: Arial, Sans-Serif;
     font-weight: bold;
-    font-size:14px;
+    font-size: 14px;
     margin-top: 10px;
     border-top: 2px solid #3380CB;
     color: #3380CB;
@@ -83,7 +73,7 @@
 {
     width: 80px;
     float: left;
-    height:11px;
+    height: 11px;
 }
 .schedulerForm select
 {
@@ -146,7 +136,8 @@ div.status-info
     border: 1px solid #aaa;
 }
 
-div.tinybox {
+div.tinybox
+{
     margin: 5px 5px 5px 15px;
     float: left;
     width: 10px;
@@ -154,8 +145,59 @@ div.tinybox {
     border: 1px solid #aaa;
 }
 
-span.tinybox-info {
+span.tinybox-info
+{
     margin-top: 5px;
     float: left;
 }
 /*************************End customer info box***************************/
+
+/************************ Start appointment **************************************/
+.down-arrow
+{
+    text-align: center;
+    position: relative;
+    margin: -15px 0;
+    height: 32px;
+    width: 100%;
+    background: url(../images/arrow-down.png) no-repeat center center;
+    -webkit-background-size: 32px 32px;
+    background-size: 32px 32px;
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 250ms;
+}
+.down-arrow:hover
+{
+    cursor: pointer;
+    -webkit-transform: rotate(180deg);
+}
+.up-arrow
+{
+    text-align: center;
+    position: relative;
+    margin: -15px 0;
+    height: 32px;
+    width: 100%;
+    background: url(../images/arrow-down.png) no-repeat center;
+    -webkit-transform: rotate(180deg);
+}
+.up-arrow:hover
+{
+    cursor: pointer;
+    background: url(../images/arrow-down-hover.png) no-repeat center;
+    -webkit-transform: rotate(180deg);
+}
+/************************ End appointment **************************************/
+
+/************************ Start over roster background color **************************************/
+div.roster_color
+{
+    pointer-events:none;
+    position: absolute;
+    width: 100%;
+    background: silver;
+    opacity: .3;
+    filter: alpha(opacity=30);
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=30);
+}
+/************************ End over roster background color **************************************/

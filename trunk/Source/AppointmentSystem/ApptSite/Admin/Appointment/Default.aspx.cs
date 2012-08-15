@@ -537,7 +537,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                   dtEnd.ToString("yyyy-MM-dd HH:mm:ss.000")), string.Empty, 0,
                     ServiceFacade.SettingsHelper.GetPagedLength, out count);
             DataRepository.RosterProvider.DeepLoad(lstRoster);
-            var lstDoctorRoster = lstRoster.Select(x => x.DoctorIdSource).Distinct().ToList();
+            var lstDoctorRoster = lstRoster.Select(x => x.UsernameSource).Distinct().ToList();
 
             // Lay danh sach bac si co appointment trong cung thoi diem
             var lstAppointment =
@@ -549,20 +549,18 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     ServiceFacade.SettingsHelper.GetPagedLength, out count);
 
             // Lay danh sach bac si bang keyword voi nhung bac si khong bi trung va co serviceId
-            var lstDoctor = lstDoctorRoster.FindAll(x =>
-                                                        {
-                                                            var firstOrDefault = x.DoctorServiceCollection.FirstOrDefault();
-                                                            return firstOrDefault != null && (((!string.IsNullOrEmpty(x.DisplayName) && x.DisplayName.ToLower().Contains(keyword))
-                                                                                                || (!string.IsNullOrEmpty(x.Firstname) && x.Firstname.ToLower().Contains(keyword))
-                                                                                                || (!string.IsNullOrEmpty(x.Lastname) && x.Lastname.ToLower().Contains(keyword))
-                                                                                                || string.IsNullOrEmpty(keyword))
-                                                                                               && firstOrDefault.ServiceId == iServiceId
-                                                                                               && !lstAppointment.Exists(y => y.DoctorId == x.Id));
-                                                        });
+            var lstDoctor =
+                lstDoctorRoster.FindAll(
+                    x => ((!string.IsNullOrEmpty(x.DisplayName) && x.DisplayName.ToLower().Contains(keyword))
+                          || (!string.IsNullOrEmpty(x.Firstname) && x.Firstname.ToLower().Contains(keyword))
+                          || (!string.IsNullOrEmpty(x.Lastname) && x.Lastname.ToLower().Contains(keyword))
+                          || string.IsNullOrEmpty(keyword))
+                         && !lstAppointment.Exists(y => y.Username == x.Username)
+                    );
 
             return JsonConvert.SerializeObject(lstDoctor.Select(x => new
                                                                        {
-                                                                           id = x.Id,
+                                                                           id = x.Username,
                                                                            x.DisplayName,
                                                                            propertyToSearch = String.Format("{0}. {1}", x.Title, x.DisplayName)
                                                                        }));
@@ -571,6 +569,137 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return string.Empty;
+        }
+    }
+
+    /// <summary>
+    /// Get doctors in service
+    /// </summary>
+    /// <param name="mode"></param>
+    /// <param name="currentDateView"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetSections(string mode, string currentDateView)
+    {
+        try
+        {
+            // Validate current user have any right to get room list
+            if (!CheckReading(out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            // Validate service
+            int serviceId;
+            if (!Int32.TryParse(mode, out serviceId))
+            {
+                return WebCommon.BuildFailedResult("Service is invalid");
+            }
+
+            // Get datetime to filter
+            DateTime fromDate = Convert.ToDateTime(currentDateView);
+            fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+            var toDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 23, 59, 59);
+            int count;
+
+            // Get doctor list of service
+            var lstDoctor =
+                DataRepository.UsersProvider.GetPaged(String.Format("ServicesId = {0} AND IsDisabled = 'False'", serviceId)
+                                                      , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+
+            // Get roster list
+            var lstRoster =
+                DataRepository.RosterProvider.GetPaged(
+                    String.Format(
+                        "IsDisabled = 'False' AND (StartTime BETWEEN N'{0}' AND N'{1}' OR EndTime BETWEEN N'{0}' AND N'{1}')"
+                        , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                        toDate.ToString("yyyy-MM-dd HH:mm:ss.000")),
+                    string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength,
+                    out count);
+            // Neu thoi gian bat dau thuoc ngay nho hon ngay dang xet => Set lai thoi gian bat dau 
+            // Neu thoi gian ket thuc thuoc ngay lon hon ngay dang xet => Set lai thoi gian ket thuc
+            foreach (var roster in lstRoster)
+            {
+                roster.StartTime = roster.StartTime < fromDate ? fromDate : roster.StartTime;
+                roster.EndTime = roster.EndTime > toDate ? toDate : roster.EndTime;
+            }
+            DataRepository.RosterProvider.DeepLoad(lstRoster);
+
+            // Get available doctor 
+            var lstAvaiDoctor = lstDoctor.FindAll(x => lstRoster.Exists(y => y.Username == x.Username));
+
+            // Xet tung bac si, lay danh sach roster, sap xem theo thoi gian bat dau tang dan
+            // Dat bien time chay tu 0 => het ngay
+            var lstBlockTime = new List<BlockTime>();
+            lstRoster.Sort(("StartTime ASC"));
+            foreach (var userse in lstAvaiDoctor)
+            {
+                // Lay danh sach roster cua doctor
+                Users userse1 = userse;
+                var lstTmpRoster = lstRoster.FindAll(x => x.Username == userse1.Username);
+
+                // Khoi tao bien
+                int timeIndex = 0;
+                int maxTimeIndex = ServiceFacade.SettingsHelper.MinutePerHour * ServiceFacade.SettingsHelper.MaxHour;
+
+                // Khoi tao doctor vao list
+                foreach (var roster in lstTmpRoster)
+                {
+                    // Add roster available
+                    lstBlockTime.Add(new BlockTime
+                    {
+                        StartTime = roster.StartTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.StartTime.Minute,
+                        EndTime = roster.EndTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.EndTime.Minute,
+                        Color = roster.RosterTypeIdSource.ColorCode,
+                        IsBlocked = false,
+                        Username = roster.Username
+                    });
+
+                    // Neu thoi gian bat dau lon hon timeIndex thi tao mot khoang thoi gian block
+                    if ((roster.StartTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.StartTime.Minute) > timeIndex)
+                    {
+                        lstBlockTime.Add(new BlockTime
+                            {
+                                StartTime = timeIndex,
+                                EndTime = roster.StartTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.StartTime.Minute,
+                                Color = ServiceFacade.SettingsHelper.NotAvailableColor,
+                                IsBlocked = true,
+                                Username = roster.Username
+                            });
+                    }
+
+                    // Gan timeIndex moi bang thoi gian ket thuc cua roster
+                    timeIndex = roster.EndTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.EndTime.Minute;
+                }
+
+                // Neu timeIndex van chua di het mot ngay thi tao them 1 block time
+                if (timeIndex < maxTimeIndex - 1)
+                {
+                    lstBlockTime.Add(new BlockTime
+                    {
+                        StartTime = timeIndex,
+                        EndTime = maxTimeIndex - 1,
+                        Color = ServiceFacade.SettingsHelper.NotAvailableColor,
+                        IsBlocked = true,
+                        Username = userse.Username
+                    });
+                }
+            }
+            return
+                WebCommon.BuildSuccessfulResult(
+                    lstAvaiDoctor.Select(
+                        x => new
+                        {
+                            key = x.Username,
+                            label = x.DisplayName,
+                            roster = lstBlockTime.Where(list => list.Username == x.Username).ToList()
+                        }));
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult(ex.Message);
         }
     }
     #endregion
@@ -600,22 +729,15 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Get service base on doctorId
-            var doctorService = DataRepository.DoctorServiceProvider.GetByDoctorId(doctorId).Find(x => !x.IsDisabled);
+            var doctorService = DataRepository.UsersProvider.GetByUsername(doctorId);
             // Validate available doctor
-            if (doctorService == null)
+            if (doctorService == null || doctorService.ServicesId == null)
             {
-                return WebCommon.BuildFailedResult("Doctor or service is not available to get list of available room.");
-            }
-            // Deepload to get doctor's info
-            DataRepository.DoctorServiceProvider.DeepLoad(doctorService);
-            // Validate available doctor
-            if (doctorService.DoctorIdSource.IsDisabled || doctorService.ServiceIdSource.IsDisabled)
-            {
-                return WebCommon.BuildFailedResult("Doctor or service is not available to get list of available room.");
+                return WebCommon.BuildFailedResult("Doctor is not available to get list of available room.");
             }
 
             // Set value for service Id
-            int iServiceId = doctorService.ServiceId;
+            var iServiceId = (int)doctorService.ServicesId;
 
             // Get start time and end time
             int intStartHour = Convert.ToInt32(startTime.Split(':')[0]);
@@ -665,7 +787,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                                    (firstOrDefault != null &&
                                                     (string.IsNullOrEmpty(
                                                         doctorId) ||
-                                                     firstOrDefault.DoctorId ==
+                                                     firstOrDefault.Username ==
                                                      doctorId)
                                                         ? firstOrDefault.
                                                               Priority
@@ -707,12 +829,12 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                id = obj.Id,
                                start_date = obj.StartTime.Value.ToString("dd-MM-yyyy HH:mm"),
                                end_date = obj.EndTime.Value.ToString("dd-MM-yyyy HH:mm"),
-                               section_id = obj.DoctorId,
+                               section_id = obj.Username,
                                text =
                                    String.Format("Patient: {0}<br />Note: {1}",
                                                  FullNameOfPatient(obj.PatientCodeSource),
                                                  obj.Note),
-                               DoctorDisplayname = obj.DoctorIdSource.DisplayName,
+                               DoctorDisplayname = obj.UsernameSource.DisplayName,
                                obj.PatientCode,
                                PatientName = obj.PatientCodeSource.FirstName,
                                PatientInfo = ParsePatientName(obj.PatientCodeSource),
@@ -849,7 +971,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             newObj.PatientCode = patientCode;
-            newObj.DoctorId = doctorId;
+            newObj.Username = doctorId;
             newObj.RoomId = Convert.ToInt32(roomId);
             newObj.ServicesId = serviceId;
             newObj.Note = note;
@@ -896,7 +1018,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                                   : newObj.PatientCodeSource.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(newObj.StartTime), Convert.ToDateTime(newObj.EndTime));
-            objMail.AddMailAddress(newObj.DoctorIdSource.Email, newObj.DoctorIdSource.DisplayName);
+            objMail.AddMailAddress(newObj.UsernameSource.Email, newObj.UsernameSource.DisplayName);
             objMail.SendMail();
             #endregion
 
@@ -944,7 +1066,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             tm.BeginTransaction();
             #region "Update Appointment"
-            appointment.DoctorId = doctorId;
+            appointment.Username = doctorId;
             appointment.StartTime = dtStart;
             appointment.EndTime = dtEnd;
             appointment.UpdateUser = Username;
@@ -964,7 +1086,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 , appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(appointment.StartTime), Convert.ToDateTime(appointment.EndTime));
-            objMail.AddMailAddress(appointment.DoctorIdSource.Email, appointment.DoctorIdSource.DisplayName);
+            objMail.AddMailAddress(appointment.UsernameSource.Email, appointment.UsernameSource.DisplayName);
             if (!objMail.SendMail())
             {
 
@@ -1033,7 +1155,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             #region "Update Appointment"
             appointment.PatientCode = patientCode;
-            appointment.DoctorId = doctorId;
+            appointment.Username = doctorId;
             appointment.RoomId = Convert.ToInt32(roomId);
             appointment.ServicesId = serviceId;
             appointment.Note = note;
@@ -1059,7 +1181,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 , appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(appointment.StartTime), Convert.ToDateTime(appointment.EndTime));
-            objMail.AddMailAddress(appointment.DoctorIdSource.Email, appointment.DoctorIdSource.DisplayName);
+            objMail.AddMailAddress(appointment.UsernameSource.Email, appointment.UsernameSource.DisplayName);
             if (!objMail.SendMail())
             {
 
@@ -1179,7 +1301,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             string strAlarmSummary = string.Empty;
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(appointment.StartTime), Convert.ToDateTime(appointment.EndTime));
-            objMail.AddMailAddress(appointment.DoctorIdSource.Email, appointment.DoctorIdSource.DisplayName);
+            objMail.AddMailAddress(appointment.UsernameSource.Email, appointment.UsernameSource.DisplayName);
             if (!objMail.SendMail())
             {
 
@@ -1293,14 +1415,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult("Service is invalid.");
             }
 
-            var lstDoctorService = DataRepository.DoctorServiceProvider.GetByServiceId(iServiceId).FindAll(x => !x.IsDisabled);
-            DataRepository.DoctorServiceProvider.DeepLoad(lstDoctorService);
+            var lstDoctor = DataRepository.UsersProvider.GetByServicesId(iServiceId).FindAll(x => !x.IsDisabled);
 
             // Return a list with condition is Doctor and Service must be available
-            return
-                WebCommon.BuildSuccessfulResult(
-                    lstDoctorService.FindAll(x => !x.DoctorIdSource.IsDisabled && !x.ServiceIdSource.IsDisabled).Select(
-                        x => new { key = x.DoctorIdSource.Id, label = x.DoctorIdSource.DisplayName }));
+            return WebCommon.BuildSuccessfulResult(lstDoctor.Select(x => new { key = x.Username, label = x.DisplayName }));
         }
         catch (Exception ex)
         {
@@ -1563,8 +1681,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Check exists Doctor
-            Users objDoctor = DataRepository.UsersProvider.GetById(doctorId);
-            if (objDoctor == null || objDoctor.IsDisabled)
+            Users objDoctor = DataRepository.UsersProvider.GetByUsername(doctorId);
+            if (objDoctor == null || objDoctor.IsDisabled || objDoctor.ServicesId == null)
             {
                 message = "Doctor is not exist.";
                 return false;
@@ -1586,25 +1704,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return false;
             }
 
-            // Get service base on doctorId
-            var doctorService = DataRepository.DoctorServiceProvider.GetByDoctorId(doctorId).Find(x => !x.IsDisabled);
-            // Validate available doctor
-            if (doctorService == null)
-            {
-                message = "Doctor or service is not available to get list of available room.";
-                return false;
-            }
-            // Deepload to get doctor's info
-            DataRepository.DoctorServiceProvider.DeepLoad(doctorService);
-            // Validate available doctor
-            if (doctorService.DoctorIdSource.IsDisabled || doctorService.ServiceIdSource.IsDisabled)
-            {
-                message = "Doctor or service is not available to get list of available room.";
-                return false;
-            }
-
             // Set value for service Id
-            serviceId = doctorService.ServiceId;
+            serviceId = (int)objDoctor.ServicesId;
             #endregion
 
             #region Kiem tra xem doctor duoc tao appointment co dang ky Roster hay khong
@@ -1612,7 +1713,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             // Get roster list
             var lstRoster =
                 DataRepository.RosterProvider.GetPaged(
-                    String.Format("DoctorId = '{0}' AND StartTime <= '{1}' AND EndTime >= '{2}' AND IsDisabled = 'False'",
+                    String.Format("Username = '{0}' AND StartTime <= '{1}' AND EndTime >= '{2}' AND IsDisabled = 'False'",
                                   doctorId, dtStart.ToString("yyyy-MM-dd HH:mm:ss"),
                                   dtEnd.ToString("yyyy-MM-dd HH:mm:ss")), string.Empty, 0,
                     ServiceFacade.SettingsHelper.GetPagedLength, out count);
@@ -1650,7 +1751,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Check conflict Doctor
-            if (!CheckConflict("DoctorId", doctorId, "Dr.", objDoctor.DisplayName, dtStart, dtEnd, compareValue, ref message))
+            if (!CheckConflict("Username", doctorId, string.Empty, objDoctor.DisplayName, dtStart, dtEnd, compareValue, ref message))
             {
                 return false;
             }
@@ -1693,4 +1794,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                  : patient.Title + ". ");
     }
     #endregion
+}
+
+public class BlockTime
+{
+    public string Username { get; set; }
+    public int StartTime { get; set; }
+    public int EndTime { get; set; }
+    public string Color { get; set; }
+    public bool IsBlocked { get; set; }
 }

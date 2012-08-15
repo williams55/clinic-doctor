@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Users - Add/Edit</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-		<data:MultiFormView ID="FormView1" DataKeyNames="Id" runat="server" DataSourceID="UsersDataSource">
+		<data:MultiFormView ID="FormView1" DataKeyNames="Username" runat="server" DataSourceID="UsersDataSource">
 		
 			<EditItemTemplatePaths>
 				<data:TemplatePath Path="~/Admin/UserControls/UsersFields.ascx" />
@@ -25,10 +25,10 @@
 		</data:MultiFormView>
 		
 		<data:UsersDataSource ID="UsersDataSource" runat="server"
-			SelectMethod="GetById"
+			SelectMethod="GetByUsername"
 		>
 			<Parameters>
-				<asp:QueryStringParameter Name="Id" QueryStringField="Id" Type="String" />
+				<asp:QueryStringParameter Name="Username" QueryStringField="Username" Type="String" />
 
 			</Parameters>
 		</data:UsersDataSource>
@@ -48,7 +48,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="User Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="UserIdSource" DataTextField="Username" />
+				<data:HyperLinkField HeaderText="Username" DataNavigateUrlFormatString="UsersEdit.aspx?Username={0}" DataNavigateUrlFields="Username" DataContainer="UsernameSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Role Id" DataNavigateUrlFormatString="RoleEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoleIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
 				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
@@ -75,7 +75,7 @@
 		    <Parameters>
 				<data:SqlParameter Name="Parameters">
 					<Filters>
-						<data:UserRoleFilter  Column="UserId" QueryStringField="Id" /> 
+						<data:UserRoleFilter  Column="Username" QueryStringField="Username" /> 
 					</Filters>
 				</data:SqlParameter>
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
@@ -96,7 +96,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
+				<data:HyperLinkField HeaderText="Username" DataNavigateUrlFormatString="UsersEdit.aspx?Username={0}" DataNavigateUrlFields="Username" DataContainer="UsernameSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="Priority" HeaderText="Priority" SortExpression="[Priority]" />				
 				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
@@ -124,7 +124,7 @@
 		    <Parameters>
 				<data:SqlParameter Name="Parameters">
 					<Filters>
-						<data:DoctorRoomFilter  Column="DoctorId" QueryStringField="Id" /> 
+						<data:DoctorRoomFilter  Column="Username" QueryStringField="Username" /> 
 					</Filters>
 				</data:SqlParameter>
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
@@ -146,7 +146,7 @@
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
 				<data:HyperLinkField HeaderText="Patient Code" DataNavigateUrlFormatString="PatientEdit.aspx?PatientCode={0}" DataNavigateUrlFields="PatientCode" DataContainer="PatientCodeSource" DataTextField="FirstName" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
+				<data:HyperLinkField HeaderText="Username" DataNavigateUrlFormatString="UsersEdit.aspx?Username={0}" DataNavigateUrlFields="Username" DataContainer="UsernameSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Services Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServicesIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
@@ -184,7 +184,7 @@
 		    <Parameters>
 				<data:SqlParameter Name="Parameters">
 					<Filters>
-						<data:AppointmentFilter  Column="DoctorId" QueryStringField="Id" /> 
+						<data:AppointmentFilter  Column="Username" QueryStringField="Username" /> 
 					</Filters>
 				</data:SqlParameter>
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
@@ -205,7 +205,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
+				<data:HyperLinkField HeaderText="Username" DataNavigateUrlFormatString="UsersEdit.aspx?Username={0}" DataNavigateUrlFields="Username" DataContainer="UsernameSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Roster Type Id" DataNavigateUrlFormatString="RosterTypeEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RosterTypeIdSource" DataTextField="Title" />
 				<asp:BoundField DataField="StartTime" HeaderText="Start Time" SortExpression="[StartTime]" />				
@@ -237,60 +237,12 @@
 		    <Parameters>
 				<data:SqlParameter Name="Parameters">
 					<Filters>
-						<data:RosterFilter  Column="DoctorId" QueryStringField="Id" /> 
+						<data:RosterFilter  Column="Username" QueryStringField="Username" /> 
 					</Filters>
 				</data:SqlParameter>
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
 		    </Parameters>
 		</data:RosterDataSource>		
-		
-		<br />
-		<data:EntityGridView ID="GridViewDoctorService5" runat="server"
-			AutoGenerateColumns="False"	
-			OnSelectedIndexChanged="GridViewDoctorService5_SelectedIndexChanged"			 			 
-			DataSourceID="DoctorServiceDataSource5"
-			DataKeyNames="Id"
-			AllowMultiColumnSorting="false"
-			DefaultSortColumnName="" 
-			DefaultSortDirection="Ascending"	
-			ExcelExportFileName="Export_DoctorService.xls"  		
-			Visible='<%# (FormView1.DefaultMode == FormViewMode.Insert) ? false : true %>'	
-			>
-			<Columns>
-				<asp:CommandField ShowSelectButton="True" />
-				<data:HyperLinkField HeaderText="Doctor Id" DataNavigateUrlFormatString="UsersEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="DoctorIdSource" DataTextField="Username" />
-				<data:HyperLinkField HeaderText="Service Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServiceIdSource" DataTextField="Title" />
-				<asp:BoundField DataField="IsDisabled" HeaderText="Is Disabled" SortExpression="[IsDisabled]" />				
-				<asp:BoundField DataField="CreateUser" HeaderText="Create User" SortExpression="[CreateUser]" />				
-				<asp:BoundField DataField="CreateDate" HeaderText="Create Date" SortExpression="[CreateDate]" />				
-				<asp:BoundField DataField="UpdateUser" HeaderText="Update User" SortExpression="[UpdateUser]" />				
-				<asp:BoundField DataField="UpdateDate" HeaderText="Update Date" SortExpression="[UpdateDate]" />				
-			</Columns>
-			<EmptyDataTemplate>
-				<b>No Doctor Service Found! </b>
-				<asp:HyperLink runat="server" ID="hypDoctorService" NavigateUrl="~/admin/DoctorServiceEdit.aspx">Add New</asp:HyperLink>
-			</EmptyDataTemplate>
-		</data:EntityGridView>					
-		
-		<data:DoctorServiceDataSource ID="DoctorServiceDataSource5" runat="server" SelectMethod="Find"
-			EnableDeepLoad="True"
-			>
-			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
-	            <Types>
-					<data:DoctorServiceProperty Name="Services"/> 
-					<data:DoctorServiceProperty Name="Users"/> 
-				</Types>
-			</DeepLoadProperties>
-			
-		    <Parameters>
-				<data:SqlParameter Name="Parameters">
-					<Filters>
-						<data:DoctorServiceFilter  Column="DoctorId" QueryStringField="Id" /> 
-					</Filters>
-				</data:SqlParameter>
-				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" /> 
-		    </Parameters>
-		</data:DoctorServiceDataSource>		
 		
 		<br />
 		

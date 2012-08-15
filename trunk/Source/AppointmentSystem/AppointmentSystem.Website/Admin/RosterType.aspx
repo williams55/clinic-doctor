@@ -17,6 +17,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
+				<asp:BoundField DataField="ColorCode" HeaderText="Color Code" SortExpression="[ColorCode]"  />
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]"  />
 				<data:BoundRadioButtonField DataField="IsBooked" HeaderText="Is Booked" SortExpression="[IsBooked]"  />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />

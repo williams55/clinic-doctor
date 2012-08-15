@@ -5,6 +5,9 @@ var miniCalendar;
 // This variable use for scrolling to current time in current date
 var scrollToCurrent = true;
 
+// Dung de danh dau la dang chay de khong chay lai su kien view change
+var isUsing = false;
+
 // True if lightbox is using, do not refesh page
 var isLightbox = false;
 
@@ -21,13 +24,6 @@ function ShowMinical() {
     });
 }
 
-// Refesh current view for mark_now can auto update
-setInterval(function() {
-    if (!isLightbox) {
-        scheduler.setCurrentView();
-    }
-}, 60000);
-
 // Init Schedule
 function initSchedule(weekday) {
     var currentDate = new Date();
@@ -40,34 +36,11 @@ function initSchedule(weekday) {
     var arrAjax = [];
     $.each(floors, function(i, item) {
         scheduler.locale.labels[item.Id + "_tab"] = item.ShortTitle;
-        arrAjax.push($.ajax({
-            type: "POST",
-            url: "Default.aspx/GetDoctorList",
-            data: "{serviceId: '" + item.Id + "'}",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function(response) {
-                var obj = JSON.parse(response.d);
-
-                if (obj.result == "true") {
-                    var elements = obj.data;
-                    if (elements) {
-                        scheduler.createUnitsView({
-                            name: item.Id,
-                            property: "section_id",
-                            list: elements
-                        });
-                    }
-                } else {
-                    ShowDialog("", "", "Unknow error!", "");
-                }
-            },
-            fail: function() {
-                ShowDialog("", "", "Unknow error!", "");
-            },
-            complete: function() {
-            }
-        }));
+        scheduler.createUnitsView({
+            name: item.Id,
+            property: "section_id",
+            list: scheduler.serverList(item.Id, [])
+        });
     });
     $.when.apply($, arrAjax).done(function() {
         scheduler.attachEvent("onBeforeDrag", BeforeDrag);
@@ -81,18 +54,29 @@ function initSchedule(weekday) {
                 $('div.dhx_cal_data').scrollTo({ top: top + 'px', left: '0px' }, 800);
                 scrollToCurrent = false;
             }
-            LoadAppointment(mode, date);
+
+            if (!isUsing) {
+                // Lam cai load roster cua doctor,
+                // neu doctor co roster thi hien thi
+                // khi hien thi, dua vao thoi gian cua roster ma to mau
+                isUsing = true;
+                LoadDoctorSection(mode, date);
+                //LoadAppointment(mode, date);
+            }
         });
 
         // Load roster
         if (floors.length > 0) {
             scheduler.init('scheduler_here', currentDate, floors[0].Id);
-            //LoadRoster(floors[0].Id, date);
             ShowMinical();
-        }
 
-        var scroll = $('.dhx_cal_data:first');
-        scroll.scrollTop = 40;
+            // Refesh current view for mark_now can auto update
+            setInterval(function() {
+                if (!isLightbox) {
+                    scheduler.setCurrentView();
+                }
+            }, 60000);
+        }
     });
 }
 /****************************DHTMLX - End******************************/
@@ -368,7 +352,6 @@ function GetPatientInfo(currentId) {
                 else {
                     ShowDialog("", "", obj.message, "");
                 }
-                blStaff = true;
             },
             fail: function() {
                 ShowDialog("", "", "Cannot load Patient's info. Please try again or contact Administrator.", "");
@@ -452,6 +435,7 @@ function UpdateSimplePatient(id, firstname, lastname, cellPhone, dialog) {
 /****************************Patient - End******************************/
 
 /****************************Appointment - Start******************************/
+
 // Save moved, resize appointment
 function MoveAppointment(eventId, objEvent) {
     var requestdata = JSON.stringify({ id: eventId, startTime: objEvent.start_date
@@ -482,6 +466,57 @@ function MoveAppointment(eventId, objEvent) {
         },
         complete: function() {
             CurrentAppointment = null; // set null after use
+        }
+    });
+}
+
+function LoadDoctorSection(mode, date) {
+    var requestdata = JSON.stringify({ mode: mode, currentDateView: date });
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/GetSections",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(response) {
+            var obj = JSON.parse(response.d);
+
+            if (obj.result == "true") {
+                scheduler.updateCollection(mode, obj.data);
+                $.each(obj.data, function(i, doctor) {
+                    var container = $('#main-dhx .dhx_scale_holder:nth-child(' + (i + 1) + ')');
+                    $('.roster_color, .dhx_time_block', container).remove();
+
+                    // Tao mot lop mau de len nen scheduler
+                    $.each(doctor.roster, function(j, roster) {
+                        var top = roster.StartTime * scheduler.config.hour_size_px / 60;
+                        var height = (roster.EndTime - roster.StartTime) * scheduler.config.hour_size_px / 60;
+                        var colorDiv = '<div class="' + (roster.IsBlocked ? 'dhx_time_block' : 'roster_color')
+                            + '" style="top: ' + top + 'px; height: '
+                            + height + 'px; background-color:'
+                            + roster.Color + '"></div>';
+                        $(container).append(colorDiv);
+                    });
+                    console.log($(container));
+                });
+
+                //                $('.roster_color').mousedown(function(event) {
+                //                    $(this).css('background', 'transparent');
+                //                    var element = document.elementFromPoint(event.pageX, event.pageY);
+                //                    $(this).mouseup(function(event2) {
+                //                        $(this).show();
+                //                    });
+                //                });
+            }
+            else {
+                ShowDialog("", "", obj.message, "");
+            }
+        },
+        fail: function() {
+            ShowDialog("", "", "Unknow error!", "");
+        },
+        complete: function() {
+            isUsing = false;
         }
     });
 }
@@ -631,7 +666,7 @@ function AddAppointment(evs) {
 // Cancel appointment
 function CancelAppointment() {
     scheduler.endLightbox(false, html("RosterForm"));
-    isLightbox = false;    
+    isLightbox = false;
 }
 
 function DeleteAppointment(id) {

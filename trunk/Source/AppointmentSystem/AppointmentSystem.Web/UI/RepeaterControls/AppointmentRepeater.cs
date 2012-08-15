@@ -350,13 +350,13 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.PatientCode; }
 		}
         /// <summary>
-        /// Gets the DoctorId
+        /// Gets the Username
         /// </summary>
-        /// <value>The DoctorId.</value>
+        /// <value>The Username.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String DoctorId
+		public System.String Username
 		{
-			get { return _entity.DoctorId; }
+			get { return _entity.Username; }
 		}
         /// <summary>
         /// Gets the RoomId

@@ -25,9 +25,9 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
-		/// DoctorId : 
+		/// Username : 
 		/// </summary>
-		System.String  DoctorId  { get; set; }
+		System.String  Username  { get; set; }
 		
 		/// <summary>
 		/// RoomId : 

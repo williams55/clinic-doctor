@@ -32,7 +32,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
-        
+
     }
     protected void UserRoleGrid_DataSelect(object sender, EventArgs e)
     {
@@ -98,27 +98,27 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
     }
     protected void gridUser_InitNewRow(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)
     {
-        string perxe = ServiceFacade.SettingsHelper.UserPrefix;
-        int count = 0;
-        TList<Users> objuser = DataRepository.UsersProvider.GetPaged("Id like '" + perxe + "' + '%'", "Id desc", 0, 1, out count);
-        if (count == 0)
-        {
-            e.NewValues["Id"] = perxe + "0001";
-        }
-        else
-        {
-            e.NewValues["Id"] = perxe + string.Format("{0:0000}", int.Parse(objuser[0].Id.Substring(objuser[0].Id.Length - 3)) + 1);
-        }
+        //string perxe = ServiceFacade.SettingsHelper.UserPrefix;
+        //int count = 0;
+        //TList<Users> objuser = DataRepository.UsersProvider.GetPaged("Id like '" + perxe + "' + '%'", "Id desc", 0, 1, out count);
+        //if (count == 0)
+        //{
+        //    e.NewValues["Id"] = perxe + "0001";
+        //}
+        //else
+        //{
+        //    e.NewValues["Id"] = perxe + string.Format("{0:0000}", int.Parse(objuser[0].Id.Substring(objuser[0].Id.Length - 3)) + 1);
+        //}
     }
     protected bool Getcheckbox(string obj)
     {
-        string str =obj.ToString();
+        string str = obj;
         if (str == "true") return true;
         return false;
     }
     protected void gridUser_RowValidating(object sender, DevExpress.Web.Data.ASPxDataValidationEventArgs e)
     {
-      
+
     }
     protected void gridUser_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
     {
@@ -138,30 +138,31 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage]
-                        = String.Format("You do not have permission to delete","Delete User");
+                        = String.Format("You do not have permission to delete", "Delete User");
                 return;
             }
             if (e.ButtonID != "btnDelete") return;
-            string id=gridUser.GetRowValues(e.VisibleIndex, "Id").ToString();
-            var obj = DataRepository.UsersProvider.GetById(id);
+            string username = gridUser.GetRowValues(e.VisibleIndex, "Username").ToString();
+            var obj = DataRepository.UsersProvider.GetByUsername(username);
             if (obj == null || obj.IsDisabled) return;
             DataRepository.UsersProvider.DeepLoad(obj);
-            if(obj.DoctorRoomCollection.Exists(x=>!x.IsDisabled)||obj.AppointmentCollection.Exists(x=>!x.IsDisabled)||obj.DoctorServiceCollection.Exists(x=>!x.IsDisabled)||obj.RosterCollection.Exists(x=>!x.IsDisabled))
+            if (obj.DoctorRoomCollection.Exists(x => !x.IsDisabled) || obj.AppointmentCollection.Exists(x => !x.IsDisabled)
+                || (obj.ServicesId != null && !obj.ServicesIdSource.IsDisabled) || obj.RosterCollection.Exists(x => !x.IsDisabled))
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = String.Format("Dr. {0} is using, you cannot delete it.", obj.DisplayName);
+                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = String.Format("{0} is using, you cannot delete it.", obj.DisplayName);
                 return;
             }
             obj.IsDisabled = true;
             obj.UpdateUser = WebCommon.GetAuthUsername();
             obj.UpdateDate = DateTime.Now;
             DataRepository.UsersProvider.Update(obj);
-            
+
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
-    
+
     }
     protected void UserRoleGrid_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
@@ -203,7 +204,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             string UserId = (sender as ASPxGridView).GetMasterRowKeyValue().ToString();
             string RoleId = e.NewValues["RoleId"].ToString();
             int count;
-            string query=string.Format("UserId='{0}' and RoleId={1} and IsDisabled='false'",UserId,RoleId);
+            string query = string.Format("UserId='{0}' and RoleId={1} and IsDisabled='false'", UserId, RoleId);
             var obj = DataRepository.UserRoleProvider.GetPaged(query, string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
             if (count > 0)
             {
@@ -213,8 +214,8 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             }
             e.NewValues["UserId"] = UserId;
             e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now; 
-            
+            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+
         }
         catch (Exception ex)
         {

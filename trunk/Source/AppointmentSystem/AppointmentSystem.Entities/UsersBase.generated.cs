@@ -81,7 +81,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="UsersBase"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_username"></param>
 		///<param name="_title">Dr, Mr, Ms...</param>
 		///<param name="_firstname"></param>
@@ -92,21 +91,22 @@ namespace AppointmentSystem.Entities
 		///<param name="_avatar"></param>
 		///<param name="_note"></param>
 		///<param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		///<param name="_servicesId">This user belongs what groups. It's seperated by semi-comma</param>
 		///<param name="_isFemale"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public UsersBase(System.String _id, System.String _username, System.String _title, System.String _firstname, 
+		public UsersBase(System.String _username, System.String _title, System.String _firstname, 
 			System.String _lastname, System.String _displayName, System.String _cellPhone, System.String _email, System.String _avatar, 
-			System.String _note, System.String _userGroupId, System.Boolean _isFemale, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.String _note, System.String _userGroupId, System.Int32? _servicesId, System.Boolean _isFemale, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			this.entityData = new UsersEntityData();
 			this.backupData = null;
 
-			this.Id = _id;
 			this.Username = _username;
 			this.Title = _title;
 			this.Firstname = _firstname;
@@ -117,6 +117,7 @@ namespace AppointmentSystem.Entities
 			this.Avatar = _avatar;
 			this.Note = _note;
 			this.UserGroupId = _userGroupId;
+			this.ServicesId = _servicesId;
 			this.IsFemale = _isFemale;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
@@ -128,7 +129,6 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="Users"/> instance.
 		///</summary>
-		///<param name="_id"></param>
 		///<param name="_username"></param>
 		///<param name="_title">Dr, Mr, Ms...</param>
 		///<param name="_firstname"></param>
@@ -139,19 +139,20 @@ namespace AppointmentSystem.Entities
 		///<param name="_avatar"></param>
 		///<param name="_note"></param>
 		///<param name="_userGroupId">This user belongs what groups. It's seperated by semi-comma</param>
+		///<param name="_servicesId">This user belongs what groups. It's seperated by semi-comma</param>
 		///<param name="_isFemale"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Users CreateUsers(System.String _id, System.String _username, System.String _title, System.String _firstname, 
+		public static Users CreateUsers(System.String _username, System.String _title, System.String _firstname, 
 			System.String _lastname, System.String _displayName, System.String _cellPhone, System.String _email, System.String _avatar, 
-			System.String _note, System.String _userGroupId, System.Boolean _isFemale, System.Boolean _isDisabled, 
-			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
+			System.String _note, System.String _userGroupId, System.Int32? _servicesId, System.Boolean _isFemale, 
+			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
+			System.DateTime _updateDate)
 		{
 			Users newUsers = new Users();
-			newUsers.Id = _id;
 			newUsers.Username = _username;
 			newUsers.Title = _title;
 			newUsers.Firstname = _firstname;
@@ -162,6 +163,7 @@ namespace AppointmentSystem.Entities
 			newUsers.Avatar = _avatar;
 			newUsers.Note = _note;
 			newUsers.UserGroupId = _userGroupId;
+			newUsers.ServicesId = _servicesId;
 			newUsers.IsFemale = _isFemale;
 			newUsers.IsDisabled = _isDisabled;
 			newUsers.CreateUser = _createUser;
@@ -177,56 +179,6 @@ namespace AppointmentSystem.Entities
 		
 		#region Data Properties		
 		/// <summary>
-		/// 	Gets or sets the Id property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar.</value>
-		/// <remarks>
-		/// This property can not be set to null. 
-		/// </remarks>
-		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
-
-
-
-
-		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(true, false, false, 20)]
-		public virtual System.String Id
-		{
-			get
-			{
-				return this.entityData.Id; 
-			}
-			
-			set
-			{
-				if (this.entityData.Id == value)
-					return;
-					
-				OnColumnChanging(UsersColumn.Id, this.entityData.Id);
-				this.entityData.Id = value;
-				this.EntityId.Id = value;
-				if (this.EntityState == EntityState.Unchanged)
-					this.EntityState = EntityState.Changed;
-				OnColumnChanged(UsersColumn.Id, this.entityData.Id);
-				OnPropertyChanged("Id");
-			}
-		}
-		
-		/// <summary>
-		/// 	Get the original value of the Id property.
-		///		
-		/// </summary>
-		/// <remarks>This is the original value of the Id property.</remarks>
-		/// <value>This type is nvarchar</value>
-		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
-		public  virtual System.String OriginalId
-		{
-			get { return this.entityData.OriginalId; }
-			set { this.entityData.OriginalId = value; }
-		}
-		
-		/// <summary>
 		/// 	Gets or sets the Username property. 
 		///		
 		/// </summary>
@@ -240,7 +192,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false, 50)]
+		[DataObjectField(true, false, false, 50)]
 		public virtual System.String Username
 		{
 			get
@@ -255,11 +207,25 @@ namespace AppointmentSystem.Entities
 					
 				OnColumnChanging(UsersColumn.Username, this.entityData.Username);
 				this.entityData.Username = value;
+				this.EntityId.Username = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
 				OnColumnChanged(UsersColumn.Username, this.entityData.Username);
 				OnPropertyChanged("Username");
 			}
+		}
+		
+		/// <summary>
+		/// 	Get the original value of the Username property.
+		///		
+		/// </summary>
+		/// <remarks>This is the original value of the Username property.</remarks>
+		/// <value>This type is nvarchar</value>
+		[BrowsableAttribute(false)/*, XmlIgnoreAttribute()*/]
+		public  virtual System.String OriginalUsername
+		{
+			get { return this.entityData.OriginalUsername; }
+			set { this.entityData.OriginalUsername = value; }
 		}
 		
 		/// <summary>
@@ -580,6 +546,43 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or sets the ServicesId property. 
+		///		This user belongs what groups. It's seperated by semi-comma
+		/// </summary>
+		/// <value>This type is int.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// If this column is null, this property will return (int)0. It is up to the developer
+		/// to check the value of IsServicesIdNull() and perform business logic appropriately.
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@"This user belongs what groups. It's seperated by semi-comma"), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true)]
+		public virtual System.Int32? ServicesId
+		{
+			get
+			{
+				return this.entityData.ServicesId; 
+			}
+			
+			set
+			{
+				if (this.entityData.ServicesId == value)
+					return;
+					
+				OnColumnChanging(UsersColumn.ServicesId, this.entityData.ServicesId);
+				this.entityData.ServicesId = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(UsersColumn.ServicesId, this.entityData.ServicesId);
+				OnPropertyChanged("ServicesId");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or sets the IsFemale property. 
 		///		
 		/// </summary>
@@ -794,6 +797,17 @@ namespace AppointmentSystem.Entities
 		#region Source Foreign Key Property
 				
 		/// <summary>
+		/// Gets or sets the source <see cref="Services"/>.
+		/// </summary>
+		/// <value>The source Services for ServicesId.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Services ServicesIdSource
+      	{
+            get { return entityData.ServicesIdSource; }
+            set { entityData.ServicesIdSource = value; }
+      	}
+		/// <summary>
 		/// Gets or sets the source <see cref="UserGroup"/>.
 		/// </summary>
 		/// <value>The source UserGroup for UserGroupId.</value>
@@ -810,7 +824,7 @@ namespace AppointmentSystem.Entities
 	
 		/// <summary>
 		///	Holds a collection of UserRole objects
-		///	which are related to this object through the relation FK_UserRole_User
+		///	which are related to this object through the relation FK_UserRole_Users
 		/// </summary>	
 		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
 		public virtual TList<UserRole> UserRoleCollection
@@ -821,7 +835,7 @@ namespace AppointmentSystem.Entities
 	
 		/// <summary>
 		///	Holds a collection of DoctorRoom objects
-		///	which are related to this object through the relation FK_DoctorRoom_User
+		///	which are related to this object through the relation FK_DoctorRoom_Users
 		/// </summary>	
 		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
 		public virtual TList<DoctorRoom> DoctorRoomCollection
@@ -851,17 +865,6 @@ namespace AppointmentSystem.Entities
 			get { return entityData.RosterCollection; }
 			set { entityData.RosterCollection = value; }	
 		}
-	
-		/// <summary>
-		///	Holds a collection of DoctorService objects
-		///	which are related to this object through the relation FK_DoctorService_Users
-		/// </summary>	
-		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual TList<DoctorService> DoctorServiceCollection
-		{
-			get { return entityData.DoctorServiceCollection; }
-			set { entityData.DoctorServiceCollection = value; }	
-		}
 		#endregion Children Collections
 		
 		#endregion
@@ -874,10 +877,6 @@ namespace AppointmentSystem.Entities
 		protected override void AddValidationRules()
 		{
 			//Validation rules based on database schema.
-			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("Id", "Id"));
-			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Id", "Id", 20));
 			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("Username", "Username"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -929,7 +928,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Username", "Title", "Firstname", "Lastname", "DisplayName", "CellPhone", "Email", "Avatar", "Note", "UserGroupId", "IsFemale", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Username", "Title", "Firstname", "Lastname", "DisplayName", "CellPhone", "Email", "Avatar", "Note", "UserGroupId", "ServicesId", "IsFemale", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1077,9 +1076,8 @@ namespace AppointmentSystem.Entities
 			Users copy = new Users();
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
-				copy.Id = this.Id;
-					copy.OriginalId = this.OriginalId;
 				copy.Username = this.Username;
+					copy.OriginalUsername = this.OriginalUsername;
 				copy.Title = this.Title;
 				copy.Firstname = this.Firstname;
 				copy.Lastname = this.Lastname;
@@ -1089,6 +1087,7 @@ namespace AppointmentSystem.Entities
 				copy.Avatar = this.Avatar;
 				copy.Note = this.Note;
 				copy.UserGroupId = this.UserGroupId;
+				copy.ServicesId = this.ServicesId;
 				copy.IsFemale = this.IsFemale;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -1096,6 +1095,10 @@ namespace AppointmentSystem.Entities
 				copy.UpdateUser = this.UpdateUser;
 				copy.UpdateDate = this.UpdateDate;
 			
+			if (this.ServicesIdSource != null && existingCopies.Contains(this.ServicesIdSource))
+				copy.ServicesIdSource = existingCopies[this.ServicesIdSource] as Services;
+			else
+				copy.ServicesIdSource = MakeCopyOf(this.ServicesIdSource, existingCopies) as Services;
 			if (this.UserGroupIdSource != null && existingCopies.Contains(this.UserGroupIdSource))
 				copy.UserGroupIdSource = existingCopies[this.UserGroupIdSource] as UserGroup;
 			else
@@ -1106,7 +1109,6 @@ namespace AppointmentSystem.Entities
 			copy.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection, existingCopies); 
 			copy.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
 			copy.RosterCollection = (TList<Roster>) MakeCopyOf(this.RosterCollection, existingCopies); 
-			copy.DoctorServiceCollection = (TList<DoctorService>) MakeCopyOf(this.DoctorServiceCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
 			return copy;
@@ -1237,8 +1239,6 @@ namespace AppointmentSystem.Entities
 		{
 			switch(column)
 			{
-					case UsersColumn.Id:
-					return entityData.Id != _originalData.Id;
 					case UsersColumn.Username:
 					return entityData.Username != _originalData.Username;
 					case UsersColumn.Title:
@@ -1259,6 +1259,8 @@ namespace AppointmentSystem.Entities
 					return entityData.Note != _originalData.Note;
 					case UsersColumn.UserGroupId:
 					return entityData.UserGroupId != _originalData.UserGroupId;
+					case UsersColumn.ServicesId:
+					return entityData.ServicesId != _originalData.ServicesId;
 					case UsersColumn.IsFemale:
 					return entityData.IsFemale != _originalData.IsFemale;
 					case UsersColumn.IsDisabled:
@@ -1298,7 +1300,6 @@ namespace AppointmentSystem.Entities
 		public bool HasDataChanged()
 		{
 			bool result = false;
-			result = result || entityData.Id != _originalData.Id;
 			result = result || entityData.Username != _originalData.Username;
 			result = result || entityData.Title != _originalData.Title;
 			result = result || entityData.Firstname != _originalData.Firstname;
@@ -1309,6 +1310,7 @@ namespace AppointmentSystem.Entities
 			result = result || entityData.Avatar != _originalData.Avatar;
 			result = result || entityData.Note != _originalData.Note;
 			result = result || entityData.UserGroupId != _originalData.UserGroupId;
+			result = result || entityData.ServicesId != _originalData.ServicesId;
 			result = result || entityData.IsFemale != _originalData.IsFemale;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
@@ -1325,7 +1327,6 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreateUsers(
-				_originalData.Id,
 				_originalData.Username,
 				_originalData.Title,
 				_originalData.Firstname,
@@ -1336,6 +1337,7 @@ namespace AppointmentSystem.Entities
 				_originalData.Avatar,
 				_originalData.Note,
 				_originalData.UserGroupId,
+				_originalData.ServicesId,
 				_originalData.IsFemale,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
@@ -1371,8 +1373,7 @@ namespace AppointmentSystem.Entities
         /// <returns>number (hash code) that corresponds to the value of an object</returns>
         public override int GetHashCode()
         {
-			return this.Id.GetHashCode() ^ 
-					this.Username.GetHashCode() ^ 
+			return this.Username.GetHashCode() ^ 
 					((this.Title == null) ? string.Empty : this.Title.ToString()).GetHashCode() ^ 
 					((this.Firstname == null) ? string.Empty : this.Firstname.ToString()).GetHashCode() ^ 
 					((this.Lastname == null) ? string.Empty : this.Lastname.ToString()).GetHashCode() ^ 
@@ -1382,6 +1383,7 @@ namespace AppointmentSystem.Entities
 					((this.Avatar == null) ? string.Empty : this.Avatar.ToString()).GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
 					this.UserGroupId.GetHashCode() ^ 
+					((this.ServicesId == null) ? string.Empty : this.ServicesId.ToString()).GetHashCode() ^ 
 					this.IsFemale.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -1420,8 +1422,6 @@ namespace AppointmentSystem.Entities
 				return false;
 				
 			bool equal = true;
-			if (Object1.Id != Object2.Id)
-				equal = false;
 			if (Object1.Username != Object2.Username)
 				equal = false;
 			if ( Object1.Title != null && Object2.Title != null )
@@ -1491,6 +1491,15 @@ namespace AppointmentSystem.Entities
 			}
 			if (Object1.UserGroupId != Object2.UserGroupId)
 				equal = false;
+			if ( Object1.ServicesId != null && Object2.ServicesId != null )
+			{
+				if (Object1.ServicesId != Object2.ServicesId)
+					equal = false;
+			}
+			else if (Object1.ServicesId == null ^ Object2.ServicesId == null )
+			{
+				equal = false;
+			}
 			if (Object1.IsFemale != Object2.IsFemale)
 				equal = false;
 			if (Object1.IsDisabled != Object2.IsDisabled)
@@ -1561,12 +1570,6 @@ namespace AppointmentSystem.Entities
             {
             	
             	
-            	case UsersColumn.Id:
-            		return this.Id.CompareTo(rhs.Id);
-            		
-            		                 
-            	
-            	
             	case UsersColumn.Username:
             		return this.Username.CompareTo(rhs.Username);
             		
@@ -1623,6 +1626,12 @@ namespace AppointmentSystem.Entities
             	
             	case UsersColumn.UserGroupId:
             		return this.UserGroupId.CompareTo(rhs.UserGroupId);
+            		
+            		                 
+            	
+            	
+            	case UsersColumn.ServicesId:
+            		return this.ServicesId.Value.CompareTo(rhs.ServicesId.Value);
             		
             		                 
             	
@@ -1776,7 +1785,7 @@ namespace AppointmentSystem.Entities
 			{
 				if(entityTrackingKey == null)
 					entityTrackingKey = new System.Text.StringBuilder("Users")
-					.Append("|").Append( this.Id.ToString()).ToString();
+					.Append("|").Append( this.Username.ToString()).ToString();
 				return entityTrackingKey;
 			}
 			set
@@ -1795,8 +1804,7 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{18}{17}- Id: {0}{17}- Username: {1}{17}- Title: {2}{17}- Firstname: {3}{17}- Lastname: {4}{17}- DisplayName: {5}{17}- CellPhone: {6}{17}- Email: {7}{17}- Avatar: {8}{17}- Note: {9}{17}- UserGroupId: {10}{17}- IsFemale: {11}{17}- IsDisabled: {12}{17}- CreateUser: {13}{17}- CreateDate: {14}{17}- UpdateUser: {15}{17}- UpdateDate: {16}{17}{19}", 
-				this.Id,
+				"{18}{17}- Username: {0}{17}- Title: {1}{17}- Firstname: {2}{17}- Lastname: {3}{17}- DisplayName: {4}{17}- CellPhone: {5}{17}- Email: {6}{17}- Avatar: {7}{17}- Note: {8}{17}- UserGroupId: {9}{17}- ServicesId: {10}{17}- IsFemale: {11}{17}- IsDisabled: {12}{17}- CreateUser: {13}{17}- CreateDate: {14}{17}- UpdateUser: {15}{17}- UpdateDate: {16}{17}{19}", 
 				this.Username,
 				(this.Title == null) ? string.Empty : this.Title.ToString(),
 				(this.Firstname == null) ? string.Empty : this.Firstname.ToString(),
@@ -1807,6 +1815,7 @@ namespace AppointmentSystem.Entities
 				(this.Avatar == null) ? string.Empty : this.Avatar.ToString(),
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
 				this.UserGroupId,
+				(this.ServicesId == null) ? string.Empty : this.ServicesId.ToString(),
 				this.IsFemale,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -1837,25 +1846,20 @@ namespace AppointmentSystem.Entities
 		
 		#region Primary key(s)
 		/// <summary>			
-		/// Id : 
+		/// Username : 
 		/// </summary>
 		/// <remarks>Member of the primary key of the underlying table "Users"</remarks>
-		public System.String Id;
+		public System.String Username;
 			
 		/// <summary>
 		/// keep a copy of the original so it can be used for editable primary keys.
 		/// </summary>
-		public System.String OriginalId;
+		public System.String OriginalUsername;
 		
 		#endregion
 		
 		#region Non Primary key(s)
 		
-		
-		/// <summary>
-		/// Username : 
-		/// </summary>
-		public System.String		  Username = string.Empty;
 		
 		/// <summary>
 		/// Title : Dr, Mr, Ms...
@@ -1903,6 +1907,11 @@ namespace AppointmentSystem.Entities
 		public System.String		  UserGroupId = "0";
 		
 		/// <summary>
+		/// ServicesId : This user belongs what groups. It's seperated by semi-comma
+		/// </summary>
+		public System.Int32?		  ServicesId = null;
+		
+		/// <summary>
 		/// IsFemale : 
 		/// </summary>
 		public System.Boolean		  IsFemale = false;
@@ -1935,6 +1944,19 @@ namespace AppointmentSystem.Entities
 			
 		#region Source Foreign Key Property
 				
+		private Services _servicesIdSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Services"/>.
+		/// </summary>
+		/// <value>The source Services for ServicesId.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Services ServicesIdSource
+      	{
+            get { return this._servicesIdSource; }
+            set { this._servicesIdSource = value; }
+      	}
 		private UserGroup _userGroupIdSource = null;
 		
 		/// <summary>
@@ -1955,125 +1977,100 @@ namespace AppointmentSystem.Entities
 
 		#region UserRoleCollection
 		
-		private TList<UserRole> _userRoleUserId;
+		private TList<UserRole> _userRoleUsername;
 		
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _userRoleUserId
+		///	which are related to this object through the relation _userRoleUsername
 		/// </summary>
 		
 		public TList<UserRole> UserRoleCollection
 		{
 			get
 			{
-				if (_userRoleUserId == null)
+				if (_userRoleUsername == null)
 				{
-				_userRoleUserId = new TList<UserRole>();
+				_userRoleUsername = new TList<UserRole>();
 				}
 	
-				return _userRoleUserId;
+				return _userRoleUsername;
 			}
-			set { _userRoleUserId = value; }
+			set { _userRoleUsername = value; }
 		}
 		
 		#endregion
 
 		#region DoctorRoomCollection
 		
-		private TList<DoctorRoom> _doctorRoomDoctorId;
+		private TList<DoctorRoom> _doctorRoomUsername;
 		
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorRoomDoctorId
+		///	which are related to this object through the relation _doctorRoomUsername
 		/// </summary>
 		
 		public TList<DoctorRoom> DoctorRoomCollection
 		{
 			get
 			{
-				if (_doctorRoomDoctorId == null)
+				if (_doctorRoomUsername == null)
 				{
-				_doctorRoomDoctorId = new TList<DoctorRoom>();
+				_doctorRoomUsername = new TList<DoctorRoom>();
 				}
 	
-				return _doctorRoomDoctorId;
+				return _doctorRoomUsername;
 			}
-			set { _doctorRoomDoctorId = value; }
+			set { _doctorRoomUsername = value; }
 		}
 		
 		#endregion
 
 		#region AppointmentCollection
 		
-		private TList<Appointment> _appointmentDoctorId;
+		private TList<Appointment> _appointmentUsername;
 		
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentDoctorId
+		///	which are related to this object through the relation _appointmentUsername
 		/// </summary>
 		
 		public TList<Appointment> AppointmentCollection
 		{
 			get
 			{
-				if (_appointmentDoctorId == null)
+				if (_appointmentUsername == null)
 				{
-				_appointmentDoctorId = new TList<Appointment>();
+				_appointmentUsername = new TList<Appointment>();
 				}
 	
-				return _appointmentDoctorId;
+				return _appointmentUsername;
 			}
-			set { _appointmentDoctorId = value; }
+			set { _appointmentUsername = value; }
 		}
 		
 		#endregion
 
 		#region RosterCollection
 		
-		private TList<Roster> _rosterDoctorId;
+		private TList<Roster> _rosterUsername;
 		
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _rosterDoctorId
+		///	which are related to this object through the relation _rosterUsername
 		/// </summary>
 		
 		public TList<Roster> RosterCollection
 		{
 			get
 			{
-				if (_rosterDoctorId == null)
+				if (_rosterUsername == null)
 				{
-				_rosterDoctorId = new TList<Roster>();
+				_rosterUsername = new TList<Roster>();
 				}
 	
-				return _rosterDoctorId;
+				return _rosterUsername;
 			}
-			set { _rosterDoctorId = value; }
-		}
-		
-		#endregion
-
-		#region DoctorServiceCollection
-		
-		private TList<DoctorService> _doctorServiceDoctorId;
-		
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorServiceDoctorId
-		/// </summary>
-		
-		public TList<DoctorService> DoctorServiceCollection
-		{
-			get
-			{
-				if (_doctorServiceDoctorId == null)
-				{
-				_doctorServiceDoctorId = new TList<DoctorService>();
-				}
-	
-				return _doctorServiceDoctorId;
-			}
-			set { _doctorServiceDoctorId = value; }
+			set { _rosterUsername = value; }
 		}
 		
 		#endregion
@@ -2090,10 +2087,9 @@ namespace AppointmentSystem.Entities
 		{
 			UsersEntityData _tmp = new UsersEntityData();
 						
-			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
-			
 			_tmp.Username = this.Username;
+			_tmp.OriginalUsername = this.OriginalUsername;
+			
 			_tmp.Title = this.Title;
 			_tmp.Firstname = this.Firstname;
 			_tmp.Lastname = this.Lastname;
@@ -2103,6 +2099,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Avatar = this.Avatar;
 			_tmp.Note = this.Note;
 			_tmp.UserGroupId = this.UserGroupId;
+			_tmp.ServicesId = this.ServicesId;
 			_tmp.IsFemale = this.IsFemale;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -2111,22 +2108,22 @@ namespace AppointmentSystem.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.ServicesIdSource != null)
+				_tmp.ServicesIdSource = MakeCopyOf(this.ServicesIdSource) as Services;
 			if (this.UserGroupIdSource != null)
 				_tmp.UserGroupIdSource = MakeCopyOf(this.UserGroupIdSource) as UserGroup;
 			#endregion
 		
 			#region Child Collections
 			//deep copy nested objects
-			if (this._userRoleUserId != null)
+			if (this._userRoleUsername != null)
 				_tmp.UserRoleCollection = (TList<UserRole>) MakeCopyOf(this.UserRoleCollection); 
-			if (this._doctorRoomDoctorId != null)
+			if (this._doctorRoomUsername != null)
 				_tmp.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection); 
-			if (this._appointmentDoctorId != null)
+			if (this._appointmentUsername != null)
 				_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection); 
-			if (this._rosterDoctorId != null)
+			if (this._rosterUsername != null)
 				_tmp.RosterCollection = (TList<Roster>) MakeCopyOf(this.RosterCollection); 
-			if (this._doctorServiceDoctorId != null)
-				_tmp.DoctorServiceCollection = (TList<DoctorService>) MakeCopyOf(this.DoctorServiceCollection); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -2146,10 +2143,9 @@ namespace AppointmentSystem.Entities
 				
 			UsersEntityData _tmp = new UsersEntityData();
 						
-			_tmp.Id = this.Id;
-			_tmp.OriginalId = this.OriginalId;
-			
 			_tmp.Username = this.Username;
+			_tmp.OriginalUsername = this.OriginalUsername;
+			
 			_tmp.Title = this.Title;
 			_tmp.Firstname = this.Firstname;
 			_tmp.Lastname = this.Lastname;
@@ -2159,6 +2155,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Avatar = this.Avatar;
 			_tmp.Note = this.Note;
 			_tmp.UserGroupId = this.UserGroupId;
+			_tmp.ServicesId = this.ServicesId;
 			_tmp.IsFemale = this.IsFemale;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -2167,6 +2164,10 @@ namespace AppointmentSystem.Entities
 			_tmp.UpdateDate = this.UpdateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.ServicesIdSource != null && existingCopies.Contains(this.ServicesIdSource))
+				_tmp.ServicesIdSource = existingCopies[this.ServicesIdSource] as Services;
+			else
+				_tmp.ServicesIdSource = MakeCopyOf(this.ServicesIdSource, existingCopies) as Services;
 			if (this.UserGroupIdSource != null && existingCopies.Contains(this.UserGroupIdSource))
 				_tmp.UserGroupIdSource = existingCopies[this.UserGroupIdSource] as UserGroup;
 			else
@@ -2179,7 +2180,6 @@ namespace AppointmentSystem.Entities
 			_tmp.DoctorRoomCollection = (TList<DoctorRoom>) MakeCopyOf(this.DoctorRoomCollection, existingCopies); 
 			_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
 			_tmp.RosterCollection = (TList<Roster>) MakeCopyOf(this.RosterCollection, existingCopies); 
-			_tmp.DoctorServiceCollection = (TList<DoctorService>) MakeCopyOf(this.DoctorServiceCollection, existingCopies); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -2433,7 +2433,7 @@ namespace AppointmentSystem.Entities
 
 			if ( entity != null )
 			{
-				this.Id = entity.Id;
+				this.Username = entity.Username;
 			}
 
 			#endregion
@@ -2442,11 +2442,11 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Initializes a new instance of the UsersKey class.
 		/// </summary>
-		public UsersKey(System.String _id)
+		public UsersKey(System.String _username)
 		{
 			#region Init Properties
 
-			this.Id = _id;
+			this.Username = _username;
 
 			#endregion
 		}
@@ -2467,21 +2467,21 @@ namespace AppointmentSystem.Entities
 			set { _entity = value; }
 		}
 		
-		// member variable for the Id property
-		private System.String _id;
+		// member variable for the Username property
+		private System.String _username;
 		
 		/// <summary>
-		/// Gets or sets the Id property.
+		/// Gets or sets the Username property.
 		/// </summary>
-		public System.String Id
+		public System.String Username
 		{
-			get { return _id; }
+			get { return _username; }
 			set
 			{
 				if ( this.Entity != null )
-					this.Entity.Id = value;
+					this.Entity.Username = value;
 				
-				_id = value;
+				_username = value;
 			}
 		}
 		
@@ -2501,7 +2501,7 @@ namespace AppointmentSystem.Entities
 
 			if ( values != null )
 			{
-				Id = ( values["Id"] != null ) ? (System.String) EntityUtil.ChangeType(values["Id"], typeof(System.String)) : string.Empty;
+				Username = ( values["Username"] != null ) ? (System.String) EntityUtil.ChangeType(values["Username"], typeof(System.String)) : string.Empty;
 			}
 
 			#endregion
@@ -2518,7 +2518,7 @@ namespace AppointmentSystem.Entities
 
 			#region Init Dictionary
 
-			values.Add("Id", Id);
+			values.Add("Username", Username);
 
 			#endregion Init Dictionary
 
@@ -2530,8 +2530,8 @@ namespace AppointmentSystem.Entities
 		///</summary>
 		public override string ToString()
 		{
-			return String.Format("Id: {0}{1}",
-								Id,
+			return String.Format("Username: {0}{1}",
+								Username,
 								System.Environment.NewLine);
 		}
 
@@ -2549,71 +2549,71 @@ namespace AppointmentSystem.Entities
 	public enum UsersColumn : int
 	{
 		/// <summary>
-		/// Id : 
-		/// </summary>
-		[EnumTextValue("Id")]
-		[ColumnEnum("Id", typeof(System.String), System.Data.DbType.String, true, false, false, 20)]
-		Id = 1,
-		/// <summary>
 		/// Username : 
 		/// </summary>
 		[EnumTextValue("Username")]
-		[ColumnEnum("Username", typeof(System.String), System.Data.DbType.String, false, false, false, 50)]
-		Username = 2,
+		[ColumnEnum("Username", typeof(System.String), System.Data.DbType.String, true, false, false, 50)]
+		Username = 1,
 		/// <summary>
 		/// Title : Dr, Mr, Ms...
 		/// </summary>
 		[EnumTextValue("Title")]
 		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
-		Title = 3,
+		Title = 2,
 		/// <summary>
 		/// Firstname : 
 		/// </summary>
 		[EnumTextValue("Firstname")]
 		[ColumnEnum("Firstname", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		Firstname = 4,
+		Firstname = 3,
 		/// <summary>
 		/// Lastname : 
 		/// </summary>
 		[EnumTextValue("Lastname")]
 		[ColumnEnum("Lastname", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		Lastname = 5,
+		Lastname = 4,
 		/// <summary>
 		/// DisplayName : 
 		/// </summary>
 		[EnumTextValue("DisplayName")]
 		[ColumnEnum("DisplayName", typeof(System.String), System.Data.DbType.String, false, false, false, 50)]
-		DisplayName = 6,
+		DisplayName = 5,
 		/// <summary>
 		/// CellPhone : 
 		/// </summary>
 		[EnumTextValue("CellPhone")]
 		[ColumnEnum("CellPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		CellPhone = 7,
+		CellPhone = 6,
 		/// <summary>
 		/// Email : 
 		/// </summary>
 		[EnumTextValue("Email")]
 		[ColumnEnum("Email", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		Email = 8,
+		Email = 7,
 		/// <summary>
 		/// Avatar : 
 		/// </summary>
 		[EnumTextValue("Avatar")]
 		[ColumnEnum("Avatar", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		Avatar = 9,
+		Avatar = 8,
 		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 10,
+		Note = 9,
 		/// <summary>
 		/// UserGroupId : This user belongs what groups. It's seperated by semi-comma
 		/// </summary>
 		[EnumTextValue("UserGroupId")]
 		[ColumnEnum("UserGroupId", typeof(System.String), System.Data.DbType.String, false, false, false, 20)]
-		UserGroupId = 11,
+		UserGroupId = 10,
+		/// <summary>
+		/// ServicesId : This user belongs what groups. It's seperated by semi-comma
+		/// </summary>
+		[EnumTextValue("ServicesId")]
+		[ColumnEnum("ServicesId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
+		ServicesId = 11,
 		/// <summary>
 		/// IsFemale : 
 		/// </summary>

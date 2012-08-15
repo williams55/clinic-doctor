@@ -161,7 +161,7 @@ namespace AppointmentSystem.Web.Data
 			
 			System.Int64 _id;
 			System.Int32? _roleId_nullable;
-			System.String _userId;
+			System.String _username;
 
 			switch ( SelectMethod )
 			{
@@ -199,9 +199,9 @@ namespace AppointmentSystem.Web.Data
 					_roleId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoleId"], typeof(System.Int32?));
 					results = UserRoleProvider.GetByRoleId(GetTransactionManager(), _roleId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
-				case UserRoleSelectMethod.GetByUserId:
-					_userId = ( values["UserId"] != null ) ? (System.String) EntityUtil.ChangeType(values["UserId"], typeof(System.String)) : string.Empty;
-					results = UserRoleProvider.GetByUserId(GetTransactionManager(), _userId, this.StartIndex, this.PageSize, out count);
+				case UserRoleSelectMethod.GetByUsername:
+					_username = ( values["Username"] != null ) ? (System.String) EntityUtil.ChangeType(values["Username"], typeof(System.String)) : string.Empty;
+					results = UserRoleProvider.GetByUsername(GetTransactionManager(), _username, this.StartIndex, this.PageSize, out count);
 					break;
 				// M:M
 				// Custom
@@ -388,9 +388,9 @@ namespace AppointmentSystem.Web.Data
 		/// </summary>
 		GetByRoleId,
 		/// <summary>
-		/// Represents the GetByUserId method.
+		/// Represents the GetByUsername method.
 		/// </summary>
-		GetByUserId
+		GetByUsername
 	}
 	
 	#endregion UserRoleSelectMethod

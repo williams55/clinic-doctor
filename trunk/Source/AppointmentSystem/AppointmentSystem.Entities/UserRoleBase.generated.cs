@@ -81,20 +81,20 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// Creates a new <see cref="UserRoleBase"/> instance.
 		///</summary>
-		///<param name="_userId"></param>
+		///<param name="_username"></param>
 		///<param name="_roleId"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public UserRoleBase(System.String _userId, System.Int32? _roleId, System.Boolean _isDisabled, 
+		public UserRoleBase(System.String _username, System.Int32? _roleId, System.Boolean _isDisabled, 
 			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new UserRoleEntityData();
 			this.backupData = null;
 
-			this.UserId = _userId;
+			this.Username = _username;
 			this.RoleId = _roleId;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
@@ -106,18 +106,18 @@ namespace AppointmentSystem.Entities
 		///<summary>
 		/// A simple factory method to create a new <see cref="UserRole"/> instance.
 		///</summary>
-		///<param name="_userId"></param>
+		///<param name="_username"></param>
 		///<param name="_roleId"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static UserRole CreateUserRole(System.String _userId, System.Int32? _roleId, System.Boolean _isDisabled, 
+		public static UserRole CreateUserRole(System.String _username, System.Int32? _roleId, System.Boolean _isDisabled, 
 			System.String _createUser, System.DateTime _createDate, System.String _updateUser, System.DateTime _updateDate)
 		{
 			UserRole newUserRole = new UserRole();
-			newUserRole.UserId = _userId;
+			newUserRole.Username = _username;
 			newUserRole.RoleId = _roleId;
 			newUserRole.IsDisabled = _isDisabled;
 			newUserRole.CreateUser = _createUser;
@@ -169,7 +169,7 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or sets the UserId property. 
+		/// 	Gets or sets the Username property. 
 		///		
 		/// </summary>
 		/// <value>This type is nvarchar.</value>
@@ -182,25 +182,25 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false, 20)]
-		public virtual System.String UserId
+		[DataObjectField(false, false, false, 50)]
+		public virtual System.String Username
 		{
 			get
 			{
-				return this.entityData.UserId; 
+				return this.entityData.Username; 
 			}
 			
 			set
 			{
-				if (this.entityData.UserId == value)
+				if (this.entityData.Username == value)
 					return;
 					
-				OnColumnChanging(UserRoleColumn.UserId, this.entityData.UserId);
-				this.entityData.UserId = value;
+				OnColumnChanging(UserRoleColumn.Username, this.entityData.Username);
+				this.entityData.Username = value;
 				if (this.EntityState == EntityState.Unchanged)
 					this.EntityState = EntityState.Changed;
-				OnColumnChanged(UserRoleColumn.UserId, this.entityData.UserId);
-				OnPropertyChanged("UserId");
+				OnColumnChanged(UserRoleColumn.Username, this.entityData.Username);
+				OnPropertyChanged("Username");
 			}
 		}
 		
@@ -434,13 +434,13 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		/// Gets or sets the source <see cref="Users"/>.
 		/// </summary>
-		/// <value>The source Users for UserId.</value>
+		/// <value>The source Users for Username.</value>
         [XmlIgnore()]
 		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual Users UserIdSource
+		public virtual Users UsernameSource
       	{
-            get { return entityData.UserIdSource; }
-            set { entityData.UserIdSource = value; }
+            get { return entityData.UsernameSource; }
+            set { entityData.UsernameSource = value; }
       	}
 		#endregion
 		
@@ -458,9 +458,9 @@ namespace AppointmentSystem.Entities
 		{
 			//Validation rules based on database schema.
 			ValidationRules.AddRule( CommonRules.NotNull,
-				new ValidationRuleArgs("UserId", "User Id"));
+				new ValidationRuleArgs("Username", "Username"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("UserId", "User Id", 20));
+				new CommonRules.MaxLengthRuleArgs("Username", "Username", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -486,7 +486,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "UserId", "RoleId", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Username", "RoleId", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -635,7 +635,7 @@ namespace AppointmentSystem.Entities
 			existingCopies.Add(this, copy);
 			copy.SuppressEntityEvents = true;
 				copy.Id = this.Id;
-				copy.UserId = this.UserId;
+				copy.Username = this.Username;
 				copy.RoleId = this.RoleId;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -647,10 +647,10 @@ namespace AppointmentSystem.Entities
 				copy.RoleIdSource = existingCopies[this.RoleIdSource] as Role;
 			else
 				copy.RoleIdSource = MakeCopyOf(this.RoleIdSource, existingCopies) as Role;
-			if (this.UserIdSource != null && existingCopies.Contains(this.UserIdSource))
-				copy.UserIdSource = existingCopies[this.UserIdSource] as Users;
+			if (this.UsernameSource != null && existingCopies.Contains(this.UsernameSource))
+				copy.UsernameSource = existingCopies[this.UsernameSource] as Users;
 			else
-				copy.UserIdSource = MakeCopyOf(this.UserIdSource, existingCopies) as Users;
+				copy.UsernameSource = MakeCopyOf(this.UsernameSource, existingCopies) as Users;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -784,8 +784,8 @@ namespace AppointmentSystem.Entities
 			{
 					case UserRoleColumn.Id:
 					return entityData.Id != _originalData.Id;
-					case UserRoleColumn.UserId:
-					return entityData.UserId != _originalData.UserId;
+					case UserRoleColumn.Username:
+					return entityData.Username != _originalData.Username;
 					case UserRoleColumn.RoleId:
 					return entityData.RoleId != _originalData.RoleId;
 					case UserRoleColumn.IsDisabled:
@@ -826,7 +826,7 @@ namespace AppointmentSystem.Entities
 		{
 			bool result = false;
 			result = result || entityData.Id != _originalData.Id;
-			result = result || entityData.UserId != _originalData.UserId;
+			result = result || entityData.Username != _originalData.Username;
 			result = result || entityData.RoleId != _originalData.RoleId;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
@@ -843,7 +843,7 @@ namespace AppointmentSystem.Entities
 		{
 			if (_originalData != null)
 				return CreateUserRole(
-				_originalData.UserId,
+				_originalData.Username,
 				_originalData.RoleId,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
@@ -880,7 +880,7 @@ namespace AppointmentSystem.Entities
         public override int GetHashCode()
         {
 			return this.Id.GetHashCode() ^ 
-					this.UserId.GetHashCode() ^ 
+					this.Username.GetHashCode() ^ 
 					((this.RoleId == null) ? string.Empty : this.RoleId.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -921,7 +921,7 @@ namespace AppointmentSystem.Entities
 			bool equal = true;
 			if (Object1.Id != Object2.Id)
 				equal = false;
-			if (Object1.UserId != Object2.UserId)
+			if (Object1.Username != Object2.Username)
 				equal = false;
 			if ( Object1.RoleId != null && Object2.RoleId != null )
 			{
@@ -1006,8 +1006,8 @@ namespace AppointmentSystem.Entities
             		                 
             	
             	
-            	case UserRoleColumn.UserId:
-            		return this.UserId.CompareTo(rhs.UserId);
+            	case UserRoleColumn.Username:
+            		return this.Username.CompareTo(rhs.Username);
             		
             		                 
             	
@@ -1180,9 +1180,9 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{9}{8}- Id: {0}{8}- UserId: {1}{8}- RoleId: {2}{8}- IsDisabled: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
+				"{9}{8}- Id: {0}{8}- Username: {1}{8}- RoleId: {2}{8}- IsDisabled: {3}{8}- CreateUser: {4}{8}- CreateDate: {5}{8}- UpdateUser: {6}{8}- UpdateDate: {7}{8}{10}", 
 				this.Id,
-				this.UserId,
+				this.Username,
 				(this.RoleId == null) ? string.Empty : this.RoleId.ToString(),
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -1224,9 +1224,9 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
-		/// UserId : 
+		/// Username : 
 		/// </summary>
-		public System.String		  UserId = string.Empty;
+		public System.String		  Username = string.Empty;
 		
 		/// <summary>
 		/// RoleId : 
@@ -1274,18 +1274,18 @@ namespace AppointmentSystem.Entities
             get { return this._roleIdSource; }
             set { this._roleIdSource = value; }
       	}
-		private Users _userIdSource = null;
+		private Users _usernameSource = null;
 		
 		/// <summary>
 		/// Gets or sets the source <see cref="Users"/>.
 		/// </summary>
-		/// <value>The source Users for UserId.</value>
+		/// <value>The source Users for Username.</value>
 		[XmlIgnore()]
 		[Browsable(false)]
-		public virtual Users UserIdSource
+		public virtual Users UsernameSource
       	{
-            get { return this._userIdSource; }
-            set { this._userIdSource = value; }
+            get { return this._usernameSource; }
+            set { this._usernameSource = value; }
       	}
 		#endregion
 		#endregion Variable Declarations
@@ -1306,7 +1306,7 @@ namespace AppointmentSystem.Entities
 						
 			_tmp.Id = this.Id;
 			
-			_tmp.UserId = this.UserId;
+			_tmp.Username = this.Username;
 			_tmp.RoleId = this.RoleId;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1317,8 +1317,8 @@ namespace AppointmentSystem.Entities
 			#region Source Parent Composite Entities
 			if (this.RoleIdSource != null)
 				_tmp.RoleIdSource = MakeCopyOf(this.RoleIdSource) as Role;
-			if (this.UserIdSource != null)
-				_tmp.UserIdSource = MakeCopyOf(this.UserIdSource) as Users;
+			if (this.UsernameSource != null)
+				_tmp.UsernameSource = MakeCopyOf(this.UsernameSource) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -1343,7 +1343,7 @@ namespace AppointmentSystem.Entities
 						
 			_tmp.Id = this.Id;
 			
-			_tmp.UserId = this.UserId;
+			_tmp.Username = this.Username;
 			_tmp.RoleId = this.RoleId;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -1356,10 +1356,10 @@ namespace AppointmentSystem.Entities
 				_tmp.RoleIdSource = existingCopies[this.RoleIdSource] as Role;
 			else
 				_tmp.RoleIdSource = MakeCopyOf(this.RoleIdSource, existingCopies) as Role;
-			if (this.UserIdSource != null && existingCopies.Contains(this.UserIdSource))
-				_tmp.UserIdSource = existingCopies[this.UserIdSource] as Users;
+			if (this.UsernameSource != null && existingCopies.Contains(this.UsernameSource))
+				_tmp.UsernameSource = existingCopies[this.UsernameSource] as Users;
 			else
-				_tmp.UserIdSource = MakeCopyOf(this.UserIdSource, existingCopies) as Users;
+				_tmp.UsernameSource = MakeCopyOf(this.UsernameSource, existingCopies) as Users;
 			#endregion
 		
 			#region Child Collections
@@ -1738,11 +1738,11 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("Id", typeof(System.Int64), System.Data.DbType.Int64, true, true, false)]
 		Id = 1,
 		/// <summary>
-		/// UserId : 
+		/// Username : 
 		/// </summary>
-		[EnumTextValue("UserId")]
-		[ColumnEnum("UserId", typeof(System.String), System.Data.DbType.String, false, false, false, 20)]
-		UserId = 2,
+		[EnumTextValue("Username")]
+		[ColumnEnum("Username", typeof(System.String), System.Data.DbType.String, false, false, false, 50)]
+		Username = 2,
 		/// <summary>
 		/// RoleId : 
 		/// </summary>

@@ -75,9 +75,9 @@ namespace AppointmentSystem.Entities
 
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorServiceServiceId
+		///	which are related to this object through the relation _usersServicesId
 		/// </summary>	
-		TList<DoctorService> DoctorServiceCollection {  get;  set;}	
+		TList<Users> UsersCollection {  get;  set;}	
 
 
 		/// <summary>

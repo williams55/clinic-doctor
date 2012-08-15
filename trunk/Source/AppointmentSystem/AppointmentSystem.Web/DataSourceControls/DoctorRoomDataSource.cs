@@ -160,8 +160,8 @@ namespace AppointmentSystem.Web.Data
 			count = 0;
 			
 			System.Int64 _id;
-			System.Int32? _roomId_nullable;
-			System.String _doctorId_nullable;
+			System.Int32 _roomId;
+			System.String _username;
 
 			switch ( SelectMethod )
 			{
@@ -196,12 +196,12 @@ namespace AppointmentSystem.Web.Data
 				// IX
 				// FK
 				case DoctorRoomSelectMethod.GetByRoomId:
-					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
-					results = DoctorRoomProvider.GetByRoomId(GetTransactionManager(), _roomId_nullable, this.StartIndex, this.PageSize, out count);
+					_roomId = ( values["RoomId"] != null ) ? (System.Int32) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32)) : (int)0;
+					results = DoctorRoomProvider.GetByRoomId(GetTransactionManager(), _roomId, this.StartIndex, this.PageSize, out count);
 					break;
-				case DoctorRoomSelectMethod.GetByDoctorId:
-					_doctorId_nullable = (System.String) EntityUtil.ChangeType(values["DoctorId"], typeof(System.String));
-					results = DoctorRoomProvider.GetByDoctorId(GetTransactionManager(), _doctorId_nullable, this.StartIndex, this.PageSize, out count);
+				case DoctorRoomSelectMethod.GetByUsername:
+					_username = ( values["Username"] != null ) ? (System.String) EntityUtil.ChangeType(values["Username"], typeof(System.String)) : string.Empty;
+					results = DoctorRoomProvider.GetByUsername(GetTransactionManager(), _username, this.StartIndex, this.PageSize, out count);
 					break;
 				// M:M
 				// Custom
@@ -388,9 +388,9 @@ namespace AppointmentSystem.Web.Data
 		/// </summary>
 		GetByRoomId,
 		/// <summary>
-		/// Represents the GetByDoctorId method.
+		/// Represents the GetByUsername method.
 		/// </summary>
-		GetByDoctorId
+		GetByUsername
 	}
 	
 	#endregion DoctorRoomSelectMethod

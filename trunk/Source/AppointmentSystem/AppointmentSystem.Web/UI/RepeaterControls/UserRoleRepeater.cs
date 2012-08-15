@@ -341,13 +341,13 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Id; }
 		}
         /// <summary>
-        /// Gets the UserId
+        /// Gets the Username
         /// </summary>
-        /// <value>The UserId.</value>
+        /// <value>The Username.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String UserId
+		public System.String Username
 		{
-			get { return _entity.UserId; }
+			get { return _entity.Username; }
 		}
         /// <summary>
         /// Gets the RoleId

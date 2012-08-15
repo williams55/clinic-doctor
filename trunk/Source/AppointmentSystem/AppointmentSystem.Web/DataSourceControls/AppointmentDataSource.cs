@@ -165,7 +165,7 @@ namespace AppointmentSystem.Web.Data
 			System.Int32? _servicesId_nullable;
 			System.Int32? _roomId_nullable;
 			System.String _statusId_nullable;
-			System.String _doctorId;
+			System.String _username;
 
 			switch ( SelectMethod )
 			{
@@ -219,9 +219,9 @@ namespace AppointmentSystem.Web.Data
 					_statusId_nullable = (System.String) EntityUtil.ChangeType(values["StatusId"], typeof(System.String));
 					results = AppointmentProvider.GetByStatusId(GetTransactionManager(), _statusId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
-				case AppointmentSelectMethod.GetByDoctorId:
-					_doctorId = ( values["DoctorId"] != null ) ? (System.String) EntityUtil.ChangeType(values["DoctorId"], typeof(System.String)) : string.Empty;
-					results = AppointmentProvider.GetByDoctorId(GetTransactionManager(), _doctorId, this.StartIndex, this.PageSize, out count);
+				case AppointmentSelectMethod.GetByUsername:
+					_username = ( values["Username"] != null ) ? (System.String) EntityUtil.ChangeType(values["Username"], typeof(System.String)) : string.Empty;
+					results = AppointmentProvider.GetByUsername(GetTransactionManager(), _username, this.StartIndex, this.PageSize, out count);
 					break;
 				// M:M
 				// Custom
@@ -424,9 +424,9 @@ namespace AppointmentSystem.Web.Data
 		/// </summary>
 		GetByStatusId,
 		/// <summary>
-		/// Represents the GetByDoctorId method.
+		/// Represents the GetByUsername method.
 		/// </summary>
-		GetByDoctorId
+		GetByUsername
 	}
 	
 	#endregion AppointmentSelectMethod

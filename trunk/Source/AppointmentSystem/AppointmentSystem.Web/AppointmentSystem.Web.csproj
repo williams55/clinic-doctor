@@ -125,7 +125,6 @@
     <Compile Include="..\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataSourceControls\DoctorServiceDataSource.cs" />
     <Compile Include="Data\BaseDataSource.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -210,7 +209,6 @@
     <Compile Include="DataSourceControls\GroupRoleDataSource.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\RepeaterControls\DoctorServiceRepeater.cs" />
     <Compile Include="UI\RepeaterControls\GroupRoleRepeater.cs">
       <SubType>Code</SubType>
     </Compile>

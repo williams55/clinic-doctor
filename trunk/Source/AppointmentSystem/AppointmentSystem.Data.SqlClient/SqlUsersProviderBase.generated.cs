@@ -103,18 +103,18 @@ namespace AppointmentSystem.Data.SqlClient
 		/// <summary>
 		/// 	Deletes a row from the DataSource.
 		/// </summary>
-		/// <param name="_id">. Primary Key.</param>	
+		/// <param name="_username">. Primary Key.</param>	
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 		/// <remarks>Deletes based on primary key(s).</remarks>
 		/// <returns>Returns true if operation suceeded.</returns>
         /// <exception cref="System.Exception">The command could not be executed.</exception>
         /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
         /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override bool Delete(TransactionManager transactionManager, System.String _id)
+		public override bool Delete(TransactionManager transactionManager, System.String _username)
 		{
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Users_Delete", _useStoredProcedure);
-			database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
+			database.AddInParameter(commandWrapper, "@Username", DbType.String, _username);
 			
 			//Provider Data Requesting Command Event
 			OnDataRequesting(new CommandEventArgs(commandWrapper, "Delete")); 
@@ -134,7 +134,7 @@ namespace AppointmentSystem.Data.SqlClient
 			if (DataRepository.Provider.EnableEntityTracking)
 			{
 				string entityKey = EntityLocator.ConstructKeyFromPkItems(typeof(Users)
-					,_id);
+					,_username);
 				EntityManager.StopTracking(entityKey);
 			}
 			
@@ -175,7 +175,6 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
-		database.AddInParameter(commandWrapper, "@Id", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Username", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Firstname", DbType.String, DBNull.Value);
@@ -186,6 +185,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@Avatar", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -206,12 +206,6 @@ namespace AppointmentSystem.Data.SqlClient
 			char[] singleQuote = {'\''};
 	   		foreach (string clause in clauses)
 			{
-				if (clause.Trim().StartsWith("id ") || clause.Trim().StartsWith("id="))
-				{
-					database.SetParameterValue(commandWrapper, "@Id", 
-						clause.Trim().Remove(0,2).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
-					continue;
-				}
 				if (clause.Trim().StartsWith("username ") || clause.Trim().StartsWith("username="))
 				{
 					database.SetParameterValue(commandWrapper, "@Username", 
@@ -270,6 +264,12 @@ namespace AppointmentSystem.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@UserGroupId", 
 						clause.Trim().Remove(0,11).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("servicesid ") || clause.Trim().StartsWith("servicesid="))
+				{
+					database.SetParameterValue(commandWrapper, "@ServicesId", 
+						clause.Trim().Remove(0,10).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("isfemale ") || clause.Trim().StartsWith("isfemale="))
@@ -579,6 +579,70 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		#region Get By Foreign Key Functions
 
+		#region GetByServicesId
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Users_Services key.
+		///		FK_Users_Services Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_servicesId">This user belongs what groups. It's seperated by semi-comma</param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Users objects.</returns>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Users> GetByServicesId(TransactionManager transactionManager, System.Int32? _servicesId, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Users_GetByServicesId", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, _servicesId);
+			
+			IDataReader reader = null;
+			TList<Users> rows = new TList<Users>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByServicesId", rows)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}
+			
+				//Create Collection
+				Fill(reader, rows, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByServicesId", rows)); 
+			}
+			finally
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			return rows;
+		}	
+		#endregion
+	
+
 		#region GetByUserGroupId
 		/// <summary>
 		/// 	Gets rows from the datasource based on the FK_Users_UserGroup key.
@@ -724,85 +788,6 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		#endregion
 
-
-		#region GetById
-					
-		/// <summary>
-		/// 	Gets rows from the datasource based on the PK_User index.
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_id"></param>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">out parameter to get total records for query.</param>
-		/// <returns>Returns an instance of the <see cref="AppointmentSystem.Entities.Users"/> class.</returns>
-		/// <remarks></remarks>
-        /// <exception cref="System.Exception">The command could not be executed.</exception>
-        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
-        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
-		public override AppointmentSystem.Entities.Users GetById(TransactionManager transactionManager, System.String _id, int start, int pageLength, out int count)
-		{
-			SqlDatabase database = new SqlDatabase(this._connectionString);
-			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Users_GetById", _useStoredProcedure);
-			
-				database.AddInParameter(commandWrapper, "@Id", DbType.String, _id);
-			
-			IDataReader reader = null;
-			TList<Users> tmp = new TList<Users>();
-			try
-			{
-				//Provider Data Requesting Command Event
-				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetById", tmp)); 
-
-				if (transactionManager != null)
-				{
-					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
-				}
-				else
-				{
-					reader = Utility.ExecuteReader(database, commandWrapper);
-				}		
-		
-				//Create collection and fill
-				Fill(reader, tmp, start, pageLength);
-				count = -1;
-				if(reader.NextResult())
-				{
-					if(reader.Read())
-					{
-						count = reader.GetInt32(0);
-					}
-				}
-				
-				//Provider Data Requested Command Event
-				OnDataRequested(new CommandEventArgs(commandWrapper, "GetById", tmp));
-			}
-			finally 
-			{
-				if (reader != null) 
-					reader.Close();
-					
-				commandWrapper = null;
-			}
-			
-			if (tmp.Count == 1)
-			{
-				return tmp[0];
-			}
-			else if (tmp.Count == 0)
-			{
-				return null;
-			}
-			else
-			{
-				throw new DataException("Cannot find the unique instance of the class.");
-			}
-			
-			//return rows;
-		}
-		
-		#endregion
-
 	#endregion Get By Index Functions
 
 		#region Insert Methods
@@ -836,28 +821,28 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.DestinationTableName = "Users";
 			
 			DataTable dataTable = new DataTable();
-			DataColumn col0 = dataTable.Columns.Add("Id", typeof(System.String));
+			DataColumn col0 = dataTable.Columns.Add("Username", typeof(System.String));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("Username", typeof(System.String));
-			col1.AllowDBNull = false;		
-			DataColumn col2 = dataTable.Columns.Add("Title", typeof(System.String));
+			DataColumn col1 = dataTable.Columns.Add("Title", typeof(System.String));
+			col1.AllowDBNull = true;		
+			DataColumn col2 = dataTable.Columns.Add("Firstname", typeof(System.String));
 			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("Firstname", typeof(System.String));
+			DataColumn col3 = dataTable.Columns.Add("Lastname", typeof(System.String));
 			col3.AllowDBNull = true;		
-			DataColumn col4 = dataTable.Columns.Add("Lastname", typeof(System.String));
-			col4.AllowDBNull = true;		
-			DataColumn col5 = dataTable.Columns.Add("DisplayName", typeof(System.String));
-			col5.AllowDBNull = false;		
-			DataColumn col6 = dataTable.Columns.Add("CellPhone", typeof(System.String));
+			DataColumn col4 = dataTable.Columns.Add("DisplayName", typeof(System.String));
+			col4.AllowDBNull = false;		
+			DataColumn col5 = dataTable.Columns.Add("CellPhone", typeof(System.String));
+			col5.AllowDBNull = true;		
+			DataColumn col6 = dataTable.Columns.Add("Email", typeof(System.String));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("Email", typeof(System.String));
+			DataColumn col7 = dataTable.Columns.Add("Avatar", typeof(System.String));
 			col7.AllowDBNull = true;		
-			DataColumn col8 = dataTable.Columns.Add("Avatar", typeof(System.String));
+			DataColumn col8 = dataTable.Columns.Add("Note", typeof(System.String));
 			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("Note", typeof(System.String));
-			col9.AllowDBNull = true;		
-			DataColumn col10 = dataTable.Columns.Add("UserGroupId", typeof(System.String));
-			col10.AllowDBNull = false;		
+			DataColumn col9 = dataTable.Columns.Add("UserGroupId", typeof(System.String));
+			col9.AllowDBNull = false;		
+			DataColumn col10 = dataTable.Columns.Add("ServicesId", typeof(System.Int32));
+			col10.AllowDBNull = true;		
 			DataColumn col11 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
 			col11.AllowDBNull = false;		
 			DataColumn col12 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
@@ -871,7 +856,6 @@ namespace AppointmentSystem.Data.SqlClient
 			DataColumn col16 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
 			col16.AllowDBNull = false;		
 			
-			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("Username", "Username");
 			bulkCopy.ColumnMappings.Add("Title", "Title");
 			bulkCopy.ColumnMappings.Add("Firstname", "Firstname");
@@ -882,6 +866,7 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.ColumnMappings.Add("Avatar", "Avatar");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("UserGroupId", "UserGroupId");
+			bulkCopy.ColumnMappings.Add("ServicesId", "ServicesId");
 			bulkCopy.ColumnMappings.Add("IsFemale", "IsFemale");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
@@ -895,9 +880,6 @@ namespace AppointmentSystem.Data.SqlClient
 					continue;
 					
 				DataRow row = dataTable.NewRow();
-				
-					row["Id"] = entity.Id;
-							
 				
 					row["Username"] = entity.Username;
 							
@@ -927,6 +909,9 @@ namespace AppointmentSystem.Data.SqlClient
 							
 				
 					row["UserGroupId"] = entity.UserGroupId;
+							
+				
+					row["ServicesId"] = entity.ServicesId.HasValue ? (object) entity.ServicesId  : System.DBNull.Value;
 							
 				
 					row["IsFemale"] = entity.IsFemale;
@@ -981,7 +966,6 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Users_Insert", _useStoredProcedure);
 			
-			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
 			database.AddInParameter(commandWrapper, "@Username", DbType.String, entity.Username );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Firstname", DbType.String, entity.Firstname );
@@ -992,6 +976,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Avatar", DbType.String, entity.Avatar );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, entity.UserGroupId );
+			database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, (entity.ServicesId.HasValue ? (object) entity.ServicesId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, entity.IsFemale );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -1014,7 +999,7 @@ namespace AppointmentSystem.Data.SqlClient
 			}
 					
 			
-			entity.OriginalId = entity.Id;
+			entity.OriginalUsername = entity.Username;
 			
 			entity.AcceptChanges();
 	
@@ -1045,9 +1030,8 @@ namespace AppointmentSystem.Data.SqlClient
 			SqlDatabase database = new SqlDatabase(this._connectionString);
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Users_Update", _useStoredProcedure);
 			
-			database.AddInParameter(commandWrapper, "@Id", DbType.String, entity.Id );
-			database.AddInParameter(commandWrapper, "@OriginalId", DbType.String, entity.OriginalId);
 			database.AddInParameter(commandWrapper, "@Username", DbType.String, entity.Username );
+			database.AddInParameter(commandWrapper, "@OriginalUsername", DbType.String, entity.OriginalUsername);
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Firstname", DbType.String, entity.Firstname );
 			database.AddInParameter(commandWrapper, "@Lastname", DbType.String, entity.Lastname );
@@ -1057,6 +1041,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Avatar", DbType.String, entity.Avatar );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@UserGroupId", DbType.String, entity.UserGroupId );
+			database.AddInParameter(commandWrapper, "@ServicesId", DbType.Int32, (entity.ServicesId.HasValue ? (object) entity.ServicesId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@IsFemale", DbType.Boolean, entity.IsFemale );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -1082,7 +1067,7 @@ namespace AppointmentSystem.Data.SqlClient
 			if (DataRepository.Provider.EnableEntityTracking)
 				EntityManager.StopTracking(entity.EntityTrackingKey);
 			
-			entity.OriginalId = entity.Id;
+			entity.OriginalUsername = entity.Username;
 			
 			entity.AcceptChanges();
 			

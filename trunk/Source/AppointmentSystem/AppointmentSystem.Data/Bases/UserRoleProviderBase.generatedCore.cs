@@ -145,88 +145,88 @@ namespace AppointmentSystem.Data.Bases
 		
 	
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_UserRole_User key.
-		///		FK_UserRole_User Description: 
+		/// 	Gets rows from the datasource based on the FK_UserRole_Users key.
+		///		FK_UserRole_Users Description: 
 		/// </summary>
-		/// <param name="_userId"></param>
+		/// <param name="_username"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public TList<UserRole> GetByUserId(System.String _userId)
+		public TList<UserRole> GetByUsername(System.String _username)
 		{
 			int count = -1;
-			return GetByUserId(_userId, 0,int.MaxValue, out count);
+			return GetByUsername(_username, 0,int.MaxValue, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_UserRole_User key.
-		///		FK_UserRole_User Description: 
+		/// 	Gets rows from the datasource based on the FK_UserRole_Users key.
+		///		FK_UserRole_Users Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_userId"></param>
+		/// <param name="_username"></param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
 		/// <remarks></remarks>
-		public TList<UserRole> GetByUserId(TransactionManager transactionManager, System.String _userId)
+		public TList<UserRole> GetByUsername(TransactionManager transactionManager, System.String _username)
 		{
 			int count = -1;
-			return GetByUserId(transactionManager, _userId, 0, int.MaxValue, out count);
+			return GetByUsername(transactionManager, _username, 0, int.MaxValue, out count);
 		}
 		
 			/// <summary>
-		/// 	Gets rows from the datasource based on the FK_UserRole_User key.
-		///		FK_UserRole_User Description: 
+		/// 	Gets rows from the datasource based on the FK_UserRole_Users key.
+		///		FK_UserRole_Users Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_userId"></param>
+		/// <param name="_username"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		///  <param name="pageLength">Number of rows to return.</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public TList<UserRole> GetByUserId(TransactionManager transactionManager, System.String _userId, int start, int pageLength)
+		public TList<UserRole> GetByUsername(TransactionManager transactionManager, System.String _username, int start, int pageLength)
 		{
 			int count = -1;
-			return GetByUserId(transactionManager, _userId, start, pageLength, out count);
+			return GetByUsername(transactionManager, _username, start, pageLength, out count);
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_UserRole_User key.
-		///		fkUserRoleUser Description: 
+		/// 	Gets rows from the datasource based on the FK_UserRole_Users key.
+		///		fkUserRoleUsers Description: 
 		/// </summary>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_userId"></param>
+		/// <param name="_username"></param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public TList<UserRole> GetByUserId(System.String _userId, int start, int pageLength)
+		public TList<UserRole> GetByUsername(System.String _username, int start, int pageLength)
 		{
 			int count =  -1;
-			return GetByUserId(null, _userId, start, pageLength,out count);	
+			return GetByUsername(null, _username, start, pageLength,out count);	
 		}
 		
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_UserRole_User key.
-		///		fkUserRoleUser Description: 
+		/// 	Gets rows from the datasource based on the FK_UserRole_Users key.
+		///		fkUserRoleUsers Description: 
 		/// </summary>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_userId"></param>
+		/// <param name="_username"></param>
 		/// <param name="count">out parameter to get total records for query</param>
 		/// <remarks></remarks>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public TList<UserRole> GetByUserId(System.String _userId, int start, int pageLength,out int count)
+		public TList<UserRole> GetByUsername(System.String _username, int start, int pageLength,out int count)
 		{
-			return GetByUserId(null, _userId, start, pageLength, out count);	
+			return GetByUsername(null, _username, start, pageLength, out count);	
 		}
 						
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_UserRole_User key.
-		///		FK_UserRole_User Description: 
+		/// 	Gets rows from the datasource based on the FK_UserRole_Users key.
+		///		FK_UserRole_Users Description: 
 		/// </summary>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_userId"></param>
+		/// <param name="_username"></param>
 		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="count">The total number of records.</param>
 		/// <returns>Returns a typed collection of AppointmentSystem.Entities.UserRole objects.</returns>
-		public abstract TList<UserRole> GetByUserId(TransactionManager transactionManager, System.String _userId, int start, int pageLength, out int count);
+		public abstract TList<UserRole> GetByUsername(TransactionManager transactionManager, System.String _username, int start, int pageLength, out int count);
 		
 		#endregion
 
@@ -390,7 +390,7 @@ namespace AppointmentSystem.Data.Bases
 				{
 					c.SuppressEntityEvents = true;
 					c.Id = (System.Int64)reader[((int)UserRoleColumn.Id - 1)];
-					c.UserId = (System.String)reader[((int)UserRoleColumn.UserId - 1)];
+					c.Username = (System.String)reader[((int)UserRoleColumn.Username - 1)];
 					c.RoleId = (reader.IsDBNull(((int)UserRoleColumn.RoleId - 1)))?null:(System.Int32?)reader[((int)UserRoleColumn.RoleId - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)UserRoleColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)UserRoleColumn.CreateUser - 1)))?null:(System.String)reader[((int)UserRoleColumn.CreateUser - 1)];
@@ -415,7 +415,7 @@ namespace AppointmentSystem.Data.Bases
 			if (!reader.Read()) return;
 			
 			entity.Id = (System.Int64)reader[((int)UserRoleColumn.Id - 1)];
-			entity.UserId = (System.String)reader[((int)UserRoleColumn.UserId - 1)];
+			entity.Username = (System.String)reader[((int)UserRoleColumn.Username - 1)];
 			entity.RoleId = (reader.IsDBNull(((int)UserRoleColumn.RoleId - 1)))?null:(System.Int32?)reader[((int)UserRoleColumn.RoleId - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)UserRoleColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)UserRoleColumn.CreateUser - 1)))?null:(System.String)reader[((int)UserRoleColumn.CreateUser - 1)];
@@ -435,7 +435,7 @@ namespace AppointmentSystem.Data.Bases
 			DataRow dataRow = dataSet.Tables[0].Rows[0];
 			
 			entity.Id = (System.Int64)dataRow["Id"];
-			entity.UserId = (System.String)dataRow["UserId"];
+			entity.Username = (System.String)dataRow["Username"];
 			entity.RoleId = Convert.IsDBNull(dataRow["RoleId"]) ? null : (System.Int32?)dataRow["RoleId"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
@@ -493,31 +493,31 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion RoleIdSource
 
-			#region UserIdSource	
-			if (CanDeepLoad(entity, "Users|UserIdSource", deepLoadType, innerList) 
-				&& entity.UserIdSource == null)
+			#region UsernameSource	
+			if (CanDeepLoad(entity, "Users|UsernameSource", deepLoadType, innerList) 
+				&& entity.UsernameSource == null)
 			{
 				object[] pkItems = new object[1];
-				pkItems[0] = entity.UserId;
+				pkItems[0] = entity.Username;
 				Users tmpEntity = EntityManager.LocateEntity<Users>(EntityLocator.ConstructKeyFromPkItems(typeof(Users), pkItems), DataRepository.Provider.EnableEntityTracking);
 				if (tmpEntity != null)
-					entity.UserIdSource = tmpEntity;
+					entity.UsernameSource = tmpEntity;
 				else
-					entity.UserIdSource = DataRepository.UsersProvider.GetById(transactionManager, entity.UserId);		
+					entity.UsernameSource = DataRepository.UsersProvider.GetByUsername(transactionManager, entity.Username);		
 				
 				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'UserIdSource' loaded. key " + entity.EntityTrackingKey);
+				System.Diagnostics.Debug.WriteLine("- property 'UsernameSource' loaded. key " + entity.EntityTrackingKey);
 				#endif 
 				
-				if (deep && entity.UserIdSource != null)
+				if (deep && entity.UsernameSource != null)
 				{
 					innerList.SkipChildren = true;
-					DataRepository.UsersProvider.DeepLoad(transactionManager, entity.UserIdSource, deep, deepLoadType, childTypes, innerList);
+					DataRepository.UsersProvider.DeepLoad(transactionManager, entity.UsernameSource, deep, deepLoadType, childTypes, innerList);
 					innerList.SkipChildren = false;
 				}
 					
 			}
-			#endregion UserIdSource
+			#endregion UsernameSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -561,12 +561,12 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion 
 			
-			#region UserIdSource
-			if (CanDeepSave(entity, "Users|UserIdSource", deepSaveType, innerList) 
-				&& entity.UserIdSource != null)
+			#region UsernameSource
+			if (CanDeepSave(entity, "Users|UsernameSource", deepSaveType, innerList) 
+				&& entity.UsernameSource != null)
 			{
-				DataRepository.UsersProvider.Save(transactionManager, entity.UserIdSource);
-				entity.UserId = entity.UserIdSource.Id;
+				DataRepository.UsersProvider.Save(transactionManager, entity.UsernameSource);
+				entity.Username = entity.UsernameSource.Username;
 			}
 			#endregion 
 			#endregion Composite Parent Properties
@@ -611,7 +611,7 @@ namespace AppointmentSystem.Data.Bases
 		Role,
 			
 		///<summary>
-		/// Composite Property for <c>Users</c> at UserIdSource
+		/// Composite Property for <c>Users</c> at UsernameSource
 		///</summary>
 		[ChildEntityType(typeof(Users))]
 		Users,

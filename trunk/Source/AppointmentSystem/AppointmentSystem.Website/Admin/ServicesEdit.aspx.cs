@@ -22,10 +22,10 @@ public partial class ServicesEdit : System.Web.UI.Page
 		FormUtil.RedirectAfterCancel(FormView1, "Services.aspx");
 		FormUtil.SetDefaultMode(FormView1, "Id");
 	}
-	protected void GridViewDoctorService1_SelectedIndexChanged(object sender, EventArgs e)
+	protected void GridViewUsers1_SelectedIndexChanged(object sender, EventArgs e)
 	{
-		string urlParams = string.Format("Id={0}", GridViewDoctorService1.SelectedDataKey.Values[0]);
-		Response.Redirect("DoctorServiceEdit.aspx?" + urlParams, true);		
+		string urlParams = string.Format("Username={0}", GridViewUsers1.SelectedDataKey.Values[0]);
+		Response.Redirect("UsersEdit.aspx?" + urlParams, true);		
 	}	
 	protected void GridViewAppointment2_SelectedIndexChanged(object sender, EventArgs e)
 	{

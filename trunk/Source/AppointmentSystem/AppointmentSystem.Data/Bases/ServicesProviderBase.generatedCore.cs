@@ -307,21 +307,21 @@ namespace AppointmentSystem.Data.Bases
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
 			// Deep load child collections  - Call GetById methods when available
 			
-			#region DoctorServiceCollection
+			#region UsersCollection
 			//Relationship Type One : Many
-			if (CanDeepLoad(entity, "List<DoctorService>|DoctorServiceCollection", deepLoadType, innerList)) 
+			if (CanDeepLoad(entity, "List<Users>|UsersCollection", deepLoadType, innerList)) 
 			{
 				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'DoctorServiceCollection' loaded. key " + entity.EntityTrackingKey);
+				System.Diagnostics.Debug.WriteLine("- property 'UsersCollection' loaded. key " + entity.EntityTrackingKey);
 				#endif 
 
-				entity.DoctorServiceCollection = DataRepository.DoctorServiceProvider.GetByServiceId(transactionManager, entity.Id);
+				entity.UsersCollection = DataRepository.UsersProvider.GetByServicesId(transactionManager, entity.Id);
 
-				if (deep && entity.DoctorServiceCollection.Count > 0)
+				if (deep && entity.UsersCollection.Count > 0)
 				{
-					deepHandles.Add("DoctorServiceCollection",
-						new KeyValuePair<Delegate, object>((DeepLoadHandle<DoctorService>) DataRepository.DoctorServiceProvider.DeepLoad,
-						new object[] { transactionManager, entity.DoctorServiceCollection, deep, deepLoadType, childTypes, innerList }
+					deepHandles.Add("UsersCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<Users>) DataRepository.UsersProvider.DeepLoad,
+						new object[] { transactionManager, entity.UsersCollection, deep, deepLoadType, childTypes, innerList }
 					));
 				}
 			}		
@@ -408,30 +408,30 @@ namespace AppointmentSystem.Data.Bases
 			//used to hold DeepSave method delegates and fire after all the local children have been saved.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
 	
-			#region List<DoctorService>
-				if (CanDeepSave(entity.DoctorServiceCollection, "List<DoctorService>|DoctorServiceCollection", deepSaveType, innerList)) 
+			#region List<Users>
+				if (CanDeepSave(entity.UsersCollection, "List<Users>|UsersCollection", deepSaveType, innerList)) 
 				{	
 					// update each child parent id with the real parent id (mostly used on insert)
-					foreach(DoctorService child in entity.DoctorServiceCollection)
+					foreach(Users child in entity.UsersCollection)
 					{
-						if(child.ServiceIdSource != null)
+						if(child.ServicesIdSource != null)
 						{
-							child.ServiceId = child.ServiceIdSource.Id;
+							child.ServicesId = child.ServicesIdSource.Id;
 						}
 						else
 						{
-							child.ServiceId = entity.Id;
+							child.ServicesId = entity.Id;
 						}
 
 					}
 
-					if (entity.DoctorServiceCollection.Count > 0 || entity.DoctorServiceCollection.DeletedItems.Count > 0)
+					if (entity.UsersCollection.Count > 0 || entity.UsersCollection.DeletedItems.Count > 0)
 					{
-						//DataRepository.DoctorServiceProvider.Save(transactionManager, entity.DoctorServiceCollection);
+						//DataRepository.UsersProvider.Save(transactionManager, entity.UsersCollection);
 						
-						deepHandles.Add("DoctorServiceCollection",
-						new KeyValuePair<Delegate, object>((DeepSaveHandle< DoctorService >) DataRepository.DoctorServiceProvider.DeepSave,
-							new object[] { transactionManager, entity.DoctorServiceCollection, deepSaveType, childTypes, innerList }
+						deepHandles.Add("UsersCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< Users >) DataRepository.UsersProvider.DeepSave,
+							new object[] { transactionManager, entity.UsersCollection, deepSaveType, childTypes, innerList }
 						));
 					}
 				} 
@@ -525,10 +525,10 @@ namespace AppointmentSystem.Data.Bases
 	{
 
 		///<summary>
-		/// Collection of <c>Services</c> as OneToMany for DoctorServiceCollection
+		/// Collection of <c>Services</c> as OneToMany for UsersCollection
 		///</summary>
-		[ChildEntityType(typeof(TList<DoctorService>))]
-		DoctorServiceCollection,
+		[ChildEntityType(typeof(TList<Users>))]
+		UsersCollection,
 
 		///<summary>
 		/// Collection of <c>Services</c> as OneToMany for AppointmentCollection

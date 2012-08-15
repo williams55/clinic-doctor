@@ -174,7 +174,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             // luu y la cac thong tin lien ket voi no phai co gia tri IsDisabled la false thi moi tinh la ton tai
             // neu IsDisabled co gia tri True thi nghia la no khong con ton tai
             if (obj.RoomCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co phong nao dang co dich vu nay hay khong
-                || obj.DoctorServiceCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co bac si nao duoc gan vao dich vu nay hay khong
+                || obj.UsersCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co bac si nao duoc gan vao dich vu nay hay khong
                 || obj.AppointmentCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co appointment nao da co dich vu nay hay khong
                 )
             {

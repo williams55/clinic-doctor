@@ -418,40 +418,6 @@ namespace AppointmentSystem.Data
 
 		#region Static properties
 		
-		#region ScreenProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Screen"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static ScreenProviderBase ScreenProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.ScreenProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region UserRoleProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="UserRole"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static UserRoleProviderBase UserRoleProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.UserRoleProvider;
-			}
-		}
-		
-		#endregion
-		
 		#region ServicesProvider
 
 		///<summary>
@@ -464,125 +430,6 @@ namespace AppointmentSystem.Data
 			{
 				LoadProviders();
 				return _provider.ServicesProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region RosterTypeProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="RosterType"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static RosterTypeProviderBase RosterTypeProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.RosterTypeProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region UserGroupProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="UserGroup"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static UserGroupProviderBase UserGroupProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.UserGroupProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region StatusProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Status"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static StatusProviderBase StatusProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.StatusProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region RoomProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Room"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static RoomProviderBase RoomProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.RoomProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region UnitsProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Units"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static UnitsProviderBase UnitsProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.UnitsProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region RoleProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Role"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static RoleProviderBase RoleProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.RoleProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region AppointmentGroupProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="AppointmentGroup"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static AppointmentGroupProviderBase AppointmentGroupProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.AppointmentGroupProvider;
 			}
 		}
 		
@@ -605,6 +452,159 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
+		#region RoomProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Room"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static RoomProviderBase RoomProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.RoomProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region StatusProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Status"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static StatusProviderBase StatusProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.StatusProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region ScreenProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Screen"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static ScreenProviderBase ScreenProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.ScreenProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region UnitsProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Units"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static UnitsProviderBase UnitsProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.UnitsProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region UserGroupProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="UserGroup"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static UserGroupProviderBase UserGroupProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.UserGroupProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region AppointmentProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Appointment"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static AppointmentProviderBase AppointmentProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.AppointmentProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region RosterTypeProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="RosterType"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static RosterTypeProviderBase RosterTypeProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.RosterTypeProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region UserRoleProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="UserRole"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static UserRoleProviderBase UserRoleProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.UserRoleProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region RosterProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Roster"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static RosterProviderBase RosterProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.RosterProvider;
+			}
+		}
+		
+		#endregion
+		
 		#region DoctorRoomProvider
 
 		///<summary>
@@ -617,40 +617,6 @@ namespace AppointmentSystem.Data
 			{
 				LoadProviders();
 				return _provider.DoctorRoomProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region RoleDetailProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="RoleDetail"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static RoleDetailProviderBase RoleDetailProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.RoleDetailProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region DoctorServiceProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="DoctorService"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static DoctorServiceProviderBase DoctorServiceProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.DoctorServiceProvider;
 			}
 		}
 		
@@ -690,35 +656,52 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
-		#region RosterProvider
+		#region RoleProvider
 
 		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Roster"/> business entity.
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Role"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
-		public static RosterProviderBase RosterProvider
+		public static RoleProviderBase RoleProvider
 		{
 			get 
 			{
 				LoadProviders();
-				return _provider.RosterProvider;
+				return _provider.RoleProvider;
 			}
 		}
 		
 		#endregion
 		
-		#region AppointmentProvider
+		#region RoleDetailProvider
 
 		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Appointment"/> business entity.
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="RoleDetail"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
-		public static AppointmentProviderBase AppointmentProvider
+		public static RoleDetailProviderBase RoleDetailProvider
 		{
 			get 
 			{
 				LoadProviders();
-				return _provider.AppointmentProvider;
+				return _provider.RoleDetailProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region AppointmentGroupProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="AppointmentGroup"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static AppointmentGroupProviderBase AppointmentGroupProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.AppointmentGroupProvider;
 			}
 		}
 		
@@ -729,142 +712,6 @@ namespace AppointmentSystem.Data
 	}
 	
 	#region Query/Filters
-		
-	#region ScreenFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Screen"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class ScreenFilters : ScreenFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the ScreenFilters class.
-		/// </summary>
-		public ScreenFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the ScreenFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public ScreenFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the ScreenFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public ScreenFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion ScreenFilters
-	
-	#region ScreenQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="ScreenParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Screen"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class ScreenQuery : ScreenParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the ScreenQuery class.
-		/// </summary>
-		public ScreenQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the ScreenQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public ScreenQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the ScreenQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public ScreenQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion ScreenQuery
-		
-	#region UserRoleFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="UserRole"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class UserRoleFilters : UserRoleFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the UserRoleFilters class.
-		/// </summary>
-		public UserRoleFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the UserRoleFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public UserRoleFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the UserRoleFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public UserRoleFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion UserRoleFilters
-	
-	#region UserRoleQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="UserRoleParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="UserRole"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class UserRoleQuery : UserRoleParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the UserRoleQuery class.
-		/// </summary>
-		public UserRoleQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the UserRoleQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public UserRoleQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the UserRoleQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public UserRoleQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion UserRoleQuery
 		
 	#region ServicesFilters
 	
@@ -934,209 +781,73 @@ namespace AppointmentSystem.Data
 
 	#endregion ServicesQuery
 		
-	#region RosterTypeFilters
+	#region UsersFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="RosterType"/> object.
+	/// that is used exclusively with a <see cref="Users"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class RosterTypeFilters : RosterTypeFilterBuilder
+	public class UsersFilters : UsersFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the RosterTypeFilters class.
+		/// Initializes a new instance of the UsersFilters class.
 		/// </summary>
-		public RosterTypeFilters() : base() { }
+		public UsersFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the RosterTypeFilters class.
+		/// Initializes a new instance of the UsersFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RosterTypeFilters(bool ignoreCase) : base(ignoreCase) { }
+		public UsersFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the RosterTypeFilters class.
+		/// Initializes a new instance of the UsersFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RosterTypeFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public UsersFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion RosterTypeFilters
+	#endregion UsersFilters
 	
-	#region RosterTypeQuery
+	#region UsersQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="RosterTypeParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="RosterType"/> object.
+	/// A strongly-typed instance of the <see cref="UsersParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Users"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class RosterTypeQuery : RosterTypeParameterBuilder
+	public class UsersQuery : UsersParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the RosterTypeQuery class.
+		/// Initializes a new instance of the UsersQuery class.
 		/// </summary>
-		public RosterTypeQuery() : base() { }
+		public UsersQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the RosterTypeQuery class.
+		/// Initializes a new instance of the UsersQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RosterTypeQuery(bool ignoreCase) : base(ignoreCase) { }
+		public UsersQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the RosterTypeQuery class.
+		/// Initializes a new instance of the UsersQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RosterTypeQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public UsersQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion RosterTypeQuery
-		
-	#region UserGroupFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="UserGroup"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class UserGroupFilters : UserGroupFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the UserGroupFilters class.
-		/// </summary>
-		public UserGroupFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the UserGroupFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public UserGroupFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the UserGroupFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public UserGroupFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion UserGroupFilters
-	
-	#region UserGroupQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="UserGroupParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="UserGroup"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class UserGroupQuery : UserGroupParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the UserGroupQuery class.
-		/// </summary>
-		public UserGroupQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the UserGroupQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public UserGroupQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the UserGroupQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public UserGroupQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion UserGroupQuery
-		
-	#region StatusFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Status"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class StatusFilters : StatusFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the StatusFilters class.
-		/// </summary>
-		public StatusFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the StatusFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public StatusFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the StatusFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public StatusFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion StatusFilters
-	
-	#region StatusQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="StatusParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Status"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class StatusQuery : StatusParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the StatusQuery class.
-		/// </summary>
-		public StatusQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the StatusQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public StatusQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the StatusQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public StatusQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion StatusQuery
+	#endregion UsersQuery
 		
 	#region RoomFilters
 	
@@ -1206,6 +917,142 @@ namespace AppointmentSystem.Data
 
 	#endregion RoomQuery
 		
+	#region StatusFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="Status"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class StatusFilters : StatusFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the StatusFilters class.
+		/// </summary>
+		public StatusFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the StatusFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public StatusFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the StatusFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public StatusFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion StatusFilters
+	
+	#region StatusQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="StatusParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Status"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class StatusQuery : StatusParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the StatusQuery class.
+		/// </summary>
+		public StatusQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the StatusQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public StatusQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the StatusQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public StatusQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion StatusQuery
+		
+	#region ScreenFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="Screen"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class ScreenFilters : ScreenFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the ScreenFilters class.
+		/// </summary>
+		public ScreenFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the ScreenFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public ScreenFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the ScreenFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public ScreenFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion ScreenFilters
+	
+	#region ScreenQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="ScreenParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Screen"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class ScreenQuery : ScreenParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the ScreenQuery class.
+		/// </summary>
+		public ScreenQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the ScreenQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public ScreenQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the ScreenQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public ScreenQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion ScreenQuery
+		
 	#region UnitsFilters
 	
 	/// <summary>
@@ -1274,209 +1121,345 @@ namespace AppointmentSystem.Data
 
 	#endregion UnitsQuery
 		
-	#region RoleFilters
+	#region UserGroupFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Role"/> object.
+	/// that is used exclusively with a <see cref="UserGroup"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class RoleFilters : RoleFilterBuilder
+	public class UserGroupFilters : UserGroupFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the RoleFilters class.
+		/// Initializes a new instance of the UserGroupFilters class.
 		/// </summary>
-		public RoleFilters() : base() { }
+		public UserGroupFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the RoleFilters class.
+		/// Initializes a new instance of the UserGroupFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoleFilters(bool ignoreCase) : base(ignoreCase) { }
+		public UserGroupFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the RoleFilters class.
+		/// Initializes a new instance of the UserGroupFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoleFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public UserGroupFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion RoleFilters
+	#endregion UserGroupFilters
 	
-	#region RoleQuery
+	#region UserGroupQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="RoleParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Role"/> object.
+	/// A strongly-typed instance of the <see cref="UserGroupParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="UserGroup"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class RoleQuery : RoleParameterBuilder
+	public class UserGroupQuery : UserGroupParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the RoleQuery class.
+		/// Initializes a new instance of the UserGroupQuery class.
 		/// </summary>
-		public RoleQuery() : base() { }
+		public UserGroupQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the RoleQuery class.
+		/// Initializes a new instance of the UserGroupQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoleQuery(bool ignoreCase) : base(ignoreCase) { }
+		public UserGroupQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the RoleQuery class.
+		/// Initializes a new instance of the UserGroupQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoleQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public UserGroupQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion RoleQuery
+	#endregion UserGroupQuery
 		
-	#region AppointmentGroupFilters
+	#region AppointmentFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="AppointmentGroup"/> object.
+	/// that is used exclusively with a <see cref="Appointment"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class AppointmentGroupFilters : AppointmentGroupFilterBuilder
+	public class AppointmentFilters : AppointmentFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupFilters class.
+		/// Initializes a new instance of the AppointmentFilters class.
 		/// </summary>
-		public AppointmentGroupFilters() : base() { }
+		public AppointmentFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupFilters class.
+		/// Initializes a new instance of the AppointmentFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentGroupFilters(bool ignoreCase) : base(ignoreCase) { }
+		public AppointmentFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupFilters class.
+		/// Initializes a new instance of the AppointmentFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentGroupFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public AppointmentFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion AppointmentGroupFilters
+	#endregion AppointmentFilters
 	
-	#region AppointmentGroupQuery
+	#region AppointmentQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="AppointmentGroupParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="AppointmentGroup"/> object.
+	/// A strongly-typed instance of the <see cref="AppointmentParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Appointment"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class AppointmentGroupQuery : AppointmentGroupParameterBuilder
+	public class AppointmentQuery : AppointmentParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupQuery class.
+		/// Initializes a new instance of the AppointmentQuery class.
 		/// </summary>
-		public AppointmentGroupQuery() : base() { }
+		public AppointmentQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupQuery class.
+		/// Initializes a new instance of the AppointmentQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentGroupQuery(bool ignoreCase) : base(ignoreCase) { }
+		public AppointmentQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupQuery class.
+		/// Initializes a new instance of the AppointmentQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentGroupQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public AppointmentQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion AppointmentGroupQuery
+	#endregion AppointmentQuery
 		
-	#region UsersFilters
+	#region RosterTypeFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Users"/> object.
+	/// that is used exclusively with a <see cref="RosterType"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class UsersFilters : UsersFilterBuilder
+	public class RosterTypeFilters : RosterTypeFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the UsersFilters class.
+		/// Initializes a new instance of the RosterTypeFilters class.
 		/// </summary>
-		public UsersFilters() : base() { }
+		public RosterTypeFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the UsersFilters class.
+		/// Initializes a new instance of the RosterTypeFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public UsersFilters(bool ignoreCase) : base(ignoreCase) { }
+		public RosterTypeFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the UsersFilters class.
+		/// Initializes a new instance of the RosterTypeFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public UsersFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RosterTypeFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion UsersFilters
+	#endregion RosterTypeFilters
 	
-	#region UsersQuery
+	#region RosterTypeQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="UsersParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Users"/> object.
+	/// A strongly-typed instance of the <see cref="RosterTypeParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="RosterType"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class UsersQuery : UsersParameterBuilder
+	public class RosterTypeQuery : RosterTypeParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the UsersQuery class.
+		/// Initializes a new instance of the RosterTypeQuery class.
 		/// </summary>
-		public UsersQuery() : base() { }
+		public RosterTypeQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the UsersQuery class.
+		/// Initializes a new instance of the RosterTypeQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public UsersQuery(bool ignoreCase) : base(ignoreCase) { }
+		public RosterTypeQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the UsersQuery class.
+		/// Initializes a new instance of the RosterTypeQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public UsersQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RosterTypeQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion UsersQuery
+	#endregion RosterTypeQuery
+		
+	#region UserRoleFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="UserRole"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class UserRoleFilters : UserRoleFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the UserRoleFilters class.
+		/// </summary>
+		public UserRoleFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the UserRoleFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public UserRoleFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the UserRoleFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public UserRoleFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion UserRoleFilters
+	
+	#region UserRoleQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="UserRoleParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="UserRole"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class UserRoleQuery : UserRoleParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the UserRoleQuery class.
+		/// </summary>
+		public UserRoleQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the UserRoleQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public UserRoleQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the UserRoleQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public UserRoleQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion UserRoleQuery
+		
+	#region RosterFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="Roster"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class RosterFilters : RosterFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the RosterFilters class.
+		/// </summary>
+		public RosterFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the RosterFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public RosterFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the RosterFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public RosterFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion RosterFilters
+	
+	#region RosterQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="RosterParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Roster"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class RosterQuery : RosterParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the RosterQuery class.
+		/// </summary>
+		public RosterQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the RosterQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public RosterQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the RosterQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public RosterQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion RosterQuery
 		
 	#region DoctorRoomFilters
 	
@@ -1545,142 +1528,6 @@ namespace AppointmentSystem.Data
 	}
 
 	#endregion DoctorRoomQuery
-		
-	#region RoleDetailFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="RoleDetail"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class RoleDetailFilters : RoleDetailFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailFilters class.
-		/// </summary>
-		public RoleDetailFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoleDetailFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoleDetailFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion RoleDetailFilters
-	
-	#region RoleDetailQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="RoleDetailParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="RoleDetail"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class RoleDetailQuery : RoleDetailParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailQuery class.
-		/// </summary>
-		public RoleDetailQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoleDetailQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoleDetailQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion RoleDetailQuery
-		
-	#region DoctorServiceFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="DoctorService"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class DoctorServiceFilters : DoctorServiceFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorServiceFilters class.
-		/// </summary>
-		public DoctorServiceFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorServiceFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public DoctorServiceFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorServiceFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public DoctorServiceFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion DoctorServiceFilters
-	
-	#region DoctorServiceQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="DoctorServiceParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="DoctorService"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class DoctorServiceQuery : DoctorServiceParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorServiceQuery class.
-		/// </summary>
-		public DoctorServiceQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorServiceQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public DoctorServiceQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the DoctorServiceQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public DoctorServiceQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion DoctorServiceQuery
 		
 	#region GroupRoleFilters
 	
@@ -1818,141 +1665,209 @@ namespace AppointmentSystem.Data
 
 	#endregion PatientQuery
 		
-	#region RosterFilters
+	#region RoleFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Roster"/> object.
+	/// that is used exclusively with a <see cref="Role"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class RosterFilters : RosterFilterBuilder
+	public class RoleFilters : RoleFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the RosterFilters class.
+		/// Initializes a new instance of the RoleFilters class.
 		/// </summary>
-		public RosterFilters() : base() { }
+		public RoleFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the RosterFilters class.
+		/// Initializes a new instance of the RoleFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RosterFilters(bool ignoreCase) : base(ignoreCase) { }
+		public RoleFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the RosterFilters class.
+		/// Initializes a new instance of the RoleFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RosterFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RoleFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion RosterFilters
+	#endregion RoleFilters
 	
-	#region RosterQuery
+	#region RoleQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="RosterParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Roster"/> object.
+	/// A strongly-typed instance of the <see cref="RoleParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Role"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class RosterQuery : RosterParameterBuilder
+	public class RoleQuery : RoleParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the RosterQuery class.
+		/// Initializes a new instance of the RoleQuery class.
 		/// </summary>
-		public RosterQuery() : base() { }
+		public RoleQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the RosterQuery class.
+		/// Initializes a new instance of the RoleQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RosterQuery(bool ignoreCase) : base(ignoreCase) { }
+		public RoleQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the RosterQuery class.
+		/// Initializes a new instance of the RoleQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RosterQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RoleQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion RosterQuery
+	#endregion RoleQuery
 		
-	#region AppointmentFilters
+	#region RoleDetailFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Appointment"/> object.
+	/// that is used exclusively with a <see cref="RoleDetail"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class AppointmentFilters : AppointmentFilterBuilder
+	public class RoleDetailFilters : RoleDetailFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentFilters class.
+		/// Initializes a new instance of the RoleDetailFilters class.
 		/// </summary>
-		public AppointmentFilters() : base() { }
+		public RoleDetailFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentFilters class.
+		/// Initializes a new instance of the RoleDetailFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentFilters(bool ignoreCase) : base(ignoreCase) { }
+		public RoleDetailFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentFilters class.
+		/// Initializes a new instance of the RoleDetailFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RoleDetailFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion AppointmentFilters
+	#endregion RoleDetailFilters
 	
-	#region AppointmentQuery
+	#region RoleDetailQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="AppointmentParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Appointment"/> object.
+	/// A strongly-typed instance of the <see cref="RoleDetailParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="RoleDetail"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class AppointmentQuery : AppointmentParameterBuilder
+	public class RoleDetailQuery : RoleDetailParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentQuery class.
+		/// Initializes a new instance of the RoleDetailQuery class.
 		/// </summary>
-		public AppointmentQuery() : base() { }
+		public RoleDetailQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentQuery class.
+		/// Initializes a new instance of the RoleDetailQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentQuery(bool ignoreCase) : base(ignoreCase) { }
+		public RoleDetailQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentQuery class.
+		/// Initializes a new instance of the RoleDetailQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RoleDetailQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion AppointmentQuery
+	#endregion RoleDetailQuery
+		
+	#region AppointmentGroupFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="AppointmentGroup"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class AppointmentGroupFilters : AppointmentGroupFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentGroupFilters class.
+		/// </summary>
+		public AppointmentGroupFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentGroupFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public AppointmentGroupFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentGroupFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public AppointmentGroupFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion AppointmentGroupFilters
+	
+	#region AppointmentGroupQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="AppointmentGroupParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="AppointmentGroup"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class AppointmentGroupQuery : AppointmentGroupParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentGroupQuery class.
+		/// </summary>
+		public AppointmentGroupQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentGroupQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public AppointmentGroupQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentGroupQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public AppointmentGroupQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion AppointmentGroupQuery
 	#endregion
 
 	

@@ -502,14 +502,14 @@ namespace AppointmentSystem.Entities
 		#region Children Collections
 	
 		/// <summary>
-		///	Holds a collection of DoctorService objects
-		///	which are related to this object through the relation FK_DoctorService_Services
+		///	Holds a collection of Users objects
+		///	which are related to this object through the relation FK_Users_Services
 		/// </summary>	
 		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual TList<DoctorService> DoctorServiceCollection
+		public virtual TList<Users> UsersCollection
 		{
-			get { return entityData.DoctorServiceCollection; }
-			set { entityData.DoctorServiceCollection = value; }	
+			get { return entityData.UsersCollection; }
+			set { entityData.UsersCollection = value; }	
 		}
 	
 		/// <summary>
@@ -737,7 +737,7 @@ namespace AppointmentSystem.Entities
 			
 		
 			//deep copy nested objects
-			copy.DoctorServiceCollection = (TList<DoctorService>) MakeCopyOf(this.DoctorServiceCollection, existingCopies); 
+			copy.UsersCollection = (TList<Users>) MakeCopyOf(this.UsersCollection, existingCopies); 
 			copy.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
 			copy.RoomCollection = (TList<Room>) MakeCopyOf(this.RoomCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
@@ -1406,27 +1406,27 @@ namespace AppointmentSystem.Entities
 	
 		#region Data Properties
 
-		#region DoctorServiceCollection
+		#region UsersCollection
 		
-		private TList<DoctorService> _doctorServiceServiceId;
+		private TList<Users> _usersServicesId;
 		
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorServiceServiceId
+		///	which are related to this object through the relation _usersServicesId
 		/// </summary>
 		
-		public TList<DoctorService> DoctorServiceCollection
+		public TList<Users> UsersCollection
 		{
 			get
 			{
-				if (_doctorServiceServiceId == null)
+				if (_usersServicesId == null)
 				{
-				_doctorServiceServiceId = new TList<DoctorService>();
+				_usersServicesId = new TList<Users>();
 				}
 	
-				return _doctorServiceServiceId;
+				return _usersServicesId;
 			}
-			set { _doctorServiceServiceId = value; }
+			set { _usersServicesId = value; }
 		}
 		
 		#endregion
@@ -1510,8 +1510,8 @@ namespace AppointmentSystem.Entities
 		
 			#region Child Collections
 			//deep copy nested objects
-			if (this._doctorServiceServiceId != null)
-				_tmp.DoctorServiceCollection = (TList<DoctorService>) MakeCopyOf(this.DoctorServiceCollection); 
+			if (this._usersServicesId != null)
+				_tmp.UsersCollection = (TList<Users>) MakeCopyOf(this.UsersCollection); 
 			if (this._appointmentServicesId != null)
 				_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection); 
 			if (this._roomServicesId != null)
@@ -1552,7 +1552,7 @@ namespace AppointmentSystem.Entities
 		
 			#region Child Collections
 			//deep copy nested objects
-			_tmp.DoctorServiceCollection = (TList<DoctorService>) MakeCopyOf(this.DoctorServiceCollection, existingCopies); 
+			_tmp.UsersCollection = (TList<Users>) MakeCopyOf(this.UsersCollection, existingCopies); 
 			_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
 			_tmp.RoomCollection = (TList<Room>) MakeCopyOf(this.RoomCollection, existingCopies); 
 			#endregion Child Collections
