@@ -2,7 +2,7 @@ CREATE TABLE [dbo].[Appointment]
 (
 [Id] [nvarchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [PatientCode] [nchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-[DoctorId] [nvarchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+[Username] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [RoomId] [int] NULL,
 [ServicesId] [int] NULL,
 [StatusId] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -17,13 +17,14 @@ CREATE TABLE [dbo].[Appointment]
 [UpdateUser] [nvarchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [UpdateDate] [datetime] NOT NULL CONSTRAINT [DF_Appointment_UpdateDate] DEFAULT (getdate())
 ) ON [PRIMARY]
+ALTER TABLE [dbo].[Appointment] ADD
+CONSTRAINT [FK_Appointment_Users] FOREIGN KEY ([Username]) REFERENCES [dbo].[Users] ([Username])
 GO
 ALTER TABLE [dbo].[Appointment] ADD CONSTRAINT [PK_Appointment] PRIMARY KEY CLUSTERED  ([Id]) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Appointment] ADD CONSTRAINT [FK_Appointment_AppointmentGroup] FOREIGN KEY ([AppointmentGroupId]) REFERENCES [dbo].[AppointmentGroup] ([Id])
 GO
-ALTER TABLE [dbo].[Appointment] ADD CONSTRAINT [FK_Appointment_Users] FOREIGN KEY ([DoctorId]) REFERENCES [dbo].[Users] ([Id])
-GO
+
 ALTER TABLE [dbo].[Appointment] ADD CONSTRAINT [FK_Appointment_Patient] FOREIGN KEY ([PatientCode]) REFERENCES [dbo].[Patient] ([PatientCode])
 GO
 ALTER TABLE [dbo].[Appointment] ADD CONSTRAINT [FK_Appointment_Room] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Room] ([Id])
