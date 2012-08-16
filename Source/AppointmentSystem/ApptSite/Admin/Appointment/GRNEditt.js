@@ -61,7 +61,6 @@ function initSchedule(weekday) {
                 // khi hien thi, dua vao thoi gian cua roster ma to mau
                 isUsing = true;
                 LoadDoctorSection(mode, date);
-                //LoadAppointment(mode, date);
             }
         });
 
@@ -471,7 +470,8 @@ function MoveAppointment(eventId, objEvent) {
 }
 
 function LoadDoctorSection(mode, date) {
-    var requestdata = JSON.stringify({ mode: mode, currentDateView: date });
+    var services = mode.split("_");
+    var requestdata = JSON.stringify({ mode: parseInt(services[1]), currentDateView: date });
     $.ajax({
         type: "POST",
         url: "Default.aspx/GetSections",
@@ -487,6 +487,10 @@ function LoadDoctorSection(mode, date) {
                     var container = $('#main-dhx .dhx_scale_holder:nth-child(' + (i + 1) + ')');
                     $('.roster_color, .dhx_time_block', container).remove();
 
+                    $.each(doctor.blockTime, function(j, blockTime) {
+                        scheduler.blockTime(date, blockTime, { unit: [doctor.key] });
+                    });
+
                     // Tao mot lop mau de len nen scheduler
                     $.each(doctor.roster, function(j, roster) {
                         var top = roster.StartTime * scheduler.config.hour_size_px / 60;
@@ -497,15 +501,15 @@ function LoadDoctorSection(mode, date) {
                             + roster.Color + '"></div>';
                         $(container).append(colorDiv);
                     });
-                    console.log($(container));
                 });
+                //LoadAppointment(mode, date);
 
                 //                $('.roster_color').mousedown(function(event) {
-                //                    $(this).css('background', 'transparent');
+                //                    $(this).hide();
                 //                    var element = document.elementFromPoint(event.pageX, event.pageY);
-                //                    $(this).mouseup(function(event2) {
-                //                        $(this).show();
-                //                    });
+                //                    $(element).focus();
+                //                    $(this).show();
+
                 //                });
             }
             else {

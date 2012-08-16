@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -69,7 +70,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                                             ServiceFacade.SettingsHelper.GetPagedLength, out count)
                 .Select(x => new
                                  {
-                                     x.Id,
+                                     Id = "unit_" + x.Id.ToString(),
                                      x.Title,
                                      x.ShortTitle
                                  });
@@ -629,15 +630,24 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             // Get available doctor 
             var lstAvaiDoctor = lstDoctor.FindAll(x => lstRoster.Exists(y => y.Username == x.Username));
 
+            // Get available doctor 
+            var lstResultDoctor = new TList<Users>();
+
             // Xet tung bac si, lay danh sach roster, sap xem theo thoi gian bat dau tang dan
             // Dat bien time chay tu 0 => het ngay
-            var lstBlockTime = new List<BlockTime>();
+            var blockTimes = new List<BlockTime>();
+            var avaiTimes = new List<AvaiTime>();
             lstRoster.Sort(("StartTime ASC"));
             foreach (var userse in lstAvaiDoctor)
             {
                 // Lay danh sach roster cua doctor
                 Users userse1 = userse;
                 var lstTmpRoster = lstRoster.FindAll(x => x.Username == userse1.Username);
+                var blockTime = new BlockTime
+                    {
+                        Username = userse1.Username,
+                        BlockList = new List<int>()
+                    };
 
                 // Khoi tao bien
                 int timeIndex = 0;
@@ -647,7 +657,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 foreach (var roster in lstTmpRoster)
                 {
                     // Add roster available
-                    lstBlockTime.Add(new BlockTime
+                    avaiTimes.Add(new AvaiTime
                     {
                         StartTime = roster.StartTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.StartTime.Minute,
                         EndTime = roster.EndTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.EndTime.Minute,
@@ -659,24 +669,32 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     // Neu thoi gian bat dau lon hon timeIndex thi tao mot khoang thoi gian block
                     if ((roster.StartTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.StartTime.Minute) > timeIndex)
                     {
-                        lstBlockTime.Add(new BlockTime
-                            {
-                                StartTime = timeIndex,
-                                EndTime = roster.StartTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.StartTime.Minute,
-                                Color = ServiceFacade.SettingsHelper.NotAvailableColor,
-                                IsBlocked = true,
-                                Username = roster.Username
-                            });
+                        avaiTimes.Add(new AvaiTime
+                        {
+                            StartTime = timeIndex,
+                            EndTime = roster.StartTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.StartTime.Minute,
+                            Color = ServiceFacade.SettingsHelper.NotAvailableColor,
+                            IsBlocked = true,
+                            Username = roster.Username
+                        });
+                        blockTime.BlockList.Add(timeIndex);
+                        blockTime.BlockList.Add(roster.StartTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.StartTime.Minute);
                     }
 
                     // Gan timeIndex moi bang thoi gian ket thuc cua roster
                     timeIndex = roster.EndTime.Hour * ServiceFacade.SettingsHelper.MinutePerHour + roster.EndTime.Minute;
                 }
 
+                // Neu timeIndex van bang 0 tuc la doctor hien tai khong co roster trong ngay
+                if (timeIndex == 0)
+                {
+                    continue;
+                }
+
                 // Neu timeIndex van chua di het mot ngay thi tao them 1 block time
                 if (timeIndex < maxTimeIndex - 1)
                 {
-                    lstBlockTime.Add(new BlockTime
+                    avaiTimes.Add(new AvaiTime
                     {
                         StartTime = timeIndex,
                         EndTime = maxTimeIndex - 1,
@@ -684,17 +702,22 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                         IsBlocked = true,
                         Username = userse.Username
                     });
+                    blockTime.BlockList.Add(timeIndex);
+                    blockTime.BlockList.Add(maxTimeIndex - 1);
                 }
+                blockTimes.Add(blockTime);
+                lstResultDoctor.Add(userse1);
             }
             return
                 WebCommon.BuildSuccessfulResult(
-                    lstAvaiDoctor.Select(
+                    lstResultDoctor.Select(
                         x => new
                         {
                             key = x.Username,
                             label = x.DisplayName,
-                            roster = lstBlockTime.Where(list => list.Username == x.Username).ToList()
-                        }));
+                            roster = avaiTimes.Where(list => list.Username == x.Username).ToList(),
+                            blockTime = blockTimes.Where(list => list.Username == x.Username).Select(list => list.BlockList).ToArray()
+                        }).ToList());
         }
         catch (Exception ex)
         {
@@ -1796,11 +1819,17 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     #endregion
 }
 
-public class BlockTime
+public class AvaiTime
 {
     public string Username { get; set; }
     public int StartTime { get; set; }
     public int EndTime { get; set; }
     public string Color { get; set; }
     public bool IsBlocked { get; set; }
+}
+
+public class BlockTime
+{
+    public string Username { get; set; }
+    public List<int> BlockList { get; set; }
 }
