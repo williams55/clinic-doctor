@@ -90,7 +90,8 @@ scheduler.config.limit_view  = false;
     });
     var blocker = function(ev) {
         var c = scheduler.config;
-        var res = (ev.start_date.valueOf() >= c.limit_start.valueOf() && ev.end_date.valueOf() <= c.limit_end.valueOf());
+		return true;
+        /*var res = (ev.start_date.valueOf() >= c.limit_start.valueOf() && ev.end_date.valueOf() <= c.limit_end.valueOf());
         if (res && time_block_set && ev._timed) {
             var day = scheduler.date.date_part(new Date(ev.start_date.valueOf()));
             var zones = block_days[day.valueOf()] || block_weeks[day.getDay()];
@@ -134,7 +135,7 @@ scheduler.config.limit_view  = false;
             scheduler._drag_mode = null;
             scheduler.callEvent("onLimitViolation", [ev.id, ev]);
         }
-        return res;
+        return res;*/
     };
 
     scheduler.attachEvent("onBeforeDrag", function(id) {
