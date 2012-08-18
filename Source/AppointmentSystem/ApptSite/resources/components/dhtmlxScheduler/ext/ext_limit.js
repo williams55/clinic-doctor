@@ -89,53 +89,55 @@ scheduler.config.limit_view  = false;
         return true;
     });
     var blocker = function(ev) {
-        var c = scheduler.config;
-		return true;
-        /*var res = (ev.start_date.valueOf() >= c.limit_start.valueOf() && ev.end_date.valueOf() <= c.limit_end.valueOf());
-        if (res && time_block_set && ev._timed) {
-            var day = scheduler.date.date_part(new Date(ev.start_date.valueOf()));
-            var zones = block_days[day.valueOf()] || block_weeks[day.getDay()];
-            var sm = ev.start_date.getHours() * 60 + ev.start_date.getMinutes();
-            var em = ev.end_date.getHours() * 60 + ev.end_date.getMinutes();
-            if (zones && zones._sections.unit.indexOf(ev.section_id) >= 0) {
-                for (var i = 0; i < zones.length; i += 2) {
-                    var sz = zones[i];
-                    var ez = zones[i + 1];
-                    if (sz < em && ez > sm) {
-                        if (sm <= ez && sm >= sz) {
-                            if (ez == 24 * 60 || em < ez) {
-                                res = false;
-                                break;
+        if (ev) {
+            var c = scheduler.config;
+            var res = (ev.start_date.valueOf() >= c.limit_start.valueOf() && ev.end_date.valueOf() <= c.limit_end.valueOf());
+            if (res && time_block_set && ev._timed) {
+                var day = scheduler.date.date_part(new Date(ev.start_date.valueOf()));
+                var zones = block_days[day.valueOf()] || block_weeks[day.getDay()];
+                var sm = ev.start_date.getHours() * 60 + ev.start_date.getMinutes();
+                var em = ev.end_date.getHours() * 60 + ev.end_date.getMinutes();
+                if (zones && zones._sections.unit.indexOf(ev.section_id) >= 0) {
+                    for (var i = 0; i < zones.length; i += 2) {
+                        var sz = zones[i];
+                        var ez = zones[i + 1];
+                        if (sz < em && ez > sm) {
+                            if (sm <= ez && sm >= sz) {
+                                if (ez == 24 * 60 || em < ez) {
+                                    res = false;
+                                    break;
+                                }
+                                if (scheduler._drag_id && scheduler._drag_mode == "new-size") {
+                                    ev.start_date.setHours(0);
+                                    ev.start_date.setMinutes(ez);
+                                }
+                                else {
+                                    res = false;
+                                    break;
+                                }
                             }
-                            if (scheduler._drag_id && scheduler._drag_mode == "new-size") {
-                                ev.start_date.setHours(0);
-                                ev.start_date.setMinutes(ez);
-                            }
-                            else {
-                                res = false;
-                                break;
-                            }
-                        }
-                        if (em >= sz && em < ez) {
-                            if (scheduler._drag_id && scheduler._drag_mode == "new-size") {
-                                ev.end_date.setHours(0);
-                                ev.end_date.setMinutes(sz);
-                            }
-                            else {
-                                res = false;
-                                break;
+                            if (em >= sz && em < ez) {
+                                if (scheduler._drag_id && scheduler._drag_mode == "new-size") {
+                                    ev.end_date.setHours(0);
+                                    ev.end_date.setMinutes(sz);
+                                }
+                                else {
+                                    res = false;
+                                    break;
+                                }
                             }
                         }
                     }
                 }
             }
+            if (!res) {
+                scheduler._drag_id = null;
+                scheduler._drag_mode = null;
+                scheduler.callEvent("onLimitViolation", [ev.id, ev]);
+            }
+            return res;
         }
-        if (!res) {
-            scheduler._drag_id = null;
-            scheduler._drag_mode = null;
-            scheduler.callEvent("onLimitViolation", [ev.id, ev]);
-        }
-        return res;*/
+        return false;
     };
 
     scheduler.attachEvent("onBeforeDrag", function(id) {

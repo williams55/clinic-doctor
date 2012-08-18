@@ -74,7 +74,7 @@ function initSchedule(weekday) {
                 if (!isLightbox) {
                     scheduler.setCurrentView();
                 }
-            }, 60000);
+            }, 600000);
         }
     });
 }
@@ -495,11 +495,15 @@ function LoadDoctorSection(mode, date) {
                     $.each(doctor.roster, function(j, roster) {
                         var top = roster.StartTime * scheduler.config.hour_size_px / 60;
                         var height = (roster.EndTime - roster.StartTime) * scheduler.config.hour_size_px / 60;
-                        var colorDiv = '<div class="' + (roster.IsBlocked ? 'dhx_time_block' : 'roster_color')
-                            + '" style="top: ' + top + 'px; height: '
+                        if (roster.IsBlocked) {
+                            $(container).append('<div class="dhx_time_block" style="top: ' + top + 'px; height: '
                             + height + 'px; background-color:'
-                            + roster.Color + '"></div>';
-                        $(container).append(colorDiv);
+                            + roster.Color + ';"></div>');
+                        } else {
+                        $(container).after('<div class="roster_color" style="top: ' + top + 'px; left: ' + $(container).css('left') + '; height: '
+                            + height + 'px; width: ' + $(container).width() + 'px; background-color:'
+                            + roster.Color + ';"></div>');
+                        }
                     });
                 });
                 //LoadAppointment(mode, date);
