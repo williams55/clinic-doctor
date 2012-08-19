@@ -11,6 +11,9 @@ var isUsing = false;
 // True if lightbox is using, do not refesh page
 var isLightbox = false;
 
+// True if lightbox is using, do not refesh page
+var currentForm;
+
 /****************************DHTMLX - Start******************************/
 // Load calendar for Schedule
 function ShowMinical() {
@@ -46,7 +49,6 @@ function initSchedule(weekday) {
         scheduler.attachEvent("onBeforeDrag", BeforeDrag);
         scheduler.attachEvent("onClick", BlockReadonly);
         scheduler.attachEvent("onEventChanged", EventChanged);
-
         scheduler.attachEvent("onViewChange", function(mode, date) {
             if (scrollToCurrent && (new Date()).toLocaleDateString() == date.toLocaleDateString()) {
                 // Get y position
@@ -54,8 +56,9 @@ function initSchedule(weekday) {
                 $('div.dhx_cal_data').scrollTo({ top: top + 'px', left: '0px' }, 800);
                 scrollToCurrent = false;
             }
+            // Bi loi khi tao event
 
-            if (!isUsing) {
+            if (!isUsing && !isLightbox) {
                 // Lam cai load roster cua doctor,
                 // neu doctor co roster thi hien thi
                 // khi hien thi, dua vao thoi gian cua roster ma to mau
@@ -74,7 +77,7 @@ function initSchedule(weekday) {
                 if (!isLightbox) {
                     scheduler.setCurrentView();
                 }
-            }, 600000);
+            }, 60000);
         }
     });
 }
@@ -121,7 +124,6 @@ scheduler.showLightbox = function(id) {
         }
         return false;
     }
-
     // Clear all value
     $("#hdId").val("");
     $("#txtNote").val("");
@@ -168,10 +170,10 @@ scheduler.showLightbox = function(id) {
 
         // Update case, get info from server
         $("#RosterForm").dialog({
-            autoOpen: false,
+            autoOpen: true,
             height: 320,
             width: 550,
-            modal: true,
+            modal: false,
             zIndex: $.maxZIndex() + 1,
             resizable: false,
             buttons: {
@@ -193,10 +195,10 @@ scheduler.showLightbox = function(id) {
     else {
         // New mode
         $("#RosterForm").dialog({
-            autoOpen: false,
-            height: 320,
+            autoOpen: true,
+            height: 350,
             width: 550,
-            modal: true,
+            modal: false,
             zIndex: $.maxZIndex() + 1,
             resizable: false,
             buttons: {
@@ -213,9 +215,9 @@ scheduler.showLightbox = function(id) {
         });
     }
 
-    $("#RosterForm").dialog("open");
-    $(".token-input-dropdown").css("z-index", $.maxZIndex() + 1); // Bring to front
+    $(".token-input-dropdown").css("z-index", $.maxZIndex() + 10); // Bring to front
 
+    currentForm = $('#RosterForm');
     scheduler.startLightbox(id, html("RosterForm"));
     return true;
 };
@@ -486,6 +488,7 @@ function LoadDoctorSection(mode, date) {
                 $.each(obj.data, function(i, doctor) {
                     var container = $('#main-dhx .dhx_scale_holder:nth-child(' + (i + 1) + ')');
                     $('.roster_color, .dhx_time_block', container).remove();
+                    $('#main-dhx [id^="' + doctor.key + '"]').remove();
 
                     $.each(doctor.blockTime, function(j, blockTime) {
                         scheduler.blockTime(date, blockTime, { unit: [doctor.key] });
@@ -500,21 +503,15 @@ function LoadDoctorSection(mode, date) {
                             + height + 'px; background-color:'
                             + roster.Color + ';"></div>');
                         } else {
-                        $(container).after('<div class="roster_color" style="top: ' + top + 'px; left: ' + $(container).css('left') + '; height: '
+                        $(container).after('<div class="roster_color" id="' + doctor.key + j + '" style="top: ' 
+                            + top + 'px; left: ' + $(container).css('left') + '; height: '
                             + height + 'px; width: ' + $(container).width() + 'px; background-color:'
                             + roster.Color + ';"></div>');
                         }
                     });
+
+                    AddAppointment(doctor.appointment);
                 });
-                //LoadAppointment(mode, date);
-
-                //                $('.roster_color').mousedown(function(event) {
-                //                    $(this).hide();
-                //                    var element = document.elementFromPoint(event.pageX, event.pageY);
-                //                    $(element).focus();
-                //                    $(this).show();
-
-                //                });
             }
             else {
                 ShowDialog("", "", obj.message, "");
@@ -645,7 +642,6 @@ function UpdateAppointment(id) {
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 var evs = obj.data;
-                alert("UpdateAppointment");
                 scheduler.deleteEvent(id);
                 AddAppointment(evs);
                 ShowDialog("", "", "Appointment has been updated.", "");
@@ -683,7 +679,7 @@ function DeleteAppointment(id) {
     $("#dialog-message-title").attr("title", "Confirmation");
     $("#dialog-message-title").dialog({
         resizable: false,
-        modal: true,
+        modal: false,
         buttons: {
             No: function() {
                 $(this).dialog("close");
@@ -826,11 +822,14 @@ $("[id$=createUser]").click(function() {
         txtCellPhone = $("#txtCellPhone"),
         allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone);
 
+    var tmpForm = $('#RosterForm').parent();
+    $(tmpForm).hide();
+
     $("#dialog-form").dialog({
-        autoOpen: false,
+        autoOpen: true,
         height: 230,
         width: 550,
-        modal: true,
+        modal: false,
         zIndex: $.maxZIndex() + 1,
         resizable: false,
         buttons: {
@@ -847,6 +846,8 @@ $("[id$=createUser]").click(function() {
             }
         },
         close: function() {
+            $(".token-input-dropdown").css("z-index", $.maxZIndex() + 10); // Bring to front
+            $(tmpForm).show();
             allFields.val("").removeClass("ui-state-error");
         }
     });
@@ -857,7 +858,6 @@ $("[id$=createUser]").click(function() {
     $("#radMale").val("false");
     $("#radFemale").val("true");
     $("#radMale").attr("checked", "checked");
-    $("#dialog-form").dialog("open");
 });
 
 $("[id$=changeUser]").click(function() {
@@ -890,11 +890,14 @@ $("[id$=changeUser]").click(function() {
             CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
+                var tmpForm = $('#RosterForm').parent();
+                $(tmpForm).hide();
+
                 $("#dialog-form").dialog({
-                    autoOpen: false,
+                    autoOpen: true,
                     height: 230,
                     width: 550,
-                    modal: true,
+                    modal: false,
                     zIndex: $.maxZIndex() + 1,
                     resizable: false,
                     buttons: {
@@ -911,6 +914,8 @@ $("[id$=changeUser]").click(function() {
                         }
                     },
                     close: function() {
+                        $(".token-input-dropdown").css("z-index", $.maxZIndex() + 10); // Bring to front
+                        $(tmpForm).show();
                         allFields.val("").removeClass("ui-state-error");
                     }
                 });
@@ -927,7 +932,6 @@ $("[id$=changeUser]").click(function() {
                     $("#radFemale").attr("checked", "checked");
                     $("#radMale").removeAttr("checked");
                 }
-                $("#dialog-form").dialog("open");
 
             } else {
                 ShowDialog("", "", obj.message, "");

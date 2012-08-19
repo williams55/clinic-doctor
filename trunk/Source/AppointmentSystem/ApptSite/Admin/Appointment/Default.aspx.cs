@@ -716,7 +716,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                             key = x.Username,
                             label = x.DisplayName,
                             roster = avaiTimes.Where(list => list.Username == x.Username).ToList(),
-                            blockTime = blockTimes.Where(list => list.Username == x.Username).Select(list => list.BlockList).ToArray()
+                            blockTime = blockTimes.Where(list => list.Username == x.Username).Select(list => list.BlockList).ToArray(),
+                            appointment = GetSectionAppointments(mode, currentDateView)
                         }).ToList());
         }
         catch (Exception ex)
@@ -1277,6 +1278,50 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             tm.Rollback();
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult(ex.Message);
+        }
+    }
+
+    private static object GetSectionAppointments(string mode, string currentDateView)
+    {
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        try
+        {
+            #region "Load appointment"
+            // Get datetime to filter
+            DateTime fromDate = Convert.ToDateTime(currentDateView);
+            fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+            var toDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 23, 59, 59);
+            int count;
+
+            // Get appointment
+            TList<Appointment> lstAppt =
+                DataRepository.AppointmentProvider.GetPaged(String.Format("IsDisabled = 'False' AND StartTime BETWEEN N'{0}' AND N'{1}'"
+                                                                          , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                                                                          toDate.ToString("yyyy-MM-dd HH:mm:ss.000")),
+                                                            string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength,
+                                                            out count);
+
+            tm.BeginTransaction();
+            // Set out of date for passed appointment
+            lstAppt.ForEach(x =>
+            {
+                x.StatusId = x.StartTime <= DateTime.Now &&
+                             x.StatusId != BoFactory.StatusBO.Complete &&
+                             x.StatusId != BoFactory.StatusBO.Cancel
+                                 ? BoFactory.StatusBO.Complete
+                                 : x.StatusId;
+            });
+            DataRepository.AppointmentProvider.Save(lstAppt);
+            #endregion
+
+            tm.Commit();
+            return BuildListAppointment(lstAppt);
+        }
+        catch (Exception ex)
+        {
+            tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return null;
         }
     }
 

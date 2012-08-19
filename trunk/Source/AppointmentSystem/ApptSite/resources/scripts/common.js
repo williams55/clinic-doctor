@@ -1,49 +1,32 @@
-﻿function CommaFormatted(num, isUsd) {
-    num = num.toString().replace(/\$|\,/g, '');
-    if (isNaN(num))
-        num = "0";
-    sign = (num == (num = Math.abs(num)));
-    num = Math.floor(num * 100 + 0.50000000001);
-    cents = num % 100;
-    num = Math.floor(num / 100).toString();
-    if (cents < 10)
-        cents = "0" + cents;
-    for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
-        num = num.substring(0, num.length - (4 * i + 3)) + ',' +
-        num.substring(num.length - (4 * i + 3));
-    if (isUsd == 1)
-        return (((sign) ? '' : '-') + num + '.' + cents);
-    return (((sign) ? '' : '-') + num);
+﻿if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function(searchElement /*, fromIndex */) {
+        "use strict";
+        if (this == null) {
+            throw new TypeError();
+        }
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (len === 0) {
+            return -1;
+        }
+        var n = 0;
+        if (arguments.length > 0) {
+            n = Number(arguments[1]);
+            if (n != n) { // shortcut for verifying if it's NaN
+                n = 0;
+            } else if (n != 0 && n != Infinity && n != -Infinity) {
+                n = (n > 0 || -1) * Math.floor(Math.abs(n));
+            }
+        }
+        if (n >= len) {
+            return -1;
+        }
+        var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
+        for (; k < len; k++) {
+            if (k in t && t[k] === searchElement) {
+                return k;
+            }
+        }
+        return -1;
+    };
 }
-
-function HighlightMenu() {
-    var current = $('a[href="' + window.location.pathname + '"]');
-    if ($(current).length == 0)
-        current = $('a[href="' + window.location.pathname.replace("Edit.aspx", ".aspx") + '"]');
-    $(current).addClass('current');
-    $(current).closest('ul').css("display", "block");
-    $(current).closest('ul').prev().addClass('current');
-}
-function MasterPageLoad() {
-    $(".datepicker").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'dd-M-yy'
-    });
-    $('.checkall').click(function() {
-        jQuery(this).parents('table:eq(0)').find(':checkbox').attr('checked', this.checked);
-    });
-    HighlightMenu();
-    if ($.browser.safari) { // toolbars appeared on separate lines. 
-        $('[id*=ReportViewer] table').each(function(i, item) {
-            if ($(item).attr('id') && $(item).attr('id').match( /fixedTable$/ ) != null)
-                $(item).css('display', 'table');
-            else
-                $(item).css('display', 'inline-block');
-        });
-        $('[id*=ReportViewer] table td').css('padding', '0px');
-    }
-    
-    // needed when AsyncEnabled=true.
-}
-

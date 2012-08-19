@@ -98,7 +98,7 @@ function ShowProgress() {
     $("#dialog-message-title").dialog({
         resizable: false,
         height: 120,
-        modal: true,
+        modal: false,
         buttons: {}
     });
 }
