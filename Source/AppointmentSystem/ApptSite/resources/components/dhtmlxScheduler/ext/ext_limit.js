@@ -108,8 +108,10 @@ scheduler.config.limit_view  = false;
                                     break;
                                 }
                                 if (scheduler._drag_id && scheduler._drag_mode == "new-size") {
-                                    ev.start_date.setHours(0);
-                                    ev.start_date.setMinutes(ez);
+                                    res = false;
+                                    break;
+//                                    ev.start_date.setHours(0);
+//                                    ev.start_date.setMinutes(ez);
                                 }
                                 else {
                                     res = false;
@@ -118,8 +120,10 @@ scheduler.config.limit_view  = false;
                             }
                             if (em >= sz && em < ez) {
                                 if (scheduler._drag_id && scheduler._drag_mode == "new-size") {
-                                    ev.end_date.setHours(0);
-                                    ev.end_date.setMinutes(sz);
+                                    res = false;
+                                    break;
+//                                    ev.end_date.setHours(0);
+//                                    ev.end_date.setMinutes(sz);
                                 }
                                 else {
                                     res = false;
