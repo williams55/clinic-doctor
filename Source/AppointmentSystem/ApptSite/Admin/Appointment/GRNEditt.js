@@ -49,6 +49,10 @@ function initSchedule(weekday) {
         scheduler.attachEvent("onBeforeDrag", BeforeDrag);
         scheduler.attachEvent("onClick", BlockReadonly);
         scheduler.attachEvent("onEventChanged", EventChanged);
+        scheduler.attachEvent("onBeforeViewChange", function(old_mode, old_date, mode, date) {
+            scheduler.clearAll();
+            return true;
+        });
         scheduler.attachEvent("onViewChange", function(mode, date) {
             if (scrollToCurrent && (new Date()).toLocaleDateString() == date.toLocaleDateString()) {
                 // Get y position
@@ -198,7 +202,7 @@ scheduler.showLightbox = function(id) {
             autoOpen: true,
             height: 350,
             width: 550,
-            modal: false,
+            modal: true,
             zIndex: $.maxZIndex() + 1,
             resizable: false,
             buttons: {
@@ -503,13 +507,14 @@ function LoadDoctorSection(mode, date) {
                             + height + 'px; background-color:'
                             + roster.Color + ';"></div>');
                         } else {
-                        $(container).after('<div class="roster_color" id="' + doctor.key + j + '" style="top: ' 
+                            $(container).after('<div class="roster_color" id="' + doctor.key + j + '" style="top: '
                             + top + 'px; left: ' + $(container).css('left') + '; height: '
                             + height + 'px; width: ' + $(container).width() + 'px; background-color:'
                             + roster.Color + ';"></div>');
                         }
                     });
 
+                    scheduler.clearAll();
                     AddAppointment(doctor.appointment);
                 });
             }
@@ -669,6 +674,7 @@ function AddAppointment(evs) {
 
 // Cancel appointment
 function CancelAppointment() {
+    $(".token-input-dropdown").css("z-index", 0); // Bring to front
     scheduler.endLightbox(false, html("RosterForm"));
     isLightbox = false;
 }
