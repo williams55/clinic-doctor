@@ -708,6 +708,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 blockTimes.Add(blockTime);
                 lstResultDoctor.Add(userse1);
             }
+            var lstAppointments = GetSectionAppointments(mode, currentDateView);
+
             return
                 WebCommon.BuildSuccessfulResult(
                     lstResultDoctor.Select(
@@ -717,7 +719,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                             label = x.DisplayName,
                             roster = avaiTimes.Where(list => list.Username == x.Username).ToList(),
                             blockTime = blockTimes.Where(list => list.Username == x.Username).Select(list => list.BlockList).ToArray(),
-                            appointment = GetSectionAppointments(mode, currentDateView)
+                            appointment = BuildListAppointment(lstAppointments.FindAll(y => x.Username == y.Username))
                         }).ToList());
         }
         catch (Exception ex)
@@ -1281,7 +1283,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
     }
 
-    private static object GetSectionAppointments(string mode, string currentDateView)
+    private static TList<Appointment> GetSectionAppointments(string mode, string currentDateView)
     {
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
@@ -1315,13 +1317,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             #endregion
 
             tm.Commit();
-            return BuildListAppointment(lstAppt);
+            return lstAppt;
         }
         catch (Exception ex)
         {
             tm.Rollback();
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return null;
+            return new TList<Appointment>();
         }
     }
 
