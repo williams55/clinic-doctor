@@ -202,7 +202,7 @@ scheduler.showLightbox = function(id) {
             autoOpen: true,
             height: 350,
             width: 550,
-            modal: true,
+            modal: false,
             zIndex: $.maxZIndex() + 1,
             resizable: false,
             buttons: {
@@ -489,15 +489,15 @@ function LoadDoctorSection(mode, date) {
 
             if (obj.result == "true") {
                 scheduler.updateCollection(mode, obj.data);
+                var arrContainer = $('#main-dhx > .dhx_scale_holder');
                 $.each(obj.data, function(i, doctor) {
-                    var container = $('#main-dhx .dhx_scale_holder:nth-child(' + (i + 1) + ')');
+                    var container = arrContainer[i];
                     $('.roster_color, .dhx_time_block', container).remove();
                     $('#main-dhx [id^="' + doctor.key + '"]').remove();
 
                     $.each(doctor.blockTime, function(j, blockTime) {
                         scheduler.blockTime(date, blockTime, { unit: [doctor.key] });
                     });
-
                     // Tao mot lop mau de len nen scheduler
                     $.each(doctor.roster, function(j, roster) {
                         var top = roster.StartTime * scheduler.config.hour_size_px / 60;
@@ -507,7 +507,7 @@ function LoadDoctorSection(mode, date) {
                             + height + 'px; background-color:'
                             + roster.Color + ';"></div>');
                         } else {
-                            $(container).after('<div class="roster_color" id="' + doctor.key + j + '" style="top: '
+                            $('#main-dhx').append('<div class="roster_color" id="' + doctor.key + j + '" style="top: '
                             + top + 'px; left: ' + $(container).css('left') + '; height: '
                             + height + 'px; width: ' + $(container).width() + 'px; background-color:'
                             + roster.Color + ';"></div>');
