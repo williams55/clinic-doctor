@@ -355,7 +355,7 @@ div.dhx_now_time
     position: absolute;
     width: 100%;
     border-bottom: 2px dotted red;
-    z-index: 1;
+    z-index: 7;
 }
 div.dhx_time_block
 {
@@ -1573,6 +1573,10 @@ div.dhx_cal_editor
     -moz-opacity: 0.9;
     filter: alpha(opacity=90);
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+}
+
+.dhx_cal_event {
+    z-index: 6;
 }
 
 .dhx_scale_holder_now
