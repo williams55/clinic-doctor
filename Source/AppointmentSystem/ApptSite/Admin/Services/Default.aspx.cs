@@ -119,13 +119,13 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert delete successfully
-            WebCommon.AlertGridView(sender, "Service is inserted successfully.");
+            WebCommon.AlertGridView(sender, "Service is created successfully.");
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             e.Cancel = true;
-            WebCommon.AlertGridView(sender, "Cannot insert new service. Please contact Administrator");
+            WebCommon.AlertGridView(sender, "Cannot create new service. Please contact Administrator");
         }
     }
     protected void gridServices_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
