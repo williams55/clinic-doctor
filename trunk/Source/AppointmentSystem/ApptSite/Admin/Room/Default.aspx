@@ -17,7 +17,8 @@
         </div>
         <dx:ASPxGridView ID="gridRoom" ClientInstanceName="grid" runat="server" DataSourceID="RoomDatas"
             KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoom_RowInserting"
-            OnCustomButtonCallback="gridRoom_CustomButtonCallback" OnRowUpdating="gridRoom_RowUpdating">
+            OnCustomButtonCallback="gridRoom_CustomButtonCallback" OnRowUpdating="gridRoom_RowUpdating"
+            OnAutoFilterCellEditorInitialize="gridRoom_AutoFilterCellEditorInitialize">
             <Settings ShowGroupPanel="False" ShowFilterRow="True" ShowFilterRowMenu="True" />
             <SettingsEditing Mode="Inline" />
             <Columns>
@@ -33,12 +34,25 @@
                     <EditFormSettings Visible="False" />
                     <Settings AllowGroup="False"></Settings>
                 </dx:GridViewDataColumn>
-                <dx:GridViewDataComboBoxColumn FieldName="ServicesId">
+                <dx:GridViewDataComboBoxColumn FieldName="ServicesId" Caption="Service">
                     <PropertiesComboBox TextField="Title" ValueField="Id" DataSourceID="ServicesDatas">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Service is required" />
+                        </ValidationSettings>
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataColumn FieldName="Title">
                     <Settings AllowGroup="False"></Settings>
+                    <EditItemTemplate>
+                        <dx:ASPxTextBox runat="server" ID="txtTitle" Text='<%# Bind("Title") %>' CssClass="text-form"
+                            MaxLength="100" Width="100%">
+                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                ErrorText="Error">
+                                <RequiredField IsRequired="True" ErrorText="Title is required" />
+                            </ValidationSettings>
+                        </dx:ASPxTextBox>
+                    </EditItemTemplate>
                 </dx:GridViewDataColumn>
                 <dx:GridViewDataColumn FieldName="Note">
                     <Settings AllowGroup="False" AllowAutoFilter="False"></Settings>
