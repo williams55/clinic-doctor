@@ -67,9 +67,8 @@
                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 </dx:GridViewCommandColumn>
             </Columns>
-            <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage();}"
-                BeginCallback="function(s, e) {command = e.command; gridObject = s;}"></ClientSideEvents>
-            <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+            <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
+                BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
             <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
             </SettingsPager>
             <SettingsEditing Mode="EditForm" />
