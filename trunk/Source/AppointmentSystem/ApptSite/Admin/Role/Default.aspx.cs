@@ -24,12 +24,6 @@ public partial class Admin_Role_Default : Page
     {
         try
         {
-            // Neu la postback thi bo qua
-            if (IsPostBack)
-            {
-                return;
-            }
-            
             // Check reading right
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
             {
