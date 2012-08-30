@@ -133,8 +133,8 @@
                     </EditForm>
                 </Templates>
                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
-                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}"></ClientSideEvents>
-                <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+                                  BeginCallback="function(s, e) {command = e.command; gridObject = s;}"
+                                  CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" Position="Bottom">
                 </SettingsPager>
                 <SettingsEditing Mode="EditForm" />

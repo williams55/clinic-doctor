@@ -11,10 +11,14 @@ function RefreshGrid() {
 }
 
 function AlertMessage() {
+    var currentGrid = gridObject;
+    if (!currentGrid) {
+        currentGrid = grid;
+    }
     // Alert if there is have message
-    if (gridObject.cpApptMessage && gridObject.cpApptMessage != "") {
-        ShowDialog("", "", gridObject.cpApptMessage, "");
-        gridObject.cpApptMessage = "";
+    if (currentGrid.cpApptMessage && currentGrid.cpApptMessage != "") {
+        ShowDialog("", "", currentGrid.cpApptMessage, "");
+        currentGrid.cpApptMessage = "";
     }
 }
 function confirmDelete() { // confirm again user when delete patient
