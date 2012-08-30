@@ -12,9 +12,9 @@ function RefreshGrid() {
 
 function AlertMessage() {
     // Alert if there is have message
-    if (grid.cpApptMessage && grid.cpApptMessage != "") {
-        ShowDialog("", "", grid.cpApptMessage, "");
-        grid.cpApptMessage = "";
+    if (gridObject.cpApptMessage && gridObject.cpApptMessage != "") {
+        ShowDialog("", "", gridObject.cpApptMessage, "");
+        gridObject.cpApptMessage = "";
     }
 }
 function confirmDelete() { // confirm again user when delete patient

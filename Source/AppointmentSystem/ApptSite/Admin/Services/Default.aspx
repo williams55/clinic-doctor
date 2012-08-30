@@ -137,7 +137,7 @@
                 <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" Position="Bottom">
                 </SettingsPager>
-                <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
+                <SettingsEditing Mode="EditForm" />
                 <Settings ShowFilterRow="True" ShowFilterRowMenu="True" />
             </dx:ASPxGridView>
             <data:ServicesDataSource ID="ServicesDataSource" runat="server" SelectMethod="GetPaged"

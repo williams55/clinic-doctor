@@ -19,8 +19,6 @@
             KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoom_RowInserting"
             OnCustomButtonCallback="gridRoom_CustomButtonCallback" OnRowUpdating="gridRoom_RowUpdating"
             OnAutoFilterCellEditorInitialize="gridRoom_AutoFilterCellEditorInitialize">
-            <Settings ShowGroupPanel="False" ShowFilterRow="True" ShowFilterRowMenu="True" />
-            <SettingsEditing Mode="Inline" />
             <Columns>
                 <dx:GridViewDataColumn Visible="False" FieldName="Id">
                 </dx:GridViewDataColumn>
@@ -32,7 +30,6 @@
                     </CellStyle>
                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                     <EditFormSettings Visible="False" />
-                    <Settings AllowGroup="False"></Settings>
                 </dx:GridViewDataColumn>
                 <dx:GridViewDataComboBoxColumn FieldName="ServicesId" Caption="Service">
                     <PropertiesComboBox TextField="Title" ValueField="Id" DataSourceID="ServicesDatas">
@@ -43,7 +40,6 @@
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataColumn FieldName="Title">
-                    <Settings AllowGroup="False"></Settings>
                     <EditItemTemplate>
                         <dx:ASPxTextBox runat="server" ID="txtTitle" Text='<%# Bind("Title") %>' CssClass="text-form"
                             MaxLength="100" Width="100%">
@@ -55,7 +51,7 @@
                     </EditItemTemplate>
                 </dx:GridViewDataColumn>
                 <dx:GridViewDataColumn FieldName="Note">
-                    <Settings AllowGroup="False" AllowAutoFilter="False"></Settings>
+                    <Settings AllowAutoFilter="False"></Settings>
                 </dx:GridViewDataColumn>
                 <dx:GridViewCommandColumn Caption="Operation" Width="100">
                     <EditButton Visible="True">
@@ -76,7 +72,8 @@
             <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
             <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
             </SettingsPager>
-            <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
+            <SettingsEditing Mode="EditForm" />
+            <Settings ShowGroupPanel="False" ShowFilterRow="True" ShowFilterRowMenu="True" />
         </dx:ASPxGridView>
         <data:RoomDataSource SelectMethod="GetPaged" runat="server" ID="RoomDatas" EnablePaging="True"
             EnableSorting="True">

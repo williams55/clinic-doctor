@@ -30,7 +30,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             gridServices.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
 
             // Lay cot co chua cac nut thao tac trong grid role
-            var gridViewCommandColumn = gridServices.Columns["#"] as GridViewCommandColumn;
+            var gridViewCommandColumn = gridServices.Columns["Operation"] as GridViewCommandColumn;
 
             // Neu khong co cot do thi khong can lam tiep
             if (gridViewCommandColumn == null) return;
