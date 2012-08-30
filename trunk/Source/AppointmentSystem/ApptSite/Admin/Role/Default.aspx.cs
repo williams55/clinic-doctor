@@ -15,16 +15,22 @@ using Log.Controller;
 using Common.Util;
 using Appt.Common.Constants;
 using AppointmentBusiness.Util;
-public partial class Admin_Role_Default : System.Web.UI.Page
+public partial class Admin_Role_Default : Page
 {
     private const string ScreenCode = "Role";
     static string _message;
-    #region //loadpage
+    #region Main list
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
-            // Validate user right for reading
+            // Neu la postback thi bo qua
+            if (IsPostBack)
+            {
+                return;
+            }
+            
+            // Check reading right
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
@@ -32,275 +38,422 @@ public partial class Admin_Role_Default : System.Web.UI.Page
                 return;
             }
 
+            // Set page size
+            gridRole.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
+
             // Lay cot co chua cac nut thao tac
-            var gridViewCommandColumn = gridRole.Columns["#"] as GridViewCommandColumn;
+            var commandColumn = gridRole.Columns["Operation"] as GridViewCommandColumn;
 
             // Neu khong co cot do thi khong can lam tiep
-            if (gridViewCommandColumn == null) return;
+            if (commandColumn == null) return;
 
             // Gan visible cho nut new, edit bang cach kiem tra quyen
-            gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),                                                                                ScreenCode,
-                                                                                  OperationConstant.Update.Key,
-                                                                                  out _message);
-            gridViewCommandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
-                                                                                  ScreenCode,
-                                                                                  OperationConstant.Create.Key,
-                                                                                  out _message);
-            // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
-          
-            GridViewCommandColumnCustomButton btnDelete = null;
-            foreach (GridViewCommandColumnCustomButton customButton in gridViewCommandColumn.CustomButtons)
-            {
-                if (customButton.ID == "btnDelete")
-                {
-                    btnDelete = customButton;
-                    break;
-                }
-            }
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
-                                                                                  ScreenCode,
-                                                                                  OperationConstant.Delete.Key,
-                                                                                  out _message))
+            commandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
+            commandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+
+            // Get delete button
+            GridViewCommandColumnCustomButton btnDelete =
+                commandColumn.CustomButtons.Cast<GridViewCommandColumnCustomButton>().FirstOrDefault(
+                    customButton => customButton.ID == "btnDelete");
+
+            // Check delete right, if user has no right to delete => invisible delete button
+            if (btnDelete != null && !RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
 
-            // Tat ca cot neu 3 thao tac deu khong hien thi
-            gridViewCommandColumn.Visible = gridViewCommandColumn.EditButton.Visible
-                || gridViewCommandColumn.NewButton.Visible
-                || (btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
+            // Check visibility of button in button column
+            // If there is no button is displayed => invisible column
+            commandColumn.Visible = commandColumn.EditButton.Visible || commandColumn.NewButton.Visible ||
+                                 (btnDelete != null && btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.ShowDialog(this, "System is error. Please contact Administrator.");
         }
     }
-    protected void Gridroledetail_OnBeforePerformDataSelect(object sender, EventArgs e)
+
+    // Delete role
+    protected void gridRole_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
-        ASPxGridView girdroledetail = (ASPxGridView)(sender as ASPxGridView);
-        var gridViewCommandColumn = girdroledetail.Columns["Controlcommand"] as GridViewCommandColumn;
-        if (gridViewCommandColumn == null) return;
-
-        // Gan visible cho nut new, edit bang cach kiem tra quyen
-        gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,OperationConstant.Update.Key,out _message);
-        gridViewCommandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),ScreenCode,OperationConstant.Create.Key,out _message);
-        // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
-        //var btnDelete = gridViewCommandColumn.CustomButtons.Find(x => x.ID == "btnDelete");
-        GridViewCommandColumnCustomButton btnDelete = null;
-        foreach (GridViewCommandColumnCustomButton customButton in gridViewCommandColumn.CustomButtons)
-        {
-            if (customButton.ID == "btnDelete")
-            {
-                btnDelete = customButton;
-                break;
-            }
-        }
-        if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),ScreenCode,OperationConstant.Delete.Key,out _message))
-        {
-            btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
-        }
-
-        // Tat ca cot neu 3 thao tac deu khong hien thi
-        gridViewCommandColumn.Visible = gridViewCommandColumn.EditButton.Visible
-            || gridViewCommandColumn.NewButton.Visible
-            || (btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
-        int roleid=int.Parse((sender as ASPxGridView).GetMasterRowKeyValue().ToString());
-        var param = RoledetailDataS.Parameters["WhereClause"];
-        if (param == null)
-        {
-            RoledetailDataS.Parameters.Add("WhereClause"
-                , String.Format("IsDisabled = 'false' AND RoleId = {0}",roleid));
-        }
-        else
-        {
-            param.DefaultValue = String.Format("IsDisabled = 'false' AND RoleId = {0}",
-                                  (sender as ASPxGridView).GetMasterRowKeyValue());
-        }
-
-      
-    }
-    #endregion
-    #region // edit role
-    protected void gridRole_CustomButtonCallback(object sender, DevExpress.Web.ASPxGridView.ASPxGridViewCustomButtonCallbackEventArgs e)
-    {
-
         try
         {
             if (e.ButtonID != "btnDelete") return;
+            #region Delete row
+            // Check deleting right
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
-                // Cau lenh nay se quang ra exception va DevExpress se nhan duoc exception de thong bao loi cho nguoi dung
                 WebCommon.AlertGridView(sender, _message);
                 return;
             }
-            int id; // Khai bao bien id de parse gia tri id cua service tu chuoi sang so
 
-            // Kiem tra xem id cua service co phai la so khong
+            // Validate id
+            Int32 id;
             if (Int32.TryParse(gridRole.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
-
                 var obj = DataRepository.RoleProvider.GetById(id);
                 if (obj == null || obj.IsDisabled)
                 {
-                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Service is not existed. You cannot delete it.";
+                    WebCommon.AlertGridView(sender, "Role is not existed. You cannot delete it.");
                     return;
                 }
-
                 DataRepository.RoleProvider.DeepLoad(obj);
-                if(obj.GroupRoleCollection.Exists(x=>!x.IsDisabled)|| obj.UserRoleCollection.Exists(x=>!x.IsDisabled))
+
+                // Kiem tra xem co cho nao dang su dung room hay khong
+                if (obj.GroupRoleCollection.Exists(x => !x.IsDisabled) || obj.UserRoleCollection.Exists(x => !x.IsDisabled)
+                    || obj.RoleDetailCollection.Exists(x => !x.IsDisabled))
                 {
-                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = String.Format("Role {0} is using, you cannot delete it.", obj.Title);
-                    
-                   return;
+                    WebCommon.AlertGridView(sender, String.Format("Role {0} is used, you cannot delete it.", obj.Title));
+                    return;
                 }
                 obj.IsDisabled = true;
                 obj.UpdateUser = WebCommon.GetAuthUsername();
                 obj.UpdateDate = DateTime.Now;
                 DataRepository.RoleProvider.Update(obj);
-                //khi xoa dc role trong ta se xoa tung roledetail
-                var listroledetail = DataRepository.RoleDetailProvider.GetByRoleId(id);
-                for (int i = 0; i < listroledetail.Count; i++)
-                {
-                    listroledetail[i].IsDisabled = true;
-                    listroledetail[i].UpdateUser = WebCommon.GetAuthUsername();
-                    listroledetail[i].UpdateDate = DateTime.Now;
-                    DataRepository.RoleDetailProvider.Update(listroledetail[i]);
-                }
+            }
+            #endregion
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot delete role. Please contact Administrator");
+        }
+    }
+
+    protected void gridRole_RowInserting(object sender, ASPxDataInsertingEventArgs e)
+    {
+        try
+        {
+            // Validate user right for creating
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+
+            // Validate empty field
+            if (!WebCommon.ValidateEmpty("Title", e.NewValues["Title"], out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+
+            // Set pure value
+            e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+
+            // Show message alert delete successfully
+            WebCommon.AlertGridView(sender, "Role is created successfully.");
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            e.Cancel = true;
+            WebCommon.AlertGridView(sender, "Cannot create new role. Please contact Administrator");
+        }
+    }
+
+    protected void gridRole_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
+    {
+        try
+        {
+            // Validate user right for updating
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message))//Kiem tra xem user co quyen cap nhat hay khong
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+
+            // Validate empty field
+            if (!WebCommon.ValidateEmpty("Title", e.NewValues["Title"], out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+
+            // Set pure value
+            e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+
+            // Show message alert delete successfully
+            WebCommon.AlertGridView(sender, "Role is updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            e.Cancel = true;
+            WebCommon.AlertGridView(sender, "Cannot update role. Please contact Administrator");
+        }
+    }
+    #endregion
+
+    #region Role detail
+    protected void gridRoleDetail_Init(object sender, EventArgs e)
+    {
+        try
+        {
+            // Check reading right
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            {
+                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
+                gridRole.Visible = false;
+                return;
+            }
+
+            // Check null for grid role detail
+            var gridRoleDetail = sender as ASPxGridView;
+            if (gridRoleDetail == null)
+            {
+                WebCommon.AlertGridView(sender, _message);
+                return;
+            }
+
+            // Set page size
+            gridRoleDetail.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
+
+            // Lay cot co chua cac nut thao tac
+            var commandColumn = gridRole.Columns["Operation"] as GridViewCommandColumn;
+
+            // Neu khong co cot do thi khong can lam tiep
+            if (commandColumn == null) return;
+
+            // Gan visible cho nut new, edit bang cach kiem tra quyen
+            commandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
+            commandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+
+            // Get delete button
+            GridViewCommandColumnCustomButton btnDelete =
+                commandColumn.CustomButtons.Cast<GridViewCommandColumnCustomButton>().FirstOrDefault(
+                    customButton => customButton.ID == "btnDelete");
+
+            // Check delete right, if user has no right to delete => invisible delete button
+            if (btnDelete != null && !RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            {
+                btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
+            }
+
+            // Check visibility of button in button column
+            // If there is no button is displayed => invisible column
+            commandColumn.Visible = commandColumn.EditButton.Visible || commandColumn.NewButton.Visible ||
+                                 (btnDelete != null && btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
+
+            int roleId = int.Parse(gridRoleDetail.GetMasterRowKeyValue().ToString());
+            var param = RoleDetailDataSource.Parameters["WhereClause"];
+            if (param == null)
+            {
+                RoleDetailDataSource.Parameters.Add("WhereClause"
+                    , String.Format("IsDisabled = 'false' AND RoleId = {0}", roleId));
+            }
+            else
+            {
+                param.DefaultValue = String.Format("IsDisabled = 'false' AND RoleId = {0}",
+                                      (sender as ASPxGridView).GetMasterRowKeyValue());
             }
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "There is system error. Please contact Administrator.";
+            WebCommon.ShowDialog(this, "System is error. Please contact Administrator.");
         }
-   
     }
-    protected void Gridroledetail_OnCustomButtonCallback(object sender, DevExpress.Web.ASPxGridView.ASPxGridViewCustomButtonCallbackEventArgs e)
+    protected void gridRoleDetail_OnCustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
-
         try
         {
-            // Neu truong hop khong phai la xoa mot item thi dung ket thuc
-            // Phai kiem tra cai nay vi o day minh chi dung cai custom button de xoa, khong lam gi khac
             if (e.ButtonID != "btnDelete") return;
-           
-            // Kiem tra xem user co quyen xoa mot role  hay khong
-            // Neu khong co quyen thi quang ra loi va cancel cai thao tac dang thuc thi
+
+            #region Delete row
+            // Check deleting right
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
-                // Cau lenh nay se quang ra exception va DevExpress se nhan duoc exception de thong bao loi cho nguoi dung
                 WebCommon.AlertGridView(sender, _message);
                 return;
             }
 
-            // Truong hop ma user co quyen thi tien hanh kiem tra xem service nay co thang con nao khong
-            // neu co thi thong bao loi la service dang duoc su dung, khong the xoa
-            // neu service hoan toan ko duoc su dung thi xoa no
-            ASPxGridView girdroledetail = (ASPxGridView)(sender as ASPxGridView);//lay gia tri bang cua gridview
-            int id; // Khai bao bien id de parse gia tri id cua service tu chuoi sang so
+            // Get current grid role detail
+            var gridRoleDetail = sender as ASPxGridView;
+            if (gridRoleDetail == null)
+            {
+                WebCommon.AlertGridView(sender, "Cannot find role detail.");
+                return;
+            }
+
+            int id;
 
             // Kiem tra xem id cua roledetail co phai la so khong
-            if (Int32.TryParse(girdroledetail.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
+            if (Int32.TryParse(gridRoleDetail.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
                 // Neu id la so thi tien hanh kiem tra xem service co duoc su dung khong
-
-                // Lay thong tin cua service             
                 var obj = DataRepository.RoleDetailProvider.GetById(id);
 
                 // Kiem tra xem roledetail co ton tai hay khong
                 // neu khong ton tai thi bao loi
                 if (obj == null || obj.IsDisabled)
                 {
-                    ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Service is not existed. You cannot delete it.";
+                    WebCommon.AlertGridView(sender, "Role detail is not existed. You cannot delete it.");
                     return;
                 }
+                DataRepository.RoleDetailProvider.DeepLoad(obj);
 
-                
-                // Vi roledetail  la con cua roled khong co bang nao tham chieu toi no len ta co the xoa ma khong can kiem tra cac bang khac
-                
                 obj.IsDisabled = true;
                 obj.UpdateUser = WebCommon.GetAuthUsername();
                 obj.UpdateDate = DateTime.Now;
                 DataRepository.RoleDetailProvider.Update(obj);
             }
+            #endregion
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "There is system error. Please contact Administrator.";
+            WebCommon.AlertGridView(sender, "Cannot delete role detail. Please contact Administrator");
         }
 
     }
-    protected void gridRole_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
+    protected void gridRoleDetail_RowInserting(object sender, ASPxDataInsertingEventArgs e)
     {
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-        e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+        try
+        {
+            // Validate user right for creating
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
 
-    }
-    protected void Gridroledetail_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
-    {
-        int id = int.Parse((sender as ASPxGridView).GetMasterRowKeyValue().ToString());
+            // Check null for grid role detail
+            var gridRoleDetail = sender as ASPxGridView;
+            if (gridRoleDetail == null)
+            {
+                WebCommon.AlertGridView(sender, _message);
+                return;
+            }
 
-        string crud = Getstringcrud(sender, e);
-        e.NewValues["RoleId"] = id;
-        e.NewValues["Crud"] = crud;
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-        e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+            var crud = GetStringCrud(sender, e);
+            var roleId = gridRoleDetail.GetMasterRowKeyValue();
+
+            // Validate empty field
+            if (!WebCommon.ValidateEmpty("Role", roleId, out _message)
+                || !WebCommon.ValidateEmpty("Screen", e.NewValues["ScreenCode"], out _message)
+                || !WebCommon.ValidateEmpty("Right", crud, out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+            
+            // Set pure value
+            e.NewValues["ScreenCode"] = e.NewValues["ScreenCode"].ToString().Trim();
+            e.NewValues["RoleId"] = roleId;
+            e.NewValues["Crud"] = crud;
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+
+            // Lam them cai chan nua la an nhung screen da co role detail
+
+            // Show message alert delete successfully
+            WebCommon.AlertGridView(sender, "Role detail is created successfully.");
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            e.Cancel = true;
+            WebCommon.AlertGridView(sender, "Cannot create new role detail. Please contact Administrator");
+        }
+        
     }
-    protected void Gridroledetail_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
+    protected void gridRoleDetail_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
         e.NewValues["Crud"] = GetStringCrudUpdate(sender, e);
         e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
-    protected void Gridroledetail_OnRowValidating(object sender, ASPxDataValidationEventArgs e)
+    protected void gridRoleDetail_OnRowValidating(object sender, ASPxDataValidationEventArgs e)
     {
-        if (e.NewValues["ScreenCode"]==null)//check field Title if empty, then stop
+        if (e.NewValues["ScreenCode"] == null)//check field Title if empty, then stop
         {
             e.RowError = "Field ScreenCode not be empty";
         }
 
     }
     #endregion
-    #region //get data to checkbox
-    protected string Getstringcrud(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)//lay du lieu trong check box khi them moi
+
+    #region Checkbox in role detail
+    protected string GetStringCrud(object sender, ASPxDataInsertingEventArgs e)//lay du lieu trong check box khi them moi
     {
-        string crud = string.Empty;
-        ASPxCheckBox chkr = (ASPxCheckBox)(sender as ASPxGridView).FindEditFormTemplateControl("ckcR");
-        ASPxCheckBox chku = (ASPxCheckBox)(sender as ASPxGridView).FindEditFormTemplateControl("ckcU");
-        ASPxCheckBox chkd = (ASPxCheckBox)(sender as ASPxGridView).FindEditFormTemplateControl("ckcD");
-        ASPxCheckBox chkc = (ASPxCheckBox)(sender as ASPxGridView).FindEditFormTemplateControl("ckcC");
-        if (chkc.Checked == true) crud += "C";
-        if (chkr.Checked == true) crud += "R";
-        if (chku.Checked == true) crud += "U";
-        if (chkd.Checked == true) crud += "D";
-        return crud;
-    }
-    protected string GetStringCrudUpdate(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)//lay du lieu trong checkbox khi cap nhat
-    {
-        string crud = string.Empty;
-        ASPxCheckBox chkr = (ASPxCheckBox)(sender as ASPxGridView).FindEditFormTemplateControl("ckcR");
-        ASPxCheckBox chku = (ASPxCheckBox)(sender as ASPxGridView).FindEditFormTemplateControl("ckcU");
-        ASPxCheckBox chkd = (ASPxCheckBox)(sender as ASPxGridView).FindEditFormTemplateControl("ckcD");
-        ASPxCheckBox chkc = (ASPxCheckBox)(sender as ASPxGridView).FindEditFormTemplateControl("ckcC");
-        if (chkc.Checked == true) crud += "C";
-        if (chkr.Checked == true) crud += "R";
-        if (chku.Checked == true) crud += "U";
-        if (chkd.Checked == true) crud += "D";
-        return crud;
-    }
-    public bool Getcheckbox(string crud,string chars)//danh dau check box xem co quyen khong dua vao ky tu truyen vao 
-    {
-        if (crud != null)
+        try
         {
-            int size = crud.Length;
-            for (int i = 0; i < size; i++)
+            string crud = string.Empty;
+
+            // Validate null
+            var asPxGridView = sender as ASPxGridView;
+            if (asPxGridView == null)
             {
-                if (crud[i] == chars[0]) return true;
+                return crud;
             }
 
+            var gridColumn = asPxGridView.Columns["Right"] as GridViewDataColumn;
+
+            var chkr = (ASPxCheckBox)asPxGridView.FindEditRowCellTemplateControl(gridColumn, "ckcR");
+            var chku = (ASPxCheckBox)asPxGridView.FindEditRowCellTemplateControl(gridColumn, "ckcU");
+            var chkd = (ASPxCheckBox)asPxGridView.FindEditRowCellTemplateControl(gridColumn, "ckcD");
+            var chkc = (ASPxCheckBox)asPxGridView.FindEditRowCellTemplateControl(gridColumn, "ckcC");
+            if (chkc.Checked) crud += OperationConstant.Create.Key;
+            if (chkr.Checked) crud += OperationConstant.Read.Key;
+            if (chku.Checked) crud += OperationConstant.Update.Key;
+            if (chkd.Checked) crud += OperationConstant.Delete.Key;
+            return crud;
         }
-        return false;
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return string.Empty;
+        }
     }
- #endregion
+
+    protected string GetStringCrudUpdate(object sender, ASPxDataUpdatingEventArgs e)
+    {
+        try
+        {
+            string crud = string.Empty;
+
+            // Validate null
+            var asPxGridView = sender as ASPxGridView;
+            if (asPxGridView == null)
+            {
+                return crud;
+            }
+
+            var gridColumn = asPxGridView.Columns["Right"] as GridViewDataColumn;
+
+            var chkr = (ASPxCheckBox)asPxGridView.FindEditRowCellTemplateControl(gridColumn, "ckcR");
+            var chku = (ASPxCheckBox)asPxGridView.FindEditRowCellTemplateControl(gridColumn, "ckcU");
+            var chkd = (ASPxCheckBox)asPxGridView.FindEditRowCellTemplateControl(gridColumn, "ckcD");
+            var chkc = (ASPxCheckBox)asPxGridView.FindEditRowCellTemplateControl(gridColumn, "ckcC");
+            if (chkc.Checked) crud += OperationConstant.Create.Key;
+            if (chkr.Checked) crud += OperationConstant.Read.Key;
+            if (chku.Checked) crud += OperationConstant.Update.Key;
+            if (chkd.Checked) crud += OperationConstant.Delete.Key;
+            return crud;
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return string.Empty;
+        }
+    }
+
+    //Danh dau check box xem co quyen khong dua vao ky tu truyen vao
+    public bool GetCheckbox(object crud, string chars)
+    {
+        return crud != null && crud.ToString().Contains(chars);
+    }
+    #endregion
 }

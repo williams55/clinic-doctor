@@ -34,9 +34,14 @@ public partial class Admin_Room_edit : System.Web.UI.Page
 
             // Set page size
             gridRoom.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
-            
-            var gridcolums = gridRoom.Columns["btnCommand"] as GridViewCommandColumn;
+
+            // Lay cot co chua cac nut thao tac
+            var gridcolums = gridRoom.Columns["Operation"] as GridViewCommandColumn;
+
+            // Neu khong co cot do thi khong can lam tiep
             if (gridcolums == null) return;
+
+            // Gan visible cho nut new, edit bang cach kiem tra quyen
             gridcolums.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
             gridcolums.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
 
@@ -71,7 +76,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             // Check deleting right
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
-                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
+                WebCommon.AlertGridView(sender, _message);
                 return;
             }
 
@@ -80,7 +85,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             if (Int32.TryParse(gridRoom.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
                 var obj = DataRepository.RoomProvider.GetById(id);
-                if (obj == null||obj.IsDisabled)
+                if (obj == null || obj.IsDisabled)
                 {
                     WebCommon.AlertGridView(sender, "Cannot find room.");
                     return;
@@ -100,7 +105,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             }
             #endregion
         }
-        catch( Exception ex)
+        catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete room. Please contact Administrator");
@@ -108,7 +113,8 @@ public partial class Admin_Room_edit : System.Web.UI.Page
     }
     protected void gridRoom_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
     {
-        try {
+        try
+        {
             // Validate user right for creating
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
             {
@@ -143,7 +149,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             // Show message alert delete successfully
             WebCommon.AlertGridView(sender, "Room is created successfully.");
         }
-        catch( Exception ex)
+        catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             e.Cancel = true;
