@@ -19,8 +19,7 @@
         <div id="box-order">
             <dx:ASPxGridView ID="gridRole" ClientInstanceName="grid" runat="server" DataSourceID="RoleDataSource"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRole_RowInserting"
-                OnCustomButtonCallback="gridRole_CustomButtonCallback" 
-                OnRowUpdating="gridRole_RowUpdating">
+                OnCustomButtonCallback="gridRole_CustomButtonCallback" OnRowUpdating="gridRole_RowUpdating">
                 <Columns>
                     <dx:GridViewDataColumn FieldName="Id" Visible="False" />
                     <dx:GridViewDataColumn Caption="No." Width="50">
@@ -62,11 +61,10 @@
                 </Columns>
                 <Templates>
                     <DetailRow>
-                        <dx:ASPxGridView runat="server" ClientInstanceName="gridDetail" ID="gridRoleDetail" DataSourceID="RoleDetailDataSource"
-                            KeyFieldName="Id" oninit="gridRoleDetail_Init"
+                        <dx:ASPxGridView runat="server" ClientInstanceName="gridDetail" ID="gridRoleDetail"
+                            DataSourceID="RoleDetailDataSource" KeyFieldName="Id" OnInit="gridRoleDetail_Init"
                             OnRowInserting="gridRoleDetail_RowInserting" OnRowUpdating="gridRoleDetail_RowUpdating"
-                            OnRowValidating="gridRoleDetail_OnRowValidating" OnCustomButtonCallback="gridRoleDetail_OnCustomButtonCallback"
-                            Width="100%">
+                            OnCustomButtonCallback="gridRoleDetail_OnCustomButtonCallback" Width="100%">
                             <Columns>
                                 <dx:GridViewDataColumn FieldName="Id" Visible="False">
                                 </dx:GridViewDataColumn>

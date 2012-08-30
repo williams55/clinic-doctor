@@ -356,8 +356,6 @@ public partial class Admin_Role_Default : Page
             e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
-            // Lam them cai chan nua la an nhung screen da co role detail
-
             // Show message alert delete successfully
             WebCommon.AlertGridView(sender, "Role detail is created successfully.");
         }
@@ -367,21 +365,56 @@ public partial class Admin_Role_Default : Page
             e.Cancel = true;
             WebCommon.AlertGridView(sender, "Cannot create new role detail. Please contact Administrator");
         }
-        
     }
     protected void gridRoleDetail_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
-        e.NewValues["Crud"] = GetStringCrudUpdate(sender, e);
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-        e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
-    }
-    protected void gridRoleDetail_OnRowValidating(object sender, ASPxDataValidationEventArgs e)
-    {
-        if (e.NewValues["ScreenCode"] == null)//check field Title if empty, then stop
+        try
         {
-            e.RowError = "Field ScreenCode not be empty";
-        }
+            // Validate user right for updating
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message))//Kiem tra xem user co quyen cap nhat hay khong
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
 
+            // Check null for grid role detail
+            var gridRoleDetail = sender as ASPxGridView;
+            if (gridRoleDetail == null)
+            {
+                WebCommon.AlertGridView(sender, _message);
+                return;
+            }
+
+            var crud = GetStringCrudUpdate(sender, e);
+            var roleId = gridRoleDetail.GetMasterRowKeyValue();
+
+            // Validate empty field
+            if (!WebCommon.ValidateEmpty("Role", roleId, out _message)
+                || !WebCommon.ValidateEmpty("Screen", e.NewValues["ScreenCode"], out _message)
+                || !WebCommon.ValidateEmpty("Right", crud, out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+
+            // Set pure value
+            e.NewValues["ScreenCode"] = e.NewValues["ScreenCode"].ToString().Trim();
+            e.NewValues["RoleId"] = roleId;
+            e.NewValues["Crud"] = crud;
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+
+            // Show message alert delete successfully
+            WebCommon.AlertGridView(sender, "Role detail is updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            e.Cancel = true;
+            WebCommon.AlertGridView(sender, "Cannot update role detail. Please contact Administrator");
+        }
     }
     #endregion
 
