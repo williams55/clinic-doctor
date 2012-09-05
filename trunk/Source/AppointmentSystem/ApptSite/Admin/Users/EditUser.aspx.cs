@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AppointmentSystem.Settings.BusinessLayer;
 using DevExpress.Web.ASPxGridView;
+using DevExpress.Web.ASPxUploadControl;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Data;
 using AppointmentBusiness.Util;
@@ -14,19 +15,28 @@ using Log.Controller;
 using Common.Util;
 public partial class Admin_Users_EditUser : System.Web.UI.Page
 {
+    const string UploadDirectory = "~/Images/";
+    string ThumbnailFileName = "tuan1.jpg";
     string ScreenCode = "User";
     static string _message;
     protected void Page_Load(object sender, EventArgs e)
     {
+
+        if (!IsPostBack)
+        {
+            bindService();
+        }
         try
         {
-            // Validate user right for reading
-            //if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key,
-            //                           out _message))
-            //{
-            //    WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
-            //    gridUser.Visible = false;
-            //}
+            bool result = false;
+            bindUser();
+            result=RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key,
+                                       out _message);
+            if (!result)
+            {
+                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
+                gridUser.Visible = false;
+            }
         }
         catch (Exception ex)
         {
@@ -34,17 +44,29 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
 
     }
+    protected void bindService() {
+
+        var listService = DataRepository.ServicesProvider.GetAll();
+        this.service_Id.DataSource = listService;
+        service_Id.DataBind();
+    }
+    protected void bindUser()
+    {
+        var listUser = DataRepository.UsersProvider.GetAll();
+        gridUser.DataSource = listUser;
+        gridUser.DataBind();
+    }
     protected void UserRoleGrid_DataSelect(object sender, EventArgs e)
     {
         var parameter = UserRoleDatas.Parameters["whereClause"];
         if (parameter == null)
         {
 
-            UserRoleDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND UserId = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
+            UserRoleDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND Username = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
         }
         else
         {
-            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND UserId = '{0}'",
+            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND Username = '{0}'",
                                   (sender as ASPxGridView).GetMasterRowKeyValue());
         }
     }
@@ -54,11 +76,11 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         if (parameter == null)
         {
 
-            UserRoleDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND UserId = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
+            UserRoleDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND Username = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
         }
         else
         {
-            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND UserId = '{0}'",
+            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND Username = '{0}'",
                                   (sender as ASPxGridView).GetMasterRowKeyValue());
         }
     }
@@ -73,7 +95,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 e.Cancel = true;
                 return;
             }
-            if (e.NewValues["Username"].ToString().Trim().Length < 1)
+            if (e.NewValues["Username"].ToString().Trim().Length < 1||e.NewValues["Username"]==null)
             {
                 ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field User name can not be empty";
                 e.Cancel = true;
@@ -94,7 +116,11 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
     }
     protected void gridUser_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
     {
-
+        //ASPxGridView aspxgrid = sender as ASPxGridView;
+        //FileUpload fileupload = (FileUpload)(aspxgrid.FindEditFormTemplateControl("Uploadimg"));
+        //string result=string.Empty;
+        //if(fileupload!=null)
+        //    result = SaveImage(fileupload);
     }
     protected void gridUser_InitNewRow(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)
     {
@@ -122,13 +148,13 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
     }
     protected void gridUser_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
     {
-        // Checks whether the generated row has the errors.
-        bool hasError = e.GetValue("Username").ToString().Length <= 1;
-        hasError = hasError || e.GetValue("DisplayName").ToString().Length <= 1;
-        hasError = hasError || e.GetValue("UserGroupId") == null;
-        // If the row has the error(s), its text color is set to red.
-        if (hasError)
-            e.Row.ForeColor = System.Drawing.Color.Red;
+        //// Checks whether the generated row has the errors.
+        //bool hasError = e.GetValue("Username").ToString().Length <= 1;
+        //hasError = hasError || e.GetValue("DisplayName").ToString().Length <= 1;
+        //hasError = hasError || e.GetValue("UserGroupId") == null;
+        //// If the row has the error(s), its text color is set to red.
+        //if (hasError)
+        //    e.Row.ForeColor = System.Drawing.Color.Red;
 
     }
     protected void gridUser_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
@@ -221,5 +247,26 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
+    }
+    public void service_Id_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (service_Id.SelectedIndex != -1)
+        {           
+            int count;
+            string query=string.Format("IsDisabled='false' and ServicesId={0} ",service_Id.SelectedItem.Value.ToString());
+            var listuser = DataRepository.UsersProvider.GetPaged(query,"",0, 10, out count);
+            gridUser.DataSource = listuser;
+            gridUser.DataBind();
+        }
+    }
+    public string SaveImage(FileUpload uploadedFile)
+    {
+        if (!uploadedFile.HasFile)
+        {
+            return string.Empty;
+        }
+        string filename = Server.MapPath(UploadDirectory + uploadedFile.FileName);
+        uploadedFile.PostedFile.SaveAs(filename);
+        return uploadedFile.FileName;
     }
 }
