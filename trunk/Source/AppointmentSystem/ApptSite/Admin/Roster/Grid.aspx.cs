@@ -9,6 +9,8 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Util;
+using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
 using Log.Controller;
@@ -188,5 +190,50 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             e.Cancel = true;
             WebCommon.AlertGridView(sender, "Cannot update role. Please contact Administrator");
         }
+    }
+
+    protected void ContentControl1_OnLoad(object sender, EventArgs e)
+    {
+        try
+        {
+            var container = sender as ContentControl;
+            if (container != null)
+            {
+                var hdfRosterType = (HiddenField)container.FindControl("hdfRosterType");
+                var cboRosterType = container.FindControl("cboRosterType") as ASPxComboBox;
+                if (hdfRosterType != null && cboRosterType != null)
+                {
+                    var item = cboRosterType.Items.FindByValue(hdfRosterType.Value);
+                    cboRosterType.SelectedItem = item;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+
+    protected DateTime getDate(object obj, bool isEndTime)
+    {
+        var currentTime = DateTime.Now;
+        try
+        {
+            if (obj == null)
+            {
+                currentTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, currentTime.Hour, 0, 0)
+                    .
+                    AddMinutes(ServiceFacade.SettingsHelper.RosterMinuteStep * (isEndTime ? 2 : 1));
+            }
+            else
+            {
+                currentTime = DateTime.Parse(obj.ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+        return currentTime;
     }
 }

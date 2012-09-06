@@ -88,6 +88,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_startTime"></param>
 		///<param name="_endTime"></param>
 		///<param name="_note"></param>
+		///<param name="_repeatId">Neu roster duoc tao theo dang repeat thi se co cung Id</param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
@@ -95,8 +96,8 @@ namespace AppointmentSystem.Entities
 		///<param name="_updateDate"></param>
 		public RosterBase(System.String _id, System.String _username, System.Int32? _roomId, 
 			System.Int32 _rosterTypeId, System.DateTime _startTime, System.DateTime _endTime, System.String _note, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+			System.Guid? _repeatId, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new RosterEntityData();
 			this.backupData = null;
@@ -108,6 +109,7 @@ namespace AppointmentSystem.Entities
 			this.StartTime = _startTime;
 			this.EndTime = _endTime;
 			this.Note = _note;
+			this.RepeatId = _repeatId;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
 			this.CreateDate = _createDate;
@@ -125,6 +127,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_startTime"></param>
 		///<param name="_endTime"></param>
 		///<param name="_note"></param>
+		///<param name="_repeatId">Neu roster duoc tao theo dang repeat thi se co cung Id</param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
@@ -132,8 +135,8 @@ namespace AppointmentSystem.Entities
 		///<param name="_updateDate"></param>
 		public static Roster CreateRoster(System.String _id, System.String _username, System.Int32? _roomId, 
 			System.Int32 _rosterTypeId, System.DateTime _startTime, System.DateTime _endTime, System.String _note, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+			System.Guid? _repeatId, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			Roster newRoster = new Roster();
 			newRoster.Id = _id;
@@ -143,6 +146,7 @@ namespace AppointmentSystem.Entities
 			newRoster.StartTime = _startTime;
 			newRoster.EndTime = _endTime;
 			newRoster.Note = _note;
+			newRoster.RepeatId = _repeatId;
 			newRoster.IsDisabled = _isDisabled;
 			newRoster.CreateUser = _createUser;
 			newRoster.CreateDate = _createDate;
@@ -420,6 +424,43 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or sets the RepeatId property. 
+		///		Neu roster duoc tao theo dang repeat thi se co cung Id
+		/// </summary>
+		/// <value>This type is uniqueidentifier.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// If this column is null, this property will return Guid.Empty. It is up to the developer
+		/// to check the value of IsRepeatIdNull() and perform business logic appropriately.
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@"Neu roster duoc tao theo dang repeat thi se co cung Id"), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true)]
+		public virtual System.Guid? RepeatId
+		{
+			get
+			{
+				return this.entityData.RepeatId; 
+			}
+			
+			set
+			{
+				if (this.entityData.RepeatId == value)
+					return;
+					
+				OnColumnChanging(RosterColumn.RepeatId, this.entityData.RepeatId);
+				this.entityData.RepeatId = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(RosterColumn.RepeatId, this.entityData.RepeatId);
+				OnPropertyChanged("RepeatId");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or sets the IsDisabled property. 
 		///		
 		/// </summary>
@@ -681,7 +722,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "Username", "RoomId", "RosterTypeId", "StartTime", "EndTime", "Note", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "Username", "RoomId", "RosterTypeId", "StartTime", "EndTime", "Note", "RepeatId", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -837,6 +878,7 @@ namespace AppointmentSystem.Entities
 				copy.StartTime = this.StartTime;
 				copy.EndTime = this.EndTime;
 				copy.Note = this.Note;
+				copy.RepeatId = this.RepeatId;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
@@ -1000,6 +1042,8 @@ namespace AppointmentSystem.Entities
 					return entityData.EndTime != _originalData.EndTime;
 					case RosterColumn.Note:
 					return entityData.Note != _originalData.Note;
+					case RosterColumn.RepeatId:
+					return entityData.RepeatId != _originalData.RepeatId;
 					case RosterColumn.IsDisabled:
 					return entityData.IsDisabled != _originalData.IsDisabled;
 					case RosterColumn.CreateUser:
@@ -1044,6 +1088,7 @@ namespace AppointmentSystem.Entities
 			result = result || entityData.StartTime != _originalData.StartTime;
 			result = result || entityData.EndTime != _originalData.EndTime;
 			result = result || entityData.Note != _originalData.Note;
+			result = result || entityData.RepeatId != _originalData.RepeatId;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
 			result = result || entityData.CreateDate != _originalData.CreateDate;
@@ -1066,6 +1111,7 @@ namespace AppointmentSystem.Entities
 				_originalData.StartTime,
 				_originalData.EndTime,
 				_originalData.Note,
+				_originalData.RepeatId,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
 				_originalData.CreateDate,
@@ -1107,6 +1153,7 @@ namespace AppointmentSystem.Entities
 					this.StartTime.GetHashCode() ^ 
 					this.EndTime.GetHashCode() ^ 
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
+					((this.RepeatId == null) ? string.Empty : this.RepeatId.ToString()).GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
 					this.CreateDate.GetHashCode() ^ 
@@ -1169,6 +1216,15 @@ namespace AppointmentSystem.Entities
 					equal = false;
 			}
 			else if (Object1.Note == null ^ Object2.Note == null )
+			{
+				equal = false;
+			}
+			if ( Object1.RepeatId != null && Object2.RepeatId != null )
+			{
+				if (Object1.RepeatId != Object2.RepeatId)
+					equal = false;
+			}
+			else if (Object1.RepeatId == null ^ Object2.RepeatId == null )
 			{
 				equal = false;
 			}
@@ -1278,6 +1334,12 @@ namespace AppointmentSystem.Entities
             	
             	case RosterColumn.Note:
             		return this.Note.CompareTo(rhs.Note);
+            		
+            		                 
+            	
+            	
+            	case RosterColumn.RepeatId:
+            		return this.RepeatId.Value.CompareTo(rhs.RepeatId.Value);
             		
             		                 
             	
@@ -1444,7 +1506,7 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{13}{12}- Id: {0}{12}- Username: {1}{12}- RoomId: {2}{12}- RosterTypeId: {3}{12}- StartTime: {4}{12}- EndTime: {5}{12}- Note: {6}{12}- IsDisabled: {7}{12}- CreateUser: {8}{12}- CreateDate: {9}{12}- UpdateUser: {10}{12}- UpdateDate: {11}{12}{14}", 
+				"{14}{13}- Id: {0}{13}- Username: {1}{13}- RoomId: {2}{13}- RosterTypeId: {3}{13}- StartTime: {4}{13}- EndTime: {5}{13}- Note: {6}{13}- RepeatId: {7}{13}- IsDisabled: {8}{13}- CreateUser: {9}{13}- CreateDate: {10}{13}- UpdateUser: {11}{13}- UpdateDate: {12}{13}{15}", 
 				this.Id,
 				this.Username,
 				(this.RoomId == null) ? string.Empty : this.RoomId.ToString(),
@@ -1452,6 +1514,7 @@ namespace AppointmentSystem.Entities
 				this.StartTime,
 				this.EndTime,
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
+				(this.RepeatId == null) ? string.Empty : this.RepeatId.ToString(),
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
 				this.CreateDate,
@@ -1525,6 +1588,11 @@ namespace AppointmentSystem.Entities
 		/// Note : 
 		/// </summary>
 		public System.String		  Note = null;
+		
+		/// <summary>
+		/// RepeatId : Neu roster duoc tao theo dang repeat thi se co cung Id
+		/// </summary>
+		public System.Guid?		  RepeatId = null;
 		
 		/// <summary>
 		/// IsDisabled : 
@@ -1619,6 +1687,7 @@ namespace AppointmentSystem.Entities
 			_tmp.StartTime = this.StartTime;
 			_tmp.EndTime = this.EndTime;
 			_tmp.Note = this.Note;
+			_tmp.RepeatId = this.RepeatId;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -1663,6 +1732,7 @@ namespace AppointmentSystem.Entities
 			_tmp.StartTime = this.StartTime;
 			_tmp.EndTime = this.EndTime;
 			_tmp.Note = this.Note;
+			_tmp.RepeatId = this.RepeatId;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
 			_tmp.CreateDate = this.CreateDate;
@@ -2096,35 +2166,41 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
 		Note = 7,
 		/// <summary>
+		/// RepeatId : Neu roster duoc tao theo dang repeat thi se co cung Id
+		/// </summary>
+		[EnumTextValue("RepeatId")]
+		[ColumnEnum("RepeatId", typeof(System.Guid), System.Data.DbType.Guid, false, false, true)]
+		RepeatId = 8,
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 8,
+		IsDisabled = 9,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 9,
+		CreateUser = 10,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 10,
+		CreateDate = 11,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 11,
+		UpdateUser = 12,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 12
+		UpdateDate = 13
 	}//End enum
 
 	#endregion RosterColumn Enum
