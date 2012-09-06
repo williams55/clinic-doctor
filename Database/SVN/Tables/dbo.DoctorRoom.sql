@@ -10,11 +10,10 @@ CREATE TABLE [dbo].[DoctorRoom]
 [UpdateUser] [nvarchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [UpdateDate] [datetime] NOT NULL CONSTRAINT [DF_UnitRoom_UpdateDate] DEFAULT (getdate())
 ) ON [PRIMARY]
+ALTER TABLE [dbo].[DoctorRoom] WITH NOCHECK ADD
+CONSTRAINT [FK_DoctorRoom_Room] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Room] ([Id])
 ALTER TABLE [dbo].[DoctorRoom] ADD
 CONSTRAINT [FK_DoctorRoom_Users] FOREIGN KEY ([Username]) REFERENCES [dbo].[Users] ([Username])
 GO
 ALTER TABLE [dbo].[DoctorRoom] ADD CONSTRAINT [PK_UnitRoom] PRIMARY KEY CLUSTERED  ([Id]) ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[DoctorRoom] ADD CONSTRAINT [FK_DoctorRoom_Room] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Room] ([Id])
 GO
