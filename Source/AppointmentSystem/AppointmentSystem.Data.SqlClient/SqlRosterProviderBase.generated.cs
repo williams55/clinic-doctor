@@ -182,6 +182,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@RepeatId", DbType.Guid, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, DBNull.Value);
@@ -241,6 +242,12 @@ namespace AppointmentSystem.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@Note", 
 						clause.Trim().Remove(0,4).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("repeatid ") || clause.Trim().StartsWith("repeatid="))
+				{
+					database.SetParameterValue(commandWrapper, "@RepeatId", new Guid(
+						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote)));
 					continue;
 				}
 				if (clause.Trim().StartsWith("isdisabled ") || clause.Trim().StartsWith("isdisabled="))
@@ -864,16 +871,18 @@ namespace AppointmentSystem.Data.SqlClient
 			col5.AllowDBNull = false;		
 			DataColumn col6 = dataTable.Columns.Add("Note", typeof(System.String));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
-			col7.AllowDBNull = false;		
-			DataColumn col8 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col9.AllowDBNull = false;		
-			DataColumn col10 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col10.AllowDBNull = true;		
-			DataColumn col11 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col11.AllowDBNull = false;		
+			DataColumn col7 = dataTable.Columns.Add("RepeatId", typeof(System.Guid));
+			col7.AllowDBNull = true;		
+			DataColumn col8 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col8.AllowDBNull = false;		
+			DataColumn col9 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col9.AllowDBNull = true;		
+			DataColumn col10 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col10.AllowDBNull = false;		
+			DataColumn col11 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col11.AllowDBNull = true;		
+			DataColumn col12 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col12.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("Username", "Username");
@@ -882,6 +891,7 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.ColumnMappings.Add("StartTime", "StartTime");
 			bulkCopy.ColumnMappings.Add("EndTime", "EndTime");
 			bulkCopy.ColumnMappings.Add("Note", "Note");
+			bulkCopy.ColumnMappings.Add("RepeatId", "RepeatId");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
 			bulkCopy.ColumnMappings.Add("CreateDate", "CreateDate");
@@ -914,6 +924,9 @@ namespace AppointmentSystem.Data.SqlClient
 							
 				
 					row["Note"] = entity.Note;
+							
+				
+					row["RepeatId"] = entity.RepeatId.HasValue ? (object) entity.RepeatId  : System.DBNull.Value;
 							
 				
 					row["IsDisabled"] = entity.IsDisabled;
@@ -972,6 +985,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, entity.StartTime );
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, entity.EndTime );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
+			database.AddInParameter(commandWrapper, "@RepeatId", DbType.Guid, (entity.RepeatId.HasValue ? (object) entity.RepeatId  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );
@@ -1032,6 +1046,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, entity.StartTime );
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, entity.EndTime );
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
+			database.AddInParameter(commandWrapper, "@RepeatId", DbType.Guid, (entity.RepeatId.HasValue ? (object) entity.RepeatId : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
 			database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime, entity.CreateDate );

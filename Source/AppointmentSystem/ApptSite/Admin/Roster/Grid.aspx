@@ -1,12 +1,17 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="Grid.aspx.cs" Inherits="Admin_Roster_Grid" %>
 
+<%@ Import Namespace="AppointmentSystem.Settings.BusinessLayer" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
     Roster
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
 
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
+
+    <script type="text/javascript">
+    var minuteStep = <%=ServiceFacade.SettingsHelper.RosterMinuteStep %>;
+    </script>
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
@@ -18,8 +23,8 @@
         <div id="box-order">
             <dx:ASPxGridView ID="gridRoster" ClientInstanceName="grid" runat="server" DataSourceID="RosterDataSource"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRole_RowInserting"
-                OnCustomButtonCallback="gridRole_CustomButtonCallback" 
-                OnRowUpdating="gridRole_RowUpdating" AutoGenerateColumns="False">
+                OnCustomButtonCallback="gridRole_CustomButtonCallback" OnRowUpdating="gridRole_RowUpdating"
+                AutoGenerateColumns="False" >
                 <Columns>
                     <dx:GridViewCommandColumn Width="40" ShowSelectCheckbox="True">
                         <CellStyle HorizontalAlign="Center">
@@ -56,15 +61,14 @@
                         </PropertiesComboBox>
                     </dx:GridViewDataComboBoxColumn>
                     <dx:GridViewDataDateColumn FieldName="StartTime" Width="120" Caption="From">
-                        <PropertiesDateEdit DisplayFormatString="hh:mm MM/dd/yyyy" 
-                            EditFormatString="MM/dd/yyyy" DisplayFormatInEditMode="True">
+                        <PropertiesDateEdit DisplayFormatString="HH:mm MM/dd/yyyy" EditFormat="Custom" EditFormatString="MM/dd/yyyy"
+                            EnableAnimation="False">
                         </PropertiesDateEdit>
                         <Settings AutoFilterCondition="GreaterOrEqual" />
                     </dx:GridViewDataDateColumn>
-                    <dx:GridViewDataDateColumn Caption="To" FieldName="EndTime" VisibleIndex="6" 
-                        Width="120px">
-                        <PropertiesDateEdit DisplayFormatString="hh:mm MM/dd/yyyy" 
-                            EditFormat="Custom" EditFormatString="MM/dd/yyyy" EnableAnimation="False">
+                    <dx:GridViewDataDateColumn Caption="To" FieldName="EndTime" VisibleIndex="6" Width="120px">
+                        <PropertiesDateEdit DisplayFormatString="HH:mm MM/dd/yyyy" EditFormat="Custom" EditFormatString="MM/dd/yyyy"
+                            EnableAnimation="False">
                         </PropertiesDateEdit>
                         <Settings AutoFilterCondition="LessOrEqual" />
                     </dx:GridViewDataDateColumn>
@@ -91,6 +95,157 @@
                 </SettingsPager>
                 <SettingsEditing Mode="EditForm" />
                 <Settings ShowGroupPanel="False" ShowFilterRow="True" ShowFilterRowMenu="True" />
+                <Templates>
+                    <EditForm>
+                        <div id="devexpress-form">
+                            <dx:ContentControl ID="ContentControl1" runat="server">
+                                <table class="edit-form">
+                                    <tbody>
+                                        <tr>
+                                            <td class="title-row" style="width: 100px;">
+                                                Id
+                                            </td>
+                                            <td class="content-row" style="width: 220px;">
+                                                <dx:ASPxTextBox runat="server" ID="txtId" Text='<%# Eval("Id") %>' CssClass="text-form"
+                                                    MaxLength="100" Width="100%" ReadOnly="True">
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                            <td class="title-row" style="width: 80px;">
+                                                From
+                                            </td>
+                                            <td class="content-row">
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td style="width: 80px; padding-right: 10px;">
+                                                            <dx:ASPxTimeEdit ID="fromTime" runat="server" DateTime='<%# getDate(Eval("StartTime"), false) %>'
+                                                                EditFormatString="HH:mm" DisplayFormatString="HH:mm" Width="100%">
+                                                                <ClientSideEvents ButtonClick='function(s, e) {
+                                                                    if (e.buttonIndex == -2) //increment button
+                                                                    {
+                                                                        var date = s.GetDate();
+                                                                        var minutes = date.getMinutes();
+                                                                        date.setMinutes(minutes + minuteStep);
+                                                                        s.SetDate(date);
+                                                                    }
+                                                                    else if (e.buttonIndex == -3) //down button
+                                                                    {
+                                                                        var date = s.GetDate();
+                                                                        var minutes = date.getMinutes();
+                                                                        date.setMinutes(minutes - minuteStep); 
+                                                                        s.SetDate(date);
+                                                                    }}' />
+                                                            </dx:ASPxTimeEdit>
+                                                        </td>
+                                                        <td>
+                                                            <dx:ASPxDateEdit ID="fromDate" runat="server" EditFormatString="MM/dd/yyyy" DisplayFormatString="MM/dd/yyyy"
+                                                                Date='<%# Eval("StartTime") == null? DateTime.Now : DateTime.Parse(Eval("StartTime").ToString()) %>'
+                                                                Width="100%">
+                                                            </dx:ASPxDateEdit>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row" style="width: 100px;">
+                                                Doctor
+                                            </td>
+                                            <td class="content-row" style="width: 220px;">
+                                                <dx:ASPxTextBox runat="server" ID="txtUsername" Text='<%# Eval("Username") %>' CssClass="text-form"
+                                                    MaxLength="100" Width="100%">
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                            <td class="title-row">
+                                                To
+                                            </td>
+                                            <td class="content-row">
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td style="width: 80px; padding-right: 10px;">
+                                                            <dx:ASPxTimeEdit ID="endTime" runat="server" DateTime='<%# getDate(Eval("EndTime"), true) %>'
+                                                                EditFormatString="HH:mm" DisplayFormatString="HH:mm" Width="100%">
+                                                                <ClientSideEvents ButtonClick='function(s, e) {
+                                                                    if (e.buttonIndex == -2) //increment button
+                                                                    {
+                                                                        var date = s.GetDate();
+                                                                        var minutes = date.getMinutes();
+                                                                        date.setMinutes(minutes + minuteStep);
+                                                                        s.SetDate(date);
+                                                                    }
+                                                                    else if (e.buttonIndex == -3) //down button
+                                                                    {
+                                                                        var date = s.GetDate();
+                                                                        var minutes = date.getMinutes();
+                                                                        date.setMinutes(minutes - minuteStep); 
+                                                                        s.SetDate(date);
+                                                                    }}' />
+                                                            </dx:ASPxTimeEdit>
+                                                        </td>
+                                                        <td>
+                                                            <dx:ASPxDateEdit ID="endDate" runat="server" EditFormatString="MM/dd/yyyy" DisplayFormatString="MM/dd/yyyy"
+                                                                Date='<%# Eval("EndTime") == null? DateTime.Now : DateTime.Parse(Eval("EndTime").ToString()) %>'
+                                                                Width="100%">
+                                                            </dx:ASPxDateEdit>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                                Roster Type
+                                            </td>
+                                            <td class="content-row">
+                                                <asp:HiddenField runat="server" ID="hdfRosterType" Value='<%# Eval("RosterTypeId") %>'
+                                                    Visible="False">
+                                                </asp:HiddenField>
+                                                <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="100%"
+                                                    TextField="Title" ValueField="Id" ID="cboRosterType" ValueType="System.Int32" Value='<%# Eval("RosterTypeId") %>'>
+                                                    <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                        ErrorText="Error">
+                                                        <RequiredField IsRequired="True" ErrorText="Roster Type is required" />
+                                                    </ValidationSettings>
+                                                </dx:ASPxComboBox>
+                                            </td>
+                                            <td class="title-row">
+                                                Is Repeat
+                                            </td>
+                                            <td class="content-row">
+                                                <dx:ASPxCheckBox runat="server" ID="chkIsRepeat">
+                                                </dx:ASPxCheckBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                                Note
+                                            </td>
+                                            <td class="content-row">
+                                                <dx:ASPxMemo runat="server" ID="txtNote" Text='<%# Bind("Note") %>' CssClass="text-form"
+                                                    MaxLength="500" Width="100%" Height="50px">
+                                                </dx:ASPxMemo>
+                                            </td>
+                                            <td class="title-row">
+                                                Weekday
+                                            </td>
+                                            <td class="content-row">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" style="text-align: right;">
+                                                <dx:ASPxGridViewTemplateReplacement ID="UpdateButton" ReplacementType="EditFormUpdateButton"
+                                                    runat="server">
+                                                </dx:ASPxGridViewTemplateReplacement>
+                                                <dx:ASPxGridViewTemplateReplacement ID="CancelButton" ReplacementType="EditFormCancelButton"
+                                                    runat="server">
+                                                </dx:ASPxGridViewTemplateReplacement>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </dx:ContentControl>
+                        </div>
+                    </EditForm>
+                </Templates>
             </dx:ASPxGridView>
             <data:RosterDataSource ID="RosterDataSource" runat="server" SelectMethod="GetPaged"
                 EnablePaging="True" EnableSorting="True" InsertMethod="Insert" UpdateMethod="Update">

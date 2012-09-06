@@ -55,6 +55,11 @@ namespace AppointmentSystem.Entities
 		System.String  Note  { get; set; }
 		
 		/// <summary>
+		/// RepeatId : Neu roster duoc tao theo dang repeat thi se co cung Id
+		/// </summary>
+		System.Guid?  RepeatId  { get; set; }
+		
+		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		System.Boolean  IsDisabled  { get; set; }

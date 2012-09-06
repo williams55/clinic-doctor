@@ -11,6 +11,12 @@
 				</td>
 			</tr>
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataRepeatId" runat="server" Text="Repeat Id:" AssociatedControlID="dataRepeatId" /></td>
+        <td>
+					<asp:HiddenField runat="server" id="dataRepeatId" Value='<%# Bind("RepeatId") %>'></asp:HiddenField>
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataId" runat="server" Text="Id:" AssociatedControlID="dataId" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataId" Text='<%# Bind("Id") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataId" runat="server" Display="Dynamic" ControlToValidate="dataId" ErrorMessage="Required"></asp:RequiredFieldValidator>

@@ -395,6 +395,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Note; }
 		}
         /// <summary>
+        /// Gets the RepeatId
+        /// </summary>
+        /// <value>The RepeatId.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.Guid? RepeatId
+		{
+			get { return _entity.RepeatId; }
+		}
+        /// <summary>
         /// Gets the IsDisabled
         /// </summary>
         /// <value>The IsDisabled.</value>

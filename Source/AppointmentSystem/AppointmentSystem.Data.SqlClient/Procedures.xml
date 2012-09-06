@@ -4556,6 +4556,7 @@
 					[StartTime],
 					[EndTime],
 					[Note],
+					[RepeatId],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -4624,7 +4625,7 @@
 				EXEC sp_executesql @SQL
 
 				-- Return paged results
-				SELECT O.[Id], O.[Username], O.[RoomId], O.[RosterTypeId], O.[StartTime], O.[EndTime], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Username], O.[RoomId], O.[RosterTypeId], O.[StartTime], O.[EndTime], O.[Note], O.[RepeatId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Roster] O,
 				    #PageIndex PageIndex
@@ -4664,6 +4665,7 @@
 				<parameter name="@StartTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@EndTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
+				<parameter name="@RepeatId" type="uniqueidentifier" direction="Input" size="16" precision="0" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -4681,6 +4683,7 @@
 					,[StartTime]
 					,[EndTime]
 					,[Note]
+					,[RepeatId]
 					,[IsDisabled]
 					,[CreateUser]
 					,[CreateDate]
@@ -4696,6 +4699,7 @@
 					,@StartTime
 					,@EndTime
 					,@Note
+					,@RepeatId
 					,@IsDisabled
 					,@CreateUser
 					,@CreateDate
@@ -4725,6 +4729,7 @@
 				<parameter name="@StartTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@EndTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
+				<parameter name="@RepeatId" type="uniqueidentifier" direction="Input" size="16" precision="0" scale="0" param="" nulldefault=""/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
@@ -4745,6 +4750,7 @@
 					,[StartTime] = @StartTime
 					,[EndTime] = @EndTime
 					,[Note] = @Note
+					,[RepeatId] = @RepeatId
 					,[IsDisabled] = @IsDisabled
 					,[CreateUser] = @CreateUser
 					,[CreateDate] = @CreateDate
@@ -4797,6 +4803,7 @@
 					[StartTime],
 					[EndTime],
 					[Note],
+					[RepeatId],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -4834,6 +4841,7 @@
 					[StartTime],
 					[EndTime],
 					[Note],
+					[RepeatId],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -4871,6 +4879,7 @@
 					[StartTime],
 					[EndTime],
 					[Note],
+					[RepeatId],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -4906,6 +4915,7 @@
 					[StartTime],
 					[EndTime],
 					[Note],
+					[RepeatId],
 					[IsDisabled],
 					[CreateUser],
 					[CreateDate],
@@ -4938,6 +4948,7 @@
 				<parameter name="@StartTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
 				<parameter name="@EndTime" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
 				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
+				<parameter name="@RepeatId" type="uniqueidentifier" direction="Input" size="16" precision="0" scale="0" param="" nulldefault="null"/>
 				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
 				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
@@ -4956,6 +4967,7 @@
 	, [StartTime]
 	, [EndTime]
 	, [Note]
+	, [RepeatId]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -4971,6 +4983,7 @@
 	AND ([StartTime] = @StartTime OR @StartTime IS NULL)
 	AND ([EndTime] = @EndTime OR @EndTime IS NULL)
 	AND ([Note] = @Note OR @Note IS NULL)
+	AND ([RepeatId] = @RepeatId OR @RepeatId IS NULL)
 	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
 	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
 	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
@@ -4988,6 +5001,7 @@
 	, [StartTime]
 	, [EndTime]
 	, [Note]
+	, [RepeatId]
 	, [IsDisabled]
 	, [CreateUser]
 	, [CreateDate]
@@ -5003,6 +5017,7 @@
 	OR ([StartTime] = @StartTime AND @StartTime is not null)
 	OR ([EndTime] = @EndTime AND @EndTime is not null)
 	OR ([Note] = @Note AND @Note is not null)
+	OR ([RepeatId] = @RepeatId AND @RepeatId is not null)
 	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
 	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
 	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
@@ -5042,7 +5057,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Id], O.[Username], O.[RoomId], O.[RosterTypeId], O.[StartTime], O.[EndTime], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Id], O.[Username], O.[RoomId], O.[RosterTypeId], O.[StartTime], O.[EndTime], O.[Note], O.[RepeatId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Roster] O,
 				    #PageIndex PageIndex
