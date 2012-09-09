@@ -18,18 +18,11 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
+<label runat="server" id="lblmessage">tai file</label>
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
                 Manager User</h5>
-        </div>
-        <div style="width: 350px; margin-left: 100px; padding: 5px;">
-            <label style="width: 100px; float: left; line-height: 20px; font-weight: bold">
-                Select Service:
-            </label>
-            <dx:ASPxComboBox ID="service_Id" runat="server" AutoPostBack="True" OnSelectedIndexChanged="service_Id_SelectedIndexChanged"
-                TextField="Title" ValueField="Id">
-            </dx:ASPxComboBox>
         </div>
         <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" Width="100%"
             KeyFieldName="Username" OnInitNewRow="gridUser_InitNewRow" OnRowInserting="gridUser_RowInserting"
@@ -42,7 +35,12 @@
                 <dx:GridViewDataColumn FieldName="Firstname" Visible="false" VisibleIndex="4" />
                 <dx:GridViewDataColumn FieldName="DisplayName" VisibleIndex="5" />
                 <dx:GridViewDataColumn FieldName="CellPhone" VisibleIndex="4" />
-                <dx:GridViewDataColumn FieldName="ServicesId" VisibleIndex="4" />
+                <dx:GridViewDataColumn FieldName="ServicesId" VisibleIndex="4" Visible="false" />
+                <dx:GridViewDataComboBoxColumn Caption="Services" FieldName="ServicesId" VisibleIndex="4"  >
+                    <PropertiesComboBox  DropDownStyle="DropDown" ValueField="Id" TextField="Title" DataSourceID="ServicesDatas">
+                    
+                    </PropertiesComboBox>
+                </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataColumn FieldName="Email" VisibleIndex="6" />
                 <dx:GridViewDataColumn FieldName="UserGroupId" VisibleIndex="8" />
                 <dx:GridViewCommandColumn VisibleIndex="9">
@@ -54,8 +52,10 @@
                         <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
                         </dx:GridViewCommandColumnCustomButton>
                     </CustomButtons>
+                   
                 </dx:GridViewCommandColumn>
             </Columns>
+            <Settings ShowFilterRow="true" />
             <Templates>
                 <DetailRow>
                     <div style="padding: 3px 3px 2px 3px">
@@ -248,11 +248,11 @@
                                         Avarta
                                     </td>
                                     <td>
-                                        <%-- <dx:ASPxUploadControl ID="uplImage" runat="server">
+                                        <%--<dx:ASPxUploadControl ID="uplImage" runat="server">
                                                     <ValidationSettings MaxFileSize="4194304" AllowedFileExtensions=".jpg,.jpeg,.jpe,.gif">
                                                     </ValidationSettings>
                                                 </dx:ASPxUploadControl>--%>
-                                        <asp:FileUpload runat="server" ID="Uploadimg" />
+                                        <asp:FileUpload runat="server" ID="Uploadimg" Enabled="true" EnableViewState="false"  />
                                     </td>
                                 </tr>
                             </tbody>
@@ -303,5 +303,10 @@
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
         </data:RoleDataSource>
+        <data:ServicesDataSource ID="ServicesDatas" runat="server">
+            <Parameters>
+                <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />            
+            </Parameters>
+        </data:ServicesDataSource>
     </div>
 </asp:Content>
