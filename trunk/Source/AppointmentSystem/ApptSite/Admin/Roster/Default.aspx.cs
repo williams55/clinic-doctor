@@ -582,9 +582,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             tm.BeginTransaction();
 
             Roster roster = DataRepository.RosterProvider.GetById(id);
-            if (roster == null || roster.IsDisabled)
+            if (roster == null || roster.IsDisabled )
             {
-                return WebCommon.BuildFailedResult("There is no roster to delete or roster is expired.");
+                return WebCommon.BuildFailedResult("There is no roster to delete.");
+            }
+            if (roster.StartTime <= DateTime.Now)
+            {
+                return WebCommon.BuildFailedResult("Cannot delete roster. Roster is expired.");
             }
 
             roster.IsDisabled = true;
