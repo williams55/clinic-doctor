@@ -6,14 +6,17 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
+using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
+using Common;
 using Common.Util;
 using DevExpress.Web.ASPxClasses;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
 using Log.Controller;
+using Newtonsoft.Json;
 
 public partial class Admin_Roster_Grid : System.Web.UI.Page
 {
@@ -73,8 +76,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
         }
     }
 
-    // Delete role
-    protected void gridRole_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
+    protected void gridRoster_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
         {
@@ -87,40 +89,34 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
                 return;
             }
 
-            // Validate id
-            Int32 id;
-            if (Int32.TryParse(gridRoster.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
+            // Lay roster muon xoa
+            var id = gridRoster.GetRowValues(e.VisibleIndex, "Id").ToString();
+            Roster roster = DataRepository.RosterProvider.GetById(id);
+            if (roster == null || roster.IsDisabled)
             {
-                var obj = DataRepository.RoleProvider.GetById(id);
-                if (obj == null || obj.IsDisabled)
-                {
-                    WebCommon.AlertGridView(sender, "Role is not existed. You cannot delete it.");
-                    return;
-                }
-                DataRepository.RoleProvider.DeepLoad(obj);
-
-                // Kiem tra xem co cho nao dang su dung room hay khong
-                if (obj.GroupRoleCollection.Exists(x => !x.IsDisabled) || obj.UserRoleCollection.Exists(x => !x.IsDisabled)
-                    || obj.RoleDetailCollection.Exists(x => !x.IsDisabled))
-                {
-                    WebCommon.AlertGridView(sender, String.Format("Role {0} is used, you cannot delete it.", obj.Title));
-                    return;
-                }
-                obj.IsDisabled = true;
-                obj.UpdateUser = WebCommon.GetAuthUsername();
-                obj.UpdateDate = DateTime.Now;
-                DataRepository.RoleProvider.Update(obj);
+                WebCommon.AlertGridView(sender, "There is no roster to delete.");
+                return;
             }
+            if (roster.StartTime <= DateTime.Now)
+            {
+                WebCommon.AlertGridView(sender, "Cannot delete roster. Roster is expired.");
+                return;
+            }
+
+            roster.IsDisabled = true;
+            roster.UpdateUser = WebCommon.GetAuthUsername();
+            roster.UpdateDate = DateTime.Now;
+            DataRepository.RosterProvider.Update(roster);
             #endregion
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            WebCommon.AlertGridView(sender, "Cannot delete role. Please contact Administrator");
+            WebCommon.AlertGridView(sender, "Cannot delete roster. Please contact Administrator");
         }
     }
 
-    protected void gridRole_RowInserting(object sender, ASPxDataInsertingEventArgs e)
+    protected void gridRoster_RowInserting(object sender, ASPxDataInsertingEventArgs e)
     {
         try
         {
@@ -156,7 +152,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
         }
     }
 
-    protected void gridRole_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
+    protected void gridRoster_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
         try
         {
@@ -192,28 +188,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
         }
     }
 
-    protected void ContentControl1_OnLoad(object sender, EventArgs e)
-    {
-        try
-        {
-            var container = sender as ContentControl;
-            if (container != null)
-            {
-                var hdfRosterType = (HiddenField)container.FindControl("hdfRosterType");
-                var cboRosterType = container.FindControl("cboRosterType") as ASPxComboBox;
-                if (hdfRosterType != null && cboRosterType != null)
-                {
-                    var item = cboRosterType.Items.FindByValue(hdfRosterType.Value);
-                    cboRosterType.SelectedItem = item;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-        }
-    }
-
+    // Lay khoang thoi gian phu hop voi moi buoc nhay
     protected DateTime getDate(object obj, bool isEndTime)
     {
         var currentTime = DateTime.Now;
@@ -235,5 +210,34 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
         return currentTime;
+    }
+
+    protected void gridRoster_InitNewRow(object sender, ASPxDataInitNewRowEventArgs e)
+    {
+        try
+        {
+            // Lay danh sach weekday va bind vao checkbox list
+            var grid = sender as ASPxGridView;
+            if (grid == null)
+            {
+                return;
+            }
+            var chkWeekday = grid.FindEditFormTemplateControl("chkWeekday") as CheckBoxList;
+            var lstWeekday = JsonConvert.DeserializeObject<List<ConstantKeyValue>>(Constants.Weekdays);
+
+            if (chkWeekday == null)
+            {
+                return;
+            }
+
+            chkWeekday.DataSource = lstWeekday;
+            chkWeekday.DataTextField = "key";
+            chkWeekday.DataValueField = "key";
+            chkWeekday.DataBind();
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
     }
 }
