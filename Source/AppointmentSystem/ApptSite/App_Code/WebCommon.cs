@@ -4,7 +4,9 @@ using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Appt.Common.Constants;
+using Common;
 using Common.Util;
 using DevExpress.Web.ASPxGridView;
 using Log.Controller;
@@ -110,6 +112,10 @@ public class WebCommon
         return false;
     }
 
+    public static List<ConstantKeyValue> GetWeekday()
+    {
+        return JsonConvert.DeserializeObject<List<ConstantKeyValue>>(Constants.Weekdays);
+    }
     #endregion
 
     #region Build Result for Ajax call with Json format

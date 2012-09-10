@@ -1,8 +1,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="EditUser.aspx.cs" Inherits="Admin_Users_EditUser" %>
 
-<%@ Register Assembly="DevExpress.Web.v10.2, Version=10.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
-    Namespace="DevExpress.Web.ASPxUploadControl" TagPrefix="dx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
