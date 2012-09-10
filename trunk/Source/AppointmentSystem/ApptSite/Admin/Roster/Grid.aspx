@@ -36,21 +36,22 @@
                 Roster</h5>
         </div>
         <div id="box-order">
-            <div style="float: left; width: 20%">
+            <div style="float: left; width: 10%">
                 <div>
                     Selected values:
                 </div>
                 <dx:ASPxListBox ID="selList" ClientInstanceName="selList" runat="server" Height="250px"
-                    Width="100%" />
+                    Width="100%">
+                </dx:ASPxListBox>
                 <div>
                     Selected count: <span id="selCount" style="font-weight: bold">0</span>
                 </div>
             </div>
-            <div style="float: right; width: 78%">
+            <div style="float: right; width: 88%">
                 <dx:ASPxGridView ID="gridRoster" ClientInstanceName="grid" runat="server" DataSourceID="RosterDataSource"
                     KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoster_RowInserting"
                     OnCustomButtonCallback="gridRoster_CustomButtonCallback" OnRowUpdating="gridRoster_RowUpdating"
-                    OnInitNewRow="gridRoster_InitNewRow" AutoGenerateColumns="False">
+                    AutoGenerateColumns="False">
                     <Columns>
                         <dx:GridViewCommandColumn Width="40" ShowSelectCheckbox="True">
                             <CellStyle HorizontalAlign="Center">
@@ -133,9 +134,16 @@
                                                     Id
                                                 </td>
                                                 <td class="content-row" style="width: 220px;">
+                                                    <% if (gridRoster.IsNewRowEditing)
+                                                       {%>
+                                                    Auto Id
+                                                    <% }
+                                                       else
+                                                       { %>
                                                     <dx:ASPxTextBox runat="server" ID="txtId" Text='<%# Eval("Id") %>' CssClass="text-form"
                                                         MaxLength="100" Width="100%" ReadOnly="True">
                                                     </dx:ASPxTextBox>
+                                                    <% } %>
                                                 </td>
                                                 <td class="title-row" style="width: 80px;">
                                                     From
@@ -167,6 +175,10 @@
                                                                 <dx:ASPxDateEdit ID="fromDate" runat="server" EditFormatString="MM/dd/yyyy" DisplayFormatString="MM/dd/yyyy"
                                                                     Date='<%# Eval("StartTime") == null? DateTime.Now : DateTime.Parse(Eval("StartTime").ToString()) %>'
                                                                     Width="100%">
+                                                                    <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                                        ErrorText="Error">
+                                                                        <RequiredField IsRequired="True" ErrorText="From Date is required" />
+                                                                    </ValidationSettings>
                                                                 </dx:ASPxDateEdit>
                                                             </td>
                                                         </tr>
@@ -174,13 +186,23 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="title-row" style="width: 100px;">
+                                                <td class="title-row">
                                                     Doctor
                                                 </td>
-                                                <td class="content-row" style="width: 220px;">
-                                                    <dx:ASPxTextBox runat="server" ID="txtUsername" Text='<%# Eval("Username") %>' CssClass="text-form"
-                                                        MaxLength="100" Width="100%">
-                                                    </dx:ASPxTextBox>
+                                                <td class="content-row">
+                                                    <dx:ASPxComboBox ID="choDoctor" runat="server" Width="100%" DropDownWidth="550" DropDownStyle="DropDownList"
+                                                        DataSourceID="UsersDataSource" ValueField="Username" ValueType="System.String"
+                                                        TextFormatString="{0}" EnableCallbackMode="true" IncrementalFilteringMode="StartsWith"
+                                                        Value='<%# Bind("Username") %>'>
+                                                        <Columns>
+                                                            <dx:ListBoxColumn FieldName="Username" Width="130px" />
+                                                            <dx:ListBoxColumn FieldName="DisplayName" Width="200px" />
+                                                        </Columns>
+                                                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                            ErrorText="Error">
+                                                            <RequiredField IsRequired="True" ErrorText="Doctor is required" />
+                                                        </ValidationSettings>
+                                                    </dx:ASPxComboBox>
                                                 </td>
                                                 <td class="title-row">
                                                     To
@@ -212,6 +234,10 @@
                                                                 <dx:ASPxDateEdit ID="endDate" runat="server" EditFormatString="MM/dd/yyyy" DisplayFormatString="MM/dd/yyyy"
                                                                     Date='<%# Eval("EndTime") == null? DateTime.Now : DateTime.Parse(Eval("EndTime").ToString()) %>'
                                                                     Width="100%">
+                                                                    <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                                        ErrorText="Error">
+                                                                        <RequiredField IsRequired="True" ErrorText="To Date is required" />
+                                                                    </ValidationSettings>
                                                                 </dx:ASPxDateEdit>
                                                             </td>
                                                         </tr>
@@ -227,7 +253,7 @@
                                                         Visible="False"></asp:HiddenField>
                                                     <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="100%"
                                                         TextField="Title" ValueField="Id" ID="cboRosterType" ValueType="System.Int32"
-                                                        Value='<%# Eval("RosterTypeId") %>'>
+                                                        Value='<%# Bind("RosterTypeId") %>'>
                                                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                             ErrorText="Error">
                                                             <RequiredField IsRequired="True" ErrorText="Roster Type is required" />
@@ -259,7 +285,7 @@
                                                 </td>
                                                 <td class="content-row">
                                                     <dx:ASPxMemo runat="server" ID="txtNote" Text='<%# Bind("Note") %>' CssClass="text-form"
-                                                        MaxLength="500" Width="100%" Height="50px">
+                                                        Width="100%" Height="50px">
                                                     </dx:ASPxMemo>
                                                 </td>
                                                 <% if (gridRoster.IsNewRowEditing)
@@ -269,6 +295,13 @@
                                                 </td>
                                                 <td class="content-row">
                                                     <asp:CheckBoxList ID="chkWeekday" runat="server" RepeatDirection="Horizontal">
+                                                        <asp:ListItem Value="Sunday">Sunday</asp:ListItem>
+                                                        <asp:ListItem Value="Monday">Monday</asp:ListItem>
+                                                        <asp:ListItem Value="Tuesday">Tuesday</asp:ListItem>
+                                                        <asp:ListItem Value="Wednesday">Wednesday</asp:ListItem>
+                                                        <asp:ListItem Value="Thursday">Thursday</asp:ListItem>
+                                                        <asp:ListItem Value="Friday">Friday</asp:ListItem>
+                                                        <asp:ListItem Value="Saturday">Saturday</asp:ListItem>
                                                     </asp:CheckBoxList>
                                                 </td>
                                                 <% }

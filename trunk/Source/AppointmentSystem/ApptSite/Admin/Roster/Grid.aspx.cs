@@ -128,27 +128,212 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
                 return;
             }
 
+            var grid = sender as ASPxGridView;
+            if (grid == null)
+            {
+                WebCommon.AlertGridView(sender, "Cannot find roster.");
+                e.Cancel = true;
+                return;
+            }
+
+            var fromTime = grid.FindEditFormTemplateControl("fromTime") as ASPxTimeEdit;
+            var fromDate = grid.FindEditFormTemplateControl("fromDate") as ASPxDateEdit;
+            var endTime = grid.FindEditFormTemplateControl("endTime") as ASPxTimeEdit;
+            var endDate = grid.FindEditFormTemplateControl("endDate") as ASPxDateEdit;
+
+            if (fromTime == null || fromDate == null || endTime == null || endDate == null)
+            {
+                WebCommon.AlertGridView(sender, "New form is error.");
+                e.Cancel = true;
+                return;
+            }
+
+            var chkIsRepeat = grid.FindEditFormTemplateControl("chkIsRepeat") as ASPxCheckBox;
+            var chkWeekday = grid.FindEditFormTemplateControl("chkWeekday") as CheckBoxList;
+
             // Validate empty field
-            if (!WebCommon.ValidateEmpty("Title", e.NewValues["Title"], out _message))
+            if (!WebCommon.ValidateEmpty("Doctor", e.NewValues["Username"], out _message)
+                || !WebCommon.ValidateEmpty("Roster Type", e.NewValues["RosterTypeId"], out _message)
+                || !WebCommon.ValidateEmpty("From Time", fromTime.Text, out _message)
+                || !WebCommon.ValidateEmpty("From Date", fromDate.Text, out _message)
+                || !WebCommon.ValidateEmpty("End Time", endTime.Text, out _message)
+                || !WebCommon.ValidateEmpty("End Date", endDate.Text, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
                 return;
             }
 
-            // Set pure value
-            e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+            // Get date time
+            DateTime dtStart = (DateTime)fromDate.Value, dtEnd = (DateTime)endDate.Value;
+            DateTime timeStart = (DateTime)fromTime.Value, timeEnd = (DateTime)endTime.Value;
+            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, timeStart.Hour, timeStart.Minute, 0);
+            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, timeEnd.Hour, timeEnd.Minute, 0);
+
+            #region Validate Time
+            #endregion
+
+            // Declare list of roster in case repeat roster
+            var lstRoster = new TList<Roster>();
+
+            // Lay du lieu duoc nhap vao
+            var username = e.NewValues["Username"].ToString();
+            int intRosterTypeId;
+            var note = e.NewValues["Note"].ToString();
+
+            if (!Int32.TryParse(e.NewValues["RosterTypeId"].ToString(), out intRosterTypeId))
+            {
+                WebCommon.AlertGridView(sender, "Roster Type is invalid.");
+                e.Cancel = true;
+                return;
+            }
+
+            if (chkIsRepeat != null && chkIsRepeat.Checked && chkWeekday != null)
+            {
+                #region Validate Time
+                if (dtStart >= dtEnd)
+                {
+                    WebCommon.AlertGridView(sender, "To time must be greater than from date.");
+                    e.Cancel = true;
+                    return;
+                }
+
+                // If roster is created in a passed or current day
+                DateTime dtNow = DateTime.Now;
+                if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(dtStart.Year, dtStart.Month, dtStart.Day))
+                {
+                    WebCommon.AlertGridView(sender, "You can not change roster to passed or current date.");
+                    e.Cancel = true;
+                    return;
+                }
+                #endregion
+
+                // Get auto increasement id
+                string perfix = ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
+                int count;
+                TList<Roster> objPo = DataRepository.RosterProvider.GetPaged("Id like '" + perfix + "' + '%'", "Id desc", 0, 1, out count);
+                string number = count == 0 ? "001" : String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
+
+                // Variable for error message if there is conflict roster
+                string errorMessage = string.Empty;
+
+                // Set gia tri cho ngay dau tien
+                // Se khong cho gia tri ngay dau tien vao vong lap
+                e.NewValues["Id"] = perfix + number;
+                e.NewValues["StartTime"] = dtStart;
+                e.NewValues["EndTime"] = dtEnd;
+                e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+                e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+
+                // Lay danh sach ngay duoc lap lai
+                var weekday = (from ListItem item in chkWeekday.Items where item.Selected select item.Value).ToList();
+
+                while (dtStart <= dtEnd)
+                {
+                    dtStart = dtStart.AddDays(1);
+                    if (weekday.Exists(x => x == dtStart.DayOfWeek.ToString()))
+                    {
+                        var dtTmpStart = dtStart;
+                        var dtTmpEnd = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, dtEnd.Hour, dtEnd.Minute, 0);
+
+                        // Check existed rosters
+                        string query = string.Format("Username = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+                            , username, dtTmpEnd, dtTmpStart);
+                        DataRepository.RosterProvider.GetPaged(query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                        // If there is no roster -> insert new roster
+                        if (count > 0)
+                        {
+                            errorMessage += dtTmpStart.DayOfWeek.ToString() + " " + dtTmpStart.ToString("dd MMM yyyy") + ", ";
+                            continue;
+                        }
+
+                        number = String.Format("{0:000}", int.Parse(number) + 1);
+                        lstRoster.Add(new Roster
+                        {
+                            Id = perfix + number,
+                            Username = username,
+                            RosterTypeId = intRosterTypeId,
+                            StartTime = dtTmpStart,
+                            EndTime = dtTmpEnd,
+                            Note = note,
+                            CreateUser = username,
+                            UpdateUser = username
+                        });
+                    }
+                }
+
+                if (errorMessage.Length > 0)
+                {
+                    WebCommon.AlertGridView(sender, String.Format("There are some rosters conflicted: {0}", errorMessage.Substring(0, errorMessage.Length - 1)));
+                    e.Cancel = true;
+                    return;
+                }
+
+                // Insert new rosters
+                DataRepository.RosterProvider.Insert(lstRoster);
+            }
+            else
+            {
+                #region Validate Time
+                if (dtStart >= dtEnd)
+                {
+                    WebCommon.AlertGridView(sender, "To time must be greater than from date.");
+                    e.Cancel = true;
+                    return;
+                }
+                // If roster is created in a passed or current day
+                DateTime dtNow = DateTime.Now;
+                if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(dtStart.Year, dtStart.Month, dtStart.Day))
+                {
+                    WebCommon.AlertGridView(sender, "You can not change roster to passed or current date.");
+                    e.Cancel = true;
+                    return;
+                }
+                #endregion
+
+                var newObj = new Roster();
+
+                string perfix = ServiceFacade.SettingsHelper.RosterPrefix + DateTime.Now.ToString("yyMMdd");
+                int count;
+                TList<Roster> objPo = DataRepository.RosterProvider.GetPaged("Id like '" + perfix + "' + '%'", "Id desc", 0, 1, out count);
+                string id;
+                if (count == 0)
+                    id = perfix + "001";
+                else
+                {
+                    id = perfix + String.Format("{0:000}", int.Parse(objPo[0].Id.Substring(objPo[0].Id.Length - 3)) + 1);
+                }
+
+                // Check existed rosters
+                string query = string.Format("Username = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'"
+                    , username, dtStart, dtEnd);
+                DataRepository.RosterProvider.GetPaged(query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                // If there is no roster -> insert new roster
+                if (count > 0)
+                {
+                    WebCommon.AlertGridView(sender, String.Format("There is roster conflicted: From {0} {1} to {2} {3}"
+                        , newObj.StartTime.DayOfWeek, newObj.StartTime.ToString("dd MMM yyyy HH:mm")
+                        , newObj.EndTime.DayOfWeek, newObj.EndTime.ToString("dd MMM yyyy HH:mm")));
+                    e.Cancel = true;
+                    return;
+                }
+
+                // Set pure value
+                e.NewValues["Id"] = id;
+                e.NewValues["StartTime"] = dtStart;
+                e.NewValues["EndTime"] = dtEnd;
+                e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+                e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+            }
 
             // Show message alert delete successfully
-            WebCommon.AlertGridView(sender, "Role is created successfully.");
+            WebCommon.AlertGridView(sender, "Roster is created successfully.");
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             e.Cancel = true;
-            WebCommon.AlertGridView(sender, "Cannot create new role. Please contact Administrator");
+            WebCommon.AlertGridView(sender, "Cannot create new Roster. Please contact Administrator");
         }
     }
 
