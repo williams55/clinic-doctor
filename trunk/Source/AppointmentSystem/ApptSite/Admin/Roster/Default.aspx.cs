@@ -410,7 +410,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             // return message, nothing more
             if (rosterItem == null)
             {
-                return WebCommon.BuildFailedResult("There is no roster to update or the roster is expired.");
+                return WebCommon.BuildFailedResult("There is no roster to update.");
             }
 
             // Validate if roster's expired

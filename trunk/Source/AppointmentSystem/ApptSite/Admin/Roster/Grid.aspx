@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="Grid.aspx.cs" Inherits="Admin_Roster_Grid" %>
 
+<%@ Register TagPrefix="dx" Namespace="DevExpress.Web.ASPxGlobalEvents" Assembly="DevExpress.Web.v10.2, Version=10.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
 <%@ Import Namespace="AppointmentSystem.Settings.BusinessLayer" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
     Roster
@@ -28,6 +29,54 @@
         }
     </script>
 
+    <script type="text/javascript">
+        // <![CDATA[
+        function AddSelectedItems() {
+            MoveSelectedItems(lbAvailable, lbChoosen);
+            UpdateButtonState();
+        }
+        function AddAllItems() {
+            MoveAllItems(lbAvailable, lbChoosen);
+            UpdateButtonState();
+        }
+        function RemoveSelectedItems() {
+            MoveSelectedItems(lbChoosen, lbAvailable);
+            UpdateButtonState();
+        }
+        function RemoveAllItems() {
+            MoveAllItems(lbChoosen, lbAvailable);
+            UpdateButtonState();
+        }
+        function MoveSelectedItems(srcListBox, dstListBox) {
+            srcListBox.BeginUpdate();
+            dstListBox.BeginUpdate();
+            var items = srcListBox.GetSelectedItems();
+            for (var i = items.length - 1; i >= 0; i = i - 1) {
+                dstListBox.AddItem(items[i].text, items[i].value);
+                srcListBox.RemoveItem(items[i].index);
+            }
+            srcListBox.EndUpdate();
+            dstListBox.EndUpdate();
+        }
+        function MoveAllItems(srcListBox, dstListBox) {
+            srcListBox.BeginUpdate();
+            var count = srcListBox.GetItemCount();
+            for (var i = 0; i < count; i++) {
+                var item = srcListBox.GetItem(i);
+                dstListBox.AddItem(item.text, item.value);
+            }
+            srcListBox.EndUpdate();
+            srcListBox.ClearItems();
+        }
+        function UpdateButtonState() {
+            btnMoveAllItemsToRight.SetEnabled(lbAvailable.GetItemCount() > 0);
+            btnMoveAllItemsToLeft.SetEnabled(lbChoosen.GetItemCount() > 0);
+            btnMoveSelectedItemsToRight.SetEnabled(lbAvailable.GetSelectedItems().length > 0);
+            btnMoveSelectedItemsToLeft.SetEnabled(lbChoosen.GetSelectedItems().length > 0);
+        }
+        // ]]> 
+    </script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div id="box-tabs" class="box">
@@ -51,7 +100,7 @@
                 <dx:ASPxGridView ID="gridRoster" ClientInstanceName="grid" runat="server" DataSourceID="RosterDataSource"
                     KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoster_RowInserting"
                     OnCustomButtonCallback="gridRoster_CustomButtonCallback" OnRowUpdating="gridRoster_RowUpdating"
-                    AutoGenerateColumns="False">
+                    AutoGenerateColumns="False" OnStartRowEditing="gridRoster_StartRowEditing">
                     <Columns>
                         <dx:GridViewCommandColumn Width="40" ShowSelectCheckbox="True">
                             <CellStyle HorizontalAlign="Center">
@@ -325,6 +374,85 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <dx:ASPxGlobalEvents ID="GlobalEvents" runat="server">
+                                        <ClientSideEvents ControlsInitialized="function(s, e) { UpdateButtonState(); }" />
+                                    </dx:ASPxGlobalEvents>
+                                    <asp:HiddenField runat="server" Value="<%# Eval(&quot;RepeatId&quot;) == null 
+                                        ? &quot;0 > 1&quot; : Eval(&quot;RepeatId&quot;, &quot;RepeatId = '{0}'&quot;)
+                                        + &quot; AND &quot; + Eval(&quot;Id&quot;, &quot;Id <> '{0}'&quot;) %>"
+                                        ID="hdfRepeatId" />
+                                    <% if (!gridRoster.IsNewRowEditing)
+                                                   { %>
+                                    <table class="edit-form">
+                                        <tbody>
+                                            <tr>
+                                                <td valign="top" style="width: 35%">
+                                                    <div class="BottomPadding">
+                                                        <dx:ASPxLabel ID="lblAvailable" runat="server" Text="Available:" />
+                                                    </div>
+                                                    <dx:ASPxListBox ID="lbAvailable" runat="server" ClientInstanceName="lbAvailable"
+                                                        Width="100%" Height="240px" SelectionMode="CheckColumn" TextField="Id" ValueField="Id"
+                                                        DataSourceID="UpdateRosterDataSource">
+                                                        <ClientSideEvents SelectedIndexChanged="function(s, e) { UpdateButtonState(); }" />
+                                                    </dx:ASPxListBox>
+                                                </td>
+                                                <td valign="middle" align="center" style="padding: 10px; width: 30%">
+                                                    <div>
+                                                        <dx:ASPxButton ID="btnMoveSelectedItemsToRight" runat="server" ClientInstanceName="btnMoveSelectedItemsToRight"
+                                                            AutoPostBack="False" Text="Add >" Width="130px" Height="23px" ClientEnabled="False"
+                                                            ToolTip="Add selected items">
+                                                            <ClientSideEvents Click="function(s, e) { AddSelectedItems(); }" />
+                                                        </dx:ASPxButton>
+                                                    </div>
+                                                    <div class="TopPadding">
+                                                        <dx:ASPxButton ID="btnMoveAllItemsToRight" runat="server" ClientInstanceName="btnMoveAllItemsToRight"
+                                                            AutoPostBack="False" Text="Add All >>" Width="130px" Height="23px" ToolTip="Add all items">
+                                                            <ClientSideEvents Click="function(s, e) { AddAllItems(); }" />
+                                                        </dx:ASPxButton>
+                                                    </div>
+                                                    <div style="height: 32px">
+                                                    </div>
+                                                    <div>
+                                                        <dx:ASPxButton ID="btnMoveSelectedItemsToLeft" runat="server" ClientInstanceName="btnMoveSelectedItemsToLeft"
+                                                            AutoPostBack="False" Text="< Remove" Width="130px" Height="23px" ClientEnabled="False"
+                                                            ToolTip="Remove selected items">
+                                                            <ClientSideEvents Click="function(s, e) { RemoveSelectedItems(); }" />
+                                                        </dx:ASPxButton>
+                                                    </div>
+                                                    <div class="TopPadding">
+                                                        <dx:ASPxButton ID="btnMoveAllItemsToLeft" runat="server" ClientInstanceName="btnMoveAllItemsToLeft"
+                                                            AutoPostBack="False" Text="<< Remove All" Width="130px" Height="23px" ClientEnabled="False"
+                                                            ToolTip="Remove all items">
+                                                            <ClientSideEvents Click="function(s, e) { RemoveAllItems(); }" />
+                                                        </dx:ASPxButton>
+                                                    </div>
+                                                </td>
+                                                <td valign="top" style="width: 35%">
+                                                    <div class="BottomPadding">
+                                                        <dx:ASPxLabel ID="lblChosen" runat="server" Text="Chosen:" />
+                                                    </div>
+                                                    <dx:ASPxListBox ID="lbChoosen" runat="server" ClientInstanceName="lbChoosen" Width="100%"
+                                                        Height="240px" SelectionMode="CheckColumn">
+                                                        <ClientSideEvents SelectedIndexChanged="function(s, e) { UpdateButtonState(); }">
+                                                        </ClientSideEvents>
+                                                    </dx:ASPxListBox>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                <% } %>
+                                    <data:RosterDataSource ID="UpdateRosterDataSource" runat="server" SelectMethod="GetPaged"
+                                        EnablePaging="True" EnableSorting="True">
+                                        <DeepLoadProperties Method="IncludeChildren" Recursive="False">
+                                        </DeepLoadProperties>
+                                        <Parameters>
+                                            <asp:ControlParameter Name="WhereClause" ControlID="hdfRepeatId" Type="String" PropertyName="Value" />
+                                            <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
+                                            <asp:ControlParameter Name="PageIndex" ControlID="gridRoster" PropertyName="PageIndex"
+                                                Type="Int32" />
+                                            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+                                        </Parameters>
+                                    </data:RosterDataSource>
                                 </dx:ContentControl>
                             </div>
                         </EditForm>
