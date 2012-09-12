@@ -188,6 +188,15 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             if (chkIsRepeat != null && chkIsRepeat.Checked && chkWeekday != null)
             {
                 #region Validate Time
+                // Set lai ngay cho endtime de so sanh
+                timeEnd = new DateTime(timeStart.Year, timeStart.Month, timeStart.Day, timeEnd.Hour, timeEnd.Minute, 0);
+
+                if (timeStart >= timeEnd)
+                {
+                    WebCommon.AlertGridView(sender, "End time must be greater than start time.");
+                    e.Cancel = true;
+                    return;
+                }
                 if (dtStart >= dtEnd)
                 {
                     WebCommon.AlertGridView(sender, "To time must be greater than from date.");
@@ -339,13 +348,17 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
 
     protected void gridRoster_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
+            tm.BeginTransaction();
+
             // Validate user right for updating
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message))//Kiem tra xem user co quyen cap nhat hay khong
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
+                tm.Rollback();
                 return;
             }
 
@@ -354,96 +367,158 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             {
                 WebCommon.AlertGridView(sender, "Cannot find roster.");
                 e.Cancel = true;
+                tm.Rollback();
                 return;
             }
 
-            var fromTime = grid.FindEditFormTemplateControl("fromTime") as ASPxTimeEdit;
-            var fromDate = grid.FindEditFormTemplateControl("fromDate") as ASPxDateEdit;
-            var endTime = grid.FindEditFormTemplateControl("endTime") as ASPxTimeEdit;
-            var endDate = grid.FindEditFormTemplateControl("endDate") as ASPxDateEdit;
+            var objStartTime = grid.FindEditFormTemplateControl("fromTime") as ASPxTimeEdit;
+            var objStartDate = grid.FindEditFormTemplateControl("fromDate") as ASPxDateEdit;
+            var objEndTime = grid.FindEditFormTemplateControl("endTime") as ASPxTimeEdit;
+            var objEndDate = grid.FindEditFormTemplateControl("endDate") as ASPxDateEdit;
             var txtId = grid.FindEditFormTemplateControl("txtId") as ASPxTextBox;
             var lbChoosen = grid.FindEditFormTemplateControl("lbChoosen") as ASPxListBox;
 
-            if (fromTime == null || fromDate == null || endTime == null || endDate == null || txtId == null || lbChoosen == null)
+            if (objStartTime == null || objStartDate == null || objEndTime == null || objEndDate == null || txtId == null || lbChoosen == null)
             {
                 WebCommon.AlertGridView(sender, "Edit form is error.");
                 e.Cancel = true;
+                tm.Rollback();
                 return;
             }
-
-            var chkSimilar = grid.FindEditFormTemplateControl("chkSimilar") as ASPxCheckBox;
 
             // Validate empty field
             if (!WebCommon.ValidateEmpty("Doctor", e.NewValues["Username"], out _message)
                 || !WebCommon.ValidateEmpty("Roster Type", e.NewValues["RosterTypeId"], out _message)
-                || !WebCommon.ValidateEmpty("From Time", fromTime.Text, out _message)
-                || !WebCommon.ValidateEmpty("From Date", fromDate.Text, out _message)
-                || !WebCommon.ValidateEmpty("End Time", endTime.Text, out _message)
-                || !WebCommon.ValidateEmpty("End Date", endDate.Text, out _message))
+                || !WebCommon.ValidateEmpty("From Time", objStartTime.Text, out _message)
+                || !WebCommon.ValidateEmpty("From Date", objStartDate.Text, out _message)
+                || !WebCommon.ValidateEmpty("End Time", objEndTime.Text, out _message)
+                || !WebCommon.ValidateEmpty("End Date", objEndDate.Text, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
+                tm.Rollback();
                 return;
             }
-
-            // Get date time
-            DateTime dtStart = (DateTime)fromDate.Value, dtEnd = (DateTime)endDate.Value;
-            DateTime timeStart = (DateTime)fromTime.Value, timeEnd = (DateTime)endTime.Value;
-            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, timeStart.Hour, timeStart.Minute, 0);
-            dtEnd = new DateTime(dtEnd.Year, dtEnd.Month, dtEnd.Day, timeEnd.Hour, timeEnd.Minute, 0);
 
             // Lay du lieu duoc nhap vao
             var rosterId = txtId.Text;
             var username = e.NewValues["Username"].ToString();
             int intRosterTypeId;
-            var note = e.NewValues["Note"].ToString();
+            var note = e.NewValues["Note"].ToString().Trim();
+            var startTime = (DateTime)objStartTime.Value;
+            var startDate = (DateTime)objStartDate.Value;
+            var endTime = (DateTime)objEndTime.Value;
+            var endDate = (DateTime)objEndDate.Value;
 
             if (!Int32.TryParse(e.NewValues["RosterTypeId"].ToString(), out intRosterTypeId))
             {
                 WebCommon.AlertGridView(sender, "Roster Type is invalid.");
                 e.Cancel = true;
+                tm.Rollback();
                 return;
             }
 
-            if (chkSimilar != null && chkSimilar.Checked)
+            #region Validate Time
+            // Set lai ngay cho endtime de so sanh
+            endTime = new DateTime(startTime.Year, startTime.Month, startTime.Day, endTime.Hour, endTime.Minute, 0);
+
+            if (startTime >= endTime)
             {
-                #region Validate Time
-                if (dtStart >= dtEnd)
+                WebCommon.AlertGridView(sender, "End time must be greater than start time.");
+                e.Cancel = true;
+                tm.Rollback();
+                return;
+            }
+            #endregion
+
+            #region Kiem tra roster hien tai
+            // Lay thong tin roster hien tai
+            var currentRoster = DataRepository.RosterProvider.GetById(txtId.Text);
+
+            // Kiem tra roster co ton tai hay khong
+            if (currentRoster == null)
+            {
+                WebCommon.AlertGridView(sender, String.Format("Roster {0} is not existed.", txtId.Text));
+                e.Cancel = true;
+                tm.Rollback();
+                return;
+            }
+
+            // Kiem tra xem roster co phai da qua khong
+            if (currentRoster.StartTime < DateTime.Now)
+            {
+                WebCommon.AlertGridView(sender, String.Format("Roster {0} is passed.", txtId.Text));
+                e.Cancel = true;
+                tm.Rollback();
+                return;
+            }
+
+            // Kiem tra appointment, chua lam
+            #endregion
+
+            // Cap nhat cac roster lien quan neu co
+            string errorMessage = string.Empty;
+
+            foreach (ListEditItem item in lbChoosen.Items)
+            {
+                var roster = DataRepository.RosterProvider.GetById(item.Text);
+
+                // Kiem tra roster co ton tai hay khong
+                if (roster == null)
                 {
-                    WebCommon.AlertGridView(sender, "To time must be greater than from date.");
-                    e.Cancel = true;
-                    return;
+                    errorMessage += String.Format("<br />Roster {0} is not existed.", item.Text);
+                    continue;
                 }
 
-                // If roster is created in a passed or current day
-                DateTime dtNow = DateTime.Now;
-                if (new DateTime(dtNow.Year, dtNow.Month, dtNow.Day) >= new DateTime(dtStart.Year, dtStart.Month, dtStart.Day))
+                // Kiem tra xem roster co phai da qua khong
+                if (roster.StartTime < DateTime.Now)
                 {
-                    WebCommon.AlertGridView(sender, "You can not change roster to passed or current date.");
-                    e.Cancel = true;
-                    return;
+                    errorMessage += String.Format("<br />Roster {0} is passed.", item.Text);
+                    continue;
                 }
-                #endregion
 
-                // Get roster by id
-                Roster rosterItem = DataRepository.RosterProvider.GetById(rosterId);
+                DataRepository.RosterProvider.DeepLoad(roster);
+
+                // Neu roster da co appointment thi bao loi
+                // Cho nay chua them column roster trong appointment nen chua kiem tra duoc
+                //foreach (var VARIABLE in roster.a)
+                //{
+                    
+                //}
+
+                roster.StartTime = new DateTime(roster.StartTime.Year, roster.StartTime.Month, roster.StartTime.Day
+                    , startTime.Hour, startTime.Minute, 0);
+                roster.EndTime = new DateTime(roster.EndTime.Year, roster.EndTime.Month, roster.EndTime.Day
+                    , endTime.Hour, endTime.Minute, 0);
+                roster.Note = note;
+                roster.RosterTypeId = intRosterTypeId;
+                roster.Username = username;
+                DataRepository.RosterProvider.Save(tm, roster);
             }
-            else
+
+            if (errorMessage.Length > 0)
             {
-                
+                WebCommon.AlertGridView(sender, String.Format("There are some rosters error: {0}", errorMessage.Substring(0, errorMessage.Length - 1)));
+                e.Cancel = true;
+                tm.Rollback();
+                return;
             }
+ 
             // Set pure value
-            e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
+            e.NewValues["StartTime"] = new DateTime(startDate.Year, startDate.Month, startDate.Day, startTime.Hour, startTime.Minute, 0);
+            e.NewValues["EndTime"] = new DateTime(endDate.Year, endDate.Month, endDate.Day, endTime.Hour, endTime.Minute, 0);
             e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
-            e.Cancel = true;//tmp
+
             // Show message alert delete successfully
-            WebCommon.AlertGridView(sender, "Role is updated successfully.");
+            tm.Commit();
+            WebCommon.AlertGridView(sender, "Roster is updated successfully.");
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             e.Cancel = true;
+            tm.Rollback();
             WebCommon.AlertGridView(sender, "Cannot update roster. Please contact Administrator");
         }
     }
@@ -498,48 +573,6 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-        }
-    }
-    protected void gridRoster_StartRowEditing(object sender, ASPxStartRowEditingEventArgs e)
-    {
-        try
-        {
-            //var grid = sender as ASPxGridView;
-            //if (grid == null)
-            //{
-            //    WebCommon.AlertGridView(sender, "Cannot find roster.");
-            //    e.Cancel = true;
-            //    return;
-            //}
-
-            //// Lay RepeatId de tim nhung roster co cung dang
-            //var hdfRepeatId = grid.FindEditFormTemplateControl("hdfRepeatId") as HiddenField;
-            //var lbAvailable = grid.FindEditFormTemplateControl("lbAvailable") as ASPxListBox;
-            //if (lbAvailable == null || hdfRepeatId == null)
-            //{
-            //    WebCommon.AlertGridView(sender, "Cannot find roster.");
-            //    e.Cancel = true;
-            //    return;
-            //}
-
-            //int count;
-            //var lst =
-            //    DataRepository.RosterProvider.GetPaged(
-            //        String.Format("RepeatId = '{0}' AND IsDisabled = 'False'",
-            //                      hdfRepeatId.Value),
-            //        "Id ASC", 0, ServiceFacade.SettingsHelper.GetPagedLength,
-            //        out count);
-            
-            //// Bind du lieu vao list
-            //lbAvailable.DataSource = lst;
-            //lbAvailable.TextField = "Id";
-            //lbAvailable.ValueField = "Id";
-            //lbAvailable.DataBind();
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            WebCommon.AlertGridView(sender, "Cannot update roster. Please contact Administrator");
         }
     }
 }
