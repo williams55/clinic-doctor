@@ -357,6 +357,14 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     , rosterItem.StartTime.DayOfWeek.ToString(), rosterItem.StartTime.ToString("dd MMM yyyy HH:mm")
                     , rosterItem.EndTime.DayOfWeek.ToString(), rosterItem.EndTime.ToString("dd MMM yyyy HH:mm")), lstResult);
             }
+
+            // Kiem tra appointment
+            DataRepository.RosterProvider.DeepLoad(rosterItem);
+            if (rosterItem.AppointmentCollection.Any(appointment => appointment.StartTime < dtStart || appointment.EndTime > dtEnd))
+            {
+                return WebCommon.BuildFailedResult(
+                    String.Format("Cannot change roster {0} because there are some appointments.", rosterItem.Id));
+            }
             #endregion
 
             // Set new value
@@ -486,6 +494,14 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(String.Format("There is roster conflicted: From {0} {1} to {2} {3}"
                     , dtStart.DayOfWeek, dtStart.ToString("dd MMM yyyy HH:mm")
                     , dtEnd.DayOfWeek, dtEnd.ToString("dd MMM yyyy HH:mm")));
+            }
+
+            // Kiem tra appointment
+            DataRepository.RosterProvider.DeepLoad(rosterItem);
+            if (rosterItem.AppointmentCollection.Any(appointment => appointment.StartTime < dtStart || appointment.EndTime > dtEnd))
+            {
+                return WebCommon.BuildFailedResult(
+                    String.Format("Cannot change roster {0} because there are some appointments.", rosterItem.Id));
             }
             #endregion
 

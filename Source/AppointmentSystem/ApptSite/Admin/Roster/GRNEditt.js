@@ -134,12 +134,12 @@ scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
 
     if (ev.start_date <= new Date()) {
-        if (ev.isnew == "false") {
-            ShowDialog("", "", "You cannot change a passed roster.", "");
-        }
-        else {
+        if (ev.isnew == "true") {
             scheduler.deleteEvent(id);
             ShowDialog("", "", "You must create new roster in the day after current date.", "");
+        }
+        else {
+            ShowDialog("", "", "You cannot change a passed roster.", "");
         }
         return false;
     }
