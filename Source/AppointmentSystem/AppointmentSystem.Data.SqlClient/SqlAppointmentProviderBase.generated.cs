@@ -185,6 +185,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@Note", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@RosterId", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsComplete", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, DBNull.Value);
@@ -263,6 +264,12 @@ namespace AppointmentSystem.Data.SqlClient
 				{
 					database.SetParameterValue(commandWrapper, "@EndTime", 
 						clause.Trim().Remove(0,7).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("rosterid ") || clause.Trim().StartsWith("rosterid="))
+				{
+					database.SetParameterValue(commandWrapper, "@RosterId", 
+						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
 				if (clause.Trim().StartsWith("iscomplete ") || clause.Trim().StartsWith("iscomplete="))
@@ -828,6 +835,70 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 	
 
+		#region GetByRosterId
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Roster key.
+		///		FK_Appointment_Roster Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_rosterId"></param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<Appointment> GetByRosterId(TransactionManager transactionManager, System.String _rosterId, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Appointment_GetByRosterId", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@RosterId", DbType.String, _rosterId);
+			
+			IDataReader reader = null;
+			TList<Appointment> rows = new TList<Appointment>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByRosterId", rows)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}
+			
+				//Create Collection
+				Fill(reader, rows, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByRosterId", rows)); 
+			}
+			finally
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			return rows;
+		}	
+		#endregion
+	
+
 		#region GetByStatusId
 		/// <summary>
 		/// 	Gets rows from the datasource based on the FK_Appointment_Status key.
@@ -1090,18 +1161,20 @@ namespace AppointmentSystem.Data.SqlClient
 			col8.AllowDBNull = true;		
 			DataColumn col9 = dataTable.Columns.Add("EndTime", typeof(System.DateTime));
 			col9.AllowDBNull = true;		
-			DataColumn col10 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
-			col10.AllowDBNull = false;		
-			DataColumn col11 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col10 = dataTable.Columns.Add("RosterId", typeof(System.String));
+			col10.AllowDBNull = true;		
+			DataColumn col11 = dataTable.Columns.Add("IsComplete", typeof(System.Boolean));
 			col11.AllowDBNull = false;		
-			DataColumn col12 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col12.AllowDBNull = true;		
-			DataColumn col13 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col13.AllowDBNull = false;		
-			DataColumn col14 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col14.AllowDBNull = true;		
-			DataColumn col15 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col15.AllowDBNull = false;		
+			DataColumn col12 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col12.AllowDBNull = false;		
+			DataColumn col13 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col13.AllowDBNull = true;		
+			DataColumn col14 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col14.AllowDBNull = false;		
+			DataColumn col15 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col15.AllowDBNull = true;		
+			DataColumn col16 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col16.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Id", "Id");
 			bulkCopy.ColumnMappings.Add("PatientCode", "PatientCode");
@@ -1113,6 +1186,7 @@ namespace AppointmentSystem.Data.SqlClient
 			bulkCopy.ColumnMappings.Add("Note", "Note");
 			bulkCopy.ColumnMappings.Add("StartTime", "StartTime");
 			bulkCopy.ColumnMappings.Add("EndTime", "EndTime");
+			bulkCopy.ColumnMappings.Add("RosterId", "RosterId");
 			bulkCopy.ColumnMappings.Add("IsComplete", "IsComplete");
 			bulkCopy.ColumnMappings.Add("IsDisabled", "IsDisabled");
 			bulkCopy.ColumnMappings.Add("CreateUser", "CreateUser");
@@ -1155,6 +1229,9 @@ namespace AppointmentSystem.Data.SqlClient
 							
 				
 					row["EndTime"] = entity.EndTime.HasValue ? (object) entity.EndTime  : System.DBNull.Value;
+							
+				
+					row["RosterId"] = entity.RosterId;
 							
 				
 					row["IsComplete"] = entity.IsComplete;
@@ -1219,6 +1296,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, (entity.StartTime.HasValue ? (object) entity.StartTime  : System.DBNull.Value));
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, (entity.EndTime.HasValue ? (object) entity.EndTime  : System.DBNull.Value));
+			database.AddInParameter(commandWrapper, "@RosterId", DbType.String, entity.RosterId );
 			database.AddInParameter(commandWrapper, "@IsComplete", DbType.Boolean, entity.IsComplete );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );
@@ -1283,6 +1361,7 @@ namespace AppointmentSystem.Data.SqlClient
 			database.AddInParameter(commandWrapper, "@Note", DbType.String, entity.Note );
 			database.AddInParameter(commandWrapper, "@StartTime", DbType.DateTime, (entity.StartTime.HasValue ? (object) entity.StartTime : System.DBNull.Value) );
 			database.AddInParameter(commandWrapper, "@EndTime", DbType.DateTime, (entity.EndTime.HasValue ? (object) entity.EndTime : System.DBNull.Value) );
+			database.AddInParameter(commandWrapper, "@RosterId", DbType.String, entity.RosterId );
 			database.AddInParameter(commandWrapper, "@IsComplete", DbType.Boolean, entity.IsComplete );
 			database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean, entity.IsDisabled );
 			database.AddInParameter(commandWrapper, "@CreateUser", DbType.String, entity.CreateUser );

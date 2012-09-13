@@ -675,6 +675,17 @@ namespace AppointmentSystem.Entities
 		#endregion
 		
 		#region Children Collections
+	
+		/// <summary>
+		///	Holds a collection of Appointment objects
+		///	which are related to this object through the relation FK_Appointment_Roster
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<Appointment> AppointmentCollection
+		{
+			get { return entityData.AppointmentCollection; }
+			set { entityData.AppointmentCollection = value; }	
+		}
 		#endregion Children Collections
 		
 		#endregion
@@ -898,6 +909,8 @@ namespace AppointmentSystem.Entities
 			else
 				copy.UsernameSource = MakeCopyOf(this.UsernameSource, existingCopies) as Users;
 		
+			//deep copy nested objects
+			copy.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
 			return copy;
@@ -1666,6 +1679,31 @@ namespace AppointmentSystem.Entities
 	
 		#region Data Properties
 
+		#region AppointmentCollection
+		
+		private TList<Appointment> _appointmentRosterId;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _appointmentRosterId
+		/// </summary>
+		
+		public TList<Appointment> AppointmentCollection
+		{
+			get
+			{
+				if (_appointmentRosterId == null)
+				{
+				_appointmentRosterId = new TList<Appointment>();
+				}
+	
+				return _appointmentRosterId;
+			}
+			set { _appointmentRosterId = value; }
+		}
+		
+		#endregion
+
 		#endregion Data Properties
 		
 		#region Clone Method
@@ -1704,6 +1742,9 @@ namespace AppointmentSystem.Entities
 			#endregion
 		
 			#region Child Collections
+			//deep copy nested objects
+			if (this._appointmentRosterId != null)
+				_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -1755,6 +1796,8 @@ namespace AppointmentSystem.Entities
 			#endregion
 		
 			#region Child Collections
+			//deep copy nested objects
+			_tmp.AppointmentCollection = (TList<Appointment>) MakeCopyOf(this.AppointmentCollection, existingCopies); 
 			#endregion Child Collections
 			
 			//EntityState

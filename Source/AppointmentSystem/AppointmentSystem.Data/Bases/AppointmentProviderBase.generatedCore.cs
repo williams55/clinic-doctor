@@ -400,6 +400,91 @@ namespace AppointmentSystem.Data.Bases
 		
 	
 		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Roster key.
+		///		FK_Appointment_Roster Description: 
+		/// </summary>
+		/// <param name="_rosterId"></param>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
+		public TList<Appointment> GetByRosterId(System.String _rosterId)
+		{
+			int count = -1;
+			return GetByRosterId(_rosterId, 0,int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Roster key.
+		///		FK_Appointment_Roster Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_rosterId"></param>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
+		/// <remarks></remarks>
+		public TList<Appointment> GetByRosterId(TransactionManager transactionManager, System.String _rosterId)
+		{
+			int count = -1;
+			return GetByRosterId(transactionManager, _rosterId, 0, int.MaxValue, out count);
+		}
+		
+			/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Roster key.
+		///		FK_Appointment_Roster Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_rosterId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		///  <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
+		public TList<Appointment> GetByRosterId(TransactionManager transactionManager, System.String _rosterId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByRosterId(transactionManager, _rosterId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Roster key.
+		///		fkAppointmentRoster Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_rosterId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
+		public TList<Appointment> GetByRosterId(System.String _rosterId, int start, int pageLength)
+		{
+			int count =  -1;
+			return GetByRosterId(null, _rosterId, start, pageLength,out count);	
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Roster key.
+		///		fkAppointmentRoster Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_rosterId"></param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
+		public TList<Appointment> GetByRosterId(System.String _rosterId, int start, int pageLength,out int count)
+		{
+			return GetByRosterId(null, _rosterId, start, pageLength, out count);	
+		}
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_Appointment_Roster key.
+		///		FK_Appointment_Roster Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_rosterId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
+		public abstract TList<Appointment> GetByRosterId(TransactionManager transactionManager, System.String _rosterId, int start, int pageLength, out int count);
+		
+	
+		/// <summary>
 		/// 	Gets rows from the datasource based on the FK_Appointment_Status key.
 		///		FK_Appointment_Status Description: 
 		/// </summary>
@@ -740,6 +825,7 @@ namespace AppointmentSystem.Data.Bases
 					c.Note = (reader.IsDBNull(((int)AppointmentColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentColumn.Note - 1)];
 					c.StartTime = (reader.IsDBNull(((int)AppointmentColumn.StartTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.StartTime - 1)];
 					c.EndTime = (reader.IsDBNull(((int)AppointmentColumn.EndTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.EndTime - 1)];
+					c.RosterId = (reader.IsDBNull(((int)AppointmentColumn.RosterId - 1)))?null:(System.String)reader[((int)AppointmentColumn.RosterId - 1)];
 					c.IsComplete = (System.Boolean)reader[((int)AppointmentColumn.IsComplete - 1)];
 					c.IsDisabled = (System.Boolean)reader[((int)AppointmentColumn.IsDisabled - 1)];
 					c.CreateUser = (reader.IsDBNull(((int)AppointmentColumn.CreateUser - 1)))?null:(System.String)reader[((int)AppointmentColumn.CreateUser - 1)];
@@ -774,6 +860,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.Note = (reader.IsDBNull(((int)AppointmentColumn.Note - 1)))?null:(System.String)reader[((int)AppointmentColumn.Note - 1)];
 			entity.StartTime = (reader.IsDBNull(((int)AppointmentColumn.StartTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.StartTime - 1)];
 			entity.EndTime = (reader.IsDBNull(((int)AppointmentColumn.EndTime - 1)))?null:(System.DateTime?)reader[((int)AppointmentColumn.EndTime - 1)];
+			entity.RosterId = (reader.IsDBNull(((int)AppointmentColumn.RosterId - 1)))?null:(System.String)reader[((int)AppointmentColumn.RosterId - 1)];
 			entity.IsComplete = (System.Boolean)reader[((int)AppointmentColumn.IsComplete - 1)];
 			entity.IsDisabled = (System.Boolean)reader[((int)AppointmentColumn.IsDisabled - 1)];
 			entity.CreateUser = (reader.IsDBNull(((int)AppointmentColumn.CreateUser - 1)))?null:(System.String)reader[((int)AppointmentColumn.CreateUser - 1)];
@@ -803,6 +890,7 @@ namespace AppointmentSystem.Data.Bases
 			entity.Note = Convert.IsDBNull(dataRow["Note"]) ? null : (System.String)dataRow["Note"];
 			entity.StartTime = Convert.IsDBNull(dataRow["StartTime"]) ? null : (System.DateTime?)dataRow["StartTime"];
 			entity.EndTime = Convert.IsDBNull(dataRow["EndTime"]) ? null : (System.DateTime?)dataRow["EndTime"];
+			entity.RosterId = Convert.IsDBNull(dataRow["RosterId"]) ? null : (System.String)dataRow["RosterId"];
 			entity.IsComplete = (System.Boolean)dataRow["IsComplete"];
 			entity.IsDisabled = (System.Boolean)dataRow["IsDisabled"];
 			entity.CreateUser = Convert.IsDBNull(dataRow["CreateUser"]) ? null : (System.String)dataRow["CreateUser"];
@@ -938,6 +1026,32 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion RoomIdSource
 
+			#region RosterIdSource	
+			if (CanDeepLoad(entity, "Roster|RosterIdSource", deepLoadType, innerList) 
+				&& entity.RosterIdSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = (entity.RosterId ?? string.Empty);
+				Roster tmpEntity = EntityManager.LocateEntity<Roster>(EntityLocator.ConstructKeyFromPkItems(typeof(Roster), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.RosterIdSource = tmpEntity;
+				else
+					entity.RosterIdSource = DataRepository.RosterProvider.GetById(transactionManager, (entity.RosterId ?? string.Empty));		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'RosterIdSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.RosterIdSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.RosterProvider.DeepLoad(transactionManager, entity.RosterIdSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion RosterIdSource
+
 			#region StatusIdSource	
 			if (CanDeepLoad(entity, "Status|StatusIdSource", deepLoadType, innerList) 
 				&& entity.StatusIdSource == null)
@@ -1059,6 +1173,15 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion 
 			
+			#region RosterIdSource
+			if (CanDeepSave(entity, "Roster|RosterIdSource", deepSaveType, innerList) 
+				&& entity.RosterIdSource != null)
+			{
+				DataRepository.RosterProvider.Save(transactionManager, entity.RosterIdSource);
+				entity.RosterId = entity.RosterIdSource.Id;
+			}
+			#endregion 
+			
 			#region StatusIdSource
 			if (CanDeepSave(entity, "Status|StatusIdSource", deepSaveType, innerList) 
 				&& entity.StatusIdSource != null)
@@ -1134,6 +1257,12 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Room))]
 		Room,
+			
+		///<summary>
+		/// Composite Property for <c>Roster</c> at RosterIdSource
+		///</summary>
+		[ChildEntityType(typeof(Roster))]
+		Roster,
 			
 		///<summary>
 		/// Composite Property for <c>Status</c> at StatusIdSource

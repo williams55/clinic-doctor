@@ -11,6 +11,13 @@
 				</td>
 			</tr>
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataRosterId" runat="server" Text="Roster Id:" AssociatedControlID="dataRosterId" /></td>
+        <td>
+					<data:EntityDropDownList runat="server" ID="dataRosterId" DataSourceID="RosterIdRosterDataSource" DataTextField="StartTime" DataValueField="Id" SelectedValue='<%# Bind("RosterId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />
+					<data:RosterDataSource ID="RosterIdRosterDataSource" runat="server" SelectMethod="GetAll"  />
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataId" runat="server" Text="Id:" AssociatedControlID="dataId" /></td>
         <td>
 					<asp:TextBox runat="server" ID="dataId" Text='<%# Bind("Id") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataId" runat="server" Display="Dynamic" ControlToValidate="dataId" ErrorMessage="Required"></asp:RequiredFieldValidator>

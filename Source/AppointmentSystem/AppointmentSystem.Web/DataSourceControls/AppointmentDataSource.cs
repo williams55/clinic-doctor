@@ -164,6 +164,7 @@ namespace AppointmentSystem.Web.Data
 			System.String _patientCode;
 			System.Int32? _servicesId_nullable;
 			System.Int32? _roomId_nullable;
+			System.String _rosterId_nullable;
 			System.String _statusId_nullable;
 			System.String _username;
 
@@ -214,6 +215,10 @@ namespace AppointmentSystem.Web.Data
 				case AppointmentSelectMethod.GetByRoomId:
 					_roomId_nullable = (System.Int32?) EntityUtil.ChangeType(values["RoomId"], typeof(System.Int32?));
 					results = AppointmentProvider.GetByRoomId(GetTransactionManager(), _roomId_nullable, this.StartIndex, this.PageSize, out count);
+					break;
+				case AppointmentSelectMethod.GetByRosterId:
+					_rosterId_nullable = (System.String) EntityUtil.ChangeType(values["RosterId"], typeof(System.String));
+					results = AppointmentProvider.GetByRosterId(GetTransactionManager(), _rosterId_nullable, this.StartIndex, this.PageSize, out count);
 					break;
 				case AppointmentSelectMethod.GetByStatusId:
 					_statusId_nullable = (System.String) EntityUtil.ChangeType(values["StatusId"], typeof(System.String));
@@ -419,6 +424,10 @@ namespace AppointmentSystem.Web.Data
 		/// Represents the GetByRoomId method.
 		/// </summary>
 		GetByRoomId,
+		/// <summary>
+		/// Represents the GetByRosterId method.
+		/// </summary>
+		GetByRosterId,
 		/// <summary>
 		/// Represents the GetByStatusId method.
 		/// </summary>
