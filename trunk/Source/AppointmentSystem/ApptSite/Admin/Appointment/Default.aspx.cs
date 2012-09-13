@@ -974,9 +974,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             var dtStart = new DateTime();
             var dtEnd = new DateTime();
             int serviceId = 0;
+            string rosterId = string.Empty;
             if (!ValidateAppointmentFields(0, ref patientCode, ref note, ref startTime, ref endTime
                 , ref startDate, ref endDate, ref doctorId, ref roomId, ref status
-                , ref dtStart, ref dtEnd, ref _message, ref serviceId))
+                , ref dtStart, ref dtEnd, ref _message, ref serviceId, ref rosterId))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -1004,6 +1005,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             newObj.StatusId = status;
             newObj.StartTime = dtStart;
             newObj.EndTime = dtEnd;
+            newObj.RosterId = rosterId;
             newObj.CreateUser = Username;
             newObj.UpdateUser = Username;
 
@@ -1085,7 +1087,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             Appointment appointment = DataRepository.AppointmentProvider.GetById(id);
             var dtStart = new DateTime();
             var dtEnd = new DateTime();
-            if (!ValidateAppointmentFields(doctorId, startTime, endTime, appointment, ref dtStart, ref dtEnd, ref _message))
+            string rosterId = string.Empty;
+            if (!ValidateAppointmentFields(doctorId, startTime, endTime, appointment, ref dtStart, ref dtEnd, ref _message, ref rosterId))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -1170,9 +1173,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             var dtStart = new DateTime();
             var dtEnd = new DateTime();
             int serviceId = 0;
+            string rosterId = string.Empty;
             if (!ValidateAppointmentFields(1, ref patientCode, ref note, ref startTime, ref endTime
                 , ref startDate, ref endDate, ref doctorId, ref roomId, ref status
-                , ref dtStart, ref dtEnd, ref _message, ref serviceId))
+                , ref dtStart, ref dtEnd, ref _message, ref serviceId, ref rosterId))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -1186,6 +1190,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             appointment.ServicesId = serviceId;
             appointment.Note = note;
             appointment.StatusId = status;
+            appointment.RosterId = rosterId;
             appointment.StartTime = dtStart;
             appointment.EndTime = dtEnd;
             appointment.UpdateUser = Username;
@@ -1596,7 +1601,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <param name="startTime"> </param>
     /// <returns></returns>
     private static bool ValidateAppointmentFields(string doctorId, string startTime, string endTime, Appointment appointment
-        , ref DateTime dtStart, ref DateTime dtEnd, ref string message)
+        , ref DateTime dtStart, ref DateTime dtEnd, ref string message, ref string rosterId)
     {
         try
         {
@@ -1633,7 +1638,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             int serviceId = 0;
             if (!ValidateAppointmentFields(1, ref patientCode, ref note, ref tmpStartTime, ref tmpEndTime
             , ref startDate, ref endDate, ref doctorId, ref roomId, ref status
-            , ref dtStart, ref dtEnd, ref message, ref serviceId))
+            , ref dtStart, ref dtEnd, ref message, ref serviceId, ref rosterId))
             {
                 return false;
             }
@@ -1668,7 +1673,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <returns></returns>
     private static bool ValidateAppointmentFields(int compareValue, ref string patientCode, ref string note, ref string startTime, ref string endTime
         , ref string startDate, ref string endDate, ref string doctorId, ref string roomId, ref string status
-        , ref DateTime dtStart, ref DateTime dtEnd, ref string message, ref int serviceId)
+        , ref DateTime dtStart, ref DateTime dtEnd, ref string message, ref int serviceId, ref string rosterId)
     {
         try
         {
@@ -1833,6 +1838,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
             #endregion
 
+            rosterId = lstRoster[0].Id;
             return true;
         }
         catch (Exception ex)

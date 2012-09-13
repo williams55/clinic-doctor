@@ -409,6 +409,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             var startDate = (DateTime)objStartDate.Value;
             var endTime = (DateTime)objEndTime.Value;
             var endDate = (DateTime)objEndDate.Value;
+            string errorMessage = string.Empty;
 
             if (!Int32.TryParse(e.NewValues["RosterTypeId"].ToString(), out intRosterTypeId))
             {
@@ -429,6 +430,10 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
                 tm.Rollback();
                 return;
             }
+
+            // Tao thoi gian moi de kiem tra
+            var newStartTime = new DateTime(startDate.Year, startDate.Month, startDate.Day, startTime.Hour, startTime.Minute, 0);
+            var newEndTime = new DateTime(endDate.Year, endDate.Month, endDate.Day, endTime.Hour, endTime.Minute, 0);
             #endregion
 
             #region Kiem tra roster hien tai
@@ -454,10 +459,12 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             }
 
             // Kiem tra appointment, chua lam
+            DataRepository.RosterProvider.DeepLoad(currentRoster);
+            if (currentRoster.AppointmentCollection.Any(appointment => appointment.StartTime< newStartTime || appointment.EndTime > newEndTime))
+            {
+                errorMessage += String.Format("<br />Cannot change roster {0} because there are some appointments.", currentRoster.Id);
+            }
             #endregion
-
-            // Cap nhat cac roster lien quan neu co
-            string errorMessage = string.Empty;
 
             foreach (ListEditItem item in lbChoosen.Items)
             {
@@ -481,10 +488,10 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
 
                 // Neu roster da co appointment thi bao loi
                 // Cho nay chua them column roster trong appointment nen chua kiem tra duoc
-                //foreach (var VARIABLE in roster.a)
-                //{
-                    
-                //}
+                if (roster.AppointmentCollection.Any(appointment => appointment.StartTime < newStartTime || appointment.EndTime > newEndTime))
+                {
+                    errorMessage += String.Format("<br />Cannot change roster {0} because there are some appointments.", currentRoster.Id);
+                }
 
                 roster.StartTime = new DateTime(roster.StartTime.Year, roster.StartTime.Month, roster.StartTime.Day
                     , startTime.Hour, startTime.Minute, 0);
@@ -505,8 +512,8 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             }
  
             // Set pure value
-            e.NewValues["StartTime"] = new DateTime(startDate.Year, startDate.Month, startDate.Day, startTime.Hour, startTime.Minute, 0);
-            e.NewValues["EndTime"] = new DateTime(endDate.Year, endDate.Month, endDate.Day, endTime.Hour, endTime.Minute, 0);
+            e.NewValues["StartTime"] = newStartTime;
+            e.NewValues["EndTime"] = newEndTime;
             e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
