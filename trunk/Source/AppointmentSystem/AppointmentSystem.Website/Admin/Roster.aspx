@@ -48,6 +48,7 @@
 					<data:RosterProperty Name="Room"/> 
 					<data:RosterProperty Name="RosterType"/> 
 					<data:RosterProperty Name="Users"/> 
+					<%--<data:RosterProperty Name="AppointmentCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
 			<Parameters>

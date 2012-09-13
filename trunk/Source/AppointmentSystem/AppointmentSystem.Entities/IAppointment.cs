@@ -70,6 +70,11 @@ namespace AppointmentSystem.Entities
 		System.DateTime?  EndTime  { get; set; }
 		
 		/// <summary>
+		/// RosterId : 
+		/// </summary>
+		System.String  RosterId  { get; set; }
+		
+		/// <summary>
 		/// IsComplete : 
 		/// </summary>
 		System.Boolean  IsComplete  { get; set; }

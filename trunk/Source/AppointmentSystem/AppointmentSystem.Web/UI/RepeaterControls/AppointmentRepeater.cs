@@ -422,6 +422,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.EndTime; }
 		}
         /// <summary>
+        /// Gets the RosterId
+        /// </summary>
+        /// <value>The RosterId.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String RosterId
+		{
+			get { return _entity.RosterId; }
+		}
+        /// <summary>
         /// Gets the IsComplete
         /// </summary>
         /// <value>The IsComplete.</value>

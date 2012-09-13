@@ -91,6 +91,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_note"></param>
 		///<param name="_startTime"></param>
 		///<param name="_endTime"></param>
+		///<param name="_rosterId"></param>
 		///<param name="_isComplete"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
@@ -99,9 +100,9 @@ namespace AppointmentSystem.Entities
 		///<param name="_updateDate"></param>
 		public AppointmentBase(System.String _id, System.String _patientCode, System.String _username, 
 			System.Int32? _roomId, System.Int32? _servicesId, System.String _statusId, System.Int32? _appointmentGroupId, 
-			System.String _note, System.DateTime? _startTime, System.DateTime? _endTime, System.Boolean _isComplete, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+			System.String _note, System.DateTime? _startTime, System.DateTime? _endTime, System.String _rosterId, 
+			System.Boolean _isComplete, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new AppointmentEntityData();
 			this.backupData = null;
@@ -116,6 +117,7 @@ namespace AppointmentSystem.Entities
 			this.Note = _note;
 			this.StartTime = _startTime;
 			this.EndTime = _endTime;
+			this.RosterId = _rosterId;
 			this.IsComplete = _isComplete;
 			this.IsDisabled = _isDisabled;
 			this.CreateUser = _createUser;
@@ -137,6 +139,7 @@ namespace AppointmentSystem.Entities
 		///<param name="_note"></param>
 		///<param name="_startTime"></param>
 		///<param name="_endTime"></param>
+		///<param name="_rosterId"></param>
 		///<param name="_isComplete"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_createUser"></param>
@@ -145,9 +148,9 @@ namespace AppointmentSystem.Entities
 		///<param name="_updateDate"></param>
 		public static Appointment CreateAppointment(System.String _id, System.String _patientCode, System.String _username, 
 			System.Int32? _roomId, System.Int32? _servicesId, System.String _statusId, System.Int32? _appointmentGroupId, 
-			System.String _note, System.DateTime? _startTime, System.DateTime? _endTime, System.Boolean _isComplete, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+			System.String _note, System.DateTime? _startTime, System.DateTime? _endTime, System.String _rosterId, 
+			System.Boolean _isComplete, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			Appointment newAppointment = new Appointment();
 			newAppointment.Id = _id;
@@ -160,6 +163,7 @@ namespace AppointmentSystem.Entities
 			newAppointment.Note = _note;
 			newAppointment.StartTime = _startTime;
 			newAppointment.EndTime = _endTime;
+			newAppointment.RosterId = _rosterId;
 			newAppointment.IsComplete = _isComplete;
 			newAppointment.IsDisabled = _isDisabled;
 			newAppointment.CreateUser = _createUser;
@@ -552,6 +556,41 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or sets the RosterId property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 20)]
+		public virtual System.String RosterId
+		{
+			get
+			{
+				return this.entityData.RosterId; 
+			}
+			
+			set
+			{
+				if (this.entityData.RosterId == value)
+					return;
+					
+				OnColumnChanging(AppointmentColumn.RosterId, this.entityData.RosterId);
+				this.entityData.RosterId = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(AppointmentColumn.RosterId, this.entityData.RosterId);
+				OnPropertyChanged("RosterId");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or sets the IsComplete property. 
 		///		
 		/// </summary>
@@ -810,6 +849,17 @@ namespace AppointmentSystem.Entities
             set { entityData.RoomIdSource = value; }
       	}
 		/// <summary>
+		/// Gets or sets the source <see cref="Roster"/>.
+		/// </summary>
+		/// <value>The source Roster for RosterId.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Roster RosterIdSource
+      	{
+            get { return entityData.RosterIdSource; }
+            set { entityData.RosterIdSource = value; }
+      	}
+		/// <summary>
 		/// Gets or sets the source <see cref="Status"/>.
 		/// </summary>
 		/// <value>The source Status for StatusId.</value>
@@ -863,6 +913,8 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("RosterId", "Roster Id", 20));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("CreateUser", "Create User", 200));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("UpdateUser", "Update User", 200));
@@ -887,7 +939,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Id", "PatientCode", "Username", "RoomId", "ServicesId", "StatusId", "AppointmentGroupId", "Note", "StartTime", "EndTime", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Id", "PatientCode", "Username", "RoomId", "ServicesId", "StatusId", "AppointmentGroupId", "Note", "StartTime", "EndTime", "RosterId", "IsComplete", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1046,6 +1098,7 @@ namespace AppointmentSystem.Entities
 				copy.Note = this.Note;
 				copy.StartTime = this.StartTime;
 				copy.EndTime = this.EndTime;
+				copy.RosterId = this.RosterId;
 				copy.IsComplete = this.IsComplete;
 				copy.IsDisabled = this.IsDisabled;
 				copy.CreateUser = this.CreateUser;
@@ -1069,6 +1122,10 @@ namespace AppointmentSystem.Entities
 				copy.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				copy.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
+			if (this.RosterIdSource != null && existingCopies.Contains(this.RosterIdSource))
+				copy.RosterIdSource = existingCopies[this.RosterIdSource] as Roster;
+			else
+				copy.RosterIdSource = MakeCopyOf(this.RosterIdSource, existingCopies) as Roster;
 			if (this.StatusIdSource != null && existingCopies.Contains(this.StatusIdSource))
 				copy.StatusIdSource = existingCopies[this.StatusIdSource] as Status;
 			else
@@ -1228,6 +1285,8 @@ namespace AppointmentSystem.Entities
 					return entityData.StartTime != _originalData.StartTime;
 					case AppointmentColumn.EndTime:
 					return entityData.EndTime != _originalData.EndTime;
+					case AppointmentColumn.RosterId:
+					return entityData.RosterId != _originalData.RosterId;
 					case AppointmentColumn.IsComplete:
 					return entityData.IsComplete != _originalData.IsComplete;
 					case AppointmentColumn.IsDisabled:
@@ -1277,6 +1336,7 @@ namespace AppointmentSystem.Entities
 			result = result || entityData.Note != _originalData.Note;
 			result = result || entityData.StartTime != _originalData.StartTime;
 			result = result || entityData.EndTime != _originalData.EndTime;
+			result = result || entityData.RosterId != _originalData.RosterId;
 			result = result || entityData.IsComplete != _originalData.IsComplete;
 			result = result || entityData.IsDisabled != _originalData.IsDisabled;
 			result = result || entityData.CreateUser != _originalData.CreateUser;
@@ -1303,6 +1363,7 @@ namespace AppointmentSystem.Entities
 				_originalData.Note,
 				_originalData.StartTime,
 				_originalData.EndTime,
+				_originalData.RosterId,
 				_originalData.IsComplete,
 				_originalData.IsDisabled,
 				_originalData.CreateUser,
@@ -1348,6 +1409,7 @@ namespace AppointmentSystem.Entities
 					((this.Note == null) ? string.Empty : this.Note.ToString()).GetHashCode() ^ 
 					((this.StartTime == null) ? string.Empty : this.StartTime.ToString()).GetHashCode() ^ 
 					((this.EndTime == null) ? string.Empty : this.EndTime.ToString()).GetHashCode() ^ 
+					((this.RosterId == null) ? string.Empty : this.RosterId.ToString()).GetHashCode() ^ 
 					this.IsComplete.GetHashCode() ^ 
 					this.IsDisabled.GetHashCode() ^ 
 					((this.CreateUser == null) ? string.Empty : this.CreateUser.ToString()).GetHashCode() ^ 
@@ -1452,6 +1514,15 @@ namespace AppointmentSystem.Entities
 					equal = false;
 			}
 			else if (Object1.EndTime == null ^ Object2.EndTime == null )
+			{
+				equal = false;
+			}
+			if ( Object1.RosterId != null && Object2.RosterId != null )
+			{
+				if (Object1.RosterId != Object2.RosterId)
+					equal = false;
+			}
+			else if (Object1.RosterId == null ^ Object2.RosterId == null )
 			{
 				equal = false;
 			}
@@ -1581,6 +1652,12 @@ namespace AppointmentSystem.Entities
             	
             	case AppointmentColumn.EndTime:
             		return this.EndTime.Value.CompareTo(rhs.EndTime.Value);
+            		
+            		                 
+            	
+            	
+            	case AppointmentColumn.RosterId:
+            		return this.RosterId.CompareTo(rhs.RosterId);
             		
             		                 
             	
@@ -1753,7 +1830,7 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{17}{16}- Id: {0}{16}- PatientCode: {1}{16}- Username: {2}{16}- RoomId: {3}{16}- ServicesId: {4}{16}- StatusId: {5}{16}- AppointmentGroupId: {6}{16}- Note: {7}{16}- StartTime: {8}{16}- EndTime: {9}{16}- IsComplete: {10}{16}- IsDisabled: {11}{16}- CreateUser: {12}{16}- CreateDate: {13}{16}- UpdateUser: {14}{16}- UpdateDate: {15}{16}{18}", 
+				"{18}{17}- Id: {0}{17}- PatientCode: {1}{17}- Username: {2}{17}- RoomId: {3}{17}- ServicesId: {4}{17}- StatusId: {5}{17}- AppointmentGroupId: {6}{17}- Note: {7}{17}- StartTime: {8}{17}- EndTime: {9}{17}- RosterId: {10}{17}- IsComplete: {11}{17}- IsDisabled: {12}{17}- CreateUser: {13}{17}- CreateDate: {14}{17}- UpdateUser: {15}{17}- UpdateDate: {16}{17}{19}", 
 				this.Id,
 				this.PatientCode,
 				this.Username,
@@ -1764,6 +1841,7 @@ namespace AppointmentSystem.Entities
 				(this.Note == null) ? string.Empty : this.Note.ToString(),
 				(this.StartTime == null) ? string.Empty : this.StartTime.ToString(),
 				(this.EndTime == null) ? string.Empty : this.EndTime.ToString(),
+				(this.RosterId == null) ? string.Empty : this.RosterId.ToString(),
 				this.IsComplete,
 				this.IsDisabled,
 				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
@@ -1855,6 +1933,11 @@ namespace AppointmentSystem.Entities
 		public System.DateTime?		  EndTime = null;
 		
 		/// <summary>
+		/// RosterId : 
+		/// </summary>
+		public System.String		  RosterId = null;
+		
+		/// <summary>
 		/// IsComplete : 
 		/// </summary>
 		public System.Boolean		  IsComplete = false;
@@ -1939,6 +2022,19 @@ namespace AppointmentSystem.Entities
             get { return this._roomIdSource; }
             set { this._roomIdSource = value; }
       	}
+		private Roster _rosterIdSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Roster"/>.
+		/// </summary>
+		/// <value>The source Roster for RosterId.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Roster RosterIdSource
+      	{
+            get { return this._rosterIdSource; }
+            set { this._rosterIdSource = value; }
+      	}
 		private Status _statusIdSource = null;
 		
 		/// <summary>
@@ -1994,6 +2090,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Note = this.Note;
 			_tmp.StartTime = this.StartTime;
 			_tmp.EndTime = this.EndTime;
+			_tmp.RosterId = this.RosterId;
 			_tmp.IsComplete = this.IsComplete;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -2010,6 +2107,8 @@ namespace AppointmentSystem.Entities
 				_tmp.ServicesIdSource = MakeCopyOf(this.ServicesIdSource) as Services;
 			if (this.RoomIdSource != null)
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource) as Room;
+			if (this.RosterIdSource != null)
+				_tmp.RosterIdSource = MakeCopyOf(this.RosterIdSource) as Roster;
 			if (this.StatusIdSource != null)
 				_tmp.StatusIdSource = MakeCopyOf(this.StatusIdSource) as Status;
 			if (this.UsernameSource != null)
@@ -2048,6 +2147,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Note = this.Note;
 			_tmp.StartTime = this.StartTime;
 			_tmp.EndTime = this.EndTime;
+			_tmp.RosterId = this.RosterId;
 			_tmp.IsComplete = this.IsComplete;
 			_tmp.IsDisabled = this.IsDisabled;
 			_tmp.CreateUser = this.CreateUser;
@@ -2072,6 +2172,10 @@ namespace AppointmentSystem.Entities
 				_tmp.RoomIdSource = existingCopies[this.RoomIdSource] as Room;
 			else
 				_tmp.RoomIdSource = MakeCopyOf(this.RoomIdSource, existingCopies) as Room;
+			if (this.RosterIdSource != null && existingCopies.Contains(this.RosterIdSource))
+				_tmp.RosterIdSource = existingCopies[this.RosterIdSource] as Roster;
+			else
+				_tmp.RosterIdSource = MakeCopyOf(this.RosterIdSource, existingCopies) as Roster;
 			if (this.StatusIdSource != null && existingCopies.Contains(this.StatusIdSource))
 				_tmp.StatusIdSource = existingCopies[this.StatusIdSource] as Status;
 			else
@@ -2512,41 +2616,47 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("EndTime", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
 		EndTime = 10,
 		/// <summary>
+		/// RosterId : 
+		/// </summary>
+		[EnumTextValue("RosterId")]
+		[ColumnEnum("RosterId", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
+		RosterId = 11,
+		/// <summary>
 		/// IsComplete : 
 		/// </summary>
 		[EnumTextValue("IsComplete")]
 		[ColumnEnum("IsComplete", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsComplete = 11,
+		IsComplete = 12,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 12,
+		IsDisabled = 13,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 13,
+		CreateUser = 14,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 14,
+		CreateDate = 15,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 15,
+		UpdateUser = 16,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 16
+		UpdateDate = 17
 	}//End enum
 
 	#endregion AppointmentColumn Enum
