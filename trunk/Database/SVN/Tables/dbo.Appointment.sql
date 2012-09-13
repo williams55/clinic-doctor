@@ -10,6 +10,7 @@ CREATE TABLE [dbo].[Appointment]
 [Note] [nvarchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [StartTime] [datetime] NULL,
 [EndTime] [datetime] NULL,
+[RosterId] [nvarchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [IsComplete] [bit] NOT NULL CONSTRAINT [DF_Appointment_IsComplete] DEFAULT ((0)),
 [IsDisabled] [bit] NOT NULL CONSTRAINT [DF_Appointment_IsDisabled] DEFAULT ((0)),
 [CreateUser] [nvarchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -17,6 +18,8 @@ CREATE TABLE [dbo].[Appointment]
 [UpdateUser] [nvarchar] (200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [UpdateDate] [datetime] NOT NULL CONSTRAINT [DF_Appointment_UpdateDate] DEFAULT (getdate())
 ) ON [PRIMARY]
+ALTER TABLE [dbo].[Appointment] ADD
+CONSTRAINT [FK_Appointment_Roster] FOREIGN KEY ([RosterId]) REFERENCES [dbo].[Roster] ([Id])
 ALTER TABLE [dbo].[Appointment] ADD
 CONSTRAINT [FK_Appointment_Users] FOREIGN KEY ([Username]) REFERENCES [dbo].[Users] ([Username])
 GO
