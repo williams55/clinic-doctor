@@ -29,54 +29,6 @@
         }
     </script>
 
-    <script type="text/javascript">
-        // <![CDATA[
-        function AddSelectedItems() {
-            MoveSelectedItems(lbAvailable, lbChoosen);
-            UpdateButtonState();
-        }
-        function AddAllItems() {
-            MoveAllItems(lbAvailable, lbChoosen);
-            UpdateButtonState();
-        }
-        function RemoveSelectedItems() {
-            MoveSelectedItems(lbChoosen, lbAvailable);
-            UpdateButtonState();
-        }
-        function RemoveAllItems() {
-            MoveAllItems(lbChoosen, lbAvailable);
-            UpdateButtonState();
-        }
-        function MoveSelectedItems(srcListBox, dstListBox) {
-            srcListBox.BeginUpdate();
-            dstListBox.BeginUpdate();
-            var items = srcListBox.GetSelectedItems();
-            for (var i = items.length - 1; i >= 0; i = i - 1) {
-                dstListBox.AddItem(items[i].text, items[i].value);
-                srcListBox.RemoveItem(items[i].index);
-            }
-            srcListBox.EndUpdate();
-            dstListBox.EndUpdate();
-        }
-        function MoveAllItems(srcListBox, dstListBox) {
-            srcListBox.BeginUpdate();
-            var count = srcListBox.GetItemCount();
-            for (var i = 0; i < count; i++) {
-                var item = srcListBox.GetItem(i);
-                dstListBox.AddItem(item.text, item.value);
-            }
-            srcListBox.EndUpdate();
-            srcListBox.ClearItems();
-        }
-        function UpdateButtonState() {
-            btnMoveAllItemsToRight.SetEnabled(lbAvailable.GetItemCount() > 0);
-            btnMoveAllItemsToLeft.SetEnabled(lbChoosen.GetItemCount() > 0);
-            btnMoveSelectedItemsToRight.SetEnabled(lbAvailable.GetSelectedItems().length > 0);
-            btnMoveSelectedItemsToLeft.SetEnabled(lbChoosen.GetSelectedItems().length > 0);
-        }
-        // ]]> 
-    </script>
-
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div id="box-tabs" class="box">
@@ -87,8 +39,8 @@
         <div id="box-order">
             <dx:ASPxGridView ID="gridRoster" ClientInstanceName="grid" runat="server" DataSourceID="RosterDataSource"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoster_RowInserting"
-                OnCustomButtonCallback="gridRoster_CustomButtonCallback"
-                AutoGenerateColumns="False" onrowupdating="gridRoster_RowUpdating">
+                OnCustomButtonCallback="gridRoster_CustomButtonCallback" AutoGenerateColumns="False"
+                OnRowUpdating="gridRoster_RowUpdating">
                 <Columns>
                     <dx:GridViewDataColumn Caption="No." Width="50">
                         <DataItemTemplate>
@@ -99,10 +51,14 @@
                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                         <EditFormSettings Visible="False" />
                     </dx:GridViewDataColumn>
-                    <dx:GridViewDataColumn FieldName="Id" Width="100" ReadOnly="True" />
+                    <dx:GridViewDataColumn FieldName="Id" Width="100" ReadOnly="True" SortOrder="Descending" />
                     <dx:GridViewDataComboBoxColumn FieldName="Username" Caption="Doctor">
+                        <PropertiesComboBox TextField="DisplayName" ValueField="Username" DataSourceID="UsersDataSource">
+                        </PropertiesComboBox>
                     </dx:GridViewDataComboBoxColumn>
                     <dx:GridViewDataComboBoxColumn FieldName="RosterTypeId" Caption="Roster Type" Width="120">
+                        <PropertiesComboBox TextField="Title" ValueField="Id" DataSourceID="RosterTypeDataSource">
+                        </PropertiesComboBox>
                     </dx:GridViewDataComboBoxColumn>
                     <dx:GridViewDataDateColumn FieldName="StartTime" Width="120" Caption="From">
                         <PropertiesDateEdit DisplayFormatString="HH:mm MM/dd/yyyy" EditFormat="Custom" EditFormatString="MM/dd/yyyy"
@@ -134,8 +90,7 @@
                     </dx:GridViewCommandColumn>
                 </Columns>
                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
-                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}" 
-                    CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>
                 <SettingsEditing Mode="EditFormAndDisplayRow" />
@@ -146,21 +101,14 @@
                             <dx:ContentControl ID="ContentControl1" runat="server">
                                 <table class="edit-form">
                                     <tbody>
+                                        <% if (gridRoster.IsNewRowEditing)
+                                           { %>
                                         <tr>
                                             <td class="title-row" style="width: 100px;">
                                                 Id
                                             </td>
                                             <td class="content-row" style="width: 220px;">
-                                                <% if (gridRoster.IsNewRowEditing)
-                                                   {%>
                                                 Auto Id
-                                                <% }
-                                                   else
-                                                   { %>
-                                                <dx:ASPxTextBox runat="server" ID="txtId" Text='<%# Eval("Id") %>' CssClass="text-form"
-                                                    MaxLength="100" Width="100%" ReadOnly="True">
-                                                </dx:ASPxTextBox>
-                                                <% } %>
                                             </td>
                                             <td class="title-row" style="width: 80px;">
                                                 From
@@ -277,13 +225,6 @@
                                                     </ValidationSettings>
                                                 </dx:ASPxComboBox>
                                             </td>
-                                            <% if (!gridRoster.IsNewRowEditing)
-                                               {%>
-                                            <td class="title-row" colspan="2">
-                                            </td>
-                                            <% }
-                                               else
-                                               { %>
                                             <td class="title-row">
                                                 Is Repeat
                                             </td>
@@ -291,7 +232,6 @@
                                                 <dx:ASPxCheckBox runat="server" ID="chkIsRepeat">
                                                 </dx:ASPxCheckBox>
                                             </td>
-                                            <% } %>
                                         </tr>
                                         <tr>
                                             <td class="title-row">
@@ -302,8 +242,6 @@
                                                     Width="100%" Height="50px">
                                                 </dx:ASPxMemo>
                                             </td>
-                                            <% if (gridRoster.IsNewRowEditing)
-                                               { %>
                                             <td class="title-row">
                                                 Weekday
                                             </td>
@@ -318,15 +256,199 @@
                                                     <asp:ListItem Value="Saturday">Saturday</asp:ListItem>
                                                 </asp:CheckBoxList>
                                             </td>
-                                            <% }
-                                               else
-                                               { %>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <% } %>
                                         </tr>
+                                        <% }
+                                           else
+                                           { %>
+                                        <tr>
+                                            <td class="title-row" style="width: 100px;">
+                                                Id
+                                            </td>
+                                            <td class="content-row" style="width: 220px;">
+                                                <dx:ASPxTextBox runat="server" ID="txtId" Text='<%# Eval("Id") %>' CssClass="text-form"
+                                                    MaxLength="100" Width="100%" ReadOnly="True">
+                                                </dx:ASPxTextBox>
+                                            </td>
+                                            <td class="title-row" style="width: 100px;">
+                                                Edit Mode
+                                            </td>
+                                            <td class="content-row">
+                                                <dx:ASPxRadioButton runat="server" GroupName="EditRosterMode" ID="radSingle" Checked="True"
+                                                    Text="Single" Layout="Flow" />
+                                                <dx:ASPxRadioButton ID="radSimilar" runat="server" GroupName="EditRosterMode" Text="Similar"
+                                                    Layout="Flow" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                                Doctor
+                                            </td>
+                                            <td class="content-row">
+                                                <dx:ASPxComboBox ID="choDoctorEdit" runat="server" Width="100%" DropDownWidth="550"
+                                                    DropDownStyle="DropDownList" DataSourceID="UsersDataSource" ValueField="Username"
+                                                    ValueType="System.String" TextFormatString="{0}" EnableCallbackMode="true" IncrementalFilteringMode="StartsWith"
+                                                    Value='<%# Bind("Username") %>'>
+                                                    <Columns>
+                                                        <dx:ListBoxColumn FieldName="Username" Width="130px" />
+                                                        <dx:ListBoxColumn FieldName="DisplayName" Width="200px" />
+                                                    </Columns>
+                                                    <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                        ErrorText="Error">
+                                                        <RequiredField IsRequired="True" ErrorText="Doctor is required" />
+                                                    </ValidationSettings>
+                                                </dx:ASPxComboBox>
+                                            </td>
+                                            <td class="title-row">
+                                                Similar rosters
+                                            </td>
+                                            <td class="title-row" rowspan="5" style="vertical-align: top">
+                                                <asp:HiddenField runat="server" Value="<%# Eval(&quot;RepeatId&quot;) == null 
+                                                    ? &quot;0 > 1&quot; : Eval(&quot;RepeatId&quot;, &quot;RepeatId = '{0}'&quot;)
+                                                    + &quot; AND &quot; + Eval(&quot;Id&quot;, &quot;Id <> '{0}'&quot;)
+                                                    + &quot; AND &quot; + &quot;IsDisabled = 'False' &quot; %>" ID="hdfRepeatId" />
+                                                <dx:ASPxGridView ID="gridSimilarRoster" runat="server" DataSourceID="UpdateRosterDataSource"
+                                                    KeyFieldName="Id" Width="100%" EnableRowsCache="False">
+                                                    <Columns>
+                                                        <dx:GridViewDataColumn Caption="No." Width="70">
+                                                            <DataItemTemplate>
+                                                                <%# Container.ItemIndex + 1%>
+                                                            </DataItemTemplate>
+                                                            <CellStyle HorizontalAlign="Center">
+                                                            </CellStyle>
+                                                            <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                                            <EditFormSettings Visible="False" />
+                                                        </dx:GridViewDataColumn>
+                                                        <dx:GridViewDataColumn FieldName="Id" Width="120" ReadOnly="True" />
+                                                        <dx:GridViewDataDateColumn FieldName="StartTime" Caption="Day">
+                                                            <PropertiesDateEdit DisplayFormatString="MM/dd/yyyy" EnableAnimation="False">
+                                                            </PropertiesDateEdit>
+                                                        </dx:GridViewDataDateColumn>
+                                                    </Columns>
+                                                    <Settings ShowGroupPanel="False" ShowFilterRow="False" ShowFilterRowMenu="False"
+                                                        ShowVerticalScrollBar="True" />
+                                                    <SettingsPager Mode="ShowAllRecords">
+                                                    </SettingsPager>
+                                                </dx:ASPxGridView>
+                                                <data:RosterDataSource ID="UpdateRosterDataSource" runat="server" SelectMethod="GetPaged"
+                                                    EnablePaging="True" EnableSorting="True">
+                                                    <DeepLoadProperties Method="IncludeChildren" Recursive="False">
+                                                    </DeepLoadProperties>
+                                                    <Parameters>
+                                                        <asp:ControlParameter Name="WhereClause" ControlID="hdfRepeatId" Type="String" PropertyName="Value" />
+                                                        <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
+                                                        <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+                                                    </Parameters>
+                                                </data:RosterDataSource>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                                Roster Type
+                                            </td>
+                                            <td class="content-row">
+                                                <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="100%"
+                                                    TextField="Title" ValueField="Id" ID="cboRosterTypeEdit" ValueType="System.Int32"
+                                                    Value='<%# Bind("RosterTypeId") %>'>
+                                                    <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                        ErrorText="Error">
+                                                        <RequiredField IsRequired="True" ErrorText="Roster Type is required" />
+                                                    </ValidationSettings>
+                                                </dx:ASPxComboBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                                From
+                                            </td>
+                                            <td class="content-row">
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td style="width: 80px; padding-right: 10px;">
+                                                            <dx:ASPxTimeEdit ID="fromTimeEdit" runat="server" DateTime='<%# getDate(Eval("StartTime"), false) %>'
+                                                                EditFormatString="HH:mm" DisplayFormatString="HH:mm" Width="100%">
+                                                                <ClientSideEvents ButtonClick='function(s, e) {
+                                                                    if (e.buttonIndex == -2) //increment button
+                                                                    {
+                                                                        var date = s.GetDate();
+                                                                        var minutes = date.getMinutes();
+                                                                        date.setMinutes(minutes + minuteStep);
+                                                                        s.SetDate(date);
+                                                                    }
+                                                                    else if (e.buttonIndex == -3) //down button
+                                                                    {
+                                                                        var date = s.GetDate();
+                                                                        var minutes = date.getMinutes();
+                                                                        date.setMinutes(minutes - minuteStep); 
+                                                                        s.SetDate(date);
+                                                                    }}' />
+                                                            </dx:ASPxTimeEdit>
+                                                        </td>
+                                                        <td>
+                                                            <dx:ASPxDateEdit ID="fromDateEdit" runat="server" EditFormatString="MM/dd/yyyy"
+                                                                DisplayFormatString="MM/dd/yyyy" Date='<%# Eval("StartTime") == null? DateTime.Now : DateTime.Parse(Eval("StartTime").ToString()) %>'
+                                                                Width="100%">
+                                                                <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                                    ErrorText="Error">
+                                                                    <RequiredField IsRequired="True" ErrorText="From Date is required" />
+                                                                </ValidationSettings>
+                                                            </dx:ASPxDateEdit>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row">
+                                                To
+                                            </td>
+                                            <td class="content-row">
+                                                <table style="width: 100%">
+                                                    <tr>
+                                                        <td style="width: 80px; padding-right: 10px;">
+                                                            <dx:ASPxTimeEdit ID="endTimeEdit" runat="server" DateTime='<%# getDate(Eval("EndTime"), true) %>'
+                                                                EditFormatString="HH:mm" DisplayFormatString="HH:mm" Width="100%">
+                                                                <ClientSideEvents ButtonClick='function(s, e) {
+                                                                    if (e.buttonIndex == -2) //increment button
+                                                                    {
+                                                                        var date = s.GetDate();
+                                                                        var minutes = date.getMinutes();
+                                                                        date.setMinutes(minutes + minuteStep);
+                                                                        s.SetDate(date);
+                                                                    }
+                                                                    else if (e.buttonIndex == -3) //down button
+                                                                    {
+                                                                        var date = s.GetDate();
+                                                                        var minutes = date.getMinutes();
+                                                                        date.setMinutes(minutes - minuteStep); 
+                                                                        s.SetDate(date);
+                                                                    }}' />
+                                                            </dx:ASPxTimeEdit>
+                                                        </td>
+                                                        <td>
+                                                            <dx:ASPxDateEdit ID="endDateEdit" runat="server" EditFormatString="MM/dd/yyyy"
+                                                                DisplayFormatString="MM/dd/yyyy" Date='<%# Eval("EndTime") == null? DateTime.Now : DateTime.Parse(Eval("EndTime").ToString()) %>'
+                                                                Width="100%">
+                                                                <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                                    ErrorText="Error">
+                                                                    <RequiredField IsRequired="True" ErrorText="To Date is required" />
+                                                                </ValidationSettings>
+                                                            </dx:ASPxDateEdit>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="title-row" style="vertical-align: top">
+                                                Note
+                                            </td>
+                                            <td class="content-row" style="vertical-align: top">
+                                                <dx:ASPxMemo runat="server" ID="txtNoteEdit" Text='<%# Bind("Note") %>' CssClass="text-form"
+                                                    Width="100%" Height="120px">
+                                                </dx:ASPxMemo>
+                                            </td>
+                                        </tr>
+                                        <% } %>
                                         <tr>
                                             <td colspan="4" style="text-align: right;">
                                                 <dx:ASPxGridViewTemplateReplacement ID="UpdateButton" ReplacementType="EditFormUpdateButton"
@@ -339,84 +461,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <dx:ASPxGlobalEvents ID="GlobalEvents" runat="server">
-                                    <ClientSideEvents ControlsInitialized="function(s, e) { UpdateButtonState(); }" />
-                                </dx:ASPxGlobalEvents>
-                                <asp:HiddenField runat="server" Value="<%# Eval(&quot;RepeatId&quot;) == null 
-                                        ? &quot;0 > 1&quot; : Eval(&quot;RepeatId&quot;, &quot;RepeatId = '{0}'&quot;)
-                                        + &quot; AND &quot; + Eval(&quot;Id&quot;, &quot;Id <> '{0}'&quot;) %>" ID="hdfRepeatId" />
-                                <% if (!gridRoster.IsNewRowEditing)
-                                   { %>
-                                <table class="edit-form">
-                                    <tbody>
-                                        <tr>
-                                            <td valign="top" style="width: 35%">
-                                                <div class="BottomPadding">
-                                                    <dx:ASPxLabel ID="lblAvailable" runat="server" Text="Available:" />
-                                                </div>
-                                                <dx:ASPxListBox ID="lbAvailable" runat="server" ClientInstanceName="lbAvailable"
-                                                    Width="100%" Height="240px" SelectionMode="CheckColumn" TextField="Id" ValueField="Id"
-                                                    DataSourceID="UpdateRosterDataSource">
-                                                    <ClientSideEvents SelectedIndexChanged="function(s, e) { UpdateButtonState(); }" />
-                                                </dx:ASPxListBox>
-                                            </td>
-                                            <td valign="middle" align="center" style="padding: 10px; width: 30%">
-                                                <div>
-                                                    <dx:ASPxButton ID="btnMoveSelectedItemsToRight" runat="server" ClientInstanceName="btnMoveSelectedItemsToRight"
-                                                        AutoPostBack="False" Text="Add >" Width="130px" Height="23px" ClientEnabled="False"
-                                                        ToolTip="Add selected items">
-                                                        <ClientSideEvents Click="function(s, e) { AddSelectedItems(); }" />
-                                                    </dx:ASPxButton>
-                                                </div>
-                                                <div class="TopPadding">
-                                                    <dx:ASPxButton ID="btnMoveAllItemsToRight" runat="server" ClientInstanceName="btnMoveAllItemsToRight"
-                                                        AutoPostBack="False" Text="Add All >>" Width="130px" Height="23px" ToolTip="Add all items">
-                                                        <ClientSideEvents Click="function(s, e) { AddAllItems(); }" />
-                                                    </dx:ASPxButton>
-                                                </div>
-                                                <div style="height: 32px">
-                                                </div>
-                                                <div>
-                                                    <dx:ASPxButton ID="btnMoveSelectedItemsToLeft" runat="server" ClientInstanceName="btnMoveSelectedItemsToLeft"
-                                                        AutoPostBack="False" Text="< Remove" Width="130px" Height="23px" ClientEnabled="False"
-                                                        ToolTip="Remove selected items">
-                                                        <ClientSideEvents Click="function(s, e) { RemoveSelectedItems(); }" />
-                                                    </dx:ASPxButton>
-                                                </div>
-                                                <div class="TopPadding">
-                                                    <dx:ASPxButton ID="btnMoveAllItemsToLeft" runat="server" ClientInstanceName="btnMoveAllItemsToLeft"
-                                                        AutoPostBack="False" Text="<< Remove All" Width="130px" Height="23px" ClientEnabled="False"
-                                                        ToolTip="Remove all items">
-                                                        <ClientSideEvents Click="function(s, e) { RemoveAllItems(); }" />
-                                                    </dx:ASPxButton>
-                                                </div>
-                                            </td>
-                                            <td valign="top" style="width: 35%">
-                                                <div class="BottomPadding">
-                                                    <dx:ASPxLabel ID="lblChosen" runat="server" Text="Chosen:" />
-                                                </div>
-                                                <dx:ASPxListBox ID="lbChoosen" runat="server" ClientInstanceName="lbChoosen" Width="100%"
-                                                    Height="240px" SelectionMode="CheckColumn">
-                                                    <ClientSideEvents SelectedIndexChanged="function(s, e) { UpdateButtonState(); }">
-                                                    </ClientSideEvents>
-                                                </dx:ASPxListBox>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <% } %>
-                                <data:RosterDataSource ID="UpdateRosterDataSource" runat="server" SelectMethod="GetPaged"
-                                    EnablePaging="True" EnableSorting="True">
-                                    <DeepLoadProperties Method="IncludeChildren" Recursive="False">
-                                    </DeepLoadProperties>
-                                    <Parameters>
-                                        <asp:ControlParameter Name="WhereClause" ControlID="hdfRepeatId" Type="String" PropertyName="Value" />
-                                        <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
-                                        <asp:ControlParameter Name="PageIndex" ControlID="gridRoster" PropertyName="PageIndex"
-                                            Type="Int32" />
-                                        <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
-                                    </Parameters>
-                                </data:RosterDataSource>
                             </dx:ContentControl>
                         </div>
                     </EditForm>

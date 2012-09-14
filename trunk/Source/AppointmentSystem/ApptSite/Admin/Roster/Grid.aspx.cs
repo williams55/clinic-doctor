@@ -371,14 +371,14 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
                 return;
             }
 
-            var objStartTime = grid.FindEditFormTemplateControl("fromTime") as ASPxTimeEdit;
-            var objStartDate = grid.FindEditFormTemplateControl("fromDate") as ASPxDateEdit;
-            var objEndTime = grid.FindEditFormTemplateControl("endTime") as ASPxTimeEdit;
-            var objEndDate = grid.FindEditFormTemplateControl("endDate") as ASPxDateEdit;
+            var objStartTime = grid.FindEditFormTemplateControl("fromTimeEdit") as ASPxTimeEdit;
+            var objStartDate = grid.FindEditFormTemplateControl("fromDateEdit") as ASPxDateEdit;
+            var objEndTime = grid.FindEditFormTemplateControl("endTimeEdit") as ASPxTimeEdit;
+            var objEndDate = grid.FindEditFormTemplateControl("endDateEdit") as ASPxDateEdit;
             var txtId = grid.FindEditFormTemplateControl("txtId") as ASPxTextBox;
-            var lbChoosen = grid.FindEditFormTemplateControl("lbChoosen") as ASPxListBox;
+            var radSimilar = grid.FindEditFormTemplateControl("radSimilar") as ASPxRadioButton;
 
-            if (objStartTime == null || objStartDate == null || objEndTime == null || objEndDate == null || txtId == null || lbChoosen == null)
+            if (objStartTime == null || objStartDate == null || objEndTime == null || objEndDate == null || txtId == null || radSimilar == null)
             {
                 WebCommon.AlertGridView(sender, "Edit form is error.");
                 e.Cancel = true;
@@ -438,7 +438,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
 
             #region Kiem tra roster hien tai
             // Lay thong tin roster hien tai
-            var currentRoster = DataRepository.RosterProvider.GetById(txtId.Text);
+            var currentRoster = DataRepository.RosterProvider.GetById(rosterId);
 
             // Kiem tra roster co ton tai hay khong
             if (currentRoster == null)
@@ -466,41 +466,39 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             }
             #endregion
 
-            foreach (ListEditItem item in lbChoosen.Items)
+            // Neu similar roster duoc chon
+            if (radSimilar.Checked && currentRoster.RepeatId != null)
             {
-                var roster = DataRepository.RosterProvider.GetById(item.Text);
-
-                // Kiem tra roster co ton tai hay khong
-                if (roster == null)
+                int count;
+                var lstSimilar = DataRepository.RosterProvider.GetPaged(
+                    String.Format("IsDisabled = 'False' AND RepeatId = '{0}' AND Id <> '{1}'", currentRoster.RepeatId, currentRoster.Id)
+                    , "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                DataRepository.RosterProvider.DeepLoad(lstSimilar);
+                foreach (var roster in lstSimilar)
                 {
-                    errorMessage += String.Format("<br />Roster {0} is not existed.", item.Text);
-                    continue;
+                    // Kiem tra xem roster co phai da qua khong
+                    if (roster.StartTime < DateTime.Now)
+                    {
+                        errorMessage += String.Format("<br />Roster {0} is passed.", roster.Id);
+                        continue;
+                    }
+
+                    // Neu roster da co appointment thi bao loi
+                    // Cho nay chua them column roster trong appointment nen chua kiem tra duoc
+                    if (roster.AppointmentCollection.Any(appointment => appointment.StartTime < newStartTime || appointment.EndTime > newEndTime))
+                    {
+                        errorMessage += String.Format("<br />Cannot change roster {0} because there are some appointments.", currentRoster.Id);
+                    }
+
+                    roster.StartTime = new DateTime(roster.StartTime.Year, roster.StartTime.Month, roster.StartTime.Day
+                        , startTime.Hour, startTime.Minute, 0);
+                    roster.EndTime = new DateTime(roster.EndTime.Year, roster.EndTime.Month, roster.EndTime.Day
+                        , endTime.Hour, endTime.Minute, 0);
+                    roster.Note = note;
+                    roster.RosterTypeId = intRosterTypeId;
+                    roster.Username = username;
+                    DataRepository.RosterProvider.Save(tm, roster);
                 }
-
-                // Kiem tra xem roster co phai da qua khong
-                if (roster.StartTime < DateTime.Now)
-                {
-                    errorMessage += String.Format("<br />Roster {0} is passed.", item.Text);
-                    continue;
-                }
-
-                DataRepository.RosterProvider.DeepLoad(roster);
-
-                // Neu roster da co appointment thi bao loi
-                // Cho nay chua them column roster trong appointment nen chua kiem tra duoc
-                if (roster.AppointmentCollection.Any(appointment => appointment.StartTime < newStartTime || appointment.EndTime > newEndTime))
-                {
-                    errorMessage += String.Format("<br />Cannot change roster {0} because there are some appointments.", currentRoster.Id);
-                }
-
-                roster.StartTime = new DateTime(roster.StartTime.Year, roster.StartTime.Month, roster.StartTime.Day
-                    , startTime.Hour, startTime.Minute, 0);
-                roster.EndTime = new DateTime(roster.EndTime.Year, roster.EndTime.Month, roster.EndTime.Day
-                    , endTime.Hour, endTime.Minute, 0);
-                roster.Note = note;
-                roster.RosterTypeId = intRosterTypeId;
-                roster.Username = username;
-                DataRepository.RosterProvider.Save(tm, roster);
             }
 
             if (errorMessage.Length > 0)
