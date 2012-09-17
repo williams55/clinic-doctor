@@ -52,12 +52,17 @@
         var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
     </script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
                 Roster</h5>
+            <ul class="links">
+                <li class="ui-tabs-selected"><a href="javascript:return false;">Messages</a></li>
+                <li><a href="Grid.aspx">Grid</a></li>
+            </ul>
         </div>
         <div id="box-other">
             <div id="RosterForm" class="dialog-form" title="Roster" style="display: none;">
