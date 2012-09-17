@@ -15,13 +15,15 @@
     </script>
 
 </asp:Content>
+
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
-<label runat="server" id="lblmessage">tai file</label>
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
                 Manager User</h5>
         </div>
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true">
+        </asp:ScriptManager>
         <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" Width="100%"
             KeyFieldName="Username" OnInitNewRow="gridUser_InitNewRow" OnRowInserting="gridUser_RowInserting"
             OnRowUpdating="gridUser_RowUpdating" OnHtmlRowPrepared="gridUser_HtmlRowPrepared"
@@ -35,8 +37,7 @@
                 <dx:GridViewDataColumn FieldName="CellPhone" VisibleIndex="4" />
                 <dx:GridViewDataColumn FieldName="ServicesId" VisibleIndex="4" Visible="false" />
                 <dx:GridViewDataComboBoxColumn Caption="Services" FieldName="ServicesId" VisibleIndex="4"  >
-                    <PropertiesComboBox  DropDownStyle="DropDown" ValueField="Id" TextField="Title" DataSourceID="ServicesDatas">
-                    
+                    <PropertiesComboBox  DropDownStyle="DropDown" ValueField="Id" TextField="Title" DataSourceID="ServicesDatas">                    
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataColumn FieldName="Email" VisibleIndex="6" />
@@ -142,7 +143,7 @@
                                         User name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="true" ID="txtTitle" Text='<%# Bind("Username") %>'
+                                        <dx:ASPxTextBox runat="server" ID="txtUsername" Text='<%# Bind("Username") %>'
                                             CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
@@ -150,7 +151,7 @@
                                         Title
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox1" Text='<%# Bind("Title") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtTitle" Text='<%# Bind("Title") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
                                 </tr>
@@ -159,7 +160,7 @@
                                         First name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox2" Text='<%# Bind("Firstname") %>'
+                                        <dx:ASPxTextBox runat="server" ID="txtFirstname" Text='<%# Bind("Firstname") %>'
                                             CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
@@ -167,7 +168,7 @@
                                         Last name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox3" Text='<%# Bind("Lastname") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtLastname" Text='<%# Bind("Lastname") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
                                 </tr>
@@ -176,20 +177,9 @@
                                         Display name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox4" Text='<%# Bind("DisplayName") %>'
+                                        <dx:ASPxTextBox runat="server" ID="txtDisplayname" Text='<%# Bind("DisplayName") %>'
                                             CssClass="text-form" Width="100%">
                                             <ValidationSettings ValidationGroup="editForm" Display="Dynamic" ErrorText="*">
-                                                <RequiredField IsRequired="True" />
-                                            </ValidationSettings>
-                                        </dx:ASPxTextBox>
-                                    </td>
-                                    <td class="title-row">
-                                        User name
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox5" Text='<%# Bind("Username") %>' CssClass="text-form"
-                                            Width="100%">
-                                            <ValidationSettings ValidationGroup="editForm" Display="Dynamic">
                                                 <RequiredField IsRequired="True" />
                                             </ValidationSettings>
                                         </dx:ASPxTextBox>
@@ -200,7 +190,7 @@
                                         Cell phone
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox7" Text='<%# Bind("CellPhone") %>'
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="txtCellphone" Text='<%# Bind("CellPhone") %>'
                                             CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
@@ -208,7 +198,7 @@
                                         Email
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox8" Text='<%# Bind("Email") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtEmail" Text='<%# Bind("Email") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
                                 </tr>
@@ -243,14 +233,27 @@
                                 </tr>
                                 <tr>
                                     <td class="title-row">
-                                        Avarta
+                                        AvartauplImage
                                     </td>
                                     <td>
-                                        <%--<dx:ASPxUploadControl ID="uplImage" runat="server">
-                                                    <ValidationSettings MaxFileSize="4194304" AllowedFileExtensions=".jpg,.jpeg,.jpe,.gif">
-                                                    </ValidationSettings>
-                                                </dx:ASPxUploadControl>--%>
-                                        <asp:FileUpload runat="server" ID="Uploadimg" Enabled="true" EnableViewState="false"  />
+                                        
+                                      <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="conditional">
+                                            <Triggers>
+                                               
+                                            </Triggers>
+                                            <ContentTemplate><br />
+                                                <table>
+                                                    <tr>
+                                                        <td colspan="2"><asp:FileUpload runat="server" ID="img_upload" /></td>
+                                                        <td><asp:Button ID="UploadBtn" runat="server" Text="Upload" OnClick="UploadBtn_Click" /></td>
+                                                        <td><asp:Image Height="100" Width="100" runat="server" ID="img_thumb" /></td>
+                                                        <td><asp:Label Height="100" Width="100" runat="server" ID="Label1" /></td>
+                                                        <td><asp:HiddenField  runat="server" Value='<%Bind("Avatar")%>' ID="img_field"/></td>
+                                                    </tr>                                                    
+                                                </table>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                        
                                     </td>
                                 </tr>
                             </tbody>
