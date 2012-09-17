@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AppointmentBusiness.Util;
+using AppointmentSystem.Data;
+using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
+using Appt.Common.Constants;
+using Common.Util;
+using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.ASPxUploadControl;
-using DevExpress.Web.ASPxEditors;
-using AppointmentSystem.Entities;
-using AppointmentSystem.Data;
-using AppointmentBusiness.Util;
-using Appt.Common.Constants;
 using Log.Controller;
-using Common.Util;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
+
+
+
 public partial class Admin_Users_EditUser : System.Web.UI.Page
 {
     const string UploadDirectory = "~/Images/";
-    string ThumbnailFileName = "tuan1.jpg";
     string ScreenCode = "User";
     static string _message;
     protected void Page_Load(object sender, EventArgs e)
@@ -45,6 +51,60 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         var listUser = DataRepository.UsersProvider.GetAll();
         gridUser.DataSource = listUser;
         gridUser.DataBind();
+    }
+    protected void UploadBtn_Click(object sender, EventArgs e)
+    {
+        if (img_upload.HasFile)
+        {
+            try
+            {
+                string physicalPath = Server.MapPath("../Images/") + img_upload.FileName;
+                int heightImage = 100;
+                int widthImage = 100;
+                System.Drawing.Image fullimage;
+                fullimage = new Bitmap(img_upload.PostedFile.InputStream);
+                System.Drawing.Image original = ResizeImage(fullimage, widthImage, heightImage);
+                fullimage.Dispose();
+                string ext = Path.GetExtension(img_upload.FileName);
+                switch (ext.ToLower())
+                {
+                    case ".jpg":
+                        original.Save(physicalPath, ImageFormat.Jpeg);
+                        break;
+                    case ".png":
+                        original.Save(physicalPath, ImageFormat.Png);
+                        break;
+                    case ".gif":
+                        original.Save(physicalPath, ImageFormat.Gif);
+                        break;
+                    case ".bmp":
+                        original.Save(physicalPath, ImageFormat.Bmp);
+                        break;
+                }
+                original.Dispose();
+                Label1.Text = img_upload.PostedFile.FileName;
+                this.img_field.Value = img_upload.PostedFile.FileName;
+            }
+            catch (Exception ex)
+            {
+                Label1.Text = "Erorr:" + ex.Message.ToString();
+            }
+        }
+        else
+        {
+            Label1.Text = "You have not specified a file";
+        }
+    }
+    public static Bitmap ResizeImage(System.Drawing.Image original, int newWidth, int newHeight)
+    {
+        if (original.Width == 0 || original.Height == 0 || newWidth == 0 || newHeight == 0) return null;
+        if (original.Width < newWidth) newWidth = original.Width;
+        if (original.Height < newHeight) newHeight = original.Height;
+        Bitmap newBitmap = new Bitmap(newWidth, newHeight);
+        Graphics g = Graphics.FromImage(newBitmap);
+        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+        g.DrawImage(original, 0, 0, newWidth, newHeight);
+        return newBitmap;
     }
     protected void UserRoleGrid_DataSelect(object sender, EventArgs e)
     {
@@ -106,13 +166,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
     }
     protected void gridUser_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
     {
-        ASPxGridView aspxgrid = sender as ASPxGridView;
-        FileUpload fileupload = (FileUpload)aspxgrid.FindEditFormTemplateControl("Uploadimg");
-
-        ASPxTextBox idb = (ASPxTextBox)(aspxgrid.FindEditFormTemplateControl("ASPxTextBox1"));
-        string result = string.Empty;
-        if (fileupload != null)
-            result = SaveImage(fileupload);
+        string assd = "da";
     }
     protected void gridUser_InitNewRow(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)
     {
@@ -244,10 +298,9 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
     {
         if (!uploadedFile.HasFile)
         {
-            return string.Empty;
+            return "you have not select image";
         }
-        string filename = Server.MapPath(UploadDirectory + uploadedFile.FileName);
-        uploadedFile.PostedFile.SaveAs(filename);
-        return uploadedFile.FileName;
+        string directoryimage = Server.MapPath("../Images");
+        return string.Empty;
     }
 }
