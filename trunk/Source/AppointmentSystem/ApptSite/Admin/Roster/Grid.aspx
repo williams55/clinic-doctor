@@ -35,6 +35,10 @@
         <div class="title">
             <h5>
                 Roster</h5>
+            <ul class="links">
+                <li><a href="Default.aspx">Messages</a></li>
+                <li class="ui-tabs-selected"><a href="javascript:return false;">Grid</a></li>
+            </ul>
         </div>
         <div id="box-order">
             <dx:ASPxGridView ID="gridRoster" ClientInstanceName="grid" runat="server" DataSourceID="RosterDataSource"
@@ -384,8 +388,8 @@
                                                             </dx:ASPxTimeEdit>
                                                         </td>
                                                         <td>
-                                                            <dx:ASPxDateEdit ID="fromDateEdit" runat="server" EditFormatString="MM/dd/yyyy"
-                                                                DisplayFormatString="MM/dd/yyyy" Date='<%# Eval("StartTime") == null? DateTime.Now : DateTime.Parse(Eval("StartTime").ToString()) %>'
+                                                            <dx:ASPxDateEdit ID="fromDateEdit" runat="server" EditFormatString="MM/dd/yyyy" DisplayFormatString="MM/dd/yyyy"
+                                                                Date='<%# Eval("StartTime") == null? DateTime.Now : DateTime.Parse(Eval("StartTime").ToString()) %>'
                                                                 Width="100%">
                                                                 <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                                     ErrorText="Error">
@@ -425,8 +429,8 @@
                                                             </dx:ASPxTimeEdit>
                                                         </td>
                                                         <td>
-                                                            <dx:ASPxDateEdit ID="endDateEdit" runat="server" EditFormatString="MM/dd/yyyy"
-                                                                DisplayFormatString="MM/dd/yyyy" Date='<%# Eval("EndTime") == null? DateTime.Now : DateTime.Parse(Eval("EndTime").ToString()) %>'
+                                                            <dx:ASPxDateEdit ID="endDateEdit" runat="server" EditFormatString="MM/dd/yyyy" DisplayFormatString="MM/dd/yyyy"
+                                                                Date='<%# Eval("EndTime") == null? DateTime.Now : DateTime.Parse(Eval("EndTime").ToString()) %>'
                                                                 Width="100%">
                                                                 <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                                     ErrorText="Error">
