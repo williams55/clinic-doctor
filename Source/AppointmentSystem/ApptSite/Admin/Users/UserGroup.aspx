@@ -10,7 +10,7 @@
             <h5>User Group</h5>
         </div>
         <div id="box-order">
-            <dx:ASPxGridView runat="server" ID="GridUserGroup" 
+            <dx:ASPxGridView runat="server" ID="GridUserGroup"  Width="100%"
                 DataSourceID="UserGroupDatas" KeyFieldName="Id" 
                 oncustombuttoncallback="GridUserGroup_CustomButtonCallback" 
                 onrowinserting="GridUserGroup_RowInserting" 
@@ -30,7 +30,6 @@
                         </ClientSideEvents>
                         <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                         </SettingsPager>
-                        <SettingsEditing PopupEditFormWidth="600px" Mode="EditFormAndDisplayRow" />
             </dx:ASPxGridView>
             <data:UserGroupDataSource runat="server" ID="UserGroupDatas" SelectMethod="GetPaged">
                 <Parameters>

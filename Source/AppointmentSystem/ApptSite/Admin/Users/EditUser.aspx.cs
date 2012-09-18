@@ -31,7 +31,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         try
         {
             bool result = false;
-            bindUser();
+            //bindUser();
             result=RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key,
                                        out _message);
             if (!result)
@@ -82,8 +82,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                         break;
                 }
                 original.Dispose();
-                Label1.Text = img_upload.PostedFile.FileName;
-                this.img_field.Value = img_upload.PostedFile.FileName;
+                Session["imagedata"] = img_upload.FileName;
             }
             catch (Exception ex)
             {
@@ -95,6 +94,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             Label1.Text = "You have not specified a file";
         }
     }
+
     public static Bitmap ResizeImage(System.Drawing.Image original, int newWidth, int newHeight)
     {
         if (original.Width == 0 || original.Height == 0 || newWidth == 0 || newHeight == 0) return null;
@@ -166,7 +166,11 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
     }
     protected void gridUser_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
     {
-        string assd = "da";
+        if (Session["imagedata"] != null)
+        {
+            e.NewValues["Avatar"] = Session["imagedata"];
+            Session.Remove("imagedata");
+        }
     }
     protected void gridUser_InitNewRow(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)
     {

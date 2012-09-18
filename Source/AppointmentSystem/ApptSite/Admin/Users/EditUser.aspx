@@ -1,19 +1,16 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="EditUser.aspx.cs" Inherits="Admin_Users_EditUser" %>
 
+<%@ Register assembly="DevExpress.Web.v10.2, Version=10.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxUploadControl" tagprefix="dx" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
 
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
-
-    <script type="text/javascript">
-        function OnUpdateClick(editor) {
-            if (ASPxClientEdit.ValidateGroup("EditForm"))
-                grid.UpdateEdit();
-        }
-    </script>
-
+    <style>
+        input.file{ width:120px !important}
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
@@ -24,7 +21,7 @@
         </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true">
         </asp:ScriptManager>
-        <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" Width="100%"
+        <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" DataSourceID="UserDatas" Width="100%"
             KeyFieldName="Username" OnInitNewRow="gridUser_InitNewRow" OnRowInserting="gridUser_RowInserting"
             OnRowUpdating="gridUser_RowUpdating" OnHtmlRowPrepared="gridUser_HtmlRowPrepared"
             OnRowValidating="gridUser_RowValidating" OnCustomButtonCallback="gridUser_CustomButtonCallback"
@@ -235,20 +232,18 @@
                                     <td class="title-row">
                                         AvartauplImage
                                     </td>
-                                    <td>
-                                        
-                                      <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="conditional">
+                                    <td> 
+                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="conditional">
                                             <Triggers>
-                                               
+                                                 <asp:PostBackTrigger ControlID="UploadBtn" />
                                             </Triggers>
                                             <ContentTemplate><br />
                                                 <table>
                                                     <tr>
-                                                        <td colspan="2"><asp:FileUpload runat="server" ID="img_upload" /></td>
+                                                        <td colspan="2"><asp:FileUpload  runat="server" ID="img_upload" /></td>
                                                         <td><asp:Button ID="UploadBtn" runat="server" Text="Upload" OnClick="UploadBtn_Click" /></td>
-                                                        <td><asp:Image Height="100" Width="100" runat="server" ID="img_thumb" /></td>
+                                                        <td><asp:Image Height="100" Width="100" AlternateText="Avatar" ImageUrl='<%# "../Images/"+ Eval("Avatar")%>' runat="server" ID="img_thumb" /></td>
                                                         <td><asp:Label Height="100" Width="100" runat="server" ID="Label1" /></td>
-                                                        <td><asp:HiddenField  runat="server" Value='<%Bind("Avatar")%>' ID="img_field"/></td>
                                                     </tr>                                                    
                                                 </table>
                                             </ContentTemplate>
