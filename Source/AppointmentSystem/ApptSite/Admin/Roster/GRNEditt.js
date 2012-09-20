@@ -49,17 +49,18 @@ function initSchedule(weekday) {
                     scheduler.createTimelineView({
                         section_autoheight: false,
                         name: "timeline",
-                        x_unit: "hour",
-                        x_date: "%m/%d %H:%i",
-                        x_step: 12,
-                        x_size: 10,
+                        x_unit: "minute",
+                        x_date: "%H:%i",
+                        x_step: 30,
+                        x_size: 24,
                         x_start: 0,
-                        x_length: 60,
+                        x_length: 48,
                         y_unit: elements,
                         y_property: "section_id",
                         render: "tree",
+                        dx: 150,
                         folder_dy: 20,
-                        dy: 60
+                        dy: 40
                     });
                 }
             } else {
@@ -86,14 +87,20 @@ function initSchedule(weekday) {
             if (e.keyCode == 37) {
                 //left
                 scheduler.matrix.timeline.x_start -= 1;
-                if (scheduler.matrix.timeline.x_start < 0)
+                if (scheduler.matrix.timeline.x_start <= 0) {
                     scheduler.matrix.timeline.x_start = 0;
+                    $('#move_left').hide();
+                }
+                $('#move_right').show();
                 scheduler.callEvent("onOptionsLoad", []);
             } else if (e.keyCode == 39) {
                 //right
                 scheduler.matrix.timeline.x_start += 1;
-                if (scheduler.matrix.timeline.x_start > 24)
+                if (scheduler.matrix.timeline.x_start >= 24) {
                     scheduler.matrix.timeline.x_start = 24;
+                    $('#move_right').hide();
+                }
+                $('#move_left').show();
                 scheduler.callEvent("onOptionsLoad", []);
             }
         });
@@ -104,7 +111,29 @@ function initSchedule(weekday) {
 }
 /****************************DHTMLX - End******************************/
 
-/****************************Scheduler - End******************************/
+/****************************Scheduler - Start******************************/
+// Move time event
+function moveTime() {
+    $('#move_left').click(function() {
+        scheduler.matrix.timeline.x_start -= 1;
+        if (scheduler.matrix.timeline.x_start <= 0) {
+            scheduler.matrix.timeline.x_start = 0;
+            $('#move_left').hide();
+        }
+        $('#move_right').show();
+        scheduler.callEvent("onOptionsLoad", []);
+    });
+    $('#move_right').click(function() {
+        scheduler.matrix.timeline.x_start += 1;
+        if (scheduler.matrix.timeline.x_start >= 24) {
+            scheduler.matrix.timeline.x_start = 24;
+            $('#move_right').hide();
+        }
+        $('#move_left').show();
+        scheduler.callEvent("onOptionsLoad", []);
+    });
+}
+
 // Set readonly property for event
 function BlockReadonly(id) {
     if (!id) return true;
@@ -132,9 +161,8 @@ scheduler.showLightbox = function(id) {
     InitForm();
 
     var ev = scheduler.getEvent(id);
-
     if (ev.start_date <= new Date()) {
-        if (ev.isnew == "true") {
+        if (ev.isnew != false) {
             scheduler.deleteEvent(id);
             ShowDialog("", "", "You must create new roster in the day after current date.", "");
         }
@@ -527,6 +555,7 @@ function InitForm() {
 $(document).ready(function() {
     BindTime();
     GetToken();
+    moveTime();
 
     $("input, textarea").addClass("idle");
     $("input, textarea").focus(function() {
