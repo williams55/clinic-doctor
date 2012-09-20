@@ -625,44 +625,6 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     }
     #endregion
 
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetDoctorTree()
-    {
-        try
-        {
-            // Validate user right for reading
-            if (!CheckReading(out _message))
-            {
-                return WebCommon.BuildFailedResult(_message);
-            }
-
-            // Get all services
-            int count;
-            var lstService = DataRepository.ServicesProvider.GetAll().FindAll(x => !x.IsDisabled);
-
-            // Get all available staffs
-            var lstUsers = DataRepository.UsersProvider.GetPaged("IsDisabled = 'False' AND ServicesId IS NOT NULL"
-                , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
-
-            return WebCommon.BuildSuccessfulResult(lstService.Select(item => new
-                                                                                 {
-                                                                                     key = item.Id,
-                                                                                     label = item.Title,
-                                                                                     open = true,
-                                                                                     children = lstUsers.FindAll(x => x.ServicesId == item.Id).Select(user => new
-                                                                                     {
-                                                                                         key = user.Username,
-                                                                                         label = user.DisplayName
-                                                                                     })
-                                                                                 }));
-        }
-        catch (Exception ex)
-        {
-            return WebCommon.BuildFailedResult(ex.Message);
-        }
-    }
-
     #region Methods
     /// <summary>
     /// Add roster to list
@@ -705,6 +667,51 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     #endregion
 
     #region Doctor
+    /// <summary>
+    /// Lay danh sach doctor
+    /// </summary>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetDoctorTree()
+    {
+        try
+        {
+            // Validate user right for reading
+            if (!CheckReading(out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            // Get all services
+            int count;
+            var lstService = DataRepository.ServicesProvider.GetAll().FindAll(x => !x.IsDisabled);
+
+            // Get all available staffs
+            var lstUsers = DataRepository.UsersProvider.GetPaged("IsDisabled = 'False' AND ServicesId IS NOT NULL"
+                , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+
+            // Sort user by name
+            lstUsers.Sort((x1, x2) => String.CompareOrdinal(x1.DisplayName, x2.DisplayName));
+
+            return WebCommon.BuildSuccessfulResult(lstService.Select(item => new
+            {
+                key = item.Id,
+                label = item.Title,
+                open = false,
+                children = lstUsers.FindAll(x => x.ServicesId == item.Id).Select(user => new
+                {
+                    key = user.Username,
+                    label = user.DisplayName
+                })
+            }));
+        }
+        catch (Exception ex)
+        {
+            return WebCommon.BuildFailedResult(ex.Message);
+        }
+    }
+    
     /// <summary>
     /// Search doctor by keyword
     /// </summary>
@@ -779,7 +786,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             int count;
             string query =
                 string.Format(
-                    "(Id LIKE '%{0}%' OR Firstname LIKE '%{0}%' OR Lastname LIKE '%{0}%' OR DisplayName LIKE '%{0}%') AND IsDisabled = 'False'",
+                    "(DisplayName LIKE '%{0}%') AND IsDisabled = 'False'",
                     keyword);
             var lstDoctor = DataRepository.UsersProvider.GetPaged(query, string.Empty, 0
                 , 10, out count);
