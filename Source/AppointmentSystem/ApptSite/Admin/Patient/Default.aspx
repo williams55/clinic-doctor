@@ -2,6 +2,7 @@
     CodeFile="Default.aspx.cs" Inherits="Admin_Patient_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
+    Patient
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
 
@@ -12,7 +13,7 @@
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
-                Manager Patient</h5>
+                Manage Patient</h5>
         </div>
         <dx:ASPxGridView ID="gridPatient" ClientInstanceName="grid" runat="server" DataSourceID="PatientDatas"
             Width="100%" KeyFieldName="PatientCode" OnCustomButtonCallback="gridPatient_CustomButtonCallback"
@@ -26,7 +27,7 @@
                 <dx:GridViewDataColumn FieldName="Title" VisibleIndex="5" Visible="False" />
                 <dx:GridViewDataCheckColumn FieldName="IsFemale" VisibleIndex="6" Caption="Female">
                 </dx:GridViewDataCheckColumn>
-                <dx:GridViewDataDateColumn FieldName="Birthdate" VisibleIndex="7">
+                <dx:GridViewDataDateColumn FieldName="Birthdate" VisibleIndex="7" Caption="DOB">
                 </dx:GridViewDataDateColumn>
                 <dx:GridViewDataColumn FieldName="HomePhone" VisibleIndex="8" />
                 <dx:GridViewDataColumn FieldName="WorkPhone" VisibleIndex="9" />
@@ -185,7 +186,7 @@
                                                 KeyFieldName="Id" Width="100%" OnBeforePerformDataSelect="GridAppointment_BeforePerformDataSelect">
                                                 <Columns>
                                                     <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" />
-                                                    <dx:GridViewDataColumn FieldName="DoctorId" VisibleIndex="1" />
+                                                    <dx:GridViewDataColumn FieldName="Username" VisibleIndex="1" Caption="Doctor" />
                                                     <dx:GridViewDataColumn FieldName="RoomId" VisibleIndex="3" />
                                                     <dx:GridViewDataColumn FieldName="ServicesId" VisibleIndex="4" />
                                                     <dx:GridViewDataColumn FieldName="StatusId" VisibleIndex="5" />
