@@ -11,6 +11,7 @@ using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common;
 using Common.Util;
+using DevExpress.Utils;
 using DevExpress.Web.ASPxClasses;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
@@ -51,7 +52,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
 
             // Gan visible cho nut new, edit bang cach kiem tra quyen
             commandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
-            commandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
 
             // Get delete button
             GridViewCommandColumnCustomButton btnDelete =
@@ -140,8 +141,10 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             var fromDate = grid.FindEditFormTemplateControl("fromDate") as ASPxDateEdit;
             var endTime = grid.FindEditFormTemplateControl("endTime") as ASPxTimeEdit;
             var endDate = grid.FindEditFormTemplateControl("endDate") as ASPxDateEdit;
+            var doctor = grid.FindEditFormTemplateControl("choDoctor") as ASPxComboBox;
+            var rosterType = grid.FindEditFormTemplateControl("cboRosterType") as ASPxComboBox;
 
-            if (fromTime == null || fromDate == null || endTime == null || endDate == null)
+            if (fromTime == null || fromDate == null || endTime == null || endDate == null || doctor == null || rosterType == null)
             {
                 WebCommon.AlertGridView(sender, "New form is error.");
                 e.Cancel = true;
@@ -152,8 +155,8 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             var chkWeekday = grid.FindEditFormTemplateControl("chkWeekday") as CheckBoxList;
 
             // Validate empty field
-            if (!WebCommon.ValidateEmpty("Doctor", e.NewValues["Username"], out _message)
-                || !WebCommon.ValidateEmpty("Roster Type", e.NewValues["RosterTypeId"], out _message)
+            if (!WebCommon.ValidateEmpty("Doctor", doctor.SelectedItem.Value, out _message)
+                || !WebCommon.ValidateEmpty("Roster Type", rosterType.SelectedItem.Value, out _message)
                 || !WebCommon.ValidateEmpty("From Time", fromTime.Text, out _message)
                 || !WebCommon.ValidateEmpty("From Date", fromDate.Text, out _message)
                 || !WebCommon.ValidateEmpty("End Time", endTime.Text, out _message)
@@ -174,11 +177,11 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             var lstRoster = new TList<Roster>();
 
             // Lay du lieu duoc nhap vao
-            var username = e.NewValues["Username"].ToString();
+            var username = doctor.SelectedItem.Value.ToString();
             int intRosterTypeId;
             var note = e.NewValues["Note"].ToString();
 
-            if (!Int32.TryParse(e.NewValues["RosterTypeId"].ToString(), out intRosterTypeId))
+            if (!Int32.TryParse(rosterType.SelectedItem.Value.ToString(), out intRosterTypeId))
             {
                 WebCommon.AlertGridView(sender, "Roster Type is invalid.");
                 e.Cancel = true;
@@ -230,6 +233,8 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
                 e.NewValues["StartTime"] = dtStart;
                 e.NewValues["EndTime"] = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, dtEnd.Hour, dtEnd.Minute, 0); ;
                 e.NewValues["RepeatId"] = repeatRoster;
+                e.NewValues["Username"] = username;
+                e.NewValues["RosterTypeId"] = intRosterTypeId;
                 e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
                 e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
@@ -265,8 +270,8 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
                             EndTime = dtTmpEnd,
                             RepeatId = repeatRoster,
                             Note = note,
-                            CreateUser = username,
-                            UpdateUser = username
+                            CreateUser = WebCommon.GetAuthUsername(),
+                            UpdateUser = WebCommon.GetAuthUsername()
                         });
                     }
                 }
@@ -329,6 +334,8 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
 
                 // Set pure value
                 e.NewValues["Id"] = id;
+                e.NewValues["Username"] = username;
+                e.NewValues["RosterTypeId"] = intRosterTypeId;
                 e.NewValues["StartTime"] = dtStart;
                 e.NewValues["EndTime"] = dtEnd;
                 e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
@@ -377,8 +384,11 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             var objEndDate = grid.FindEditFormTemplateControl("endDateEdit") as ASPxDateEdit;
             var txtId = grid.FindEditFormTemplateControl("txtId") as ASPxTextBox;
             var radSimilar = grid.FindEditFormTemplateControl("radSimilar") as ASPxRadioButton;
+            var doctor = grid.FindEditFormTemplateControl("choDoctorEdit") as ASPxComboBox;
+            var rosterType = grid.FindEditFormTemplateControl("cboRosterTypeEdit") as ASPxComboBox;
 
-            if (objStartTime == null || objStartDate == null || objEndTime == null || objEndDate == null || txtId == null || radSimilar == null)
+            if (objStartTime == null || objStartDate == null || objEndTime == null || objEndDate == null
+                || txtId == null || radSimilar == null || doctor == null || rosterType == null)
             {
                 WebCommon.AlertGridView(sender, "Edit form is error.");
                 e.Cancel = true;
@@ -387,8 +397,8 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             }
 
             // Validate empty field
-            if (!WebCommon.ValidateEmpty("Doctor", e.NewValues["Username"], out _message)
-                || !WebCommon.ValidateEmpty("Roster Type", e.NewValues["RosterTypeId"], out _message)
+            if (!WebCommon.ValidateEmpty("Doctor", doctor.SelectedItem.Value, out _message)
+                || !WebCommon.ValidateEmpty("Roster Type", rosterType.SelectedItem.Value, out _message)
                 || !WebCommon.ValidateEmpty("From Time", objStartTime.Text, out _message)
                 || !WebCommon.ValidateEmpty("From Date", objStartDate.Text, out _message)
                 || !WebCommon.ValidateEmpty("End Time", objEndTime.Text, out _message)
@@ -402,7 +412,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
 
             // Lay du lieu duoc nhap vao
             var rosterId = txtId.Text;
-            var username = e.NewValues["Username"].ToString();
+            var username = doctor.SelectedItem.Value.ToString();
             int intRosterTypeId;
             var note = e.NewValues["Note"].ToString().Trim();
             var startTime = (DateTime)objStartTime.Value;
@@ -411,7 +421,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             var endDate = (DateTime)objEndDate.Value;
             string errorMessage = string.Empty;
 
-            if (!Int32.TryParse(e.NewValues["RosterTypeId"].ToString(), out intRosterTypeId))
+            if (!Int32.TryParse(rosterType.SelectedItem.Value.ToString(), out intRosterTypeId))
             {
                 WebCommon.AlertGridView(sender, "Roster Type is invalid.");
                 e.Cancel = true;
@@ -460,7 +470,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
 
             // Kiem tra appointment, chua lam
             DataRepository.RosterProvider.DeepLoad(currentRoster);
-            if (currentRoster.AppointmentCollection.Any(appointment => appointment.StartTime< newStartTime || appointment.EndTime > newEndTime))
+            if (currentRoster.AppointmentCollection.Any(appointment => appointment.StartTime < newStartTime || appointment.EndTime > newEndTime))
             {
                 errorMessage += String.Format("<br />Cannot change roster {0} because there are some appointments.", currentRoster.Id);
             }
@@ -497,6 +507,8 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
                     roster.Note = note;
                     roster.RosterTypeId = intRosterTypeId;
                     roster.Username = username;
+                    roster.UpdateUser = WebCommon.GetAuthUsername();
+                    roster.UpdateDate = DateTime.Now;
                     DataRepository.RosterProvider.Save(tm, roster);
                 }
             }
@@ -508,12 +520,14 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
                 tm.Rollback();
                 return;
             }
- 
+
             // Set pure value
+            e.NewValues["Username"] = username;
+            e.NewValues["RosterTypeId"] = intRosterTypeId;
             e.NewValues["StartTime"] = newStartTime;
             e.NewValues["EndTime"] = newEndTime;
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+            e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert delete successfully
             tm.Commit();
@@ -574,6 +588,54 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             chkWeekday.DataTextField = "key";
             chkWeekday.DataValueField = "key";
             chkWeekday.DataBind();
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+
+    /// <summary>
+    /// Tat mo nut edit
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridRoster_CommandButtonInitialize(object sender, ASPxGridViewCommandButtonEventArgs e)
+    {
+        try
+        {
+            if (e.VisibleIndex == -1) return;
+
+            // Neu la button edit thi kiem tra dieu kien de hien thi
+            if (e.ButtonType == ColumnCommandButtonType.Edit)
+            {
+                var roster = gridRoster.GetRow(e.VisibleIndex) as Roster;
+                e.Visible = roster != null && roster.StartTime > DateTime.Now;
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+    protected void gridRoster_CustomButtonInitialize(object sender, ASPxGridViewCustomButtonEventArgs e)
+    {
+        try
+        {
+            // Neu la button delete thi kiem tra dieu kien de hien thi
+            if (e.CellType == GridViewTableCommandCellType.Data && e.ButtonID == "btnDelete")
+            {
+                var grid = (ASPxGridView)sender;
+                var roster = grid.GetRow(e.VisibleIndex) as Roster;
+                if (roster != null && roster.StartTime > DateTime.Now)
+                {
+                    e.Visible = DefaultBoolean.True;
+                }
+                else
+                {
+                    e.Visible = DefaultBoolean.False;
+                }
+            }
         }
         catch (Exception ex)
         {

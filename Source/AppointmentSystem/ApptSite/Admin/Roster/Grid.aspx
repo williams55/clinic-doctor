@@ -31,6 +31,9 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
+    <div class="color">
+        <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()" ToolTip="New" CssClass="add"></asp:HyperLink>
+    </div>
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
@@ -44,7 +47,8 @@
             <dx:ASPxGridView ID="gridRoster" ClientInstanceName="grid" runat="server" DataSourceID="RosterDataSource"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoster_RowInserting"
                 OnCustomButtonCallback="gridRoster_CustomButtonCallback" AutoGenerateColumns="False"
-                OnRowUpdating="gridRoster_RowUpdating">
+                OnRowUpdating="gridRoster_RowUpdating" OnCommandButtonInitialize="gridRoster_CommandButtonInitialize"
+                OnCustomButtonInitialize="gridRoster_CustomButtonInitialize">
                 <Columns>
                     <dx:GridViewDataColumn Caption="No." Width="50">
                         <DataItemTemplate>
@@ -82,8 +86,6 @@
                     <dx:GridViewCommandColumn Caption="Operation" Width="100">
                         <EditButton Visible="True">
                         </EditButton>
-                        <NewButton Visible="true">
-                        </NewButton>
                         <CustomButtons>
                             <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
                             </dx:GridViewCommandColumnCustomButton>
@@ -162,7 +164,7 @@
                                                 <dx:ASPxComboBox ID="choDoctor" runat="server" Width="100%" DropDownWidth="550" DropDownStyle="DropDownList"
                                                     DataSourceID="UsersDataSource" ValueField="Username" ValueType="System.String"
                                                     TextFormatString="{0}" EnableCallbackMode="true" IncrementalFilteringMode="StartsWith"
-                                                    Value='<%# Bind("Username") %>'>
+                                                    Value='<%# Eval("Username") %>'>
                                                     <Columns>
                                                         <dx:ListBoxColumn FieldName="Username" Width="130px" />
                                                         <dx:ListBoxColumn FieldName="DisplayName" Width="200px" />
@@ -222,7 +224,7 @@
                                                     Visible="False"></asp:HiddenField>
                                                 <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="100%"
                                                     TextField="Title" ValueField="Id" ID="cboRosterType" ValueType="System.Int32"
-                                                    Value='<%# Bind("RosterTypeId") %>'>
+                                                    Value='<%# Eval("RosterTypeId") %>'>
                                                     <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                         ErrorText="Error">
                                                         <RequiredField IsRequired="True" ErrorText="Roster Type is required" />
@@ -291,7 +293,7 @@
                                                 <dx:ASPxComboBox ID="choDoctorEdit" runat="server" Width="100%" DropDownWidth="550"
                                                     DropDownStyle="DropDownList" DataSourceID="UsersDataSource" ValueField="Username"
                                                     ValueType="System.String" TextFormatString="{0}" EnableCallbackMode="true" IncrementalFilteringMode="StartsWith"
-                                                    Value='<%# Bind("Username") %>'>
+                                                    Value='<%# Eval("Username") %>'>
                                                     <Columns>
                                                         <dx:ListBoxColumn FieldName="Username" Width="130px" />
                                                         <dx:ListBoxColumn FieldName="DisplayName" Width="200px" />
@@ -352,7 +354,7 @@
                                             <td class="content-row">
                                                 <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="100%"
                                                     TextField="Title" ValueField="Id" ID="cboRosterTypeEdit" ValueType="System.Int32"
-                                                    Value='<%# Bind("RosterTypeId") %>'>
+                                                    Value='<%# Eval("RosterTypeId") %>'>
                                                     <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                         ErrorText="Error">
                                                         <RequiredField IsRequired="True" ErrorText="Roster Type is required" />
