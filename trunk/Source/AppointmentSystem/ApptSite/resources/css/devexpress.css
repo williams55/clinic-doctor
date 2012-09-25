@@ -18,12 +18,12 @@
 #devexpress-form table.edit-form td.title-row
 {
     font-weight: bold;
+    width: 100px;
     padding: 3px 0 3px 10px;
 }
 
 #devexpress-form table.edit-form td.content-row
 {
-    width: 40%;
     padding: 3px 0 3px 0;
 }
 
