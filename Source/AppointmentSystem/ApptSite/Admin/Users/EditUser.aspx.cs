@@ -1,29 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
-using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Util;
-using DevExpress.Web.ASPxEditors;
+using DevExpress.Web;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.ASPxUploadControl;
 using Log.Controller;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-
+using Image = System.Drawing.Image;
 
 
 public partial class Admin_Users_EditUser : System.Web.UI.Page
 {
-    const string UploadDirectory = "~/Images/";
     string ScreenCode = "User";
     static string _message;
     protected void Page_Load(object sender, EventArgs e)
@@ -39,6 +32,9 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridUser.Visible = false;
             }
+
+            // Set page size
+            gridUser.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
         }
         catch (Exception ex)
         {
@@ -52,47 +48,26 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         gridUser.DataSource = listUser;
         gridUser.DataBind();
     }
-    protected void UploadBtn_Click(object sender, EventArgs e)
+
+    const string UploadDirectory = "~/Admin/Images/";
+    const string ThumbnailFileName = "ThumbnailImage.jpg";
+
+    protected void uplImage_FileUploadComplete(object sender, FileUploadCompleteEventArgs e)
     {
-        if (img_upload.HasFile)
+        e.CallbackData = SavePostedFile(e.UploadedFile);
+    }
+
+    string SavePostedFile(UploadedFile uploadedFile)
+    {
+        if (!uploadedFile.IsValid)
+            return string.Empty;
+        string fileName = Path.Combine(MapPath(UploadDirectory), ThumbnailFileName);
+        using (Image original = Image.FromStream(uploadedFile.FileContent))
+        using (Image thumbnail = PhotoUtils.Inscribe(original, 100))
         {
-            try
-            {
-                string physicalPath = Server.MapPath("../Images/") + img_upload.FileName;
-                int heightImage = 100;
-                int widthImage = 100;
-                System.Drawing.Image fullimage;
-                fullimage = new Bitmap(img_upload.PostedFile.InputStream);
-                System.Drawing.Image original = ResizeImage(fullimage, widthImage, heightImage);
-                fullimage.Dispose();
-                string ext = Path.GetExtension(img_upload.FileName);
-                switch (ext.ToLower())
-                {
-                    case ".jpg":
-                        original.Save(physicalPath, ImageFormat.Jpeg);
-                        break;
-                    case ".png":
-                        original.Save(physicalPath, ImageFormat.Png);
-                        break;
-                    case ".gif":
-                        original.Save(physicalPath, ImageFormat.Gif);
-                        break;
-                    case ".bmp":
-                        original.Save(physicalPath, ImageFormat.Bmp);
-                        break;
-                }
-                original.Dispose();
-                Session["imagedata"] = img_upload.FileName;
-            }
-            catch (Exception ex)
-            {
-                Label1.Text = "Erorr:" + ex.Message.ToString();
-            }
+            PhotoUtils.SaveToJpeg(thumbnail, fileName);
         }
-        else
-        {
-            Label1.Text = "You have not specified a file";
-        }
+        return ThumbnailFileName;
     }
 
     public static Bitmap ResizeImage(System.Drawing.Image original, int newWidth, int newHeight)
@@ -106,6 +81,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         g.DrawImage(original, 0, 0, newWidth, newHeight);
         return newBitmap;
     }
+
     protected void UserRoleGrid_DataSelect(object sender, EventArgs e)
     {
         var parameter = UserRoleDatas.Parameters["whereClause"];
