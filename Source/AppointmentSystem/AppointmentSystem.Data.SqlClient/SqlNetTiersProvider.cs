@@ -140,7 +140,7 @@ namespace AppointmentSystem.Data.SqlClient
         }
 		
 		/// <summary>
-		/// Creates a new <c cref="TransactionManager"/> instance from the current datasource.
+		/// Creates a new <see cref="TransactionManager"/> instance from the current datasource.
 		/// </summary>
 		/// <returns></returns>
 		public override TransactionManager CreateTransaction()
@@ -181,7 +181,7 @@ namespace AppointmentSystem.Data.SqlClient
 	    }		
 		
 		///<summary>
-		/// Indicates if the current <c cref="NetTiersProvider"/> implementation supports Transacton.
+		/// Indicates if the current <see cref="NetTiersProvider"/> implementation supports Transacton.
 		///</summary>
 		public override bool IsTransactionSupported
 		{
@@ -220,7 +220,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlServicesProvider"/>.
+		/// Gets the current <see cref="SqlServicesProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlServicesProvider SqlServicesProvider
@@ -259,7 +259,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlUsersProvider"/>.
+		/// Gets the current <see cref="SqlUsersProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlUsersProvider SqlUsersProvider
@@ -298,7 +298,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlScreenProvider"/>.
+		/// Gets the current <see cref="SqlScreenProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlScreenProvider SqlScreenProvider
@@ -337,7 +337,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlRoomProvider"/>.
+		/// Gets the current <see cref="SqlRoomProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlRoomProvider SqlRoomProvider
@@ -376,7 +376,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlStatusProvider"/>.
+		/// Gets the current <see cref="SqlStatusProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlStatusProvider SqlStatusProvider
@@ -415,7 +415,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlUnitsProvider"/>.
+		/// Gets the current <see cref="SqlUnitsProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlUnitsProvider SqlUnitsProvider
@@ -454,7 +454,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlUserGroupProvider"/>.
+		/// Gets the current <see cref="SqlUserGroupProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlUserGroupProvider SqlUserGroupProvider
@@ -493,7 +493,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlRosterTypeProvider"/>.
+		/// Gets the current <see cref="SqlRosterTypeProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlRosterTypeProvider SqlRosterTypeProvider
@@ -532,7 +532,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlUserRoleProvider"/>.
+		/// Gets the current <see cref="SqlUserRoleProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlUserRoleProvider SqlUserRoleProvider
@@ -571,7 +571,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlAppointmentGroupProvider"/>.
+		/// Gets the current <see cref="SqlAppointmentGroupProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlAppointmentGroupProvider SqlAppointmentGroupProvider
@@ -610,7 +610,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlDoctorRoomProvider"/>.
+		/// Gets the current <see cref="SqlDoctorRoomProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlDoctorRoomProvider SqlDoctorRoomProvider
@@ -649,7 +649,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlGroupRoleProvider"/>.
+		/// Gets the current <see cref="SqlGroupRoleProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlGroupRoleProvider SqlGroupRoleProvider
@@ -688,7 +688,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlRosterProvider"/>.
+		/// Gets the current <see cref="SqlRosterProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlRosterProvider SqlRosterProvider
@@ -727,7 +727,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlPatientProvider"/>.
+		/// Gets the current <see cref="SqlPatientProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlPatientProvider SqlPatientProvider
@@ -766,7 +766,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlRoleProvider"/>.
+		/// Gets the current <see cref="SqlRoleProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlRoleProvider SqlRoleProvider
@@ -805,7 +805,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlRoleDetailProvider"/>.
+		/// Gets the current <see cref="SqlRoleDetailProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlRoleDetailProvider SqlRoleDetailProvider
@@ -844,7 +844,7 @@ namespace AppointmentSystem.Data.SqlClient
 		}
 		
 		/// <summary>
-		/// Gets the current <c cref="SqlAppointmentProvider"/>.
+		/// Gets the current <see cref="SqlAppointmentProvider"/>.
 		/// </summary>
 		/// <value></value>
 		public SqlAppointmentProvider SqlAppointmentProvider
@@ -854,6 +854,123 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		#endregion
 		
+		
+		
+		#region "VcsCompanyProvider"
+		
+		private SqlVcsCompanyProvider innerSqlVcsCompanyProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="VcsCompany"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override VcsCompanyProviderBase VcsCompanyProvider
+		{
+			get
+			{
+				if (innerSqlVcsCompanyProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlVcsCompanyProvider == null)
+						{
+							this.innerSqlVcsCompanyProvider = new SqlVcsCompanyProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlVcsCompanyProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <see cref="SqlVcsCompanyProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlVcsCompanyProvider SqlVcsCompanyProvider
+		{
+			get {return VcsCompanyProvider as SqlVcsCompanyProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "VcsMemberTypeProvider"
+		
+		private SqlVcsMemberTypeProvider innerSqlVcsMemberTypeProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="VcsMemberType"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override VcsMemberTypeProviderBase VcsMemberTypeProvider
+		{
+			get
+			{
+				if (innerSqlVcsMemberTypeProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlVcsMemberTypeProvider == null)
+						{
+							this.innerSqlVcsMemberTypeProvider = new SqlVcsMemberTypeProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlVcsMemberTypeProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <see cref="SqlVcsMemberTypeProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlVcsMemberTypeProvider SqlVcsMemberTypeProvider
+		{
+			get {return VcsMemberTypeProvider as SqlVcsMemberTypeProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "VcsPatientProvider"
+		
+		private SqlVcsPatientProvider innerSqlVcsPatientProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="VcsPatient"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override VcsPatientProviderBase VcsPatientProvider
+		{
+			get
+			{
+				if (innerSqlVcsPatientProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlVcsPatientProvider == null)
+						{
+							this.innerSqlVcsPatientProvider = new SqlVcsPatientProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlVcsPatientProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <see cref="SqlVcsPatientProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlVcsPatientProvider SqlVcsPatientProvider
+		{
+			get {return VcsPatientProvider as SqlVcsPatientProvider;}
+		}
+		
+		#endregion
 		
 		
 		#region "General data access methods"

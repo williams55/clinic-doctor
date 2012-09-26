@@ -61,7 +61,7 @@ namespace AppointmentSystem.Web.UI
 	}
 
     /// <summary>
-    /// A strongly typed repeater control for the <c cref="PatientRepeater"></c> Type.
+    /// A strongly typed repeater control for the <see cref="PatientRepeater"/> Type.
     /// </summary>
 	[Designer(typeof(PatientRepeaterDesigner))]
 	[ParseChildren(true)]

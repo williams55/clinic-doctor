@@ -135,7 +135,8 @@ namespace AppointmentSystem.Data.SqlClient
 			{
 				string entityKey = EntityLocator.ConstructKeyFromPkItems(typeof(Room)
 					,_id);
-				EntityManager.StopTracking(entityKey);
+                EntityManager.StopTracking(entityKey);
+                
 			}
 			
 			//Provider Data Requested Command Event
@@ -882,7 +883,9 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			//Stop Tracking Now that it has been updated and persisted.
 			if (DataRepository.Provider.EnableEntityTracking)
-				EntityManager.StopTracking(entity.EntityTrackingKey);
+            {
+                EntityManager.StopTracking(entity.EntityTrackingKey);				
+            }
 			
 			
 			entity.AcceptChanges();

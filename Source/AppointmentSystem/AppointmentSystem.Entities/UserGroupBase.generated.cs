@@ -157,6 +157,8 @@ namespace AppointmentSystem.Entities
 		/// This property can not be set to null. 
 		/// </remarks>
 		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
+		
+		
 
 
 
@@ -174,7 +176,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Id == value)
 					return;
-					
+				
+                OnPropertyChanging("Id");                    
 				OnColumnChanging(UserGroupColumn.Id, this.entityData.Id);
 				this.entityData.Id = value;
 				this.EntityId.Id = value;
@@ -206,6 +209,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -223,7 +228,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Title == value)
 					return;
-					
+				
+                OnPropertyChanging("Title");                    
 				OnColumnChanging(UserGroupColumn.Title, this.entityData.Title);
 				this.entityData.Title = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -241,6 +247,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -258,7 +266,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Note == value)
 					return;
-					
+				
+                OnPropertyChanging("Note");                    
 				OnColumnChanging(UserGroupColumn.Note, this.entityData.Note);
 				this.entityData.Note = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -277,6 +286,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -294,7 +305,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Roles == value)
 					return;
-					
+				
+                OnPropertyChanging("Roles");                    
 				OnColumnChanging(UserGroupColumn.Roles, this.entityData.Roles);
 				this.entityData.Roles = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -312,6 +324,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -329,7 +343,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.IsLocked == value)
 					return;
-					
+				
+                OnPropertyChanging("IsLocked");                    
 				OnColumnChanging(UserGroupColumn.IsLocked, this.entityData.IsLocked);
 				this.entityData.IsLocked = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -347,6 +362,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -364,7 +381,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.IsDisabled == value)
 					return;
-					
+				
+                OnPropertyChanging("IsDisabled");                    
 				OnColumnChanging(UserGroupColumn.IsDisabled, this.entityData.IsDisabled);
 				this.entityData.IsDisabled = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -382,6 +400,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -399,7 +419,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateUser == value)
 					return;
-					
+				
+                OnPropertyChanging("CreateUser");                    
 				OnColumnChanging(UserGroupColumn.CreateUser, this.entityData.CreateUser);
 				this.entityData.CreateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -417,6 +438,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -434,7 +457,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateDate == value)
 					return;
-					
+				
+                OnPropertyChanging("CreateDate");                    
 				OnColumnChanging(UserGroupColumn.CreateDate, this.entityData.CreateDate);
 				this.entityData.CreateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -452,6 +476,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -469,7 +495,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateUser == value)
 					return;
-					
+				
+                OnPropertyChanging("UpdateUser");                    
 				OnColumnChanging(UserGroupColumn.UpdateUser, this.entityData.UpdateUser);
 				this.entityData.UpdateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -487,6 +514,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -504,7 +533,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateDate == value)
 					return;
-					
+				
+                OnPropertyChanging("UpdateDate");                    
 				OnColumnChanging(UserGroupColumn.UpdateDate, this.entityData.UpdateDate);
 				this.entityData.UpdateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -1372,59 +1402,59 @@ namespace AppointmentSystem.Entities
 		
 		#region Non Primary key(s)
 		
-		
 		/// <summary>
 		/// Title : 
 		/// </summary>
-		public System.String		  Title = null;
+		public System.String Title = null;
 		
 		/// <summary>
 		/// Note : 
 		/// </summary>
-		public System.String		  Note = null;
+		public System.String Note = null;
 		
 		/// <summary>
 		/// Roles : Roles of user group. A group can have many roles, they is seperated by semi-comma [;]
 		/// 		/// For example: CreateRoster;CreateAppointMent
 		/// </summary>
-		public System.String		  Roles = null;
+		public System.String Roles = null;
 		
 		/// <summary>
 		/// IsLocked : You can CRUD if it's false (Admin, Manager...) These group is set by developer or database administrator
 		/// </summary>
-		public System.Boolean		  IsLocked = false;
+		public System.Boolean IsLocked = false;
 		
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
-		public System.Boolean		  IsDisabled = false;
+		public System.Boolean IsDisabled = false;
 		
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
-		public System.String		  CreateUser = null;
+		public System.String CreateUser = null;
 		
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
-		public System.DateTime		  CreateDate = DateTime.Now;
+		public System.DateTime CreateDate = DateTime.Now;
 		
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
-		public System.String		  UpdateUser = null;
+		public System.String UpdateUser = null;
 		
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
-		public System.DateTime		  UpdateDate = DateTime.Now;
+		public System.DateTime UpdateDate = DateTime.Now;
 		#endregion
 			
 		#region Source Foreign Key Property
 				
 		#endregion
+        
 		#endregion Variable Declarations
-	
+
 		#region Data Properties
 
 		#region GroupRoleCollection
@@ -1478,7 +1508,6 @@ namespace AppointmentSystem.Entities
 		#endregion
 
 		#endregion Data Properties
-		
 		#region Clone Method
 
 		/// <summary>
@@ -1573,16 +1602,6 @@ namespace AppointmentSystem.Entities
 	
 	}//End struct
 
-
-
-
-
-
-
-
-
-
-
 		#endregion
 		
 				
@@ -1617,8 +1636,8 @@ namespace AppointmentSystem.Entities
 		public virtual void OnColumnChanging(UserGroupColumn column, object value)
 		{
 			if(IsEntityTracked && EntityState != EntityState.Added && !EntityManager.TrackChangedEntities)
-				EntityManager.StopTracking(entityTrackingKey);
-				
+                EntityManager.StopTracking(entityTrackingKey);
+                
 			if (!SuppressEntityEvents)
 			{
 				UserGroupEventHandler handler = ColumnChanging;
@@ -1729,9 +1748,9 @@ namespace AppointmentSystem.Entities
         }
 
 		/// <summary>
-        /// Determines whether the specified <c cref="UserGroup"/> instances are considered equal.
+        /// Determines whether the specified <see cref="UserGroup"/> instances are considered equal.
         /// </summary>
-        /// <param name="a">The first <c cref="UserGroup"/> to compare.</param>
+        /// <param name="a">The first <see cref="UserGroup"/> to compare.</param>
         /// <param name="b">The second <c>UserGroup</c> to compare.</param>
         /// <returns>true if objA is the same instance as objB or if both are null references or if objA.Equals(objB) returns true; otherwise, false.</returns>
         public bool Equals(UserGroup a, UserGroup b)

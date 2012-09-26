@@ -165,7 +165,7 @@ namespace AppointmentSystem.Web.Data
 		public event ProviderDataSourceDeepLoadEventHandler DeepLoading
 		{
 			add { ProviderView.DeepLoading += value; }
-			remove { ProviderView.DeepLoaded += value; }
+			remove { ProviderView.DeepLoaded -= value; }
 		}
 
 		/// <summary>
@@ -174,7 +174,7 @@ namespace AppointmentSystem.Web.Data
 		public event ProviderDataSourceDeepLoadEventHandler DeepLoaded
 		{
 			add { ProviderView.DeepLoaded += value; }
-			remove { ProviderView.DeepLoaded += value; }
+			remove { ProviderView.DeepLoaded -= value; }
 		}
 
 		#endregion

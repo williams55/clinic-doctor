@@ -272,7 +272,7 @@ namespace AppointmentSystem.Web.UI
       	/// <param name="e">An <see cref="T:System.EventArgs"></see> object that contains the event data.</param>
         protected override void OnDataBinding( EventArgs e )
         {
-            if ( AppendNullItem )
+            if ( AppendNullItem && !Page.IsPostBack )
             {
                 nullItem.Text = NullItemText;
                 nullItem.Value = string.Empty;

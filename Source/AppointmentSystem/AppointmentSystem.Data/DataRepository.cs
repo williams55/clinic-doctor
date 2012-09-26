@@ -128,7 +128,7 @@ namespace AppointmentSystem.Data
         }
 		
 		/// <summary>
-		/// Creates a new <c cref="TransactionManager"/> instance from the current datasource.
+		/// Creates a new <see cref="TransactionManager"/> instance from the current datasource.
 		/// </summary>
 		/// <returns></returns>
 		public TransactionManager CreateTransaction()
@@ -281,13 +281,13 @@ namespace AppointmentSystem.Data
 		{
 			get
 			{
-				// use default ConnectionStrings if _section has already been discovered
-				if ( _config == null && _section != null )
-				{
-					return WebConfigurationManager.ConnectionStrings;
-				}
-				
-				return Configuration.ConnectionStrings.ConnectionStrings;
+					// use default ConnectionStrings if _section has already been discovered
+					if ( _config == null && _section != null )
+					{
+						return WebConfigurationManager.ConnectionStrings;
+					}
+					
+					return Configuration.ConnectionStrings.ConnectionStrings;
 			}
 		}
 
@@ -707,6 +707,57 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
+		
+		#region VcsCompanyProvider
+		
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="VcsCompany"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static VcsCompanyProviderBase VcsCompanyProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.VcsCompanyProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region VcsMemberTypeProvider
+		
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="VcsMemberType"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static VcsMemberTypeProviderBase VcsMemberTypeProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.VcsMemberTypeProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region VcsPatientProvider
+		
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="VcsPatient"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static VcsPatientProviderBase VcsPatientProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.VcsPatientProvider;
+			}
+		}
+		
+		#endregion
 		
 		#endregion
 	}
@@ -1868,6 +1919,210 @@ namespace AppointmentSystem.Data
 	}
 
 	#endregion AppointmentQuery
+		
+	#region VcsCompanyFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="VcsCompany"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class VcsCompanyFilters : VcsCompanyFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCompanyFilters class.
+		/// </summary>
+		public VcsCompanyFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCompanyFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public VcsCompanyFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCompanyFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public VcsCompanyFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion VcsCompanyFilters
+	
+	#region VcsCompanyQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="VcsCompanyParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="VcsCompany"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class VcsCompanyQuery : VcsCompanyParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCompanyQuery class.
+		/// </summary>
+		public VcsCompanyQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCompanyQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public VcsCompanyQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCompanyQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public VcsCompanyQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion VcsCompanyQuery
+		
+	#region VcsMemberTypeFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="VcsMemberType"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class VcsMemberTypeFilters : VcsMemberTypeFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the VcsMemberTypeFilters class.
+		/// </summary>
+		public VcsMemberTypeFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsMemberTypeFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public VcsMemberTypeFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsMemberTypeFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public VcsMemberTypeFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion VcsMemberTypeFilters
+	
+	#region VcsMemberTypeQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="VcsMemberTypeParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="VcsMemberType"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class VcsMemberTypeQuery : VcsMemberTypeParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the VcsMemberTypeQuery class.
+		/// </summary>
+		public VcsMemberTypeQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsMemberTypeQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public VcsMemberTypeQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsMemberTypeQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public VcsMemberTypeQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion VcsMemberTypeQuery
+		
+	#region VcsPatientFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="VcsPatient"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class VcsPatientFilters : VcsPatientFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the VcsPatientFilters class.
+		/// </summary>
+		public VcsPatientFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsPatientFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public VcsPatientFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsPatientFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public VcsPatientFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion VcsPatientFilters
+	
+	#region VcsPatientQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="VcsPatientParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="VcsPatient"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class VcsPatientQuery : VcsPatientParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the VcsPatientQuery class.
+		/// </summary>
+		public VcsPatientQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsPatientQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public VcsPatientQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsPatientQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public VcsPatientQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion VcsPatientQuery
 	#endregion
 
 	

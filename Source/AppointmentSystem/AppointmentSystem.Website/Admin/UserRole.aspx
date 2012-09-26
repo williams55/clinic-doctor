@@ -1,5 +1,5 @@
 ﻿
-<%@ Page Language="C#" Theme="Default" MasterPageFile="~/MasterPages/admin.master" AutoEventWireup="true"  CodeFile="UserRole.aspx.cs" Inherits="Admin_UserRole" Title="UserRole List" %>
+<%@ Page Language="C#" Theme="Default" MasterPageFile="~/MasterPages/admin.master" AutoEventWireup="true"  CodeFile="UserRole.aspx.cs" Inherits="UserRole" Title="UserRole List" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">User Role List</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">

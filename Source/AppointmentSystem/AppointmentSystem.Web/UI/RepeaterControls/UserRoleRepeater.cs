@@ -61,7 +61,7 @@ namespace AppointmentSystem.Web.UI
 	}
 
     /// <summary>
-    /// A strongly typed repeater control for the <c cref="UserRoleRepeater"></c> Type.
+    /// A strongly typed repeater control for the <see cref="UserRoleRepeater"/> Type.
     /// </summary>
 	[Designer(typeof(UserRoleRepeaterDesigner))]
 	[ParseChildren(true)]

@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="Default.aspx.cs" Inherits="Admin_Patient_Default" %>
 
+<%@ Import Namespace="AppointmentSystem.Settings.BusinessLayer" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
     Patient
 </asp:Content>
@@ -15,25 +16,37 @@
             <h5>
                 Manage Patient</h5>
         </div>
-        <dx:ASPxGridView ID="gridPatient" ClientInstanceName="grid" runat="server" DataSourceID="PatientDatas"
+        <dx:ASPxGridView ID="gridPatient" ClientInstanceName="grid" runat="server" DataSourceID="VcsPatient"
             Width="100%" KeyFieldName="PatientCode" OnCustomButtonCallback="gridPatient_CustomButtonCallback"
             OnInitNewRow="gridPatient_InitNewRow" OnRowInserting="gridPatient_RowInserting"
             OnRowUpdating="gridPatient_RowUpdating" OnBeforePerformDataSelect="gridPatient_BeforePerformDataSelect">
             <Columns>
-                <dx:GridViewDataColumn FieldName="PatientCode" VisibleIndex="1" />
-                <dx:GridViewDataColumn FieldName="FirstName" VisibleIndex="2" />
-                <dx:GridViewDataColumn FieldName="LastName" VisibleIndex="3" />
-                <dx:GridViewDataColumn FieldName="MemberType" VisibleIndex="4" />
-                <dx:GridViewDataColumn FieldName="Title" VisibleIndex="5" Visible="False" />
-                <dx:GridViewDataCheckColumn FieldName="IsFemale" VisibleIndex="6" Caption="Female">
-                </dx:GridViewDataCheckColumn>
-                <dx:GridViewDataDateColumn FieldName="Birthdate" VisibleIndex="7" Caption="DOB">
+                <dx:GridViewDataColumn Caption="No." Width="50">
+                    <DataItemTemplate>
+                        <%# Container.ItemIndex + 1%>
+                    </DataItemTemplate>
+                    <CellStyle HorizontalAlign="Center">
+                    </CellStyle>
+                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                    <EditFormSettings Visible="False" />
+                </dx:GridViewDataColumn>
+                <dx:GridViewDataColumn FieldName="PatientCode" />
+                <dx:GridViewDataColumn FieldName="FirstName" />
+                <dx:GridViewDataColumn FieldName="LastName" />
+                <dx:GridViewDataComboBoxColumn FieldName="MemberType" Width="120">
+                    <PropertiesComboBox TextField="MemberType" ValueField="MemberType" DataSourceID="VcsMemberTypeDataSource">
+                    </PropertiesComboBox>
+                </dx:GridViewDataComboBoxColumn>
+                <dx:GridViewDataColumn FieldName="EmailAddress" Visible="False" />
+                <dx:GridViewDataColumn FieldName="Sex" Caption="Sex">
+                </dx:GridViewDataColumn>
+                <dx:GridViewDataDateColumn FieldName="DateOfBirth" Caption="DOB">
                 </dx:GridViewDataDateColumn>
-                <dx:GridViewDataColumn FieldName="HomePhone" VisibleIndex="8" />
-                <dx:GridViewDataColumn FieldName="WorkPhone" VisibleIndex="9" />
-                <dx:GridViewDataColumn FieldName="CellPhone" VisibleIndex="10" />
-                <dx:GridViewDataColumn FieldName="CompanyCode" VisibleIndex="11" Visible="False" />
-                <dx:GridViewCommandColumn VisibleIndex="12" Name="btnCommand">
+                <dx:GridViewDataColumn FieldName="HomePhone" />
+                <dx:GridViewDataColumn FieldName="CompanyPhone" />
+                <dx:GridViewDataColumn FieldName="MobilePhone" />
+                <dx:GridViewDataColumn FieldName="CompanyCode" Visible="False" />
+                <dx:GridViewCommandColumn Name="btnCommand">
                     <EditButton Visible="true">
                     </EditButton>
                     <NewButton Visible="true">
@@ -214,14 +227,18 @@
             <SettingsDetail ShowDetailRow="true" />
             <Settings ShowFilterRow="True" ShowFilterRowMenu="True" />
         </dx:ASPxGridView>
-        <data:PatientDataSource ID="PatientDatas" runat="server" SelectMethod="GetPaged">
+        <data:VcsPatientDataSource ID="VcsPatient" runat="server" SelectMethod="GetPaged">
             <Parameters>
                 <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
-                <asp:ControlParameter Name="PageIndex" ControlID="gridPatient" PropertyName="PageIndex"
-                    Type="Int32" />
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
-        </data:PatientDataSource>
+        </data:VcsPatientDataSource>
+        <data:VcsMemberTypeDataSource ID="VcsMemberTypeDataSource" runat="server" SelectMethod="GetPaged">
+            <parameters>
+                <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
+                <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+            </parameters>
+        </data:VcsMemberTypeDataSource>
         <data:AppointmentDataSource ID="AppointmentDatas" runat="server" SelectMethod="GetPaged">
             <Parameters>
                 <asp:ControlParameter Name="PageIndex" ControlID="gridPatient" PropertyName="PageIndex"

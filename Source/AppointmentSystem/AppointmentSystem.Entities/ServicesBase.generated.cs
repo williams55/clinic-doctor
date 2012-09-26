@@ -150,6 +150,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -167,7 +169,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Id == value)
 					return;
-					
+				
+                OnPropertyChanging("Id");                    
 				OnColumnChanging(ServicesColumn.Id, this.entityData.Id);
 				this.entityData.Id = value;
 				this.EntityId.Id = value;
@@ -186,6 +189,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -203,7 +208,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Title == value)
 					return;
-					
+				
+                OnPropertyChanging("Title");                    
 				OnColumnChanging(ServicesColumn.Title, this.entityData.Title);
 				this.entityData.Title = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -221,6 +227,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -238,7 +246,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.ShortTitle == value)
 					return;
-					
+				
+                OnPropertyChanging("ShortTitle");                    
 				OnColumnChanging(ServicesColumn.ShortTitle, this.entityData.ShortTitle);
 				this.entityData.ShortTitle = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -256,6 +265,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -273,7 +284,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Note == value)
 					return;
-					
+				
+                OnPropertyChanging("Note");                    
 				OnColumnChanging(ServicesColumn.Note, this.entityData.Note);
 				this.entityData.Note = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -291,6 +303,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -308,7 +322,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.PriorityIndex == value)
 					return;
-					
+				
+                OnPropertyChanging("PriorityIndex");                    
 				OnColumnChanging(ServicesColumn.PriorityIndex, this.entityData.PriorityIndex);
 				this.entityData.PriorityIndex = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -326,6 +341,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -343,7 +360,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.IsDisabled == value)
 					return;
-					
+				
+                OnPropertyChanging("IsDisabled");                    
 				OnColumnChanging(ServicesColumn.IsDisabled, this.entityData.IsDisabled);
 				this.entityData.IsDisabled = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -361,6 +379,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -378,7 +398,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateUser == value)
 					return;
-					
+				
+                OnPropertyChanging("CreateUser");                    
 				OnColumnChanging(ServicesColumn.CreateUser, this.entityData.CreateUser);
 				this.entityData.CreateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -396,6 +417,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -413,7 +436,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateDate == value)
 					return;
-					
+				
+                OnPropertyChanging("CreateDate");                    
 				OnColumnChanging(ServicesColumn.CreateDate, this.entityData.CreateDate);
 				this.entityData.CreateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -431,6 +455,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -448,7 +474,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateUser == value)
 					return;
-					
+				
+                OnPropertyChanging("UpdateUser");                    
 				OnColumnChanging(ServicesColumn.UpdateUser, this.entityData.UpdateUser);
 				this.entityData.UpdateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -466,6 +493,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -483,7 +512,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateDate == value)
 					return;
-					
+				
+                OnPropertyChanging("UpdateDate");                    
 				OnColumnChanging(ServicesColumn.UpdateDate, this.entityData.UpdateDate);
 				this.entityData.UpdateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -1352,58 +1382,58 @@ namespace AppointmentSystem.Entities
 		
 		#region Non Primary key(s)
 		
-		
 		/// <summary>
 		/// Title : 
 		/// </summary>
-		public System.String		  Title = null;
+		public System.String Title = null;
 		
 		/// <summary>
 		/// ShortTitle : 
 		/// </summary>
-		public System.String		  ShortTitle = null;
+		public System.String ShortTitle = null;
 		
 		/// <summary>
 		/// Note : 
 		/// </summary>
-		public System.String		  Note = null;
+		public System.String Note = null;
 		
 		/// <summary>
 		/// PriorityIndex : 
 		/// </summary>
-		public System.Int32		  PriorityIndex = (int)1;
+		public System.Int32 PriorityIndex = (int)1;
 		
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
-		public System.Boolean		  IsDisabled = false;
+		public System.Boolean IsDisabled = false;
 		
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
-		public System.String		  CreateUser = null;
+		public System.String CreateUser = null;
 		
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
-		public System.DateTime		  CreateDate = DateTime.Now;
+		public System.DateTime CreateDate = DateTime.Now;
 		
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
-		public System.String		  UpdateUser = null;
+		public System.String UpdateUser = null;
 		
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
-		public System.DateTime		  UpdateDate = DateTime.Now;
+		public System.DateTime UpdateDate = DateTime.Now;
 		#endregion
 			
 		#region Source Foreign Key Property
 				
 		#endregion
+        
 		#endregion Variable Declarations
-	
+
 		#region Data Properties
 
 		#region UsersCollection
@@ -1482,7 +1512,6 @@ namespace AppointmentSystem.Entities
 		#endregion
 
 		#endregion Data Properties
-		
 		#region Clone Method
 
 		/// <summary>
@@ -1578,16 +1607,6 @@ namespace AppointmentSystem.Entities
 	
 	}//End struct
 
-
-
-
-
-
-
-
-
-
-
 		#endregion
 		
 				
@@ -1622,8 +1641,8 @@ namespace AppointmentSystem.Entities
 		public virtual void OnColumnChanging(ServicesColumn column, object value)
 		{
 			if(IsEntityTracked && EntityState != EntityState.Added && !EntityManager.TrackChangedEntities)
-				EntityManager.StopTracking(entityTrackingKey);
-				
+                EntityManager.StopTracking(entityTrackingKey);
+                
 			if (!SuppressEntityEvents)
 			{
 				ServicesEventHandler handler = ColumnChanging;
@@ -1734,9 +1753,9 @@ namespace AppointmentSystem.Entities
         }
 
 		/// <summary>
-        /// Determines whether the specified <c cref="Services"/> instances are considered equal.
+        /// Determines whether the specified <see cref="Services"/> instances are considered equal.
         /// </summary>
-        /// <param name="a">The first <c cref="Services"/> to compare.</param>
+        /// <param name="a">The first <see cref="Services"/> to compare.</param>
         /// <param name="b">The second <c>Services</c> to compare.</param>
         /// <returns>true if objA is the same instance as objB or if both are null references or if objA.Equals(objB) returns true; otherwise, false.</returns>
         public bool Equals(Services a, Services b)

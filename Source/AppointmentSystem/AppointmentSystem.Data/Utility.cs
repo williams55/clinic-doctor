@@ -10,7 +10,6 @@ using AppointmentSystem.Entities;
 
 namespace AppointmentSystem.Data
 {
-
 	#region Repository Enumerations
 	
 	#region Load/Save Enums
@@ -54,7 +53,6 @@ namespace AppointmentSystem.Data
 		
 	#endregion
 
-		
 	/// <summary>
 	/// Contains some helper function for SQL.
 	/// </summary>

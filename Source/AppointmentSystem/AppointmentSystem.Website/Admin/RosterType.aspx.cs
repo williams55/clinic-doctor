@@ -13,7 +13,7 @@ using System.Web.UI.HtmlControls;
 using AppointmentSystem.Web.UI;
 #endregion
 
-public partial class Admin_RosterType : System.Web.UI.Page
+public partial class RosterType : System.Web.UI.Page
 {	
     protected void Page_Load(object sender, EventArgs e)
 	{
