@@ -73,10 +73,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[Services]'
 				IF LEN(@WhereClause) > 0
@@ -88,9 +84,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Title], O.[ShortTitle], O.[Note], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -469,17 +471,13 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Username] nvarchar(50) COLLATE database_default  
+				    [Username] nvarchar(50)  
 				)
 				
 				-- Insert into the temp table
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Username])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Username]'
 				SET @SQL = @SQL + ' FROM [dbo].[Users]'
 				IF LEN(@WhereClause) > 0
@@ -491,9 +489,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[ServicesId], O.[IsFemale], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -936,7 +940,7 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Username] nvarchar(50) COLLATE database_default  
+				    [Username] nvarchar(50)  
 				)
 				
 				-- Insert into the temp table
@@ -1026,17 +1030,13 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [ScreenCode] varchar(20) COLLATE database_default  
+				    [ScreenCode] varchar(20)  
 				)
 				
 				-- Insert into the temp table
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([ScreenCode])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [ScreenCode]'
 				SET @SQL = @SQL + ' FROM [dbo].[Screen]'
 				IF LEN(@WhereClause) > 0
@@ -1048,9 +1048,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[ScreenCode], O.[ScreenName], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -1310,7 +1316,7 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [ScreenCode] varchar(20) COLLATE database_default  
+				    [ScreenCode] varchar(20)  
 				)
 				
 				-- Insert into the temp table
@@ -1406,10 +1412,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[Room]'
 				IF LEN(@WhereClause) > 0
@@ -1421,9 +1423,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Title], O.[Note], O.[ServicesId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -1809,17 +1817,13 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] varchar(20) COLLATE database_default  
+				    [Id] varchar(20)  
 				)
 				
 				-- Insert into the temp table
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[Status]'
 				IF LEN(@WhereClause) > 0
@@ -1831,9 +1835,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Title], O.[ColorCode], O.[PriorityIndex], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -2088,7 +2098,7 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] varchar(20) COLLATE database_default  
+				    [Id] varchar(20)  
 				)
 				
 				-- Insert into the temp table
@@ -2184,10 +2194,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[Units]'
 				IF LEN(@WhereClause) > 0
@@ -2199,9 +2205,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Title], O.[Note], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -2557,17 +2569,13 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] nvarchar(20) COLLATE database_default  
+				    [Id] nvarchar(20)  
 				)
 				
 				-- Insert into the temp table
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[UserGroup]'
 				IF LEN(@WhereClause) > 0
@@ -2579,9 +2587,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Title], O.[Note], O.[Roles], O.[IsLocked], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -2863,7 +2877,7 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] nvarchar(20) COLLATE database_default  
+				    [Id] nvarchar(20)  
 				)
 				
 				-- Insert into the temp table
@@ -2960,10 +2974,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[RosterType]'
 				IF LEN(@WhereClause) > 0
@@ -2975,9 +2985,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Title], O.[IsBooked], O.[ColorCode], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -3456,10 +3472,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[UserRole]'
 				IF LEN(@WhereClause) > 0
@@ -3471,9 +3483,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Username], O.[RoleId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -3896,10 +3914,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[AppointmentGroup]'
 				IF LEN(@WhereClause) > 0
@@ -3911,9 +3925,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Title], O.[Note], O.[PriorityIndex], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate], O.[UnitId]
 				FROM
@@ -4324,10 +4344,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[DoctorRoom]'
 				IF LEN(@WhereClause) > 0
@@ -4339,9 +4355,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Username], O.[RoomId], O.[Priority], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -4770,10 +4792,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[GroupRole]'
 				IF LEN(@WhereClause) > 0
@@ -4785,9 +4803,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[GroupId], O.[RoleId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -5204,17 +5228,13 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] nvarchar(20) COLLATE database_default  
+				    [Id] nvarchar(20)  
 				)
 				
 				-- Insert into the temp table
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[Roster]'
 				IF LEN(@WhereClause) > 0
@@ -5226,9 +5246,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Username], O.[RoomId], O.[RosterTypeId], O.[StartTime], O.[EndTime], O.[Note], O.[RepeatId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -5652,7 +5678,7 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] nvarchar(20) COLLATE database_default  
+				    [Id] nvarchar(20)  
 				)
 				
 				-- Insert into the temp table
@@ -5750,17 +5776,13 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [PatientCode] nchar(10) COLLATE database_default  
+				    [PatientCode] nchar(10)  
 				)
 				
 				-- Insert into the temp table
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([PatientCode])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [PatientCode]'
 				SET @SQL = @SQL + ' FROM [dbo].[Patient]'
 				IF LEN(@WhereClause) > 0
@@ -5772,9 +5794,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[PatientCode], O.[FirstName], O.[LastName], O.[MemberType], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[CompanyCode], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -6139,7 +6167,7 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [PatientCode] nchar(10) COLLATE database_default  
+				    [PatientCode] nchar(10)  
 				)
 				
 				-- Insert into the temp table
@@ -6237,10 +6265,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[Role]'
 				IF LEN(@WhereClause) > 0
@@ -6252,9 +6276,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[Title], O.[Note], O.[IsLocked], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -6621,10 +6651,6 @@
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[RoleDetail]'
 				IF LEN(@WhereClause) > 0
@@ -6636,9 +6662,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[RoleId], O.[ScreenCode], O.[Crud], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -7072,17 +7104,13 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] nvarchar(20) COLLATE database_default  
+				    [Id] nvarchar(20)  
 				)
 				
 				-- Insert into the temp table
 				DECLARE @SQL AS nvarchar(4000)
 				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
 				SET @SQL = @SQL + ' SELECT'
-				IF @PageSize > 0
-				BEGIN
-					SET @SQL = @SQL + ' TOP ' + CONVERT(nvarchar, @PageUpperBound)
-				END
 				SET @SQL = @SQL + ' [Id]'
 				SET @SQL = @SQL + ' FROM [dbo].[Appointment]'
 				IF LEN(@WhereClause) > 0
@@ -7094,9 +7122,15 @@
 					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
 				END
 				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
 				-- Populate the temp table
 				EXEC sp_executesql @SQL
 
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
 				-- Return paged results
 				SELECT O.[Id], O.[PatientCode], O.[Username], O.[RoomId], O.[ServicesId], O.[StatusId], O.[AppointmentGroupId], O.[Note], O.[StartTime], O.[EndTime], O.[RosterId], O.[IsComplete], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
@@ -7744,7 +7778,7 @@
 				CREATE TABLE #PageIndex
 				(
 				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] nvarchar(20) COLLATE database_default  
+				    [Id] nvarchar(20)  
 				)
 				
 				-- Insert into the temp table
@@ -7773,5 +7807,310 @@
 			]]></body>
 		</procedure>
 		
+            <procedure owner="dbo" name="VCSCompany_Get_List" >
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets all records from the VCSCompany view
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters/>
+                <body><![CDATA[
+                    
+                    SELECT
+                        [CompanyCode],
+                        [CompanyName],
+                        [Address],
+                        [BillingAddress],
+                        [CompanyCity],
+                        [CompanyCountry],
+                        [AccountCode],
+                        [CompanyTel],
+                        [Attn],
+                        [AttnEmail],
+                        [AttnPhone],
+                        [IsCCP],
+                        [Remark]
+                    FROM
+                        [dbo].[VCSCompany]
+                        
+                    SELECT @@ROWCOUNT			
+                ]]></body>
+            </procedure>
+            
+            <procedure owner="dbo" name="VCSCompany_Get" >
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the VCSCompany view passing page index and page count parameters
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters>
+                    <parameter name="@WhereClause" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)" />
+                    <parameter name="@OrderBy" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)"/>			
+                </parameters>
+                <body><![CDATA[
+                    
+                    BEGIN
+    
+                    -- Build the sql query
+                    DECLARE @SQL AS nvarchar(4000)
+                    SET @SQL = ' SELECT * FROM [dbo].[VCSCompany]'
+                    IF LEN(@WhereClause) > 0
+                    BEGIN
+                        SET @SQL = @SQL + ' WHERE ' + @WhereClause
+                    END
+                    IF LEN(@OrderBy) > 0
+                    BEGIN
+                        SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
+                    END
+                    
+                    -- Execution the query
+                    EXEC sp_executesql @SQL
+                    
+                    -- Return total count
+                    SELECT @@ROWCOUNT AS TotalRowCount
+                    
+                    END
+                ]]></body>
+            </procedure>
+            
+            
+            <procedure owner="dbo" name="VCSCompany_Find_Dynamic"  skip="true">
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the VCSCompany table using a dynamically generated query.
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters/>
+                <body><![CDATA[
+                    
+                    BEGIN
+                    
+                    SELECT * FROM [dbo].[VCSCompany] {0}
+                    ORDER BY {1}
+    
+                    -- get total count
+                    SELECT @@ROWCOUNT AS TotalRowCount;
+                    
+                    END
+                ]]></body>
+            </procedure>
+            
+            <procedure owner="dbo" name="VCSMemberType_Get_List" >
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets all records from the VCSMemberType view
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters/>
+                <body><![CDATA[
+                    
+                    SELECT
+                        [MemberType],
+                        [Description],
+                        [IsActive],
+                        [Remark]
+                    FROM
+                        [dbo].[VCSMemberType]
+                        
+                    SELECT @@ROWCOUNT			
+                ]]></body>
+            </procedure>
+            
+            <procedure owner="dbo" name="VCSMemberType_Get" >
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the VCSMemberType view passing page index and page count parameters
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters>
+                    <parameter name="@WhereClause" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)" />
+                    <parameter name="@OrderBy" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)"/>			
+                </parameters>
+                <body><![CDATA[
+                    
+                    BEGIN
+    
+                    -- Build the sql query
+                    DECLARE @SQL AS nvarchar(4000)
+                    SET @SQL = ' SELECT * FROM [dbo].[VCSMemberType]'
+                    IF LEN(@WhereClause) > 0
+                    BEGIN
+                        SET @SQL = @SQL + ' WHERE ' + @WhereClause
+                    END
+                    IF LEN(@OrderBy) > 0
+                    BEGIN
+                        SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
+                    END
+                    
+                    -- Execution the query
+                    EXEC sp_executesql @SQL
+                    
+                    -- Return total count
+                    SELECT @@ROWCOUNT AS TotalRowCount
+                    
+                    END
+                ]]></body>
+            </procedure>
+            
+            
+            <procedure owner="dbo" name="VCSMemberType_Find_Dynamic"  skip="true">
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the VCSMemberType table using a dynamically generated query.
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters/>
+                <body><![CDATA[
+                    
+                    BEGIN
+                    
+                    SELECT * FROM [dbo].[VCSMemberType] {0}
+                    ORDER BY {1}
+    
+                    -- get total count
+                    SELECT @@ROWCOUNT AS TotalRowCount;
+                    
+                    END
+                ]]></body>
+            </procedure>
+            
+            <procedure owner="dbo" name="VCSPatient_Get_List" >
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets all records from the VCSPatient view
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters/>
+                <body><![CDATA[
+                    
+                    SELECT
+                        [PatientCode],
+                        [FirstName],
+                        [MiddleName],
+                        [LastName],
+                        [DateOfBirth],
+                        [Sex],
+                        [MemberType],
+                        [Nationality],
+                        [HomeStreet],
+                        [HomeWard],
+                        [HomeDistrict],
+                        [HomeCity],
+                        [HomeCountry],
+                        [WorkStreet],
+                        [WorkWard],
+                        [WorkDistrict],
+                        [WorkCity],
+                        [WorkCountry],
+                        [CompanyCode],
+                        [BillingAddress],
+                        [HomePhone],
+                        [MobilePhone],
+                        [CompanyPhone],
+                        [Fax],
+                        [EmailAddress],
+                        [CreateDate],
+                        [ValidCorporate],
+                        [DefaultPaymentMode],
+                        [InsuranceCardNumber],
+                        [InsuranceCardExpDate],
+                        [MembershipSOSNumber],
+                        [MembershipSOSExpDate],
+                        [IsDisabled],
+                        [UpdateUser],
+                        [UpdateDate],
+                        [Remark]
+                    FROM
+                        [dbo].[VCSPatient]
+                        
+                    SELECT @@ROWCOUNT			
+                ]]></body>
+            </procedure>
+            
+            <procedure owner="dbo" name="VCSPatient_Get" >
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the VCSPatient view passing page index and page count parameters
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters>
+                    <parameter name="@WhereClause" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)" />
+                    <parameter name="@OrderBy" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)"/>			
+                </parameters>
+                <body><![CDATA[
+                    
+                    BEGIN
+    
+                    -- Build the sql query
+                    DECLARE @SQL AS nvarchar(4000)
+                    SET @SQL = ' SELECT * FROM [dbo].[VCSPatient]'
+                    IF LEN(@WhereClause) > 0
+                    BEGIN
+                        SET @SQL = @SQL + ' WHERE ' + @WhereClause
+                    END
+                    IF LEN(@OrderBy) > 0
+                    BEGIN
+                        SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
+                    END
+                    
+                    -- Execution the query
+                    EXEC sp_executesql @SQL
+                    
+                    -- Return total count
+                    SELECT @@ROWCOUNT AS TotalRowCount
+                    
+                    END
+                ]]></body>
+            </procedure>
+            
+            
+            <procedure owner="dbo" name="VCSPatient_Find_Dynamic"  skip="true">
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the VCSPatient table using a dynamically generated query.
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters/>
+                <body><![CDATA[
+                    
+                    BEGIN
+                    
+                    SELECT * FROM [dbo].[VCSPatient] {0}
+                    ORDER BY {1}
+    
+                    -- get total count
+                    SELECT @@ROWCOUNT AS TotalRowCount;
+                    
+                    END
+                ]]></body>
+            </procedure>
+            
 </procedures>
 </root>

@@ -61,7 +61,7 @@ namespace AppointmentSystem.Web.UI
 	}
 
     /// <summary>
-    /// A strongly typed repeater control for the <c cref="AppointmentGroupRepeater"></c> Type.
+    /// A strongly typed repeater control for the <see cref="AppointmentGroupRepeater"/> Type.
     /// </summary>
 	[Designer(typeof(AppointmentGroupRepeaterDesigner))]
 	[ParseChildren(true)]

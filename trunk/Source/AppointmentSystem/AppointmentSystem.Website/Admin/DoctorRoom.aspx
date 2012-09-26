@@ -1,5 +1,5 @@
 ﻿
-<%@ Page Language="C#" Theme="Default" MasterPageFile="~/MasterPages/admin.master" AutoEventWireup="true"  CodeFile="DoctorRoom.aspx.cs" Inherits="Admin_DoctorRoom" Title="DoctorRoom List" %>
+<%@ Page Language="C#" Theme="Default" MasterPageFile="~/MasterPages/admin.master" AutoEventWireup="true"  CodeFile="DoctorRoom.aspx.cs" Inherits="DoctorRoom" Title="DoctorRoom List" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" Runat="Server">Doctor Room List</asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">

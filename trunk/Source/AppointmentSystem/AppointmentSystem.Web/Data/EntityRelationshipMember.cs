@@ -387,7 +387,7 @@ namespace AppointmentSystem.Web.Data
 
 		/// <summary>
 		/// Gets a value indicating whether the specified value is selected in
-		/// the <paramref name="ListControl"/> object.
+		/// the <cref name="ListControl"/> object.
 		/// </summary>
 		/// <param name="value">The current value.</param>
 		/// <returns>True if the specified value is selected; otherwise false.</returns>
@@ -408,7 +408,7 @@ namespace AppointmentSystem.Web.Data
 		}
 
 		/// <summary>
-		/// Selects the specified value in the <paramref name="ListControl"/> object.
+		/// Selects the specified value in the <cref name="ListControl"/> object.
 		/// </summary>
 		/// <param name="value">The value to select.</param>
 		public void Select(String value)
@@ -423,7 +423,7 @@ namespace AppointmentSystem.Web.Data
 		}
 
 		/// <summary>
-		/// Clears the currently selected values in the <paramref name="ListControl"/> object.
+		/// Clears the currently selected values in the <cref name="ListControl"/> object.
 		/// </summary>
 		public void ClearSelections()
 		{
@@ -667,10 +667,10 @@ namespace AppointmentSystem.Web.Data
 
 		/// <summary>
 		/// Gets the original value of the cell bound to the configured
-		/// <paramref name="EntityKeyName"/> property.
+		/// <cref name="EntityKeyName"/> property.
 		/// </summary>
 		/// <param name="row">The current <see cref="GridViewRow"/> object.</param>
-		/// <returns>The oringal value.</returns>
+		/// <returns>The original value.</returns>
 		public String GetEntityKeyValue(GridViewRow row)
 		{
 			return GetOriginalValue(row, EntityKeyName) as String;
@@ -678,10 +678,10 @@ namespace AppointmentSystem.Web.Data
 
 		/// <summary>
 		/// Gets the original value of the cell bound to the configured
-		/// <paramref name="ForeignKeyName"/> property.
+		/// <cref name="ForeignKeyName"/> property.
 		/// </summary>
 		/// <param name="row">The current <see cref="GridViewRow"/> object.</param>
-		/// <returns>The oringal value.</returns>
+		/// <returns>The original value.</returns>
 		public String GetForeignKeyValue(GridViewRow row)
 		{
 			return GetOriginalValue(row, ForeignKeyName) as String;

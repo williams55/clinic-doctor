@@ -24,9 +24,13 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
-                this.gridPatient.Visible = false;
+                gridPatient.Visible = false;
                 return;
             }
+
+            // Set page size
+            gridPatient.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
+            
             var gridViewCommandColumn = gridPatient.Columns["btnCommand"] as GridViewCommandColumn;
             if (gridViewCommandColumn == null) return;
             gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
@@ -35,15 +39,9 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                                                                                   out _message);
             gridViewCommandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),ScreenCode, OperationConstant.Create.Key,
                                                                                   out _message);
-            GridViewCommandColumnCustomButton btnDelete = null;
-            foreach (GridViewCommandColumnCustomButton customButton in gridViewCommandColumn.CustomButtons)
-            {
-                if (customButton.ID == "btnDelete")
-                {
-                    btnDelete = customButton;
-                    break;
-                }
-            }
+            GridViewCommandColumnCustomButton btnDelete =
+                gridViewCommandColumn.CustomButtons.Cast<GridViewCommandColumnCustomButton>().FirstOrDefault(
+                    customButton => customButton.ID == "btnDelete");
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,
@@ -51,7 +49,6 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             {
                 btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
-
             gridViewCommandColumn.Visible = gridViewCommandColumn.EditButton.Visible
                 || gridViewCommandColumn.NewButton.Visible
                 || (btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);

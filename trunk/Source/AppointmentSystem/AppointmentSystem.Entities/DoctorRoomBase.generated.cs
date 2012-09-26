@@ -146,6 +146,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -163,7 +165,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Id == value)
 					return;
-					
+				
+                OnPropertyChanging("Id");                    
 				OnColumnChanging(DoctorRoomColumn.Id, this.entityData.Id);
 				this.entityData.Id = value;
 				this.EntityId.Id = value;
@@ -183,6 +186,8 @@ namespace AppointmentSystem.Entities
 		/// This property can not be set to null. 
 		/// </remarks>
 		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
+		
+		
 
 
 
@@ -200,7 +205,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Username == value)
 					return;
-					
+				
+                OnPropertyChanging("Username");                    
 				OnColumnChanging(DoctorRoomColumn.Username, this.entityData.Username);
 				this.entityData.Username = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -218,6 +224,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -235,7 +243,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.RoomId == value)
 					return;
-					
+				
+                OnPropertyChanging("RoomId");                    
 				OnColumnChanging(DoctorRoomColumn.RoomId, this.entityData.RoomId);
 				this.entityData.RoomId = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -253,6 +262,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -270,7 +281,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Priority == value)
 					return;
-					
+				
+                OnPropertyChanging("Priority");                    
 				OnColumnChanging(DoctorRoomColumn.Priority, this.entityData.Priority);
 				this.entityData.Priority = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -288,6 +300,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -305,7 +319,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.IsDisabled == value)
 					return;
-					
+				
+                OnPropertyChanging("IsDisabled");                    
 				OnColumnChanging(DoctorRoomColumn.IsDisabled, this.entityData.IsDisabled);
 				this.entityData.IsDisabled = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -323,6 +338,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -340,7 +357,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateUser == value)
 					return;
-					
+				
+                OnPropertyChanging("CreateUser");                    
 				OnColumnChanging(DoctorRoomColumn.CreateUser, this.entityData.CreateUser);
 				this.entityData.CreateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -358,6 +376,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -375,7 +395,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateDate == value)
 					return;
-					
+				
+                OnPropertyChanging("CreateDate");                    
 				OnColumnChanging(DoctorRoomColumn.CreateDate, this.entityData.CreateDate);
 				this.entityData.CreateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -393,6 +414,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -410,7 +433,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateUser == value)
 					return;
-					
+				
+                OnPropertyChanging("UpdateUser");                    
 				OnColumnChanging(DoctorRoomColumn.UpdateUser, this.entityData.UpdateUser);
 				this.entityData.UpdateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -428,6 +452,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -445,7 +471,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateDate == value)
 					return;
-					
+				
+                OnPropertyChanging("UpdateDate");                    
 				OnColumnChanging(DoctorRoomColumn.UpdateDate, this.entityData.UpdateDate);
 				this.entityData.UpdateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -1269,46 +1296,45 @@ namespace AppointmentSystem.Entities
 		
 		#region Non Primary key(s)
 		
-		
 		/// <summary>
 		/// Username : 
 		/// </summary>
-		public System.String		  Username = string.Empty;
+		public System.String Username = string.Empty;
 		
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
-		public System.Int32		  RoomId = (int)0;
+		public System.Int32 RoomId = (int)0;
 		
 		/// <summary>
 		/// Priority : 
 		/// </summary>
-		public System.Int32		  Priority = (int)0;
+		public System.Int32 Priority = (int)0;
 		
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
-		public System.Boolean		  IsDisabled = false;
+		public System.Boolean IsDisabled = false;
 		
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
-		public System.String		  CreateUser = null;
+		public System.String CreateUser = null;
 		
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
-		public System.DateTime		  CreateDate = DateTime.Now;
+		public System.DateTime CreateDate = DateTime.Now;
 		
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
-		public System.String		  UpdateUser = null;
+		public System.String UpdateUser = null;
 		
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
-		public System.DateTime		  UpdateDate = DateTime.Now;
+		public System.DateTime UpdateDate = DateTime.Now;
 		#endregion
 			
 		#region Source Foreign Key Property
@@ -1340,12 +1366,12 @@ namespace AppointmentSystem.Entities
             set { this._usernameSource = value; }
       	}
 		#endregion
+        
 		#endregion Variable Declarations
-	
+
 		#region Data Properties
 
 		#endregion Data Properties
-		
 		#region Clone Method
 
 		/// <summary>
@@ -1440,16 +1466,6 @@ namespace AppointmentSystem.Entities
 	
 	}//End struct
 
-
-
-
-
-
-
-
-
-
-
 		#endregion
 		
 				
@@ -1484,8 +1500,8 @@ namespace AppointmentSystem.Entities
 		public virtual void OnColumnChanging(DoctorRoomColumn column, object value)
 		{
 			if(IsEntityTracked && EntityState != EntityState.Added && !EntityManager.TrackChangedEntities)
-				EntityManager.StopTracking(entityTrackingKey);
-				
+                EntityManager.StopTracking(entityTrackingKey);
+                
 			if (!SuppressEntityEvents)
 			{
 				DoctorRoomEventHandler handler = ColumnChanging;
@@ -1596,9 +1612,9 @@ namespace AppointmentSystem.Entities
         }
 
 		/// <summary>
-        /// Determines whether the specified <c cref="DoctorRoom"/> instances are considered equal.
+        /// Determines whether the specified <see cref="DoctorRoom"/> instances are considered equal.
         /// </summary>
-        /// <param name="a">The first <c cref="DoctorRoom"/> to compare.</param>
+        /// <param name="a">The first <see cref="DoctorRoom"/> to compare.</param>
         /// <param name="b">The second <c>DoctorRoom</c> to compare.</param>
         /// <returns>true if objA is the same instance as objB or if both are null references or if objA.Equals(objB) returns true; otherwise, false.</returns>
         public bool Equals(DoctorRoom a, DoctorRoom b)

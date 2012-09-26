@@ -1,22 +1,21 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.Practices.ObjectBuilder2;
-
 
 namespace AppointmentSystem.Entities
 {
     /// <summary>
     /// Provides a means to weak reference and already created and untouched locate entities.
     /// </summary>	
-    public class EntityLocator : Microsoft.Practices.ObjectBuilder2.Locator 
+    public class EntityLocator //: Microsoft.Practices.ObjectBuilder.Locator 
     {
+        //UnityContainer _container = new UnityContainer();
+        WeakRefDictionary<string, object> _weakDictionary = new WeakRefDictionary<string, object>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityLocator"/> class.
         /// </summary>
-        public EntityLocator() 
-            : base(null)
+        public EntityLocator()
         { 
         }
 
@@ -27,8 +26,11 @@ namespace AppointmentSystem.Entities
         /// <param name="value">The value.</param>
         public void Add(string key, object value)
         {
-            base.Add(key as object, value);
+            //_container.RegisterInstance<T>(key, value, new ExternallyControlledLifetimeManager());
+            _weakDictionary.Add(key, value);
+            //base.Add(key as object, value);
         }
+
 
         /// <summary>
         /// Determines whether [contains] [the specified key].
@@ -39,7 +41,8 @@ namespace AppointmentSystem.Entities
         /// </returns>
         public bool Contains(string key)
         {
-            return base.Contains(key);
+            return _weakDictionary.ContainsKey(key);
+            //return _container.IsRegistered<T>(key);
         }
 
 
@@ -48,36 +51,47 @@ namespace AppointmentSystem.Entities
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>object if available, else null </returns>
-        public override object Get(object key)
+        public object Get(string key)
         {
-            return base.Get(key);
+            return _weakDictionary[key];
+            //return _container.Resolve<T>(key);
         }
 
         /// <summary>
         /// Get's an Entity from the Tracking Locator
         /// </summary>
-        /// <typeparam name="Entity">A type that implements IEntity</typeparam>
+        /// <typeparam name="TEntity">A type that implements IEntity</typeparam>
         /// <param name="key">locator list key to fetch, best used 
         /// if it's the (TypeName or TableName) + EntityKey of the this entity</param>
         /// <returns>Entity from Locator if available.</returns>
-        public Entity GetEntity<Entity>(string key) where Entity : EntityBase, new()
+        public TEntity GetEntity<TEntity>(string key) where TEntity : EntityBase, new()
         {
-            return Get(key as object) as Entity;
+            return Get(key) as TEntity;
         }
 
         /// <summary>
         /// Get's a List of Entities from the Tracking Locator
         /// </summary>
-        /// <typeparam name="EntityList"> a type that implements ListBase&lt;IEntity&gt;</typeparam>
+        /// <typeparam name="TEntityList"> a type that implements ListBase&lt;IEntity&gt;</typeparam>
         /// <param name="key">locator list key to fetch, best used 
         /// if it's like the criteria of the method used to populate this list
         /// </param>
         /// <returns>ListBase&lt;IEntity&gt; if available</returns>
-        public EntityList GetList<EntityList>(string key) where EntityList : ListBase<IEntity>, new()
+        public TEntityList GetList<TEntityList>(string key) where TEntityList : ListBase<IEntity>, new()
         {
-            return Get(key as object) as EntityList;
+            return Get(key) as TEntityList;
         }
-		
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        public bool Remove(string key)
+        {
+            //_container.RegisterInstance<T>(key, default(T), new ExternallyControlledLifetimeManager());
+            _weakDictionary.Remove(key);
+            return true;
+        }
 		
         /// <summary>
         /// Re-Creates the key based on primary key values.
@@ -105,5 +119,4 @@ namespace AppointmentSystem.Entities
 			return sb.ToString();
 		}
 	}
-
 }

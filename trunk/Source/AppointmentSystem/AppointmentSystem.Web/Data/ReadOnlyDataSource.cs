@@ -1,5 +1,6 @@
 ﻿#region Using directives
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -224,6 +225,20 @@ namespace AppointmentSystem.Web.Data
 			}
 
 			return entityList;
+		}
+
+		/// <summary>
+		/// Gets a collection of Entity objects based on the value of the SelectMethod property.
+		/// </summary>
+	    /// <param name="values"></param>
+		/// <param name="count">The total number of rows in the DataSource.</param>
+		/// <returns>A collection of Entity objects.</returns>
+		protected override IList<Entity> GetSelectData(IDictionary values, out int count)
+		{
+			if (values == null || values.Count == 0) 
+				values = CollectionsUtil.CreateCaseInsensitiveHashtable(GetParameterValues());
+
+			return GetSelectData(out count);
 		}
 
 		#endregion Methods

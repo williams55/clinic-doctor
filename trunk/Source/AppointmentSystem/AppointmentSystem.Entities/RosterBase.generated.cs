@@ -169,6 +169,8 @@ namespace AppointmentSystem.Entities
 		/// This property can not be set to null. 
 		/// </remarks>
 		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
+		
+		
 
 
 
@@ -186,7 +188,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Id == value)
 					return;
-					
+				
+                OnPropertyChanging("Id");                    
 				OnColumnChanging(RosterColumn.Id, this.entityData.Id);
 				this.entityData.Id = value;
 				this.EntityId.Id = value;
@@ -219,6 +222,8 @@ namespace AppointmentSystem.Entities
 		/// This property can not be set to null. 
 		/// </remarks>
 		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
+		
+		
 
 
 
@@ -236,7 +241,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Username == value)
 					return;
-					
+				
+                OnPropertyChanging("Username");                    
 				OnColumnChanging(RosterColumn.Username, this.entityData.Username);
 				this.entityData.Username = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -256,6 +262,8 @@ namespace AppointmentSystem.Entities
 		/// If this column is null, this property will return (int)0. It is up to the developer
 		/// to check the value of IsRoomIdNull() and perform business logic appropriately.
 		/// </remarks>
+		
+		
 
 
 
@@ -273,7 +281,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.RoomId == value)
 					return;
-					
+				
+                OnPropertyChanging("RoomId");                    
 				OnColumnChanging(RosterColumn.RoomId, this.entityData.RoomId);
 				this.entityData.RoomId = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -291,6 +300,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -308,7 +319,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.RosterTypeId == value)
 					return;
-					
+				
+                OnPropertyChanging("RosterTypeId");                    
 				OnColumnChanging(RosterColumn.RosterTypeId, this.entityData.RosterTypeId);
 				this.entityData.RosterTypeId = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -326,6 +338,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -343,7 +357,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.StartTime == value)
 					return;
-					
+				
+                OnPropertyChanging("StartTime");                    
 				OnColumnChanging(RosterColumn.StartTime, this.entityData.StartTime);
 				this.entityData.StartTime = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -361,6 +376,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -378,7 +395,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.EndTime == value)
 					return;
-					
+				
+                OnPropertyChanging("EndTime");                    
 				OnColumnChanging(RosterColumn.EndTime, this.entityData.EndTime);
 				this.entityData.EndTime = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -396,6 +414,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -413,7 +433,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Note == value)
 					return;
-					
+				
+                OnPropertyChanging("Note");                    
 				OnColumnChanging(RosterColumn.Note, this.entityData.Note);
 				this.entityData.Note = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -433,6 +454,8 @@ namespace AppointmentSystem.Entities
 		/// If this column is null, this property will return Guid.Empty. It is up to the developer
 		/// to check the value of IsRepeatIdNull() and perform business logic appropriately.
 		/// </remarks>
+		
+		
 
 
 
@@ -450,7 +473,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.RepeatId == value)
 					return;
-					
+				
+                OnPropertyChanging("RepeatId");                    
 				OnColumnChanging(RosterColumn.RepeatId, this.entityData.RepeatId);
 				this.entityData.RepeatId = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -468,6 +492,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -485,7 +511,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.IsDisabled == value)
 					return;
-					
+				
+                OnPropertyChanging("IsDisabled");                    
 				OnColumnChanging(RosterColumn.IsDisabled, this.entityData.IsDisabled);
 				this.entityData.IsDisabled = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -503,6 +530,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -520,7 +549,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateUser == value)
 					return;
-					
+				
+                OnPropertyChanging("CreateUser");                    
 				OnColumnChanging(RosterColumn.CreateUser, this.entityData.CreateUser);
 				this.entityData.CreateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -538,6 +568,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -555,7 +587,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateDate == value)
 					return;
-					
+				
+                OnPropertyChanging("CreateDate");                    
 				OnColumnChanging(RosterColumn.CreateDate, this.entityData.CreateDate);
 				this.entityData.CreateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -573,6 +606,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -590,7 +625,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateUser == value)
 					return;
-					
+				
+                OnPropertyChanging("UpdateUser");                    
 				OnColumnChanging(RosterColumn.UpdateUser, this.entityData.UpdateUser);
 				this.entityData.UpdateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -608,6 +644,8 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
+		
+		
 
 
 
@@ -625,7 +663,8 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateDate == value)
 					return;
-					
+				
+                OnPropertyChanging("UpdateDate");                    
 				OnColumnChanging(RosterColumn.UpdateDate, this.entityData.UpdateDate);
 				this.entityData.UpdateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -1571,66 +1610,65 @@ namespace AppointmentSystem.Entities
 		
 		#region Non Primary key(s)
 		
-		
 		/// <summary>
 		/// Username : 
 		/// </summary>
-		public System.String		  Username = string.Empty;
+		public System.String Username = string.Empty;
 		
 		/// <summary>
 		/// RoomId : 
 		/// </summary>
-		public System.Int32?		  RoomId = null;
+		public System.Int32? RoomId = null;
 		
 		/// <summary>
 		/// RosterTypeId : 
 		/// </summary>
-		public System.Int32		  RosterTypeId = (int)0;
+		public System.Int32 RosterTypeId = (int)0;
 		
 		/// <summary>
 		/// StartTime : 
 		/// </summary>
-		public System.DateTime		  StartTime = DateTime.MinValue;
+		public System.DateTime StartTime = DateTime.MinValue;
 		
 		/// <summary>
 		/// EndTime : 
 		/// </summary>
-		public System.DateTime		  EndTime = DateTime.MinValue;
+		public System.DateTime EndTime = DateTime.MinValue;
 		
 		/// <summary>
 		/// Note : 
 		/// </summary>
-		public System.String		  Note = null;
+		public System.String Note = null;
 		
 		/// <summary>
 		/// RepeatId : Neu roster duoc tao theo dang repeat thi se co cung Id
 		/// </summary>
-		public System.Guid?		  RepeatId = null;
+		public System.Guid? RepeatId = null;
 		
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
-		public System.Boolean		  IsDisabled = false;
+		public System.Boolean IsDisabled = false;
 		
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
-		public System.String		  CreateUser = null;
+		public System.String CreateUser = null;
 		
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
-		public System.DateTime		  CreateDate = DateTime.Now;
+		public System.DateTime CreateDate = DateTime.Now;
 		
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
-		public System.String		  UpdateUser = null;
+		public System.String UpdateUser = null;
 		
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
-		public System.DateTime		  UpdateDate = DateTime.Now;
+		public System.DateTime UpdateDate = DateTime.Now;
 		#endregion
 			
 		#region Source Foreign Key Property
@@ -1675,8 +1713,9 @@ namespace AppointmentSystem.Entities
             set { this._usernameSource = value; }
       	}
 		#endregion
+        
 		#endregion Variable Declarations
-	
+
 		#region Data Properties
 
 		#region AppointmentCollection
@@ -1705,7 +1744,6 @@ namespace AppointmentSystem.Entities
 		#endregion
 
 		#endregion Data Properties
-		
 		#region Clone Method
 
 		/// <summary>
@@ -1821,16 +1859,6 @@ namespace AppointmentSystem.Entities
 	
 	}//End struct
 
-
-
-
-
-
-
-
-
-
-
 		#endregion
 		
 				
@@ -1865,8 +1893,8 @@ namespace AppointmentSystem.Entities
 		public virtual void OnColumnChanging(RosterColumn column, object value)
 		{
 			if(IsEntityTracked && EntityState != EntityState.Added && !EntityManager.TrackChangedEntities)
-				EntityManager.StopTracking(entityTrackingKey);
-				
+                EntityManager.StopTracking(entityTrackingKey);
+                
 			if (!SuppressEntityEvents)
 			{
 				RosterEventHandler handler = ColumnChanging;
@@ -1977,9 +2005,9 @@ namespace AppointmentSystem.Entities
         }
 
 		/// <summary>
-        /// Determines whether the specified <c cref="Roster"/> instances are considered equal.
+        /// Determines whether the specified <see cref="Roster"/> instances are considered equal.
         /// </summary>
-        /// <param name="a">The first <c cref="Roster"/> to compare.</param>
+        /// <param name="a">The first <see cref="Roster"/> to compare.</param>
         /// <param name="b">The second <c>Roster</c> to compare.</param>
         /// <returns>true if objA is the same instance as objB or if both are null references or if objA.Equals(objB) returns true; otherwise, false.</returns>
         public bool Equals(Roster a, Roster b)

@@ -195,11 +195,11 @@ namespace AppointmentSystem.Web.Data
 		#region LinkMember Methods
 
 		/// <summary>
-		/// Gets the collection of business objects from the associated <paramref name="LinkMember"/>.
+		/// Gets the collection of business objects from the associated <cref name="LinkMember"/>.
 		/// </summary>
 		/// <param name="entity"></param>
 		/// <returns>A collection of business objects which represent the
-		/// relationship defined by the <paramref name="LinkMember"/> property.</returns>
+		/// relationship defined by the <cref name="LinkMember"/> property.</returns>
 		protected IList GetLinkList(Object entity)
 		{
 			return GetList(entity, LinkMember, PrimaryMember.LinkProperty);
@@ -215,7 +215,7 @@ namespace AppointmentSystem.Web.Data
 
 		/// <summary>
 		/// Inserts the specified <paramref name="foreignKeyValue"/> into the
-		/// relationship defined by the <paramref name="LinkMember"/> property.
+		/// relationship defined by the <cref name="LinkMember"/> property.
 		/// </summary>
 		/// <param name="entity"></param>
 		/// <param name="foreignKeyValue">The value to insert.</param>
@@ -271,11 +271,11 @@ namespace AppointmentSystem.Web.Data
 		#region ReferenceMember Methods
 
 		/// <summary>
-		/// Gets the collection of business objects from the associated <paramref name="ReferenceMember"/>.
+		/// Gets the collection of business objects from the associated <cref name="ReferenceMember"/>.
 		/// </summary>
 		/// <param name="entity"></param>
 		/// <returns>A collection of business objects which represent the
-		/// relationship defined by the <paramref name="ReferenceMember"/> property.</returns>
+		/// relationship defined by the <cref name="ReferenceMember"/> property.</returns>
 		protected IList GetReferenceList(Object entity)
 		{
 			return GetList(entity, ReferenceMember, PrimaryMember.ReferenceProperty);
@@ -291,7 +291,7 @@ namespace AppointmentSystem.Web.Data
 
 		/// <summary>
 		/// Inserts the specified name/value pairs into the
-		/// relationship defined by the <paramref name="ReferenceMember"/> property.
+		/// relationship defined by the <cref name="ReferenceMember"/> property.
 		/// </summary>
 		/// <param name="links">A collection of business objects.</param>
 		/// <param name="values">A collection of name/value pairs to insert.</param>

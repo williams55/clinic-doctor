@@ -145,15 +145,17 @@ namespace AppointmentSystem.Web.Data
 		#endregion Properties
 		
 		#region Methods
-		
+		 
 		/// <summary>
 		/// Gets a collection of Entity objects based on the value of the SelectMethod property.
 		/// </summary>
 		/// <param name="count">The total number of rows in the DataSource.</param>
+	    /// <param name="values"></param>
 		/// <returns>A collection of Entity objects.</returns>
-		protected override IList<UserRole> GetSelectData(out int count)
+		protected override IList<UserRole> GetSelectData(IDictionary values, out int count)
 		{
-			Hashtable values = CollectionsUtil.CreateCaseInsensitiveHashtable(GetParameterValues());
+            if (values == null || values.Count == 0) values = CollectionsUtil.CreateCaseInsensitiveHashtable(GetParameterValues());
+            
 			Hashtable customOutput = CollectionsUtil.CreateCaseInsensitiveHashtable();
 			IList<UserRole> results = null;
 			UserRole item;
