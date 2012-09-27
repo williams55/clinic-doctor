@@ -21,6 +21,376 @@ namespace AppointmentSystem.Data.Bases
 		#region Custom Methods
 		
 		
+		#region _VCSPatient_GetByPatientCode
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+		public VList<VcsPatient> GetByPatientCode(System.String patientCode)
+		{
+			return GetByPatientCode(null, 0, int.MaxValue , patientCode);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+		public VList<VcsPatient> GetByPatientCode(int start, int pageLength, System.String patientCode)
+		{
+			return GetByPatientCode(null, start, pageLength , patientCode);
+		}
+				
+		/// <summary>
+		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+		public VList<VcsPatient> GetByPatientCode(TransactionManager transactionManager, System.String patientCode)
+		{
+			return GetByPatientCode(transactionManager, 0, int.MaxValue , patientCode);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+		public abstract VList<VcsPatient> GetByPatientCode(TransactionManager transactionManager, int start, int pageLength, System.String patientCode);
+		
+		#endregion
+
+		
+		#region _VCSPatient_Update
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Update' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="memberType"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
+		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="workWard"> A <c>System.String</c> instance.</param>
+		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="workCity"> A <c>System.String</c> instance.</param>
+		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
+		/// <param name="fax"> A <c>System.String</c> instance.</param>
+		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void Update(System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+		{
+			 Update(null, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Update' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="memberType"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
+		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="workWard"> A <c>System.String</c> instance.</param>
+		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="workCity"> A <c>System.String</c> instance.</param>
+		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
+		/// <param name="fax"> A <c>System.String</c> instance.</param>
+		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void Update(int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+		{
+			 Update(null, start, pageLength , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark);
+		}
+				
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Update' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="memberType"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
+		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="workWard"> A <c>System.String</c> instance.</param>
+		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="workCity"> A <c>System.String</c> instance.</param>
+		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
+		/// <param name="fax"> A <c>System.String</c> instance.</param>
+		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void Update(TransactionManager transactionManager, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+		{
+			 Update(transactionManager, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Update' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="memberType"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
+		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="workWard"> A <c>System.String</c> instance.</param>
+		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="workCity"> A <c>System.String</c> instance.</param>
+		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
+		/// <param name="fax"> A <c>System.String</c> instance.</param>
+		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public abstract void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark);
+		
+		#endregion
+
+		
+		#region _VCSPatient_Insert
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Insert' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="memberType"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
+		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="workWard"> A <c>System.String</c> instance.</param>
+		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="workCity"> A <c>System.String</c> instance.</param>
+		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
+		/// <param name="fax"> A <c>System.String</c> instance.</param>
+		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void Insert(System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+		{
+			 Insert(null, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Insert' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="memberType"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
+		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="workWard"> A <c>System.String</c> instance.</param>
+		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="workCity"> A <c>System.String</c> instance.</param>
+		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
+		/// <param name="fax"> A <c>System.String</c> instance.</param>
+		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void Insert(int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+		{
+			 Insert(null, start, pageLength , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark);
+		}
+				
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Insert' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="memberType"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
+		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="workWard"> A <c>System.String</c> instance.</param>
+		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="workCity"> A <c>System.String</c> instance.</param>
+		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
+		/// <param name="fax"> A <c>System.String</c> instance.</param>
+		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void Insert(TransactionManager transactionManager, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+		{
+			 Insert(transactionManager, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Insert' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="memberType"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
+		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
+		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
+		/// <param name="workWard"> A <c>System.String</c> instance.</param>
+		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
+		/// <param name="workCity"> A <c>System.String</c> instance.</param>
+		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
+		/// <param name="fax"> A <c>System.String</c> instance.</param>
+		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
+		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public abstract void Insert(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark);
+		
+		#endregion
+
+		
 		#endregion
 
 		#region Helper Functions
