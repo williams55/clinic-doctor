@@ -32,7 +32,8 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div class="color">
-        <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()" ToolTip="New" CssClass="add"></asp:HyperLink>
+        <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
+            ToolTip="New" CssClass="add"></asp:HyperLink>
     </div>
     <div id="box-tabs" class="box">
         <div class="title">
@@ -83,11 +84,15 @@
                     <dx:GridViewDataColumn FieldName="Note" Width="130">
                         <Settings AllowAutoFilter="False"></Settings>
                     </dx:GridViewDataColumn>
-                    <dx:GridViewCommandColumn Caption="Operation" Width="100">
-                        <EditButton Visible="True">
+                    <dx:GridViewCommandColumn Caption="Operation" ButtonType="Image" Width="60">
+                        <EditButton>
+                            <Image Url="../../resources/images/icons/edit.png" ToolTip="Edit" AlternateText="Edit">
+                            </Image>
                         </EditButton>
                         <CustomButtons>
-                            <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
+                            <dx:GridViewCommandColumnCustomButton ID="btnDelete">
+                                <Image Url="../../resources/images/icons/del.png" ToolTip="Delete" AlternateText="Delete">
+                                </Image>
                             </dx:GridViewCommandColumnCustomButton>
                         </CustomButtons>
                         <CellStyle HorizontalAlign="Center">

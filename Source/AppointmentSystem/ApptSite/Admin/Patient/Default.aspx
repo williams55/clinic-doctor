@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="Default.aspx.cs" Inherits="Admin_Patient_Default" %>
 
-<%@ Import Namespace="AppointmentSystem.Settings.BusinessLayer" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
     Patient
 </asp:Content>
@@ -11,6 +10,10 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
+    <div class="color">
+        <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
+            ToolTip="New" CssClass="add"></asp:HyperLink>
+    </div>
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
@@ -34,29 +37,46 @@
                 <dx:GridViewDataColumn FieldName="FirstName" />
                 <dx:GridViewDataColumn FieldName="LastName" />
                 <dx:GridViewDataComboBoxColumn FieldName="MemberType" Width="120">
-                    <PropertiesComboBox TextField="MemberType" ValueField="MemberType" DataSourceID="VcsMemberTypeDataSource">
+                    <PropertiesComboBox TextField="MemberType" ValueField="MemberType" DataSourceID="VcsMemberTypeDataSource"
+                        Width="100%">
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataColumn FieldName="EmailAddress" Visible="False" />
                 <dx:GridViewDataColumn FieldName="Sex" Caption="Sex">
                 </dx:GridViewDataColumn>
-                <dx:GridViewDataDateColumn FieldName="DateOfBirth" Caption="DOB">
+                <dx:GridViewDataDateColumn FieldName="DateOfBirth" Width="120" Caption="DOB">
+                    <PropertiesDateEdit DisplayFormatString="MM/dd/yyyy" EditFormat="Custom" EditFormatString="MM/dd/yyyy"
+                        EnableAnimation="False" Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="DOB is required" />
+                        </ValidationSettings>
+                    </PropertiesDateEdit>
+                    <Settings AutoFilterCondition="GreaterOrEqual" />
                 </dx:GridViewDataDateColumn>
-                <dx:GridViewDataColumn FieldName="HomePhone" />
-                <dx:GridViewDataColumn FieldName="CompanyPhone" />
+                <dx:GridViewDataColumn FieldName="HomePhone" Visible="False" />
+                <dx:GridViewDataColumn FieldName="CompanyPhone" Visible="False" />
                 <dx:GridViewDataColumn FieldName="MobilePhone" />
-                <dx:GridViewDataColumn FieldName="CompanyCode" Visible="False" />
-                <dx:GridViewCommandColumn Name="btnCommand">
-                    <EditButton Visible="true">
+                <dx:GridViewDataComboBoxColumn FieldName="CompanyCode">
+                    <PropertiesComboBox TextField="CompanyName" ValueField="CompanyCode" DataSourceID="VcsCompanyDataSource"
+                        Width="100%">
+                    </PropertiesComboBox>
+                </dx:GridViewDataComboBoxColumn>
+                <dx:GridViewDataColumn FieldName="Remark" Width="150" Visible="False" />
+                <dx:GridViewCommandColumn Name="btnCommand" ButtonType="Image" Width="60" Caption="Operation">
+                    <EditButton>
+                        <Image Url="../../resources/images/icons/edit.png" ToolTip="Edit" AlternateText="Edit" Height="15" Width="15">
+                        </Image>
                     </EditButton>
-                    <NewButton Visible="true">
-                    </NewButton>
                     <CustomButtons>
-                        <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
-                            <Image Url="../../resources/images/icons/cross.png" ToolTip="Delete patient">
+                        <dx:GridViewCommandColumnCustomButton ID="btnDelete">
+                            <Image Url="../../resources/images/icons/del.png" ToolTip="Delete" AlternateText="Delete" Height="15" Width="15">
                             </Image>
                         </dx:GridViewCommandColumnCustomButton>
                     </CustomButtons>
+                    <CellStyle HorizontalAlign="Center">
+                    </CellStyle>
+                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 </dx:GridViewCommandColumn>
             </Columns>
             <Templates>
@@ -65,20 +85,84 @@
                         <table class="edit-form">
                             <tbody>
                                 <tr>
-                                    <td class="title-row">
+                                    <td class="title-row" style="width: 100px;">
                                         Patient Code
                                     </td>
-                                    <td class="content-row">
+                                    <td class="content-row" style="width: 220px;">
                                         <dx:ASPxTextBox runat="server" ReadOnly="true" ID="txtTitle" Text='<%# Bind("PatientCode") %>'
-                                            CssClass="text-form">
+                                            CssClass="text-form" TabIndex="1">
                                         </dx:ASPxTextBox>
                                     </td>
+                                    <td class="title-row" style="width: 100px;">
+                                        Home Street
+                                    </td>
+                                    <td class="content-row" style="width: 220px;">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox3" Text='<%# Bind("HomeStreet") %>'
+                                            CssClass="text-form" TabIndex="10">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row" style="width: 100px;">
+                                        Work Street
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox9" Text='<%# Bind("WorkStreet") %>'
+                                            CssClass="text-form" TabIndex="18">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="title-row">
                                         First Name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox1" Text='<%# Bind("FirstName") %>'
-                                            CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtFirstName" Text='<%# Bind("FirstName") %>'
+                                            CssClass="text-form" MaxLength="50" Width="100%" TabIndex="2">
+                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                ErrorText="Error" ValidateOnLeave="True">
+                                                <RequiredField IsRequired="True" ErrorText="First Name is required" />
+                                            </ValidationSettings>
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row">
+                                        Home Ward
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox10" Text='<%# Bind("HomeWard") %>'
+                                            CssClass="text-form" TabIndex="11">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row">
+                                        Work Ward
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox11" Text='<%# Bind("WorkWard") %>'
+                                            CssClass="text-form" TabIndex="19">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="title-row">
+                                        Middle Name
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox1" Text='<%# Bind("MiddleName") %>'
+                                            CssClass="text-form" MaxLength="50" Width="100%" TabIndex="3">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row">
+                                        Home District
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox12" Text='<%# Bind("HomeDistrict") %>'
+                                            CssClass="text-form" TabIndex="12">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row">
+                                        Work District
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox13" Text='<%# Bind("WorkDistrict") %>'
+                                            CssClass="text-form" TabIndex="20">
                                         </dx:ASPxTextBox>
                                     </td>
                                 </tr>
@@ -87,15 +171,56 @@
                                         Last Name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox2" Text='<%# Bind("LastName") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtLastName" Text='<%# Bind("LastName") %>' CssClass="text-form"
+                                            MaxLength="50" Width="100%" TabIndex="4">
+                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                ErrorText="Error">
+                                                <RequiredField IsRequired="True" ErrorText="Last Name is required" />
+                                            </ValidationSettings>
                                         </dx:ASPxTextBox>
                                     </td>
                                     <td class="title-row">
-                                        Is Female
+                                        Home City
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxCheckBox TextAlign="Left" runat="server" Value='<%#Bind("IsFemale")%>' ID="ckcR">
-                                        </dx:ASPxCheckBox>
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox15" Text='<%# Bind("HomeCity") %>'
+                                            CssClass="text-form" TabIndex="13">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row">
+                                        Work City
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox14" Text='<%# Bind("WorkCity") %>'
+                                            CssClass="text-form" TabIndex="21">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="title-row">
+                                        Sex
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxRadioButton runat="server" Checked='<%# Eval("Sex") != null && Eval("Sex").ToString() == "M" %>'
+                                            Text="Male" ID="radMale" GroupName="radSex" Layout="Flow" TabIndex="5" />
+                                        <dx:ASPxRadioButton runat="server" Checked='<%# Eval("Sex") != null && Eval("Sex").ToString() == "F" %>'
+                                            Text="Female" ID="radFemale" GroupName="radSex" Layout="Flow" TabIndex="6" />
+                                    </td>
+                                    <td class="title-row">
+                                        Home Country
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox16" Text='<%# Bind("HomeCountry") %>'
+                                            CssClass="text-form" TabIndex="14">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row">
+                                        Work Country
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox17" Text='<%# Bind("WorkCountry") %>'
+                                            CssClass="text-form" TabIndex="22">
+                                        </dx:ASPxTextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -103,15 +228,24 @@
                                         Member Type
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox3" Text='<%# Bind("MemberType") %>'
-                                            CssClass="text-form">
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement3" runat="server"
+                                            ColumnID="4" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
+                                    </td>
+                                    <td class="title-row">
+                                        Home Phone
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox7" Text='<%# Bind("HomePhone") %>'
+                                            CssClass="text-form" TabIndex="15">
                                         </dx:ASPxTextBox>
                                     </td>
                                     <td class="title-row">
-                                        Title
+                                        Company Phone
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtTitles" Text='<%# Bind("Title") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox8" Text='<%# Bind("CompanyPhone") %>'
+                                            CssClass="text-form" TabIndex="23">
                                         </dx:ASPxTextBox>
                                     </td>
                                 </tr>
@@ -120,59 +254,58 @@
                                         DOB
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxGridViewTemplateReplacement runat="server" ColumnID="6" ReplacementType="EditFormCellEditor" />
+                                        <dx:ASPxGridViewTemplateReplacement runat="server" ColumnID="7" ReplacementType="EditFormCellEditor" />
+                                    </td>
+                                    <td class="title-row">
+                                        Mobile Phone
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox4" Text='<%# Bind("MobilePhone") %>'
+                                            CssClass="text-form" TabIndex="16">
+                                        </dx:ASPxTextBox>
                                     </td>
                                     <td class="title-row">
                                         Company Code
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox5" Text='<%# Bind("CompanyCode") %>'
-                                            CssClass="text-form" Width="100%">
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" runat="server"
+                                            ColumnID="11" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="title-row">
+                                        Nationality
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox2" Text='<%# Bind("Nationality") %>'
+                                            CssClass="text-form" TabIndex="9">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row">
+                                        Billing Address
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox19" Text='<%# Bind("BillingAddress") %>'
+                                            CssClass="text-form" TabIndex="17">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row">
+                                        Fax
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox18" Text='<%# Bind("Fax") %>'
+                                            CssClass="text-form" TabIndex="25">
                                         </dx:ASPxTextBox>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="title-row">
-                                        Home Phone
+                                        Remark
                                     </td>
-                                    <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox7" Text='<%# Bind("HomePhone") %>'
-                                            CssClass="text-form">
-                                        </dx:ASPxTextBox>
-                                    </td>
-                                    <td class="title-row">
-                                        Work Phone
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="ASPxTextBox8" Text='<%# Bind("WorkPhone") %>'
-                                            CssClass="text-form">
-                                        </dx:ASPxTextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="title-row">
-                                        Cell Phone
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox4" Text='<%# Bind("CellPhone") %>'
-                                            CssClass="text-form">
-                                        </dx:ASPxTextBox>
-                                    </td>
-                                    <%if (!gridPatient.IsNewRowEditing)
-                                      { %>
-                                    <td class="title-row">
-                                        Avatar
-                                    </td>
-                                    <td class="content-row">
-                                    </td>
-                                    <%} %>
-                                </tr>
-                                <tr>
-                                    <td class="title-row">
-                                        Note
-                                    </td>
-                                    <td class="content-row" colspan="4">
-                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" Text='<%# Bind("Note")%>' CssClass="text-form">
+                                    <td class="content-row" colspan="6">
+                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" Text='<%# Bind("Remark")%>' CssClass="text-form"
+                                            TabIndex="26">
                                         </dx:ASPxMemo>
                                     </td>
                                 </tr>
@@ -180,12 +313,12 @@
                         </table>
                     </div>
                     <div style="text-align: right; padding: 2px 2px 2px 2px">
-                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" ReplacementType="EditFormUpdateButton"
-                            runat="server">
-                        </dx:ASPxGridViewTemplateReplacement>
-                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
-                            runat="server">
-                        </dx:ASPxGridViewTemplateReplacement>
+                        <dx:ASPxHyperLink runat="server" Text="Update" ID="ASPxHyperLink1">
+                            <ClientSideEvents Click="function(s, e) { grid.UpdateEdit(); }" />
+                        </dx:ASPxHyperLink>
+                        <dx:ASPxHyperLink runat="server" Text="Cancel" ID="ASPxHyperLink2">
+                            <ClientSideEvents Click="function(s, e) { grid.CancelEdit(); }" />
+                        </dx:ASPxHyperLink>
                     </div>
                 </EditForm>
                 <DetailRow>
@@ -234,11 +367,17 @@
             </Parameters>
         </data:VcsPatientDataSource>
         <data:VcsMemberTypeDataSource ID="VcsMemberTypeDataSource" runat="server" SelectMethod="GetPaged">
-            <parameters>
+            <Parameters>
                 <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
-            </parameters>
+            </Parameters>
         </data:VcsMemberTypeDataSource>
+        <data:VcsCompanyDataSource ID="VcsCompanyDataSource" runat="server" SelectMethod="GetPaged">
+            <Parameters>
+                <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
+                <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+            </Parameters>
+        </data:VcsCompanyDataSource>
         <data:AppointmentDataSource ID="AppointmentDatas" runat="server" SelectMethod="GetPaged">
             <Parameters>
                 <asp:ControlParameter Name="PageIndex" ControlID="gridPatient" PropertyName="PageIndex"

@@ -49,7 +49,6 @@
         }
         function Uploader_OnUploadComplete(args) {
             var imgSrc = $("[id$=previewImage]").attr("src");
-            console.log(args);
             if (args.isValid) {
                 var date = new Date();
                 imgSrc = "../Images/" + args.callbackData + "?dx=" + date.getTime();
