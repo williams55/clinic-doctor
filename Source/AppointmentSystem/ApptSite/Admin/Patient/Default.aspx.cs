@@ -68,27 +68,99 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                 e.Cancel = true;
 
             }
-            if (e.NewValues["LastName"].ToString().Trim().Length < 1)
-            {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Last name can not be empty";
-                e.Cancel = true;
 
-
-            }
-            if (e.NewValues["FirstName"].ToString().Trim().Length < 1)
+            // Get grid
+            var grid = sender as ASPxGridView;
+            if (grid == null)
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field First name can not be empty";
+                WebCommon.AlertGridView(sender, "Add form is error.");
                 e.Cancel = true;
                 return;
-
             }
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+
+            // Get control and validate
+            var radMale = grid.FindEditFormTemplateControl("radMale") as ASPxRadioButton;
+            var radFemale = grid.FindEditFormTemplateControl("radFemale") as ASPxRadioButton;
+
+            if (radMale == null || radFemale == null)
+            {
+                WebCommon.AlertGridView(sender, "Add form is error.");
+                e.Cancel = true;
+                return;
+            }
+
+            // Validate empty field
+            if (!WebCommon.ValidateEmpty("Patient Code", e.NewValues["PatientCode"], out _message)
+                || !WebCommon.ValidateEmpty("First Name", e.NewValues["FirstName"], out _message)
+                || !WebCommon.ValidateEmpty("Last Name", e.NewValues["LastName"], out _message)
+                || !WebCommon.ValidateEmpty("DOB", e.NewValues["DateOfBirth"], out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+
+            // Validate empty field
+            DateTime dtDOB;
+            if (!DateTime.TryParse(e.NewValues["DateOfBirth"].ToString(), out dtDOB))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+
+            var patient = new VcsPatient
+                {
+                    PatientCode = ServiceFacade.SettingsHelper.LocationCode,
+                    FirstName = e.NewValues["FirstName"] == null ? null : e.NewValues["FirstName"].ToString(),
+                    MiddleName = e.NewValues["MiddleName"] == null ? null : e.NewValues["MiddleName"].ToString(),
+                    LastName = e.NewValues["LastName"] == null ? null : e.NewValues["LastName"].ToString(),
+                    Sex = radMale.Checked
+                              ? SexConstant.Male.Value
+                              : radFemale.Checked ? SexConstant.Female.Value : string.Empty,
+                    MemberType = e.NewValues["MemberType"] == null ? null : e.NewValues["MemberType"].ToString(),
+                    DateOfBirth = dtDOB,
+                    Nationality = e.NewValues["Nationality"] == null ? null : e.NewValues["Nationality"].ToString(),
+                    HomeStreet = e.NewValues["HomeStreet"] == null ? null : e.NewValues["HomeStreet"].ToString(),
+                    HomeWard = e.NewValues["HomeWard"] == null ? null : e.NewValues["HomeWard"].ToString(),
+                    HomeDistrict = e.NewValues["HomeDistrict"] == null ? null : e.NewValues["HomeDistrict"].ToString(),
+                    HomeCity = e.NewValues["HomeCity"] == null ? null : e.NewValues["HomeCity"].ToString(),
+                    HomeCountry = e.NewValues["HomeCountry"] == null ? null : e.NewValues["HomeCountry"].ToString(),
+                    HomePhone = e.NewValues["HomePhone"] == null ? null : e.NewValues["HomePhone"].ToString(),
+                    MobilePhone = e.NewValues["MobilePhone"] == null ? null : e.NewValues["MobilePhone"].ToString(),
+                    BillingAddress = e.NewValues["BillingAddress"] == null ? null : e.NewValues["BillingAddress"].ToString(),
+                    WorkStreet = e.NewValues["WorkStreet"] == null ? null : e.NewValues["WorkStreet"].ToString(),
+                    WorkWard = e.NewValues["WorkWard"] == null ? null : e.NewValues["WorkWard"].ToString(),
+                    WorkDistrict = e.NewValues["WorkDistrict"] == null ? null : e.NewValues["WorkDistrict"].ToString(),
+                    WorkCity = e.NewValues["WorkCity"] == null ? null : e.NewValues["WorkCity"].ToString(),
+                    WorkCountry = e.NewValues["WorkCountry"] == null ? null : e.NewValues["WorkCountry"].ToString(),
+                    CompanyPhone = e.NewValues["CompanyPhone"] == null ? null : e.NewValues["CompanyPhone"].ToString(),
+                    CompanyCode = e.NewValues["CompanyCode"] == null ? null : e.NewValues["CompanyCode"].ToString(),
+                    Fax = e.NewValues["Fax"] == null ? null : e.NewValues["Fax"].ToString(),
+                    Remark = e.NewValues["Remark"] == null ? null : e.NewValues["Remark"].ToString(),
+                    CreateDate = DateTime.Now,
+                    UpdateUser = WebCommon.GetAuthUsername(),
+                    UpdateDate = DateTime.Now
+                };
+
+            DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
+                , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
+                , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
+                , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
+                , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
+                , patient.Remark);
+
+            // Doan nay dung de fake cancel update
+            var gridView = (ASPxGridView)sender;
+            gridView.CancelEdit();
+            WebCommon.AlertGridView(sender, "Patient is added successfully.");
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot add patient. Please contact Administrator");
         }
+        e.Cancel = true;
     }
     protected void gridPatient_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
@@ -151,35 +223,32 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             }
 
             var patient = patients[0];
-            patient.FirstName = e.NewValues["FirstName"].ToString();
-            patient.MiddleName = e.NewValues["MiddleName"].ToString();
-            patient.LastName = e.NewValues["LastName"].ToString();
+            patient.FirstName = e.NewValues["FirstName"] == null ? null : e.NewValues["FirstName"].ToString();
+            patient.MiddleName = e.NewValues["MiddleName"] == null ? null : e.NewValues["MiddleName"].ToString();
+            patient.LastName = e.NewValues["LastName"] == null ? null : e.NewValues["LastName"].ToString();
             patient.Sex = radMale.Checked
-                              ? SexConstant.Male.Value
-                              : radFemale.Checked ? SexConstant.Female.Value : string.Empty;
-            patient.MemberType = e.NewValues["MemberType"].ToString();
+                       ? SexConstant.Male.Value
+                       : radFemale.Checked ? SexConstant.Female.Value : string.Empty;
+            patient.MemberType = e.NewValues["MemberType"] == null ? null : e.NewValues["MemberType"].ToString();
             patient.DateOfBirth = dtDOB;
-            patient.Nationality = e.NewValues["Nationality"].ToString();
-
-            patient.HomeStreet = e.NewValues["HomeStreet"].ToString();
-            patient.HomeWard = e.NewValues["HomeWard"].ToString();
-            patient.HomeDistrict = e.NewValues["HomeDistrict"].ToString();
-            patient.HomeCity = e.NewValues["HomeCity"].ToString();
-            patient.HomeCountry = e.NewValues["HomeCountry"].ToString();
-            patient.HomePhone = e.NewValues["HomePhone"].ToString();
-            patient.MobilePhone = e.NewValues["MobilePhone"].ToString();
-            patient.BillingAddress = e.NewValues["BillingAddress"].ToString();
-
-            patient.WorkStreet = e.NewValues["WorkStreet"].ToString();
-            patient.WorkWard = e.NewValues["WorkWard"].ToString();
-            patient.WorkDistrict = e.NewValues["WorkDistrict"].ToString();
-            patient.WorkCity = e.NewValues["WorkCity"].ToString();
-            patient.WorkCountry = e.NewValues["WorkCountry"].ToString();
-            patient.CompanyPhone = e.NewValues["CompanyPhone"].ToString();
-            patient.CompanyCode = e.NewValues["CompanyCode"].ToString();
-            patient.Fax = e.NewValues["Fax"].ToString();
-
-            patient.Remark = e.NewValues["Remark"].ToString();
+            patient.Nationality = e.NewValues["Nationality"] == null ? null : e.NewValues["Nationality"].ToString();
+            patient.HomeStreet = e.NewValues["HomeStreet"] == null ? null : e.NewValues["HomeStreet"].ToString();
+            patient.HomeWard = e.NewValues["HomeWard"] == null ? null : e.NewValues["HomeWard"].ToString();
+            patient.HomeDistrict = e.NewValues["HomeDistrict"] == null ? null : e.NewValues["HomeDistrict"].ToString();
+            patient.HomeCity = e.NewValues["HomeCity"] == null ? null : e.NewValues["HomeCity"].ToString();
+            patient.HomeCountry = e.NewValues["HomeCountry"] == null ? null : e.NewValues["HomeCountry"].ToString();
+            patient.HomePhone = e.NewValues["HomePhone"] == null ? null : e.NewValues["HomePhone"].ToString();
+            patient.MobilePhone = e.NewValues["MobilePhone"] == null ? null : e.NewValues["MobilePhone"].ToString();
+            patient.BillingAddress = e.NewValues["BillingAddress"] == null ? null : e.NewValues["BillingAddress"].ToString();
+            patient.WorkStreet = e.NewValues["WorkStreet"] == null ? null : e.NewValues["WorkStreet"].ToString();
+            patient.WorkWard = e.NewValues["WorkWard"] == null ? null : e.NewValues["WorkWard"].ToString();
+            patient.WorkDistrict = e.NewValues["WorkDistrict"] == null ? null : e.NewValues["WorkDistrict"].ToString();
+            patient.WorkCity = e.NewValues["WorkCity"] == null ? null : e.NewValues["WorkCity"].ToString();
+            patient.WorkCountry = e.NewValues["WorkCountry"] == null ? null : e.NewValues["WorkCountry"].ToString();
+            patient.CompanyPhone = e.NewValues["CompanyPhone"] == null ? null : e.NewValues["CompanyPhone"].ToString();
+            patient.CompanyCode = e.NewValues["CompanyCode"] == null ? null : e.NewValues["CompanyCode"].ToString();
+            patient.Fax = e.NewValues["Fax"] == null ? null : e.NewValues["Fax"].ToString();
+            patient.Remark = e.NewValues["Remark"] == null ? null : e.NewValues["Remark"].ToString();
             patient.UpdateUser = WebCommon.GetAuthUsername();
             patient.UpdateDate = DateTime.Now;
             DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
@@ -201,6 +270,11 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         }
         e.Cancel = true;
     }
+    /// <summary>
+    /// Khoi tao Id cua patient
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridPatient_InitNewRow(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)
     {
         string perxe = "PTC";

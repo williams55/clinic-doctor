@@ -44,7 +44,7 @@
                 <dx:GridViewDataColumn FieldName="EmailAddress" Visible="False" />
                 <dx:GridViewDataColumn FieldName="Sex" Caption="Sex">
                 </dx:GridViewDataColumn>
-                <dx:GridViewDataDateColumn FieldName="DateOfBirth" Width="120" Caption="DOB">
+                <dx:GridViewDataDateColumn FieldName="DateOfBirth" Width="120" Caption="DOB" Visible="False">
                     <PropertiesDateEdit DisplayFormatString="MM/dd/yyyy" EditFormat="Custom" EditFormatString="MM/dd/yyyy"
                         EnableAnimation="False" Width="100%">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
@@ -62,15 +62,17 @@
                         Width="100%">
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
-                <dx:GridViewDataColumn FieldName="Remark" Width="150" Visible="False" />
+                <dx:GridViewDataColumn FieldName="Remark" Width="150" />
                 <dx:GridViewCommandColumn Name="btnCommand" ButtonType="Image" Width="60" Caption="Operation">
                     <EditButton>
-                        <Image Url="../../resources/images/icons/edit.png" ToolTip="Edit" AlternateText="Edit" Height="15" Width="15">
+                        <Image Url="../../resources/images/icons/edit.png" ToolTip="Edit" AlternateText="Edit"
+                            Height="15" Width="15">
                         </Image>
                     </EditButton>
                     <CustomButtons>
                         <dx:GridViewCommandColumnCustomButton ID="btnDelete">
-                            <Image Url="../../resources/images/icons/del.png" ToolTip="Delete" AlternateText="Delete" Height="15" Width="15">
+                            <Image Url="../../resources/images/icons/del.png" ToolTip="Delete" AlternateText="Delete"
+                                Height="15" Width="15">
                             </Image>
                         </dx:GridViewCommandColumnCustomButton>
                     </CustomButtons>
@@ -279,7 +281,11 @@
                                     </td>
                                     <td class="content-row">
                                         <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox2" Text='<%# Bind("Nationality") %>'
-                                            CssClass="text-form" TabIndex="9">
+                                            CssClass="text-form" TabIndex="9" Width="100%">
+                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                ErrorText="Error">
+                                                <RequiredField IsRequired="True" ErrorText="Nationality is required" />
+                                            </ValidationSettings>
                                         </dx:ASPxTextBox>
                                     </td>
                                     <td class="title-row">

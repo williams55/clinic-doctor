@@ -41,6 +41,25 @@ namespace AppointmentSystem.Web.Data
 			get { return ( View as VcsPatientDataSourceView ); }
 		}
 		
+		/// <summary>
+		/// Gets or sets the name of the method or function that
+		/// the VcsPatientDataSource control invokes to retrieve data.
+		/// </summary>
+		public new VcsPatientSelectMethod SelectMethod
+		{
+			get
+			{
+				VcsPatientSelectMethod selectMethod = VcsPatientSelectMethod.GetAll;
+				Object method = ViewState["SelectMethod"];
+				if ( method != null )
+				{
+					selectMethod = (VcsPatientSelectMethod) method;
+				}
+				return selectMethod;
+			}
+			set { ViewState["SelectMethod"] = value; }
+		}
+		
 		#endregion Properties
 		
 		#region Methods
@@ -104,6 +123,16 @@ namespace AppointmentSystem.Web.Data
 		}
 
 		/// <summary>
+		/// Gets or sets the name of the method or function that
+		/// the DataSource control invokes to retrieve data.
+		/// </summary>
+		internal new VcsPatientSelectMethod SelectMethod
+		{
+			get { return VcsPatientOwner.SelectMethod; }
+			set { VcsPatientOwner.SelectMethod = value; }
+		}
+
+		/// <summary>
 		/// Gets a strongly typed reference to the Provider property.
 		/// </summary>
 		internal VcsPatientProviderBase VcsPatientProvider
@@ -115,9 +144,98 @@ namespace AppointmentSystem.Web.Data
 		
 		#region Methods
 		
+		/// <summary>
+		/// Gets a collection of Entity objects based on the value of the SelectMethod property.
+		/// </summary>
+	    /// <param name="values"></param>
+		/// <param name="count">The total number of rows in the DataSource.</param>
+		/// <returns>A collection of Entity objects.</returns>
+		protected override IList<VcsPatient> GetSelectData(IDictionary values, out int count)
+		{	
+            if (values == null || values.Count == 0) values = CollectionsUtil.CreateCaseInsensitiveHashtable(GetParameterValues());
+            
+			Hashtable customOutput = CollectionsUtil.CreateCaseInsensitiveHashtable();
+			
+			IList<VcsPatient> results = null;
+			// VcsPatient item;
+			count = 0;
+			
+			System.String sp3_PatientCode;
+
+			switch ( SelectMethod )
+			{
+				case VcsPatientSelectMethod.Get:
+					results = VcsPatientProvider.Get(GetTransactionManager(), WhereClause, OrderBy, StartIndex, PageSize, out count);
+                    break;
+				case VcsPatientSelectMethod.GetPaged:
+					results = VcsPatientProvider.GetPaged(GetTransactionManager(), WhereClause, OrderBy, StartIndex, PageSize, out count);
+					break;
+				case VcsPatientSelectMethod.GetAll:
+					results = VcsPatientProvider.GetAll(GetTransactionManager(), StartIndex, PageSize, out count);
+                    break;
+				case VcsPatientSelectMethod.Find:
+					results = VcsPatientProvider.Find(GetTransactionManager(), FilterParameters, OrderBy, StartIndex, PageSize, out count);
+                    break;
+				// Custom
+				case VcsPatientSelectMethod.GetByPatientCode:
+					sp3_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
+					results = VcsPatientProvider.GetByPatientCode(GetTransactionManager(), StartIndex, PageSize, sp3_PatientCode);
+					break;
+				default:
+					break;
+			}
+
+			if ( results != null && count < 1 )
+			{
+				count = results.Count;
+				if ( !String.IsNullOrEmpty(CustomMethodRecordCountParamName) )
+				{
+					object objCustomCount = EntityUtil.ChangeType(customOutput[CustomMethodRecordCountParamName], typeof(Int32));
+					
+					if ( objCustomCount != null )
+					{
+						count = (int) objCustomCount;
+					}
+				}				
+			}
+			
+			return results;
+		}
+		
 		#endregion Methods
 	}
 
+	#region VcsPatientSelectMethod
+	
+	/// <summary>
+	/// Enumeration of method names available for the VcsPatientDataSource.SelectMethod property.
+	/// </summary>
+	public enum VcsPatientSelectMethod
+	{
+		/// <summary>
+		/// Represents the Get method.
+		/// </summary>
+		Get,
+		/// <summary>
+		/// Represents the GetPaged method.
+		/// </summary>
+		GetPaged,
+		/// <summary>
+		/// Represents the GetAll method.
+		/// </summary>
+		GetAll,
+		/// <summary>
+		/// Represents the Find method.
+		/// </summary>
+		Find,
+		/// <summary>
+		/// Represents the GetByPatientCode method.
+		/// </summary>
+		GetByPatientCode
+	}
+	
+	#endregion VcsPatientSelectMethod
+	
 	#region VcsPatientDataSourceDesigner
 
 	/// <summary>
@@ -125,7 +243,79 @@ namespace AppointmentSystem.Web.Data
 	/// </summary>
 	public class VcsPatientDataSourceDesigner : ReadOnlyDataSourceDesigner<VcsPatient>
 	{
+		/// <summary>
+		/// Initializes a new instance of the VcsPatientDataSourceDesigner class.
+		/// </summary>
+		public VcsPatientDataSourceDesigner()
+		{
+		}
+
+		/// <summary>
+		/// Gets or sets the SelectMethod property.
+		/// </summary>
+		public new VcsPatientSelectMethod SelectMethod
+		{
+			get { return ((VcsPatientDataSource) DataSource).SelectMethod; }
+			set { SetPropertyValue("SelectMethod", value); }
+		}
+
+		/// <summary>Gets the designer action list collection for this designer.</summary>
+		/// <returns>The <see cref="T:System.ComponentModel.Design.DesignerActionListCollection"/>
+		/// associated with this designer.</returns>
+		public override DesignerActionListCollection ActionLists
+		{
+			get
+			{
+				DesignerActionListCollection actions = new DesignerActionListCollection();
+				actions.Add(new VcsPatientDataSourceActionList(this));
+				actions.AddRange(base.ActionLists);
+				return actions;
+			}
+		}
 	}
+
+	#region VcsPatientDataSourceActionList
+
+	/// <summary>
+	/// Supports the VcsPatientDataSourceDesigner class.
+	/// </summary>
+	internal class VcsPatientDataSourceActionList : DesignerActionList
+	{
+		private VcsPatientDataSourceDesigner _designer;
+
+		/// <summary>
+		/// Initializes a new instance of the VcsPatientDataSourceActionList class.
+		/// </summary>
+		/// <param name="designer"></param>
+		public VcsPatientDataSourceActionList(VcsPatientDataSourceDesigner designer) : base(designer.Component)
+		{
+			_designer = designer;
+		}
+
+		/// <summary>
+		/// Gets or sets the SelectMethod property.
+		/// </summary>
+		public VcsPatientSelectMethod SelectMethod
+		{
+			get { return _designer.SelectMethod; }
+			set { _designer.SelectMethod = value; }
+		}
+
+		/// <summary>
+		/// Returns the collection of <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+		/// objects contained in the list.
+		/// </summary>
+		/// <returns>A <see cref="T:System.ComponentModel.Design.DesignerActionItem"/>
+		/// array that contains the items in this list.</returns>
+		public override DesignerActionItemCollection GetSortedActionItems()
+		{
+			DesignerActionItemCollection items = new DesignerActionItemCollection();
+			items.Add(new DesignerActionPropertyItem("SelectMethod", "Select Method", "Methods"));
+			return items;
+		}
+	}
+
+	#endregion VcsPatientDataSourceActionList
 
 	#endregion VcsPatientDataSourceDesigner
 
