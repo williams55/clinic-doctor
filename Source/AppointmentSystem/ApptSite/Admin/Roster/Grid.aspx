@@ -26,6 +26,16 @@
             }
             document.getElementById("selCount").innerHTML=grid.GetSelectedRowCount();
         }
+
+        function OnClickButtonDel(s, e) {
+            if (grid.GetSelectedRowCount() <= 0) {
+                ShowDialog(null, null, "Please select item first.");
+                return;
+            }
+            if (confirm("Are you sure to delete these items")) {
+                grid.PerformCallback('Delete');
+            }
+        }
     </script>
 
 </asp:Content>
@@ -33,6 +43,9 @@
     <div class="color">
         <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
             ToolTip="New" CssClass="add"></asp:HyperLink>
+        <dx:ASPxHyperLink runat="server" ID="btn" CssClass="delete">
+            <ClientSideEvents Click="OnClickButtonDel"></ClientSideEvents>
+        </dx:ASPxHyperLink>
     </div>
     <div id="box-tabs" class="box">
         <div class="title">
@@ -48,7 +61,9 @@
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoster_RowInserting"
                 OnCustomButtonCallback="gridRoster_CustomButtonCallback" AutoGenerateColumns="False"
                 OnRowUpdating="gridRoster_RowUpdating" OnCommandButtonInitialize="gridRoster_CommandButtonInitialize"
-                OnCustomButtonInitialize="gridRoster_CustomButtonInitialize">
+                OnCustomButtonInitialize="gridRoster_CustomButtonInitialize" 
+                OnCustomCallback="gridRoster_CustomCallback" 
+                onrowdeleting="gridRoster_RowDeleting" >
                 <Columns>
                     <dx:GridViewDataColumn Caption="No." Width="50">
                         <DataItemTemplate>
@@ -100,9 +115,18 @@
                         </CellStyle>
                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                     </dx:GridViewCommandColumn>
+                    <dx:GridViewCommandColumn ShowSelectCheckbox="True">
+                        <HeaderTemplate>
+                            <dx:ASPxCheckBox ID="SelectAllCheckBox" runat="server" ToolTip="Select/Unselect all rows on the page"
+                                ClientSideEvents-CheckedChanged="function(s, e) { grid.SelectAllRowsOnPage(s.GetChecked()); }" />
+                        </HeaderTemplate>
+                        <HeaderStyle HorizontalAlign="Center" />
+                    </dx:GridViewCommandColumn>
                 </Columns>
                 <Styles>
                     <AlternatingRow Enabled="true" />
+                    <Table Wrap="True">
+                    </Table>
                 </Styles>
                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
                     BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
@@ -324,7 +348,7 @@
                                                     + &quot; AND &quot; + Eval(&quot;Id&quot;, &quot;Id <> '{0}'&quot;)
                                                     + &quot; AND &quot; + &quot;IsDisabled = 'False' &quot; %>" ID="hdfRepeatId" />
                                                 <dx:ASPxGridView ID="gridSimilarRoster" runat="server" DataSourceID="UpdateRosterDataSource"
-                                                    KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnHtmlRowCreated="gridSimilarRoster_HtmlRowCreated">
+                                                    KeyFieldName="Id" Width="100%" EnableRowsCache="False">
                                                     <Columns>
                                                         <dx:GridViewDataColumn Caption="No." Width="70">
                                                             <DataItemTemplate>

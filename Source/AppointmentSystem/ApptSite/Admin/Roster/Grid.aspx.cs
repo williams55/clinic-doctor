@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -107,6 +108,7 @@ public partial class Admin_Roster_Grid : Page
             roster.UpdateUser = WebCommon.GetAuthUsername();
             roster.UpdateDate = DateTime.Now;
             DataRepository.RosterProvider.Update(roster);
+            WebCommon.AlertGridView(sender, "Deleted Roster.");
             #endregion
         }
         catch (Exception ex)
@@ -645,17 +647,53 @@ public partial class Admin_Roster_Grid : Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
-    protected void gridSimilarRoster_HtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
+
+    protected void gridRoster_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
     {
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
-            string abc = "";
-            abc += "";
-        }
-        catch (Exception)
-        {
+            if (e.Parameters == "Delete")
+            {
+                var grid = sender as ASPxGridView;
+                if (grid == null)
+                {
+                    return;
+                }
+
+                // Lay danh sach Id cua cac row duoc select
+                var fieldNames = new[] { "Id" };
+                List<object> columnValues = gridRoster.GetSelectedFieldValues(fieldNames);
+                var lstRoster = new TList<Roster>();
+
+                // Doi trang thai cua cac roster
+                tm.BeginTransaction();
+                foreach (object categoryId in columnValues)
+                {
+                    var roster = DataRepository.RosterProvider.GetById(categoryId.ToString());
+                    if (roster != null && !roster.IsDisabled)
+                    {
+                        roster.IsDisabled = true;
+                        lstRoster.Add(roster);
+                    }
+                }
+                DataRepository.RosterProvider.Update(lstRoster);
+                tm.Commit();
+                WebCommon.AlertGridView(sender, "Deleted Roster.");
+                grid.DataBind();
+                grid.Selection.UnselectAll();
+            }
             
-            throw;
         }
+        catch (Exception ex)
+        {
+            tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot delete Roster. Please contact Administrator.");
+        }
+    }
+    protected void gridRoster_RowDeleting(object sender, ASPxDataDeletingEventArgs e)
+    {
+        e.Cancel = true;
     }
 }
