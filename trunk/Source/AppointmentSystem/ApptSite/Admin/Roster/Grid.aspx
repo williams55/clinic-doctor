@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="Grid.aspx.cs" Inherits="Admin_Roster_Grid" %>
 
-<%@ Register TagPrefix="dx" Namespace="DevExpress.Web.ASPxGlobalEvents" Assembly="DevExpress.Web.v10.2, Version=10.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
 <%@ Import Namespace="AppointmentSystem.Settings.BusinessLayer" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
     Roster
@@ -286,7 +285,9 @@
                                             <td class="content-row">
                                                 <dx:ASPxRadioButton runat="server" GroupName="EditRosterMode" ID="radSingle" Checked="True"
                                                     Text="Single" Layout="Flow" />
-                                                <dx:ASPxRadioButton ID="radSimilar" runat="server" GroupName="EditRosterMode" Text="Similar"
+                                                <dx:ASPxRadioButton ID="radAllSimilar" runat="server" GroupName="EditRosterMode" Text="All Similar Rosters"
+                                                    Layout="Flow" />
+                                                <dx:ASPxRadioButton ID="radEnabledSimilar" runat="server" GroupName="EditRosterMode" Text="Enabled Similar Rosters"
                                                     Layout="Flow" />
                                             </td>
                                         </tr>

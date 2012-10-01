@@ -12,14 +12,13 @@ using Appt.Common.Constants;
 using Common;
 using Common.Util;
 using DevExpress.Utils;
-using DevExpress.Web.ASPxClasses;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
 using Log.Controller;
 using Newtonsoft.Json;
 
-public partial class Admin_Roster_Grid : System.Web.UI.Page
+public partial class Admin_Roster_Grid : Page
 {
     private const string ScreenCode = "Roster";
     static string _message;
@@ -383,12 +382,13 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             var objEndTime = grid.FindEditFormTemplateControl("endTimeEdit") as ASPxTimeEdit;
             var objEndDate = grid.FindEditFormTemplateControl("endDateEdit") as ASPxDateEdit;
             var txtId = grid.FindEditFormTemplateControl("txtId") as ASPxTextBox;
-            var radSimilar = grid.FindEditFormTemplateControl("radSimilar") as ASPxRadioButton;
+            var radAllSimilar = grid.FindEditFormTemplateControl("radAllSimilar") as ASPxRadioButton;
+            var radEnabledSimilar = grid.FindEditFormTemplateControl("radEnabledSimilar") as ASPxRadioButton;
             var doctor = grid.FindEditFormTemplateControl("choDoctorEdit") as ASPxComboBox;
             var rosterType = grid.FindEditFormTemplateControl("cboRosterTypeEdit") as ASPxComboBox;
 
             if (objStartTime == null || objStartDate == null || objEndTime == null || objEndDate == null
-                || txtId == null || radSimilar == null || doctor == null || rosterType == null)
+                || txtId == null || radAllSimilar == null || radEnabledSimilar == null || doctor == null || rosterType == null)
             {
                 WebCommon.AlertGridView(sender, "Edit form is error.");
                 e.Cancel = true;
@@ -477,7 +477,7 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
             #endregion
 
             // Neu similar roster duoc chon
-            if (radSimilar.Checked && currentRoster.RepeatId != null)
+            if ((radAllSimilar.Checked || radEnabledSimilar.Checked) && currentRoster.RepeatId != null)
             {
                 int count;
                 var lstSimilar = DataRepository.RosterProvider.GetPaged(
@@ -486,10 +486,13 @@ public partial class Admin_Roster_Grid : System.Web.UI.Page
                 DataRepository.RosterProvider.DeepLoad(lstSimilar);
                 foreach (var roster in lstSimilar)
                 {
-                    // Kiem tra xem roster co phai da qua khong
+                    // Kiem tra xem roster co phai da qua khong, dong thoi neu loai update la all, neu la enabled thi ko can bao loi
                     if (roster.StartTime < DateTime.Now)
                     {
-                        errorMessage += String.Format("<br />Roster {0} is passed.", roster.Id);
+                        if (radAllSimilar.Checked)
+                        {
+                            errorMessage += String.Format("<br />Roster {0} is passed.", roster.Id);
+                        }
                         continue;
                     }
 
