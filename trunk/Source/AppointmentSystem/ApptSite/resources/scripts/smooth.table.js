@@ -1,7 +1,7 @@
 /* sets the class of the tr containing the checked checkbox to selected */
 function set_tr_class(element, selected) {
     if (selected) {
-        element.attr("class", "selected " + element.attr("class"))
+        element.attr("class", "selected " + element.attr("class"));
     } else {
         var css = element.attr("class");
         var position = css.indexOf('selected');
