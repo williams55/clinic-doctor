@@ -645,4 +645,17 @@ public partial class Admin_Roster_Grid : Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
+    protected void gridSimilarRoster_HtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
+    {
+        try
+        {
+            string abc = "";
+            abc += "";
+        }
+        catch (Exception)
+        {
+            
+            throw;
+        }
+    }
 }

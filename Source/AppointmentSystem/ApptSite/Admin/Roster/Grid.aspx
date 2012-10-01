@@ -68,7 +68,7 @@
                         <PropertiesComboBox TextField="Title" ValueField="Id" DataSourceID="RosterTypeDataSource">
                         </PropertiesComboBox>
                     </dx:GridViewDataComboBoxColumn>
-                    <dx:GridViewDataDateColumn FieldName="StartTime" Width="120" Caption="From">
+                    <dx:GridViewDataDateColumn FieldName="StartTime" Width="120" Caption="From" SortIndex="0">
                         <PropertiesDateEdit DisplayFormatString="HH:mm MM/dd/yyyy" EditFormat="Custom" EditFormatString="MM/dd/yyyy"
                             EnableAnimation="False">
                         </PropertiesDateEdit>
@@ -85,12 +85,14 @@
                     </dx:GridViewDataColumn>
                     <dx:GridViewCommandColumn Caption="Operation" ButtonType="Image" Width="60">
                         <EditButton>
-                            <Image Url="../../resources/images/icons/edit.png" ToolTip="Edit" AlternateText="Edit">
+                            <Image Url="../../resources/images/icons/edit.png" ToolTip="Edit" AlternateText="Edit"
+                                Height="15" Width="15">
                             </Image>
                         </EditButton>
                         <CustomButtons>
                             <dx:GridViewCommandColumnCustomButton ID="btnDelete">
-                                <Image Url="../../resources/images/icons/del.png" ToolTip="Delete" AlternateText="Delete">
+                                <Image Url="../../resources/images/icons/del.png" ToolTip="Delete" AlternateText="Delete"
+                                    Height="15" Width="15">
                                 </Image>
                             </dx:GridViewCommandColumnCustomButton>
                         </CustomButtons>
@@ -99,6 +101,9 @@
                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                     </dx:GridViewCommandColumn>
                 </Columns>
+                <Styles>
+                    <AlternatingRow Enabled="true" />
+                </Styles>
                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
                     BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
@@ -285,10 +290,10 @@
                                             <td class="content-row">
                                                 <dx:ASPxRadioButton runat="server" GroupName="EditRosterMode" ID="radSingle" Checked="True"
                                                     Text="Single" Layout="Flow" />
-                                                <dx:ASPxRadioButton ID="radAllSimilar" runat="server" GroupName="EditRosterMode" Text="All Similar Rosters"
-                                                    Layout="Flow" />
-                                                <dx:ASPxRadioButton ID="radEnabledSimilar" runat="server" GroupName="EditRosterMode" Text="Enabled Similar Rosters"
-                                                    Layout="Flow" />
+                                                <dx:ASPxRadioButton ID="radAllSimilar" runat="server" GroupName="EditRosterMode"
+                                                    Text="All Similar Rosters" Layout="Flow" />
+                                                <dx:ASPxRadioButton ID="radEnabledSimilar" runat="server" GroupName="EditRosterMode"
+                                                    Text="Enabled Similar Rosters" Layout="Flow" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -319,7 +324,7 @@
                                                     + &quot; AND &quot; + Eval(&quot;Id&quot;, &quot;Id <> '{0}'&quot;)
                                                     + &quot; AND &quot; + &quot;IsDisabled = 'False' &quot; %>" ID="hdfRepeatId" />
                                                 <dx:ASPxGridView ID="gridSimilarRoster" runat="server" DataSourceID="UpdateRosterDataSource"
-                                                    KeyFieldName="Id" Width="100%" EnableRowsCache="False">
+                                                    KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnHtmlRowCreated="gridSimilarRoster_HtmlRowCreated">
                                                     <Columns>
                                                         <dx:GridViewDataColumn Caption="No." Width="70">
                                                             <DataItemTemplate>
@@ -331,11 +336,23 @@
                                                             <EditFormSettings Visible="False" />
                                                         </dx:GridViewDataColumn>
                                                         <dx:GridViewDataColumn FieldName="Id" Width="120" ReadOnly="True" />
-                                                        <dx:GridViewDataDateColumn FieldName="StartTime" Caption="Day">
+                                                        <dx:GridViewDataDateColumn FieldName="StartTime" Caption="Day" SortIndex="0" SortOrder="Descending">
                                                             <PropertiesDateEdit DisplayFormatString="MM/dd/yyyy" EnableAnimation="False">
                                                             </PropertiesDateEdit>
                                                         </dx:GridViewDataDateColumn>
+                                                        <dx:GridViewDataColumn Width="40">
+                                                            <DataItemTemplate>
+                                                                <img src="../../resources/images/icons/cancel_sign.png" style="display: <%# DateTime.Parse(Eval("StartTime").ToString()) < DateTime.Now ? "block" : "none" %>"
+                                                                    alt="Disabled" title="Cannot change this" class="icon-row" />
+                                                            </DataItemTemplate>
+                                                            <CellStyle HorizontalAlign="Center">
+                                                            </CellStyle>
+                                                            <Settings AllowSort="False"></Settings>
+                                                        </dx:GridViewDataColumn>
                                                     </Columns>
+                                                    <Styles>
+                                                        <AlternatingRow Enabled="true" />
+                                                    </Styles>
                                                     <Settings ShowGroupPanel="False" ShowFilterRow="False" ShowFilterRowMenu="False"
                                                         ShowVerticalScrollBar="True" />
                                                     <SettingsPager Mode="ShowAllRecords">
@@ -463,12 +480,12 @@
                                         <% } %>
                                         <tr>
                                             <td colspan="4" style="text-align: right;">
-                                                <dx:ASPxGridViewTemplateReplacement ID="UpdateButton" ReplacementType="EditFormUpdateButton"
-                                                    runat="server">
-                                                </dx:ASPxGridViewTemplateReplacement>
-                                                <dx:ASPxGridViewTemplateReplacement ID="CancelButton" ReplacementType="EditFormCancelButton"
-                                                    runat="server">
-                                                </dx:ASPxGridViewTemplateReplacement>
+                                                <dx:ASPxHyperLink runat="server" Text="Update" ID="ASPxHyperLink1">
+                                                    <ClientSideEvents Click="function(s, e) { grid.UpdateEdit(); }" />
+                                                </dx:ASPxHyperLink>
+                                                <dx:ASPxHyperLink runat="server" Text="Cancel" ID="ASPxHyperLink2">
+                                                    <ClientSideEvents Click="function(s, e) { grid.CancelEdit(); }" />
+                                                </dx:ASPxHyperLink>
                                             </td>
                                         </tr>
                                     </tbody>
