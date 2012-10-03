@@ -196,6 +196,19 @@
 			</Compile>
 		
 		
+			<Compile Include="AppointmentHistory.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="AppointmentHistoryBase.generated.cs">
+			  <DependentUpon>AppointmentHistory.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="IAppointmentHistory.cs">
+			  <DependentUpon>AppointmentHistory.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+		
+		
 			<Compile Include="DoctorRoom.cs">
 			  <SubType>Code</SubType>
 			</Compile>

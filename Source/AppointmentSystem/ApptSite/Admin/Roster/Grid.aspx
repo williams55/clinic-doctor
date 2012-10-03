@@ -11,23 +11,7 @@
 
     <script type="text/javascript">
         var minuteStep = <%=ServiceFacade.SettingsHelper.RosterMinuteStep %>;
-        function grid_SelectionChanged(s, e) {
-            s.GetSelectedFieldValues("Id", GetSelectedFieldValuesCallback);
-        }
-        function GetSelectedFieldValuesCallback(values) {
-            selList.BeginUpdate();
-            try {
-                selList.ClearItems();
-                for(var i=0;i<values.length;i++) {
-                    selList.AddItem(values[i]);
-                }
-            } finally {
-                selList.EndUpdate();
-            }
-            document.getElementById("selCount").innerHTML=grid.GetSelectedRowCount();
-        }
-
-        function OnClickButtonDel(s, e) {
+        function OnClickButtonDel() {
             if (grid.GetSelectedRowCount() <= 0) {
                 ShowDialog(null, null, "Please select item first.");
                 return;
@@ -43,9 +27,7 @@
     <div class="color">
         <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
             ToolTip="New" CssClass="add"></asp:HyperLink>
-        <dx:ASPxHyperLink runat="server" ID="btn" CssClass="delete">
-            <ClientSideEvents Click="OnClickButtonDel"></ClientSideEvents>
-        </dx:ASPxHyperLink>
+        <a class="delete" title="Delete" onclick="OnClickButtonDel()"></a>
     </div>
     <div id="box-tabs" class="box">
         <div class="title">
@@ -61,9 +43,8 @@
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoster_RowInserting"
                 OnCustomButtonCallback="gridRoster_CustomButtonCallback" AutoGenerateColumns="False"
                 OnRowUpdating="gridRoster_RowUpdating" OnCommandButtonInitialize="gridRoster_CommandButtonInitialize"
-                OnCustomButtonInitialize="gridRoster_CustomButtonInitialize" 
-                OnCustomCallback="gridRoster_CustomCallback" 
-                onrowdeleting="gridRoster_RowDeleting" >
+                OnCustomButtonInitialize="gridRoster_CustomButtonInitialize" OnCustomCallback="gridRoster_CustomCallback"
+                OnHtmlRowCreated="gridRoster_OnHtmlRowCreated">
                 <Columns>
                     <dx:GridViewDataColumn Caption="No." Width="50">
                         <DataItemTemplate>
@@ -111,17 +92,21 @@
                                 </Image>
                             </dx:GridViewCommandColumnCustomButton>
                         </CustomButtons>
-                        <CellStyle HorizontalAlign="Center">
-                        </CellStyle>
-                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                    </dx:GridViewCommandColumn>
-                    <dx:GridViewCommandColumn ShowSelectCheckbox="True">
-                        <HeaderTemplate>
-                            <dx:ASPxCheckBox ID="SelectAllCheckBox" runat="server" ToolTip="Select/Unselect all rows on the page"
-                                ClientSideEvents-CheckedChanged="function(s, e) { grid.SelectAllRowsOnPage(s.GetChecked()); }" />
-                        </HeaderTemplate>
+                        <CellStyle HorizontalAlign="Center" />
                         <HeaderStyle HorizontalAlign="Center" />
                     </dx:GridViewCommandColumn>
+                    <dx:GridViewDataTextColumn Caption="#">
+                        <HeaderTemplate>
+                            <dx:ASPxCheckBox ID="cbCheckAll" runat="server" OnInit="cbCheckAll_Init">
+                            </dx:ASPxCheckBox>
+                        </HeaderTemplate>
+                        <DataItemTemplate>
+                            <dx:ASPxCheckBox ID="cbCheck" runat="server" OnInit="cbCheck_Init">
+                            </dx:ASPxCheckBox>
+                        </DataItemTemplate>
+                        <CellStyle HorizontalAlign="Center" />
+                        <HeaderStyle HorizontalAlign="Center" />
+                    </dx:GridViewDataTextColumn>
                 </Columns>
                 <Styles>
                     <AlternatingRow Enabled="true" />
@@ -129,7 +114,9 @@
                     </Table>
                 </Styles>
                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
-                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}" 
+                    CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}"
+                    SelectionChanged="grid_SelectionChanged" />
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>
                 <SettingsEditing Mode="EditFormAndDisplayRow" />
@@ -521,7 +508,8 @@
             </dx:ASPxGridView>
         </div>
         <data:RosterDataSource ID="RosterDataSource" runat="server" SelectMethod="GetPaged"
-            EnablePaging="True" EnableSorting="True" InsertMethod="Insert" UpdateMethod="Update">
+            EnableCaching="False" EnablePaging="True" EnableSorting="True" InsertMethod="Insert"
+            UpdateMethod="Update">
             <DeepLoadProperties Method="IncludeChildren" Recursive="False">
             </DeepLoadProperties>
             <Parameters>

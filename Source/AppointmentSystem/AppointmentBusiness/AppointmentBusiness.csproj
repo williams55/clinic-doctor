@@ -46,7 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoFactory.cs" />
+    <Compile Include="BO\AppointmentBO.cs" />
     <Compile Include="BO\StatusBO.cs" />
+    <Compile Include="InterfaceBO\IAppointmentBO.cs" />
     <Compile Include="InterfaceBO\IStatusBO.cs" />
     <Compile Include="InterfaceBO\IUserBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
