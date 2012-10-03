@@ -143,7 +143,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                     UpdateDate = DateTime.Now
                 };
 
-            DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
+            var patients = DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
                 , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
                 , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
                 , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone

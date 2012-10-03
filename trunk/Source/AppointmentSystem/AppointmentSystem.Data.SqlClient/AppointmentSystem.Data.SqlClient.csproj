@@ -190,6 +190,14 @@
 			  <DependentUpon>SqlAppointmentGroupProvider.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="SqlAppointmentHistoryProvider.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="SqlAppointmentHistoryProviderBase.generated.cs">
+			  <DependentUpon>SqlAppointmentHistoryProvider.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="SqlDoctorRoomProvider.cs">
 			  <SubType>Code</SubType>
 			</Compile>

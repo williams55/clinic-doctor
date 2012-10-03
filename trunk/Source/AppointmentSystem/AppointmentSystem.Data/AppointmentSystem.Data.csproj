@@ -187,6 +187,14 @@
 			  <DependentUpon>AppointmentGroupProviderBase.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="Bases\AppointmentHistoryProviderBase.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="Bases\AppointmentHistoryProviderBase.generatedCore.cs">
+			  <DependentUpon>AppointmentHistoryProviderBase.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="Bases\DoctorRoomProviderBase.cs">
 			  <SubType>Code</SubType>
 			</Compile>

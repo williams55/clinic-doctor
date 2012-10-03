@@ -463,7 +463,7 @@ namespace AppointmentSystem.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, true, 50)]
-		public override System.String UpdateUser
+		public virtual System.String UpdateUser
 		{
 			get
 			{
@@ -501,7 +501,7 @@ namespace AppointmentSystem.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, false)]
-		public override System.DateTime UpdateDate
+		public virtual System.DateTime UpdateDate
 		{
 			get
 			{

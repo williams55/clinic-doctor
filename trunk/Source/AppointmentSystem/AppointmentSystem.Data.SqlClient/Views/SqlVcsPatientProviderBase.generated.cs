@@ -466,12 +466,13 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 	/// <param name="pageLength">Number of rows to return.</param>
 	/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 	/// <remark>This method is generated from a stored procedure.</remark>
-	public override void Insert(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+	/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+	public override VList<VcsPatient> Insert(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
 	{
 		SqlDatabase database = new SqlDatabase(this._connectionString);
 		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_Insert", true);
 		
-		database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength,  patientCode );
+		database.AddInParameter(commandWrapper, "@PatientCode", DbType.String,  patientCode );
 		database.AddInParameter(commandWrapper, "@FirstName", DbType.String,  firstName );
 		database.AddInParameter(commandWrapper, "@MiddleName", DbType.String,  middleName );
 		database.AddInParameter(commandWrapper, "@LastName", DbType.String,  lastName );
@@ -505,18 +506,32 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 		try
 		{
 			
+			IDataReader reader = null;
+
 			if (transactionManager != null)
 			{	
-				Utility.ExecuteNonQuery(transactionManager, commandWrapper);
+				reader = Utility.ExecuteReader(transactionManager, commandWrapper);
 			}
 			else
 			{
-				Utility.ExecuteNonQuery(database, commandWrapper);
-			}
+				reader = Utility.ExecuteReader(database, commandWrapper);
+			}			
 			
-			
-			
-			return;
+			// Create Collection
+				VList<VcsPatient> rows = new VList<VcsPatient>();
+				try
+				{  
+					Fill(reader, rows, start, pageLength);
+				}
+				finally
+				{
+					if (reader != null) 
+						reader.Close();
+				}
+				
+				
+				
+				return rows;
 		}
 		catch(SqlException ex)
 		{

@@ -179,16 +179,6 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		
 		public abstract System.DateTime CreateDate {get;set;}
-		/// <summary>
-		/// 
-		/// </summary>
-		
-		public abstract System.String UpdateUser {get;set;}
-		/// <summary>
-		/// 
-		/// </summary>
-		
-		public abstract System.DateTime UpdateDate {get;set;}
 		#endregion		
 				
 		/// <summary>

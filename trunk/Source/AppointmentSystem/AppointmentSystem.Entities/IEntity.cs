@@ -100,16 +100,6 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		System.DateTime CreateDate{ get; }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		System.String UpdateUser{ get; }
-
-		/// <summary>
-		/// 
-		/// </summary>
-		System.DateTime UpdateDate{ get; }
-
 		
 		/// <summary>
 		///     Gets or sets the object that contains supplemental data about this object.

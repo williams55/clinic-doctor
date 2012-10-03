@@ -220,6 +220,12 @@
 			<Compile Include="UI\RepeaterControls\AppointmentGroupRepeater.cs">
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="DataSourceControls\AppointmentHistoryDataSource.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UI\RepeaterControls\AppointmentHistoryRepeater.cs">
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="DataSourceControls\DoctorRoomDataSource.cs">
 			  <SubType>Code</SubType>
 			</Compile>

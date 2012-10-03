@@ -9,6 +9,7 @@ using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
+using AppointmentSystem.Web.Data;
 using Appt.Common.Constants;
 using Common;
 using Common.Util;
@@ -612,7 +613,7 @@ public partial class Admin_Roster_Grid : Page
             if (e.VisibleIndex == -1) return;
 
             // Neu la button edit thi kiem tra dieu kien de hien thi
-            if (e.ButtonType == ColumnCommandButtonType.Edit)
+            if (e.ButtonType == ColumnCommandButtonType.Edit || e.ButtonType == ColumnCommandButtonType.SelectCheckbox)
             {
                 var roster = gridRoster.GetRow(e.VisibleIndex) as Roster;
                 e.Visible = roster != null && roster.StartTime > DateTime.Now;
@@ -651,6 +652,7 @@ public partial class Admin_Roster_Grid : Page
     protected void gridRoster_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
     {
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        tm.BeginTransaction();
         try
         {
             if (e.Parameters == "Delete")
@@ -667,11 +669,10 @@ public partial class Admin_Roster_Grid : Page
                 var lstRoster = new TList<Roster>();
 
                 // Doi trang thai cua cac roster
-                tm.BeginTransaction();
                 foreach (object categoryId in columnValues)
                 {
                     var roster = DataRepository.RosterProvider.GetById(categoryId.ToString());
-                    if (roster != null && !roster.IsDisabled)
+                    if (roster != null && !roster.IsDisabled && roster.StartTime > DateTime.Now)
                     {
                         roster.IsDisabled = true;
                         lstRoster.Add(roster);
@@ -680,10 +681,30 @@ public partial class Admin_Roster_Grid : Page
                 DataRepository.RosterProvider.Update(lstRoster);
                 tm.Commit();
                 WebCommon.AlertGridView(sender, "Deleted Roster.");
-                grid.DataBind();
+
+                // Set tam duration de lay duoc danh sach moi
+                //int duration = RosterDataSource.CacheDuration;
+                //RosterDataSource.CacheDuration = 0;
+                //grid.DataBind();
                 grid.Selection.UnselectAll();
+                //RosterDataSource.CacheDuration = duration;
             }
-            
+            else
+            {
+                // Thuc hien check/uncheck khi nhan check all
+                bool needToSelectAll;
+                bool.TryParse(e.Parameters, out needToSelectAll);
+
+                var gridView = (ASPxGridView)sender;
+
+                int startIndex = gridView.PageIndex * gridView.SettingsPager.PageSize;
+                int endIndex = Math.Min(gridView.VisibleRowCount, startIndex + gridView.SettingsPager.PageSize);
+
+                for (int i = startIndex; i < endIndex; i++)
+                {
+                    gridView.Selection.SetSelection(i, needToSelectAll && IsCheckBoxVisibleCriteria(i));
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -692,8 +713,51 @@ public partial class Admin_Roster_Grid : Page
             WebCommon.AlertGridView(sender, "Cannot delete Roster. Please contact Administrator.");
         }
     }
-    protected void gridRoster_RowDeleting(object sender, ASPxDataDeletingEventArgs e)
+
+    /// <summary>
+    /// An cac row co IsDisabled bang true
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridRoster_OnHtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
     {
-        e.Cancel = true;
+        try
+        {
+            if (e.RowType == GridViewRowType.Data)
+            {
+                e.Row.Visible = !Boolean.Parse(e.GetValue("IsDisabled").ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+
+    protected void cbCheckAll_Init(object sender, EventArgs e)
+    {
+        var cb = (ASPxCheckBox)sender;
+        cb.ClientSideEvents.CheckedChanged = string.Format("function (s, e) {{ grid.PerformCallback(s.GetChecked().toString()); }}");
+    }
+    protected void cbCheck_Init(object sender, EventArgs e)
+    {
+        var cb = (ASPxCheckBox)sender;
+        var container = (GridViewDataItemTemplateContainer)cb.NamingContainer;
+        cb.ClientInstanceName = string.Format("cbCheck{0}", container.VisibleIndex);
+        cb.Checked = gridRoster.Selection.IsRowSelected(container.VisibleIndex);
+        cb.ClientSideEvents.CheckedChanged = string.Format("function (s, e) {{ grid.SelectRowOnPage({0}, s.GetChecked()); }}", container.VisibleIndex);
+        cb.Visible = IsCheckBoxVisibleCriteria(container.VisibleIndex);
+    }
+    private bool IsCheckBoxVisibleCriteria(int index)
+    {
+        try
+        {
+            return ((Roster)gridRoster.GetRow(index)).StartTime > DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return false;
+        }
     }
 }

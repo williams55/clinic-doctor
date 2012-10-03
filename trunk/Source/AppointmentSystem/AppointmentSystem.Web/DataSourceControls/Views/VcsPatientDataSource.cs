@@ -161,6 +161,35 @@ namespace AppointmentSystem.Web.Data
 			count = 0;
 			
 			System.String sp3_PatientCode;
+			System.String sp1_PatientCode;
+			System.String sp1_FirstName;
+			System.String sp1_MiddleName;
+			System.String sp1_LastName;
+			System.DateTime? sp1_DateOfBirth;
+			System.String sp1_Sex;
+			System.String sp1_MemberType;
+			System.String sp1_Nationality;
+			System.String sp1_HomeStreet;
+			System.String sp1_HomeWard;
+			System.String sp1_HomeDistrict;
+			System.String sp1_HomeCity;
+			System.String sp1_HomeCountry;
+			System.String sp1_WorkStreet;
+			System.String sp1_WorkWard;
+			System.String sp1_WorkDistrict;
+			System.String sp1_WorkCity;
+			System.String sp1_WorkCountry;
+			System.String sp1_CompanyCode;
+			System.String sp1_BillingAddress;
+			System.String sp1_HomePhone;
+			System.String sp1_MobilePhone;
+			System.String sp1_CompanyPhone;
+			System.String sp1_Fax;
+			System.String sp1_EmailAddress;
+			System.DateTime? sp1_CreateDate;
+			System.String sp1_UpdateUser;
+			System.DateTime? sp1_UpdateDate;
+			System.String sp1_Remark;
 
 			switch ( SelectMethod )
 			{
@@ -180,6 +209,38 @@ namespace AppointmentSystem.Web.Data
 				case VcsPatientSelectMethod.GetByPatientCode:
 					sp3_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
 					results = VcsPatientProvider.GetByPatientCode(GetTransactionManager(), StartIndex, PageSize, sp3_PatientCode);
+					break;
+				case VcsPatientSelectMethod.Insert:
+					sp1_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
+					sp1_FirstName = (System.String) EntityUtil.ChangeType(values["FirstName"], typeof(System.String));
+					sp1_MiddleName = (System.String) EntityUtil.ChangeType(values["MiddleName"], typeof(System.String));
+					sp1_LastName = (System.String) EntityUtil.ChangeType(values["LastName"], typeof(System.String));
+					sp1_DateOfBirth = (System.DateTime?) EntityUtil.ChangeType(values["DateOfBirth"], typeof(System.DateTime?));
+					sp1_Sex = (System.String) EntityUtil.ChangeType(values["Sex"], typeof(System.String));
+					sp1_MemberType = (System.String) EntityUtil.ChangeType(values["MemberType"], typeof(System.String));
+					sp1_Nationality = (System.String) EntityUtil.ChangeType(values["Nationality"], typeof(System.String));
+					sp1_HomeStreet = (System.String) EntityUtil.ChangeType(values["HomeStreet"], typeof(System.String));
+					sp1_HomeWard = (System.String) EntityUtil.ChangeType(values["HomeWard"], typeof(System.String));
+					sp1_HomeDistrict = (System.String) EntityUtil.ChangeType(values["HomeDistrict"], typeof(System.String));
+					sp1_HomeCity = (System.String) EntityUtil.ChangeType(values["HomeCity"], typeof(System.String));
+					sp1_HomeCountry = (System.String) EntityUtil.ChangeType(values["HomeCountry"], typeof(System.String));
+					sp1_WorkStreet = (System.String) EntityUtil.ChangeType(values["WorkStreet"], typeof(System.String));
+					sp1_WorkWard = (System.String) EntityUtil.ChangeType(values["WorkWard"], typeof(System.String));
+					sp1_WorkDistrict = (System.String) EntityUtil.ChangeType(values["WorkDistrict"], typeof(System.String));
+					sp1_WorkCity = (System.String) EntityUtil.ChangeType(values["WorkCity"], typeof(System.String));
+					sp1_WorkCountry = (System.String) EntityUtil.ChangeType(values["WorkCountry"], typeof(System.String));
+					sp1_CompanyCode = (System.String) EntityUtil.ChangeType(values["CompanyCode"], typeof(System.String));
+					sp1_BillingAddress = (System.String) EntityUtil.ChangeType(values["BillingAddress"], typeof(System.String));
+					sp1_HomePhone = (System.String) EntityUtil.ChangeType(values["HomePhone"], typeof(System.String));
+					sp1_MobilePhone = (System.String) EntityUtil.ChangeType(values["MobilePhone"], typeof(System.String));
+					sp1_CompanyPhone = (System.String) EntityUtil.ChangeType(values["CompanyPhone"], typeof(System.String));
+					sp1_Fax = (System.String) EntityUtil.ChangeType(values["Fax"], typeof(System.String));
+					sp1_EmailAddress = (System.String) EntityUtil.ChangeType(values["EmailAddress"], typeof(System.String));
+					sp1_CreateDate = (System.DateTime?) EntityUtil.ChangeType(values["CreateDate"], typeof(System.DateTime?));
+					sp1_UpdateUser = (System.String) EntityUtil.ChangeType(values["UpdateUser"], typeof(System.String));
+					sp1_UpdateDate = (System.DateTime?) EntityUtil.ChangeType(values["UpdateDate"], typeof(System.DateTime?));
+					sp1_Remark = (System.String) EntityUtil.ChangeType(values["Remark"], typeof(System.String));
+					results = VcsPatientProvider.Insert(GetTransactionManager(), StartIndex, PageSize, sp1_PatientCode, sp1_FirstName, sp1_MiddleName, sp1_LastName, sp1_DateOfBirth, sp1_Sex, sp1_MemberType, sp1_Nationality, sp1_HomeStreet, sp1_HomeWard, sp1_HomeDistrict, sp1_HomeCity, sp1_HomeCountry, sp1_WorkStreet, sp1_WorkWard, sp1_WorkDistrict, sp1_WorkCity, sp1_WorkCountry, sp1_CompanyCode, sp1_BillingAddress, sp1_HomePhone, sp1_MobilePhone, sp1_CompanyPhone, sp1_Fax, sp1_EmailAddress, sp1_CreateDate, sp1_UpdateUser, sp1_UpdateDate, sp1_Remark);
 					break;
 				default:
 					break;
@@ -231,7 +292,11 @@ namespace AppointmentSystem.Web.Data
 		/// <summary>
 		/// Represents the GetByPatientCode method.
 		/// </summary>
-		GetByPatientCode
+		GetByPatientCode,
+		/// <summary>
+		/// Represents the Insert method.
+		/// </summary>
+		Insert
 	}
 	
 	#endregion VcsPatientSelectMethod
