@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[Appointment]
 (
 [Id] [nvarchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-[PatientCode] [nchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+[PatientCode] [nchar] (11) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [Username] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [RoomId] [int] NULL,
 [ServicesId] [int] NULL,
@@ -28,8 +28,6 @@ GO
 ALTER TABLE [dbo].[Appointment] ADD CONSTRAINT [FK_Appointment_AppointmentGroup] FOREIGN KEY ([AppointmentGroupId]) REFERENCES [dbo].[AppointmentGroup] ([Id])
 GO
 
-ALTER TABLE [dbo].[Appointment] ADD CONSTRAINT [FK_Appointment_Patient] FOREIGN KEY ([PatientCode]) REFERENCES [dbo].[Patient] ([PatientCode])
-GO
 ALTER TABLE [dbo].[Appointment] ADD CONSTRAINT [FK_Appointment_Room] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Room] ([Id])
 GO
 ALTER TABLE [dbo].[Appointment] ADD CONSTRAINT [FK_Appointment_Procedure] FOREIGN KEY ([ServicesId]) REFERENCES [dbo].[Services] ([Id])
