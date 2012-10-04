@@ -867,17 +867,6 @@ namespace AppointmentSystem.Entities
             set { entityData.AppointmentGroupIdSource = value; }
       	}
 		/// <summary>
-		/// Gets or sets the source <see cref="Patient"/>.
-		/// </summary>
-		/// <value>The source Patient for PatientCode.</value>
-        [XmlIgnore()]
-		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual Patient PatientCodeSource
-      	{
-            get { return entityData.PatientCodeSource; }
-            set { entityData.PatientCodeSource = value; }
-      	}
-		/// <summary>
 		/// Gets or sets the source <see cref="Services"/>.
 		/// </summary>
 		/// <value>The source Services for ServicesId.</value>
@@ -935,6 +924,17 @@ namespace AppointmentSystem.Entities
 		#endregion
 		
 		#region Children Collections
+	
+		/// <summary>
+		///	Holds a collection of AppointmentHistory objects
+		///	which are related to this object through the relation FK_AppointmentHistory_Appointment
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<AppointmentHistory> AppointmentHistoryCollection
+		{
+			get { return entityData.AppointmentHistoryCollection; }
+			set { entityData.AppointmentHistoryCollection = value; }	
+		}
 		#endregion Children Collections
 		
 		#endregion
@@ -1161,10 +1161,6 @@ namespace AppointmentSystem.Entities
 				copy.AppointmentGroupIdSource = existingCopies[this.AppointmentGroupIdSource] as AppointmentGroup;
 			else
 				copy.AppointmentGroupIdSource = MakeCopyOf(this.AppointmentGroupIdSource, existingCopies) as AppointmentGroup;
-			if (this.PatientCodeSource != null && existingCopies.Contains(this.PatientCodeSource))
-				copy.PatientCodeSource = existingCopies[this.PatientCodeSource] as Patient;
-			else
-				copy.PatientCodeSource = MakeCopyOf(this.PatientCodeSource, existingCopies) as Patient;
 			if (this.ServicesIdSource != null && existingCopies.Contains(this.ServicesIdSource))
 				copy.ServicesIdSource = existingCopies[this.ServicesIdSource] as Services;
 			else
@@ -1186,6 +1182,8 @@ namespace AppointmentSystem.Entities
 			else
 				copy.UsernameSource = MakeCopyOf(this.UsernameSource, existingCopies) as Users;
 		
+			//deep copy nested objects
+			copy.AppointmentHistoryCollection = (TList<AppointmentHistory>) MakeCopyOf(this.AppointmentHistoryCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
 			return copy;
@@ -2033,19 +2031,6 @@ namespace AppointmentSystem.Entities
             get { return this._appointmentGroupIdSource; }
             set { this._appointmentGroupIdSource = value; }
       	}
-		private Patient _patientCodeSource = null;
-		
-		/// <summary>
-		/// Gets or sets the source <see cref="Patient"/>.
-		/// </summary>
-		/// <value>The source Patient for PatientCode.</value>
-		[XmlIgnore()]
-		[Browsable(false)]
-		public virtual Patient PatientCodeSource
-      	{
-            get { return this._patientCodeSource; }
-            set { this._patientCodeSource = value; }
-      	}
 		private Services _servicesIdSource = null;
 		
 		/// <summary>
@@ -2117,6 +2102,31 @@ namespace AppointmentSystem.Entities
 
 		#region Data Properties
 
+		#region AppointmentHistoryCollection
+		
+		private TList<AppointmentHistory> _appointmentHistoryAppointmentId;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _appointmentHistoryAppointmentId
+		/// </summary>
+		
+		public TList<AppointmentHistory> AppointmentHistoryCollection
+		{
+			get
+			{
+				if (_appointmentHistoryAppointmentId == null)
+				{
+				_appointmentHistoryAppointmentId = new TList<AppointmentHistory>();
+				}
+	
+				return _appointmentHistoryAppointmentId;
+			}
+			set { _appointmentHistoryAppointmentId = value; }
+		}
+		
+		#endregion
+
 		#endregion Data Properties
 		#region Clone Method
 
@@ -2151,8 +2161,6 @@ namespace AppointmentSystem.Entities
 			#region Source Parent Composite Entities
 			if (this.AppointmentGroupIdSource != null)
 				_tmp.AppointmentGroupIdSource = MakeCopyOf(this.AppointmentGroupIdSource) as AppointmentGroup;
-			if (this.PatientCodeSource != null)
-				_tmp.PatientCodeSource = MakeCopyOf(this.PatientCodeSource) as Patient;
 			if (this.ServicesIdSource != null)
 				_tmp.ServicesIdSource = MakeCopyOf(this.ServicesIdSource) as Services;
 			if (this.RoomIdSource != null)
@@ -2166,6 +2174,9 @@ namespace AppointmentSystem.Entities
 			#endregion
 		
 			#region Child Collections
+			//deep copy nested objects
+			if (this._appointmentHistoryAppointmentId != null)
+				_tmp.AppointmentHistoryCollection = (TList<AppointmentHistory>) MakeCopyOf(this.AppointmentHistoryCollection); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -2210,10 +2221,6 @@ namespace AppointmentSystem.Entities
 				_tmp.AppointmentGroupIdSource = existingCopies[this.AppointmentGroupIdSource] as AppointmentGroup;
 			else
 				_tmp.AppointmentGroupIdSource = MakeCopyOf(this.AppointmentGroupIdSource, existingCopies) as AppointmentGroup;
-			if (this.PatientCodeSource != null && existingCopies.Contains(this.PatientCodeSource))
-				_tmp.PatientCodeSource = existingCopies[this.PatientCodeSource] as Patient;
-			else
-				_tmp.PatientCodeSource = MakeCopyOf(this.PatientCodeSource, existingCopies) as Patient;
 			if (this.ServicesIdSource != null && existingCopies.Contains(this.ServicesIdSource))
 				_tmp.ServicesIdSource = existingCopies[this.ServicesIdSource] as Services;
 			else
@@ -2237,6 +2244,8 @@ namespace AppointmentSystem.Entities
 			#endregion
 		
 			#region Child Collections
+			//deep copy nested objects
+			_tmp.AppointmentHistoryCollection = (TList<AppointmentHistory>) MakeCopyOf(this.AppointmentHistoryCollection, existingCopies); 
 			#endregion Child Collections
 			
 			//EntityState

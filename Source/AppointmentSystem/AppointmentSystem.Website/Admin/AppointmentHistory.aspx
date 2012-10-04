@@ -21,7 +21,7 @@
 				<asp:BoundField DataField="CreateDate" DataFormatString="{0:d}" HtmlEncode="False" HeaderText="Create Date" SortExpression="[CreateDate]"  />
 				<asp:BoundField DataField="Note" HeaderText="Note" SortExpression="[Note]"  />
 				<asp:BoundField DataField="Guid" HeaderText="Guid" SortExpression="[Guid]" ReadOnly="True" />
-				<asp:BoundField DataField="AppointmentId" HeaderText="Appointment Id" SortExpression="[AppointmentId]"  />
+				<data:HyperLinkField HeaderText="Appointment Id" DataNavigateUrlFormatString="AppointmentEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="AppointmentIdSource" DataTextField="PatientCode" />
 			</Columns>
 			<EmptyDataTemplate>
 				<b>No AppointmentHistory Found!</b>
@@ -33,7 +33,13 @@
 			SelectMethod="GetPaged"
 			EnablePaging="True"
 			EnableSorting="True"
-		>
+			EnableDeepLoad="True"
+			>
+			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
+	            <Types>
+					<data:AppointmentHistoryProperty Name="Appointment"/> 
+				</Types>
+			</DeepLoadProperties>
 			<Parameters>
 				<data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
 				<data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />

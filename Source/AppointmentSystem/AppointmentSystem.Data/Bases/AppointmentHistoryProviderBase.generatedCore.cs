@@ -58,6 +58,91 @@ namespace AppointmentSystem.Data.Bases
 		#endregion Delete Methods
 		
 		#region Get By Foreign Key Functions
+	
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_AppointmentHistory_Appointment key.
+		///		FK_AppointmentHistory_Appointment Description: 
+		/// </summary>
+		/// <param name="_appointmentId"></param>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentHistory objects.</returns>
+		public TList<AppointmentHistory> GetByAppointmentId(System.String _appointmentId)
+		{
+			int count = -1;
+			return GetByAppointmentId(_appointmentId, 0,int.MaxValue, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_AppointmentHistory_Appointment key.
+		///		FK_AppointmentHistory_Appointment Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentHistory objects.</returns>
+		/// <remarks></remarks>
+		public TList<AppointmentHistory> GetByAppointmentId(TransactionManager transactionManager, System.String _appointmentId)
+		{
+			int count = -1;
+			return GetByAppointmentId(transactionManager, _appointmentId, 0, int.MaxValue, out count);
+		}
+		
+			/// <summary>
+		/// 	Gets rows from the datasource based on the FK_AppointmentHistory_Appointment key.
+		///		FK_AppointmentHistory_Appointment Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		///  <param name="pageLength">Number of rows to return.</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentHistory objects.</returns>
+		public TList<AppointmentHistory> GetByAppointmentId(TransactionManager transactionManager, System.String _appointmentId, int start, int pageLength)
+		{
+			int count = -1;
+			return GetByAppointmentId(transactionManager, _appointmentId, start, pageLength, out count);
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_AppointmentHistory_Appointment key.
+		///		fkAppointmentHistoryAppointment Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_appointmentId"></param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentHistory objects.</returns>
+		public TList<AppointmentHistory> GetByAppointmentId(System.String _appointmentId, int start, int pageLength)
+		{
+			int count =  -1;
+			return GetByAppointmentId(null, _appointmentId, start, pageLength,out count);	
+		}
+		
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_AppointmentHistory_Appointment key.
+		///		fkAppointmentHistoryAppointment Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentHistory objects.</returns>
+		public TList<AppointmentHistory> GetByAppointmentId(System.String _appointmentId, int start, int pageLength,out int count)
+		{
+			return GetByAppointmentId(null, _appointmentId, start, pageLength, out count);	
+		}
+						
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_AppointmentHistory_Appointment key.
+		///		FK_AppointmentHistory_Appointment Description: 
+		/// </summary>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="count">The total number of records.</param>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentHistory objects.</returns>
+		public abstract TList<AppointmentHistory> GetByAppointmentId(TransactionManager transactionManager, System.String _appointmentId, int start, int pageLength, out int count);
+		
 		#endregion
 
 		#region Get By Index Functions
@@ -290,6 +375,32 @@ namespace AppointmentSystem.Data.Bases
 		{
 			if(entity == null)
 				return;
+
+			#region AppointmentIdSource	
+			if (CanDeepLoad(entity, "Appointment|AppointmentIdSource", deepLoadType, innerList) 
+				&& entity.AppointmentIdSource == null)
+			{
+				object[] pkItems = new object[1];
+				pkItems[0] = entity.AppointmentId;
+				Appointment tmpEntity = EntityManager.LocateEntity<Appointment>(EntityLocator.ConstructKeyFromPkItems(typeof(Appointment), pkItems), DataRepository.Provider.EnableEntityTracking);
+				if (tmpEntity != null)
+					entity.AppointmentIdSource = tmpEntity;
+				else
+					entity.AppointmentIdSource = DataRepository.AppointmentProvider.GetById(transactionManager, entity.AppointmentId);		
+				
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'AppointmentIdSource' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+				
+				if (deep && entity.AppointmentIdSource != null)
+				{
+					innerList.SkipChildren = true;
+					DataRepository.AppointmentProvider.DeepLoad(transactionManager, entity.AppointmentIdSource, deep, deepLoadType, childTypes, innerList);
+					innerList.SkipChildren = false;
+				}
+					
+			}
+			#endregion AppointmentIdSource
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
@@ -323,6 +434,15 @@ namespace AppointmentSystem.Data.Bases
 			#region Composite Parent Properties
 			//Save Source Composite Properties, however, don't call deep save on them.  
 			//So they only get saved a single level deep.
+			
+			#region AppointmentIdSource
+			if (CanDeepSave(entity, "Appointment|AppointmentIdSource", deepSaveType, innerList) 
+				&& entity.AppointmentIdSource != null)
+			{
+				DataRepository.AppointmentProvider.Save(transactionManager, entity.AppointmentIdSource);
+				entity.AppointmentId = entity.AppointmentIdSource.Id;
+			}
+			#endregion 
 			#endregion Composite Parent Properties
 
 			// Save Root Entity through Provider
@@ -357,7 +477,13 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum AppointmentHistoryChildEntityTypes
 	{
-	}
+		
+		///<summary>
+		/// Composite Property for <c>Appointment</c> at AppointmentIdSource
+		///</summary>
+		[ChildEntityType(typeof(Appointment))]
+		Appointment,
+		}
 	
 	#endregion AppointmentHistoryChildEntityTypes
 	

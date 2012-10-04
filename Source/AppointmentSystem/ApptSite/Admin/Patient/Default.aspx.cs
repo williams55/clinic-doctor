@@ -289,31 +289,50 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             e.NewValues["PatientCode"] = perxe + string.Format("{0:0000}", int.Parse(objuser[0].PatientCode.Substring(objuser[0].PatientCode.Length - 3)) + 1);
         }
     }
-    protected void gridPatient_CustomButtonCallback(object sender, DevExpress.Web.ASPxGridView.ASPxGridViewCustomButtonCallbackEventArgs e)
+    protected void gridPatient_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
         {
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage]
-                        = String.Format("You do not have permission delete", "Delete Patient");
+                WebCommon.AlertGridView(sender, "You do not have permission delete");
                 return;
             }
             if (e.ButtonID != "btnDelete") return;
             string id = gridPatient.GetRowValues(e.VisibleIndex, "PatientCode").ToString();
-            var obj = DataRepository.PatientProvider.GetByPatientCode(id);
-            if (obj == null || obj.IsDisabled) return;
-            DataRepository.PatientProvider.DeepLoad(obj);
-            if (obj.AppointmentCollection.Exists(x => !x.IsDisabled))
+
+            // Get patient by Patient Code
+            var patients = DataRepository.VcsPatientProvider.GetByPatientCode(id);
+            if (patients == null || !patients.Any())
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = String.Format("Dr. {0} is using, you cannot delete it.", obj.FirstName);
+                WebCommon.AlertGridView(sender, "Cannot find patient, you cannot delete it.");
                 return;
             }
-            obj.IsDisabled = true;
-            obj.UpdateUser = WebCommon.GetAuthUsername();
-            obj.UpdateDate = DateTime.Now;
-            DataRepository.PatientProvider.Update(obj);
+            var patient = patients[0];
+            if (patient.IsDisabled)
+            {
+                WebCommon.AlertGridView(sender, String.Format("Patient {0} is using, you cannot delete it.", patient.FirstName));
+                return;
+            }
 
+            int count;
+            DataRepository.AppointmentProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0,
+                                                                           ServiceFacade.SettingsHelper.GetPagedLength,
+                                                                           out count);
+            if (count > 0)
+            {
+                WebCommon.AlertGridView(sender, String.Format("Patient {0} is using, you cannot delete it.", patient.FirstName));
+                return;
+            }
+            patient.IsDisabled = true;
+            patient.UpdateUser = WebCommon.GetAuthUsername();
+            patient.UpdateDate = DateTime.Now;
+            DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
+                , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
+                , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
+                , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
+                , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
+                , patient.Remark);
         }
         catch (Exception ex)
         {
@@ -333,9 +352,5 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             parameter.DefaultValue = String.Format("IsDisabled = 'false' AND PatientCode = '{0}'",
                                   (sender as ASPxGridView).GetMasterRowKeyValue());
         }
-    }
-    protected void gridPatient_BeforePerformDataSelect(object sender, EventArgs e)
-    {
-
     }
 }

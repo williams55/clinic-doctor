@@ -333,6 +333,17 @@ namespace AppointmentSystem.Entities
 
 		#region Source Foreign Key Property
 				
+		/// <summary>
+		/// Gets or sets the source <see cref="Appointment"/>.
+		/// </summary>
+		/// <value>The source Appointment for AppointmentId.</value>
+        [XmlIgnore()]
+		[Browsable(false), System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual Appointment AppointmentIdSource
+      	{
+            get { return entityData.AppointmentIdSource; }
+            set { entityData.AppointmentIdSource = value; }
+      	}
 		#endregion
 		
 		#region Children Collections
@@ -532,6 +543,10 @@ namespace AppointmentSystem.Entities
 				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
 			
+			if (this.AppointmentIdSource != null && existingCopies.Contains(this.AppointmentIdSource))
+				copy.AppointmentIdSource = existingCopies[this.AppointmentIdSource] as Appointment;
+			else
+				copy.AppointmentIdSource = MakeCopyOf(this.AppointmentIdSource, existingCopies) as Appointment;
 		
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
@@ -1083,6 +1098,19 @@ namespace AppointmentSystem.Entities
 			
 		#region Source Foreign Key Property
 				
+		private Appointment _appointmentIdSource = null;
+		
+		/// <summary>
+		/// Gets or sets the source <see cref="Appointment"/>.
+		/// </summary>
+		/// <value>The source Appointment for AppointmentId.</value>
+		[XmlIgnore()]
+		[Browsable(false)]
+		public virtual Appointment AppointmentIdSource
+      	{
+            get { return this._appointmentIdSource; }
+            set { this._appointmentIdSource = value; }
+      	}
 		#endregion
         
 		#endregion Variable Declarations
@@ -1109,6 +1137,8 @@ namespace AppointmentSystem.Entities
 			_tmp.CreateDate = this.CreateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.AppointmentIdSource != null)
+				_tmp.AppointmentIdSource = MakeCopyOf(this.AppointmentIdSource) as Appointment;
 			#endregion
 		
 			#region Child Collections
@@ -1140,6 +1170,10 @@ namespace AppointmentSystem.Entities
 			_tmp.CreateDate = this.CreateDate;
 			
 			#region Source Parent Composite Entities
+			if (this.AppointmentIdSource != null && existingCopies.Contains(this.AppointmentIdSource))
+				_tmp.AppointmentIdSource = existingCopies[this.AppointmentIdSource] as Appointment;
+			else
+				_tmp.AppointmentIdSource = MakeCopyOf(this.AppointmentIdSource, existingCopies) as Appointment;
 			#endregion
 		
 			#region Child Collections

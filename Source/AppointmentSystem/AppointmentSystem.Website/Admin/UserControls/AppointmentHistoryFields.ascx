@@ -30,7 +30,8 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataAppointmentId" runat="server" Text="Appointment Id:" AssociatedControlID="dataAppointmentId" /></td>
         <td>
-					<asp:TextBox runat="server" ID="dataAppointmentId" Text='<%# Bind("AppointmentId") %>' MaxLength="20"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataAppointmentId" runat="server" Display="Dynamic" ControlToValidate="dataAppointmentId" ErrorMessage="Required"></asp:RequiredFieldValidator>
+					<data:EntityDropDownList runat="server" ID="dataAppointmentId" DataSourceID="AppointmentIdAppointmentDataSource" DataTextField="PatientCode" DataValueField="Id" SelectedValue='<%# Bind("AppointmentId") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
+					<data:AppointmentDataSource ID="AppointmentIdAppointmentDataSource" runat="server" SelectMethod="GetAll"  />
 				</td>
 			</tr>
 			

@@ -20,7 +20,7 @@
 				<data:HyperLinkField HeaderText="Username" DataNavigateUrlFormatString="UsersEdit.aspx?Username={0}" DataNavigateUrlFields="Username" DataContainer="UsernameSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Roster Id" DataNavigateUrlFormatString="RosterEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RosterIdSource" DataTextField="StartTime" />
 				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
-				<data:HyperLinkField HeaderText="Patient Code" DataNavigateUrlFormatString="PatientEdit.aspx?PatientCode={0}" DataNavigateUrlFields="PatientCode" DataContainer="PatientCodeSource" DataTextField="FirstName" />
+				<asp:BoundField DataField="PatientCode" HeaderText="Patient Code" SortExpression="[PatientCode]"  />
 				<data:HyperLinkField HeaderText="Room Id" DataNavigateUrlFormatString="RoomEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RoomIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Services Id" DataNavigateUrlFormatString="ServicesEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="ServicesIdSource" DataTextField="Title" />
 				<data:HyperLinkField HeaderText="Status Id" DataNavigateUrlFormatString="StatusEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="StatusIdSource" DataTextField="Title" />
@@ -50,12 +50,12 @@
 			<DeepLoadProperties Method="IncludeChildren" Recursive="False">
 	            <Types>
 					<data:AppointmentProperty Name="AppointmentGroup"/> 
-					<data:AppointmentProperty Name="Patient"/> 
 					<data:AppointmentProperty Name="Services"/> 
 					<data:AppointmentProperty Name="Room"/> 
 					<data:AppointmentProperty Name="Roster"/> 
 					<data:AppointmentProperty Name="Status"/> 
 					<data:AppointmentProperty Name="Users"/> 
+					<%--<data:AppointmentProperty Name="AppointmentHistoryCollection" />--%>
 				</Types>
 			</DeepLoadProperties>
 			<Parameters>

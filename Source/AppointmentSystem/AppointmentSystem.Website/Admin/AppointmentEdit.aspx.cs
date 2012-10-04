@@ -22,6 +22,11 @@ public partial class AppointmentEdit : System.Web.UI.Page
 		FormUtil.RedirectAfterCancel(FormView1, "Appointment.aspx");
 		FormUtil.SetDefaultMode(FormView1, "Id");
 	}
+	protected void GridViewAppointmentHistory1_SelectedIndexChanged(object sender, EventArgs e)
+	{
+		string urlParams = string.Format("Guid={0}", GridViewAppointmentHistory1.SelectedDataKey.Values[0]);
+		Response.Redirect("AppointmentHistoryEdit.aspx?" + urlParams, true);		
+	}	
 }
 
 

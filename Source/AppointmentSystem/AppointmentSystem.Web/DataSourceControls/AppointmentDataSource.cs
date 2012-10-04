@@ -163,7 +163,6 @@ namespace AppointmentSystem.Web.Data
 			
 			System.String _id;
 			System.Int32? _appointmentGroupId_nullable;
-			System.String _patientCode;
 			System.Int32? _servicesId_nullable;
 			System.Int32? _roomId_nullable;
 			System.String _rosterId_nullable;
@@ -205,10 +204,6 @@ namespace AppointmentSystem.Web.Data
 				case AppointmentSelectMethod.GetByAppointmentGroupId:
 					_appointmentGroupId_nullable = (System.Int32?) EntityUtil.ChangeType(values["AppointmentGroupId"], typeof(System.Int32?));
 					results = AppointmentProvider.GetByAppointmentGroupId(GetTransactionManager(), _appointmentGroupId_nullable, this.StartIndex, this.PageSize, out count);
-					break;
-				case AppointmentSelectMethod.GetByPatientCode:
-					_patientCode = ( values["PatientCode"] != null ) ? (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String)) : string.Empty;
-					results = AppointmentProvider.GetByPatientCode(GetTransactionManager(), _patientCode, this.StartIndex, this.PageSize, out count);
 					break;
 				case AppointmentSelectMethod.GetByServicesId:
 					_servicesId_nullable = (System.Int32?) EntityUtil.ChangeType(values["ServicesId"], typeof(System.Int32?));
@@ -414,10 +409,6 @@ namespace AppointmentSystem.Web.Data
 		/// Represents the GetByAppointmentGroupId method.
 		/// </summary>
 		GetByAppointmentGroupId,
-		/// <summary>
-		/// Represents the GetByPatientCode method.
-		/// </summary>
-		GetByPatientCode,
 		/// <summary>
 		/// Represents the GetByServicesId method.
 		/// </summary>

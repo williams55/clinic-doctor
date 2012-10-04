@@ -112,6 +112,13 @@ namespace AppointmentSystem.Entities
 		
 		#region Data Properties
 
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _appointmentHistoryAppointmentId
+		/// </summary>	
+		TList<AppointmentHistory> AppointmentHistoryCollection {  get;  set;}	
+
 		#endregion Data Properties
 
 	}

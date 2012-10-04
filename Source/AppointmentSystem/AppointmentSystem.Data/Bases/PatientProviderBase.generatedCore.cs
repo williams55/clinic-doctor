@@ -332,28 +332,6 @@ namespace AppointmentSystem.Data.Bases
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
-			// Deep load child collections  - Call GetByPatientCode methods when available
-			
-			#region AppointmentCollection
-			//Relationship Type One : Many
-			if (CanDeepLoad(entity, "List<Appointment>|AppointmentCollection", deepLoadType, innerList)) 
-			{
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'AppointmentCollection' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-
-				entity.AppointmentCollection = DataRepository.AppointmentProvider.GetByPatientCode(transactionManager, entity.PatientCode);
-
-				if (deep && entity.AppointmentCollection.Count > 0)
-				{
-					deepHandles.Add("AppointmentCollection",
-						new KeyValuePair<Delegate, object>((DeepLoadHandle<Appointment>) DataRepository.AppointmentProvider.DeepLoad,
-						new object[] { transactionManager, entity.AppointmentCollection, deep, deepLoadType, childTypes, innerList }
-					));
-				}
-			}		
-			#endregion 
-			
 			
 			//Fire all DeepLoad Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
@@ -392,36 +370,6 @@ namespace AppointmentSystem.Data.Bases
 			
 			//used to hold DeepSave method delegates and fire after all the local children have been saved.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
-	
-			#region List<Appointment>
-				if (CanDeepSave(entity.AppointmentCollection, "List<Appointment>|AppointmentCollection", deepSaveType, innerList)) 
-				{	
-					// update each child parent id with the real parent id (mostly used on insert)
-					foreach(Appointment child in entity.AppointmentCollection)
-					{
-						if(child.PatientCodeSource != null)
-						{
-							child.PatientCode = child.PatientCodeSource.PatientCode;
-						}
-						else
-						{
-							child.PatientCode = entity.PatientCode;
-						}
-
-					}
-
-					if (entity.AppointmentCollection.Count > 0 || entity.AppointmentCollection.DeletedItems.Count > 0)
-					{
-						//DataRepository.AppointmentProvider.Save(transactionManager, entity.AppointmentCollection);
-						
-						deepHandles.Add("AppointmentCollection",
-						new KeyValuePair<Delegate, object>((DeepSaveHandle< Appointment >) DataRepository.AppointmentProvider.DeepSave,
-							new object[] { transactionManager, entity.AppointmentCollection, deepSaveType, childTypes, innerList }
-						));
-					}
-				} 
-			#endregion 
-				
 			//Fire all DeepSave Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
 		    {
@@ -448,12 +396,6 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum PatientChildEntityTypes
 	{
-
-		///<summary>
-		/// Collection of <c>Patient</c> as OneToMany for AppointmentCollection
-		///</summary>
-		[ChildEntityType(typeof(TList<Appointment>))]
-		AppointmentCollection,
 	}
 	
 	#endregion PatientChildEntityTypes
