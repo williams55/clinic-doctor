@@ -656,18 +656,18 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
-		#region PatientProvider
+		#region RosterProvider
 
 		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Patient"/> business entity.
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Roster"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
-		public static PatientProviderBase PatientProvider
+		public static RosterProviderBase RosterProvider
 		{
 			get 
 			{
 				LoadProviders();
-				return _provider.PatientProvider;
+				return _provider.RosterProvider;
 			}
 		}
 		
@@ -690,23 +690,6 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
-		#region RosterProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Roster"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static RosterProviderBase RosterProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.RosterProvider;
-			}
-		}
-		
-		#endregion
-		
 		#region AppointmentProvider
 
 		///<summary>
@@ -719,6 +702,23 @@ namespace AppointmentSystem.Data
 			{
 				LoadProviders();
 				return _provider.AppointmentProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region PatientProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Patient"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static PatientProviderBase PatientProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.PatientProvider;
 			}
 		}
 		
@@ -1733,73 +1733,73 @@ namespace AppointmentSystem.Data
 
 	#endregion DoctorRoomQuery
 		
-	#region PatientFilters
+	#region RosterFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Patient"/> object.
+	/// that is used exclusively with a <see cref="Roster"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class PatientFilters : PatientFilterBuilder
+	public class RosterFilters : RosterFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the PatientFilters class.
+		/// Initializes a new instance of the RosterFilters class.
 		/// </summary>
-		public PatientFilters() : base() { }
+		public RosterFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the PatientFilters class.
+		/// Initializes a new instance of the RosterFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public PatientFilters(bool ignoreCase) : base(ignoreCase) { }
+		public RosterFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the PatientFilters class.
+		/// Initializes a new instance of the RosterFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public PatientFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RosterFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion PatientFilters
+	#endregion RosterFilters
 	
-	#region PatientQuery
+	#region RosterQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="PatientParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Patient"/> object.
+	/// A strongly-typed instance of the <see cref="RosterParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Roster"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class PatientQuery : PatientParameterBuilder
+	public class RosterQuery : RosterParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the PatientQuery class.
+		/// Initializes a new instance of the RosterQuery class.
 		/// </summary>
-		public PatientQuery() : base() { }
+		public RosterQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the PatientQuery class.
+		/// Initializes a new instance of the RosterQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public PatientQuery(bool ignoreCase) : base(ignoreCase) { }
+		public RosterQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the PatientQuery class.
+		/// Initializes a new instance of the RosterQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public PatientQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RosterQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion PatientQuery
+	#endregion RosterQuery
 		
 	#region GroupRoleFilters
 	
@@ -1869,74 +1869,6 @@ namespace AppointmentSystem.Data
 
 	#endregion GroupRoleQuery
 		
-	#region RosterFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Roster"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class RosterFilters : RosterFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the RosterFilters class.
-		/// </summary>
-		public RosterFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the RosterFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RosterFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the RosterFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RosterFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion RosterFilters
-	
-	#region RosterQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="RosterParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Roster"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class RosterQuery : RosterParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the RosterQuery class.
-		/// </summary>
-		public RosterQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the RosterQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RosterQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the RosterQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RosterQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion RosterQuery
-		
 	#region AppointmentFilters
 	
 	/// <summary>
@@ -2004,6 +1936,74 @@ namespace AppointmentSystem.Data
 	}
 
 	#endregion AppointmentQuery
+		
+	#region PatientFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="Patient"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class PatientFilters : PatientFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the PatientFilters class.
+		/// </summary>
+		public PatientFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the PatientFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public PatientFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the PatientFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public PatientFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion PatientFilters
+	
+	#region PatientQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="PatientParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Patient"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class PatientQuery : PatientParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the PatientQuery class.
+		/// </summary>
+		public PatientQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the PatientQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public PatientQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the PatientQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public PatientQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion PatientQuery
 		
 	#region VcsCompanyFilters
 	

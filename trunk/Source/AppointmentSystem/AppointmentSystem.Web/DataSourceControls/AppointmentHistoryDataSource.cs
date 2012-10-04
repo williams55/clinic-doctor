@@ -162,6 +162,7 @@ namespace AppointmentSystem.Web.Data
 			count = 0;
 			
 			System.Guid _guid;
+			System.String _appointmentId;
 
 			switch ( SelectMethod )
 			{
@@ -195,6 +196,10 @@ namespace AppointmentSystem.Web.Data
 					break;
 				// IX
 				// FK
+				case AppointmentHistorySelectMethod.GetByAppointmentId:
+					_appointmentId = ( values["AppointmentId"] != null ) ? (System.String) EntityUtil.ChangeType(values["AppointmentId"], typeof(System.String)) : string.Empty;
+					results = AppointmentHistoryProvider.GetByAppointmentId(GetTransactionManager(), _appointmentId, this.StartIndex, this.PageSize, out count);
+					break;
 				// M:M
 				// Custom
 				default:
@@ -387,7 +392,11 @@ namespace AppointmentSystem.Web.Data
 		/// <summary>
 		/// Represents the GetByGuid method.
 		/// </summary>
-		GetByGuid
+		GetByGuid,
+		/// <summary>
+		/// Represents the GetByAppointmentId method.
+		/// </summary>
+		GetByAppointmentId
 	}
 	
 	#endregion AppointmentHistorySelectMethod

@@ -495,6 +495,70 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion	
 		
 		#region Get By Foreign Key Functions
+
+		#region GetByAppointmentId
+		/// <summary>
+		/// 	Gets rows from the datasource based on the FK_AppointmentHistory_Appointment key.
+		///		FK_AppointmentHistory_Appointment Description: 
+		/// </summary>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <param name="_appointmentId"></param>
+		/// <param name="count">out parameter to get total records for query</param>
+		/// <remarks></remarks>
+		/// <returns>Returns a typed collection of AppointmentSystem.Entities.AppointmentHistory objects.</returns>
+        /// <exception cref="System.Exception">The command could not be executed.</exception>
+        /// <exception cref="System.Data.DataException">The <paramref name="transactionManager"/> is not open.</exception>
+        /// <exception cref="System.Data.Common.DbException">The command could not be executed.</exception>
+		public override TList<AppointmentHistory> GetByAppointmentId(TransactionManager transactionManager, System.String _appointmentId, int start, int pageLength, out int count)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.AppointmentHistory_GetByAppointmentId", _useStoredProcedure);
+			
+				database.AddInParameter(commandWrapper, "@AppointmentId", DbType.String, _appointmentId);
+			
+			IDataReader reader = null;
+			TList<AppointmentHistory> rows = new TList<AppointmentHistory>();
+			try
+			{
+				//Provider Data Requesting Command Event
+				OnDataRequesting(new CommandEventArgs(commandWrapper, "GetByAppointmentId", rows)); 
+
+				if (transactionManager != null)
+				{
+					reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+				}
+				else
+				{
+					reader = Utility.ExecuteReader(database, commandWrapper);
+				}
+			
+				//Create Collection
+				Fill(reader, rows, start, pageLength);
+				count = -1;
+				if(reader.NextResult())
+				{
+					if(reader.Read())
+					{
+						count = reader.GetInt32(0);
+					}
+				}
+				
+				//Provider Data Requested Command Event
+				OnDataRequested(new CommandEventArgs(commandWrapper, "GetByAppointmentId", rows)); 
+			}
+			finally
+			{
+				if (reader != null) 
+					reader.Close();
+					
+				commandWrapper = null;
+			}
+			return rows;
+		}	
+		#endregion
+	
 	#endregion
 	
 		#region Get By Index Functions

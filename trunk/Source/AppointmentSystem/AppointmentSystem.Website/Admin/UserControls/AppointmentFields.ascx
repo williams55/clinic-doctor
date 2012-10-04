@@ -26,8 +26,7 @@
 			<tr>
         <td class="literal"><asp:Label ID="lbldataPatientCode" runat="server" Text="Patient Code:" AssociatedControlID="dataPatientCode" /></td>
         <td>
-					<data:EntityDropDownList runat="server" ID="dataPatientCode" DataSourceID="PatientCodePatientDataSource" DataTextField="FirstName" DataValueField="PatientCode" SelectedValue='<%# Bind("PatientCode") %>' AppendNullItem="true" Required="true" NullItemText="< Please Choose ...>" ErrorText="Required" />
-					<data:PatientDataSource ID="PatientCodePatientDataSource" runat="server" SelectMethod="GetAll"  />
+					<asp:TextBox runat="server" ID="dataPatientCode" Text='<%# Bind("PatientCode") %>' MaxLength="10"></asp:TextBox><asp:RequiredFieldValidator ID="ReqVal_dataPatientCode" runat="server" Display="Dynamic" ControlToValidate="dataPatientCode" ErrorMessage="Required"></asp:RequiredFieldValidator>
 				</td>
 			</tr>
 			<tr>

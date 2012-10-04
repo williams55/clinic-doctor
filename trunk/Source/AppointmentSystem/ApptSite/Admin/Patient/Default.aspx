@@ -22,7 +22,7 @@
         <dx:ASPxGridView ID="gridPatient" ClientInstanceName="grid" runat="server" DataSourceID="VcsPatient"
             Width="100%" KeyFieldName="PatientCode" OnCustomButtonCallback="gridPatient_CustomButtonCallback"
             OnInitNewRow="gridPatient_InitNewRow" OnRowInserting="gridPatient_RowInserting"
-            OnRowUpdating="gridPatient_RowUpdating" OnBeforePerformDataSelect="gridPatient_BeforePerformDataSelect">
+            OnRowUpdating="gridPatient_RowUpdating">
             <Columns>
                 <dx:GridViewDataColumn Caption="No." Width="50">
                     <DataItemTemplate>

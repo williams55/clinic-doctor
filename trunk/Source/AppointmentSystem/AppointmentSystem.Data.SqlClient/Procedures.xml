@@ -4862,6 +4862,36 @@
 					
 			]]></body>
 		</procedure>
+		<procedure owner="dbo" name="AppointmentHistory_GetByAppointmentId" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the AppointmentHistory table through a foreign key
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@AppointmentId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SET ANSI_NULLS OFF
+				
+				SELECT
+					[Guid],
+					[AppointmentId],
+					[Note],
+					[CreateUser],
+					[CreateDate]
+				FROM
+					[dbo].[AppointmentHistory]
+				WHERE
+					[AppointmentId] = @AppointmentId
+				
+				SELECT @@ROWCOUNT
+				SET ANSI_NULLS ON
+			]]></body>
+		</procedure>
 		<procedure owner="dbo" name="AppointmentHistory_GetByGuid" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
@@ -5898,935 +5928,6 @@
 		</procedure>
 		
 		
-		<procedure owner="dbo" name="Patient_Get_List" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Gets all records from the Patient table
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters/>
-			<body><![CDATA[
-				
-				SELECT
-					[PatientCode],
-					[FirstName],
-					[LastName],
-					[MemberType],
-					[HomePhone],
-					[WorkPhone],
-					[CellPhone],
-					[Avatar],
-					[CompanyCode],
-					[Birthdate],
-					[IsFemale],
-					[Title],
-					[Note],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[Patient]
-					
-				SELECT @@ROWCOUNT
-			]]></body>
-		</procedure>
-		
-		
-		<procedure owner="dbo" name="Patient_GetPaged" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Gets records from the Patient table passing page index and page count parameters
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@WhereClause" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)" />
-				<parameter name="@OrderBy" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)"/>
-				<parameter name="@PageIndex" type="int" direction="Input" size="0" precision="10" scale="0" />
-				<parameter name="@PageSize" type="int" direction="Input" size="0" precision="10" scale="0" /> 
-			</parameters>
-			<body><![CDATA[
-				
-				BEGIN
-				DECLARE @PageLowerBound int
-				DECLARE @PageUpperBound int
-				
-				-- Set the page bounds
-				SET @PageLowerBound = @PageSize * @PageIndex
-				SET @PageUpperBound = @PageLowerBound + @PageSize
-
-				-- Create a temp table to store the select results
-				CREATE TABLE #PageIndex
-				(
-				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [PatientCode] nchar(10)  
-				)
-				
-				-- Insert into the temp table
-				DECLARE @SQL AS nvarchar(4000)
-				SET @SQL = 'INSERT INTO #PageIndex ([PatientCode])'
-				SET @SQL = @SQL + ' SELECT'
-				SET @SQL = @SQL + ' [PatientCode]'
-				SET @SQL = @SQL + ' FROM [dbo].[Patient]'
-				IF LEN(@WhereClause) > 0
-				BEGIN
-					SET @SQL = @SQL + ' WHERE ' + @WhereClause
-				END
-				IF LEN(@OrderBy) > 0
-				BEGIN
-					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
-				END
-				
-				-- Only get the number of rows needed here.
-				SET ROWCOUNT @PageUpperBound
-				
-				-- Populate the temp table
-				EXEC sp_executesql @SQL
-
-				-- Reset Rowcount back to all
-				SET ROWCOUNT 0
-				
-				-- Return paged results
-				SELECT O.[PatientCode], O.[FirstName], O.[LastName], O.[MemberType], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[CompanyCode], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
-				FROM
-				    [dbo].[Patient] O,
-				    #PageIndex PageIndex
-				WHERE
-				    PageIndex.IndexId > @PageLowerBound
-					AND O.[PatientCode] = PageIndex.[PatientCode]
-				ORDER BY
-				    PageIndex.IndexId
-				
-				-- get row count
-				SET @SQL = 'SELECT COUNT(*) AS TotalRowCount'
-				SET @SQL = @SQL + ' FROM [dbo].[Patient]'
-				IF LEN(@WhereClause) > 0
-				BEGIN
-					SET @SQL = @SQL + ' WHERE ' + @WhereClause
-				END
-				EXEC sp_executesql @SQL
-			
-				END
-			]]></body>
-		</procedure>
-		
-		<procedure owner="dbo" name="Patient_Insert" grant="">
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Inserts a record into the Patient table
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
-				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@MemberType" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
-				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@CompanyCode" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
-				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
-				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				
-				INSERT INTO [dbo].[Patient]
-					(
-					[PatientCode]
-					,[FirstName]
-					,[LastName]
-					,[MemberType]
-					,[HomePhone]
-					,[WorkPhone]
-					,[CellPhone]
-					,[Avatar]
-					,[CompanyCode]
-					,[Birthdate]
-					,[IsFemale]
-					,[Title]
-					,[Note]
-					,[IsDisabled]
-					,[CreateUser]
-					,[CreateDate]
-					,[UpdateUser]
-					,[UpdateDate]
-					)
-				VALUES
-					(
-					@PatientCode
-					,@FirstName
-					,@LastName
-					,@MemberType
-					,@HomePhone
-					,@WorkPhone
-					,@CellPhone
-					,@Avatar
-					,@CompanyCode
-					,@Birthdate
-					,@IsFemale
-					,@Title
-					,@Note
-					,@IsDisabled
-					,@CreateUser
-					,@CreateDate
-					,@UpdateUser
-					,@UpdateDate
-					)
-				
-									
-							
-			]]></body>
-		</procedure>
-		<procedure owner="dbo" name="Patient_Update" grant="">
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Updates a record in the Patient table
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
-				<parameter name="@OriginalPatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
-				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@MemberType" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
-				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@CompanyCode" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
-				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
-				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				
-				
-				-- Modify the updatable columns
-				UPDATE
-					[dbo].[Patient]
-				SET
-					[PatientCode] = @PatientCode
-					,[FirstName] = @FirstName
-					,[LastName] = @LastName
-					,[MemberType] = @MemberType
-					,[HomePhone] = @HomePhone
-					,[WorkPhone] = @WorkPhone
-					,[CellPhone] = @CellPhone
-					,[Avatar] = @Avatar
-					,[CompanyCode] = @CompanyCode
-					,[Birthdate] = @Birthdate
-					,[IsFemale] = @IsFemale
-					,[Title] = @Title
-					,[Note] = @Note
-					,[IsDisabled] = @IsDisabled
-					,[CreateUser] = @CreateUser
-					,[CreateDate] = @CreateDate
-					,[UpdateUser] = @UpdateUser
-					,[UpdateDate] = @UpdateDate
-				WHERE
-[PatientCode] = @OriginalPatientCode 
-				
-			]]></body>
-		</procedure>
-		<procedure owner="dbo" name="Patient_Delete" grant="">
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Deletes a record in the Patient table
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				DELETE FROM [dbo].[Patient] WITH (ROWLOCK) 
-				WHERE
-					[PatientCode] = @PatientCode
-					
-			]]></body>
-		</procedure>
-		<procedure owner="dbo" name="Patient_GetByPatientCode" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the Patient table through an index
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SELECT
-					[PatientCode],
-					[FirstName],
-					[LastName],
-					[MemberType],
-					[HomePhone],
-					[WorkPhone],
-					[CellPhone],
-					[Avatar],
-					[CompanyCode],
-					[Birthdate],
-					[IsFemale],
-					[Title],
-					[Note],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[Patient]
-				WHERE
-					[PatientCode] = @PatientCode
-				SELECT @@ROWCOUNT
-					
-			]]></body>
-			
-		</procedure>
-		<procedure owner="dbo" name="Patient_Find" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Finds records in the Patient table passing nullable parameters
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
-				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
-				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@MemberType" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
-				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@CompanyCode" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
-				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
-				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
-				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
-				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
-				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
-				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
-			</parameters>
-			<body><![CDATA[
-				
-  IF ISNULL(@SearchUsingOR, 0) <> 1
-  BEGIN
-    SELECT
-	  [PatientCode]
-	, [FirstName]
-	, [LastName]
-	, [MemberType]
-	, [HomePhone]
-	, [WorkPhone]
-	, [CellPhone]
-	, [Avatar]
-	, [CompanyCode]
-	, [Birthdate]
-	, [IsFemale]
-	, [Title]
-	, [Note]
-	, [IsDisabled]
-	, [CreateUser]
-	, [CreateDate]
-	, [UpdateUser]
-	, [UpdateDate]
-    FROM
-	[dbo].[Patient]
-    WHERE 
-	 ([PatientCode] = @PatientCode OR @PatientCode IS NULL)
-	AND ([FirstName] = @FirstName OR @FirstName IS NULL)
-	AND ([LastName] = @LastName OR @LastName IS NULL)
-	AND ([MemberType] = @MemberType OR @MemberType IS NULL)
-	AND ([HomePhone] = @HomePhone OR @HomePhone IS NULL)
-	AND ([WorkPhone] = @WorkPhone OR @WorkPhone IS NULL)
-	AND ([CellPhone] = @CellPhone OR @CellPhone IS NULL)
-	AND ([Avatar] = @Avatar OR @Avatar IS NULL)
-	AND ([CompanyCode] = @CompanyCode OR @CompanyCode IS NULL)
-	AND ([Birthdate] = @Birthdate OR @Birthdate IS NULL)
-	AND ([IsFemale] = @IsFemale OR @IsFemale IS NULL)
-	AND ([Title] = @Title OR @Title IS NULL)
-	AND ([Note] = @Note OR @Note IS NULL)
-	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
-	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
-	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
-	AND ([UpdateUser] = @UpdateUser OR @UpdateUser IS NULL)
-	AND ([UpdateDate] = @UpdateDate OR @UpdateDate IS NULL)
-						
-  END
-  ELSE
-  BEGIN
-    SELECT
-	  [PatientCode]
-	, [FirstName]
-	, [LastName]
-	, [MemberType]
-	, [HomePhone]
-	, [WorkPhone]
-	, [CellPhone]
-	, [Avatar]
-	, [CompanyCode]
-	, [Birthdate]
-	, [IsFemale]
-	, [Title]
-	, [Note]
-	, [IsDisabled]
-	, [CreateUser]
-	, [CreateDate]
-	, [UpdateUser]
-	, [UpdateDate]
-    FROM
-	[dbo].[Patient]
-    WHERE 
-	 ([PatientCode] = @PatientCode AND @PatientCode is not null)
-	OR ([FirstName] = @FirstName AND @FirstName is not null)
-	OR ([LastName] = @LastName AND @LastName is not null)
-	OR ([MemberType] = @MemberType AND @MemberType is not null)
-	OR ([HomePhone] = @HomePhone AND @HomePhone is not null)
-	OR ([WorkPhone] = @WorkPhone AND @WorkPhone is not null)
-	OR ([CellPhone] = @CellPhone AND @CellPhone is not null)
-	OR ([Avatar] = @Avatar AND @Avatar is not null)
-	OR ([CompanyCode] = @CompanyCode AND @CompanyCode is not null)
-	OR ([Birthdate] = @Birthdate AND @Birthdate is not null)
-	OR ([IsFemale] = @IsFemale AND @IsFemale is not null)
-	OR ([Title] = @Title AND @Title is not null)
-	OR ([Note] = @Note AND @Note is not null)
-	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
-	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
-	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
-	OR ([UpdateUser] = @UpdateUser AND @UpdateUser is not null)
-	OR ([UpdateDate] = @UpdateDate AND @UpdateDate is not null)
-	SELECT @@ROWCOUNT			
-  END
-				]]></body>
-		</procedure>
-
-		
-		<procedure owner="dbo" name="Patient_Find_Dynamic"  skip="true">
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Gets records from the Patient table using a dynamically generated query.
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters/>
-			<body><![CDATA[
-				
-				BEGIN
-				
-				-- Create a temp table to store the select results
-				CREATE TABLE #PageIndex
-				(
-				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [PatientCode] nchar(10)  
-				)
-				
-				-- Insert into the temp table
-				INSERT INTO #PageIndex ( [PatientCode] )
-				SELECT TOP {3} [PatientCode]
-				FROM [dbo].[Patient] {0}
-				ORDER BY {1}
-				
-				-- Return paged results
-				SELECT O.[PatientCode], O.[FirstName], O.[LastName], O.[MemberType], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[CompanyCode], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
-				FROM
-				    [dbo].[Patient] O,
-				    #PageIndex PageIndex
-				WHERE
-				    PageIndex.IndexId > {2}
-				    AND O.[PatientCode] = PageIndex.[PatientCode]
-				ORDER BY
-				    PageIndex.IndexId
-				
-
-				-- get total count
-				SELECT COUNT(*) AS TotalRowCount FROM [dbo].[Patient] {0};
-				
-				DROP TABLE #PageIndex
-				END
-			]]></body>
-		</procedure>
-		
-		
-		<procedure owner="dbo" name="GroupRole_Get_List" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Gets all records from the GroupRole table
--- Table Comment: Define group have what roles
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters/>
-			<body><![CDATA[
-				
-				SELECT
-					[Id],
-					[GroupId],
-					[RoleId],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[GroupRole]
-					
-				SELECT @@ROWCOUNT
-			]]></body>
-		</procedure>
-		
-		
-		<procedure owner="dbo" name="GroupRole_GetPaged" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Gets records from the GroupRole table passing page index and page count parameters
--- Table Comment: Define group have what roles
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@WhereClause" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)" />
-				<parameter name="@OrderBy" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)"/>
-				<parameter name="@PageIndex" type="int" direction="Input" size="0" precision="10" scale="0" />
-				<parameter name="@PageSize" type="int" direction="Input" size="0" precision="10" scale="0" /> 
-			</parameters>
-			<body><![CDATA[
-				
-				BEGIN
-				DECLARE @PageLowerBound int
-				DECLARE @PageUpperBound int
-				
-				-- Set the page bounds
-				SET @PageLowerBound = @PageSize * @PageIndex
-				SET @PageUpperBound = @PageLowerBound + @PageSize
-
-				-- Create a temp table to store the select results
-				CREATE TABLE #PageIndex
-				(
-				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] bigint 
-				)
-				
-				-- Insert into the temp table
-				DECLARE @SQL AS nvarchar(4000)
-				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
-				SET @SQL = @SQL + ' SELECT'
-				SET @SQL = @SQL + ' [Id]'
-				SET @SQL = @SQL + ' FROM [dbo].[GroupRole]'
-				IF LEN(@WhereClause) > 0
-				BEGIN
-					SET @SQL = @SQL + ' WHERE ' + @WhereClause
-				END
-				IF LEN(@OrderBy) > 0
-				BEGIN
-					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
-				END
-				
-				-- Only get the number of rows needed here.
-				SET ROWCOUNT @PageUpperBound
-				
-				-- Populate the temp table
-				EXEC sp_executesql @SQL
-
-				-- Reset Rowcount back to all
-				SET ROWCOUNT 0
-				
-				-- Return paged results
-				SELECT O.[Id], O.[GroupId], O.[RoleId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
-				FROM
-				    [dbo].[GroupRole] O,
-				    #PageIndex PageIndex
-				WHERE
-				    PageIndex.IndexId > @PageLowerBound
-					AND O.[Id] = PageIndex.[Id]
-				ORDER BY
-				    PageIndex.IndexId
-				
-				-- get row count
-				SET @SQL = 'SELECT COUNT(*) AS TotalRowCount'
-				SET @SQL = @SQL + ' FROM [dbo].[GroupRole]'
-				IF LEN(@WhereClause) > 0
-				BEGIN
-					SET @SQL = @SQL + ' WHERE ' + @WhereClause
-				END
-				EXEC sp_executesql @SQL
-			
-				END
-			]]></body>
-		</procedure>
-		
-		<procedure owner="dbo" name="GroupRole_Insert" grant="">
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Inserts a record into the GroupRole table
--- Table Comment: Define group have what roles
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@GroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@RoleId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
-				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				
-				INSERT INTO [dbo].[GroupRole]
-					(
-					[GroupId]
-					,[RoleId]
-					,[IsDisabled]
-					,[CreateUser]
-					,[CreateDate]
-					,[UpdateUser]
-					,[UpdateDate]
-					)
-				VALUES
-					(
-					@GroupId
-					,@RoleId
-					,@IsDisabled
-					,@CreateUser
-					,@CreateDate
-					,@UpdateUser
-					,@UpdateDate
-					)
-				
-				-- Get the identity value
-				SET @Id = SCOPE_IDENTITY()
-									
-							
-			]]></body>
-		</procedure>
-		<procedure owner="dbo" name="GroupRole_Update" grant="">
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Updates a record in the GroupRole table
--- Table Comment: Define group have what roles
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-				<parameter name="@GroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@RoleId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
-				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
-				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
-				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				
-				
-				-- Modify the updatable columns
-				UPDATE
-					[dbo].[GroupRole]
-				SET
-					[GroupId] = @GroupId
-					,[RoleId] = @RoleId
-					,[IsDisabled] = @IsDisabled
-					,[CreateUser] = @CreateUser
-					,[CreateDate] = @CreateDate
-					,[UpdateUser] = @UpdateUser
-					,[UpdateDate] = @UpdateDate
-				WHERE
-[Id] = @Id 
-				
-			]]></body>
-		</procedure>
-		<procedure owner="dbo" name="GroupRole_Delete" grant="">
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Deletes a record in the GroupRole table
--- Table Comment: Define group have what roles
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				DELETE FROM [dbo].[GroupRole] WITH (ROWLOCK) 
-				WHERE
-					[Id] = @Id
-					
-			]]></body>
-		</procedure>
-		<procedure owner="dbo" name="GroupRole_GetByRoleId" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the GroupRole table through a foreign key
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@RoleId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SET ANSI_NULLS OFF
-				
-				SELECT
-					[Id],
-					[GroupId],
-					[RoleId],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[GroupRole]
-				WHERE
-					[RoleId] = @RoleId
-				
-				SELECT @@ROWCOUNT
-				SET ANSI_NULLS ON
-			]]></body>
-		</procedure>
-		<procedure owner="dbo" name="GroupRole_GetByGroupId" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the GroupRole table through a foreign key
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@GroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SET ANSI_NULLS OFF
-				
-				SELECT
-					[Id],
-					[GroupId],
-					[RoleId],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[GroupRole]
-				WHERE
-					[GroupId] = @GroupId
-				
-				SELECT @@ROWCOUNT
-				SET ANSI_NULLS ON
-			]]></body>
-		</procedure>
-		<procedure owner="dbo" name="GroupRole_GetById" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the GroupRole table through an index
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SELECT
-					[Id],
-					[GroupId],
-					[RoleId],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[GroupRole]
-				WHERE
-					[Id] = @Id
-				SELECT @@ROWCOUNT
-					
-			]]></body>
-			
-		</procedure>
-		<procedure owner="dbo" name="GroupRole_Find" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Finds records in the GroupRole table passing nullable parameters
--- Table Comment: Define group have what roles
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
-				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
-				<parameter name="@GroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@RoleId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
-				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
-				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
-				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
-				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
-			</parameters>
-			<body><![CDATA[
-				
-  IF ISNULL(@SearchUsingOR, 0) <> 1
-  BEGIN
-    SELECT
-	  [Id]
-	, [GroupId]
-	, [RoleId]
-	, [IsDisabled]
-	, [CreateUser]
-	, [CreateDate]
-	, [UpdateUser]
-	, [UpdateDate]
-    FROM
-	[dbo].[GroupRole]
-    WHERE 
-	 ([Id] = @Id OR @Id IS NULL)
-	AND ([GroupId] = @GroupId OR @GroupId IS NULL)
-	AND ([RoleId] = @RoleId OR @RoleId IS NULL)
-	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
-	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
-	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
-	AND ([UpdateUser] = @UpdateUser OR @UpdateUser IS NULL)
-	AND ([UpdateDate] = @UpdateDate OR @UpdateDate IS NULL)
-						
-  END
-  ELSE
-  BEGIN
-    SELECT
-	  [Id]
-	, [GroupId]
-	, [RoleId]
-	, [IsDisabled]
-	, [CreateUser]
-	, [CreateDate]
-	, [UpdateUser]
-	, [UpdateDate]
-    FROM
-	[dbo].[GroupRole]
-    WHERE 
-	 ([Id] = @Id AND @Id is not null)
-	OR ([GroupId] = @GroupId AND @GroupId is not null)
-	OR ([RoleId] = @RoleId AND @RoleId is not null)
-	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
-	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
-	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
-	OR ([UpdateUser] = @UpdateUser AND @UpdateUser is not null)
-	OR ([UpdateDate] = @UpdateDate AND @UpdateDate is not null)
-	SELECT @@ROWCOUNT			
-  END
-				]]></body>
-		</procedure>
-
-		
-		<procedure owner="dbo" name="GroupRole_Find_Dynamic"  skip="true">
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Gets records from the GroupRole table using a dynamically generated query.
--- Table Comment: Define group have what roles
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters/>
-			<body><![CDATA[
-				
-				BEGIN
-				
-				-- Create a temp table to store the select results
-				CREATE TABLE #PageIndex
-				(
-				    [IndexId] int IDENTITY (1, 1) NOT NULL,
-				    [Id] bigint 
-				)
-				
-				-- Insert into the temp table
-				INSERT INTO #PageIndex ( [Id] )
-				SELECT TOP {3} [Id]
-				FROM [dbo].[GroupRole] {0}
-				ORDER BY {1}
-				
-				-- Return paged results
-				SELECT O.[Id], O.[GroupId], O.[RoleId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
-				FROM
-				    [dbo].[GroupRole] O,
-				    #PageIndex PageIndex
-				WHERE
-				    PageIndex.IndexId > {2}
-				    AND O.[Id] = PageIndex.[Id]
-				ORDER BY
-				    PageIndex.IndexId
-				
-
-				-- get total count
-				SELECT COUNT(*) AS TotalRowCount FROM [dbo].[GroupRole] {0};
-				
-				DROP TABLE #PageIndex
-				END
-			]]></body>
-		</procedure>
-		
-		
 		<procedure owner="dbo" name="Roster_Get_List" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
@@ -7370,6 +6471,446 @@
 		</procedure>
 		
 		
+		<procedure owner="dbo" name="GroupRole_Get_List" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets all records from the GroupRole table
+-- Table Comment: Define group have what roles
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters/>
+			<body><![CDATA[
+				
+				SELECT
+					[Id],
+					[GroupId],
+					[RoleId],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[GroupRole]
+					
+				SELECT @@ROWCOUNT
+			]]></body>
+		</procedure>
+		
+		
+		<procedure owner="dbo" name="GroupRole_GetPaged" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the GroupRole table passing page index and page count parameters
+-- Table Comment: Define group have what roles
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@WhereClause" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)" />
+				<parameter name="@OrderBy" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)"/>
+				<parameter name="@PageIndex" type="int" direction="Input" size="0" precision="10" scale="0" />
+				<parameter name="@PageSize" type="int" direction="Input" size="0" precision="10" scale="0" /> 
+			</parameters>
+			<body><![CDATA[
+				
+				BEGIN
+				DECLARE @PageLowerBound int
+				DECLARE @PageUpperBound int
+				
+				-- Set the page bounds
+				SET @PageLowerBound = @PageSize * @PageIndex
+				SET @PageUpperBound = @PageLowerBound + @PageSize
+
+				-- Create a temp table to store the select results
+				CREATE TABLE #PageIndex
+				(
+				    [IndexId] int IDENTITY (1, 1) NOT NULL,
+				    [Id] bigint 
+				)
+				
+				-- Insert into the temp table
+				DECLARE @SQL AS nvarchar(4000)
+				SET @SQL = 'INSERT INTO #PageIndex ([Id])'
+				SET @SQL = @SQL + ' SELECT'
+				SET @SQL = @SQL + ' [Id]'
+				SET @SQL = @SQL + ' FROM [dbo].[GroupRole]'
+				IF LEN(@WhereClause) > 0
+				BEGIN
+					SET @SQL = @SQL + ' WHERE ' + @WhereClause
+				END
+				IF LEN(@OrderBy) > 0
+				BEGIN
+					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
+				END
+				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
+				-- Populate the temp table
+				EXEC sp_executesql @SQL
+
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
+				-- Return paged results
+				SELECT O.[Id], O.[GroupId], O.[RoleId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				FROM
+				    [dbo].[GroupRole] O,
+				    #PageIndex PageIndex
+				WHERE
+				    PageIndex.IndexId > @PageLowerBound
+					AND O.[Id] = PageIndex.[Id]
+				ORDER BY
+				    PageIndex.IndexId
+				
+				-- get row count
+				SET @SQL = 'SELECT COUNT(*) AS TotalRowCount'
+				SET @SQL = @SQL + ' FROM [dbo].[GroupRole]'
+				IF LEN(@WhereClause) > 0
+				BEGIN
+					SET @SQL = @SQL + ' WHERE ' + @WhereClause
+				END
+				EXEC sp_executesql @SQL
+			
+				END
+			]]></body>
+		</procedure>
+		
+		<procedure owner="dbo" name="GroupRole_Insert" grant="">
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Inserts a record into the GroupRole table
+-- Table Comment: Define group have what roles
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@Id" type="bigint" direction="Output" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@GroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@RoleId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				
+				INSERT INTO [dbo].[GroupRole]
+					(
+					[GroupId]
+					,[RoleId]
+					,[IsDisabled]
+					,[CreateUser]
+					,[CreateDate]
+					,[UpdateUser]
+					,[UpdateDate]
+					)
+				VALUES
+					(
+					@GroupId
+					,@RoleId
+					,@IsDisabled
+					,@CreateUser
+					,@CreateDate
+					,@UpdateUser
+					,@UpdateDate
+					)
+				
+				-- Get the identity value
+				SET @Id = SCOPE_IDENTITY()
+									
+							
+			]]></body>
+		</procedure>
+		<procedure owner="dbo" name="GroupRole_Update" grant="">
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Updates a record in the GroupRole table
+-- Table Comment: Define group have what roles
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+				<parameter name="@GroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@RoleId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				
+				
+				-- Modify the updatable columns
+				UPDATE
+					[dbo].[GroupRole]
+				SET
+					[GroupId] = @GroupId
+					,[RoleId] = @RoleId
+					,[IsDisabled] = @IsDisabled
+					,[CreateUser] = @CreateUser
+					,[CreateDate] = @CreateDate
+					,[UpdateUser] = @UpdateUser
+					,[UpdateDate] = @UpdateDate
+				WHERE
+[Id] = @Id 
+				
+			]]></body>
+		</procedure>
+		<procedure owner="dbo" name="GroupRole_Delete" grant="">
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Deletes a record in the GroupRole table
+-- Table Comment: Define group have what roles
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				DELETE FROM [dbo].[GroupRole] WITH (ROWLOCK) 
+				WHERE
+					[Id] = @Id
+					
+			]]></body>
+		</procedure>
+		<procedure owner="dbo" name="GroupRole_GetByRoleId" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the GroupRole table through a foreign key
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@RoleId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SET ANSI_NULLS OFF
+				
+				SELECT
+					[Id],
+					[GroupId],
+					[RoleId],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[GroupRole]
+				WHERE
+					[RoleId] = @RoleId
+				
+				SELECT @@ROWCOUNT
+				SET ANSI_NULLS ON
+			]]></body>
+		</procedure>
+		<procedure owner="dbo" name="GroupRole_GetByGroupId" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the GroupRole table through a foreign key
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@GroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SET ANSI_NULLS OFF
+				
+				SELECT
+					[Id],
+					[GroupId],
+					[RoleId],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[GroupRole]
+				WHERE
+					[GroupId] = @GroupId
+				
+				SELECT @@ROWCOUNT
+				SET ANSI_NULLS ON
+			]]></body>
+		</procedure>
+		<procedure owner="dbo" name="GroupRole_GetById" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the GroupRole table through an index
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SELECT
+					[Id],
+					[GroupId],
+					[RoleId],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[GroupRole]
+				WHERE
+					[Id] = @Id
+				SELECT @@ROWCOUNT
+					
+			]]></body>
+			
+		</procedure>
+		<procedure owner="dbo" name="GroupRole_Find" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Finds records in the GroupRole table passing nullable parameters
+-- Table Comment: Define group have what roles
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
+				<parameter name="@Id" type="bigint" direction="Input" size="8" precision="19" scale="0" param="" nulldefault="null"/>
+				<parameter name="@GroupId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@RoleId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
+				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
+			</parameters>
+			<body><![CDATA[
+				
+  IF ISNULL(@SearchUsingOR, 0) <> 1
+  BEGIN
+    SELECT
+	  [Id]
+	, [GroupId]
+	, [RoleId]
+	, [IsDisabled]
+	, [CreateUser]
+	, [CreateDate]
+	, [UpdateUser]
+	, [UpdateDate]
+    FROM
+	[dbo].[GroupRole]
+    WHERE 
+	 ([Id] = @Id OR @Id IS NULL)
+	AND ([GroupId] = @GroupId OR @GroupId IS NULL)
+	AND ([RoleId] = @RoleId OR @RoleId IS NULL)
+	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
+	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
+	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
+	AND ([UpdateUser] = @UpdateUser OR @UpdateUser IS NULL)
+	AND ([UpdateDate] = @UpdateDate OR @UpdateDate IS NULL)
+						
+  END
+  ELSE
+  BEGIN
+    SELECT
+	  [Id]
+	, [GroupId]
+	, [RoleId]
+	, [IsDisabled]
+	, [CreateUser]
+	, [CreateDate]
+	, [UpdateUser]
+	, [UpdateDate]
+    FROM
+	[dbo].[GroupRole]
+    WHERE 
+	 ([Id] = @Id AND @Id is not null)
+	OR ([GroupId] = @GroupId AND @GroupId is not null)
+	OR ([RoleId] = @RoleId AND @RoleId is not null)
+	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
+	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
+	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
+	OR ([UpdateUser] = @UpdateUser AND @UpdateUser is not null)
+	OR ([UpdateDate] = @UpdateDate AND @UpdateDate is not null)
+	SELECT @@ROWCOUNT			
+  END
+				]]></body>
+		</procedure>
+
+		
+		<procedure owner="dbo" name="GroupRole_Find_Dynamic"  skip="true">
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the GroupRole table using a dynamically generated query.
+-- Table Comment: Define group have what roles
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters/>
+			<body><![CDATA[
+				
+				BEGIN
+				
+				-- Create a temp table to store the select results
+				CREATE TABLE #PageIndex
+				(
+				    [IndexId] int IDENTITY (1, 1) NOT NULL,
+				    [Id] bigint 
+				)
+				
+				-- Insert into the temp table
+				INSERT INTO #PageIndex ( [Id] )
+				SELECT TOP {3} [Id]
+				FROM [dbo].[GroupRole] {0}
+				ORDER BY {1}
+				
+				-- Return paged results
+				SELECT O.[Id], O.[GroupId], O.[RoleId], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				FROM
+				    [dbo].[GroupRole] O,
+				    #PageIndex PageIndex
+				WHERE
+				    PageIndex.IndexId > {2}
+				    AND O.[Id] = PageIndex.[Id]
+				ORDER BY
+				    PageIndex.IndexId
+				
+
+				-- get total count
+				SELECT COUNT(*) AS TotalRowCount FROM [dbo].[GroupRole] {0};
+				
+				DROP TABLE #PageIndex
+				END
+			]]></body>
+		</procedure>
+		
+		
 		<procedure owner="dbo" name="Appointment_Get_List" >
 			<comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
@@ -7677,48 +7218,6 @@
 					[dbo].[Appointment]
 				WHERE
 					[AppointmentGroupId] = @AppointmentGroupId
-				
-				SELECT @@ROWCOUNT
-				SET ANSI_NULLS ON
-			]]></body>
-		</procedure>
-		<procedure owner="dbo" name="Appointment_GetByPatientCode" >
-			<comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Select records from the Appointment table through a foreign key
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-			<parameters>
-				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
-			</parameters>
-			<body><![CDATA[
-				SET ANSI_NULLS OFF
-				
-				SELECT
-					[Id],
-					[PatientCode],
-					[Username],
-					[RoomId],
-					[ServicesId],
-					[StatusId],
-					[AppointmentGroupId],
-					[Note],
-					[StartTime],
-					[EndTime],
-					[RosterId],
-					[IsComplete],
-					[IsDisabled],
-					[CreateUser],
-					[CreateDate],
-					[UpdateUser],
-					[UpdateDate]
-				FROM
-					[dbo].[Appointment]
-				WHERE
-					[PatientCode] = @PatientCode
 				
 				SELECT @@ROWCOUNT
 				SET ANSI_NULLS ON
@@ -8134,6 +7633,495 @@
 
 				-- get total count
 				SELECT COUNT(*) AS TotalRowCount FROM [dbo].[Appointment] {0};
+				
+				DROP TABLE #PageIndex
+				END
+			]]></body>
+		</procedure>
+		
+		
+		<procedure owner="dbo" name="Patient_Get_List" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets all records from the Patient table
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters/>
+			<body><![CDATA[
+				
+				SELECT
+					[PatientCode],
+					[FirstName],
+					[LastName],
+					[MemberType],
+					[HomePhone],
+					[WorkPhone],
+					[CellPhone],
+					[Avatar],
+					[CompanyCode],
+					[Birthdate],
+					[IsFemale],
+					[Title],
+					[Note],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[Patient]
+					
+				SELECT @@ROWCOUNT
+			]]></body>
+		</procedure>
+		
+		
+		<procedure owner="dbo" name="Patient_GetPaged" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the Patient table passing page index and page count parameters
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@WhereClause" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)" />
+				<parameter name="@OrderBy" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)"/>
+				<parameter name="@PageIndex" type="int" direction="Input" size="0" precision="10" scale="0" />
+				<parameter name="@PageSize" type="int" direction="Input" size="0" precision="10" scale="0" /> 
+			</parameters>
+			<body><![CDATA[
+				
+				BEGIN
+				DECLARE @PageLowerBound int
+				DECLARE @PageUpperBound int
+				
+				-- Set the page bounds
+				SET @PageLowerBound = @PageSize * @PageIndex
+				SET @PageUpperBound = @PageLowerBound + @PageSize
+
+				-- Create a temp table to store the select results
+				CREATE TABLE #PageIndex
+				(
+				    [IndexId] int IDENTITY (1, 1) NOT NULL,
+				    [PatientCode] nchar(10)  
+				)
+				
+				-- Insert into the temp table
+				DECLARE @SQL AS nvarchar(4000)
+				SET @SQL = 'INSERT INTO #PageIndex ([PatientCode])'
+				SET @SQL = @SQL + ' SELECT'
+				SET @SQL = @SQL + ' [PatientCode]'
+				SET @SQL = @SQL + ' FROM [dbo].[Patient]'
+				IF LEN(@WhereClause) > 0
+				BEGIN
+					SET @SQL = @SQL + ' WHERE ' + @WhereClause
+				END
+				IF LEN(@OrderBy) > 0
+				BEGIN
+					SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
+				END
+				
+				-- Only get the number of rows needed here.
+				SET ROWCOUNT @PageUpperBound
+				
+				-- Populate the temp table
+				EXEC sp_executesql @SQL
+
+				-- Reset Rowcount back to all
+				SET ROWCOUNT 0
+				
+				-- Return paged results
+				SELECT O.[PatientCode], O.[FirstName], O.[LastName], O.[MemberType], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[CompanyCode], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				FROM
+				    [dbo].[Patient] O,
+				    #PageIndex PageIndex
+				WHERE
+				    PageIndex.IndexId > @PageLowerBound
+					AND O.[PatientCode] = PageIndex.[PatientCode]
+				ORDER BY
+				    PageIndex.IndexId
+				
+				-- get row count
+				SET @SQL = 'SELECT COUNT(*) AS TotalRowCount'
+				SET @SQL = @SQL + ' FROM [dbo].[Patient]'
+				IF LEN(@WhereClause) > 0
+				BEGIN
+					SET @SQL = @SQL + ' WHERE ' + @WhereClause
+				END
+				EXEC sp_executesql @SQL
+			
+				END
+			]]></body>
+		</procedure>
+		
+		<procedure owner="dbo" name="Patient_Insert" grant="">
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Inserts a record into the Patient table
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@MemberType" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CompanyCode" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				
+				INSERT INTO [dbo].[Patient]
+					(
+					[PatientCode]
+					,[FirstName]
+					,[LastName]
+					,[MemberType]
+					,[HomePhone]
+					,[WorkPhone]
+					,[CellPhone]
+					,[Avatar]
+					,[CompanyCode]
+					,[Birthdate]
+					,[IsFemale]
+					,[Title]
+					,[Note]
+					,[IsDisabled]
+					,[CreateUser]
+					,[CreateDate]
+					,[UpdateUser]
+					,[UpdateDate]
+					)
+				VALUES
+					(
+					@PatientCode
+					,@FirstName
+					,@LastName
+					,@MemberType
+					,@HomePhone
+					,@WorkPhone
+					,@CellPhone
+					,@Avatar
+					,@CompanyCode
+					,@Birthdate
+					,@IsFemale
+					,@Title
+					,@Note
+					,@IsDisabled
+					,@CreateUser
+					,@CreateDate
+					,@UpdateUser
+					,@UpdateDate
+					)
+				
+									
+							
+			]]></body>
+		</procedure>
+		<procedure owner="dbo" name="Patient_Update" grant="">
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Updates a record in the Patient table
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@OriginalPatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@MemberType" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
+				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CompanyCode" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault=""/>
+				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault=""/>
+				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				
+				
+				-- Modify the updatable columns
+				UPDATE
+					[dbo].[Patient]
+				SET
+					[PatientCode] = @PatientCode
+					,[FirstName] = @FirstName
+					,[LastName] = @LastName
+					,[MemberType] = @MemberType
+					,[HomePhone] = @HomePhone
+					,[WorkPhone] = @WorkPhone
+					,[CellPhone] = @CellPhone
+					,[Avatar] = @Avatar
+					,[CompanyCode] = @CompanyCode
+					,[Birthdate] = @Birthdate
+					,[IsFemale] = @IsFemale
+					,[Title] = @Title
+					,[Note] = @Note
+					,[IsDisabled] = @IsDisabled
+					,[CreateUser] = @CreateUser
+					,[CreateDate] = @CreateDate
+					,[UpdateUser] = @UpdateUser
+					,[UpdateDate] = @UpdateDate
+				WHERE
+[PatientCode] = @OriginalPatientCode 
+				
+			]]></body>
+		</procedure>
+		<procedure owner="dbo" name="Patient_Delete" grant="">
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Deletes a record in the Patient table
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				DELETE FROM [dbo].[Patient] WITH (ROWLOCK) 
+				WHERE
+					[PatientCode] = @PatientCode
+					
+			]]></body>
+		</procedure>
+		<procedure owner="dbo" name="Patient_GetByPatientCode" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Select records from the Patient table through an index
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+			</parameters>
+			<body><![CDATA[
+				SELECT
+					[PatientCode],
+					[FirstName],
+					[LastName],
+					[MemberType],
+					[HomePhone],
+					[WorkPhone],
+					[CellPhone],
+					[Avatar],
+					[CompanyCode],
+					[Birthdate],
+					[IsFemale],
+					[Title],
+					[Note],
+					[IsDisabled],
+					[CreateUser],
+					[CreateDate],
+					[UpdateUser],
+					[UpdateDate]
+				FROM
+					[dbo].[Patient]
+				WHERE
+					[PatientCode] = @PatientCode
+				SELECT @@ROWCOUNT
+					
+			]]></body>
+			
+		</procedure>
+		<procedure owner="dbo" name="Patient_Find" >
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Finds records in the Patient table passing nullable parameters
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters>
+				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
+				<parameter name="@FirstName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@LastName" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@MemberType" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
+				<parameter name="@HomePhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@WorkPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@CellPhone" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@Avatar" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@CompanyCode" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@Birthdate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
+				<parameter name="@IsFemale" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
+				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
+				<parameter name="@Note" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
+				<parameter name="@IsDisabled" type="bit" direction="Input" size="1" precision="1" scale="0" param="" nulldefault="null"/>
+				<parameter name="@CreateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@CreateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@UpdateDate" type="datetime" direction="Input" size="8" precision="23" scale="3" param="" nulldefault="null"/>
+			</parameters>
+			<body><![CDATA[
+				
+  IF ISNULL(@SearchUsingOR, 0) <> 1
+  BEGIN
+    SELECT
+	  [PatientCode]
+	, [FirstName]
+	, [LastName]
+	, [MemberType]
+	, [HomePhone]
+	, [WorkPhone]
+	, [CellPhone]
+	, [Avatar]
+	, [CompanyCode]
+	, [Birthdate]
+	, [IsFemale]
+	, [Title]
+	, [Note]
+	, [IsDisabled]
+	, [CreateUser]
+	, [CreateDate]
+	, [UpdateUser]
+	, [UpdateDate]
+    FROM
+	[dbo].[Patient]
+    WHERE 
+	 ([PatientCode] = @PatientCode OR @PatientCode IS NULL)
+	AND ([FirstName] = @FirstName OR @FirstName IS NULL)
+	AND ([LastName] = @LastName OR @LastName IS NULL)
+	AND ([MemberType] = @MemberType OR @MemberType IS NULL)
+	AND ([HomePhone] = @HomePhone OR @HomePhone IS NULL)
+	AND ([WorkPhone] = @WorkPhone OR @WorkPhone IS NULL)
+	AND ([CellPhone] = @CellPhone OR @CellPhone IS NULL)
+	AND ([Avatar] = @Avatar OR @Avatar IS NULL)
+	AND ([CompanyCode] = @CompanyCode OR @CompanyCode IS NULL)
+	AND ([Birthdate] = @Birthdate OR @Birthdate IS NULL)
+	AND ([IsFemale] = @IsFemale OR @IsFemale IS NULL)
+	AND ([Title] = @Title OR @Title IS NULL)
+	AND ([Note] = @Note OR @Note IS NULL)
+	AND ([IsDisabled] = @IsDisabled OR @IsDisabled IS NULL)
+	AND ([CreateUser] = @CreateUser OR @CreateUser IS NULL)
+	AND ([CreateDate] = @CreateDate OR @CreateDate IS NULL)
+	AND ([UpdateUser] = @UpdateUser OR @UpdateUser IS NULL)
+	AND ([UpdateDate] = @UpdateDate OR @UpdateDate IS NULL)
+						
+  END
+  ELSE
+  BEGIN
+    SELECT
+	  [PatientCode]
+	, [FirstName]
+	, [LastName]
+	, [MemberType]
+	, [HomePhone]
+	, [WorkPhone]
+	, [CellPhone]
+	, [Avatar]
+	, [CompanyCode]
+	, [Birthdate]
+	, [IsFemale]
+	, [Title]
+	, [Note]
+	, [IsDisabled]
+	, [CreateUser]
+	, [CreateDate]
+	, [UpdateUser]
+	, [UpdateDate]
+    FROM
+	[dbo].[Patient]
+    WHERE 
+	 ([PatientCode] = @PatientCode AND @PatientCode is not null)
+	OR ([FirstName] = @FirstName AND @FirstName is not null)
+	OR ([LastName] = @LastName AND @LastName is not null)
+	OR ([MemberType] = @MemberType AND @MemberType is not null)
+	OR ([HomePhone] = @HomePhone AND @HomePhone is not null)
+	OR ([WorkPhone] = @WorkPhone AND @WorkPhone is not null)
+	OR ([CellPhone] = @CellPhone AND @CellPhone is not null)
+	OR ([Avatar] = @Avatar AND @Avatar is not null)
+	OR ([CompanyCode] = @CompanyCode AND @CompanyCode is not null)
+	OR ([Birthdate] = @Birthdate AND @Birthdate is not null)
+	OR ([IsFemale] = @IsFemale AND @IsFemale is not null)
+	OR ([Title] = @Title AND @Title is not null)
+	OR ([Note] = @Note AND @Note is not null)
+	OR ([IsDisabled] = @IsDisabled AND @IsDisabled is not null)
+	OR ([CreateUser] = @CreateUser AND @CreateUser is not null)
+	OR ([CreateDate] = @CreateDate AND @CreateDate is not null)
+	OR ([UpdateUser] = @UpdateUser AND @UpdateUser is not null)
+	OR ([UpdateDate] = @UpdateDate AND @UpdateDate is not null)
+	SELECT @@ROWCOUNT			
+  END
+				]]></body>
+		</procedure>
+
+		
+		<procedure owner="dbo" name="Patient_Find_Dynamic"  skip="true">
+			<comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the Patient table using a dynamically generated query.
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+			<parameters/>
+			<body><![CDATA[
+				
+				BEGIN
+				
+				-- Create a temp table to store the select results
+				CREATE TABLE #PageIndex
+				(
+				    [IndexId] int IDENTITY (1, 1) NOT NULL,
+				    [PatientCode] nchar(10)  
+				)
+				
+				-- Insert into the temp table
+				INSERT INTO #PageIndex ( [PatientCode] )
+				SELECT TOP {3} [PatientCode]
+				FROM [dbo].[Patient] {0}
+				ORDER BY {1}
+				
+				-- Return paged results
+				SELECT O.[PatientCode], O.[FirstName], O.[LastName], O.[MemberType], O.[HomePhone], O.[WorkPhone], O.[CellPhone], O.[Avatar], O.[CompanyCode], O.[Birthdate], O.[IsFemale], O.[Title], O.[Note], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				FROM
+				    [dbo].[Patient] O,
+				    #PageIndex PageIndex
+				WHERE
+				    PageIndex.IndexId > {2}
+				    AND O.[PatientCode] = PageIndex.[PatientCode]
+				ORDER BY
+				    PageIndex.IndexId
+				
+
+				-- get total count
+				SELECT COUNT(*) AS TotalRowCount FROM [dbo].[Patient] {0};
 				
 				DROP TABLE #PageIndex
 				END

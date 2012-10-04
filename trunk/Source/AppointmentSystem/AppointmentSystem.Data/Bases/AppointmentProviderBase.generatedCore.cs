@@ -145,91 +145,6 @@ namespace AppointmentSystem.Data.Bases
 		
 	
 		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Appointment_Patient key.
-		///		FK_Appointment_Patient Description: 
-		/// </summary>
-		/// <param name="_patientCode"></param>
-		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByPatientCode(System.String _patientCode)
-		{
-			int count = -1;
-			return GetByPatientCode(_patientCode, 0,int.MaxValue, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Appointment_Patient key.
-		///		FK_Appointment_Patient Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_patientCode"></param>
-		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		/// <remarks></remarks>
-		public TList<Appointment> GetByPatientCode(TransactionManager transactionManager, System.String _patientCode)
-		{
-			int count = -1;
-			return GetByPatientCode(transactionManager, _patientCode, 0, int.MaxValue, out count);
-		}
-		
-			/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Appointment_Patient key.
-		///		FK_Appointment_Patient Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_patientCode"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		///  <param name="pageLength">Number of rows to return.</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByPatientCode(TransactionManager transactionManager, System.String _patientCode, int start, int pageLength)
-		{
-			int count = -1;
-			return GetByPatientCode(transactionManager, _patientCode, start, pageLength, out count);
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Appointment_Patient key.
-		///		fkAppointmentPatient Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_patientCode"></param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByPatientCode(System.String _patientCode, int start, int pageLength)
-		{
-			int count =  -1;
-			return GetByPatientCode(null, _patientCode, start, pageLength,out count);	
-		}
-		
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Appointment_Patient key.
-		///		fkAppointmentPatient Description: 
-		/// </summary>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="_patientCode"></param>
-		/// <param name="count">out parameter to get total records for query</param>
-		/// <remarks></remarks>
-		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public TList<Appointment> GetByPatientCode(System.String _patientCode, int start, int pageLength,out int count)
-		{
-			return GetByPatientCode(null, _patientCode, start, pageLength, out count);	
-		}
-						
-		/// <summary>
-		/// 	Gets rows from the datasource based on the FK_Appointment_Patient key.
-		///		FK_Appointment_Patient Description: 
-		/// </summary>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <param name="_patientCode"></param>
-		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="count">The total number of records.</param>
-		/// <returns>Returns a typed collection of AppointmentSystem.Entities.Appointment objects.</returns>
-		public abstract TList<Appointment> GetByPatientCode(TransactionManager transactionManager, System.String _patientCode, int start, int pageLength, out int count);
-		
-	
-		/// <summary>
 		/// 	Gets rows from the datasource based on the FK_Appointment_Procedure key.
 		///		FK_Appointment_Procedure Description: 
 		/// </summary>
@@ -948,32 +863,6 @@ namespace AppointmentSystem.Data.Bases
 			}
 			#endregion AppointmentGroupIdSource
 
-			#region PatientCodeSource	
-			if (CanDeepLoad(entity, "Patient|PatientCodeSource", deepLoadType, innerList) 
-				&& entity.PatientCodeSource == null)
-			{
-				object[] pkItems = new object[1];
-				pkItems[0] = entity.PatientCode;
-				Patient tmpEntity = EntityManager.LocateEntity<Patient>(EntityLocator.ConstructKeyFromPkItems(typeof(Patient), pkItems), DataRepository.Provider.EnableEntityTracking);
-				if (tmpEntity != null)
-					entity.PatientCodeSource = tmpEntity;
-				else
-					entity.PatientCodeSource = DataRepository.PatientProvider.GetByPatientCode(transactionManager, entity.PatientCode);		
-				
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'PatientCodeSource' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-				
-				if (deep && entity.PatientCodeSource != null)
-				{
-					innerList.SkipChildren = true;
-					DataRepository.PatientProvider.DeepLoad(transactionManager, entity.PatientCodeSource, deep, deepLoadType, childTypes, innerList);
-					innerList.SkipChildren = false;
-				}
-					
-			}
-			#endregion PatientCodeSource
-
 			#region ServicesIdSource	
 			if (CanDeepLoad(entity, "Services|ServicesIdSource", deepLoadType, innerList) 
 				&& entity.ServicesIdSource == null)
@@ -1106,6 +995,28 @@ namespace AppointmentSystem.Data.Bases
 			
 			//used to hold DeepLoad method delegates and fire after all the local children have been loaded.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
+			// Deep load child collections  - Call GetById methods when available
+			
+			#region AppointmentHistoryCollection
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<AppointmentHistory>|AppointmentHistoryCollection", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'AppointmentHistoryCollection' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.AppointmentHistoryCollection = DataRepository.AppointmentHistoryProvider.GetByAppointmentId(transactionManager, entity.Id);
+
+				if (deep && entity.AppointmentHistoryCollection.Count > 0)
+				{
+					deepHandles.Add("AppointmentHistoryCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<AppointmentHistory>) DataRepository.AppointmentHistoryProvider.DeepLoad,
+						new object[] { transactionManager, entity.AppointmentHistoryCollection, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
 			
 			//Fire all DeepLoad Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
@@ -1143,15 +1054,6 @@ namespace AppointmentSystem.Data.Bases
 			{
 				DataRepository.AppointmentGroupProvider.Save(transactionManager, entity.AppointmentGroupIdSource);
 				entity.AppointmentGroupId = entity.AppointmentGroupIdSource.Id;
-			}
-			#endregion 
-			
-			#region PatientCodeSource
-			if (CanDeepSave(entity, "Patient|PatientCodeSource", deepSaveType, innerList) 
-				&& entity.PatientCodeSource != null)
-			{
-				DataRepository.PatientProvider.Save(transactionManager, entity.PatientCodeSource);
-				entity.PatientCode = entity.PatientCodeSource.PatientCode;
 			}
 			#endregion 
 			
@@ -1207,6 +1109,36 @@ namespace AppointmentSystem.Data.Bases
 			
 			//used to hold DeepSave method delegates and fire after all the local children have been saved.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
+	
+			#region List<AppointmentHistory>
+				if (CanDeepSave(entity.AppointmentHistoryCollection, "List<AppointmentHistory>|AppointmentHistoryCollection", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(AppointmentHistory child in entity.AppointmentHistoryCollection)
+					{
+						if(child.AppointmentIdSource != null)
+						{
+							child.AppointmentId = child.AppointmentIdSource.Id;
+						}
+						else
+						{
+							child.AppointmentId = entity.Id;
+						}
+
+					}
+
+					if (entity.AppointmentHistoryCollection.Count > 0 || entity.AppointmentHistoryCollection.DeletedItems.Count > 0)
+					{
+						//DataRepository.AppointmentHistoryProvider.Save(transactionManager, entity.AppointmentHistoryCollection);
+						
+						deepHandles.Add("AppointmentHistoryCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< AppointmentHistory >) DataRepository.AppointmentHistoryProvider.DeepSave,
+							new object[] { transactionManager, entity.AppointmentHistoryCollection, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
 			//Fire all DeepSave Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
 		    {
@@ -1241,12 +1173,6 @@ namespace AppointmentSystem.Data.Bases
 		AppointmentGroup,
 			
 		///<summary>
-		/// Composite Property for <c>Patient</c> at PatientCodeSource
-		///</summary>
-		[ChildEntityType(typeof(Patient))]
-		Patient,
-			
-		///<summary>
 		/// Composite Property for <c>Services</c> at ServicesIdSource
 		///</summary>
 		[ChildEntityType(typeof(Services))]
@@ -1275,7 +1201,13 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Users))]
 		Users,
-		}
+	
+		///<summary>
+		/// Collection of <c>Appointment</c> as OneToMany for AppointmentHistoryCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<AppointmentHistory>))]
+		AppointmentHistoryCollection,
+	}
 	
 	#endregion AppointmentChildEntityTypes
 	

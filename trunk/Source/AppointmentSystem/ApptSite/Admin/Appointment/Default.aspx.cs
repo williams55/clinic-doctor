@@ -950,8 +950,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                       obj.Note),
                     DoctorDisplayname = obj.UsernameSource.DisplayName,
                     obj.PatientCode,
-                    PatientName = obj.PatientCodeSource.FirstName,
-                    PatientInfo = patient,
+                    PatientName = patient.FirstName,
+                    PatientInfo = ParsePatientName(patient),
                     obj.ServicesId,
                     ServicesTitle = obj.ServicesIdSource.Title,
                     obj.RoomId,
@@ -1020,29 +1020,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     }
     #endregion
 
-    #region Appointment Methods
-    /// <summary>
-    /// Add appointment to list
-    /// </summary>
-    /// <param name="lst"></param>
-    /// <param name="item"></param>
-    private static void AddAppointment(List<object> lst, Appointment item)
-    {
-        lst.Add(BuildAppointment(item));
-    }
-
-    /// <summary>
-    /// Add appointment to list
-    /// </summary>
-    /// <param name="lst"></param>
-    /// <param name="lstItem"></param>
-    private static void AddAppointment(List<object> lst, IEnumerable<Appointment> lstItem)
-    {
-        lst.AddRange(lstItem.Select(appointment => BuildAppointment(appointment)));
-    }
-
-    #endregion
-
     #region Appointment
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
@@ -1102,37 +1079,34 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             #endregion
 
             #region "Send Appointment"
+            var objPatient = DataRepository.VcsPatientProvider.GetByPatientCode(patientCode)[0];
+            
             DataRepository.AppointmentProvider.DeepLoad(newObj);
-            string strSubject = String.Format("New Appointment: {0}{1}{2}{3}",
+            string strSubject = String.Format("New Appointment: {0}{1}{2}",
                                               string.IsNullOrEmpty(newObj.ServicesIdSource.Title)
                                                   ? string.Empty
                                                   : newObj.ServicesIdSource.Title + " - "
                                               ,
-                                              string.IsNullOrEmpty(newObj.PatientCodeSource.Title)
+                                              string.IsNullOrEmpty(objPatient.FirstName)
                                                   ? string.Empty
-                                                  : newObj.PatientCodeSource.Title + ". ",
-                                              string.IsNullOrEmpty(newObj.PatientCodeSource.FirstName)
+                                                  : objPatient.FirstName + " ",
+                                              string.IsNullOrEmpty(objPatient.LastName)
                                                   ? string.Empty
-                                                  : newObj.PatientCodeSource.FirstName + " ",
-                                              string.IsNullOrEmpty(newObj.PatientCodeSource.LastName)
-                                                  ? string.Empty
-                                                  : newObj.PatientCodeSource.LastName);
+                                                  : objPatient.LastName);
             string strBody = String.Format("You have a new appointment");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
             string strLocation = String.Format("Room {0}", string.IsNullOrEmpty(newObj.RoomIdSource.Title)
                                                   ? string.Empty
                                                   : newObj.RoomIdSource.Title);
-            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}. {2} {3}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, string.IsNullOrEmpty(newObj.PatientCodeSource.Title)
+            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1} {2}",
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, 
+                                              string.IsNullOrEmpty(objPatient.FirstName)
                                                   ? string.Empty
-                                                  : newObj.PatientCodeSource.Title + ". ",
-                                              string.IsNullOrEmpty(newObj.PatientCodeSource.FirstName)
+                                                  : objPatient.FirstName + " ",
+                                              string.IsNullOrEmpty(objPatient.LastName)
                                                   ? string.Empty
-                                                  : newObj.PatientCodeSource.FirstName + " ",
-                                              string.IsNullOrEmpty(newObj.PatientCodeSource.LastName)
-                                                  ? string.Empty
-                                                  : newObj.PatientCodeSource.LastName);
+                                                  : objPatient.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(newObj.StartTime), Convert.ToDateTime(newObj.EndTime));
             objMail.AddMailAddress(newObj.UsernameSource.Email, newObj.UsernameSource.DisplayName);
@@ -1193,15 +1167,16 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             #endregion
 
             #region "Send Appointment"
-            string strSubject = String.Format("Change Appointment: {0} - {1}. {2} {3}", appointment.ServicesIdSource.Title
-                , appointment.PatientCodeSource.Title, appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
+            var objPatient = DataRepository.VcsPatientProvider.GetByPatientCode(appointment.PatientCode)[0];
+            string strSubject = String.Format("Change Appointment: {0} - {1} {2}", appointment.ServicesIdSource.Title
+                , objPatient.FirstName, objPatient.LastName);
             string strBody = String.Format("You have a new change for appointment");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
             string strLocation = String.Format("Room {0}", appointment.RoomIdSource.Title);
-            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}. {2} {3}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, appointment.PatientCodeSource.Title
-                , appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
+            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1} {2}",
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment
+                , objPatient.FirstName, objPatient.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(appointment.StartTime), Convert.ToDateTime(appointment.EndTime));
             objMail.AddMailAddress(appointment.UsernameSource.Email, appointment.UsernameSource.DisplayName);
@@ -1270,6 +1245,20 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(_message);
             }
 
+            // Neu status thay doi thi ghi log
+            if (appointment.StatusId != status)
+            {
+                DataRepository.AppointmentHistoryProvider.Insert(new AppointmentHistory
+                    {
+                        Guid = Guid.NewGuid(),
+                        AppointmentId = appointment.Id,
+                        CreateDate = DateTime.Now,
+                        CreateUser = WebCommon.GetAuthUsername(),
+                        Note = String.Format("User {3} change status of appointment {0} from {1} to {2}"
+                                             , appointment.Id, appointment.StatusId, status, WebCommon.GetAuthUsername())
+                    });
+            }
+
             tm.BeginTransaction();
 
             #region "Update Appointment"
@@ -1289,16 +1278,17 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             #endregion
 
             #region "Send Appointment"
+            var objPatient = DataRepository.VcsPatientProvider.GetByPatientCode(patientCode)[0];
             DataRepository.AppointmentProvider.DeepLoad(appointment);
-            string strSubject = String.Format("Change Appointment: {0} - {1}. {2} {3}", appointment.ServicesIdSource.Title
-                , appointment.PatientCodeSource.Title, appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
+            string strSubject = String.Format("Change Appointment: {0} - {1} {2}", appointment.ServicesIdSource.Title
+                , objPatient.FirstName, objPatient.LastName);
             string strBody = String.Format("You have a new change for appointment");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
             string strLocation = String.Format("Room {0}", appointment.RoomIdSource.Title);
-            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1}. {2} {3}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, appointment.PatientCodeSource.Title
-                , appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
+            string strAlarmSummary = String.Format("{0} minutes left for appointment with {1} {2}",
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment
+                , objPatient.FirstName, objPatient.LastName);
             var objMail = new MailAppointment(strSubject, strBody, strSummary, strDescription, strLocation, strAlarmSummary,
                 Convert.ToDateTime(appointment.StartTime), Convert.ToDateTime(appointment.EndTime));
             objMail.AddMailAddress(appointment.UsernameSource.Email, appointment.UsernameSource.DisplayName);
@@ -1456,8 +1446,9 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             #region "Send Appointment"
             DataRepository.AppointmentProvider.DeepLoad(appointment);
-            string strSubject = String.Format("Delete Appointment: {0} - {1}. {2} {3}", appointment.ServicesIdSource.Title
-                , appointment.PatientCodeSource.Title, appointment.PatientCodeSource.FirstName, appointment.PatientCodeSource.LastName);
+            var objPatient = DataRepository.VcsPatientProvider.GetByPatientCode(appointment.PatientCode)[0];
+            string strSubject = String.Format("Delete Appointment: {0} - {1} {2}", appointment.ServicesIdSource.Title
+                , objPatient.FirstName, objPatient.LastName);
             string strBody = String.Format("Appointment has been deleted.");
             string strSummary = string.Empty;
             string strDescription = string.Empty;
@@ -1685,6 +1676,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <param name="message"> </param>
     /// <param name="dtStart"> </param>
     /// <param name="startTime"> </param>
+    /// <param name="rosterId"> </param>
     /// <returns></returns>
     private static bool ValidateAppointmentFields(string doctorId, string startTime, string endTime, Appointment appointment
         , ref DateTime dtStart, ref DateTime dtEnd, ref string message, ref string rosterId)
@@ -1756,6 +1748,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <param name="message"> </param>
     /// <param name="dtStart"> </param>
     /// <param name="serviceId"> </param>
+    /// <param name="rosterId"> </param>
     /// <returns></returns>
     private static bool ValidateAppointmentFields(int compareValue, ref string patientCode, ref string note, ref string startTime, ref string endTime
         , ref string startDate, ref string endDate, ref string doctorId, ref string roomId, ref string status

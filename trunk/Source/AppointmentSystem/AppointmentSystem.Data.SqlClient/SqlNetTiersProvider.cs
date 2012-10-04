@@ -738,40 +738,40 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 		
 		
-		#region "PatientProvider"
+		#region "RosterProvider"
 			
-		private SqlPatientProvider innerSqlPatientProvider;
+		private SqlRosterProvider innerSqlRosterProvider;
 
 		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="Patient"/> business entity.
+		/// This class is the Data Access Logic Component for the <see cref="Roster"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
 		/// <value></value>
-		public override PatientProviderBase PatientProvider
+		public override RosterProviderBase RosterProvider
 		{
 			get
 			{
-				if (innerSqlPatientProvider == null) 
+				if (innerSqlRosterProvider == null) 
 				{
 					lock (syncRoot) 
 					{
-						if (innerSqlPatientProvider == null)
+						if (innerSqlRosterProvider == null)
 						{
-							this.innerSqlPatientProvider = new SqlPatientProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+							this.innerSqlRosterProvider = new SqlRosterProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
 						}
 					}
 				}
-				return innerSqlPatientProvider;
+				return innerSqlRosterProvider;
 			}
 		}
 		
 		/// <summary>
-		/// Gets the current <see cref="SqlPatientProvider"/>.
+		/// Gets the current <see cref="SqlRosterProvider"/>.
 		/// </summary>
 		/// <value></value>
-		public SqlPatientProvider SqlPatientProvider
+		public SqlRosterProvider SqlRosterProvider
 		{
-			get {return PatientProvider as SqlPatientProvider;}
+			get {return RosterProvider as SqlRosterProvider;}
 		}
 		
 		#endregion
@@ -816,45 +816,6 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 		
 		
-		#region "RosterProvider"
-			
-		private SqlRosterProvider innerSqlRosterProvider;
-
-		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="Roster"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		/// <value></value>
-		public override RosterProviderBase RosterProvider
-		{
-			get
-			{
-				if (innerSqlRosterProvider == null) 
-				{
-					lock (syncRoot) 
-					{
-						if (innerSqlRosterProvider == null)
-						{
-							this.innerSqlRosterProvider = new SqlRosterProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
-						}
-					}
-				}
-				return innerSqlRosterProvider;
-			}
-		}
-		
-		/// <summary>
-		/// Gets the current <see cref="SqlRosterProvider"/>.
-		/// </summary>
-		/// <value></value>
-		public SqlRosterProvider SqlRosterProvider
-		{
-			get {return RosterProvider as SqlRosterProvider;}
-		}
-		
-		#endregion
-		
-		
 		#region "AppointmentProvider"
 			
 		private SqlAppointmentProvider innerSqlAppointmentProvider;
@@ -889,6 +850,45 @@ namespace AppointmentSystem.Data.SqlClient
 		public SqlAppointmentProvider SqlAppointmentProvider
 		{
 			get {return AppointmentProvider as SqlAppointmentProvider;}
+		}
+		
+		#endregion
+		
+		
+		#region "PatientProvider"
+			
+		private SqlPatientProvider innerSqlPatientProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="Patient"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override PatientProviderBase PatientProvider
+		{
+			get
+			{
+				if (innerSqlPatientProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlPatientProvider == null)
+						{
+							this.innerSqlPatientProvider = new SqlPatientProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlPatientProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <see cref="SqlPatientProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlPatientProvider SqlPatientProvider
+		{
+			get {return PatientProvider as SqlPatientProvider;}
 		}
 		
 		#endregion

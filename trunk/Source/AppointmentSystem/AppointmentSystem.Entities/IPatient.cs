@@ -117,13 +117,6 @@ namespace AppointmentSystem.Entities
 		
 		#region Data Properties
 
-
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentPatientCode
-		/// </summary>	
-		TList<Appointment> AppointmentCollection {  get;  set;}	
-
 		#endregion Data Properties
 
 	}

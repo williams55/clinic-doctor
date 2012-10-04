@@ -22,11 +22,6 @@ public partial class PatientEdit : System.Web.UI.Page
 		FormUtil.RedirectAfterCancel(FormView1, "Patient.aspx");
 		FormUtil.SetDefaultMode(FormView1, "PatientCode");
 	}
-	protected void GridViewAppointment1_SelectedIndexChanged(object sender, EventArgs e)
-	{
-		string urlParams = string.Format("Id={0}", GridViewAppointment1.SelectedDataKey.Values[0]);
-		Response.Redirect("AppointmentEdit.aspx?" + urlParams, true);		
-	}	
 }
 
 
