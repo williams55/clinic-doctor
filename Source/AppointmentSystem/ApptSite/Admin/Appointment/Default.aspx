@@ -2,6 +2,7 @@
     CodeFile="Default.aspx.cs" Inherits="Admin_Appointment_Default" %>
 
 <%@ Import Namespace="AppointmentSystem.Settings.BusinessLayer" %>
+<%@ Import Namespace="Appt.Common.Constants" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
     Appointment
 </asp:Content>
@@ -44,6 +45,7 @@
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/jquery.scrollTo-1.4.2-min.js") %>"></script>
+
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/common.js") %>"></script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/jqueryRotate.js") %>"></script>
@@ -111,31 +113,31 @@
                     <h3>
                         Patient's Information</h3>
                     <div class="title-info">
-                        Firstname</div>
+                        First Name</div>
                     <div class="content-info" id="divFirstname" style="margin-right: 35px;">
                         &nbsp;
                     </div>
                     <div class="title-info">
-                        Lastname</div>
+                        Last Name</div>
                     <div class="content-info" id="divLastname">
                         &nbsp;
                     </div>
                     <div class="clear">
                     </div>
                     <div class="title-info">
-                        Cell phone</div>
+                        Mobile phone</div>
                     <div class="content-info" id="divCellPhone" style="margin-right: 35px;">
                         &nbsp;
                     </div>
                     <div class="title-info">
-                        Birthday</div>
+                        DOB</div>
                     <div class="content-info" id="divBirthday">
                         &nbsp;
                     </div>
                     <div class="clear">
                     </div>
                     <div class="title-info">
-                        Note</div>
+                        Remark</div>
                     <div class="content-info" id="divNote" style="width: 435px;">
                         &nbsp;
                     </div>
@@ -197,41 +199,89 @@
                 <table class="table-form" style="width: 100%">
                     <tr>
                         <td class="header" style="width: 80px;">
+                            First Name
+                        </td>
+                        <td>
+                            <input tabindex="1" type="text" name="txtFirstName" id="txtFirstName" style="width: 100%"
+                                class="content-input ui-widget-content ui-corner-all" />
+                        </td>
+                        <td style="width: 10px;">
+                        </td>
+                        <td class="header">
+                            DOB
+                        </td>
+                        <td>
+                            <input type="text" id="txtDob" class="datePicker content-input ui-widget-content ui-corner-all"
+                                readonly="readonly" tabindex="6" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="header">
+                            Middle Name
+                        </td>
+                        <td>
+                            <input type="text" tabindex="2" name="txtMiddileName" id="txtMiddileName" value=""
+                                style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
+                        </td>
+                        <td>
+                        </td>
+                        <td class="header">
+                            Mobile Phone
+                        </td>
+                        <td>
+                            <input type="text" name="txtCellPhone" tabindex="7" id="txtMobilePhone" value=""
+                                style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="header">
+                            Last Name
+                        </td>
+                        <td>
+                            <input type="text" tabindex="3" name="txtLastName" id="txtLastName" value="" style="width: 100%"
+                                class="content-input ui-widget-content ui-corner-all" />
+                        </td>
+                        <td>
+                        </td>
+                        <td class="header">
+                            Member Type
+                        </td>
+                        <td>
+                            <dx:ASPxComboBox runat="server" ID="txtMemberType" Width="100%" DataSourceID="VcsMemberTypeDataSource"
+                                TabIndex="8" CssClass="content-input ui-widget-content ui-corner-all" ValueField="MemberType"
+                                TextField="MemberType" ClientInstanceName="txtMemberType">
+                            </dx:ASPxComboBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="header">
                             Sex
                         </td>
                         <td>
-                            <input type="radio" name="radSex" id="radMale" value="false" checked="checked" />
+                            <input type="radio" name="radSex" id="radMale" value="<%= SexConstant.Male.Key %>"
+                                checked="checked" tabindex="4" />
                             <label for="radMale">
-                                Male</label>
-                            <input type="radio" name="radSex" id="radFemale" value="true" />
-                            <label for="radFemale">
-                                Female</label>
+                                <%= SexConstant.Male.Value %></label>
+                            <input type="radio" name="radSex" id="radFemale" value="<%= SexConstant.Female.Key %>" />
+                            <label for="radFemale" tabindex="5">
+                                <%= SexConstant.Female.Value %></label>
+                        </td>
+                        <td>
+                        </td>
+                        <td class="header">
+                            Nationality
+                        </td>
+                        <td>
+                            <input type="text" tabindex="9" name="txtNationality" id="txtNationality" value=""
+                                style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
                         </td>
                     </tr>
                     <tr>
                         <td class="header">
-                            Firstname
+                            Remark
                         </td>
-                        <td>
-                            <input type="text" name="txtFirstName" id="txtFirstName" style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Lastname
-                        </td>
-                        <td>
-                            <input type="text" name="txtLastName" id="txtLastName" value="" style="width: 100%"
-                                class="content-input ui-widget-content ui-corner-all" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Cell Phone
-                        </td>
-                        <td>
-                            <input type="text" name="txtCellPhone" id="txtCellPhone" value="" style="width: 100%"
-                                class="content-input ui-widget-content ui-corner-all" />
+                        <td colspan="4">
+                            <textarea id="txtRemark" tabindex="10" style="width: 100%; height: 40px;" class="content-input ui-widget-content ui-corner-all"></textarea>
                         </td>
                     </tr>
                 </table>
@@ -313,7 +363,10 @@
             </div>
         </div>
     </div>
-
-
-    
+    <data:VcsMemberTypeDataSource ID="VcsMemberTypeDataSource" runat="server" SelectMethod="GetPaged">
+        <Parameters>
+            <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+        </Parameters>
+    </data:VcsMemberTypeDataSource>
 </asp:Content>
