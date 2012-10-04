@@ -366,12 +366,17 @@ function GetPatientInfo(currentId) {
 }
 
 // Create new patient
-function CreateSimplePatient(firstname, lastname, cellPhone, dialog) {
+function CreateSimplePatient(firstname, middleName, lastname, dob, memberType, nationality, remark, mobilePhone, dialog) {
     var requestdata = JSON.stringify({
-        firstname: $(firstname).val(),
-        lastname: $(lastname).val(),
-        cellPhone: $(cellPhone).val(),
-        isFemale: $('input[name=radSex]:checked').val()
+        firstName: $(firstname).val(),
+        middleName: $(middleName).val(),
+        lastName: $(lastname).val(),
+        memberType: txtMemberType.GetValue(),
+        dob: $(dob).datepicker('getDate'),
+        nationality: $(nationality).val(),
+        mobilePhone: $(mobilePhone).val(),
+        sex: $('input[name=radSex]:checked').val(),
+        remark: $(remark).val()
     });
     ShowProgress();
     $.ajax({
@@ -399,13 +404,18 @@ function CreateSimplePatient(firstname, lastname, cellPhone, dialog) {
 }
 
 // Create new patient
-function UpdateSimplePatient(id, firstname, lastname, cellPhone, dialog) {
+function UpdateSimplePatient(id, firstname, middleName, lastname, dob, memberType, nationality, remark, mobilePhone, dialog) {
     var requestdata = JSON.stringify({
         id: id,
-        firstname: $(firstname).val(),
-        lastname: $(lastname).val(),
-        cellPhone: $(cellPhone).val(),
-        isFemale: $('input[name=radSex]:checked').val()
+        firstName: $(firstname).val(),
+        middleName: $(middleName).val(),
+        lastName: $(lastname).val(),
+        memberType: txtMemberType.GetValue(),
+        dob: $(dob).datepicker('getDate'),
+        nationality: $(nationality).val(),
+        mobilePhone: $(mobilePhone).val(),
+        sex: $('input[name=radSex]:checked').val(),
+        remark: $(remark).val()
     });
     ShowProgress();
 
@@ -823,18 +833,24 @@ $("[id$=createUser]").click(function() {
     $("#dialog:ui-dialog").dialog("destroy");
 
     var txtFirstName = $("#txtFirstName"),
+        txtMiddileName = $("#txtMiddileName"),
         txtLastName = $("#txtLastName"),
+        txtDob = $("#txtDob"),
+        txtMemberType = $("[id*=txtMemberType]"),
+        txtNationality = $("#txtNationality"),
+        txtRemark = $("#txtRemark"),
         radSex = $("input[name=radSex]"),
-        txtCellPhone = $("#txtCellPhone"),
-        allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone);
+        txtMobilePhone = $("#txtMobilePhone"),
+        allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtMobilePhone).add(txtMiddileName).add(txtDob)
+            .add(txtMemberType).add(txtNationality).add(txtRemark);
 
     var tmpForm = $('#RosterForm').parent();
     $(tmpForm).hide();
 
     $("#dialog-form").dialog({
         autoOpen: true,
-        height: 230,
-        width: 550,
+        height: 320,
+        width: 600,
         modal: false,
         zIndex: $.maxZIndex() + 1,
         resizable: false,
@@ -847,7 +863,8 @@ $("[id$=createUser]").click(function() {
                 allFields.removeClass("ui-state-error");
 
                 if (bValid) {
-                    CreateSimplePatient(txtFirstName, txtLastName, txtCellPhone, this);
+                    CreateSimplePatient(txtFirstName, txtMiddileName, txtLastName, txtDob, txtMemberType
+                        , txtNationality, txtRemark, txtMobilePhone, this);
                 }
             }
         },
@@ -860,9 +877,14 @@ $("[id$=createUser]").click(function() {
 
     $(txtFirstName).val("");
     $(txtLastName).val("");
-    $(txtCellPhone).val("");
-    $("#radMale").val("false");
-    $("#radFemale").val("true");
+    $(txtMobilePhone).val("");
+    $(txtMiddileName).val("");
+    $(txtDob).val("");
+    $(txtMemberType).val("");
+    $(txtNationality).val("");
+    $(txtRemark).val("");
+    $("#radMale").val("M");
+    $("#radFemale").val("F");
     $("#radMale").attr("checked", "checked");
 });
 
@@ -878,10 +900,15 @@ $("[id$=changeUser]").click(function() {
     }
 
     var txtFirstName = $("#txtFirstName"),
+        txtMiddileName = $("#txtMiddileName"),
         txtLastName = $("#txtLastName"),
+        txtDob = $("#txtDob"),
+        txtNationality = $("#txtNationality"),
+        txtRemark = $("#txtRemark"),
         radSex = $("input[name=radSex]"),
-        txtCellPhone = $("#txtCellPhone"),
-        allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtCellPhone);
+        txtMobilePhone = $("#txtMobilePhone"),
+        allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtMobilePhone).add(txtMiddileName).add(txtDob)
+            .add(txtMemberType).add(txtNationality).add(txtRemark);
 
     ShowProgress();
     var requestdata = JSON.stringify({ id: patient[0].id });
@@ -901,8 +928,8 @@ $("[id$=changeUser]").click(function() {
 
                 $("#dialog-form").dialog({
                     autoOpen: true,
-                    height: 230,
-                    width: 550,
+                    height: 320,
+                    width: 600,
                     modal: false,
                     zIndex: $.maxZIndex() + 1,
                     resizable: false,
@@ -915,7 +942,8 @@ $("[id$=changeUser]").click(function() {
                             allFields.removeClass("ui-state-error");
 
                             if (bValid) {
-                                UpdateSimplePatient(patient[0].id, txtFirstName, txtLastName, txtCellPhone, this);
+                                UpdateSimplePatient(patient[0].id, txtFirstName, txtMiddileName, txtLastName, txtDob, txtMemberType
+                                    , txtNationality, txtRemark, txtMobilePhone, this);
                             }
                         }
                     },
@@ -927,11 +955,17 @@ $("[id$=changeUser]").click(function() {
                 });
 
                 $(txtFirstName).val(obj.data[0].FirstName);
+                $(txtMiddileName).val(obj.data[0].MiddleName);
                 $(txtLastName).val(obj.data[0].LastName);
-                $(txtCellPhone).val(obj.data[0].CellPhone);
-                $("#radMale").val("false");
-                $("#radFemale").val("true");
-                if (obj.data[0].IsFemale == false) {
+                $(txtMobilePhone).val(obj.data[0].CellPhone);
+                $(txtDob).datepicker('setDate', obj.data[0].DateOfBirth);
+                var item = txtMemberType.FindItemByValue(obj.data[0].MemberType);
+                txtMemberType.SetSelectedItem(item);
+                $(txtNationality).val(obj.data[0].Nationality);
+                $(txtRemark).val(obj.data[0].Remark);
+                $("#radMale").val("M");
+                $("#radFemale").val("F");
+                if (obj.data[0].Sex == "M") {
                     $("#radMale").attr("checked", "checked");
                     $("#radFemale").removeAttr("checked");
                 } else {

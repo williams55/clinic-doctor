@@ -100,7 +100,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                 return;
             }
 
-            // Validate empty field
+            // Validate field
             DateTime dtDOB;
             if (!DateTime.TryParse(e.NewValues["DateOfBirth"].ToString(), out dtDOB))
             {
