@@ -126,6 +126,16 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field User name can not be empty";
                 e.Cancel = true;
             }
+            if (e.NewValues["Firstname"].ToString().Trim().Length < 1 || e.NewValues["Firstname"] == null)
+            {
+                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field First name can not be empty";
+                e.Cancel = true;
+            }
+            if (e.NewValues["Lastname"].ToString().Trim().Length < 1 || e.NewValues["Lastname"] == null)
+            {
+                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Last name can not be empty";
+                e.Cancel = true;
+            }
             if (e.NewValues["DisplayName"].ToString().Trim().Length < 1)
             {
                 ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Display name can not be empty";
