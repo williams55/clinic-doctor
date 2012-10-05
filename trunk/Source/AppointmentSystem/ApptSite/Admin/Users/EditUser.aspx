@@ -8,6 +8,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
 
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/function.js") %>"></script>
 
     <style type="text/css">
         #mainContainer td.buttonCell
@@ -37,43 +38,63 @@
             text-align: left;
             padding-top: 1px;
         }
+        #spanMessage-content .error{ line-height:1; padding-bottom:3px;}
     </style>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
-
     <script type="text/javascript">
         // <![CDATA[
-        function Uploader_OnUploadStart() {
-            btnUpload.SetText("Uploading...");
-            btnUpload.SetEnabled(false);
-        }
-        function Uploader_OnUploadComplete(args) {
-            var imgSrc = $("[id$=previewImage]").attr("src");
-            if (args.isValid) {
-                var date = new Date();
-                imgSrc = "../Images/" + args.callbackData + "?dx=" + date.getTime();
-                $("[id$=previewImage]").attr("src", imgSrc);
+        function updategrid() {
+            var error = "";  
+            error = checkvalidate();
+            if (error == "")
                 grid.UpdateEdit();
-            } else {
-                alert("a");
+            else {
+                ShowDialog("", "", error, "");
+                error = "";
+                return false;
             }
-            $("[id$=previewImage]").attr("src", imgSrc);
-            btnUpload.SetEnabled(true);
-            btnUpload.SetText("Upload");
         }
+        function checkvalidate() {
+            var error = "";
+            if ($("[id$=txtUsername_I]").val() == "") {
+                error += '<p class="error">User name not be empty</p>';
+                return error;
+            }
+            if ($("[id$=txtFirstname_I]").val() == "") {
+                error += '<p class="error">First name not be empty</p>';
+                return error;
+            }
+          
+            if ($("[id$=txtLastname_I]").val() == "") {
+                error += '<p class="error">Last name not be empty</p>';
+                return error;
+            }
+            if ($("[id$=txtDisplayname_I]").val() == "") {
+                error += '<p class="error">Display name not be empty</p>';
+                return error;
+            }
+            if (($("[id$=txtEmail_I]").val().trim() != "" )&&( !isEmail($("[id$=txtEmail_I]").val()))) {
+                error += '<p class="error">Email is not format</p><p>Example: yourname@gmail.com</p>';
+                return error;
+            }
+            if (($("[id$=txtCellphone_I]").val().trim() != "") && (isPhone($("[id$=txtCellphone_I]").val()))) {
+                error += '<p class="error">Cell phone is  not format</p><p>Example: 123-456-7899</p>';
+                return error;
+            }
+            return error;
+                
+         }
         // ]]> 
     </script>
-
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
                 Manage User</h5>
         </div>
-        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true">
-        </asp:ScriptManager>
         <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" DataSourceID="UserDatas"
-            Width="100%" KeyFieldName="Username" OnInitNewRow="gridUser_InitNewRow" OnRowInserting="gridUser_RowInserting"
-            OnRowUpdating="gridUser_RowUpdating" OnHtmlRowPrepared="gridUser_HtmlRowPrepared"
+            Width="100%" KeyFieldName="Username" OnRowInserting="gridUser_RowInserting"
+            OnRowUpdating="gridUser_RowUpdating" 
             OnRowValidating="gridUser_RowValidating" OnCustomButtonCallback="gridUser_CustomButtonCallback"
             EnableViewState="False">
             <Columns>
@@ -90,7 +111,7 @@
                 <dx:GridViewDataColumn FieldName="Email" VisibleIndex="6" />
                 <dx:GridViewDataColumn FieldName="UserGroupId" VisibleIndex="8" />
                 <dx:GridViewCommandColumn VisibleIndex="9">
-                    <EditButton Visible="true">
+                    <EditButton Visible="true">                     
                     </EditButton>
                     <NewButton Visible="true">
                     </NewButton>
@@ -142,7 +163,7 @@
                                                                         <td>
                                                                             Role
                                                                         </td>
-                                                                        <td colspan="3" style="text-align: left">
+                                                                        <td colspan="3" style="text-align: left; ">
                                                                             <dx:ASPxComboBox Width="200" runat="server" ID="cboroleid" DataSourceID="RoleDatas"
                                                                                 Value="<%#Bind('RoleId') %>" ValueField="Id" TextField="Title">
                                                                             </dx:ASPxComboBox>
@@ -182,50 +203,46 @@
                 </DetailRow>
                 <EditForm>
                     <div id="devexpress-form">
-                        <table class="edit-form">
+                        <table class="edit-form users">
                             <tbody>
                                 <tr>
                                     <td class="title-row">
                                         Username
                                     </td>
-                                    <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtUsername" Text='<%# Bind("Username") %>' CssClass="text-form">
-                                        </dx:ASPxTextBox>
+                                    <td class="content-row">                               
+                                        <dx:ASPxTextBox runat="server" ID="txtUsername"  TabIndex="1" Text='<%# Bind("Username") %>' CssClass="text-form">
+                                        </dx:ASPxTextBox>                                
+                                      
                                     </td>
-                                    <td class="title-row">
-                                        Female
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxCheckBox runat="server" Value='<%#Bind("IsFemale")%>' ID="ckcR">
-                                        </dx:ASPxCheckBox>
-                                    </td>
-                                    <td class="title-row">
-                                        Cell phone
+                                     <td class="title-row">
+                                        First name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="txtCellphone" Text='<%# Bind("CellPhone") %>'
+                                        <dx:ASPxTextBox runat="server" ID="txtFirstname"  TabIndex="2" Text='<%# Bind("Firstname") %>'
                                             CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
-                                    <td rowspan="4" style="text-align: center;">
-                                        <dx:ASPxImage runat="server" Height="100" Width="100" AlternateText="Avatar" 
-                                            ImageUrl='<%# Eval("Avatar") == null ? "../../resources/images/avatar.png" : "../Images/"+ Eval("Avatar")%>'
-                                            ID="previewImage" />
+                                    <td class="title-row">
+                                        Last name
                                     </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ID="txtLastname"  TabIndex="3" Text='<%# Bind("Lastname") %>' CssClass="text-form">
+                                        </dx:ASPxTextBox>
+                                    </td>                                    
                                 </tr>
                                 <tr>
                                     <td class="title-row">
                                         Title
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtTitle" Text='<%# Bind("Title") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtTitle"  TabIndex="4" Text='<%# Bind("Title") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
                                     <td class="title-row">
-                                        First name
+                                        Display name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtFirstname" Text='<%# Bind("Firstname") %>'
+                                        <dx:ASPxTextBox runat="server" ID="txtDisplayname"  TabIndex="5" Text='<%# Bind("DisplayName") %>'
                                             CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
@@ -233,68 +250,48 @@
                                         Email
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtEmail" Text='<%# Bind("Email") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtEmail"  TabIndex="6" Text='<%# Bind("Email") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="title-row">
+                                     <td class="title-row">
+                                        Cell phone
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false"  TabIndex="7" ID="txtCellphone" Text='<%# Bind("CellPhone") %>'
+                                            CssClass="text-form">
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                         <td class="title-row">
+                                        Female
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxCheckBox runat="server"  TabIndex="8" Value='<%#Bind("IsFemale")%>' ID="ckcR">
+                                        </dx:ASPxCheckBox>
+                                    </td>
+                                     <td class="title-row">
                                         User Group
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxComboBox runat="server" ID="ListServicesId" SelectedIndex="0" TextField="Title"
+                                        <dx:ASPxComboBox runat="server" ID="ASPxComboBox1" TabIndex="9" SelectedIndex="0" TextField="Title"
                                             ValueField="Id" Value='<%# Bind("UserGroupId") %>' DataSourceID="UserGroupDatas">
                                         </dx:ASPxComboBox>
-                                        <data:ServicesDataSource runat="server" ID="ServicesDataSource" SelectMethod="GetAll">
+                                        <data:ServicesDataSource runat="server" ID="ServicesDataSource1" SelectMethod="GetAll">
                                         </data:ServicesDataSource>
-                                    </td>
-                                    <td class="title-row">
-                                        Last name
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtLastname" Text='<%# Bind("Lastname") %>' CssClass="text-form">
-                                        </dx:ASPxTextBox>
-                                    </td>
-                                    <td class="title-row" rowspan="2">
-                                        Avatar
-                                    </td>
-                                    <td class="content-row" rowspan="2">
-                                        <dx:ASPxUploadControl ID="uplImage" runat="server" ClientInstanceName="uploader"
-                                            Size="35" OnFileUploadComplete="uplImage_FileUploadComplete">
-                                            <ClientSideEvents FileUploadComplete="function(s, e) { Uploader_OnUploadComplete(e); }"
-                                                FileUploadStart="function(s, e) { Uploader_OnUploadStart(); }"></ClientSideEvents>
-                                            <ValidationSettings MaxFileSize="4000000" AllowedFileExtensions=".jpg,.jpeg,.jpe,.gif">
-                                            </ValidationSettings>
-                                        </dx:ASPxUploadControl>
-                                        <dx:ASPxLabel ID="lblAllowebMimeType" runat="server" Text="Allowed image types: jpeg, gif"
-                                            Font-Size="8pt">
-                                        </dx:ASPxLabel>
-                                        <br />
-                                        <dx:ASPxLabel ID="lblMaxFileSize" runat="server" Text="Maximum file size: 4Mb" Font-Size="8pt">
-                                        </dx:ASPxLabel>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                    </td>
-                                    <td class="title-row">
-                                        Display name
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtDisplayname" Text='<%# Bind("DisplayName") %>'
-                                            CssClass="text-form">
-                                            <ValidationSettings ValidationGroup="editForm" Display="Dynamic" ErrorText="*">
-                                                <RequiredField IsRequired="True" />
-                                            </ValidationSettings>
-                                        </dx:ASPxTextBox>
-                                    </td>
+                                    </td>                               
+                                    
                                 </tr>
                                 <tr>
                                     <td class="title-row">
                                         Note
                                     </td>
                                     <td class="content-row" colspan="6">
-                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" Text='<%# Bind("Note")%>' CssClass="text-form">
+                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" TabIndex="10" Text='<%# Bind("Note")%>' CssClass="text-form">
                                         </dx:ASPxMemo>
                                     </td>
                                 </tr>
@@ -302,11 +299,12 @@
                         </table>
                     </div>
                     <div style="text-align: right; padding: 2px 2px 2px 2px">
-                        <dx:ASPxHyperLink runat="server" Text="Update" ID="btnUpload" ClientInstanceName="btnUpload">
-                            <ClientSideEvents Click="function(s, e) { uploader.UploadFile(); }" />
+                        <dx:ASPxHyperLink runat="server" TabIndex="11" Text="Update" ID="btnUpload" ClientInstanceName="btnUpload">
+                            <ClientSideEvents Click="function(s, e) {updategrid() }" />
                         </dx:ASPxHyperLink>
-                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
+                        <dx:ASPxGridViewTemplateReplacement  ID="btn_cancel"  ReplacementType="EditFormCancelButton"
                             runat="server">
+                            
                         </dx:ASPxGridViewTemplateReplacement>
                     </div>
                 </EditForm>
@@ -319,7 +317,7 @@
         <data:UsersDataSource ID="UserDatas" runat="server" SelectMethod="GetPaged" EnablePaging="true">
             <Parameters>
                 <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" />
-                <data:CustomParameter Name="OrderByClause" Value="UserId" />
+                <data:CustomParameter Name="OrderByClause" Value="Username" />
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
         </data:UsersDataSource>
