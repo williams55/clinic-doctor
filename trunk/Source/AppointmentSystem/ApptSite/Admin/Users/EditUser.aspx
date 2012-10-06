@@ -62,16 +62,16 @@
                 return error;
             }
             if ($("[id$=txtFirstname_I]").val() == "") {
-                error += '<p class="error">First name not be empty</p>';
+                error += '<p class="error">First name can not be empty</p>';
                 return error;
             }
           
             if ($("[id$=txtLastname_I]").val() == "") {
-                error += '<p class="error">Last name not be empty</p>';
+                error += '<p class="error">Last name can not be empty</p>';
                 return error;
             }
             if ($("[id$=txtDisplayname_I]").val() == "") {
-                error += '<p class="error">Display name not be empty</p>';
+                error += '<p class="error">Display name can not be empty</p>';
                 return error;
             }
             if (($("[id$=txtEmail_I]").val().trim() != "" )&&( !isEmail($("[id$=txtEmail_I]").val()))) {
@@ -209,10 +209,17 @@
                                     <td class="title-row">
                                         Username
                                     </td>
-                                    <td class="content-row">                               
-                                        <dx:ASPxTextBox runat="server" ID="txtUsername"  TabIndex="1" Text='<%# Bind("Username") %>' CssClass="text-form">
+                                    <td class="content-row">
+                                        <%if (!gridUser.IsNewRowEditing)
+                                          { %>                               
+                                        <dx:ASPxTextBox runat="server" ID="txtUsername" ReadOnly="true" BackColor="gray"  TabIndex="1" Text='<%# Bind("Username") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>                                
-                                      
+                                      <%}
+                                          else
+                                          { %>
+                                           <dx:ASPxTextBox runat="server" ID="ASPxTextBox1"  TabIndex="1" Text='<%# Bind("Username") %>' CssClass="text-form">
+                                        </dx:ASPxTextBox> 
+                                      <%} %>
                                     </td>
                                      <td class="title-row">
                                         First name

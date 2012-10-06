@@ -5,6 +5,7 @@ using System.IO;
 using System.Web.UI.WebControls;
 using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
+using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Util;
@@ -121,29 +122,38 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 e.Cancel = true;
                 return;
             }
-            if (e.NewValues["Username"].ToString().Trim().Length < 1||e.NewValues["Username"]==null)
+            // Validate empty field
+            if (!WebCommon.ValidateEmpty("Username", e.NewValues["Username"], out _message)
+                || !WebCommon.ValidateEmpty("First name", e.NewValues["Firstname"], out _message)
+                || !WebCommon.ValidateEmpty("Last name", e.NewValues["Lastname"], out _message)
+                || !WebCommon.ValidateEmpty("Display name", e.NewValues["DisplayName"], out _message))
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field User name can not be empty";
+                WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
+                return;
             }
-            if (e.NewValues["Firstname"].ToString().Trim().Length < 1 || e.NewValues["Firstname"] == null)
+            //check username is exists
+            Users iusers = (Users)DataRepository.UsersProvider.GetByUsername(e.NewValues["Username"].ToString());
+            if (iusers!=null)
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field First name can not be empty";
+                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field User name is exists";
                 e.Cancel = true;
+                return;
+            
             }
-            if (e.NewValues["Lastname"].ToString().Trim().Length < 1 || e.NewValues["Lastname"] == null)
+            //check email is exists
+            string squery = string.Format("Email='{0}' and IsDisabled='False'",e.NewValues["Email"]);
+            int count=0;
+            TList<Users> user = DataRepository.UsersProvider.GetPaged(squery,"",0, 0, out count);
+            if (user.Count>0)
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Last name can not be empty";
-                e.Cancel = true;
-            }
-            if (e.NewValues["DisplayName"].ToString().Trim().Length < 1)
-            {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Display name can not be empty";
+                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Email is exists";
                 e.Cancel = true;
                 return;
             }
             e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+            WebCommon.AlertGridView(sender, "User is created successfully.");
         }
         catch (Exception ex)
         {
@@ -152,10 +162,41 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
     }
     protected void gridUser_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
     {
-        if (Session["imagedata"] != null)
+        try
         {
-            e.NewValues["Avatar"] = Session["imagedata"];
-            Session.Remove("imagedata");
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key,
+                                       out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+            // Validate empty field
+            if (!WebCommon.ValidateEmpty("First name", e.NewValues["Firstname"], out _message)
+                || !WebCommon.ValidateEmpty("Last name", e.NewValues["Lastname"], out _message)
+                || !WebCommon.ValidateEmpty("Display name", e.NewValues["DisplayName"], out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
+                return;
+            }
+            //check email is exists
+            string squery = string.Format("Email='{0}' and IsDisabled='False' and Username!='{1}'", e.NewValues["Email"],e.OldValues["Username"]);
+            int count = 0;
+            TList<Users> user = DataRepository.UsersProvider.GetPaged(squery, "", 0, 0, out count);
+            if (user.Count > 0)
+            {
+                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Email is exists";
+                e.Cancel = true;
+                return;
+            }
+            e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["UpdateDate"] = DateTime.Now;
+            WebCommon.AlertGridView(sender, "User is update successfully.");
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
     protected void gridUser_InitNewRow(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)
@@ -218,7 +259,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             obj.UpdateUser = WebCommon.GetAuthUsername();
             obj.UpdateDate = DateTime.Now;
             DataRepository.UsersProvider.Update(obj);
-
+            WebCommon.AlertGridView(sender, "User is deleted successfully.");
         }
         catch (Exception ex)
         {
