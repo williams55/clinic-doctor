@@ -13,9 +13,8 @@ using DevExpress.Web;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.ASPxUploadControl;
 using Log.Controller;
-using Image = System.Drawing.Image;
-
-
+using System.Collections;
+using DevExpress.Web.ASPxEditors;
 public partial class Admin_Users_EditUser : System.Web.UI.Page
 {
     string ScreenCode = "User";
@@ -49,28 +48,11 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         gridUser.DataSource = listUser;
         gridUser.DataBind();
     }
-
     const string UploadDirectory = "~/Admin/Images/";
     const string ThumbnailFileName = "ThumbnailImage.jpg";
-
     protected void uplImage_FileUploadComplete(object sender, FileUploadCompleteEventArgs e)
     {
-        e.CallbackData = SavePostedFile(e.UploadedFile);
     }
-
-    string SavePostedFile(UploadedFile uploadedFile)
-    {
-        if (!uploadedFile.IsValid)
-            return string.Empty;
-        string fileName = Path.Combine(MapPath(UploadDirectory), ThumbnailFileName);
-        using (Image original = Image.FromStream(uploadedFile.FileContent))
-        using (Image thumbnail = PhotoUtils.Inscribe(original, 100))
-        {
-            PhotoUtils.SaveToJpeg(thumbnail, fileName);
-        }
-        return ThumbnailFileName;
-    }
-
     public static Bitmap ResizeImage(System.Drawing.Image original, int newWidth, int newHeight)
     {
         if (original.Width == 0 || original.Height == 0 || newWidth == 0 || newHeight == 0) return null;
@@ -82,14 +64,14 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         g.DrawImage(original, 0, 0, newWidth, newHeight);
         return newBitmap;
     }
-
     protected void UserRoleGrid_DataSelect(object sender, EventArgs e)
     {
         var parameter = UserRoleDatas.Parameters["whereClause"];
+        string username= (sender as ASPxGridView).GetMasterRowKeyValue().ToString();
         if (parameter == null)
         {
 
-            UserRoleDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND Username = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
+            UserRoleDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND Username = '{0}'",username));
         }
         else
         {
@@ -158,6 +140,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot insert role Please contact Administrator");
         }
     }
     protected void gridUser_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
@@ -212,6 +195,23 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         //{
         //    e.NewValues["Id"] = perxe + string.Format("{0:0000}", int.Parse(objuser[0].Id.Substring(objuser[0].Id.Length - 3)) + 1);
         //}
+    }
+    /// <summary>
+    /// loc nhung role ma co the them cho user
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void UserRoleGrid_OnInitNewRow(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)
+    {
+        int count;
+        string username= (sender as ASPxGridView).GetMasterRowKeyValue().ToString();
+        ASPxGridView userrole = (ASPxGridView)sender;
+        ASPxComboBox cboroleid = (ASPxComboBox)userrole.FindEditFormTemplateControl("cboroleid");
+        TList<Role> listrole = DataRepository.RoleProvider.GetPaged("IsDisabled='false'","",0,0,out count);
+        TList<UserRole> userroleq = DataRepository.UserRoleProvider.GetPaged(string.Format("IsDisabled='false' and Username='{0}'",username), "", 0, 0, out count);
+        var lstroleid = listrole.FindAll(role=> !userroleq.Exists(role2=>role.Id==role2.RoleId));
+        cboroleid.DataSource = lstroleid;
+        cboroleid.DataBindItems();
     }
     protected bool Getcheckbox(string obj)
     {
@@ -271,11 +271,11 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
     {
         try
         {
-            //if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
-            //{
-            //    WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
-            //    return;
-            //}
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            {
+                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
+                return;
+            }
             if (e.ButtonID != "btnDeleteRole") return;
             ASPxGridView girdUserRole = (ASPxGridView)(sender as ASPxGridView);//lay gia tri bang cua gridview
             Int64 id;
@@ -303,19 +303,15 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 WebCommon.AlertGridView(sender, _message);
                 return;
             }
-
-            string UserId = (sender as ASPxGridView).GetMasterRowKeyValue().ToString();
-            string RoleId = e.NewValues["RoleId"].ToString();
-            int count;
-            string query = string.Format("UserId='{0}' and RoleId={1} and IsDisabled='false'", UserId, RoleId);
-            var obj = DataRepository.UserRoleProvider.GetPaged(query, string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
-            if (count > 0)
+            string Username = (sender as ASPxGridView).GetMasterRowKeyValue().ToString();
+            if (e.NewValues["RoleId"]==null)
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = String.Format("Role {0} is using, you cannot delete it.", RoleId);
+                WebCommon.AlertGridView(sender,"You not select role");
                 e.Cancel = true;
                 return;
             }
-            e.NewValues["UserId"] = UserId;
+            string RoleId = e.NewValues["RoleId"].ToString();
+            e.NewValues["Username"] = Username;
             e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 

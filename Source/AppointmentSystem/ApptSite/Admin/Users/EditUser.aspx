@@ -61,6 +61,10 @@
                 error += '<p class="error">User name not be empty</p>';
                 return error;
             }
+            if ($("[id$=txtUsername_I]").val().trim().length<4) {
+                error += '<p class="error">Field User name is too short</p>';
+                return error;
+            }
             if ($("[id$=txtFirstname_I]").val() == "") {
                 error += '<p class="error">First name can not be empty</p>';
                 return error;
@@ -130,9 +134,9 @@
                                 <dx:TabPage Text="UserRole" Visible="true">
                                     <ContentCollection>
                                         <dx:ContentControl ID="ContentControl1" runat="server">
-                                            <dx:ASPxGridView ID="UserRoleGrid" runat="server" DataSourceID="UserRoleDatas" KeyFieldName="UserId"
+                                            <dx:ASPxGridView ID="UserRoleGrid" runat="server" DataSourceID="UserRoleDatas" KeyFieldName="Username"
                                                 Width="100%" OnBeforePerformDataSelect="UserRoleGrid_DataSelect" OnCustomButtonCallback="UserRoleGrid_CustomButtonCallback"
-                                                OnRowInserting="UserRoleGrid_RowInserting">
+                                                OnRowInserting="UserRoleGrid_RowInserting" OnInitNewRow="UserRoleGrid_OnInitNewRow" >
                                                 <Columns>
                                                     <dx:GridViewDataColumn FieldName="RoleId" VisibleIndex="1" />
                                                     <dx:GridViewDataColumn FieldName="RoleIdSource.Title" VisibleIndex="2" />
@@ -147,15 +151,7 @@
                                                     </dx:GridViewCommandColumn>
                                                 </Columns>
                                                 <Templates>
-                                                    <EditForm>
-                                                        <div style="text-align: right; padding: 2px 2px 2px 2px">
-                                                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" ReplacementType="EditFormUpdateButton"
-                                                                runat="server">
-                                                            </dx:ASPxGridViewTemplateReplacement>
-                                                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
-                                                                runat="server">
-                                                            </dx:ASPxGridViewTemplateReplacement>
-                                                        </div>
+                                                    <EditForm>                                                        
                                                         <div id="devexpress-form">
                                                             <table class="edit-form">
                                                                 <tbody>
@@ -164,13 +160,21 @@
                                                                             Role
                                                                         </td>
                                                                         <td colspan="3" style="text-align: left; ">
-                                                                            <dx:ASPxComboBox Width="200" runat="server" ID="cboroleid" DataSourceID="RoleDatas"
+                                                                            <dx:ASPxComboBox Width="200" runat="server" ID="cboroleid"
                                                                                 Value="<%#Bind('RoleId') %>" ValueField="Id" TextField="Title">
                                                                             </dx:ASPxComboBox>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
+                                                        </div>
+                                                        <div style="text-align: right; padding: 2px 2px 2px 2px">
+                                                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" ReplacementType="EditFormUpdateButton"
+                                                                runat="server">
+                                                            </dx:ASPxGridViewTemplateReplacement>
+                                                            <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" ReplacementType="EditFormCancelButton"
+                                                                runat="server">
+                                                            </dx:ASPxGridViewTemplateReplacement>
                                                         </div>
                                                     </EditForm>
                                                 </Templates>
@@ -212,12 +216,12 @@
                                     <td class="content-row">
                                         <%if (!gridUser.IsNewRowEditing)
                                           { %>                               
-                                        <dx:ASPxTextBox runat="server" ID="txtUsername" ReadOnly="true" BackColor="gray"  TabIndex="1" Text='<%# Bind("Username") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtUsername" MaxLength="50" ReadOnly="true" BackColor="gray"  TabIndex="1" Text='<%# Bind("Username") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>                                
                                       <%}
                                           else
                                           { %>
-                                           <dx:ASPxTextBox runat="server" ID="ASPxTextBox1"  TabIndex="1" Text='<%# Bind("Username") %>' CssClass="text-form">
+                                           <dx:ASPxTextBox runat="server" ID="itxtUsername" MaxLength="50"  TabIndex="1" Text='<%# Bind("Username") %>' CssClass="text-form">
                                         </dx:ASPxTextBox> 
                                       <%} %>
                                     </td>
@@ -225,7 +229,7 @@
                                         First name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtFirstname"  TabIndex="2" Text='<%# Bind("Firstname") %>'
+                                        <dx:ASPxTextBox runat="server" ID="txtFirstname" MaxLength="50" TabIndex="2" Text='<%# Bind("Firstname") %>'
                                             CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
@@ -233,7 +237,7 @@
                                         Last name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtLastname"  TabIndex="3" Text='<%# Bind("Lastname") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtLastname" MaxLength="50"  TabIndex="3" Text='<%# Bind("Lastname") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>                                    
                                 </tr>
@@ -242,14 +246,14 @@
                                         Title
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtTitle"  TabIndex="4" Text='<%# Bind("Title") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtTitle" MaxLength="10"  TabIndex="4" Text='<%# Bind("Title") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
                                     <td class="title-row">
                                         Display name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtDisplayname"  TabIndex="5" Text='<%# Bind("DisplayName") %>'
+                                        <dx:ASPxTextBox runat="server" ID="txtDisplayname" MaxLength="50" TabIndex="5" Text='<%# Bind("DisplayName") %>'
                                             CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
@@ -257,7 +261,7 @@
                                         Email
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtEmail"  TabIndex="6" Text='<%# Bind("Email") %>' CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtEmail" MaxLength="50"  TabIndex="6" Text='<%# Bind("Email") %>' CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
                                 </tr>
@@ -266,7 +270,7 @@
                                         Cell phone
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="false"  TabIndex="7" ID="txtCellphone" Text='<%# Bind("CellPhone") %>'
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" MaxLength="20" TabIndex="7" ID="txtCellphone" Text='<%# Bind("CellPhone") %>'
                                             CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
@@ -298,7 +302,7 @@
                                         Note
                                     </td>
                                     <td class="content-row" colspan="6">
-                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" TabIndex="10" Text='<%# Bind("Note")%>' CssClass="text-form">
+                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" MaxLength="500" TabIndex="10" Text='<%# Bind("Note")%>' CssClass="text-form">
                                         </dx:ASPxMemo>
                                     </td>
                                 </tr>
