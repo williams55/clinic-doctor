@@ -383,7 +383,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
                 , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
                 , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
-                , patient.Remark);
+                , patient.Remark, patient.IsDisabled);
             #endregion
 
             return WebCommon.BuildSuccessfulResult(new List<object>

@@ -256,7 +256,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                 , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
                 , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
                 , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
-                , patient.Remark);
+                , patient.Remark, patient.IsDisabled);
 
             // Doan nay dung de fake cancel update
             var gridView = (ASPxGridView)sender;
@@ -289,6 +289,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             e.NewValues["PatientCode"] = perxe + string.Format("{0:0000}", int.Parse(objuser[0].PatientCode.Substring(objuser[0].PatientCode.Length - 3)) + 1);
         }
     }
+
     protected void gridPatient_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
@@ -316,9 +317,9 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             }
 
             int count;
-            DataRepository.AppointmentProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0,
-                                                                           ServiceFacade.SettingsHelper.GetPagedLength,
-                                                                           out count);
+            DataRepository.AppointmentProvider.GetPaged(
+               String.Format("IsDisabled = 'False' AND PatientCode = '{0}'", patient.PatientCode), string.Empty,
+               0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
             if (count > 0)
             {
                 WebCommon.AlertGridView(sender, String.Format("Patient {0} is using, you cannot delete it.", patient.FirstName));
@@ -332,7 +333,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                 , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
                 , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
                 , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
-                , patient.Remark);
+                , patient.Remark, patient.IsDisabled);
         }
         catch (Exception ex)
         {
@@ -352,5 +353,131 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             parameter.DefaultValue = String.Format("IsDisabled = 'false' AND PatientCode = '{0}'",
                                   (sender as ASPxGridView).GetMasterRowKeyValue());
         }
+    }
+
+    protected void gridPatient_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+    {
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        tm.BeginTransaction();
+        try
+        {
+            if (e.Parameters == "Delete")
+            {
+                var grid = sender as ASPxGridView;
+                if (grid == null)
+                {
+                    return;
+                }
+
+                // Lay danh sach Id cua cac row duoc select
+                var fieldNames = new[] { "PatientCode" };
+                List<object> columnValues = grid.GetSelectedFieldValues(fieldNames);
+                
+                // Doi trang thai cua cac roster
+                foreach (object patientCode in columnValues)
+                {
+                    // Kiem tra patient xem co ton tai khong
+                    var patients = DataRepository.VcsPatientProvider.GetByPatientCode(patientCode.ToString());
+                    if (patients == null || !patients.Any())
+                    {
+                        WebCommon.AlertGridView(sender, "Cannot find patient, you cannot delete it.");
+                        return;
+                    }
+                    var patient = patients[0];
+                    if (patient.IsDisabled)
+                    {
+                        WebCommon.AlertGridView(sender, String.Format("Patient {0} is not existed, you cannot delete it.", patient.FirstName));
+                        return;
+                    }
+
+                    // Kiem tra xem patient da tung dat lich hen chua
+                    int count;
+                    DataRepository.AppointmentProvider.GetPaged(
+                        String.Format("IsDisabled = 'False' AND PatientCode = '{0}'", patient.PatientCode), string.Empty,
+                        0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                    if (count > 0)
+                    {
+                        WebCommon.AlertGridView(sender, String.Format("Patient {0} is using, you cannot delete it.", patient.FirstName));
+                        return;
+                    }
+
+                    // Tien anh cap nhat
+                    patient.IsDisabled = true;
+                    patient.UpdateUser = WebCommon.GetAuthUsername();
+                    patient.UpdateDate = DateTime.Now;
+                    DataRepository.VcsPatientProvider.Update(tm, patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
+                      , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
+                      , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
+                      , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
+                      , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
+                      , patient.Remark, patient.IsDisabled);
+                }
+                tm.Commit();
+                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted patients." : "Deleted patient.");
+
+                // Set tam duration de lay duoc danh sach moi
+                //int duration = RosterDataSource.CacheDuration;
+                //RosterDataSource.CacheDuration = 0;
+                grid.DataBind();
+                grid.Selection.UnselectAll();
+                //RosterDataSource.CacheDuration = duration;
+            }
+            else
+            {
+                // Thuc hien check/uncheck khi nhan check all
+                bool needToSelectAll;
+                bool.TryParse(e.Parameters, out needToSelectAll);
+
+                var gridView = (ASPxGridView)sender;
+
+                int startIndex = gridView.PageIndex * gridView.SettingsPager.PageSize;
+                int endIndex = Math.Min(gridView.VisibleRowCount, startIndex + gridView.SettingsPager.PageSize);
+
+                for (int i = startIndex; i < endIndex; i++)
+                {
+                    gridView.Selection.SetSelection(i, needToSelectAll);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot delete Roster. Please contact Administrator.");
+        }
+    }
+
+    /// <summary>
+    /// An cac row co IsDisabled bang true
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridPatient_OnHtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
+    {
+        try
+        {
+            if (e.RowType == GridViewRowType.Data)
+            {
+                e.Row.Visible = !Boolean.Parse(e.GetValue("IsDisabled").ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+
+    protected void cbCheck_Init(object sender, EventArgs e)
+    {
+        var cb = (ASPxCheckBox)sender;
+        var container = (GridViewDataItemTemplateContainer)cb.NamingContainer;
+        cb.ClientInstanceName = string.Format("cbCheck{0}", container.VisibleIndex);
+        cb.Checked = gridPatient.Selection.IsRowSelected(container.VisibleIndex);
+        cb.ClientSideEvents.CheckedChanged = string.Format("function (s, e) {{ grid.SelectRowOnPage({0}, s.GetChecked()); }}", container.VisibleIndex);
+    }
+    protected void cbCheckAll_Init(object sender, EventArgs e)
+    {
+        var cb = (ASPxCheckBox)sender;
+        cb.ClientSideEvents.CheckedChanged = string.Format("function (s, e) {{ grid.PerformCallback(s.GetChecked().toString()); }}");
     }
 }

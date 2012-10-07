@@ -8,11 +8,24 @@
 
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
 
+    <script type="text/javascript">
+        function OnClickButtonDel() {
+            if (grid.GetSelectedRowCount() <= 0) {
+                ShowDialog(null, null, "Please select item first.");
+                return;
+            }
+            if (confirm("Are you sure to delete these items")) {
+                grid.PerformCallback('Delete');
+            }
+        }
+    </script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div class="color">
         <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
             ToolTip="New" CssClass="add"></asp:HyperLink>
+        <a class="delete" title="Delete selected items" onclick="OnClickButtonDel()"></a>
     </div>
     <div id="box-tabs" class="box">
         <div class="title">
@@ -22,7 +35,8 @@
         <dx:ASPxGridView ID="gridPatient" ClientInstanceName="grid" runat="server" DataSourceID="VcsPatient"
             Width="100%" KeyFieldName="PatientCode" OnCustomButtonCallback="gridPatient_CustomButtonCallback"
             OnInitNewRow="gridPatient_InitNewRow" OnRowInserting="gridPatient_RowInserting"
-            OnRowUpdating="gridPatient_RowUpdating">
+            OnRowUpdating="gridPatient_RowUpdating" OnHtmlRowCreated="gridPatient_OnHtmlRowCreated"
+            OnCustomCallback="gridPatient_CustomCallback">
             <Columns>
                 <dx:GridViewDataColumn Caption="No." Width="50">
                     <DataItemTemplate>
@@ -80,6 +94,18 @@
                     </CellStyle>
                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 </dx:GridViewCommandColumn>
+                <dx:GridViewDataTextColumn Caption="#">
+                    <HeaderTemplate>
+                        <dx:ASPxCheckBox ID="cbCheckAll" runat="server" OnInit="cbCheckAll_Init">
+                        </dx:ASPxCheckBox>
+                    </HeaderTemplate>
+                    <DataItemTemplate>
+                        <dx:ASPxCheckBox ID="cbCheck" runat="server" OnInit="cbCheck_Init">
+                        </dx:ASPxCheckBox>
+                    </DataItemTemplate>
+                    <CellStyle HorizontalAlign="Center" />
+                    <HeaderStyle HorizontalAlign="Center" />
+                </dx:GridViewDataTextColumn>
             </Columns>
             <Templates>
                 <EditForm>
@@ -360,6 +386,11 @@
                     </div>
                 </DetailRow>
             </Templates>
+            <Styles>
+                <AlternatingRow Enabled="true" />
+                <Table Wrap="True">
+                </Table>
+            </Styles>
             <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
                 BeginCallback="function(s, e) {command = e.command; gridObject = s;}"></ClientSideEvents>
             <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />

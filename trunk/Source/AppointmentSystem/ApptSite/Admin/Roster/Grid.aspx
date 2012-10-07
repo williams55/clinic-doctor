@@ -27,7 +27,7 @@
     <div class="color">
         <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
             ToolTip="New" CssClass="add"></asp:HyperLink>
-        <a class="delete" title="Delete" onclick="OnClickButtonDel()"></a>
+        <a class="delete" title="Delete selected items" onclick="OnClickButtonDel()"></a>
     </div>
     <div id="box-tabs" class="box">
         <div class="title">
@@ -181,7 +181,7 @@
                                                 Doctor
                                             </td>
                                             <td class="content-row">
-                                                <dx:ASPxComboBox ID="choDoctor" runat="server" Width="100%" DropDownWidth="550" DropDownStyle="DropDownList"
+                                                <dx:ASPxComboBox ID="cboDoctor" runat="server" Width="100%" DropDownWidth="550" DropDownStyle="DropDownList"
                                                     DataSourceID="UsersDataSource" ValueField="Username" ValueType="System.String"
                                                     TextFormatString="{0}" EnableCallbackMode="true" IncrementalFilteringMode="StartsWith"
                                                     Value='<%# Eval("Username") %>'>
