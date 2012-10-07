@@ -19,6 +19,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
 {
     string ScreenCode = "Patient";
     static string _message;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -35,30 +36,47 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
 
             var gridViewCommandColumn = gridPatient.Columns["btnCommand"] as GridViewCommandColumn;
             if (gridViewCommandColumn == null) return;
+
+            // Set hien thi/an cho nut edit cua tung row
             gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
                                                                                   ScreenCode,
                                                                                   OperationConstant.Update.Key,
                                                                                   out _message);
+
+            // Set hien thi/an cho nut new
             btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+          
+            // Set hien thi/an cho nut delete
+            btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+                                                                                  ScreenCode,
+                                                                                  OperationConstant.Delete.Key,
+                                                                                  out _message);
+
+            // Set hien thi/an cho nut delete cua tung row
             GridViewCommandColumnCustomButton btnDelete =
                 gridViewCommandColumn.CustomButtons.Cast<GridViewCommandColumnCustomButton>().FirstOrDefault(
                     customButton => customButton.ID == "btnDelete");
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
-                                                                                  ScreenCode,
-                                                                                  OperationConstant.Delete.Key,
-                                                                                  out _message))
+            if (!btnGeneralDelete.Visible)
             {
-                btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
+                if (btnDelete != null) btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
+
+            // Set hien thi/an cho cot button
             gridViewCommandColumn.Visible = gridViewCommandColumn.EditButton.Visible
                 || gridViewCommandColumn.NewButton.Visible
-                || (btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
+                || btnGeneralDelete.Visible;
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
+  
+    /// <summary>
+    /// Them moi mot patient
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridPatient_RowInserting(object sender, ASPxDataInsertingEventArgs e)
     {
         try
@@ -162,6 +180,12 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         }
         e.Cancel = true;
     }
+    
+    /// <summary>
+    /// Cap nhat thong tin mot patient
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridPatient_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
         try
@@ -270,36 +294,24 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         }
         e.Cancel = true;
     }
+
     /// <summary>
-    /// Khoi tao Id cua patient
+    /// Xoa mot patient
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    protected void gridPatient_InitNewRow(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)
-    {
-        string perxe = "PTC";
-        int count = 0;
-        TList<Patient> objuser = DataRepository.PatientProvider.GetPaged("PatientCode like '" + perxe + "' + '%'", "PatientCode desc", 0, 1, out count);
-        if (count == 0)
-        {
-            e.NewValues["PatientCode"] = perxe + "0001";
-        }
-        else
-        {
-            e.NewValues["PatientCode"] = perxe + string.Format("{0:0000}", int.Parse(objuser[0].PatientCode.Substring(objuser[0].PatientCode.Length - 3)) + 1);
-        }
-    }
-
     protected void gridPatient_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
         {
+            if (e.ButtonID != "btnDelete") return;
+
+            // Kiem tra xem user co quyen delete khong
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, "You do not have permission delete");
                 return;
             }
-            if (e.ButtonID != "btnDelete") return;
             string id = gridPatient.GetRowValues(e.VisibleIndex, "PatientCode").ToString();
 
             // Get patient by Patient Code
@@ -340,21 +352,41 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
-    protected void GridAppointment_BeforePerformDataSelect(object sender, EventArgs e)
+    
+    /// <summary>
+    /// Lay gia tri master de loc ra danh sach Appointment phu hop
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridAppointment_BeforePerformDataSelect(object sender, EventArgs e)
     {
         var parameter = AppointmentDatas.Parameters["whereClause"];
+        var value = string.Empty;
+
+        // Lay gia tri cua dong hien tai trong grid cha
+        var grid = sender as ASPxGridView;
+        if (grid != null)
+        {
+            value = grid.GetMasterRowKeyValue().ToString();
+        }
+
         if (parameter == null)
         {
 
-            this.AppointmentDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND PatientCode = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
+            AppointmentDatas.Parameters.Add("WhereClause",
+                                            String.Format("IsDisabled = 'false' AND PatientCode = '{0}'", value));
         }
         else
         {
-            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND PatientCode = '{0}'",
-                                  (sender as ASPxGridView).GetMasterRowKeyValue());
+            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND PatientCode = '{0}'", value);
         }
     }
 
+    /// <summary>
+    /// Xoa nhieu patient
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridPatient_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
     {
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
@@ -363,9 +395,18 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         {
             if (e.Parameters == "Delete")
             {
+                // Kiem tra xem user co quyen delete khong
+                if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+                {
+                    WebCommon.AlertGridView(sender, "You do not have permission delete");
+                    tm.Rollback();
+                    return;
+                }
+
                 var grid = sender as ASPxGridView;
                 if (grid == null)
                 {
+                    tm.Rollback();
                     return;
                 }
 
@@ -381,12 +422,14 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                     if (patients == null || !patients.Any())
                     {
                         WebCommon.AlertGridView(sender, "Cannot find patient, you cannot delete it.");
+                        tm.Rollback();
                         return;
                     }
                     var patient = patients[0];
                     if (patient.IsDisabled)
                     {
                         WebCommon.AlertGridView(sender, String.Format("Patient {0} is not existed, you cannot delete it.", patient.FirstName));
+                        tm.Rollback();
                         return;
                     }
 
@@ -398,6 +441,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                     if (count > 0)
                     {
                         WebCommon.AlertGridView(sender, String.Format("Patient {0} is using, you cannot delete it.", patient.FirstName));
+                        tm.Rollback();
                         return;
                     }
 
@@ -429,7 +473,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                 bool.TryParse(e.Parameters, out needToSelectAll);
 
                 var gridView = (ASPxGridView)sender;
-
+                
                 int startIndex = gridView.PageIndex * gridView.SettingsPager.PageSize;
                 int endIndex = Math.Min(gridView.VisibleRowCount, startIndex + gridView.SettingsPager.PageSize);
 
@@ -467,6 +511,11 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         }
     }
 
+    /// <summary>
+    /// Xu ly khi checkbox cua tung dong duoc khoi tao
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void cbCheck_Init(object sender, EventArgs e)
     {
         var cb = (ASPxCheckBox)sender;
@@ -475,6 +524,12 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         cb.Checked = gridPatient.Selection.IsRowSelected(container.VisibleIndex);
         cb.ClientSideEvents.CheckedChanged = string.Format("function (s, e) {{ grid.SelectRowOnPage({0}, s.GetChecked()); }}", container.VisibleIndex);
     }
+  
+    /// <summary>
+    /// Xu ly khi checkbox all duoc khoi tao
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void cbCheckAll_Init(object sender, EventArgs e)
     {
         var cb = (ASPxCheckBox)sender;

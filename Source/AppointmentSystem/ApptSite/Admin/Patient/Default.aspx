@@ -25,7 +25,7 @@
     <div class="color">
         <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
             ToolTip="New" CssClass="add"></asp:HyperLink>
-        <a class="delete" title="Delete selected items" onclick="OnClickButtonDel()"></a>
+        <a class="delete" title="Delete selected items" onclick="OnClickButtonDel()" id="btnGeneralDelete" runat="server"></a>
     </div>
     <div id="box-tabs" class="box">
         <div class="title">
@@ -34,9 +34,8 @@
         </div>
         <dx:ASPxGridView ID="gridPatient" ClientInstanceName="grid" runat="server" DataSourceID="VcsPatient"
             Width="100%" KeyFieldName="PatientCode" OnCustomButtonCallback="gridPatient_CustomButtonCallback"
-            OnInitNewRow="gridPatient_InitNewRow" OnRowInserting="gridPatient_RowInserting"
-            OnRowUpdating="gridPatient_RowUpdating" OnHtmlRowCreated="gridPatient_OnHtmlRowCreated"
-            OnCustomCallback="gridPatient_CustomCallback">
+            OnRowInserting="gridPatient_RowInserting" OnCustomCallback="gridPatient_CustomCallback"
+            OnRowUpdating="gridPatient_RowUpdating" OnHtmlRowCreated="gridPatient_OnHtmlRowCreated">
             <Columns>
                 <dx:GridViewDataColumn Caption="No." Width="50">
                     <DataItemTemplate>
@@ -361,7 +360,7 @@
                                     <ContentCollection>
                                         <dx:ContentControl ID="ContentControl1" runat="server">
                                             <dx:ASPxGridView ID="GridAppointment" runat="server" DataSourceID="AppointmentDatas"
-                                                KeyFieldName="Id" Width="100%" OnBeforePerformDataSelect="GridAppointment_BeforePerformDataSelect">
+                                                KeyFieldName="Id" Width="100%" OnBeforePerformDataSelect="gridAppointment_BeforePerformDataSelect">
                                                 <Columns>
                                                     <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" />
                                                     <dx:GridViewDataColumn FieldName="Username" VisibleIndex="1" Caption="Doctor" />
