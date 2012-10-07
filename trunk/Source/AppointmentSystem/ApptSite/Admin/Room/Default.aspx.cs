@@ -20,6 +20,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
 {
     private const string ScreenCode = "Room";
     static string _message;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -42,8 +43,18 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             if (gridcolums == null) return;
 
             // Gan visible cho nut new, edit bang cach kiem tra quyen
-            gridcolums.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
-            gridcolums.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+            gridcolums.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,
+                                                                       OperationConstant.Update.Key, out _message);
+
+            // Set hien thi/an cho nut new
+            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,
+                                                        OperationConstant.Create.Key, out _message);
+
+            // Set hien thi/an cho nut delete
+            btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+                                                                                  ScreenCode,
+                                                                                  OperationConstant.Delete.Key,
+                                                                                  out _message);
 
             // Get delete button
             GridViewCommandColumnCustomButton btnDelete =
@@ -51,15 +62,14 @@ public partial class Admin_Room_edit : System.Web.UI.Page
                     customButton => customButton.ID == "btnDelete");
 
             // Check delete right, if user has no right to delete => invisible delete button
-            if (btnDelete != null && !RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (btnDelete != null && !btnGeneralDelete.Visible)
             {
                 btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
 
             // Check visibility of button in button column
             // If there is no button is displayed => invisible column
-            gridcolums.Visible = gridcolums.EditButton.Visible || gridcolums.NewButton.Visible ||
-                                 (btnDelete != null && btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
+            gridcolums.Visible = gridcolums.EditButton.Visible || gridcolums.NewButton.Visible || btnGeneralDelete.Visible;
         }
         catch (Exception ex)
         {
@@ -67,6 +77,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             WebCommon.ShowDialog(this, "System is error. Please contact Administrator.");
         }
     }
+  
     protected void gridRoom_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
@@ -84,24 +95,24 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             Int32 id;
             if (Int32.TryParse(gridRoom.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
-                var obj = DataRepository.RoomProvider.GetById(id);
-                if (obj == null || obj.IsDisabled)
+                var room = DataRepository.RoomProvider.GetById(id);
+                if (room == null || room.IsDisabled)
                 {
                     WebCommon.AlertGridView(sender, "Cannot find room.");
                     return;
                 }
-                DataRepository.RoomProvider.DeepLoad(obj);
+                DataRepository.RoomProvider.DeepLoad(room);
                 // Kiem tra xem co cho nao dang su dung room hay khong
-                if (obj.RosterCollection.Exists(x => !x.IsDisabled) || obj.DoctorRoomCollection.Exists(x => !x.IsDisabled)
-                    || obj.AppointmentCollection.Exists(x => !x.IsDisabled))
+                if (room.RosterCollection.Exists(x => !x.IsDisabled) || room.DoctorRoomCollection.Exists(x => !x.IsDisabled)
+                    || room.AppointmentCollection.Exists(x => !x.IsDisabled))
                 {
-                    WebCommon.AlertGridView(sender, String.Format("Room {0} is using, you cannot delete it.", obj.Title));
+                    WebCommon.AlertGridView(sender, String.Format("Room {0} is using, you cannot delete it.", room.Title));
                     return;
                 }
-                obj.IsDisabled = true;
-                obj.UpdateUser = WebCommon.GetAuthUsername();
-                obj.UpdateDate = DateTime.Now;
-                DataRepository.RoomProvider.Update(obj);
+                room.IsDisabled = true;
+                room.UpdateUser = WebCommon.GetAuthUsername();
+                room.UpdateDate = DateTime.Now;
+                DataRepository.RoomProvider.Update(room);
             }
             #endregion
         }
@@ -111,6 +122,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             WebCommon.AlertGridView(sender, "Cannot delete room. Please contact Administrator");
         }
     }
+   
     protected void gridRoom_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
     {
         try
@@ -156,6 +168,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             WebCommon.AlertGridView(sender, "Cannot create new room. Please contact Administrator");
         }
     }
+
     protected void gridRoom_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
         try
@@ -201,6 +214,12 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             WebCommon.AlertGridView(sender, "Cannot update room. Please contact Administrator");
         }
     }
+  
+    /// <summary>
+    /// Tao option All
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridRoom_AutoFilterCellEditorInitialize(object sender, ASPxGridViewEditorEventArgs e)
     {
         if (e.Column.FieldName == "ServicesId")
@@ -210,6 +229,111 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             if (comboBox != null)
                 comboBox.ClientSideEvents.Init = "function(s, e) {s.InsertItem('" + GeneralConstants.FilterAll.Key
                     + "', '" + GeneralConstants.FilterAll.Value + "', '');}";
+        }
+    }
+
+    /// <summary>
+    /// Xoa nhieu room
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridRoom_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+    {
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        tm.BeginTransaction();
+        try
+        {
+            if (e.Parameters == "Delete")
+            {
+                // Check deleting right
+                if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+                {
+                    WebCommon.AlertGridView(sender, _message);
+                    tm.Rollback();
+                    return;
+                }
+
+                var grid = sender as ASPxGridView;
+                if (grid == null)
+                {
+                    WebCommon.AlertGridView(sender, "Cannot find room.");
+                    tm.Rollback();
+                    return;
+                }
+
+                // Lay danh sach Id cua cac row duoc select
+                var fieldNames = new[] { "Id" };
+                List<object> columnValues = grid.GetSelectedFieldValues(fieldNames);
+
+                // Doi trang thai cua cac roster
+                foreach (object roomId in columnValues)
+                {
+                    int id;
+                    if (!Int32.TryParse(roomId.ToString(), out id))
+                    {
+                        WebCommon.AlertGridView(sender, "Room is invalid. You cannot delete it.");
+                        tm.Rollback();
+                        return;
+                    }
+
+                    var room = DataRepository.RoomProvider.GetById(id);
+                    if (room == null || room.IsDisabled)
+                    {
+                        WebCommon.AlertGridView(sender, "Room is not existed. You cannot delete it.");
+                        tm.Rollback();
+                        return;
+                    }
+                    DataRepository.RoomProvider.DeepLoad(room);
+
+                    // Kiem tra xem co cho nao dang su dung room hay khong
+                    if (room.RosterCollection.Exists(x => !x.IsDisabled) || room.DoctorRoomCollection.Exists(x => !x.IsDisabled)
+                        || room.AppointmentCollection.Exists(x => !x.IsDisabled))
+                    {
+                        WebCommon.AlertGridView(sender, String.Format("Room {0} is using, you cannot delete it.", room.Title));
+                        tm.Rollback();
+                        return;
+                    }
+                    room.IsDisabled = true;
+                    room.UpdateUser = WebCommon.GetAuthUsername();
+                    room.UpdateDate = DateTime.Now;
+                    DataRepository.RoomProvider.Update(tm, room);
+                }
+                tm.Commit();
+                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted rooms." : "Deleted room.");
+
+                // Set tam duration de lay duoc danh sach moi
+                //int duration = RosterDataSource.CacheDuration;
+                //RosterDataSource.CacheDuration = 0;
+                //grid.DataBind();
+                grid.Selection.UnselectAll();
+                //RosterDataSource.CacheDuration = duration;
+            }
+        }
+        catch (Exception ex)
+        {
+            tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot delete service. Please contact Administrator.");
+        }
+    }
+
+    /// <summary>
+    /// An cac row co IsDisabled bang true
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridRoom_OnHtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
+    {
+        try
+        {
+            if (e.RowType == GridViewRowType.Data)
+            {
+                e.Row.Visible = !Boolean.Parse(e.GetValue("IsDisabled").ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 }

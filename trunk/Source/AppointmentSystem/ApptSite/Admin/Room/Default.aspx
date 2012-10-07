@@ -8,8 +8,26 @@
 
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
 
+    <script type="text/javascript">
+        function OnClickButtonDel() {
+            if (grid.GetSelectedRowCount() <= 0) {
+                ShowDialog(null, null, "Please select item first.");
+                return;
+            }
+            if (confirm("Are you sure to delete these items")) {
+                grid.PerformCallback('Delete');
+            }
+        }
+    </script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
+    <div class="color">
+        <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
+            ToolTip="New" CssClass="add"></asp:HyperLink>
+        <a class="delete" title="Delete selected items" onclick="OnClickButtonDel()" id="btnGeneralDelete"
+            runat="server"></a>
+    </div>
     <div class="box">
         <div class="title">
             <h5>
@@ -18,7 +36,8 @@
         <dx:ASPxGridView ID="gridRoom" ClientInstanceName="grid" runat="server" DataSourceID="RoomDatas"
             KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoom_RowInserting"
             OnCustomButtonCallback="gridRoom_CustomButtonCallback" OnRowUpdating="gridRoom_RowUpdating"
-            OnAutoFilterCellEditorInitialize="gridRoom_AutoFilterCellEditorInitialize">
+            OnAutoFilterCellEditorInitialize="gridRoom_AutoFilterCellEditorInitialize" OnCustomCallback="gridRoom_CustomCallback"
+            OnHtmlRowCreated="gridRoom_OnHtmlRowCreated">
             <Columns>
                 <dx:GridViewDataColumn Visible="False" FieldName="Id">
                 </dx:GridViewDataColumn>
@@ -53,18 +72,30 @@
                 <dx:GridViewDataColumn FieldName="Note">
                     <Settings AllowAutoFilter="False"></Settings>
                 </dx:GridViewDataColumn>
-                <dx:GridViewCommandColumn Caption="Operation" Width="100">
-                    <EditButton Visible="True">
+                <dx:GridViewCommandColumn Name="btnCommand" ButtonType="Image" Width="60" Caption="Operation">
+                    <EditButton>
+                        <Image Url="../../resources/images/icons/edit.png" ToolTip="Edit" AlternateText="Edit"
+                            Height="15" Width="15">
+                        </Image>
                     </EditButton>
-                    <NewButton Visible="true">
-                    </NewButton>
                     <CustomButtons>
-                        <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
+                        <dx:GridViewCommandColumnCustomButton ID="btnDelete">
+                            <Image Url="../../resources/images/icons/del.png" ToolTip="Delete" AlternateText="Delete"
+                                Height="15" Width="15">
+                            </Image>
                         </dx:GridViewCommandColumnCustomButton>
                     </CustomButtons>
                     <CellStyle HorizontalAlign="Center">
                     </CellStyle>
                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                </dx:GridViewCommandColumn>
+                <dx:GridViewCommandColumn Caption="#" ShowSelectCheckbox="True" Width="15">
+                    <HeaderTemplate>
+                        <dx:ASPxCheckBox ID="SelectAllCheckBox" runat="server" ToolTip="Select/Unselect all rows on the page"
+                            ClientSideEvents-CheckedChanged="function(s, e) { grid.SelectAllRowsOnPage(s.GetChecked()); }" />
+                    </HeaderTemplate>
+                    <CellStyle HorizontalAlign="Center" />
+                    <HeaderStyle HorizontalAlign="Center" />
                 </dx:GridViewCommandColumn>
             </Columns>
             <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
