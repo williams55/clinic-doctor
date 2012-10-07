@@ -9,6 +9,7 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
+using Common.Extension;
 using Common.Util;
 using Log.Controller;
 using Newtonsoft.Json;
@@ -514,10 +515,12 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             rosterItem.UpdateDate = DateTime.Now;
 
             DataRepository.RosterProvider.Save(tm, rosterItem);
-            DataRepository.RosterProvider.DeepLoad(rosterItem);
 
-            AddRoster(lstResult, rosterItem);
+            // Lay lai thong tin roster de cac datasource lien quan cap nhat
             tm.Commit();
+
+            rosterItem = DataRepository.RosterProvider.GetById(rosterItem.Id);
+            AddRoster(lstResult, rosterItem);
             return WebCommon.BuildSuccessfulResult(lstResult);
         }
         catch (Exception ex)
@@ -541,8 +544,33 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(_message);
             }
 
+            // Get datetime to filter
+            DateTime fromDate = Convert.ToDateTime(currentDateView);
+            fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+            var toDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 23, 59, 59);
+            if (mode == "week")
+            {
+                // Neu loai thoi gian la tuan thi lay ngay dau tuan va cuoi tuan
+                toDate = fromDate.LastDateOfWeek();
+                toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
+                fromDate = fromDate.FirstDateOfWeek();
+                fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+            }
+            else if (mode == "month")
+            {
+                // Neu loai thoi gian la thang thi lay ngay dau thang va cuoi thang
+                toDate = fromDate.LastDateOfWeek();
+                toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
+                fromDate = new DateTime(fromDate.Year, fromDate.Month, 1, 0, 0, 0);
+            }
+
             int count;
-            var lstObj = DataRepository.RosterProvider.GetPaged("IsDisabled = 'False'", string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+            var lstObj =
+                DataRepository.RosterProvider.GetPaged(
+                    String.Format("IsDisabled = 'False' AND StartTime BETWEEN N'{0}' AND N'{1}'"
+                                  , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                                  toDate.ToString("yyyy-MM-dd HH:mm:ss.000")), string.Empty, 0,
+                    ServiceFacade.SettingsHelper.GetPagedLength, out count);
             DataRepository.RosterProvider.DeepLoad(lstObj);
 
             // Declare list of object are returned
@@ -565,7 +593,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     item.RosterTypeId,
                     RosterTypeTitle = item.RosterTypeIdSource.Title,
                     note = item.Note,
-                    isnew = false
+                    isnew = false,
+                    color = item.RosterTypeIdSource.ColorCode
                 });
             }
             return WebCommon.BuildSuccessfulResult(lstResult);
@@ -598,7 +627,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             tm.BeginTransaction();
 
             Roster roster = DataRepository.RosterProvider.GetById(id);
-            if (roster == null || roster.IsDisabled )
+            if (roster == null || roster.IsDisabled)
             {
                 return WebCommon.BuildFailedResult("There is no roster to delete.");
             }
@@ -633,6 +662,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     /// <param name="item"></param>
     private static void AddRoster(List<object> lst, Roster item)
     {
+        DataRepository.RosterProvider.DeepLoad(item);
         lst.Add(new
         {
             id = item.Id,
@@ -648,7 +678,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             item.RosterTypeId,
             RosterTypeTitle = item.RosterTypeIdSource.Title,
             note = item.Note,
-            isnew = false
+            isnew = false,
+            color = item.RosterTypeIdSource.ColorCode
         });
     }
 
@@ -711,7 +742,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             return WebCommon.BuildFailedResult(ex.Message);
         }
     }
-    
+
     /// <summary>
     /// Search doctor by keyword
     /// </summary>

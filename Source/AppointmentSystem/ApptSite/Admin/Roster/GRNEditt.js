@@ -1,6 +1,12 @@
 ﻿var blStaff = false;
 var CurrentRoster;
 
+// True if lightbox is using, do not refesh page
+var isLightbox = false;
+
+// Dung de danh dau la dang chay de khong chay lai su kien view change
+var isUsing = false;
+
 /****************************DHTMLX - Start******************************/
 // Load calendar for Schedule
 function ShowMinical() {
@@ -17,9 +23,6 @@ function ShowMinical() {
             }
         });
 }
-
-// Refesh current view for mark_now can auto update
-setInterval(function() { scheduler.setCurrentView(); }, 60000);
 
 // Init Schedule
 function initSchedule(weekday) {
@@ -51,10 +54,10 @@ function initSchedule(weekday) {
                         name: "timeline",
                         x_unit: "minute",
                         x_date: "%H:%i",
-                        x_step: 30,
+                        x_step: 60,
                         x_size: 24,
                         x_start: 0,
-                        x_length: 48,
+                        x_length: 24,
                         y_unit: elements,
                         y_property: "section_id",
                         render: "tree",
@@ -76,37 +79,53 @@ function initSchedule(weekday) {
     }));
 
     $.when.apply($, arrAjax).done(function() {
-        scheduler.init('scheduler_here', currentDate, currentMode);
-
         scheduler.attachEvent("onBeforeDrag", BeforeDrag);
         scheduler.attachEvent("onClick", BlockReadonly);
         scheduler.attachEvent("onEventChanged", EventChanged);
 
         dhtmlxEvent(document, (_isOpera ? "keypress" : "keydown"), function(e) {
 
-            if (e.keyCode == 37) {
-                //left
-                scheduler.matrix.timeline.x_start -= 1;
-                if (scheduler.matrix.timeline.x_start <= 0) {
-                    scheduler.matrix.timeline.x_start = 0;
-                    $('#move_left').hide();
-                }
-                $('#move_right').show();
-                scheduler.callEvent("onOptionsLoad", []);
-            } else if (e.keyCode == 39) {
-                //right
-                scheduler.matrix.timeline.x_start += 1;
-                if (scheduler.matrix.timeline.x_start >= 24) {
-                    scheduler.matrix.timeline.x_start = 24;
-                    $('#move_right').hide();
-                }
-                $('#move_left').show();
-                scheduler.callEvent("onOptionsLoad", []);
+//            if (e.keyCode == 37) {
+//                //left
+//                scheduler.matrix.timeline.x_start -= 1;
+//                if (scheduler.matrix.timeline.x_start <= 0) {
+//                    scheduler.matrix.timeline.x_start = 0;
+//                    $('#move_left').hide();
+//                }
+//                $('#move_right').show();
+//                scheduler.callEvent("onOptionsLoad", []);
+//            } else if (e.keyCode == 39) {
+//                //right
+//                scheduler.matrix.timeline.x_start += 1;
+//                if (scheduler.matrix.timeline.x_start >= 24) {
+//                    scheduler.matrix.timeline.x_start = 24;
+//                    $('#move_right').hide();
+//                }
+//                $('#move_left').show();
+//                scheduler.callEvent("onOptionsLoad", []);
+//            }
+        });
+
+        scheduler.attachEvent("onViewChange", function(mode, date) {
+            if (!isUsing && !isLightbox) {
+                // Lam cai load roster cua doctor,
+                // neu doctor co roster thi hien thi
+                // khi hien thi, dua vao thoi gian cua roster ma to mau
+                isUsing = true;
+
+                // Load roster
+                LoadRoster(mode, date);
             }
         });
 
-        // Load roster
-        LoadRoster(currentMode, currentDate);
+        scheduler.init('scheduler_here', currentDate, currentMode);
+
+        // Refesh current view for mark_now can auto update
+        setInterval(function() {
+            if (!isLightbox) {
+                scheduler.setCurrentView();
+            }
+        }, 60000);
     });
 }
 /****************************DHTMLX - End******************************/
@@ -114,24 +133,24 @@ function initSchedule(weekday) {
 /****************************Scheduler - Start******************************/
 // Move time event
 function moveTime() {
-    $('#move_left').click(function() {
-        scheduler.matrix.timeline.x_start -= 1;
-        if (scheduler.matrix.timeline.x_start <= 0) {
-            scheduler.matrix.timeline.x_start = 0;
-            $('#move_left').hide();
-        }
-        $('#move_right').show();
-        scheduler.callEvent("onOptionsLoad", []);
-    });
-    $('#move_right').click(function() {
-        scheduler.matrix.timeline.x_start += 1;
-        if (scheduler.matrix.timeline.x_start >= 24) {
-            scheduler.matrix.timeline.x_start = 24;
-            $('#move_right').hide();
-        }
-        $('#move_left').show();
-        scheduler.callEvent("onOptionsLoad", []);
-    });
+//    $('#move_left').click(function() {
+//        scheduler.matrix.timeline.x_start -= 1;
+//        if (scheduler.matrix.timeline.x_start <= 0) {
+//            scheduler.matrix.timeline.x_start = 0;
+//            $('#move_left').hide();
+//        }
+//        $('#move_right').show();
+//        scheduler.callEvent("onOptionsLoad", []);
+//    });
+//    $('#move_right').click(function() {
+//        scheduler.matrix.timeline.x_start += 1;
+//        if (scheduler.matrix.timeline.x_start >= 24) {
+//            scheduler.matrix.timeline.x_start = 24;
+//            $('#move_right').hide();
+//        }
+//        $('#move_left').show();
+//        scheduler.callEvent("onOptionsLoad", []);
+//    });
 }
 
 // Set readonly property for event
@@ -156,6 +175,7 @@ function EventChanged(eventId, objEvent) {
 }
 
 scheduler.showLightbox = function(id) {
+    isLightbox = true;
 
     $("#txtDoctor").tokenInput("clear");
     InitForm();
@@ -324,6 +344,7 @@ function LoadRoster(mode, date) {
             ShowDialog("", "", "Unknow error!", "");
         },
         complete: function() {
+            isUsing = false;
         }
     });
 }
@@ -490,7 +511,9 @@ function AddRoster(evs) {
 
 // Cancel roster
 function CancelRoster() {
+    $(".token-input-dropdown").css("z-index", 0); // Bring to front
     scheduler.endLightbox(false, html("RosterForm"));
+    isLightbox = false;
 }
 
 // Delete roster by Id

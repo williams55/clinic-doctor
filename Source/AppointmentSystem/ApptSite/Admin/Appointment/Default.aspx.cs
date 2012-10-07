@@ -11,6 +11,7 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
+using Common.Extension;
 using Common.Util;
 using Log.Controller;
 using Newtonsoft.Json;
@@ -1333,6 +1334,21 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             DateTime fromDate = Convert.ToDateTime(currentDateView);
             fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
             var toDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 23, 59, 59);
+            if (mode == "week")
+            {
+                // Neu loai thoi gian la tuan thi lay ngay dau tuan va cuoi tuan
+                toDate = fromDate.LastDateOfWeek();
+                toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
+                fromDate = fromDate.FirstDateOfWeek();
+                fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+            }
+            else if (mode == "month")
+            {
+                // Neu loai thoi gian la thang thi lay ngay dau thang va cuoi thang
+                toDate = fromDate.LastDateOfWeek();
+                toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
+                fromDate = new DateTime(fromDate.Year, fromDate.Month, 1, 0, 0, 0);
+            }
             int count;
 
             // Get appointment
