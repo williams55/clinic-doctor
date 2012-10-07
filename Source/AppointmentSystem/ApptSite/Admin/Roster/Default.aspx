@@ -155,7 +155,7 @@
                         width: 30px; height: 20px; float: left; right: 30px; cursor: pointer; display: none;" id="move_left" title="Move left">
                         &nbsp;</div>
                     <div style="background: url('../../resources/components/dhtmlxScheduler/imgs/buttons.gif') -30px 0px;
-                        width: 30px; height: 20px; float: left; right: 0px; cursor: pointer;" id="move_right" title="Move right">
+                        width: 30px; height: 20px; float: left; right: 0px; cursor: pointer; display: none;" id="move_right" title="Move right">
                         &nbsp;</div>
                 </div>
                 <div class="dhx_cal_header">

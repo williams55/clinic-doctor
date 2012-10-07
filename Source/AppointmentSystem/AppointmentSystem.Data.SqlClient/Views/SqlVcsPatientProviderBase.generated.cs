@@ -365,11 +365,12 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
 		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
 	/// <param name="start">Row number at which to start reading.</param>
 	/// <param name="pageLength">Number of rows to return.</param>
 	/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 	/// <remark>This method is generated from a stored procedure.</remark>
-	public override void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+	public override void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark, System.Boolean? isDisabled)
 	{
 		SqlDatabase database = new SqlDatabase(this._connectionString);
 		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_Update", true);
@@ -403,6 +404,7 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 		database.AddInParameter(commandWrapper, "@UpdateUser", DbType.String,  updateUser );
 		database.AddInParameter(commandWrapper, "@UpdateDate", DbType.DateTime,  updateDate );
 		database.AddInParameter(commandWrapper, "@Remark", DbType.String,  remark );
+		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean,  isDisabled );
 		
 
 		try

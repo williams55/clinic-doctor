@@ -247,7 +247,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, false, 10)]
+		[DataObjectField(false, false, false, 11)]
 		public virtual System.String PatientCode
 		{
 			get
@@ -954,7 +954,7 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("PatientCode", "Patient Code"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("PatientCode", "Patient Code", 10));
+				new CommonRules.MaxLengthRuleArgs("PatientCode", "Patient Code", 11));
 			ValidationRules.AddRule( CommonRules.NotNull,
 				new ValidationRuleArgs("Username", "Username"));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -2614,7 +2614,7 @@ namespace AppointmentSystem.Entities
 		/// PatientCode : 
 		/// </summary>
 		[EnumTextValue("PatientCode")]
-		[ColumnEnum("PatientCode", typeof(System.String), System.Data.DbType.StringFixedLength, false, false, false, 10)]
+		[ColumnEnum("PatientCode", typeof(System.String), System.Data.DbType.StringFixedLength, false, false, false, 11)]
 		PatientCode = 2,
 		/// <summary>
 		/// Username : 

@@ -78,6 +78,11 @@ public partial class Admin_Roster_Grid : Page
         }
     }
 
+    /// <summary>
+    /// Thuc hien xoa roster
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridRoster_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
@@ -119,6 +124,11 @@ public partial class Admin_Roster_Grid : Page
         }
     }
 
+    /// <summary>
+    /// Thuc hien them moi roster
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridRoster_RowInserting(object sender, ASPxDataInsertingEventArgs e)
     {
         try
@@ -143,7 +153,7 @@ public partial class Admin_Roster_Grid : Page
             var fromDate = grid.FindEditFormTemplateControl("fromDate") as ASPxDateEdit;
             var endTime = grid.FindEditFormTemplateControl("endTime") as ASPxTimeEdit;
             var endDate = grid.FindEditFormTemplateControl("endDate") as ASPxDateEdit;
-            var doctor = grid.FindEditFormTemplateControl("choDoctor") as ASPxComboBox;
+            var doctor = grid.FindEditFormTemplateControl("cboDoctor") as ASPxComboBox;
             var rosterType = grid.FindEditFormTemplateControl("cboRosterType") as ASPxComboBox;
 
             if (fromTime == null || fromDate == null || endTime == null || endDate == null || doctor == null || rosterType == null)
@@ -156,9 +166,25 @@ public partial class Admin_Roster_Grid : Page
             var chkIsRepeat = grid.FindEditFormTemplateControl("chkIsRepeat") as ASPxCheckBox;
             var chkWeekday = grid.FindEditFormTemplateControl("chkWeekday") as CheckBoxList;
 
+            // Lay doctorUsername
+            // Neu selected value la null thi mac dinh no bang empty
+            var doctorUsername = string.Empty;
+            if (doctor.SelectedItem != null)
+            {
+                doctorUsername = doctor.SelectedItem.Value.ToString();
+            }
+
+            // Lay roster type
+            // Neu selected value la null thi mac dinh no bang empty
+            var rosterTypeId = string.Empty;
+            if (rosterType.SelectedItem != null)
+            {
+                rosterTypeId = rosterType.SelectedItem.Value.ToString();
+            }
+
             // Validate empty field
-            if (!WebCommon.ValidateEmpty("Doctor", doctor.SelectedItem.Value, out _message)
-                || !WebCommon.ValidateEmpty("Roster Type", rosterType.SelectedItem.Value, out _message)
+            if (!WebCommon.ValidateEmpty("Doctor", doctorUsername, out _message)
+                || !WebCommon.ValidateEmpty("Roster Type", rosterTypeId, out _message)
                 || !WebCommon.ValidateEmpty("From Time", fromTime.Text, out _message)
                 || !WebCommon.ValidateEmpty("From Date", fromDate.Text, out _message)
                 || !WebCommon.ValidateEmpty("End Time", endTime.Text, out _message)
@@ -355,6 +381,11 @@ public partial class Admin_Roster_Grid : Page
         }
     }
 
+    /// <summary>
+    /// Thuc hien cap nhat roster
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridRoster_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
@@ -399,9 +430,25 @@ public partial class Admin_Roster_Grid : Page
                 return;
             }
 
+            // Lay doctorUsername
+            // Neu selected value la null thi mac dinh no bang empty
+            var doctorUsername = string.Empty;
+            if (doctor.SelectedItem != null)
+            {
+                doctorUsername = doctor.SelectedItem.Value.ToString();
+            }
+
+            // Lay roster type
+            // Neu selected value la null thi mac dinh no bang empty
+            var rosterTypeId = string.Empty;
+            if (rosterType.SelectedItem != null)
+            {
+                rosterTypeId = rosterType.SelectedItem.Value.ToString();
+            }
+
             // Validate empty field
-            if (!WebCommon.ValidateEmpty("Doctor", doctor.SelectedItem.Value, out _message)
-                || !WebCommon.ValidateEmpty("Roster Type", rosterType.SelectedItem.Value, out _message)
+            if (!WebCommon.ValidateEmpty("Doctor", doctorUsername, out _message)
+                || !WebCommon.ValidateEmpty("Roster Type", rosterTypeId, out _message)
                 || !WebCommon.ValidateEmpty("From Time", objStartTime.Text, out _message)
                 || !WebCommon.ValidateEmpty("From Date", objStartDate.Text, out _message)
                 || !WebCommon.ValidateEmpty("End Time", objEndTime.Text, out _message)
@@ -548,7 +595,12 @@ public partial class Admin_Roster_Grid : Page
         }
     }
 
-    // Lay khoang thoi gian phu hop voi moi buoc nhay
+    /// <summary>
+    /// Lay khoang thoi gian phu hop voi moi buoc nhay
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="isEndTime"></param>
+    /// <returns></returns>
     protected DateTime getDate(object obj, bool isEndTime)
     {
         var currentTime = DateTime.Now;
@@ -572,6 +624,11 @@ public partial class Admin_Roster_Grid : Page
         return currentTime;
     }
 
+    /// <summary>
+    /// Khoi tao danh sach cac ngay trong tuan
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridRoster_InitNewRow(object sender, ASPxDataInitNewRowEventArgs e)
     {
         try
@@ -624,6 +681,12 @@ public partial class Admin_Roster_Grid : Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
+    
+    /// <summary>
+    /// Hien thi/An nut delete o tung dong
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridRoster_CustomButtonInitialize(object sender, ASPxGridViewCustomButtonEventArgs e)
     {
         try
@@ -649,6 +712,11 @@ public partial class Admin_Roster_Grid : Page
         }
     }
 
+    /// <summary>
+    /// Tien hanh xoa nhieu roster, hoac check/uncheck all
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void gridRoster_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
     {
         TransactionManager tm = DataRepository.Provider.CreateTransaction();
@@ -665,7 +733,7 @@ public partial class Admin_Roster_Grid : Page
 
                 // Lay danh sach Id cua cac row duoc select
                 var fieldNames = new[] { "Id" };
-                List<object> columnValues = gridRoster.GetSelectedFieldValues(fieldNames);
+                List<object> columnValues = grid.GetSelectedFieldValues(fieldNames);
                 var lstRoster = new TList<Roster>();
 
                 // Doi trang thai cua cac roster
@@ -680,7 +748,7 @@ public partial class Admin_Roster_Grid : Page
                 }
                 DataRepository.RosterProvider.Update(lstRoster);
                 tm.Commit();
-                WebCommon.AlertGridView(sender, "Deleted Roster.");
+                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted rosters." : "Deleted roster.");
 
                 // Set tam duration de lay duoc danh sach moi
                 //int duration = RosterDataSource.CacheDuration;

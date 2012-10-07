@@ -7040,7 +7040,7 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="11" precision="0" scale="0" param="(11)" nulldefault=""/>
 				<parameter name="@Username" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@RoomId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@ServicesId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
@@ -7116,7 +7116,7 @@
 			<parameters>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
 				<parameter name="@OriginalId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault=""/>
-				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="11" precision="0" scale="0" param="(11)" nulldefault=""/>
 				<parameter name="@Username" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@RoomId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
 				<parameter name="@ServicesId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault=""/>
@@ -7485,7 +7485,7 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Id" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
-				<parameter name="@PatientCode" type="nchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="11" precision="0" scale="0" param="(11)" nulldefault="null"/>
 				<parameter name="@Username" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@RoomId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
 				<parameter name="@ServicesId" type="int" direction="Input" size="4" precision="10" scale="0" param="" nulldefault="null"/>
