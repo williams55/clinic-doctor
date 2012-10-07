@@ -56,9 +56,9 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             GridViewCommandColumnCustomButton btnDelete =
                 gridViewCommandColumn.CustomButtons.Cast<GridViewCommandColumnCustomButton>().FirstOrDefault(
                     customButton => customButton.ID == "btnDelete");
-            if (!btnGeneralDelete.Visible)
+            if (btnDelete != null && !btnGeneralDelete.Visible)
             {
-                if (btnDelete != null) btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
+                btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
 
             // Set hien thi/an cho cot button
