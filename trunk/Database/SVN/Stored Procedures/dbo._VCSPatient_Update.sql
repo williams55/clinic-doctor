@@ -1,3 +1,4 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -38,6 +39,7 @@ CREATE PROCEDURE [dbo].[_VCSPatient_Update]
 	,@UpdateUser nvarchar(50)
 	,@UpdateDate datetime
 	,@Remark nvarchar(250)
+	,@IsDisabled bit
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -73,6 +75,7 @@ UPDATE [VCS].[dbo].[Patient]
       ,[UpdateUser] = @UpdateUser
       ,[UpdateDate] = GETDATE()
       ,[Remark] = @Remark
+      ,[IsDisabled] = @IsDisabled
  WHERE [PatientCode] = @PatientCode
  
 	RETURN @@ROWCOUNT
