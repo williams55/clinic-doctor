@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AppointmentSystem.Data;
 using AppointmentSystem.Settings.BusinessLayer;
@@ -40,27 +41,30 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                                                                                   ScreenCode,
                                                                                   OperationConstant.Update.Key,
                                                                                   out _message);
-            gridViewCommandColumn.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+
+            // Set hien thi/an cho nut new
+            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,
+                                                        OperationConstant.Create.Key, out _message);
+
+            // Set hien thi/an cho nut delete
+            btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
                                                                                   ScreenCode,
-                                                                                  OperationConstant.Create.Key,
+                                                                                  OperationConstant.Delete.Key,
                                                                                   out _message);
 
-            // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
+            // Set hien thi/an cho nut delete cua tung row
             GridViewCommandColumnCustomButton btnDelete =
                 gridViewCommandColumn.CustomButtons.Cast<GridViewCommandColumnCustomButton>().FirstOrDefault(
                     customButton => customButton.ID == "btnDelete");
-            if (btnDelete != null && !RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
-                                                                                  ScreenCode,
-                                                                                  OperationConstant.Delete.Key,
-                                                                                  out _message))
+            if (!btnGeneralDelete.Visible)
             {
-                btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
+                if (btnDelete != null) btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
 
-            // Tat ca cot neu 3 thao tac deu khong hien thi
+            // Set hien thi/an cho cot button
             gridViewCommandColumn.Visible = gridViewCommandColumn.EditButton.Visible
                 || gridViewCommandColumn.NewButton.Visible
-                || (btnDelete != null && btnDelete.Visibility != GridViewCustomButtonVisibility.Invisible);
+                || btnGeneralDelete.Visible;
         }
         catch (Exception ex)
         {
@@ -128,6 +132,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             WebCommon.AlertGridView(sender, "Cannot create new service. Please contact Administrator");
         }
     }
+ 
     protected void gridServices_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
@@ -156,11 +161,11 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             }
 
             // Lay thong tin cua service
-            var obj = DataRepository.ServicesProvider.GetById(id);
+            var services = DataRepository.ServicesProvider.GetById(id);
 
             // Kiem tra xem service co ton tai hay khong
             // neu khong ton tai thi bao loi
-            if (obj == null || obj.IsDisabled)
+            if (services == null || services.IsDisabled)
             {
                 // Set returned message, then DevExpress will get it and show for end-user
                 WebCommon.AlertGridView(sender, "Service is not existed. You cannot delete it.");
@@ -168,26 +173,26 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             }
 
             // O day dung deepload de load toan bo du lieu lien quan
-            DataRepository.ServicesProvider.DeepLoad(obj);
+            DataRepository.ServicesProvider.DeepLoad(services);
 
             // Tien hanh kiem tra xem no co dang duoc su dung hay khong
             // luu y la cac thong tin lien ket voi no phai co gia tri IsDisabled la false thi moi tinh la ton tai
             // neu IsDisabled co gia tri True thi nghia la no khong con ton tai
-            if (obj.RoomCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co phong nao dang co dich vu nay hay khong
-                || obj.UsersCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co bac si nao duoc gan vao dich vu nay hay khong
-                || obj.AppointmentCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co appointment nao da co dich vu nay hay khong
+            if (services.RoomCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co phong nao dang co dich vu nay hay khong
+                || services.UsersCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co bac si nao duoc gan vao dich vu nay hay khong
+                || services.AppointmentCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co appointment nao da co dich vu nay hay khong
                 )
             {
                 // Set returned message, then DevExpress will get it and show for end-user
-                WebCommon.AlertGridView(sender, String.Format("Service {0} is using, you cannot delete it.", obj.Title));
+                WebCommon.AlertGridView(sender, String.Format("Service {0} is using, you cannot delete it.", services.Title));
                 return;
             }
             // Neu service dang trong tinh trang hoan toan khong duoc su dung thi tien hanh xoa
             // viec xoa chi o day chi la doi gia tri cua IsDisabled thanh True
-            obj.IsDisabled = true;
-            obj.UpdateUser = WebCommon.GetAuthUsername();
-            obj.UpdateDate = DateTime.Now;
-            DataRepository.ServicesProvider.Update(obj);
+            services.IsDisabled = true;
+            services.UpdateUser = WebCommon.GetAuthUsername();
+            services.UpdateDate = DateTime.Now;
+            DataRepository.ServicesProvider.Update(services);
 
             // Show message alert delete successfully
             WebCommon.AlertGridView(sender, "Service is deleted successfully.");
@@ -198,6 +203,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             WebCommon.AlertGridView(sender, "Cannot delete service. Please contact Administrator");
         }
     }
+    
     protected void gridServices_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
         try
@@ -249,6 +255,113 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             e.Cancel = true;
             WebCommon.AlertGridView(sender, "Cannot update service. Please contact Administrator");
+        }
+    }
+
+    /// <summary>
+    /// Xoa nhieu service
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridServices_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+    {
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        tm.BeginTransaction();
+        try
+        {
+            if (e.Parameters == "Delete")
+            {
+                // Check deleting right
+                if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+                {
+                    WebCommon.AlertGridView(sender, _message);
+                    tm.Rollback();
+                    return;
+                }
+
+                var grid = sender as ASPxGridView;
+                if (grid == null)
+                {
+                    WebCommon.AlertGridView(sender, "Cannot find role.");
+                    tm.Rollback();
+                    return;
+                }
+
+                // Lay danh sach Id cua cac row duoc select
+                var fieldNames = new[] { "Id" };
+                List<object> columnValues = grid.GetSelectedFieldValues(fieldNames);
+
+                // Doi trang thai cua cac roster
+                foreach (object serviceId in columnValues)
+                {
+                    int id;
+                    if (!Int32.TryParse(serviceId.ToString(), out id))
+                    {
+                        WebCommon.AlertGridView(sender, "Service is invalid. You cannot delete it.");
+                        tm.Rollback();
+                        return;
+                    }
+
+                    var services = DataRepository.ServicesProvider.GetById(id);
+                    if (services == null || services.IsDisabled)
+                    {
+                        WebCommon.AlertGridView(sender, "Service is not existed. You cannot delete it.");
+                        tm.Rollback();
+                        return;
+                    }
+                    DataRepository.ServicesProvider.DeepLoad(services);
+
+                    // Kiem tra xem co cho nao dang su dung room hay khong
+                    if (services.RoomCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co phong nao dang co dich vu nay hay khong
+                        || services.UsersCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co bac si nao duoc gan vao dich vu nay hay khong
+                        || services.AppointmentCollection.Exists(x => !x.IsDisabled) // Kiem tra xem co appointment nao da co dich vu nay hay khong
+                        )
+                    {
+                        WebCommon.AlertGridView(sender, String.Format("Service {0} is using, you cannot delete it.", services.Title));
+                        tm.Rollback();
+                        return;
+                    }
+                    services.IsDisabled = true;
+                    services.UpdateUser = WebCommon.GetAuthUsername();
+                    services.UpdateDate = DateTime.Now;
+                    DataRepository.ServicesProvider.Update(tm, services);
+                }
+                tm.Commit();
+                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted services." : "Deleted service.");
+
+                // Set tam duration de lay duoc danh sach moi
+                //int duration = RosterDataSource.CacheDuration;
+                //RosterDataSource.CacheDuration = 0;
+                //grid.DataBind();
+                grid.Selection.UnselectAll();
+                //RosterDataSource.CacheDuration = duration;
+            }
+        }
+        catch (Exception ex)
+        {
+            tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot delete service. Please contact Administrator.");
+        }
+    }
+
+    /// <summary>
+    /// An cac row co IsDisabled bang true
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridServices_OnHtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
+    {
+        try
+        {
+            if (e.RowType == GridViewRowType.Data)
+            {
+                e.Row.Visible = !Boolean.Parse(e.GetValue("IsDisabled").ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 }

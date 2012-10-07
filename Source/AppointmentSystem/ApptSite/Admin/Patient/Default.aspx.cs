@@ -44,7 +44,8 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                                                                                   out _message);
 
             // Set hien thi/an cho nut new
-            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,
+                                                        OperationConstant.Create.Key, out _message);
           
             // Set hien thi/an cho nut delete
             btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),

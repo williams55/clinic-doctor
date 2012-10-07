@@ -106,7 +106,7 @@ public partial class Admin_Role_Default : Page
                 if (role.GroupRoleCollection.Exists(x => !x.IsDisabled) || role.UserRoleCollection.Exists(x => !x.IsDisabled)
                     || role.RoleDetailCollection.Exists(x => !x.IsDisabled))
                 {
-                    WebCommon.AlertGridView(sender, String.Format("Role {0} is used, you cannot delete it.", role.Title));
+                    WebCommon.AlertGridView(sender, String.Format("Role {0} is using, you cannot delete it.", role.Title));
                     return;
                 }
                 role.IsDisabled = true;
@@ -263,7 +263,7 @@ public partial class Admin_Role_Default : Page
                         role.UserRoleCollection.Exists(x => !x.IsDisabled)
                         || role.RoleDetailCollection.Exists(x => !x.IsDisabled))
                     {
-                        WebCommon.AlertGridView(sender, String.Format("Role {0} is used, you cannot delete it.", role.Title));
+                        WebCommon.AlertGridView(sender, String.Format("Role {0} is using, you cannot delete it.", role.Title));
                         tm.Rollback();
                         return;
                     }
@@ -281,22 +281,6 @@ public partial class Admin_Role_Default : Page
                 //grid.DataBind();
                 grid.Selection.UnselectAll();
                 //RosterDataSource.CacheDuration = duration;
-            }
-            else
-            {
-                // Thuc hien check/uncheck khi nhan check all
-                bool needToSelectAll;
-                bool.TryParse(e.Parameters, out needToSelectAll);
-
-                var gridView = (ASPxGridView)sender;
-
-                int startIndex = gridView.PageIndex * gridView.SettingsPager.PageSize;
-                int endIndex = Math.Min(gridView.VisibleRowCount, startIndex + gridView.SettingsPager.PageSize);
-
-                for (int i = startIndex; i < endIndex; i++)
-                {
-                    gridView.Selection.SetSelection(i, needToSelectAll);
-                }
             }
         }
         catch (Exception ex)
