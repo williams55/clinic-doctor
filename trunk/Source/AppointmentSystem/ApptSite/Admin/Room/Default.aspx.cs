@@ -95,7 +95,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
                 if (obj.RosterCollection.Exists(x => !x.IsDisabled) || obj.DoctorRoomCollection.Exists(x => !x.IsDisabled)
                     || obj.AppointmentCollection.Exists(x => !x.IsDisabled))
                 {
-                    WebCommon.AlertGridView(sender, String.Format("Room {0} is used, you cannot delete it.", obj.Title));
+                    WebCommon.AlertGridView(sender, String.Format("Room {0} is using, you cannot delete it.", obj.Title));
                     return;
                 }
                 obj.IsDisabled = true;

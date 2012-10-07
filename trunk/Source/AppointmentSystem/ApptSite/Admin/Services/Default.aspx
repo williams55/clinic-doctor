@@ -9,8 +9,26 @@
 
     <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
 
+    <script type="text/javascript">
+        function OnClickButtonDel() {
+            if (grid.GetSelectedRowCount() <= 0) {
+                ShowDialog(null, null, "Please select item first.");
+                return;
+            }
+            if (confirm("Are you sure to delete these items")) {
+                grid.PerformCallback('Delete');
+            }
+        }
+    </script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
+    <div class="color">
+        <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
+            ToolTip="New" CssClass="add"></asp:HyperLink>
+        <a class="delete" title="Delete selected items" onclick="OnClickButtonDel()" id="btnGeneralDelete"
+            runat="server"></a>
+    </div>
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
@@ -19,7 +37,8 @@
         <div id="box-order">
             <dx:ASPxGridView ID="gridServices" ClientInstanceName="grid" runat="server" DataSourceID="ServicesDataSource"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridServices_RowInserting"
-                OnCustomButtonCallback="gridServices_CustomButtonCallback" OnRowUpdating="gridServices_RowUpdating">
+                OnCustomButtonCallback="gridServices_CustomButtonCallback" OnRowUpdating="gridServices_RowUpdating"
+                OnCustomCallback="gridServices_CustomCallback" OnHtmlRowCreated="gridServices_OnHtmlRowCreated">
                 <Columns>
                     <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" ReadOnly="true" Visible="False">
                     </dx:GridViewDataColumn>
@@ -43,16 +62,30 @@
                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                         <Settings AllowAutoFilter="False"></Settings>
                     </dx:GridViewDataColumn>
-                    <dx:GridViewCommandColumn Caption="Operation" Width="100">
-                        <EditButton Visible="true" />
-                        <NewButton Visible="true" />
+                    <dx:GridViewCommandColumn Name="btnCommand" ButtonType="Image" Width="60" Caption="Operation">
+                        <EditButton>
+                            <Image Url="../../resources/images/icons/edit.png" ToolTip="Edit" AlternateText="Edit"
+                                Height="15" Width="15">
+                            </Image>
+                        </EditButton>
                         <CustomButtons>
-                            <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
+                            <dx:GridViewCommandColumnCustomButton ID="btnDelete">
+                                <Image Url="../../resources/images/icons/del.png" ToolTip="Delete" AlternateText="Delete"
+                                    Height="15" Width="15">
+                                </Image>
                             </dx:GridViewCommandColumnCustomButton>
                         </CustomButtons>
                         <CellStyle HorizontalAlign="Center">
                         </CellStyle>
                         <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                    </dx:GridViewCommandColumn>
+                    <dx:GridViewCommandColumn Caption="#" ShowSelectCheckbox="True" Width="15">
+                        <HeaderTemplate>
+                            <dx:ASPxCheckBox ID="SelectAllCheckBox" runat="server" ToolTip="Select/Unselect all rows on the page"
+                                ClientSideEvents-CheckedChanged="function(s, e) { grid.SelectAllRowsOnPage(s.GetChecked()); }" />
+                        </HeaderTemplate>
+                        <CellStyle HorizontalAlign="Center" />
+                        <HeaderStyle HorizontalAlign="Center" />
                     </dx:GridViewCommandColumn>
                 </Columns>
                 <Templates>
@@ -65,7 +98,7 @@
                                             <td class="title-row" style="width: 100px;">
                                                 Title
                                             </td>
-                                            <td class="content-row" style="width: 220px;">
+                                            <td class="content-row">
                                                 <dx:ASPxTextBox runat="server" ID="txtTitle" Text='<%# Bind("Title") %>' CssClass="text-form"
                                                     MaxLength="100" Width="100%">
                                                     <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
@@ -77,7 +110,7 @@
                                             <td class="title-row" style="width: 80px; text-align: right;">
                                                 Note
                                             </td>
-                                            <td class="title-row" rowspan="3">
+                                            <td class="title-row" rowspan="3" style="width: 520px;">
                                                 <dx:ASPxMemo runat="server" ID="txtNote" Text='<%# Bind("Note") %>' CssClass="text-form"
                                                     MaxLength="500" Width="100%" Rows="5">
                                                 </dx:ASPxMemo>
@@ -100,10 +133,10 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="title-row" style="width: 60px;">
+                                            <td class="title-row">
                                                 Index
                                             </td>
-                                            <td class="content-row" style="width: 220px;">
+                                            <td class="content-row">
                                                 <dx:ASPxSpinEdit ID="index" runat="server" Number='<%# Convert.ToInt32(Eval("PriorityIndex"))%>'
                                                     NumberType="Integer" MinValue="1" MaxValue='<%#ServiceFacade.SettingsHelper.MaxPriorityIndex %>'
                                                     CssClass="text-form" MaxLength="5">
@@ -133,8 +166,7 @@
                     </EditForm>
                 </Templates>
                 <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
-                                  BeginCallback="function(s, e) {command = e.command; gridObject = s;}"
-                                  CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" Position="Bottom">
                 </SettingsPager>
                 <SettingsEditing Mode="EditForm" />
