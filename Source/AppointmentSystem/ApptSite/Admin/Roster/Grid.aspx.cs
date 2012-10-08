@@ -114,7 +114,7 @@ public partial class Admin_Roster_Grid : Page
             roster.UpdateUser = WebCommon.GetAuthUsername();
             roster.UpdateDate = DateTime.Now;
             DataRepository.RosterProvider.Update(roster);
-            WebCommon.AlertGridView(sender, "Deleted Roster.");
+            WebCommon.AlertGridView(sender, "Roster is deleted successfully.");
             #endregion
         }
         catch (Exception ex)
@@ -748,14 +748,11 @@ public partial class Admin_Roster_Grid : Page
                 }
                 DataRepository.RosterProvider.Update(lstRoster);
                 tm.Commit();
-                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted rosters." : "Deleted roster.");
+                WebCommon.AlertGridView(sender, String.Format("{0} deleted successfully.",
+                                                      grid.Selection.Count > 1 ? "Rosters are" : "Roster is"));
 
                 // Set tam duration de lay duoc danh sach moi
-                //int duration = RosterDataSource.CacheDuration;
-                //RosterDataSource.CacheDuration = 0;
-                //grid.DataBind();
                 grid.Selection.UnselectAll();
-                //RosterDataSource.CacheDuration = duration;
             }
             else
             {

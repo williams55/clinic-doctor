@@ -50,7 +50,7 @@
             <dx:ASPxGridView ID="gridRole" ClientInstanceName="grid" runat="server" DataSourceID="RoleDataSource"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRole_RowInserting"
                 OnCustomButtonCallback="gridRole_CustomButtonCallback" OnRowUpdating="gridRole_RowUpdating"
-                OnCustomCallback="gridRole_CustomCallback" OnHtmlRowCreated="gridRole_OnHtmlRowCreated">
+                OnCustomCallback="gridRole_CustomCallback">
                 <Columns>
                     <dx:GridViewDataColumn FieldName="Id" Visible="False" />
                     <dx:GridViewDataColumn Caption="No." Width="50">
@@ -107,8 +107,8 @@
                         <dx:ASPxGridView runat="server" ClientInstanceName="gridDetail" ID="gridRoleDetail"
                             DataSourceID="RoleDetailDataSource" KeyFieldName="Id" OnInit="gridRoleDetail_Init"
                             OnRowInserting="gridRoleDetail_RowInserting" OnRowUpdating="gridRoleDetail_RowUpdating"
-                            OnCustomButtonCallback="gridRoleDetail_OnCustomButtonCallback" Width="100%" OnCustomCallback="gridRoleDetail_CustomCallback"
-                            OnHtmlRowCreated="gridRoleDetail_OnHtmlRowCreated">
+                            OnCustomButtonCallback="gridRoleDetail_OnCustomButtonCallback" Width="100%" 
+                            OnCustomCallback="gridRoleDetail_CustomCallback">
                             <Columns>
                                 <dx:GridViewDataColumn FieldName="Id" Visible="False">
                                 </dx:GridViewDataColumn>
@@ -183,14 +183,14 @@
                                     <HeaderStyle HorizontalAlign="Center" />
                                 </dx:GridViewCommandColumn>
                             </Columns>
-                            <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
+                            <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
                                 BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                             <SettingsEditing Mode="EditForm" />
                         </dx:ASPxGridView>
                     </DetailRow>
                 </Templates>
                 <SettingsDetail ShowDetailRow="true" AllowOnlyOneMasterRowExpanded="True" />
-                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
+                <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
                     BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>

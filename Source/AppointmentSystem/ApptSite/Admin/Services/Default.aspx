@@ -38,7 +38,7 @@
             <dx:ASPxGridView ID="gridServices" ClientInstanceName="grid" runat="server" DataSourceID="ServicesDataSource"
                 KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridServices_RowInserting"
                 OnCustomButtonCallback="gridServices_CustomButtonCallback" OnRowUpdating="gridServices_RowUpdating"
-                OnCustomCallback="gridServices_CustomCallback" OnHtmlRowCreated="gridServices_OnHtmlRowCreated">
+                OnCustomCallback="gridServices_CustomCallback">
                 <Columns>
                     <dx:GridViewDataColumn FieldName="Id" VisibleIndex="0" ReadOnly="true" Visible="False">
                     </dx:GridViewDataColumn>
@@ -165,8 +165,9 @@
                         </div>
                     </EditForm>
                 </Templates>
-                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
-                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+                <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
+                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}" 
+                    CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" Position="Bottom">
                 </SettingsPager>
                 <SettingsEditing Mode="EditForm" />

@@ -90,9 +90,16 @@ public partial class Admin_Role_Default : Page
                 return;
             }
 
+            var grid = sender as ASPxGridView;
+            if (grid == null)
+            {
+                WebCommon.AlertGridView(sender, "Cannot find role.");
+                return;
+            }
+
             // Validate id
             Int32 id;
-            if (Int32.TryParse(gridRole.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
+            if (Int32.TryParse(grid.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
                 var role = DataRepository.RoleProvider.GetById(id);
                 if (role == null || role.IsDisabled)
@@ -113,6 +120,9 @@ public partial class Admin_Role_Default : Page
                 role.UpdateUser = WebCommon.GetAuthUsername();
                 role.UpdateDate = DateTime.Now;
                 DataRepository.RoleProvider.Update(role);
+
+                // Show message alert delete successfully
+                WebCommon.AlertGridView(sender, "Role is deleted successfully.");
             }
             #endregion
         }
@@ -273,14 +283,10 @@ public partial class Admin_Role_Default : Page
                     DataRepository.RoleProvider.Update(tm, role);
                 }
                 tm.Commit();
-                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted roles." : "Deleted role.");
+                WebCommon.AlertGridView(sender, String.Format("{0} deleted successfully.",
+                                      grid.Selection.Count > 1 ? "Roles are" : "Role is"));
 
-                // Set tam duration de lay duoc danh sach moi
-                //int duration = RosterDataSource.CacheDuration;
-                //RosterDataSource.CacheDuration = 0;
-                //grid.DataBind();
                 grid.Selection.UnselectAll();
-                //RosterDataSource.CacheDuration = duration;
             }
         }
         catch (Exception ex)
@@ -289,51 +295,6 @@ public partial class Admin_Role_Default : Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete role. Please contact Administrator.");
         }
-    }
-
-    /// <summary>
-    /// An cac row co IsDisabled bang true
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void gridRole_OnHtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
-    {
-        try
-        {
-            if (e.RowType == GridViewRowType.Data)
-            {
-                e.Row.Visible = !Boolean.Parse(e.GetValue("IsDisabled").ToString());
-            }
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-        }
-    }
-
-    /// <summary>
-    /// Xu ly khi checkbox cua tung dong duoc khoi tao
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void cbCheck_Init(object sender, EventArgs e)
-    {
-        var cb = (ASPxCheckBox)sender;
-        var container = (GridViewDataItemTemplateContainer)cb.NamingContainer;
-        cb.ClientInstanceName = string.Format("cbCheck{0}", container.VisibleIndex);
-        cb.Checked = gridRole.Selection.IsRowSelected(container.VisibleIndex);
-        cb.ClientSideEvents.CheckedChanged = string.Format("function (s, e) {{ grid.SelectRowOnPage({0}, s.GetChecked()); }}", container.VisibleIndex);
-    }
-
-    /// <summary>
-    /// Xu ly khi checkbox all duoc khoi tao
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void cbCheckAll_Init(object sender, EventArgs e)
-    {
-        var cb = (ASPxCheckBox)sender;
-        cb.ClientSideEvents.CheckedChanged = string.Format("function (s, e) {{ grid.PerformCallback(s.GetChecked().toString()); }}");
     }
     #endregion
 
@@ -428,17 +389,16 @@ public partial class Admin_Role_Default : Page
             }
 
             // Get current grid role detail
-            var gridRoleDetail = sender as ASPxGridView;
-            if (gridRoleDetail == null)
+            var grid = sender as ASPxGridView;
+            if (grid == null)
             {
                 WebCommon.AlertGridView(sender, "Cannot find role detail.");
                 return;
             }
 
             int id;
-
             // Kiem tra xem id cua roledetail co phai la so khong
-            if (Int32.TryParse(gridRoleDetail.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
+            if (Int32.TryParse(grid.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
                 // Neu id la so thi tien hanh kiem tra xem service co duoc su dung khong
                 var roleDetail = DataRepository.RoleDetailProvider.GetById(id);
@@ -454,6 +414,9 @@ public partial class Admin_Role_Default : Page
                 roleDetail.UpdateUser = WebCommon.GetAuthUsername();
                 roleDetail.UpdateDate = DateTime.Now;
                 DataRepository.RoleDetailProvider.Update(roleDetail);
+
+                // Show message alert delete successfully
+                WebCommon.AlertGridView(sender, "Role detail is deleted successfully.");
             }
             #endregion
         }
@@ -612,7 +575,7 @@ public partial class Admin_Role_Default : Page
                     var roleDetail = DataRepository.RoleDetailProvider.GetById(id);
                     if (roleDetail == null || roleDetail.IsDisabled)
                     {
-                        WebCommon.AlertGridView(sender, "Role is not existed. You cannot delete it.");
+                        WebCommon.AlertGridView(sender, "Role detail is not existed. You cannot delete it.");
                         tm.Rollback();
                         return;
                     }
@@ -623,30 +586,11 @@ public partial class Admin_Role_Default : Page
                     DataRepository.RoleDetailProvider.Update(tm, roleDetail);
                 }
                 tm.Commit();
-                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted roles detail." : "Deleted role detail.");
+                WebCommon.AlertGridView(sender, String.Format("{0} deleted successfully.",
+                                                      grid.Selection.Count > 1 ? "Role details are" : "Role detail is"));
 
-                // Set tam duration de lay duoc danh sach moi
-                //int duration = RosterDataSource.CacheDuration;
-                //RosterDataSource.CacheDuration = 0;
-                //grid.DataBind();
+                // Set tam pageIndex de lay duoc danh sach moi
                 grid.Selection.UnselectAll();
-                //RosterDataSource.CacheDuration = duration;
-            }
-            else
-            {
-                // Thuc hien check/uncheck khi nhan check all
-                bool needToSelectAll;
-                bool.TryParse(e.Parameters, out needToSelectAll);
-
-                var gridView = (ASPxGridView)sender;
-
-                int startIndex = gridView.PageIndex * gridView.SettingsPager.PageSize;
-                int endIndex = Math.Min(gridView.VisibleRowCount, startIndex + gridView.SettingsPager.PageSize);
-
-                for (int i = startIndex; i < endIndex; i++)
-                {
-                    gridView.Selection.SetSelection(i, needToSelectAll);
-                }
             }
         }
         catch (Exception ex)
@@ -654,26 +598,6 @@ public partial class Admin_Role_Default : Page
             tm.Rollback();
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete role detail. Please contact Administrator.");
-        }
-    }
-
-    /// <summary>
-    /// An cac row co IsDisabled bang true
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void gridRoleDetail_OnHtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
-    {
-        try
-        {
-            if (e.RowType == GridViewRowType.Data)
-            {
-                e.Row.Visible = !Boolean.Parse(e.GetValue("IsDisabled").ToString());
-            }
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
     #endregion

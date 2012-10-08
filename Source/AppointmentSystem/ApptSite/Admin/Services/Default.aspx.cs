@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AppointmentSystem.Data;
 using AppointmentSystem.Settings.BusinessLayer;
+using AppointmentSystem.Web.Data;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
@@ -15,6 +16,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
 {
     private const string ScreenCode = "Services";
     static string _message;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -149,13 +151,20 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                 return;
             }
 
+            var grid = sender as ASPxGridView;
+            if (grid == null)
+            {
+                WebCommon.AlertGridView(sender, "Cannot find service.");
+                return;
+            }
+
             // Truong hop ma user co quyen thi tien hanh kiem tra xem service nay co thang con nao khong
             // neu co thi thong bao loi la service dang duoc su dung, khong the xoa
             // neu service hoan toan ko duoc su dung thi xoa no
             int id; // Khai bao bien id de parse gia tri id cua service tu chuoi sang so
 
             // Kiem tra xem id cua service co phai la so khong
-            if (!Int32.TryParse(gridServices.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
+            if (!Int32.TryParse(grid.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
                 WebCommon.AlertGridView(sender, "Cannot delete service. Service is invalid!");
             }
@@ -282,7 +291,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                 var grid = sender as ASPxGridView;
                 if (grid == null)
                 {
-                    WebCommon.AlertGridView(sender, "Cannot find role.");
+                    WebCommon.AlertGridView(sender, "Cannot find service.");
                     tm.Rollback();
                     return;
                 }
@@ -327,41 +336,21 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                     DataRepository.ServicesProvider.Update(tm, services);
                 }
                 tm.Commit();
-                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted services." : "Deleted service.");
+                WebCommon.AlertGridView(sender, String.Format("{0} deleted successfully.",
+                                                      grid.Selection.Count > 1 ? "Services are" : "Service is"));
 
-                // Set tam duration de lay duoc danh sach moi
-                //int duration = RosterDataSource.CacheDuration;
-                //RosterDataSource.CacheDuration = 0;
-                //grid.DataBind();
+                // Set tam pageIndex de lay duoc danh sach moi
                 grid.Selection.UnselectAll();
-                //RosterDataSource.CacheDuration = duration;
             }
         }
         catch (Exception ex)
         {
-            tm.Rollback();
+            if (tm.IsOpen)
+            {
+                tm.Rollback();
+            }
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete service. Please contact Administrator.");
-        }
-    }
-
-    /// <summary>
-    /// An cac row co IsDisabled bang true
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void gridServices_OnHtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
-    {
-        try
-        {
-            if (e.RowType == GridViewRowType.Data)
-            {
-                e.Row.Visible = !Boolean.Parse(e.GetValue("IsDisabled").ToString());
-            }
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 }

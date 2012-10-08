@@ -113,10 +113,10 @@
                     <Table Wrap="True">
                     </Table>
                 </Styles>
-                <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
+                <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
                     BeginCallback="function(s, e) {command = e.command; gridObject = s;}" 
                     CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}"
-                    SelectionChanged="grid_SelectionChanged" />
+                    />
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>
                 <SettingsEditing Mode="EditFormAndDisplayRow" />

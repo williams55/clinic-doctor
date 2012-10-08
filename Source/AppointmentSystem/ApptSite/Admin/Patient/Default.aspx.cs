@@ -347,6 +347,9 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                 , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
                 , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
                 , patient.Remark, patient.IsDisabled);
+
+            // Show message alert delete successfully
+            WebCommon.AlertGridView(sender, "Patient is deleted successfully.");
         }
         catch (Exception ex)
         {
@@ -458,7 +461,8 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                       , patient.Remark, patient.IsDisabled);
                 }
                 tm.Commit();
-                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted patients." : "Deleted patient.");
+                WebCommon.AlertGridView(sender, String.Format("{0} deleted successfully.",
+                                                      grid.Selection.Count > 1 ? "Patients are" : "Patient is"));
 
                 // Set tam duration de lay duoc danh sach moi
                 //int duration = RosterDataSource.CacheDuration;
