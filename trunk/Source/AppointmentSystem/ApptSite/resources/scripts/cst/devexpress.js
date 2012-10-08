@@ -3,8 +3,9 @@ var gridObject = null;
 
 // Call refesh event for grid
 function RefreshGrid() {
-    if (command == 'CUSTOMBUTTON' && gridObject != null) {
-        gridObject.Refresh();
+    if ((command == 'CUSTOMBUTTON' || command == 'CUSTOMCALLBACK') && gridObject != null) {
+        var pageIndex = gridObject.GetPageIndex();
+        gridObject.GotoPage(pageIndex);
         command = "";
         gridObject = null;
     }

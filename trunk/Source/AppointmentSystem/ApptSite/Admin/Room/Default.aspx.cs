@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using AppointmentSystem.Data;
-using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
@@ -16,7 +12,7 @@ using Appt.Common.Constants;
 using Log.Controller;
 using Common.Util;
 
-public partial class Admin_Room_edit : System.Web.UI.Page
+public partial class Admin_Room_edit : Page
 {
     private const string ScreenCode = "Room";
     static string _message;
@@ -77,7 +73,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             WebCommon.ShowDialog(this, "System is error. Please contact Administrator.");
         }
     }
-  
+
     protected void gridRoom_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
@@ -91,9 +87,16 @@ public partial class Admin_Room_edit : System.Web.UI.Page
                 return;
             }
 
+            var grid = sender as ASPxGridView;
+            if (grid == null)
+            {
+                WebCommon.AlertGridView(sender, "Cannot find room.");
+                return;
+            }
+
             // Validate id
             Int32 id;
-            if (Int32.TryParse(gridRoom.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
+            if (Int32.TryParse(grid.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
                 var room = DataRepository.RoomProvider.GetById(id);
                 if (room == null || room.IsDisabled)
@@ -113,6 +116,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
                 room.UpdateUser = WebCommon.GetAuthUsername();
                 room.UpdateDate = DateTime.Now;
                 DataRepository.RoomProvider.Update(room);
+                WebCommon.AlertGridView(sender, "Room is deleted successfully.");
             }
             #endregion
         }
@@ -122,7 +126,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             WebCommon.AlertGridView(sender, "Cannot delete room. Please contact Administrator");
         }
     }
-   
+
     protected void gridRoom_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
     {
         try
@@ -214,7 +218,7 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             WebCommon.AlertGridView(sender, "Cannot update room. Please contact Administrator");
         }
     }
-  
+
     /// <summary>
     /// Tao option All
     /// </summary>
@@ -299,14 +303,11 @@ public partial class Admin_Room_edit : System.Web.UI.Page
                     DataRepository.RoomProvider.Update(tm, room);
                 }
                 tm.Commit();
-                WebCommon.AlertGridView(sender, grid.Selection.Count > 1 ? "Deleted rooms." : "Deleted room.");
+                WebCommon.AlertGridView(sender, String.Format("{0} deleted successfully.",
+                                                      grid.Selection.Count > 1 ? "Rooms are" : "Room is"));
 
                 // Set tam duration de lay duoc danh sach moi
-                //int duration = RosterDataSource.CacheDuration;
-                //RosterDataSource.CacheDuration = 0;
-                //grid.DataBind();
                 grid.Selection.UnselectAll();
-                //RosterDataSource.CacheDuration = duration;
             }
         }
         catch (Exception ex)
@@ -314,26 +315,6 @@ public partial class Admin_Room_edit : System.Web.UI.Page
             tm.Rollback();
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete service. Please contact Administrator.");
-        }
-    }
-
-    /// <summary>
-    /// An cac row co IsDisabled bang true
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void gridRoom_OnHtmlRowCreated(object sender, ASPxGridViewTableRowEventArgs e)
-    {
-        try
-        {
-            if (e.RowType == GridViewRowType.Data)
-            {
-                e.Row.Visible = !Boolean.Parse(e.GetValue("IsDisabled").ToString());
-            }
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 }

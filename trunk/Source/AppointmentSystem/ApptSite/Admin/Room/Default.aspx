@@ -36,8 +36,7 @@
         <dx:ASPxGridView ID="gridRoom" ClientInstanceName="grid" runat="server" DataSourceID="RoomDatas"
             KeyFieldName="Id" Width="100%" EnableRowsCache="False" OnRowInserting="gridRoom_RowInserting"
             OnCustomButtonCallback="gridRoom_CustomButtonCallback" OnRowUpdating="gridRoom_RowUpdating"
-            OnAutoFilterCellEditorInitialize="gridRoom_AutoFilterCellEditorInitialize" OnCustomCallback="gridRoom_CustomCallback"
-            OnHtmlRowCreated="gridRoom_OnHtmlRowCreated">
+            OnAutoFilterCellEditorInitialize="gridRoom_AutoFilterCellEditorInitialize" OnCustomCallback="gridRoom_CustomCallback">
             <Columns>
                 <dx:GridViewDataColumn Visible="False" FieldName="Id">
                 </dx:GridViewDataColumn>
@@ -98,7 +97,7 @@
                     <HeaderStyle HorizontalAlign="Center" />
                 </dx:GridViewCommandColumn>
             </Columns>
-            <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
+            <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
                 BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
             <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
             </SettingsPager>

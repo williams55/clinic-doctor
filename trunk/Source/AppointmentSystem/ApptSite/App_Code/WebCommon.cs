@@ -116,6 +116,19 @@ public class WebCommon
     {
         return JsonConvert.DeserializeObject<List<ConstantKeyValue>>(Constants.Weekdays);
     }
+
+    /// <summary>
+    /// Refresh grid moi khi delete item
+    /// Phai thuc hien nhieu buoc la vi khi thuc hien ham bind o 1 trang > 0 thi bi loi
+    /// </summary>
+    /// <param name="grid"></param>
+    public static void RefreshGrid(ASPxGridView grid)
+    {
+        int page = grid.PageIndex;
+        grid.PageIndex = 0;
+        grid.DataBind();
+        grid.PageIndex = page;
+    }
     #endregion
 
     #region Build Result for Ajax call with Json format
