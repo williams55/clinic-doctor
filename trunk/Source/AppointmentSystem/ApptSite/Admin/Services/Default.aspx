@@ -165,12 +165,16 @@
                         </div>
                     </EditForm>
                 </Templates>
+                <Styles>
+                    <AlternatingRow Enabled="true" />
+                    <Table Wrap="True">
+                    </Table>
+                </Styles>
                 <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
-                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}" 
-                    CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
-                <SettingsPager Mode="ShowPager" Position="Bottom">
+                    BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+                <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>
-                <SettingsEditing Mode="EditForm" />
+                <SettingsEditing Mode="EditFormAndDisplayRow" />
                 <Settings ShowFilterRow="True" ShowFilterRowMenu="True" />
             </dx:ASPxGridView>
             <data:ServicesDataSource ID="ServicesDataSource" runat="server" SelectMethod="GetPaged"

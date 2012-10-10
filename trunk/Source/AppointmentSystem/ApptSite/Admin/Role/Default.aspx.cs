@@ -364,8 +364,7 @@ public partial class Admin_Role_Default : Page
             }
             else
             {
-                param.DefaultValue = String.Format("IsDisabled = 'false' AND RoleId = {0}",
-                                      (sender as ASPxGridView).GetMasterRowKeyValue());
+                param.DefaultValue = String.Format("IsDisabled = 'false' AND RoleId = {0}", roleId);
             }
         }
         catch (Exception ex)

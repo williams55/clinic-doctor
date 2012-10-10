@@ -105,10 +105,9 @@
                 <Templates>
                     <DetailRow>
                         <dx:ASPxGridView runat="server" ClientInstanceName="gridDetail" ID="gridRoleDetail"
-                            DataSourceID="RoleDetailDataSource" KeyFieldName="Id" Width="100%"
-                            OnRowInserting="gridRoleDetail_RowInserting" OnRowUpdating="gridRoleDetail_RowUpdating"
-                            OnCustomButtonCallback="gridRoleDetail_OnCustomButtonCallback" OnInit="gridRoleDetail_Init"
-                            OnCustomCallback="gridRoleDetail_CustomCallback">
+                            DataSourceID="RoleDetailDataSource" KeyFieldName="Id" Width="100%" OnRowInserting="gridRoleDetail_RowInserting"
+                            OnRowUpdating="gridRoleDetail_RowUpdating" OnCustomButtonCallback="gridRoleDetail_OnCustomButtonCallback"
+                            OnInit="gridRoleDetail_Init" OnCustomCallback="gridRoleDetail_CustomCallback">
                             <Columns>
                                 <dx:GridViewDataColumn FieldName="Id" Visible="False">
                                 </dx:GridViewDataColumn>
@@ -183,19 +182,28 @@
                                     <HeaderStyle HorizontalAlign="Center" />
                                 </dx:GridViewCommandColumn>
                             </Columns>
+                            <Styles>
+                                <AlternatingRow Enabled="true" />
+                                <Table Wrap="True">
+                                </Table>
+                            </Styles>
                             <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
-                                BeginCallback="function(s, e) {command = e.command; gridObject = s;}" 
-                                CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
-                            <SettingsEditing Mode="EditForm" />
+                                BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+                            <SettingsEditing Mode="EditFormAndDisplayRow" />
                         </dx:ASPxGridView>
                     </DetailRow>
                 </Templates>
+                <Styles>
+                    <AlternatingRow Enabled="true" />
+                    <Table Wrap="True">
+                    </Table>
+                </Styles>
                 <SettingsDetail ShowDetailRow="true" AllowOnlyOneMasterRowExpanded="True" />
                 <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
                     BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                 <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
                 </SettingsPager>
-                <SettingsEditing Mode="EditForm" />
+                <SettingsEditing Mode="EditFormAndDisplayRow" />
                 <Settings ShowGroupPanel="False" ShowFilterRow="True" ShowFilterRowMenu="True" />
             </dx:ASPxGridView>
             <data:RoleDataSource ID="RoleDataSource" runat="server" SelectMethod="GetPaged" EnablePaging="True"

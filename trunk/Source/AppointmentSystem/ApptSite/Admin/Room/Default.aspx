@@ -97,11 +97,16 @@
                     <HeaderStyle HorizontalAlign="Center" />
                 </dx:GridViewCommandColumn>
             </Columns>
+            <Styles>
+                <AlternatingRow Enabled="true" />
+                <Table Wrap="True">
+                </Table>
+            </Styles>
             <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
                 BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
             <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
             </SettingsPager>
-            <SettingsEditing Mode="EditForm" />
+            <SettingsEditing Mode="EditFormAndDisplayRow" />
             <Settings ShowGroupPanel="False" ShowFilterRow="True" ShowFilterRowMenu="True" />
         </dx:ASPxGridView>
         <data:RoomDataSource SelectMethod="GetPaged" runat="server" ID="RoomDatas" EnablePaging="True"

@@ -1,43 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.IO;
 using System.Linq;
-using System.Web.UI.WebControls;
 using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Util;
-using DevExpress.Web;
 using DevExpress.Web.ASPxGridView;
-using DevExpress.Web.ASPxUploadControl;
 using DevExpress.Web.Data;
 using Log.Controller;
-using System.Collections;
 using DevExpress.Web.ASPxEditors;
 public partial class Admin_Users_EditUser : System.Web.UI.Page
 {
-    string ScreenCode = "User";
+    private const string ScreenCode = "User";
     static string _message;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
-            bool result = false;
-            //bindUser();
-            result = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key,
-                                       out _message);
-            if (!result)
+            // Check reading right
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridUser.Visible = false;
+                return;
             }
 
             // Set page size
             gridUser.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
+
+            // Lay cot co chua cac nut thao tac
+            var commandColumn = gridUser.Columns["Operation"] as GridViewCommandColumn;
+
+            // Neu khong co cot do thi khong can lam tiep
+            if (commandColumn == null) return;
+
+            // Gan visible cho nut new, edit bang cach kiem tra quyen
+            commandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
+
+            // Set hien thi/an cho nut new
+            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+
+            // Set hien thi/an cho nut delete
+            btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+                                                                                  ScreenCode,
+                                                                                  OperationConstant.Delete.Key,
+                                                                                  out _message);
+
+            // Get delete button
+            GridViewCommandColumnCustomButton btnDelete =
+                commandColumn.CustomButtons.Cast<GridViewCommandColumnCustomButton>().FirstOrDefault(
+                    customButton => customButton.ID == "btnDelete");
+
+            // Check delete right, if user has no right to delete => invisible delete button
+            if (btnDelete != null && !btnGeneralDelete.Visible)
+            {
+                btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
+            }
+
+            // Check visibility of button in button column
+            // If there is no button is displayed => invisible column
+            commandColumn.Visible = commandColumn.EditButton.Visible || commandColumn.NewButton.Visible || btnGeneralDelete.Visible;
         }
         catch (Exception ex)
         {
@@ -45,97 +69,238 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
 
     }
-    protected void bindUser()
-    {
-        var listUser = DataRepository.UsersProvider.GetAll();
-        gridUser.DataSource = listUser;
-        gridUser.DataBind();
-    }
-    const string UploadDirectory = "~/Admin/Images/";
-    const string ThumbnailFileName = "ThumbnailImage.jpg";
-    protected void uplImage_FileUploadComplete(object sender, FileUploadCompleteEventArgs e)
-    {
-    }
-    public static Bitmap ResizeImage(System.Drawing.Image original, int newWidth, int newHeight)
-    {
-        if (original.Width == 0 || original.Height == 0 || newWidth == 0 || newHeight == 0) return null;
-        if (original.Width < newWidth) newWidth = original.Width;
-        if (original.Height < newHeight) newHeight = original.Height;
-        Bitmap newBitmap = new Bitmap(newWidth, newHeight);
-        Graphics g = Graphics.FromImage(newBitmap);
-        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-        g.DrawImage(original, 0, 0, newWidth, newHeight);
-        return newBitmap;
-    }
-    //protected void UserRoleGrid_DataSelect(object sender, EventArgs e)
-    //{
-    //    var parameter = UserRoleDatas.Parameters["whereClause"];
-    //    string username= (sender as ASPxGridView).GetMasterRowKeyValue().ToString();
-    //    if (parameter == null)
-    //    {
 
-    //        UserRoleDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND Username = '{0}'",username));
-    //    }
-    //    else
-    //    {
-    //        parameter.DefaultValue = String.Format("IsDisabled = 'false' AND Username = '{0}'",
-    //                              (sender as ASPxGridView).GetMasterRowKeyValue());
-    //    }
-    //}
-    protected void UserGroupGrid_DataSelect(object sender, EventArgs e)
-    {
-        var parameter = UserRoleDatas.Parameters["whereClause"];
-        if (parameter == null)
-        {
-
-            UserRoleDatas.Parameters.Add("WhereClause", String.Format("IsDisabled = 'false' AND Username = '{0}'", (sender as ASPxGridView).GetMasterRowKeyValue()));
-        }
-        else
-        {
-            parameter.DefaultValue = String.Format("IsDisabled = 'false' AND Username = '{0}'",
-                                  (sender as ASPxGridView).GetMasterRowKeyValue());
-        }
-    }
-    protected void gridUser_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
+    #region User
+    /// <summary>
+    /// Xoa mot user
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridUser_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
     {
         try
         {
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key,
-                                       out _message))
+            if (e.ButtonID != "btnDelete") return;
+
+            // Check deleting right
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            {
+                WebCommon.AlertGridView(sender, _message);
+                return;
+            }
+
+            var grid = sender as ASPxGridView;
+            if (grid == null)
+            {
+                WebCommon.AlertGridView(sender, "Cannot find user.");
+                return;
+            }
+
+            string username = gridUser.GetRowValues(e.VisibleIndex, "Username").ToString();
+            var user = DataRepository.UsersProvider.GetByUsername(username);
+            if (user == null || user.IsDisabled)
+            {
+                WebCommon.AlertGridView(sender, "User is not existed. You cannot delete it.");
+                return;
+            }
+            DataRepository.UsersProvider.DeepLoad(user);
+
+            // Kiem tra xem user co duoc su dung chua
+            if (user.DoctorRoomCollection.Exists(x => !x.IsDisabled) || user.AppointmentCollection.Exists(x => !x.IsDisabled)
+                || user.RosterCollection.Exists(x => !x.IsDisabled))
+            {
+                WebCommon.AlertGridView(sender, String.Format("{0} is using, you cannot delete.", user.DisplayName));
+                return;
+            }
+            user.IsDisabled = true;
+            user.UpdateUser = WebCommon.GetAuthUsername();
+            user.UpdateDate = DateTime.Now;
+            DataRepository.UsersProvider.Update(user);
+
+            // Show message alert delete successfully
+            WebCommon.AlertGridView(sender, "User is deleted successfully.");
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot delete user. Please contact Administrator.");
+        }
+
+    }
+
+    /// <summary>
+    /// Xoa nhieu user
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gridUser_OnCustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+    {
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        tm.BeginTransaction();
+        try
+        {
+            if (e.Parameters == "Delete")
+            {
+                // Check deleting right
+                if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+                {
+                    WebCommon.AlertGridView(sender, _message);
+                    tm.Rollback();
+                    return;
+                }
+
+                var grid = sender as ASPxGridView;
+                if (grid == null)
+                {
+                    WebCommon.AlertGridView(sender, "Cannot find user.");
+                    tm.Rollback();
+                    return;
+                }
+
+                // Lay danh sach Id cua cac row duoc select
+                var fieldNames = new[] { "Username" };
+                List<object> columnValues = grid.GetSelectedFieldValues(fieldNames);
+
+                // Doi trang thai cua cac roster
+                foreach (object username in columnValues)
+                {
+                    var user = DataRepository.UsersProvider.GetByUsername(username.ToString());
+                    if (user == null || user.IsDisabled)
+                    {
+                        WebCommon.AlertGridView(sender, "User is not existed. You cannot delete it.");
+                        tm.Rollback();
+                        return;
+                    }
+                    DataRepository.UsersProvider.DeepLoad(user);
+
+                    // Kiem tra xem user co duoc su dung chua
+                    if (user.DoctorRoomCollection.Exists(x => !x.IsDisabled) || user.AppointmentCollection.Exists(x => !x.IsDisabled)
+                        || user.RosterCollection.Exists(x => !x.IsDisabled))
+                    {
+                        WebCommon.AlertGridView(sender, String.Format("{0} is using, you cannot delete.", user.DisplayName));
+                        tm.Rollback();
+                        return;
+                    }
+                    user.IsDisabled = true;
+                    user.UpdateUser = WebCommon.GetAuthUsername();
+                    user.UpdateDate = DateTime.Now;
+                    DataRepository.UsersProvider.Update(tm, user);
+                }
+                tm.Commit();
+                WebCommon.AlertGridView(sender, String.Format("{0} deleted successfully.",
+                                      grid.Selection.Count > 1 ? "Users are" : "User is"));
+
+                grid.Selection.UnselectAll();
+            }
+        }
+        catch (Exception ex)
+        {
+            tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot delete user. Please contact Administrator.");
+        }
+    }
+
+    protected void gridUser_RowInserting(object sender, ASPxDataInsertingEventArgs e)
+    {
+        try
+        {
+            // Validate user right for creating
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
                 return;
             }
+
+            // Get grid
+            var grid = sender as ASPxGridView;
+            if (grid == null)
+            {
+                WebCommon.AlertGridView(sender, "Add form is error.");
+                e.Cancel = true;
+                return;
+            }
+
             // Validate empty field
             if (!WebCommon.ValidateEmpty("Username", e.NewValues["Username"], out _message)
-                || !WebCommon.ValidateEmpty("First name", e.NewValues["Firstname"], out _message)
-                || !WebCommon.ValidateEmpty("Last name", e.NewValues["Lastname"], out _message)
-                || !WebCommon.ValidateEmpty("Display name", e.NewValues["DisplayName"], out _message))
+                || !WebCommon.ValidateEmpty("Service", e.NewValues["ServicesId"], out _message)
+                || !WebCommon.ValidateEmpty("Group", e.NewValues["UserGroupId"], out _message)
+                || !WebCommon.ValidateEmpty("First Name", e.NewValues["Firstname"], out _message)
+                || !WebCommon.ValidateEmpty("Last Name", e.NewValues["Lastname"], out _message)
+                || !WebCommon.ValidateEmpty("Display Name", e.NewValues["DisplayName"], out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
                 return;
             }
-            //check username is exists
-            Users iusers = (Users)DataRepository.UsersProvider.GetByUsername(e.NewValues["Username"].ToString());
-            if (iusers != null)
+
+            // Get control and validate
+            var radMale = grid.FindEditFormTemplateControl("radMale") as ASPxRadioButton;
+            var radFemale = grid.FindEditFormTemplateControl("radFemale") as ASPxRadioButton;
+
+            if (radMale == null || radFemale == null)
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field User name is exists";
+                WebCommon.AlertGridView(sender, "Add form is error.");
+                e.Cancel = true;
+                return;
+            }
+
+            // Check username is exists
+            var user = DataRepository.UsersProvider.GetByUsername(e.NewValues["Username"].ToString());
+            if (user != null)
+            {
+                WebCommon.AlertGridView(sender, "Username is existed.");
                 e.Cancel = true;
                 return;
 
             }
-            //check email is exists
-            string squery = string.Format("Email='{0}' and IsDisabled='False'", e.NewValues["Email"]);
-            int count = 0;
-            TList<Users> user = DataRepository.UsersProvider.GetPaged(squery, "", 0, 0, out count);
-            if (user.Count > 0)
+
+            // Validate service field
+            int serviceId;
+            if (!Int32.TryParse(e.NewValues["ServicesId"].ToString(), out serviceId))
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Email is exists";
+                WebCommon.AlertGridView(sender, "Service is invalid.");
                 e.Cancel = true;
                 return;
             }
+            var service = DataRepository.ServicesProvider.GetById(serviceId);
+            if (service == null || service.IsDisabled)
+            {
+                WebCommon.AlertGridView(sender, "Service is not existed.");
+                e.Cancel = true;
+                return;
+            }
+
+            // Validate group field
+            var userGroup = DataRepository.UserGroupProvider.GetById(e.NewValues["UserGroupId"].ToString());
+            if (userGroup == null || userGroup.IsDisabled)
+            {
+                WebCommon.AlertGridView(sender, "Group is not existed.");
+                e.Cancel = true;
+                return;
+            }
+
+            // Check email is exists
+            string squery = string.Format("Email='{0}' and IsDisabled='False'", e.NewValues["Email"]);
+            int count;
+            if (DataRepository.UsersProvider.GetPaged(squery, "", 0, 0, out count).Any())
+            {
+                WebCommon.AlertGridView(sender, "Email is existed.");
+                e.Cancel = true;
+                return;
+            }
+
+            e.NewValues["Username"] = e.NewValues["Username"].ToString().Trim();
+            e.NewValues["Firstname"] = e.NewValues["Firstname"].ToString().Trim();
+            e.NewValues["Lastname"] = e.NewValues["Lastname"].ToString().Trim();
+            e.NewValues["DisplayName"] = e.NewValues["DisplayName"].ToString().Trim();
+            e.NewValues["CellPhone"] = e.NewValues["CellPhone"].ToString().Trim();
+            e.NewValues["Email"] = e.NewValues["Email"].ToString().Trim();
+            e.NewValues["Note"] = e.NewValues["Note"].ToString().Trim();
+            e.NewValues["UserGroupId"] = e.NewValues["UserGroupId"].ToString().Trim();
+            e.NewValues["ServicesId"] = serviceId;
+            e.NewValues["IsFemale"] = radFemale.Checked;
             e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
             WebCommon.AlertGridView(sender, "User is created successfully.");
@@ -143,39 +308,98 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            WebCommon.AlertGridView(sender, "Cannot insert role Please contact Administrator");
+            WebCommon.AlertGridView(sender, "Cannot insert user. Please contact Administrator");
+            e.Cancel = true;
         }
     }
-    protected void gridUser_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
+    protected void gridUser_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
         try
         {
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key,
-                                       out _message))
+            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
                 return;
             }
+
+            // Get grid
+            var grid = sender as ASPxGridView;
+            if (grid == null)
+            {
+                WebCommon.AlertGridView(sender, "Edit form is error.");
+                e.Cancel = true;
+                return;
+            }
+
             // Validate empty field
-            if (!WebCommon.ValidateEmpty("First name", e.NewValues["Firstname"], out _message)
-                || !WebCommon.ValidateEmpty("Last name", e.NewValues["Lastname"], out _message)
-                || !WebCommon.ValidateEmpty("Display name", e.NewValues["DisplayName"], out _message))
+            if (!WebCommon.ValidateEmpty("Username", e.NewValues["Username"], out _message)
+                || !WebCommon.ValidateEmpty("Service", e.NewValues["ServicesId"], out _message)
+                || !WebCommon.ValidateEmpty("Group", e.NewValues["UserGroupId"], out _message)
+                || !WebCommon.ValidateEmpty("First Name", e.NewValues["Firstname"], out _message)
+                || !WebCommon.ValidateEmpty("Last Name", e.NewValues["Lastname"], out _message)
+                || !WebCommon.ValidateEmpty("Display Name", e.NewValues["DisplayName"], out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
                 return;
             }
-            //check email is exists
-            string squery = string.Format("Email='{0}' and IsDisabled='False' and Username!='{1}'", e.NewValues["Email"], e.OldValues["Username"]);
-            int count = 0;
-            TList<Users> user = DataRepository.UsersProvider.GetPaged(squery, "", 0, 0, out count);
-            if (user.Count > 0)
+
+            // Get control and validate
+            var radMale = grid.FindEditFormTemplateControl("radMale") as ASPxRadioButton;
+            var radFemale = grid.FindEditFormTemplateControl("radFemale") as ASPxRadioButton;
+
+            if (radMale == null || radFemale == null)
             {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "Field Email is exists";
+                WebCommon.AlertGridView(sender, "Add form is error.");
                 e.Cancel = true;
                 return;
             }
+
+            // Validate service field
+            int serviceId;
+            if (!Int32.TryParse(e.NewValues["ServicesId"].ToString(), out serviceId))
+            {
+                WebCommon.AlertGridView(sender, "Service is invalid.");
+                e.Cancel = true;
+                return;
+            }
+            var service = DataRepository.ServicesProvider.GetById(serviceId);
+            if (service == null || service.IsDisabled)
+            {
+                WebCommon.AlertGridView(sender, "Service is not existed.");
+                e.Cancel = true;
+                return;
+            }
+
+            // Validate group field
+            var userGroup = DataRepository.UserGroupProvider.GetById(e.NewValues["UserGroupId"].ToString());
+            if (userGroup == null || userGroup.IsDisabled)
+            {
+                WebCommon.AlertGridView(sender, "Group is not existed.");
+                e.Cancel = true;
+                return;
+            }
+
+            // Check email is exists
+            string squery = string.Format("Email='{0}' and IsDisabled='False' and Username!='{1}'", e.NewValues["Email"], e.OldValues["Username"]);
+            int count;
+            if (DataRepository.UsersProvider.GetPaged(squery, "", 0, 0, out count).Any())
+            {
+                WebCommon.AlertGridView(sender, "Email is existed.");
+                e.Cancel = true;
+                return;
+            }
+
+            e.NewValues["Firstname"] = e.NewValues["Firstname"].ToString().Trim();
+            e.NewValues["Lastname"] = e.NewValues["Lastname"].ToString().Trim();
+            e.NewValues["DisplayName"] = e.NewValues["DisplayName"].ToString().Trim();
+            e.NewValues["CellPhone"] = e.NewValues["CellPhone"].ToString().Trim();
+            e.NewValues["Email"] = e.NewValues["Email"].ToString().Trim();
+            e.NewValues["Note"] = e.NewValues["Note"].ToString().Trim();
+            e.NewValues["UserGroupId"] = e.NewValues["UserGroupId"].ToString().Trim();
+            e.NewValues["ServicesId"] = serviceId;
+            e.NewValues["IsFemale"] = radFemale.Checked;
             e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
             e.NewValues["UpdateDate"] = DateTime.Now;
             WebCommon.AlertGridView(sender, "User is update successfully.");
@@ -183,85 +407,11 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot update user. Please contact Administrator");
+            e.Cancel = true;
         }
     }
-    protected void gridUser_InitNewRow(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)
-    {
-        //string perxe = ServiceFacade.SettingsHelper.UserPrefix;
-        //int count = 0;
-        //TList<Users> objuser = DataRepository.UsersProvider.GetPaged("Id like '" + perxe + "' + '%'", "Id desc", 0, 1, out count);
-        //if (count == 0)
-        //{
-        //    e.NewValues["Id"] = perxe + "0001";
-        //}
-        //else
-        //{
-        //    e.NewValues["Id"] = perxe + string.Format("{0:0000}", int.Parse(objuser[0].Id.Substring(objuser[0].Id.Length - 3)) + 1);
-        //}
-    }
-
-    protected bool Getcheckbox(string obj)
-    {
-        string str = obj;
-        if (str == "true") return true;
-        return false;
-    }
-    protected void gridUser_RowValidating(object sender, DevExpress.Web.Data.ASPxDataValidationEventArgs e)
-    {
-
-    }
-    protected void gridUser_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
-    {
-        //// Checks whether the generated row has the errors.
-        //bool hasError = e.GetValue("Username").ToString().Length <= 1;
-        //hasError = hasError || e.GetValue("DisplayName").ToString().Length <= 1;
-        //hasError = hasError || e.GetValue("UserGroupId") == null;
-        //// If the row has the error(s), its text color is set to red.
-        //if (hasError)
-        //    e.Row.ForeColor = System.Drawing.Color.Red;
-
-    }
-    protected void gridUser_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
-    {
-        try
-        {
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
-            {
-                WebCommon.AlertGridView(sender, _message);
-                return;
-            }
-            if (e.ButtonID != "btnDelete") return;
-            string username = gridUser.GetRowValues(e.VisibleIndex, "Username").ToString();
-            var obj = DataRepository.UsersProvider.GetByUsername(username);
-            if (obj == null || obj.IsDisabled) return;
-            DataRepository.UsersProvider.DeepLoad(obj);
-            if (obj.DoctorRoomCollection.Exists(x => !x.IsDisabled) || obj.AppointmentCollection.Exists(x => !x.IsDisabled)
-                || (obj.ServicesId != null && !obj.ServicesIdSource.IsDisabled) || obj.RosterCollection.Exists(x => !x.IsDisabled))
-            {
-                ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = String.Format("{0} is using, you cannot delete it.", obj.DisplayName);
-                return;
-            }
-            obj.IsDisabled = true;
-            obj.UpdateUser = WebCommon.GetAuthUsername();
-            obj.UpdateDate = DateTime.Now;
-            DataRepository.UsersProvider.Update(obj);
-            WebCommon.AlertGridView(sender, "User is deleted successfully.");
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-        }
-
-    }
-    public string SaveImage(FileUpload uploadedFile)
-    {
-        if (!uploadedFile.HasFile)
-        {
-            return "you have not select image";
-        }
-        string directoryimage = Server.MapPath("../Images");
-        return string.Empty;
-    }
+    #endregion
 
     #region UserRole
     protected void gridUserRole_OnInit(object sender, EventArgs e)

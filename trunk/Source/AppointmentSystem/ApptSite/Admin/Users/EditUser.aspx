@@ -49,30 +49,57 @@
         </div>
         <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" DataSourceID="UserDatas"
             Width="100%" KeyFieldName="Username" OnRowInserting="gridUser_RowInserting" OnRowUpdating="gridUser_RowUpdating"
-            OnRowValidating="gridUser_RowValidating" OnCustomButtonCallback="gridUser_CustomButtonCallback"
+            OnCustomButtonCallback="gridUser_CustomButtonCallback" OnCustomCallback="gridUser_OnCustomCallback"
             EnableViewState="False">
             <Columns>
-                <dx:GridViewDataColumn FieldName="Username" VisibleIndex="2" />
-                <dx:GridViewDataColumn FieldName="Title" VisibleIndex="3" />
-                <dx:GridViewDataColumn FieldName="Firstname" Visible="false" VisibleIndex="4" />
-                <dx:GridViewDataColumn FieldName="DisplayName" VisibleIndex="5" />
-                <dx:GridViewDataColumn FieldName="CellPhone" VisibleIndex="4" />
-                <dx:GridViewDataColumn FieldName="ServicesId" VisibleIndex="4" Visible="false" />
-                <dx:GridViewDataComboBoxColumn Caption="Services" FieldName="ServicesId" VisibleIndex="4">
+                <dx:GridViewDataColumn Caption="No." Width="50">
+                    <DataItemTemplate>
+                        <%# Container.ItemIndex + 1%>
+                    </DataItemTemplate>
+                    <CellStyle HorizontalAlign="Center">
+                    </CellStyle>
+                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                    <EditFormSettings Visible="False" />
+                </dx:GridViewDataColumn>
+                <dx:GridViewDataColumn FieldName="Username" />
+                <dx:GridViewDataColumn FieldName="Title" Visible="False" />
+                <dx:GridViewDataColumn FieldName="Firstname" />
+                <dx:GridViewDataColumn FieldName="Lastname" />
+                <dx:GridViewDataColumn FieldName="DisplayName" />
+                <dx:GridViewDataColumn FieldName="CellPhone" />
+                <dx:GridViewDataComboBoxColumn Caption="Service" FieldName="ServicesId">
                     <PropertiesComboBox DropDownStyle="DropDown" ValueField="Id" TextField="Title" DataSourceID="ServicesDatas">
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
-                <dx:GridViewDataColumn FieldName="Email" VisibleIndex="6" />
-                <dx:GridViewDataColumn FieldName="UserGroupId" VisibleIndex="8" />
-                <dx:GridViewCommandColumn VisibleIndex="9">
-                    <EditButton Visible="true">
+                <dx:GridViewDataColumn FieldName="Email" />
+                <dx:GridViewDataComboBoxColumn Caption="Group" FieldName="UserGroupId">
+                    <PropertiesComboBox DropDownStyle="DropDown" ValueField="Id" TextField="Title" DataSourceID="UserGroupDatas">
+                    </PropertiesComboBox>
+                </dx:GridViewDataComboBoxColumn>
+                <dx:GridViewCommandColumn Name="btnCommand" ButtonType="Image" Width="60" Caption="Operation">
+                    <EditButton>
+                        <Image Url="../../resources/images/icons/edit.png" ToolTip="Edit" AlternateText="Edit"
+                            Height="15" Width="15">
+                        </Image>
                     </EditButton>
-                    <NewButton Visible="true">
-                    </NewButton>
                     <CustomButtons>
-                        <dx:GridViewCommandColumnCustomButton ID="btnDelete" Text="Delete">
+                        <dx:GridViewCommandColumnCustomButton ID="btnDelete">
+                            <Image Url="../../resources/images/icons/del.png" ToolTip="Delete" AlternateText="Delete"
+                                Height="15" Width="15">
+                            </Image>
                         </dx:GridViewCommandColumnCustomButton>
                     </CustomButtons>
+                    <CellStyle HorizontalAlign="Center">
+                    </CellStyle>
+                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                </dx:GridViewCommandColumn>
+                <dx:GridViewCommandColumn Caption="#" ShowSelectCheckbox="True" Width="15">
+                    <HeaderTemplate>
+                        <dx:ASPxCheckBox ID="SelectAllCheckBox" runat="server" ToolTip="Select/Unselect all rows on the page"
+                            ClientSideEvents-CheckedChanged="function(s, e) { grid.SelectAllRowsOnPage(s.GetChecked()); }" />
+                    </HeaderTemplate>
+                    <CellStyle HorizontalAlign="Center" />
+                    <HeaderStyle HorizontalAlign="Center" />
                 </dx:GridViewCommandColumn>
             </Columns>
             <Templates>
@@ -154,9 +181,14 @@
                                 </div>
                             </EditForm>
                         </Templates>
+                        <Styles>
+                            <AlternatingRow Enabled="true" />
+                            <Table Wrap="True">
+                            </Table>
+                        </Styles>
                         <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
                             BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
-                        <SettingsEditing Mode="EditForm" />
+                        <SettingsEditing Mode="EditFormAndDisplayRow" />
                     </dx:ASPxGridView>
                 </DetailRow>
                 <EditForm>
@@ -170,85 +202,109 @@
                                     <td class="content-row">
                                         <%if (!gridUser.IsNewRowEditing)
                                           { %>
-                                        <dx:ASPxTextBox runat="server" ID="txtUsername" MaxLength="50" ReadOnly="true" BackColor="gray"
-                                            TabIndex="1" Text='<%# Bind("Username") %>' CssClass="text-form">
-                                        </dx:ASPxTextBox>
+                                        <%# Eval("Username") %>
                                         <%}
                                           else
                                           { %>
-                                        <dx:ASPxTextBox runat="server" ID="itxtUsername" MaxLength="50" TabIndex="1" Text='<%# Bind("Username") %>'
-                                            CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtUsernamme" MaxLength="50" TabIndex="1" Text=""
+                                            CssClass="text-form" Width="100%" Value='<%# Bind("Username") %>'>
+                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                ErrorText="Error">
+                                                <RequiredField IsRequired="True" ErrorText="Username is required" />
+                                            </ValidationSettings>
                                         </dx:ASPxTextBox>
                                         <%} %>
                                     </td>
                                     <td class="title-row">
-                                        First name
+                                        First Name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtFirstname" MaxLength="50" TabIndex="2" Text='<%# Bind("Firstname") %>'
-                                            CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtFirstname" MaxLength="50" TabIndex="4" Text='<%# Bind("Firstname") %>'
+                                            CssClass="text-form" Width="100%">
+                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                ErrorText="Error">
+                                                <RequiredField IsRequired="True" ErrorText="First Name is required" />
+                                            </ValidationSettings>
                                         </dx:ASPxTextBox>
                                     </td>
                                     <td class="title-row">
-                                        Last name
+                                        Sex
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtLastname" MaxLength="50" TabIndex="3" Text='<%# Bind("Lastname") %>'
-                                            CssClass="text-form">
-                                        </dx:ASPxTextBox>
+                                        <dx:ASPxRadioButton runat="server" Checked='<%# !(Eval("IsFemale") != null && Boolean.Parse(Eval("IsFemale").ToString())) %>'
+                                            Text="Male" ID="radMale" GroupName="radSex" Layout="Flow" TabIndex="7" />
+                                        <dx:ASPxRadioButton runat="server" Checked='<%# Eval("IsFemale") != null && Boolean.Parse(Eval("IsFemale").ToString()) %>'
+                                            Text="Female" ID="radFemale" GroupName="radSex" Layout="Flow" TabIndex="8" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="title-row">
-                                        Title
+                                        Service
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtTitle" MaxLength="10" TabIndex="4" Text='<%# Bind("Title") %>'
-                                            CssClass="text-form">
-                                        </dx:ASPxTextBox>
+                                        <dx:ASPxComboBox runat="server" ID="ASPxComboBox2" TabIndex="2" TextField="Title"
+                                            ValueField="Id" Value='<%# Bind("ServicesId") %>' DataSourceID="ServicesDatas"
+                                            ValueType="System.Int32" Width="100%">
+                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                ErrorText="Error">
+                                                <RequiredField IsRequired="True" ErrorText="Service is required" />
+                                            </ValidationSettings>
+                                        </dx:ASPxComboBox>
                                     </td>
                                     <td class="title-row">
-                                        Display name
+                                        Last Name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtDisplayname" MaxLength="50" TabIndex="5" Text='<%# Bind("DisplayName") %>'
-                                            CssClass="text-form">
+                                        <dx:ASPxTextBox runat="server" ID="txtLastname" MaxLength="50" TabIndex="5" Text='<%# Bind("Lastname") %>'
+                                            CssClass="text-form" Width="100%">
+                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                ErrorText="Error">
+                                                <RequiredField IsRequired="True" ErrorText="Last Name is required" />
+                                            </ValidationSettings>
                                         </dx:ASPxTextBox>
                                     </td>
                                     <td class="title-row">
                                         Email
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtEmail" MaxLength="50" TabIndex="6" Text='<%# Bind("Email") %>'
+                                        <dx:ASPxTextBox runat="server" ID="txtEmail" MaxLength="50" TabIndex="9" Text='<%# Bind("Email") %>'
                                             CssClass="text-form">
                                         </dx:ASPxTextBox>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="title-row">
-                                        Cell phone
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="false" MaxLength="20" TabIndex="7" ID="txtCellphone"
-                                            Text='<%# Bind("CellPhone") %>' CssClass="text-form">
-                                        </dx:ASPxTextBox>
-                                    </td>
-                                    <td class="title-row">
-                                        Female
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxCheckBox runat="server" TabIndex="8" Value='<%#Bind("IsFemale")%>' ID="ckcR">
-                                        </dx:ASPxCheckBox>
-                                    </td>
-                                    <td class="title-row">
                                         User Group
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxComboBox runat="server" ID="ASPxComboBox1" TabIndex="9" SelectedIndex="0"
-                                            TextField="Title" ValueField="Id" Value='<%# Bind("UserGroupId") %>' DataSourceID="UserGroupDatas">
+                                        <dx:ASPxComboBox runat="server" ID="ASPxComboBox1" TabIndex="3" TextField="Title"
+                                            ValueField="Id" Value='<%# Bind("UserGroupId") %>' DataSourceID="UserGroupDatas"
+                                            ValueType="System.String" Width="100%">
+                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                ErrorText="Error">
+                                                <RequiredField IsRequired="True" ErrorText="Group is required" />
+                                            </ValidationSettings>
                                         </dx:ASPxComboBox>
-                                        <data:ServicesDataSource runat="server" ID="ServicesDataSource1" SelectMethod="GetAll">
-                                        </data:ServicesDataSource>
+                                    </td>
+                                    <td class="title-row">
+                                        Display Name
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ID="txtDisplayname" MaxLength="50" TabIndex="6" Text='<%# Bind("DisplayName") %>'
+                                            CssClass="text-form" Width="100%">
+                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                ErrorText="Error">
+                                                <RequiredField IsRequired="True" ErrorText="Display Name is required" />
+                                            </ValidationSettings>
+                                        </dx:ASPxTextBox>
+                                    </td>
+                                    <td class="title-row">
+                                        Cell Phone
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" MaxLength="20" TabIndex="10" ID="txtCellphone"
+                                            Text='<%# Bind("CellPhone") %>' CssClass="text-form">
+                                        </dx:ASPxTextBox>
                                     </td>
                                 </tr>
                                 <tr>
@@ -260,7 +316,7 @@
                                         Note
                                     </td>
                                     <td class="content-row" colspan="6">
-                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" MaxLength="500" TabIndex="10" Text='<%# Bind("Note")%>'
+                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" MaxLength="500" TabIndex="11" Text='<%# Bind("Note")%>'
                                             CssClass="text-form">
                                         </dx:ASPxMemo>
                                     </td>
@@ -269,25 +325,31 @@
                         </table>
                     </div>
                     <div style="text-align: right; padding: 2px 2px 2px 2px">
-                        <dx:ASPxHyperLink runat="server" TabIndex="11" Text="Update" ID="btnUpload" ClientInstanceName="btnUpload">
-                            <ClientSideEvents Click="function(s, e) {updategrid() }" />
+                        <dx:ASPxHyperLink runat="server" Text="Update" ID="ASPxHyperLink1">
+                            <ClientSideEvents Click="function(s, e) { grid.UpdateEdit(); }" />
                         </dx:ASPxHyperLink>
-                        <dx:ASPxGridViewTemplateReplacement ID="btn_cancel" ReplacementType="EditFormCancelButton"
-                            runat="server">
-                        </dx:ASPxGridViewTemplateReplacement>
+                        <dx:ASPxHyperLink runat="server" Text="Cancel" ID="ASPxHyperLink2">
+                            <ClientSideEvents Click="function(s, e) { grid.CancelEdit(); }" />
+                        </dx:ASPxHyperLink>
                     </div>
                 </EditForm>
             </Templates>
+            <Styles>
+                <AlternatingRow Enabled="true" />
+                <Table Wrap="True">
+                </Table>
+            </Styles>
             <SettingsDetail ShowDetailRow="true" AllowOnlyOneMasterRowExpanded="True" />
             <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
-                BeginCallback="function(s, e) {command = e.command; gridObject = s;}"></ClientSideEvents>
-            <ClientSideEvents CustomButtonClick="function(s, e) {   if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+                BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}">
+            </ClientSideEvents>
             <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
             </SettingsPager>
-            <SettingsEditing Mode="EditForm" />
+            <SettingsEditing Mode="EditFormAndDisplayRow" />
             <Settings ShowGroupPanel="False" ShowFilterRow="True" ShowFilterRowMenu="True" />
         </dx:ASPxGridView>
-        <data:UsersDataSource ID="UserDatas" runat="server" SelectMethod="GetPaged" EnablePaging="true">
+        <data:UsersDataSource ID="UserDatas" runat="server" SelectMethod="GetPaged" EnablePaging="True"
+            EnableSorting="True" InsertMethod="Insert" UpdateMethod="Update">
             <Parameters>
                 <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" />
                 <data:CustomParameter Name="OrderByClause" Value="Username" />
@@ -295,31 +357,39 @@
             </Parameters>
         </data:UsersDataSource>
         <data:UserRoleDataSource runat="server" ID="UserRoleDatas" SelectMethod="GetPaged"
-            EnableDeepLoad="true">
-            <DeepLoadProperties>
+            EnableDeepLoad="true" EnablePaging="True" EnableSorting="True" InsertMethod="Insert"
+            UpdateMethod="Update">
+            <DeepLoadProperties Method="IncludeChildren" Recursive="False">
                 <Types>
                     <data:RoleDetailProperty Name="Role" />
                     <data:RoleDetailProperty Name="Screen" />
                 </Types>
             </DeepLoadProperties>
             <Parameters>
+                <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
         </data:UserRoleDataSource>
         <data:UserGroupDataSource runat="server" ID="UserGroupDatas" SelectMethod="GetPaged">
             <Parameters>
+                <data:CustomParameter Name="WhereClause" Value="IsDisabled = 'false'" ConvertEmptyStringToNull="false" />
+                <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
         </data:UserGroupDataSource>
-        <data:RoleDataSource ID="RoleDatas" runat="server">
+        <data:RoleDataSource ID="RoleDatas" runat="server" SelectMethod="GetPaged">
             <Parameters>
                 <data:CustomParameter Name="WhereClause" Value="IsDisabled = 'false'" ConvertEmptyStringToNull="false" />
+                <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
         </data:RoleDataSource>
-        <data:ServicesDataSource ID="ServicesDatas" runat="server">
+        <data:ServicesDataSource ID="ServicesDatas" runat="server" SelectMethod="GetPaged"
+            EnablePaging="True" EnableSorting="True">
             <Parameters>
-                <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
+                <data:CustomParameter Name="WhereClause" Value="IsDisabled = 'false'" ConvertEmptyStringToNull="false" />
+                <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
+                <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
         </data:ServicesDataSource>
     </div>
