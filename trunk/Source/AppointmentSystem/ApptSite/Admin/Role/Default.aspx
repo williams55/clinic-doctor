@@ -96,7 +96,7 @@
                     <dx:GridViewCommandColumn Caption="#" ShowSelectCheckbox="True" Width="15">
                         <HeaderTemplate>
                             <dx:ASPxCheckBox ID="SelectAllCheckBox" runat="server" ToolTip="Select/Unselect all rows on the page"
-                                ClientSideEvents-CheckedChanged="function(s, e) { gridDetail.SelectAllRowsOnPage(s.GetChecked()); }" />
+                                ClientSideEvents-CheckedChanged="function(s, e) { grid.SelectAllRowsOnPage(s.GetChecked()); }" />
                         </HeaderTemplate>
                         <CellStyle HorizontalAlign="Center" />
                         <HeaderStyle HorizontalAlign="Center" />
@@ -105,9 +105,9 @@
                 <Templates>
                     <DetailRow>
                         <dx:ASPxGridView runat="server" ClientInstanceName="gridDetail" ID="gridRoleDetail"
-                            DataSourceID="RoleDetailDataSource" KeyFieldName="Id" OnInit="gridRoleDetail_Init"
+                            DataSourceID="RoleDetailDataSource" KeyFieldName="Id" Width="100%"
                             OnRowInserting="gridRoleDetail_RowInserting" OnRowUpdating="gridRoleDetail_RowUpdating"
-                            OnCustomButtonCallback="gridRoleDetail_OnCustomButtonCallback" Width="100%" 
+                            OnCustomButtonCallback="gridRoleDetail_OnCustomButtonCallback" OnInit="gridRoleDetail_Init"
                             OnCustomCallback="gridRoleDetail_CustomCallback">
                             <Columns>
                                 <dx:GridViewDataColumn FieldName="Id" Visible="False">
@@ -184,7 +184,8 @@
                                 </dx:GridViewCommandColumn>
                             </Columns>
                             <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
-                                BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
+                                BeginCallback="function(s, e) {command = e.command; gridObject = s;}" 
+                                CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}" />
                             <SettingsEditing Mode="EditForm" />
                         </dx:ASPxGridView>
                     </DetailRow>

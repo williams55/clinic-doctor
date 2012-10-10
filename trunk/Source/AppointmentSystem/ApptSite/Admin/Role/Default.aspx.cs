@@ -371,7 +371,7 @@ public partial class Admin_Role_Default : Page
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            WebCommon.ShowDialog(this, "System is error. Please contact Administrator.");
+            WebCommon.AlertGridView(this, "System is error. Please contact Administrator.");
         }
     }
     protected void gridRoleDetail_OnCustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
@@ -400,7 +400,7 @@ public partial class Admin_Role_Default : Page
             // Kiem tra xem id cua roledetail co phai la so khong
             if (Int32.TryParse(grid.GetRowValues(e.VisibleIndex, "Id").ToString(), out id))
             {
-                // Neu id la so thi tien hanh kiem tra xem service co duoc su dung khong
+                // Neu id la so thi tien hanh kiem tra xem role detail co duoc su dung khong
                 var roleDetail = DataRepository.RoleDetailProvider.GetById(id);
 
                 // Kiem tra xem roledetail co ton tai hay khong
@@ -440,15 +440,16 @@ public partial class Admin_Role_Default : Page
             }
 
             // Check null for grid role detail
-            var gridRoleDetail = sender as ASPxGridView;
-            if (gridRoleDetail == null)
+            var grid = sender as ASPxGridView;
+            if (grid == null)
             {
                 WebCommon.AlertGridView(sender, _message);
+                e.Cancel = true;
                 return;
             }
 
             var crud = GetStringCrud(sender, e);
-            var roleId = gridRoleDetail.GetMasterRowKeyValue();
+            var roleId = grid.GetMasterRowKeyValue();
 
             // Validate empty field
             if (!WebCommon.ValidateEmpty("Role", roleId, out _message)
@@ -490,15 +491,15 @@ public partial class Admin_Role_Default : Page
             }
 
             // Check null for grid role detail
-            var gridRoleDetail = sender as ASPxGridView;
-            if (gridRoleDetail == null)
+            var grid = sender as ASPxGridView;
+            if (grid == null)
             {
                 WebCommon.AlertGridView(sender, _message);
                 return;
             }
 
             var crud = GetStringCrudUpdate(sender, e);
-            var roleId = gridRoleDetail.GetMasterRowKeyValue();
+            var roleId = grid.GetMasterRowKeyValue();
 
             // Validate empty field
             if (!WebCommon.ValidateEmpty("Role", roleId, out _message)
@@ -514,8 +515,8 @@ public partial class Admin_Role_Default : Page
             e.NewValues["ScreenCode"] = e.NewValues["ScreenCode"].ToString().Trim();
             e.NewValues["RoleId"] = roleId;
             e.NewValues["Crud"] = crud;
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
-            e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
+            e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert delete successfully
             WebCommon.AlertGridView(sender, "Role detail is updated successfully.");
