@@ -47,10 +47,10 @@
             <h5>
                 Manage User</h5>
         </div>
-        <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" DataSourceID="UserDatas"
+        <dx:ASPxGridView ID="gridUser" ClientInstanceName="grid" runat="server" DataSourceID="UsersDataSource"
             Width="100%" KeyFieldName="Username" OnRowInserting="gridUser_RowInserting" OnRowUpdating="gridUser_RowUpdating"
             OnCustomButtonCallback="gridUser_CustomButtonCallback" OnCustomCallback="gridUser_OnCustomCallback"
-            EnableViewState="False">
+            EnableViewState="False" OnRowInserted="gridUser_OnRowInserted">
             <Columns>
                 <dx:GridViewDataColumn Caption="No." Width="50">
                     <DataItemTemplate>
@@ -68,7 +68,7 @@
                 <dx:GridViewDataColumn FieldName="DisplayName" />
                 <dx:GridViewDataColumn FieldName="CellPhone" />
                 <dx:GridViewDataComboBoxColumn Caption="Service" FieldName="ServicesId">
-                    <PropertiesComboBox DropDownStyle="DropDown" ValueField="Id" TextField="Title" DataSourceID="ServicesDatas">
+                    <PropertiesComboBox DropDownStyle="DropDown" ValueField="Id" TextField="Title" DataSourceID="ServicesDataSource">
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataColumn FieldName="Email" />
@@ -105,7 +105,7 @@
             <Templates>
                 <DetailRow>
                     <dx:ASPxGridView runat="server" ClientInstanceName="gridDetail" ID="gridUserRole"
-                        DataSourceID="UserRoleDatas" KeyFieldName="Username" Width="100%" OnRowInserting="gridUserRole_RowInserting"
+                        DataSourceID="UserRoleDataSource" KeyFieldName="Id" Width="100%" OnRowInserting="gridUserRole_RowInserting"
                         OnCustomButtonCallback="gridUserRole_CustomButtonCallback" OnInit="gridUserRole_OnInit"
                         OnCustomCallback="gridUserRole_OnCustomCallback" OnInitNewRow="gridUserRole_OnInitNewRow">
                         <Columns>
@@ -243,7 +243,7 @@
                                     </td>
                                     <td class="content-row">
                                         <dx:ASPxComboBox runat="server" ID="ASPxComboBox2" TabIndex="2" TextField="Title"
-                                            ValueField="Id" Value='<%# Bind("ServicesId") %>' DataSourceID="ServicesDatas"
+                                            ValueField="Id" Value='<%# Bind("ServicesId") %>' DataSourceID="ServicesDataSource"
                                             ValueType="System.Int32" Width="100%">
                                             <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                 ErrorText="Error">
@@ -340,7 +340,7 @@
                 </Table>
             </Styles>
             <SettingsDetail ShowDetailRow="true" AllowOnlyOneMasterRowExpanded="True" />
-            <ClientSideEvents EndCallback="function(s, e) { RefreshGrid(); AlertMessage(); }"
+            <ClientSideEvents EndCallback="function(s, e) { AlertMessage(); RefreshGrid(); }"
                 BeginCallback="function(s, e) {command = e.command; gridObject = s;}" CustomButtonClick="function(s, e) { if(e.buttonID == 'btnDelete'){ e.processOnServer = confirmDelete();}}">
             </ClientSideEvents>
             <SettingsPager Mode="ShowPager" PageSize="5" Position="Bottom">
@@ -348,7 +348,7 @@
             <SettingsEditing Mode="EditFormAndDisplayRow" />
             <Settings ShowGroupPanel="False" ShowFilterRow="True" ShowFilterRowMenu="True" />
         </dx:ASPxGridView>
-        <data:UsersDataSource ID="UserDatas" runat="server" SelectMethod="GetPaged" EnablePaging="True"
+        <data:UsersDataSource ID="UsersDataSource" runat="server" SelectMethod="GetPaged" EnablePaging="True"
             EnableSorting="True" InsertMethod="Insert" UpdateMethod="Update">
             <Parameters>
                 <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" />
@@ -356,7 +356,7 @@
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
         </data:UsersDataSource>
-        <data:UserRoleDataSource runat="server" ID="UserRoleDatas" SelectMethod="GetPaged"
+        <data:UserRoleDataSource runat="server" ID="UserRoleDataSource" SelectMethod="GetPaged"
             EnableDeepLoad="true" EnablePaging="True" EnableSorting="True" InsertMethod="Insert"
             UpdateMethod="Update">
             <DeepLoadProperties Method="IncludeChildren" Recursive="False">
@@ -377,14 +377,14 @@
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
         </data:UserGroupDataSource>
-        <data:RoleDataSource ID="RoleDatas" runat="server" SelectMethod="GetPaged">
+        <data:RoleDataSource ID="RoleDataSource" runat="server" SelectMethod="GetPaged">
             <Parameters>
                 <data:CustomParameter Name="WhereClause" Value="IsDisabled = 'false'" ConvertEmptyStringToNull="false" />
                 <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
                 <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
             </Parameters>
         </data:RoleDataSource>
-        <data:ServicesDataSource ID="ServicesDatas" runat="server" SelectMethod="GetPaged"
+        <data:ServicesDataSource ID="ServicesDataSource" runat="server" SelectMethod="GetPaged"
             EnablePaging="True" EnableSorting="True">
             <Parameters>
                 <data:CustomParameter Name="WhereClause" Value="IsDisabled = 'false'" ConvertEmptyStringToNull="false" />

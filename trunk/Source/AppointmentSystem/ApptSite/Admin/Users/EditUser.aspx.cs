@@ -67,7 +67,6 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
-
     }
 
     #region User
@@ -96,7 +95,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 return;
             }
 
-            string username = gridUser.GetRowValues(e.VisibleIndex, "Username").ToString();
+            string username = grid.GetRowValues(e.VisibleIndex, "Username").ToString();
             var user = DataRepository.UsersProvider.GetByUsername(username);
             if (user == null || user.IsDisabled)
             {
@@ -125,7 +124,6 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete user. Please contact Administrator.");
         }
-
     }
 
     /// <summary>
@@ -312,6 +310,45 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             e.Cancel = true;
         }
     }
+
+    protected void gridUser_OnRowInserted(object sender, ASPxDataInsertedEventArgs e)
+    {
+        TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        tm.BeginTransaction();
+        try
+        {
+            // Validate group field
+            var userGroup = DataRepository.UserGroupProvider.GetById(e.NewValues["UserGroupId"].ToString());
+            if (userGroup == null || userGroup.IsDisabled)
+            {
+                WebCommon.AlertGridView(sender, "Group is not existed.");
+                tm.Rollback();
+                return;
+            }
+            DataRepository.UserGroupProvider.DeepLoad(userGroup);
+
+            foreach (var groupRole in userGroup.GroupRoleCollection)
+            {
+                DataRepository.UserRoleProvider.Insert(tm, new UserRole
+                    {
+                        Username = e.NewValues["Username"].ToString(),
+                        RoleId = groupRole.RoleId,
+                        CreateDate = DateTime.Now,
+                        CreateUser = WebCommon.GetAuthUsername(),
+                        UpdateDate = DateTime.Now,
+                        UpdateUser = WebCommon.GetAuthUsername(),
+                    });
+            }
+            tm.Commit();
+        }
+        catch (Exception ex)
+        {
+            tm.Rollback();
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            WebCommon.AlertGridView(sender, "Cannot insert user role. Please contact Administrator");
+        }
+    }
+    
     protected void gridUser_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
         try
@@ -419,8 +456,8 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         try
         {
             // Check null for grid user role
-            var gridUserRole = sender as ASPxGridView;
-            if (gridUserRole == null)
+            var grid = sender as ASPxGridView;
+            if (grid == null)
             {
                 WebCommon.AlertGridView(sender, _message);
                 return;
@@ -429,16 +466,16 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             // Check reading right
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
             {
-                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
-                gridUserRole.Visible = false;
+                WebCommon.AlertGridView(sender, _message);
+                grid.Visible = false;
                 return;
             }
 
             // Set page size
-            gridUserRole.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
+            grid.SettingsPager.PageSize = ServiceFacade.SettingsHelper.PageSize;
 
             // Lay cot co chua cac nut thao tac
-            var commandColumn = gridUserRole.Columns["Operation"] as GridViewCommandColumn;
+            var commandColumn = grid.Columns["Operation"] as GridViewCommandColumn;
 
             // Neu khong co cot do thi khong can lam tiep
             if (commandColumn == null) return;
@@ -471,11 +508,11 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             // If there is no button is displayed => invisible column
             commandColumn.Visible = commandColumn.EditButton.Visible || commandColumn.NewButton.Visible || btnGeneralDelete.Visible;
 
-            string username = gridUserRole.GetMasterRowKeyValue().ToString();
-            var param = UserRoleDatas.Parameters["WhereClause"];
+            string username = grid.GetMasterRowKeyValue().ToString();
+            var param = UserRoleDataSource.Parameters["WhereClause"];
             if (param == null)
             {
-                UserRoleDatas.Parameters.Add("WhereClause"
+                UserRoleDataSource.Parameters.Add("WhereClause"
                     , String.Format("IsDisabled = 'false' AND Username='{0}'", username));
             }
             else
@@ -499,7 +536,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             // Check deleting right
             if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
             {
-                WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
+                WebCommon.AlertGridView(sender, _message);
                 return;
             }
 
@@ -599,7 +636,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 // Check deleting right
                 if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
                 {
-                    WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
+                    WebCommon.AlertGridView(sender, _message);
                     return;
                 }
 
