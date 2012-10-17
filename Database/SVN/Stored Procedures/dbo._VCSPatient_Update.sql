@@ -23,11 +23,6 @@ CREATE PROCEDURE [dbo].[_VCSPatient_Update]
 	,@HomeDistrict nvarchar(50)
 	,@HomeCity nvarchar(50)
 	,@HomeCountry nvarchar(50)
-	,@WorkStreet nvarchar(100)
-	,@WorkWard nvarchar(50)
-	,@WorkDistrict nvarchar(50)
-	,@WorkCity nvarchar(50)
-	,@WorkCountry nvarchar(50)
 	,@CompanyCode nchar(9)
 	,@BillingAddress nvarchar(50)
 	,@HomePhone nvarchar(50)
@@ -60,11 +55,6 @@ UPDATE [VCS].[dbo].[Patient]
       ,[HomeDistrict] = @HomeDistrict
       ,[HomeCity] = @HomeCity
       ,[HomeCountry] = @HomeCountry
-      ,[WorkStreet] = @WorkStreet
-      ,[WorkWard] = @WorkWard
-      ,[WorkDistrict] = @WorkDistrict
-      ,[WorkCity] = @WorkCity
-      ,[WorkCountry] = @WorkCountry
       ,[CompanyCode] = @CompanyCode
       ,[BillingAddress] = @BillingAddress
       ,[HomePhone] = @HomePhone
