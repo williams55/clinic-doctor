@@ -109,8 +109,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             }
 
             // Validate empty field
-            if (!WebCommon.ValidateEmpty("Patient Code", e.NewValues["PatientCode"], out _message)
-                || !WebCommon.ValidateEmpty("First Name", e.NewValues["FirstName"], out _message)
+            if (!WebCommon.ValidateEmpty("First Name", e.NewValues["FirstName"], out _message)
                 || !WebCommon.ValidateEmpty("Last Name", e.NewValues["LastName"], out _message)
                 || !WebCommon.ValidateEmpty("DOB", e.NewValues["DateOfBirth"], out _message))
             {
@@ -219,8 +218,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             }
 
             // Validate empty field
-            if (!WebCommon.ValidateEmpty("Patient Code", e.NewValues["PatientCode"], out _message)
-                || !WebCommon.ValidateEmpty("First Name", e.NewValues["FirstName"], out _message)
+            if (!WebCommon.ValidateEmpty("First Name", e.NewValues["FirstName"], out _message)
                 || !WebCommon.ValidateEmpty("Last Name", e.NewValues["LastName"], out _message)
                 || !WebCommon.ValidateEmpty("DOB", e.NewValues["DateOfBirth"], out _message))
             {
@@ -239,7 +237,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             }
 
             // Get patient by Patient Code
-            var patients = DataRepository.VcsPatientProvider.GetByPatientCode(e.NewValues["PatientCode"].ToString());
+            var patients = DataRepository.VcsPatientProvider.GetByPatientCode(e.OldValues["PatientCode"].ToString());
             if (patients == null || !patients.Any() || patients[0].IsDisabled)
             {
                 WebCommon.AlertGridView(sender, "Cannot find patient.");
