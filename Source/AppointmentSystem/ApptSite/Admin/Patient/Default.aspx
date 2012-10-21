@@ -25,7 +25,8 @@
     <div class="color">
         <asp:HyperLink runat="server" ID="btnAdd" NavigateUrl="javascript:grid.AddNewRow()"
             ToolTip="New" CssClass="add"></asp:HyperLink>
-        <a class="delete" title="Delete selected items" onclick="OnClickButtonDel()" id="btnGeneralDelete" runat="server"></a>
+        <a class="delete" title="Delete selected items" onclick="OnClickButtonDel()" id="btnGeneralDelete"
+            runat="server"></a>
     </div>
     <div id="box-tabs" class="box">
         <div class="title">
@@ -116,9 +117,17 @@
                                         Patient Code
                                     </td>
                                     <td class="content-row" style="width: 220px;">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="true" ID="txtTitle" Text='<%# Bind("PatientCode") %>'
-                                            CssClass="text-form" TabIndex="1">
+                                        <%if (!gridPatient.IsNewRowEditing)
+                                          { %>
+                                        <%# Eval("PatientCode")%>
+                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox5" Text='<%# Bind("PatientCode") %>'
+                                            CssClass="text-form" Visible="False">
                                         </dx:ASPxTextBox>
+                                        <%}
+                                          else
+                                          { %>
+                                        Auto generate
+                                        <%} %>
                                     </td>
                                     <td class="title-row" style="width: 100px;">
                                         Home Street
