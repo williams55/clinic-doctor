@@ -157,13 +157,6 @@
 				<DependentUpon>VcsCompanyProviderBase.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
-			<Compile Include="Bases\Views\VcsMemberTypeProviderBase.cs">
-			  <SubType>Code</SubType>
-			</Compile>
-			<Compile Include="Bases\Views\VcsMemberTypeProviderBase.generatedCore.cs">
-				<DependentUpon>VcsMemberTypeProviderBase.cs</DependentUpon>
-			  <SubType>Code</SubType>
-			</Compile>
 			<Compile Include="Bases\Views\VcsPatientProviderBase.cs">
 			  <SubType>Code</SubType>
 			</Compile>

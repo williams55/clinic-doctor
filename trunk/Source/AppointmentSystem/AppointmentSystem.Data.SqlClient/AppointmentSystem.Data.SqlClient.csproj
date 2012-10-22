@@ -160,13 +160,6 @@
 			   <DependentUpon>SqlVcsCompanyProvider.cs</DependentUpon>
 			   <SubType>Code</SubType>
 			</Compile>
-			<Compile Include="Views\SqlVcsMemberTypeProvider.cs">
-			  <SubType>Code</SubType>
-			</Compile>
-			<Compile Include="Views\SqlVcsMemberTypeProviderBase.generated.cs">
-			   <DependentUpon>SqlVcsMemberTypeProvider.cs</DependentUpon>
-			   <SubType>Code</SubType>
-			</Compile>
 			<Compile Include="Views\SqlVcsPatientProvider.cs">
 			  <SubType>Code</SubType>
 			</Compile>

@@ -59,6 +59,16 @@ namespace AppointmentSystem.Entities
 		private System.String		  _memberType = string.Empty;
 		
 		/// <summary>
+		/// MembershipSOSNumber : 
+		/// </summary>
+		private System.String		  _membershipSosNumber = null;
+		
+		/// <summary>
+		/// MembershipSOSExpDate : 
+		/// </summary>
+		private System.DateTime?		  _membershipSosExpDate = null;
+		
+		/// <summary>
 		/// Nationality : 
 		/// </summary>
 		private System.String		  _nationality = string.Empty;
@@ -87,31 +97,6 @@ namespace AppointmentSystem.Entities
 		/// HomeCountry : 
 		/// </summary>
 		private System.String		  _homeCountry = null;
-		
-		/// <summary>
-		/// WorkStreet : 
-		/// </summary>
-		private System.String		  _workStreet = null;
-		
-		/// <summary>
-		/// WorkWard : 
-		/// </summary>
-		private System.String		  _workWard = null;
-		
-		/// <summary>
-		/// WorkDistrict : 
-		/// </summary>
-		private System.String		  _workDistrict = null;
-		
-		/// <summary>
-		/// WorkCity : 
-		/// </summary>
-		private System.String		  _workCity = null;
-		
-		/// <summary>
-		/// WorkCountry : 
-		/// </summary>
-		private System.String		  _workCountry = null;
 		
 		/// <summary>
 		/// CompanyCode : 
@@ -149,6 +134,11 @@ namespace AppointmentSystem.Entities
 		private System.String		  _emailAddress = null;
 		
 		/// <summary>
+		/// CreateUser : 
+		/// </summary>
+		private System.String		  _createUser = null;
+		
+		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		private System.DateTime		  _createDate = DateTime.MinValue;
@@ -174,16 +164,6 @@ namespace AppointmentSystem.Entities
 		private System.DateTime?		  _insuranceCardExpDate = null;
 		
 		/// <summary>
-		/// MembershipSOSNumber : 
-		/// </summary>
-		private System.String		  _membershipSosNumber = null;
-		
-		/// <summary>
-		/// MembershipSOSExpDate : 
-		/// </summary>
-		private System.DateTime?		  _membershipSosExpDate = null;
-		
-		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		private System.Boolean		  _isDisabled = false;
@@ -197,6 +177,11 @@ namespace AppointmentSystem.Entities
 		/// UpdateDate : 
 		/// </summary>
 		private System.DateTime		  _updateDate = DateTime.MinValue;
+		
+		/// <summary>
+		/// ApptRemark : 
+		/// </summary>
+		private System.String		  _apptRemark = null;
 		
 		/// <summary>
 		/// Remark : 
@@ -235,17 +220,14 @@ namespace AppointmentSystem.Entities
 		///<param name="_dateOfBirth"></param>
 		///<param name="_sex"></param>
 		///<param name="_memberType"></param>
+		///<param name="_membershipSosNumber"></param>
+		///<param name="_membershipSosExpDate"></param>
 		///<param name="_nationality"></param>
 		///<param name="_homeStreet"></param>
 		///<param name="_homeWard"></param>
 		///<param name="_homeDistrict"></param>
 		///<param name="_homeCity"></param>
 		///<param name="_homeCountry"></param>
-		///<param name="_workStreet"></param>
-		///<param name="_workWard"></param>
-		///<param name="_workDistrict"></param>
-		///<param name="_workCity"></param>
-		///<param name="_workCountry"></param>
 		///<param name="_companyCode"></param>
 		///<param name="_billingAddress"></param>
 		///<param name="_homePhone"></param>
@@ -253,18 +235,18 @@ namespace AppointmentSystem.Entities
 		///<param name="_companyPhone"></param>
 		///<param name="_fax"></param>
 		///<param name="_emailAddress"></param>
+		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_validCorporate"></param>
 		///<param name="_defaultPaymentMode"></param>
 		///<param name="_insuranceCardNumber"></param>
 		///<param name="_insuranceCardExpDate"></param>
-		///<param name="_membershipSosNumber"></param>
-		///<param name="_membershipSosExpDate"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
+		///<param name="_apptRemark"></param>
 		///<param name="_remark"></param>
-		public VcsPatientBase(System.String _patientCode, System.String _firstName, System.String _middleName, System.String _lastName, System.DateTime _dateOfBirth, System.String _sex, System.String _memberType, System.String _nationality, System.String _homeStreet, System.String _homeWard, System.String _homeDistrict, System.String _homeCity, System.String _homeCountry, System.String _workStreet, System.String _workWard, System.String _workDistrict, System.String _workCity, System.String _workCountry, System.String _companyCode, System.String _billingAddress, System.String _homePhone, System.String _mobilePhone, System.String _companyPhone, System.String _fax, System.String _emailAddress, System.DateTime _createDate, System.Boolean _validCorporate, System.String _defaultPaymentMode, System.String _insuranceCardNumber, System.DateTime? _insuranceCardExpDate, System.String _membershipSosNumber, System.DateTime? _membershipSosExpDate, System.Boolean _isDisabled, System.String _updateUser, System.DateTime _updateDate, System.String _remark)
+		public VcsPatientBase(System.String _patientCode, System.String _firstName, System.String _middleName, System.String _lastName, System.DateTime _dateOfBirth, System.String _sex, System.String _memberType, System.String _membershipSosNumber, System.DateTime? _membershipSosExpDate, System.String _nationality, System.String _homeStreet, System.String _homeWard, System.String _homeDistrict, System.String _homeCity, System.String _homeCountry, System.String _companyCode, System.String _billingAddress, System.String _homePhone, System.String _mobilePhone, System.String _companyPhone, System.String _fax, System.String _emailAddress, System.String _createUser, System.DateTime _createDate, System.Boolean _validCorporate, System.String _defaultPaymentMode, System.String _insuranceCardNumber, System.DateTime? _insuranceCardExpDate, System.Boolean _isDisabled, System.String _updateUser, System.DateTime _updateDate, System.String _apptRemark, System.String _remark)
 		{
 			this._patientCode = _patientCode;
 			this._firstName = _firstName;
@@ -273,17 +255,14 @@ namespace AppointmentSystem.Entities
 			this._dateOfBirth = _dateOfBirth;
 			this._sex = _sex;
 			this._memberType = _memberType;
+			this._membershipSosNumber = _membershipSosNumber;
+			this._membershipSosExpDate = _membershipSosExpDate;
 			this._nationality = _nationality;
 			this._homeStreet = _homeStreet;
 			this._homeWard = _homeWard;
 			this._homeDistrict = _homeDistrict;
 			this._homeCity = _homeCity;
 			this._homeCountry = _homeCountry;
-			this._workStreet = _workStreet;
-			this._workWard = _workWard;
-			this._workDistrict = _workDistrict;
-			this._workCity = _workCity;
-			this._workCountry = _workCountry;
 			this._companyCode = _companyCode;
 			this._billingAddress = _billingAddress;
 			this._homePhone = _homePhone;
@@ -291,16 +270,16 @@ namespace AppointmentSystem.Entities
 			this._companyPhone = _companyPhone;
 			this._fax = _fax;
 			this._emailAddress = _emailAddress;
+			this._createUser = _createUser;
 			this._createDate = _createDate;
 			this._validCorporate = _validCorporate;
 			this._defaultPaymentMode = _defaultPaymentMode;
 			this._insuranceCardNumber = _insuranceCardNumber;
 			this._insuranceCardExpDate = _insuranceCardExpDate;
-			this._membershipSosNumber = _membershipSosNumber;
-			this._membershipSosExpDate = _membershipSosExpDate;
 			this._isDisabled = _isDisabled;
 			this._updateUser = _updateUser;
 			this._updateDate = _updateDate;
+			this._apptRemark = _apptRemark;
 			this._remark = _remark;
 		}
 		
@@ -314,17 +293,14 @@ namespace AppointmentSystem.Entities
 		///<param name="_dateOfBirth"></param>
 		///<param name="_sex"></param>
 		///<param name="_memberType"></param>
+		///<param name="_membershipSosNumber"></param>
+		///<param name="_membershipSosExpDate"></param>
 		///<param name="_nationality"></param>
 		///<param name="_homeStreet"></param>
 		///<param name="_homeWard"></param>
 		///<param name="_homeDistrict"></param>
 		///<param name="_homeCity"></param>
 		///<param name="_homeCountry"></param>
-		///<param name="_workStreet"></param>
-		///<param name="_workWard"></param>
-		///<param name="_workDistrict"></param>
-		///<param name="_workCity"></param>
-		///<param name="_workCountry"></param>
 		///<param name="_companyCode"></param>
 		///<param name="_billingAddress"></param>
 		///<param name="_homePhone"></param>
@@ -332,18 +308,18 @@ namespace AppointmentSystem.Entities
 		///<param name="_companyPhone"></param>
 		///<param name="_fax"></param>
 		///<param name="_emailAddress"></param>
+		///<param name="_createUser"></param>
 		///<param name="_createDate"></param>
 		///<param name="_validCorporate"></param>
 		///<param name="_defaultPaymentMode"></param>
 		///<param name="_insuranceCardNumber"></param>
 		///<param name="_insuranceCardExpDate"></param>
-		///<param name="_membershipSosNumber"></param>
-		///<param name="_membershipSosExpDate"></param>
 		///<param name="_isDisabled"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
+		///<param name="_apptRemark"></param>
 		///<param name="_remark"></param>
-		public static VcsPatient CreateVcsPatient(System.String _patientCode, System.String _firstName, System.String _middleName, System.String _lastName, System.DateTime _dateOfBirth, System.String _sex, System.String _memberType, System.String _nationality, System.String _homeStreet, System.String _homeWard, System.String _homeDistrict, System.String _homeCity, System.String _homeCountry, System.String _workStreet, System.String _workWard, System.String _workDistrict, System.String _workCity, System.String _workCountry, System.String _companyCode, System.String _billingAddress, System.String _homePhone, System.String _mobilePhone, System.String _companyPhone, System.String _fax, System.String _emailAddress, System.DateTime _createDate, System.Boolean _validCorporate, System.String _defaultPaymentMode, System.String _insuranceCardNumber, System.DateTime? _insuranceCardExpDate, System.String _membershipSosNumber, System.DateTime? _membershipSosExpDate, System.Boolean _isDisabled, System.String _updateUser, System.DateTime _updateDate, System.String _remark)
+		public static VcsPatient CreateVcsPatient(System.String _patientCode, System.String _firstName, System.String _middleName, System.String _lastName, System.DateTime _dateOfBirth, System.String _sex, System.String _memberType, System.String _membershipSosNumber, System.DateTime? _membershipSosExpDate, System.String _nationality, System.String _homeStreet, System.String _homeWard, System.String _homeDistrict, System.String _homeCity, System.String _homeCountry, System.String _companyCode, System.String _billingAddress, System.String _homePhone, System.String _mobilePhone, System.String _companyPhone, System.String _fax, System.String _emailAddress, System.String _createUser, System.DateTime _createDate, System.Boolean _validCorporate, System.String _defaultPaymentMode, System.String _insuranceCardNumber, System.DateTime? _insuranceCardExpDate, System.Boolean _isDisabled, System.String _updateUser, System.DateTime _updateDate, System.String _apptRemark, System.String _remark)
 		{
 			VcsPatient newVcsPatient = new VcsPatient();
 			newVcsPatient.PatientCode = _patientCode;
@@ -353,17 +329,14 @@ namespace AppointmentSystem.Entities
 			newVcsPatient.DateOfBirth = _dateOfBirth;
 			newVcsPatient.Sex = _sex;
 			newVcsPatient.MemberType = _memberType;
+			newVcsPatient.MembershipSosNumber = _membershipSosNumber;
+			newVcsPatient.MembershipSosExpDate = _membershipSosExpDate;
 			newVcsPatient.Nationality = _nationality;
 			newVcsPatient.HomeStreet = _homeStreet;
 			newVcsPatient.HomeWard = _homeWard;
 			newVcsPatient.HomeDistrict = _homeDistrict;
 			newVcsPatient.HomeCity = _homeCity;
 			newVcsPatient.HomeCountry = _homeCountry;
-			newVcsPatient.WorkStreet = _workStreet;
-			newVcsPatient.WorkWard = _workWard;
-			newVcsPatient.WorkDistrict = _workDistrict;
-			newVcsPatient.WorkCity = _workCity;
-			newVcsPatient.WorkCountry = _workCountry;
 			newVcsPatient.CompanyCode = _companyCode;
 			newVcsPatient.BillingAddress = _billingAddress;
 			newVcsPatient.HomePhone = _homePhone;
@@ -371,16 +344,16 @@ namespace AppointmentSystem.Entities
 			newVcsPatient.CompanyPhone = _companyPhone;
 			newVcsPatient.Fax = _fax;
 			newVcsPatient.EmailAddress = _emailAddress;
+			newVcsPatient.CreateUser = _createUser;
 			newVcsPatient.CreateDate = _createDate;
 			newVcsPatient.ValidCorporate = _validCorporate;
 			newVcsPatient.DefaultPaymentMode = _defaultPaymentMode;
 			newVcsPatient.InsuranceCardNumber = _insuranceCardNumber;
 			newVcsPatient.InsuranceCardExpDate = _insuranceCardExpDate;
-			newVcsPatient.MembershipSosNumber = _membershipSosNumber;
-			newVcsPatient.MembershipSosExpDate = _membershipSosExpDate;
 			newVcsPatient.IsDisabled = _isDisabled;
 			newVcsPatient.UpdateUser = _updateUser;
 			newVcsPatient.UpdateDate = _updateDate;
+			newVcsPatient.ApptRemark = _apptRemark;
 			newVcsPatient.Remark = _remark;
 			return newVcsPatient;
 		}
@@ -593,6 +566,62 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or Sets the MembershipSOSNumber property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		public virtual System.String MembershipSosNumber
+		{
+			get
+			{
+				return this._membershipSosNumber; 
+			}
+			set
+			{
+				if (_membershipSosNumber == value)
+					return;
+					
+				this._membershipSosNumber = value;
+				this._isDirty = true;
+				
+				OnPropertyChanged("MembershipSosNumber");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or Sets the MembershipSOSExpDate property. 
+		///		
+		/// </summary>
+		/// <value>This type is datetime</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// If this column is null, this property will return DateTime.MinValue. It is up to the developer
+		/// to check the value of IsMembershipSosExpDateNull() and perform business logic appropriately.
+		/// </remarks>
+		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		public virtual System.DateTime? MembershipSosExpDate
+		{
+			get
+			{
+				return this._membershipSosExpDate; 
+			}
+			set
+			{
+				if (_membershipSosExpDate == value && MembershipSosExpDate != null )
+					return;
+					
+				this._membershipSosExpDate = value;
+				this._isDirty = true;
+				
+				OnPropertyChanged("MembershipSosExpDate");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or Sets the Nationality property. 
 		///		
 		/// </summary>
@@ -754,141 +783,6 @@ namespace AppointmentSystem.Entities
 				this._isDirty = true;
 				
 				OnPropertyChanged("HomeCountry");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or Sets the WorkStreet property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// </remarks>
-		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.String WorkStreet
-		{
-			get
-			{
-				return this._workStreet; 
-			}
-			set
-			{
-				if (_workStreet == value)
-					return;
-					
-				this._workStreet = value;
-				this._isDirty = true;
-				
-				OnPropertyChanged("WorkStreet");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or Sets the WorkWard property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// </remarks>
-		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.String WorkWard
-		{
-			get
-			{
-				return this._workWard; 
-			}
-			set
-			{
-				if (_workWard == value)
-					return;
-					
-				this._workWard = value;
-				this._isDirty = true;
-				
-				OnPropertyChanged("WorkWard");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or Sets the WorkDistrict property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// </remarks>
-		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.String WorkDistrict
-		{
-			get
-			{
-				return this._workDistrict; 
-			}
-			set
-			{
-				if (_workDistrict == value)
-					return;
-					
-				this._workDistrict = value;
-				this._isDirty = true;
-				
-				OnPropertyChanged("WorkDistrict");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or Sets the WorkCity property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// </remarks>
-		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.String WorkCity
-		{
-			get
-			{
-				return this._workCity; 
-			}
-			set
-			{
-				if (_workCity == value)
-					return;
-					
-				this._workCity = value;
-				this._isDirty = true;
-				
-				OnPropertyChanged("WorkCity");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or Sets the WorkCountry property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// </remarks>
-		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.String WorkCountry
-		{
-			get
-			{
-				return this._workCountry; 
-			}
-			set
-			{
-				if (_workCountry == value)
-					return;
-					
-				this._workCountry = value;
-				this._isDirty = true;
-				
-				OnPropertyChanged("WorkCountry");
 			}
 		}
 		
@@ -1082,6 +976,33 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
+		/// 	Gets or Sets the CreateUser property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		public virtual System.String CreateUser
+		{
+			get
+			{
+				return this._createUser; 
+			}
+			set
+			{
+				if (_createUser == value)
+					return;
+					
+				this._createUser = value;
+				this._isDirty = true;
+				
+				OnPropertyChanged("CreateUser");
+			}
+		}
+		
+		/// <summary>
 		/// 	Gets or Sets the CreateDate property. 
 		///		
 		/// </summary>
@@ -1222,62 +1143,6 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or Sets the MembershipSOSNumber property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// </remarks>
-		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.String MembershipSosNumber
-		{
-			get
-			{
-				return this._membershipSosNumber; 
-			}
-			set
-			{
-				if (_membershipSosNumber == value)
-					return;
-					
-				this._membershipSosNumber = value;
-				this._isDirty = true;
-				
-				OnPropertyChanged("MembershipSosNumber");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or Sets the MembershipSOSExpDate property. 
-		///		
-		/// </summary>
-		/// <value>This type is datetime</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// If this column is null, this property will return DateTime.MinValue. It is up to the developer
-		/// to check the value of IsMembershipSosExpDateNull() and perform business logic appropriately.
-		/// </remarks>
-		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.DateTime? MembershipSosExpDate
-		{
-			get
-			{
-				return this._membershipSosExpDate; 
-			}
-			set
-			{
-				if (_membershipSosExpDate == value && MembershipSosExpDate != null )
-					return;
-					
-				this._membershipSosExpDate = value;
-				this._isDirty = true;
-				
-				OnPropertyChanged("MembershipSosExpDate");
-			}
-		}
-		
-		/// <summary>
 		/// 	Gets or Sets the IsDisabled property. 
 		///		
 		/// </summary>
@@ -1355,6 +1220,33 @@ namespace AppointmentSystem.Entities
 				this._isDirty = true;
 				
 				OnPropertyChanged("UpdateDate");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or Sets the ApptRemark property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		public virtual System.String ApptRemark
+		{
+			get
+			{
+				return this._apptRemark; 
+			}
+			set
+			{
+				if (_apptRemark == value)
+					return;
+					
+				this._apptRemark = value;
+				this._isDirty = true;
+				
+				OnPropertyChanged("ApptRemark");
 			}
 		}
 		
@@ -1519,17 +1411,14 @@ namespace AppointmentSystem.Entities
 				copy.DateOfBirth = this.DateOfBirth;
 				copy.Sex = this.Sex;
 				copy.MemberType = this.MemberType;
+				copy.MembershipSosNumber = this.MembershipSosNumber;
+				copy.MembershipSosExpDate = this.MembershipSosExpDate;
 				copy.Nationality = this.Nationality;
 				copy.HomeStreet = this.HomeStreet;
 				copy.HomeWard = this.HomeWard;
 				copy.HomeDistrict = this.HomeDistrict;
 				copy.HomeCity = this.HomeCity;
 				copy.HomeCountry = this.HomeCountry;
-				copy.WorkStreet = this.WorkStreet;
-				copy.WorkWard = this.WorkWard;
-				copy.WorkDistrict = this.WorkDistrict;
-				copy.WorkCity = this.WorkCity;
-				copy.WorkCountry = this.WorkCountry;
 				copy.CompanyCode = this.CompanyCode;
 				copy.BillingAddress = this.BillingAddress;
 				copy.HomePhone = this.HomePhone;
@@ -1537,16 +1426,16 @@ namespace AppointmentSystem.Entities
 				copy.CompanyPhone = this.CompanyPhone;
 				copy.Fax = this.Fax;
 				copy.EmailAddress = this.EmailAddress;
+				copy.CreateUser = this.CreateUser;
 				copy.CreateDate = this.CreateDate;
 				copy.ValidCorporate = this.ValidCorporate;
 				copy.DefaultPaymentMode = this.DefaultPaymentMode;
 				copy.InsuranceCardNumber = this.InsuranceCardNumber;
 				copy.InsuranceCardExpDate = this.InsuranceCardExpDate;
-				copy.MembershipSosNumber = this.MembershipSosNumber;
-				copy.MembershipSosExpDate = this.MembershipSosExpDate;
 				copy.IsDisabled = this.IsDisabled;
 				copy.UpdateUser = this.UpdateUser;
 				copy.UpdateDate = this.UpdateDate;
+				copy.ApptRemark = this.ApptRemark;
 				copy.Remark = this.Remark;
 			copy.AcceptChanges();
 			return (VcsPatient)copy;
@@ -1626,6 +1515,24 @@ namespace AppointmentSystem.Entities
 				equal = false;
 			if (Object1.MemberType != Object2.MemberType)
 				equal = false;
+			if (Object1.MembershipSosNumber != null && Object2.MembershipSosNumber != null )
+			{
+				if (Object1.MembershipSosNumber != Object2.MembershipSosNumber)
+					equal = false;
+			}
+			else if (Object1.MembershipSosNumber == null ^ Object1.MembershipSosNumber == null )
+			{
+				equal = false;
+			}
+			if (Object1.MembershipSosExpDate != null && Object2.MembershipSosExpDate != null )
+			{
+				if (Object1.MembershipSosExpDate != Object2.MembershipSosExpDate)
+					equal = false;
+			}
+			else if (Object1.MembershipSosExpDate == null ^ Object1.MembershipSosExpDate == null )
+			{
+				equal = false;
+			}
 			if (Object1.Nationality != Object2.Nationality)
 				equal = false;
 			if (Object1.HomeStreet != null && Object2.HomeStreet != null )
@@ -1670,51 +1577,6 @@ namespace AppointmentSystem.Entities
 					equal = false;
 			}
 			else if (Object1.HomeCountry == null ^ Object1.HomeCountry == null )
-			{
-				equal = false;
-			}
-			if (Object1.WorkStreet != null && Object2.WorkStreet != null )
-			{
-				if (Object1.WorkStreet != Object2.WorkStreet)
-					equal = false;
-			}
-			else if (Object1.WorkStreet == null ^ Object1.WorkStreet == null )
-			{
-				equal = false;
-			}
-			if (Object1.WorkWard != null && Object2.WorkWard != null )
-			{
-				if (Object1.WorkWard != Object2.WorkWard)
-					equal = false;
-			}
-			else if (Object1.WorkWard == null ^ Object1.WorkWard == null )
-			{
-				equal = false;
-			}
-			if (Object1.WorkDistrict != null && Object2.WorkDistrict != null )
-			{
-				if (Object1.WorkDistrict != Object2.WorkDistrict)
-					equal = false;
-			}
-			else if (Object1.WorkDistrict == null ^ Object1.WorkDistrict == null )
-			{
-				equal = false;
-			}
-			if (Object1.WorkCity != null && Object2.WorkCity != null )
-			{
-				if (Object1.WorkCity != Object2.WorkCity)
-					equal = false;
-			}
-			else if (Object1.WorkCity == null ^ Object1.WorkCity == null )
-			{
-				equal = false;
-			}
-			if (Object1.WorkCountry != null && Object2.WorkCountry != null )
-			{
-				if (Object1.WorkCountry != Object2.WorkCountry)
-					equal = false;
-			}
-			else if (Object1.WorkCountry == null ^ Object1.WorkCountry == null )
 			{
 				equal = false;
 			}
@@ -1781,6 +1643,15 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
+			if (Object1.CreateUser != null && Object2.CreateUser != null )
+			{
+				if (Object1.CreateUser != Object2.CreateUser)
+					equal = false;
+			}
+			else if (Object1.CreateUser == null ^ Object1.CreateUser == null )
+			{
+				equal = false;
+			}
 			if (Object1.CreateDate != Object2.CreateDate)
 				equal = false;
 			if (Object1.ValidCorporate != Object2.ValidCorporate)
@@ -1805,24 +1676,6 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
-			if (Object1.MembershipSosNumber != null && Object2.MembershipSosNumber != null )
-			{
-				if (Object1.MembershipSosNumber != Object2.MembershipSosNumber)
-					equal = false;
-			}
-			else if (Object1.MembershipSosNumber == null ^ Object1.MembershipSosNumber == null )
-			{
-				equal = false;
-			}
-			if (Object1.MembershipSosExpDate != null && Object2.MembershipSosExpDate != null )
-			{
-				if (Object1.MembershipSosExpDate != Object2.MembershipSosExpDate)
-					equal = false;
-			}
-			else if (Object1.MembershipSosExpDate == null ^ Object1.MembershipSosExpDate == null )
-			{
-				equal = false;
-			}
 			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
 			if (Object1.UpdateUser != null && Object2.UpdateUser != null )
@@ -1836,6 +1689,15 @@ namespace AppointmentSystem.Entities
 			}
 			if (Object1.UpdateDate != Object2.UpdateDate)
 				equal = false;
+			if (Object1.ApptRemark != null && Object2.ApptRemark != null )
+			{
+				if (Object1.ApptRemark != Object2.ApptRemark)
+					equal = false;
+			}
+			else if (Object1.ApptRemark == null ^ Object1.ApptRemark == null )
+			{
+				equal = false;
+			}
 			if (Object1.Remark != null && Object2.Remark != null )
 			{
 				if (Object1.Remark != Object2.Remark)
@@ -1921,6 +1783,10 @@ namespace AppointmentSystem.Entities
 					return entity.Sex;
 				case "MemberType":
 					return entity.MemberType;
+				case "MembershipSosNumber":
+					return entity.MembershipSosNumber;
+				case "MembershipSosExpDate":
+					return entity.MembershipSosExpDate;
 				case "Nationality":
 					return entity.Nationality;
 				case "HomeStreet":
@@ -1933,16 +1799,6 @@ namespace AppointmentSystem.Entities
 					return entity.HomeCity;
 				case "HomeCountry":
 					return entity.HomeCountry;
-				case "WorkStreet":
-					return entity.WorkStreet;
-				case "WorkWard":
-					return entity.WorkWard;
-				case "WorkDistrict":
-					return entity.WorkDistrict;
-				case "WorkCity":
-					return entity.WorkCity;
-				case "WorkCountry":
-					return entity.WorkCountry;
 				case "CompanyCode":
 					return entity.CompanyCode;
 				case "BillingAddress":
@@ -1957,6 +1813,8 @@ namespace AppointmentSystem.Entities
 					return entity.Fax;
 				case "EmailAddress":
 					return entity.EmailAddress;
+				case "CreateUser":
+					return entity.CreateUser;
 				case "CreateDate":
 					return entity.CreateDate;
 				case "ValidCorporate":
@@ -1967,16 +1825,14 @@ namespace AppointmentSystem.Entities
 					return entity.InsuranceCardNumber;
 				case "InsuranceCardExpDate":
 					return entity.InsuranceCardExpDate;
-				case "MembershipSosNumber":
-					return entity.MembershipSosNumber;
-				case "MembershipSosExpDate":
-					return entity.MembershipSosExpDate;
 				case "IsDisabled":
 					return entity.IsDisabled;
 				case "UpdateUser":
 					return entity.UpdateUser;
 				case "UpdateDate":
 					return entity.UpdateDate;
+				case "ApptRemark":
+					return entity.ApptRemark;
 				case "Remark":
 					return entity.Remark;
 			}
@@ -1999,7 +1855,7 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{37}{36}- PatientCode: {0}{36}- FirstName: {1}{36}- MiddleName: {2}{36}- LastName: {3}{36}- DateOfBirth: {4}{36}- Sex: {5}{36}- MemberType: {6}{36}- Nationality: {7}{36}- HomeStreet: {8}{36}- HomeWard: {9}{36}- HomeDistrict: {10}{36}- HomeCity: {11}{36}- HomeCountry: {12}{36}- WorkStreet: {13}{36}- WorkWard: {14}{36}- WorkDistrict: {15}{36}- WorkCity: {16}{36}- WorkCountry: {17}{36}- CompanyCode: {18}{36}- BillingAddress: {19}{36}- HomePhone: {20}{36}- MobilePhone: {21}{36}- CompanyPhone: {22}{36}- Fax: {23}{36}- EmailAddress: {24}{36}- CreateDate: {25}{36}- ValidCorporate: {26}{36}- DefaultPaymentMode: {27}{36}- InsuranceCardNumber: {28}{36}- InsuranceCardExpDate: {29}{36}- MembershipSosNumber: {30}{36}- MembershipSosExpDate: {31}{36}- IsDisabled: {32}{36}- UpdateUser: {33}{36}- UpdateDate: {34}{36}- Remark: {35}{36}", 
+				"{34}{33}- PatientCode: {0}{33}- FirstName: {1}{33}- MiddleName: {2}{33}- LastName: {3}{33}- DateOfBirth: {4}{33}- Sex: {5}{33}- MemberType: {6}{33}- MembershipSosNumber: {7}{33}- MembershipSosExpDate: {8}{33}- Nationality: {9}{33}- HomeStreet: {10}{33}- HomeWard: {11}{33}- HomeDistrict: {12}{33}- HomeCity: {13}{33}- HomeCountry: {14}{33}- CompanyCode: {15}{33}- BillingAddress: {16}{33}- HomePhone: {17}{33}- MobilePhone: {18}{33}- CompanyPhone: {19}{33}- Fax: {20}{33}- EmailAddress: {21}{33}- CreateUser: {22}{33}- CreateDate: {23}{33}- ValidCorporate: {24}{33}- DefaultPaymentMode: {25}{33}- InsuranceCardNumber: {26}{33}- InsuranceCardExpDate: {27}{33}- IsDisabled: {28}{33}- UpdateUser: {29}{33}- UpdateDate: {30}{33}- ApptRemark: {31}{33}- Remark: {32}{33}", 
 				this.PatientCode,
 				this.FirstName,
 				(this.MiddleName == null) ? string.Empty : this.MiddleName.ToString(),
@@ -2008,6 +1864,10 @@ namespace AppointmentSystem.Entities
 				this.DateOfBirth,
 				this.Sex,
 				this.MemberType,
+				(this.MembershipSosNumber == null) ? string.Empty : this.MembershipSosNumber.ToString(),
+			     
+				(this.MembershipSosExpDate == null) ? string.Empty : this.MembershipSosExpDate.ToString(),
+			     
 				this.Nationality,
 				(this.HomeStreet == null) ? string.Empty : this.HomeStreet.ToString(),
 			     
@@ -2018,16 +1878,6 @@ namespace AppointmentSystem.Entities
 				(this.HomeCity == null) ? string.Empty : this.HomeCity.ToString(),
 			     
 				(this.HomeCountry == null) ? string.Empty : this.HomeCountry.ToString(),
-			     
-				(this.WorkStreet == null) ? string.Empty : this.WorkStreet.ToString(),
-			     
-				(this.WorkWard == null) ? string.Empty : this.WorkWard.ToString(),
-			     
-				(this.WorkDistrict == null) ? string.Empty : this.WorkDistrict.ToString(),
-			     
-				(this.WorkCity == null) ? string.Empty : this.WorkCity.ToString(),
-			     
-				(this.WorkCountry == null) ? string.Empty : this.WorkCountry.ToString(),
 			     
 				(this.CompanyCode == null) ? string.Empty : this.CompanyCode.ToString(),
 			     
@@ -2043,6 +1893,8 @@ namespace AppointmentSystem.Entities
 			     
 				(this.EmailAddress == null) ? string.Empty : this.EmailAddress.ToString(),
 			     
+				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
+			     
 				this.CreateDate,
 				this.ValidCorporate,
 				this.DefaultPaymentMode,
@@ -2050,14 +1902,12 @@ namespace AppointmentSystem.Entities
 			     
 				(this.InsuranceCardExpDate == null) ? string.Empty : this.InsuranceCardExpDate.ToString(),
 			     
-				(this.MembershipSosNumber == null) ? string.Empty : this.MembershipSosNumber.ToString(),
-			     
-				(this.MembershipSosExpDate == null) ? string.Empty : this.MembershipSosExpDate.ToString(),
-			     
 				this.IsDisabled,
 				(this.UpdateUser == null) ? string.Empty : this.UpdateUser.ToString(),
 			     
 				this.UpdateDate,
+				(this.ApptRemark == null) ? string.Empty : this.ApptRemark.ToString(),
+			     
 				(this.Remark == null) ? string.Empty : this.Remark.ToString(),
 			     
 				System.Environment.NewLine, 
@@ -2116,6 +1966,18 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("MemberType", typeof(System.String), System.Data.DbType.String, false, false, false, 50)]
 		MemberType,
 		/// <summary>
+		/// MembershipSOSNumber : 
+		/// </summary>
+		[EnumTextValue("MembershipSOSNumber")]
+		[ColumnEnum("MembershipSOSNumber", typeof(System.String), System.Data.DbType.String, false, false, true, 25)]
+		MembershipSosNumber,
+		/// <summary>
+		/// MembershipSOSExpDate : 
+		/// </summary>
+		[EnumTextValue("MembershipSOSExpDate")]
+		[ColumnEnum("MembershipSOSExpDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
+		MembershipSosExpDate,
+		/// <summary>
 		/// Nationality : 
 		/// </summary>
 		[EnumTextValue("Nationality")]
@@ -2152,36 +2014,6 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("HomeCountry", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		HomeCountry,
 		/// <summary>
-		/// WorkStreet : 
-		/// </summary>
-		[EnumTextValue("WorkStreet")]
-		[ColumnEnum("WorkStreet", typeof(System.String), System.Data.DbType.String, false, false, true, 100)]
-		WorkStreet,
-		/// <summary>
-		/// WorkWard : 
-		/// </summary>
-		[EnumTextValue("WorkWard")]
-		[ColumnEnum("WorkWard", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		WorkWard,
-		/// <summary>
-		/// WorkDistrict : 
-		/// </summary>
-		[EnumTextValue("WorkDistrict")]
-		[ColumnEnum("WorkDistrict", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		WorkDistrict,
-		/// <summary>
-		/// WorkCity : 
-		/// </summary>
-		[EnumTextValue("WorkCity")]
-		[ColumnEnum("WorkCity", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		WorkCity,
-		/// <summary>
-		/// WorkCountry : 
-		/// </summary>
-		[EnumTextValue("WorkCountry")]
-		[ColumnEnum("WorkCountry", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		WorkCountry,
-		/// <summary>
 		/// CompanyCode : 
 		/// </summary>
 		[EnumTextValue("CompanyCode")]
@@ -2197,25 +2029,25 @@ namespace AppointmentSystem.Entities
 		/// HomePhone : 
 		/// </summary>
 		[EnumTextValue("HomePhone")]
-		[ColumnEnum("HomePhone", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		[ColumnEnum("HomePhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
 		HomePhone,
 		/// <summary>
 		/// MobilePhone : 
 		/// </summary>
 		[EnumTextValue("MobilePhone")]
-		[ColumnEnum("MobilePhone", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		[ColumnEnum("MobilePhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
 		MobilePhone,
 		/// <summary>
 		/// CompanyPhone : 
 		/// </summary>
 		[EnumTextValue("CompanyPhone")]
-		[ColumnEnum("CompanyPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		[ColumnEnum("CompanyPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
 		CompanyPhone,
 		/// <summary>
 		/// Fax : 
 		/// </summary>
 		[EnumTextValue("Fax")]
-		[ColumnEnum("Fax", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		[ColumnEnum("Fax", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
 		Fax,
 		/// <summary>
 		/// EmailAddress : 
@@ -2223,6 +2055,12 @@ namespace AppointmentSystem.Entities
 		[EnumTextValue("EmailAddress")]
 		[ColumnEnum("EmailAddress", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		EmailAddress,
+		/// <summary>
+		/// CreateUser : 
+		/// </summary>
+		[EnumTextValue("CreateUser")]
+		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		CreateUser,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
@@ -2254,18 +2092,6 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("InsuranceCardExpDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
 		InsuranceCardExpDate,
 		/// <summary>
-		/// MembershipSOSNumber : 
-		/// </summary>
-		[EnumTextValue("MembershipSOSNumber")]
-		[ColumnEnum("MembershipSOSNumber", typeof(System.String), System.Data.DbType.String, false, false, true, 25)]
-		MembershipSosNumber,
-		/// <summary>
-		/// MembershipSOSExpDate : 
-		/// </summary>
-		[EnumTextValue("MembershipSOSExpDate")]
-		[ColumnEnum("MembershipSOSExpDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, true)]
-		MembershipSosExpDate,
-		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
@@ -2283,6 +2109,12 @@ namespace AppointmentSystem.Entities
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
 		UpdateDate,
+		/// <summary>
+		/// ApptRemark : 
+		/// </summary>
+		[EnumTextValue("ApptRemark")]
+		[ColumnEnum("ApptRemark", typeof(System.String), System.Data.DbType.String, false, false, true, 250)]
+		ApptRemark,
 		/// <summary>
 		/// Remark : 
 		/// </summary>

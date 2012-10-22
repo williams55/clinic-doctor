@@ -8145,14 +8145,18 @@
                         [CompanyName],
                         [Address],
                         [BillingAddress],
-                        [CompanyCity],
-                        [CompanyCountry],
-                        [AccountCode],
                         [CompanyTel],
+                        [CompanyTel2],
+                        [TAXNumber],
+                        [AccountCode],
                         [Attn],
                         [AttnEmail],
                         [AttnPhone],
-                        [IsCCP],
+                        [PaymentMode],
+                        [CreateUser],
+                        [CreateDate],
+                        [TypeOfServices],
+                        [IsDisabled],
                         [Remark]
                     FROM
                         [dbo].[VCSCompany]
@@ -8225,94 +8229,6 @@
                 ]]></body>
             </procedure>
             
-            <procedure owner="dbo" name="VCSMemberType_Get_List" >
-                <comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Gets all records from the VCSMemberType view
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-                <parameters/>
-                <body><![CDATA[
-                    
-                    SELECT
-                        [MemberType],
-                        [Description],
-                        [IsActive],
-                        [Remark]
-                    FROM
-                        [dbo].[VCSMemberType]
-                        
-                    SELECT @@ROWCOUNT			
-                ]]></body>
-            </procedure>
-            
-            <procedure owner="dbo" name="VCSMemberType_Get" >
-                <comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Gets records from the VCSMemberType view passing page index and page count parameters
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-                <parameters>
-                    <parameter name="@WhereClause" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)" />
-                    <parameter name="@OrderBy" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)"/>			
-                </parameters>
-                <body><![CDATA[
-                    
-                    BEGIN
-    
-                    -- Build the sql query
-                    DECLARE @SQL AS nvarchar(4000)
-                    SET @SQL = ' SELECT * FROM [dbo].[VCSMemberType]'
-                    IF LEN(@WhereClause) > 0
-                    BEGIN
-                        SET @SQL = @SQL + ' WHERE ' + @WhereClause
-                    END
-                    IF LEN(@OrderBy) > 0
-                    BEGIN
-                        SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
-                    END
-                    
-                    -- Execution the query
-                    EXEC sp_executesql @SQL
-                    
-                    -- Return total count
-                    SELECT @@ROWCOUNT AS TotalRowCount
-                    
-                    END
-                ]]></body>
-            </procedure>
-            
-            
-            <procedure owner="dbo" name="VCSMemberType_Find_Dynamic"  skip="true">
-                <comment><![CDATA[/*
-----------------------------------------------------------------------------------------------------
-
--- Created By:  ()
--- Purpose: Gets records from the VCSMemberType table using a dynamically generated query.
-----------------------------------------------------------------------------------------------------
-*/
-]]></comment>
-                <parameters/>
-                <body><![CDATA[
-                    
-                    BEGIN
-                    
-                    SELECT * FROM [dbo].[VCSMemberType] {0}
-                    ORDER BY {1}
-    
-                    -- get total count
-                    SELECT @@ROWCOUNT AS TotalRowCount;
-                    
-                    END
-                ]]></body>
-            </procedure>
-            
             <procedure owner="dbo" name="VCSPatient_Get_List" >
                 <comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------
@@ -8333,17 +8249,14 @@
                         [DateOfBirth],
                         [Sex],
                         [MemberType],
+                        [MembershipSOSNumber],
+                        [MembershipSOSExpDate],
                         [Nationality],
                         [HomeStreet],
                         [HomeWard],
                         [HomeDistrict],
                         [HomeCity],
                         [HomeCountry],
-                        [WorkStreet],
-                        [WorkWard],
-                        [WorkDistrict],
-                        [WorkCity],
-                        [WorkCountry],
                         [CompanyCode],
                         [BillingAddress],
                         [HomePhone],
@@ -8351,16 +8264,16 @@
                         [CompanyPhone],
                         [Fax],
                         [EmailAddress],
+                        [CreateUser],
                         [CreateDate],
                         [ValidCorporate],
                         [DefaultPaymentMode],
                         [InsuranceCardNumber],
                         [InsuranceCardExpDate],
-                        [MembershipSOSNumber],
-                        [MembershipSOSExpDate],
                         [IsDisabled],
                         [UpdateUser],
                         [UpdateDate],
+                        [ApptRemark],
                         [Remark]
                     FROM
                         [dbo].[VCSPatient]

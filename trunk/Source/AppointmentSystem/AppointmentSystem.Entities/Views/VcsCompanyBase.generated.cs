@@ -44,24 +44,24 @@ namespace AppointmentSystem.Entities
 		private System.String		  _billingAddress = null;
 		
 		/// <summary>
-		/// CompanyCity : 
+		/// CompanyTel : 
 		/// </summary>
-		private System.String		  _companyCity = null;
+		private System.String		  _companyTel = null;
 		
 		/// <summary>
-		/// CompanyCountry : 
+		/// CompanyTel2 : 
 		/// </summary>
-		private System.String		  _companyCountry = null;
+		private System.String		  _companyTel2 = null;
+		
+		/// <summary>
+		/// TAXNumber : 
+		/// </summary>
+		private System.String		  _taxNumber = null;
 		
 		/// <summary>
 		/// AccountCode : 
 		/// </summary>
 		private System.String		  _accountCode = null;
-		
-		/// <summary>
-		/// CompanyTel : 
-		/// </summary>
-		private System.String		  _companyTel = null;
 		
 		/// <summary>
 		/// Attn : 
@@ -79,9 +79,29 @@ namespace AppointmentSystem.Entities
 		private System.String		  _attnPhone = null;
 		
 		/// <summary>
-		/// IsCCP : 
+		/// PaymentMode : 
 		/// </summary>
-		private System.Boolean		  _isCcp = false;
+		private System.String		  _paymentMode = null;
+		
+		/// <summary>
+		/// CreateUser : 
+		/// </summary>
+		private System.String		  _createUser = null;
+		
+		/// <summary>
+		/// CreateDate : 
+		/// </summary>
+		private System.DateTime		  _createDate = DateTime.MinValue;
+		
+		/// <summary>
+		/// TypeOfServices : 
+		/// </summary>
+		private System.String		  _typeOfServices = null;
+		
+		/// <summary>
+		/// IsDisabled : 
+		/// </summary>
+		private System.Boolean		  _isDisabled = false;
 		
 		/// <summary>
 		/// Remark : 
@@ -117,29 +137,37 @@ namespace AppointmentSystem.Entities
 		///<param name="_companyName"></param>
 		///<param name="_address"></param>
 		///<param name="_billingAddress"></param>
-		///<param name="_companyCity"></param>
-		///<param name="_companyCountry"></param>
-		///<param name="_accountCode"></param>
 		///<param name="_companyTel"></param>
+		///<param name="_companyTel2"></param>
+		///<param name="_taxNumber"></param>
+		///<param name="_accountCode"></param>
 		///<param name="_attn"></param>
 		///<param name="_attnEmail"></param>
 		///<param name="_attnPhone"></param>
-		///<param name="_isCcp"></param>
+		///<param name="_paymentMode"></param>
+		///<param name="_createUser"></param>
+		///<param name="_createDate"></param>
+		///<param name="_typeOfServices"></param>
+		///<param name="_isDisabled"></param>
 		///<param name="_remark"></param>
-		public VcsCompanyBase(System.String _companyCode, System.String _companyName, System.String _address, System.String _billingAddress, System.String _companyCity, System.String _companyCountry, System.String _accountCode, System.String _companyTel, System.String _attn, System.String _attnEmail, System.String _attnPhone, System.Boolean _isCcp, System.String _remark)
+		public VcsCompanyBase(System.String _companyCode, System.String _companyName, System.String _address, System.String _billingAddress, System.String _companyTel, System.String _companyTel2, System.String _taxNumber, System.String _accountCode, System.String _attn, System.String _attnEmail, System.String _attnPhone, System.String _paymentMode, System.String _createUser, System.DateTime _createDate, System.String _typeOfServices, System.Boolean _isDisabled, System.String _remark)
 		{
 			this._companyCode = _companyCode;
 			this._companyName = _companyName;
 			this._address = _address;
 			this._billingAddress = _billingAddress;
-			this._companyCity = _companyCity;
-			this._companyCountry = _companyCountry;
-			this._accountCode = _accountCode;
 			this._companyTel = _companyTel;
+			this._companyTel2 = _companyTel2;
+			this._taxNumber = _taxNumber;
+			this._accountCode = _accountCode;
 			this._attn = _attn;
 			this._attnEmail = _attnEmail;
 			this._attnPhone = _attnPhone;
-			this._isCcp = _isCcp;
+			this._paymentMode = _paymentMode;
+			this._createUser = _createUser;
+			this._createDate = _createDate;
+			this._typeOfServices = _typeOfServices;
+			this._isDisabled = _isDisabled;
 			this._remark = _remark;
 		}
 		
@@ -150,30 +178,38 @@ namespace AppointmentSystem.Entities
 		///<param name="_companyName"></param>
 		///<param name="_address"></param>
 		///<param name="_billingAddress"></param>
-		///<param name="_companyCity"></param>
-		///<param name="_companyCountry"></param>
-		///<param name="_accountCode"></param>
 		///<param name="_companyTel"></param>
+		///<param name="_companyTel2"></param>
+		///<param name="_taxNumber"></param>
+		///<param name="_accountCode"></param>
 		///<param name="_attn"></param>
 		///<param name="_attnEmail"></param>
 		///<param name="_attnPhone"></param>
-		///<param name="_isCcp"></param>
+		///<param name="_paymentMode"></param>
+		///<param name="_createUser"></param>
+		///<param name="_createDate"></param>
+		///<param name="_typeOfServices"></param>
+		///<param name="_isDisabled"></param>
 		///<param name="_remark"></param>
-		public static VcsCompany CreateVcsCompany(System.String _companyCode, System.String _companyName, System.String _address, System.String _billingAddress, System.String _companyCity, System.String _companyCountry, System.String _accountCode, System.String _companyTel, System.String _attn, System.String _attnEmail, System.String _attnPhone, System.Boolean _isCcp, System.String _remark)
+		public static VcsCompany CreateVcsCompany(System.String _companyCode, System.String _companyName, System.String _address, System.String _billingAddress, System.String _companyTel, System.String _companyTel2, System.String _taxNumber, System.String _accountCode, System.String _attn, System.String _attnEmail, System.String _attnPhone, System.String _paymentMode, System.String _createUser, System.DateTime _createDate, System.String _typeOfServices, System.Boolean _isDisabled, System.String _remark)
 		{
 			VcsCompany newVcsCompany = new VcsCompany();
 			newVcsCompany.CompanyCode = _companyCode;
 			newVcsCompany.CompanyName = _companyName;
 			newVcsCompany.Address = _address;
 			newVcsCompany.BillingAddress = _billingAddress;
-			newVcsCompany.CompanyCity = _companyCity;
-			newVcsCompany.CompanyCountry = _companyCountry;
-			newVcsCompany.AccountCode = _accountCode;
 			newVcsCompany.CompanyTel = _companyTel;
+			newVcsCompany.CompanyTel2 = _companyTel2;
+			newVcsCompany.TaxNumber = _taxNumber;
+			newVcsCompany.AccountCode = _accountCode;
 			newVcsCompany.Attn = _attn;
 			newVcsCompany.AttnEmail = _attnEmail;
 			newVcsCompany.AttnPhone = _attnPhone;
-			newVcsCompany.IsCcp = _isCcp;
+			newVcsCompany.PaymentMode = _paymentMode;
+			newVcsCompany.CreateUser = _createUser;
+			newVcsCompany.CreateDate = _createDate;
+			newVcsCompany.TypeOfServices = _typeOfServices;
+			newVcsCompany.IsDisabled = _isDisabled;
 			newVcsCompany.Remark = _remark;
 			return newVcsCompany;
 		}
@@ -296,7 +332,7 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or Sets the CompanyCity property. 
+		/// 	Gets or Sets the CompanyTel property. 
 		///		
 		/// </summary>
 		/// <value>This type is nvarchar</value>
@@ -304,26 +340,26 @@ namespace AppointmentSystem.Entities
 		/// This property can be set to null. 
 		/// </remarks>
 		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.String CompanyCity
+		public virtual System.String CompanyTel
 		{
 			get
 			{
-				return this._companyCity; 
+				return this._companyTel; 
 			}
 			set
 			{
-				if (_companyCity == value)
+				if (_companyTel == value)
 					return;
 					
-				this._companyCity = value;
+				this._companyTel = value;
 				this._isDirty = true;
 				
-				OnPropertyChanged("CompanyCity");
+				OnPropertyChanged("CompanyTel");
 			}
 		}
 		
 		/// <summary>
-		/// 	Gets or Sets the CompanyCountry property. 
+		/// 	Gets or Sets the CompanyTel2 property. 
 		///		
 		/// </summary>
 		/// <value>This type is nvarchar</value>
@@ -331,21 +367,48 @@ namespace AppointmentSystem.Entities
 		/// This property can be set to null. 
 		/// </remarks>
 		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.String CompanyCountry
+		public virtual System.String CompanyTel2
 		{
 			get
 			{
-				return this._companyCountry; 
+				return this._companyTel2; 
 			}
 			set
 			{
-				if (_companyCountry == value)
+				if (_companyTel2 == value)
 					return;
 					
-				this._companyCountry = value;
+				this._companyTel2 = value;
 				this._isDirty = true;
 				
-				OnPropertyChanged("CompanyCountry");
+				OnPropertyChanged("CompanyTel2");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or Sets the TAXNumber property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		public virtual System.String TaxNumber
+		{
+			get
+			{
+				return this._taxNumber; 
+			}
+			set
+			{
+				if (_taxNumber == value)
+					return;
+					
+				this._taxNumber = value;
+				this._isDirty = true;
+				
+				OnPropertyChanged("TaxNumber");
 			}
 		}
 		
@@ -373,33 +436,6 @@ namespace AppointmentSystem.Entities
 				this._isDirty = true;
 				
 				OnPropertyChanged("AccountCode");
-			}
-		}
-		
-		/// <summary>
-		/// 	Gets or Sets the CompanyTel property. 
-		///		
-		/// </summary>
-		/// <value>This type is nvarchar</value>
-		/// <remarks>
-		/// This property can be set to null. 
-		/// </remarks>
-		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.String CompanyTel
-		{
-			get
-			{
-				return this._companyTel; 
-			}
-			set
-			{
-				if (_companyTel == value)
-					return;
-					
-				this._companyTel = value;
-				this._isDirty = true;
-				
-				OnPropertyChanged("CompanyTel");
 			}
 		}
 		
@@ -485,7 +521,115 @@ namespace AppointmentSystem.Entities
 		}
 		
 		/// <summary>
-		/// 	Gets or Sets the IsCCP property. 
+		/// 	Gets or Sets the PaymentMode property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		public virtual System.String PaymentMode
+		{
+			get
+			{
+				return this._paymentMode; 
+			}
+			set
+			{
+				if (_paymentMode == value)
+					return;
+					
+				this._paymentMode = value;
+				this._isDirty = true;
+				
+				OnPropertyChanged("PaymentMode");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or Sets the CreateUser property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		public virtual System.String CreateUser
+		{
+			get
+			{
+				return this._createUser; 
+			}
+			set
+			{
+				if (_createUser == value)
+					return;
+					
+				this._createUser = value;
+				this._isDirty = true;
+				
+				OnPropertyChanged("CreateUser");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or Sets the CreateDate property. 
+		///		
+		/// </summary>
+		/// <value>This type is datetime</value>
+		/// <remarks>
+		/// This property can not be set to null. 
+		/// </remarks>
+		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		public virtual System.DateTime CreateDate
+		{
+			get
+			{
+				return this._createDate; 
+			}
+			set
+			{
+				if (_createDate == value)
+					return;
+					
+				this._createDate = value;
+				this._isDirty = true;
+				
+				OnPropertyChanged("CreateDate");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or Sets the TypeOfServices property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		public virtual System.String TypeOfServices
+		{
+			get
+			{
+				return this._typeOfServices; 
+			}
+			set
+			{
+				if (_typeOfServices == value)
+					return;
+					
+				this._typeOfServices = value;
+				this._isDirty = true;
+				
+				OnPropertyChanged("TypeOfServices");
+			}
+		}
+		
+		/// <summary>
+		/// 	Gets or Sets the IsDisabled property. 
 		///		
 		/// </summary>
 		/// <value>This type is bit</value>
@@ -493,21 +637,21 @@ namespace AppointmentSystem.Entities
 		/// This property can not be set to null. 
 		/// </remarks>
 		[DescriptionAttribute(""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		public virtual System.Boolean IsCcp
+		public virtual System.Boolean IsDisabled
 		{
 			get
 			{
-				return this._isCcp; 
+				return this._isDisabled; 
 			}
 			set
 			{
-				if (_isCcp == value)
+				if (_isDisabled == value)
 					return;
 					
-				this._isCcp = value;
+				this._isDisabled = value;
 				this._isDirty = true;
 				
-				OnPropertyChanged("IsCcp");
+				OnPropertyChanged("IsDisabled");
 			}
 		}
 		
@@ -669,14 +813,18 @@ namespace AppointmentSystem.Entities
 				copy.CompanyName = this.CompanyName;
 				copy.Address = this.Address;
 				copy.BillingAddress = this.BillingAddress;
-				copy.CompanyCity = this.CompanyCity;
-				copy.CompanyCountry = this.CompanyCountry;
-				copy.AccountCode = this.AccountCode;
 				copy.CompanyTel = this.CompanyTel;
+				copy.CompanyTel2 = this.CompanyTel2;
+				copy.TaxNumber = this.TaxNumber;
+				copy.AccountCode = this.AccountCode;
 				copy.Attn = this.Attn;
 				copy.AttnEmail = this.AttnEmail;
 				copy.AttnPhone = this.AttnPhone;
-				copy.IsCcp = this.IsCcp;
+				copy.PaymentMode = this.PaymentMode;
+				copy.CreateUser = this.CreateUser;
+				copy.CreateDate = this.CreateDate;
+				copy.TypeOfServices = this.TypeOfServices;
+				copy.IsDisabled = this.IsDisabled;
 				copy.Remark = this.Remark;
 			copy.AcceptChanges();
 			return (VcsCompany)copy;
@@ -757,21 +905,30 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
-			if (Object1.CompanyCity != null && Object2.CompanyCity != null )
+			if (Object1.CompanyTel != null && Object2.CompanyTel != null )
 			{
-				if (Object1.CompanyCity != Object2.CompanyCity)
+				if (Object1.CompanyTel != Object2.CompanyTel)
 					equal = false;
 			}
-			else if (Object1.CompanyCity == null ^ Object1.CompanyCity == null )
+			else if (Object1.CompanyTel == null ^ Object1.CompanyTel == null )
 			{
 				equal = false;
 			}
-			if (Object1.CompanyCountry != null && Object2.CompanyCountry != null )
+			if (Object1.CompanyTel2 != null && Object2.CompanyTel2 != null )
 			{
-				if (Object1.CompanyCountry != Object2.CompanyCountry)
+				if (Object1.CompanyTel2 != Object2.CompanyTel2)
 					equal = false;
 			}
-			else if (Object1.CompanyCountry == null ^ Object1.CompanyCountry == null )
+			else if (Object1.CompanyTel2 == null ^ Object1.CompanyTel2 == null )
+			{
+				equal = false;
+			}
+			if (Object1.TaxNumber != null && Object2.TaxNumber != null )
+			{
+				if (Object1.TaxNumber != Object2.TaxNumber)
+					equal = false;
+			}
+			else if (Object1.TaxNumber == null ^ Object1.TaxNumber == null )
 			{
 				equal = false;
 			}
@@ -781,15 +938,6 @@ namespace AppointmentSystem.Entities
 					equal = false;
 			}
 			else if (Object1.AccountCode == null ^ Object1.AccountCode == null )
-			{
-				equal = false;
-			}
-			if (Object1.CompanyTel != null && Object2.CompanyTel != null )
-			{
-				if (Object1.CompanyTel != Object2.CompanyTel)
-					equal = false;
-			}
-			else if (Object1.CompanyTel == null ^ Object1.CompanyTel == null )
 			{
 				equal = false;
 			}
@@ -820,7 +968,36 @@ namespace AppointmentSystem.Entities
 			{
 				equal = false;
 			}
-			if (Object1.IsCcp != Object2.IsCcp)
+			if (Object1.PaymentMode != null && Object2.PaymentMode != null )
+			{
+				if (Object1.PaymentMode != Object2.PaymentMode)
+					equal = false;
+			}
+			else if (Object1.PaymentMode == null ^ Object1.PaymentMode == null )
+			{
+				equal = false;
+			}
+			if (Object1.CreateUser != null && Object2.CreateUser != null )
+			{
+				if (Object1.CreateUser != Object2.CreateUser)
+					equal = false;
+			}
+			else if (Object1.CreateUser == null ^ Object1.CreateUser == null )
+			{
+				equal = false;
+			}
+			if (Object1.CreateDate != Object2.CreateDate)
+				equal = false;
+			if (Object1.TypeOfServices != null && Object2.TypeOfServices != null )
+			{
+				if (Object1.TypeOfServices != Object2.TypeOfServices)
+					equal = false;
+			}
+			else if (Object1.TypeOfServices == null ^ Object1.TypeOfServices == null )
+			{
+				equal = false;
+			}
+			if (Object1.IsDisabled != Object2.IsDisabled)
 				equal = false;
 			if (Object1.Remark != null && Object2.Remark != null )
 			{
@@ -901,22 +1078,30 @@ namespace AppointmentSystem.Entities
 					return entity.Address;
 				case "BillingAddress":
 					return entity.BillingAddress;
-				case "CompanyCity":
-					return entity.CompanyCity;
-				case "CompanyCountry":
-					return entity.CompanyCountry;
-				case "AccountCode":
-					return entity.AccountCode;
 				case "CompanyTel":
 					return entity.CompanyTel;
+				case "CompanyTel2":
+					return entity.CompanyTel2;
+				case "TaxNumber":
+					return entity.TaxNumber;
+				case "AccountCode":
+					return entity.AccountCode;
 				case "Attn":
 					return entity.Attn;
 				case "AttnEmail":
 					return entity.AttnEmail;
 				case "AttnPhone":
 					return entity.AttnPhone;
-				case "IsCcp":
-					return entity.IsCcp;
+				case "PaymentMode":
+					return entity.PaymentMode;
+				case "CreateUser":
+					return entity.CreateUser;
+				case "CreateDate":
+					return entity.CreateDate;
+				case "TypeOfServices":
+					return entity.TypeOfServices;
+				case "IsDisabled":
+					return entity.IsDisabled;
 				case "Remark":
 					return entity.Remark;
 			}
@@ -939,20 +1124,20 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{14}{13}- CompanyCode: {0}{13}- CompanyName: {1}{13}- Address: {2}{13}- BillingAddress: {3}{13}- CompanyCity: {4}{13}- CompanyCountry: {5}{13}- AccountCode: {6}{13}- CompanyTel: {7}{13}- Attn: {8}{13}- AttnEmail: {9}{13}- AttnPhone: {10}{13}- IsCcp: {11}{13}- Remark: {12}{13}", 
+				"{18}{17}- CompanyCode: {0}{17}- CompanyName: {1}{17}- Address: {2}{17}- BillingAddress: {3}{17}- CompanyTel: {4}{17}- CompanyTel2: {5}{17}- TaxNumber: {6}{17}- AccountCode: {7}{17}- Attn: {8}{17}- AttnEmail: {9}{17}- AttnPhone: {10}{17}- PaymentMode: {11}{17}- CreateUser: {12}{17}- CreateDate: {13}{17}- TypeOfServices: {14}{17}- IsDisabled: {15}{17}- Remark: {16}{17}", 
 				this.CompanyCode,
 				this.CompanyName,
 				(this.Address == null) ? string.Empty : this.Address.ToString(),
 			     
 				(this.BillingAddress == null) ? string.Empty : this.BillingAddress.ToString(),
 			     
-				(this.CompanyCity == null) ? string.Empty : this.CompanyCity.ToString(),
+				(this.CompanyTel == null) ? string.Empty : this.CompanyTel.ToString(),
 			     
-				(this.CompanyCountry == null) ? string.Empty : this.CompanyCountry.ToString(),
+				(this.CompanyTel2 == null) ? string.Empty : this.CompanyTel2.ToString(),
+			     
+				(this.TaxNumber == null) ? string.Empty : this.TaxNumber.ToString(),
 			     
 				(this.AccountCode == null) ? string.Empty : this.AccountCode.ToString(),
-			     
-				(this.CompanyTel == null) ? string.Empty : this.CompanyTel.ToString(),
 			     
 				(this.Attn == null) ? string.Empty : this.Attn.ToString(),
 			     
@@ -960,7 +1145,14 @@ namespace AppointmentSystem.Entities
 			     
 				(this.AttnPhone == null) ? string.Empty : this.AttnPhone.ToString(),
 			     
-				this.IsCcp,
+				(this.PaymentMode == null) ? string.Empty : this.PaymentMode.ToString(),
+			     
+				(this.CreateUser == null) ? string.Empty : this.CreateUser.ToString(),
+			     
+				this.CreateDate,
+				(this.TypeOfServices == null) ? string.Empty : this.TypeOfServices.ToString(),
+			     
+				this.IsDisabled,
 				(this.Remark == null) ? string.Empty : this.Remark.ToString(),
 			     
 				System.Environment.NewLine, 
@@ -992,38 +1184,38 @@ namespace AppointmentSystem.Entities
 		/// Address : 
 		/// </summary>
 		[EnumTextValue("Address")]
-		[ColumnEnum("Address", typeof(System.String), System.Data.DbType.String, false, false, true, 100)]
+		[ColumnEnum("Address", typeof(System.String), System.Data.DbType.String, false, false, true, 250)]
 		Address,
 		/// <summary>
 		/// BillingAddress : 
 		/// </summary>
 		[EnumTextValue("BillingAddress")]
-		[ColumnEnum("BillingAddress", typeof(System.String), System.Data.DbType.String, false, false, true, 100)]
+		[ColumnEnum("BillingAddress", typeof(System.String), System.Data.DbType.String, false, false, true, 250)]
 		BillingAddress,
-		/// <summary>
-		/// CompanyCity : 
-		/// </summary>
-		[EnumTextValue("CompanyCity")]
-		[ColumnEnum("CompanyCity", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		CompanyCity,
-		/// <summary>
-		/// CompanyCountry : 
-		/// </summary>
-		[EnumTextValue("CompanyCountry")]
-		[ColumnEnum("CompanyCountry", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		CompanyCountry,
-		/// <summary>
-		/// AccountCode : 
-		/// </summary>
-		[EnumTextValue("AccountCode")]
-		[ColumnEnum("AccountCode", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
-		AccountCode,
 		/// <summary>
 		/// CompanyTel : 
 		/// </summary>
 		[EnumTextValue("CompanyTel")]
 		[ColumnEnum("CompanyTel", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		CompanyTel,
+		/// <summary>
+		/// CompanyTel2 : 
+		/// </summary>
+		[EnumTextValue("CompanyTel2")]
+		[ColumnEnum("CompanyTel2", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		CompanyTel2,
+		/// <summary>
+		/// TAXNumber : 
+		/// </summary>
+		[EnumTextValue("TAXNumber")]
+		[ColumnEnum("TAXNumber", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		TaxNumber,
+		/// <summary>
+		/// AccountCode : 
+		/// </summary>
+		[EnumTextValue("AccountCode")]
+		[ColumnEnum("AccountCode", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
+		AccountCode,
 		/// <summary>
 		/// Attn : 
 		/// </summary>
@@ -1043,11 +1235,35 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("AttnPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
 		AttnPhone,
 		/// <summary>
-		/// IsCCP : 
+		/// PaymentMode : 
 		/// </summary>
-		[EnumTextValue("IsCCP")]
-		[ColumnEnum("IsCCP", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsCcp,
+		[EnumTextValue("PaymentMode")]
+		[ColumnEnum("PaymentMode", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		PaymentMode,
+		/// <summary>
+		/// CreateUser : 
+		/// </summary>
+		[EnumTextValue("CreateUser")]
+		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		CreateUser,
+		/// <summary>
+		/// CreateDate : 
+		/// </summary>
+		[EnumTextValue("CreateDate")]
+		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
+		CreateDate,
+		/// <summary>
+		/// TypeOfServices : 
+		/// </summary>
+		[EnumTextValue("TypeOfServices")]
+		[ColumnEnum("TypeOfServices", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
+		TypeOfServices,
+		/// <summary>
+		/// IsDisabled : 
+		/// </summary>
+		[EnumTextValue("IsDisabled")]
+		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
+		IsDisabled,
 		/// <summary>
 		/// Remark : 
 		/// </summary>

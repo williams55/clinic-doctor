@@ -342,35 +342,18 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
 	/// <param name="start">Row number at which to start reading.</param>
 	/// <param name="pageLength">Number of rows to return.</param>
 	/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 	/// <remark>This method is generated from a stored procedure.</remark>
-	public override void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark, System.Boolean? isDisabled)
+	public override void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
 	{
 		SqlDatabase database = new SqlDatabase(this._connectionString);
 		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_Update", true);
@@ -381,29 +364,12 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 		database.AddInParameter(commandWrapper, "@LastName", DbType.String,  lastName );
 		database.AddInParameter(commandWrapper, "@DateOfBirth", DbType.DateTime,  dateOfBirth );
 		database.AddInParameter(commandWrapper, "@Sex", DbType.AnsiStringFixedLength,  sex );
-		database.AddInParameter(commandWrapper, "@MemberType", DbType.String,  memberType );
 		database.AddInParameter(commandWrapper, "@Nationality", DbType.String,  nationality );
-		database.AddInParameter(commandWrapper, "@HomeStreet", DbType.String,  homeStreet );
-		database.AddInParameter(commandWrapper, "@HomeWard", DbType.String,  homeWard );
-		database.AddInParameter(commandWrapper, "@HomeDistrict", DbType.String,  homeDistrict );
-		database.AddInParameter(commandWrapper, "@HomeCity", DbType.String,  homeCity );
-		database.AddInParameter(commandWrapper, "@HomeCountry", DbType.String,  homeCountry );
-		database.AddInParameter(commandWrapper, "@WorkStreet", DbType.String,  workStreet );
-		database.AddInParameter(commandWrapper, "@WorkWard", DbType.String,  workWard );
-		database.AddInParameter(commandWrapper, "@WorkDistrict", DbType.String,  workDistrict );
-		database.AddInParameter(commandWrapper, "@WorkCity", DbType.String,  workCity );
-		database.AddInParameter(commandWrapper, "@WorkCountry", DbType.String,  workCountry );
 		database.AddInParameter(commandWrapper, "@CompanyCode", DbType.StringFixedLength,  companyCode );
-		database.AddInParameter(commandWrapper, "@BillingAddress", DbType.String,  billingAddress );
 		database.AddInParameter(commandWrapper, "@HomePhone", DbType.String,  homePhone );
 		database.AddInParameter(commandWrapper, "@MobilePhone", DbType.String,  mobilePhone );
-		database.AddInParameter(commandWrapper, "@CompanyPhone", DbType.String,  companyPhone );
-		database.AddInParameter(commandWrapper, "@Fax", DbType.String,  fax );
-		database.AddInParameter(commandWrapper, "@EmailAddress", DbType.String,  emailAddress );
-		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime,  createDate );
 		database.AddInParameter(commandWrapper, "@UpdateUser", DbType.String,  updateUser );
-		database.AddInParameter(commandWrapper, "@UpdateDate", DbType.DateTime,  updateDate );
-		database.AddInParameter(commandWrapper, "@Remark", DbType.String,  remark );
+		database.AddInParameter(commandWrapper, "@ApptRemark", DbType.String,  apptRemark );
 		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean,  isDisabled );
 		
 
@@ -441,35 +407,18 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="createUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 	/// <param name="start">Row number at which to start reading.</param>
 	/// <param name="pageLength">Number of rows to return.</param>
 	/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 	/// <remark>This method is generated from a stored procedure.</remark>
 	/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-	public override VList<VcsPatient> Insert(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+	public override VList<VcsPatient> Insert(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String createUser, System.String apptRemark)
 	{
 		SqlDatabase database = new SqlDatabase(this._connectionString);
 		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_Insert", true);
@@ -480,29 +429,12 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 		database.AddInParameter(commandWrapper, "@LastName", DbType.String,  lastName );
 		database.AddInParameter(commandWrapper, "@DateOfBirth", DbType.DateTime,  dateOfBirth );
 		database.AddInParameter(commandWrapper, "@Sex", DbType.AnsiStringFixedLength,  sex );
-		database.AddInParameter(commandWrapper, "@MemberType", DbType.String,  memberType );
 		database.AddInParameter(commandWrapper, "@Nationality", DbType.String,  nationality );
-		database.AddInParameter(commandWrapper, "@HomeStreet", DbType.String,  homeStreet );
-		database.AddInParameter(commandWrapper, "@HomeWard", DbType.String,  homeWard );
-		database.AddInParameter(commandWrapper, "@HomeDistrict", DbType.String,  homeDistrict );
-		database.AddInParameter(commandWrapper, "@HomeCity", DbType.String,  homeCity );
-		database.AddInParameter(commandWrapper, "@HomeCountry", DbType.String,  homeCountry );
-		database.AddInParameter(commandWrapper, "@WorkStreet", DbType.String,  workStreet );
-		database.AddInParameter(commandWrapper, "@WorkWard", DbType.String,  workWard );
-		database.AddInParameter(commandWrapper, "@WorkDistrict", DbType.String,  workDistrict );
-		database.AddInParameter(commandWrapper, "@WorkCity", DbType.String,  workCity );
-		database.AddInParameter(commandWrapper, "@WorkCountry", DbType.String,  workCountry );
 		database.AddInParameter(commandWrapper, "@CompanyCode", DbType.StringFixedLength,  companyCode );
-		database.AddInParameter(commandWrapper, "@BillingAddress", DbType.String,  billingAddress );
 		database.AddInParameter(commandWrapper, "@HomePhone", DbType.String,  homePhone );
 		database.AddInParameter(commandWrapper, "@MobilePhone", DbType.String,  mobilePhone );
-		database.AddInParameter(commandWrapper, "@CompanyPhone", DbType.String,  companyPhone );
-		database.AddInParameter(commandWrapper, "@Fax", DbType.String,  fax );
-		database.AddInParameter(commandWrapper, "@EmailAddress", DbType.String,  emailAddress );
-		database.AddInParameter(commandWrapper, "@CreateDate", DbType.DateTime,  createDate );
-		database.AddInParameter(commandWrapper, "@UpdateUser", DbType.String,  updateUser );
-		database.AddInParameter(commandWrapper, "@UpdateDate", DbType.DateTime,  updateDate );
-		database.AddInParameter(commandWrapper, "@Remark", DbType.String,  remark );
+		database.AddInParameter(commandWrapper, "@CreateUser", DbType.String,  createUser );
+		database.AddInParameter(commandWrapper, "@ApptRemark", DbType.String,  apptRemark );
 		
 
 		try
