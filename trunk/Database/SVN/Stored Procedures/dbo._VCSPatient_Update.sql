@@ -16,24 +16,12 @@ CREATE PROCEDURE [dbo].[_VCSPatient_Update]
 	,@LastName nvarchar(30)
 	,@DateOfBirth datetime
 	,@Sex char(1)
-	,@MemberType nvarchar(50)
 	,@Nationality nvarchar(50)
-	,@HomeStreet nvarchar(100)
-	,@HomeWard nvarchar(50)
-	,@HomeDistrict nvarchar(50)
-	,@HomeCity nvarchar(50)
-	,@HomeCountry nvarchar(50)
 	,@CompanyCode nchar(9)
-	,@BillingAddress nvarchar(50)
 	,@HomePhone nvarchar(50)
 	,@MobilePhone nvarchar(50)
-	,@CompanyPhone nvarchar(50)
-	,@Fax nvarchar(50)
-	,@EmailAddress nvarchar(50)
-	,@CreateDate datetime
 	,@UpdateUser nvarchar(50)
-	,@UpdateDate datetime
-	,@Remark nvarchar(250)
+	,@ApptRemark nvarchar(250)
 	,@IsDisabled bit
 AS
 BEGIN
@@ -48,23 +36,13 @@ UPDATE [VCS].[dbo].[Patient]
       ,[LastName] = @LastName
       ,[DateOfBirth] = @DateOfBirth
       ,[Sex] = @Sex
-      ,[MemberType] = @MemberType
       ,[Nationality] = @Nationality
-      ,[HomeStreet] = @HomeStreet
-      ,[HomeWard] = @HomeWard
-      ,[HomeDistrict] = @HomeDistrict
-      ,[HomeCity] = @HomeCity
-      ,[HomeCountry] = @HomeCountry
       ,[CompanyCode] = @CompanyCode
-      ,[BillingAddress] = @BillingAddress
       ,[HomePhone] = @HomePhone
       ,[MobilePhone] = @MobilePhone
-      ,[CompanyPhone] = @CompanyPhone
-      ,[Fax] = @Fax
-      ,[EmailAddress] = @EmailAddress
       ,[UpdateUser] = @UpdateUser
       ,[UpdateDate] = GETDATE()
-      ,[Remark] = @Remark
+      ,[ApptRemark] = @ApptRemark
       ,[IsDisabled] = @IsDisabled
  WHERE [PatientCode] = @PatientCode
  
