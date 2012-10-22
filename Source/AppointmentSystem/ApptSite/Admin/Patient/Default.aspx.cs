@@ -136,37 +136,18 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                     Sex = radMale.Checked
                               ? SexConstant.Male.Value
                               : radFemale.Checked ? SexConstant.Female.Value : string.Empty,
-                    MemberType = e.NewValues["MemberType"] == null ? null : e.NewValues["MemberType"].ToString(),
                     DateOfBirth = dtDOB,
                     Nationality = e.NewValues["Nationality"] == null ? null : e.NewValues["Nationality"].ToString(),
-                    HomeStreet = e.NewValues["HomeStreet"] == null ? null : e.NewValues["HomeStreet"].ToString(),
-                    HomeWard = e.NewValues["HomeWard"] == null ? null : e.NewValues["HomeWard"].ToString(),
-                    HomeDistrict = e.NewValues["HomeDistrict"] == null ? null : e.NewValues["HomeDistrict"].ToString(),
-                    HomeCity = e.NewValues["HomeCity"] == null ? null : e.NewValues["HomeCity"].ToString(),
-                    HomeCountry = e.NewValues["HomeCountry"] == null ? null : e.NewValues["HomeCountry"].ToString(),
                     HomePhone = e.NewValues["HomePhone"] == null ? null : e.NewValues["HomePhone"].ToString(),
                     MobilePhone = e.NewValues["MobilePhone"] == null ? null : e.NewValues["MobilePhone"].ToString(),
-                    BillingAddress = e.NewValues["BillingAddress"] == null ? null : e.NewValues["BillingAddress"].ToString(),
-                    WorkStreet = e.NewValues["WorkStreet"] == null ? null : e.NewValues["WorkStreet"].ToString(),
-                    WorkWard = e.NewValues["WorkWard"] == null ? null : e.NewValues["WorkWard"].ToString(),
-                    WorkDistrict = e.NewValues["WorkDistrict"] == null ? null : e.NewValues["WorkDistrict"].ToString(),
-                    WorkCity = e.NewValues["WorkCity"] == null ? null : e.NewValues["WorkCity"].ToString(),
-                    WorkCountry = e.NewValues["WorkCountry"] == null ? null : e.NewValues["WorkCountry"].ToString(),
-                    CompanyPhone = e.NewValues["CompanyPhone"] == null ? null : e.NewValues["CompanyPhone"].ToString(),
                     CompanyCode = e.NewValues["CompanyCode"] == null ? null : e.NewValues["CompanyCode"].ToString(),
-                    Fax = e.NewValues["Fax"] == null ? null : e.NewValues["Fax"].ToString(),
-                    Remark = e.NewValues["Remark"] == null ? null : e.NewValues["Remark"].ToString(),
-                    CreateDate = DateTime.Now,
+                    ApptRemark = e.NewValues["ApptRemark"] == null ? null : e.NewValues["ApptRemark"].ToString(),
                     UpdateUser = WebCommon.GetAuthUsername(),
-                    UpdateDate = DateTime.Now
                 };
 
-            var patients = DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
-                , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
-                , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
-                , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
-                , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
-                , patient.Remark);
+            var patients = DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName, patient.MiddleName
+                , patient.LastName, patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone
+                , patient.MobilePhone, patient.UpdateUser, patient.ApptRemark);
 
             // Doan nay dung de fake cancel update
             var gridView = (ASPxGridView)sender;
@@ -252,34 +233,16 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             patient.Sex = radMale.Checked
                        ? SexConstant.Male.Value
                        : radFemale.Checked ? SexConstant.Female.Value : string.Empty;
-            patient.MemberType = e.NewValues["MemberType"] == null ? null : e.NewValues["MemberType"].ToString();
             patient.DateOfBirth = dtDOB;
             patient.Nationality = e.NewValues["Nationality"] == null ? null : e.NewValues["Nationality"].ToString();
-            patient.HomeStreet = e.NewValues["HomeStreet"] == null ? null : e.NewValues["HomeStreet"].ToString();
-            patient.HomeWard = e.NewValues["HomeWard"] == null ? null : e.NewValues["HomeWard"].ToString();
-            patient.HomeDistrict = e.NewValues["HomeDistrict"] == null ? null : e.NewValues["HomeDistrict"].ToString();
-            patient.HomeCity = e.NewValues["HomeCity"] == null ? null : e.NewValues["HomeCity"].ToString();
-            patient.HomeCountry = e.NewValues["HomeCountry"] == null ? null : e.NewValues["HomeCountry"].ToString();
             patient.HomePhone = e.NewValues["HomePhone"] == null ? null : e.NewValues["HomePhone"].ToString();
             patient.MobilePhone = e.NewValues["MobilePhone"] == null ? null : e.NewValues["MobilePhone"].ToString();
-            patient.BillingAddress = e.NewValues["BillingAddress"] == null ? null : e.NewValues["BillingAddress"].ToString();
-            patient.WorkStreet = e.NewValues["WorkStreet"] == null ? null : e.NewValues["WorkStreet"].ToString();
-            patient.WorkWard = e.NewValues["WorkWard"] == null ? null : e.NewValues["WorkWard"].ToString();
-            patient.WorkDistrict = e.NewValues["WorkDistrict"] == null ? null : e.NewValues["WorkDistrict"].ToString();
-            patient.WorkCity = e.NewValues["WorkCity"] == null ? null : e.NewValues["WorkCity"].ToString();
-            patient.WorkCountry = e.NewValues["WorkCountry"] == null ? null : e.NewValues["WorkCountry"].ToString();
-            patient.CompanyPhone = e.NewValues["CompanyPhone"] == null ? null : e.NewValues["CompanyPhone"].ToString();
             patient.CompanyCode = e.NewValues["CompanyCode"] == null ? null : e.NewValues["CompanyCode"].ToString();
-            patient.Fax = e.NewValues["Fax"] == null ? null : e.NewValues["Fax"].ToString();
-            patient.Remark = e.NewValues["Remark"] == null ? null : e.NewValues["Remark"].ToString();
+            patient.ApptRemark = e.NewValues["ApptRemark"] == null ? null : e.NewValues["ApptRemark"].ToString();
             patient.UpdateUser = WebCommon.GetAuthUsername();
-            patient.UpdateDate = DateTime.Now;
             DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
-                , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
-                , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
-                , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
-                , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
-                , patient.Remark, patient.IsDisabled);
+                , patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone, patient.MobilePhone
+                , patient.UpdateUser, patient.ApptRemark, patient.IsDisabled);
 
             // Doan nay dung de fake cancel update
             var gridView = (ASPxGridView)sender;
@@ -338,13 +301,9 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             }
             patient.IsDisabled = true;
             patient.UpdateUser = WebCommon.GetAuthUsername();
-            patient.UpdateDate = DateTime.Now;
             DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
-                , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
-                , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
-                , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
-                , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
-                , patient.Remark, patient.IsDisabled);
+                , patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone, patient.MobilePhone
+                , patient.UpdateUser, patient.ApptRemark, patient.IsDisabled);
 
             // Show message alert delete successfully
             WebCommon.AlertGridView(sender, "Patient is deleted successfully.");
@@ -450,13 +409,9 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                     // Tien anh cap nhat
                     patient.IsDisabled = true;
                     patient.UpdateUser = WebCommon.GetAuthUsername();
-                    patient.UpdateDate = DateTime.Now;
-                    DataRepository.VcsPatientProvider.Update(tm, patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
-                      , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
-                      , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
-                      , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
-                      , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
-                      , patient.Remark, patient.IsDisabled);
+                    DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
+                        , patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone, patient.MobilePhone
+                        , patient.UpdateUser, patient.ApptRemark, patient.IsDisabled);
                 }
                 tm.Commit();
                 WebCommon.AlertGridView(sender, String.Format("{0} deleted successfully.",

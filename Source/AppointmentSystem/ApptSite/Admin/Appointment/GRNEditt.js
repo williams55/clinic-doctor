@@ -366,12 +366,11 @@ function GetPatientInfo(currentId) {
 }
 
 // Create new patient
-function CreateSimplePatient(firstname, middleName, lastname, dob, memberType, nationality, remark, mobilePhone, dialog) {
+function CreateSimplePatient(firstname, middleName, lastname, dob, nationality, remark, mobilePhone, dialog) {
     var requestdata = JSON.stringify({
         firstName: $(firstname).val(),
         middleName: $(middleName).val(),
         lastName: $(lastname).val(),
-        memberType: txtMemberType.GetValue(),
         dob: $(dob).datepicker('getDate'),
         nationality: $(nationality).val(),
         mobilePhone: $(mobilePhone).val(),
@@ -404,13 +403,12 @@ function CreateSimplePatient(firstname, middleName, lastname, dob, memberType, n
 }
 
 // Create new patient
-function UpdateSimplePatient(id, firstname, middleName, lastname, dob, memberType, nationality, remark, mobilePhone, dialog) {
+function UpdateSimplePatient(id, firstname, middleName, lastname, dob, nationality, remark, mobilePhone, dialog) {
     var requestdata = JSON.stringify({
         id: id,
         firstName: $(firstname).val(),
         middleName: $(middleName).val(),
         lastName: $(lastname).val(),
-        memberType: txtMemberType.GetValue(),
         dob: $(dob).datepicker('getDate'),
         nationality: $(nationality).val(),
         mobilePhone: $(mobilePhone).val(),
@@ -753,6 +751,7 @@ $(document).ready(function() {
         buttonImageOnly: true, changeMonth: true,
         changeYear: true,
         showOtherMonths: true,
+        dateFormat: "m/d/yy",
         selectOtherMonths: true
     });
 
@@ -836,13 +835,12 @@ $("[id$=createUser]").click(function() {
         txtMiddileName = $("#txtMiddileName"),
         txtLastName = $("#txtLastName"),
         txtDob = $("#txtDob"),
-        txtMemberType = $("[id*=txtMemberType]"),
         txtNationality = $("#txtNationality"),
         txtRemark = $("#txtRemark"),
         radSex = $("input[name=radSex]"),
         txtMobilePhone = $("#txtMobilePhone"),
         allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtMobilePhone).add(txtMiddileName).add(txtDob)
-            .add(txtMemberType).add(txtNationality).add(txtRemark);
+            .add(txtNationality).add(txtRemark);
 
     var tmpForm = $('#RosterForm').parent();
     $(tmpForm).hide();
@@ -863,7 +861,7 @@ $("[id$=createUser]").click(function() {
                 allFields.removeClass("ui-state-error");
 
                 if (bValid) {
-                    CreateSimplePatient(txtFirstName, txtMiddileName, txtLastName, txtDob, txtMemberType
+                    CreateSimplePatient(txtFirstName, txtMiddileName, txtLastName, txtDob
                         , txtNationality, txtRemark, txtMobilePhone, this);
                 }
             }
@@ -880,7 +878,6 @@ $("[id$=createUser]").click(function() {
     $(txtMobilePhone).val("");
     $(txtMiddileName).val("");
     $(txtDob).val("");
-    $(txtMemberType).val("");
     $(txtNationality).val("");
     $(txtRemark).val("");
     $("#radMale").val("M");
@@ -908,7 +905,7 @@ $("[id$=changeUser]").click(function() {
         radSex = $("input[name=radSex]"),
         txtMobilePhone = $("#txtMobilePhone"),
         allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtMobilePhone).add(txtMiddileName).add(txtDob)
-            .add(txtMemberType).add(txtNationality).add(txtRemark);
+            .add(txtNationality).add(txtRemark);
 
     ShowProgress();
     var requestdata = JSON.stringify({ id: patient[0].id });
@@ -942,7 +939,7 @@ $("[id$=changeUser]").click(function() {
                             allFields.removeClass("ui-state-error");
 
                             if (bValid) {
-                                UpdateSimplePatient(patient[0].id, txtFirstName, txtMiddileName, txtLastName, txtDob, txtMemberType
+                                UpdateSimplePatient(patient[0].id, txtFirstName, txtMiddileName, txtLastName, txtDob
                                     , txtNationality, txtRemark, txtMobilePhone, this);
                             }
                         }
@@ -959,8 +956,6 @@ $("[id$=changeUser]").click(function() {
                 $(txtLastName).val(obj.data[0].LastName);
                 $(txtMobilePhone).val(obj.data[0].CellPhone);
                 $(txtDob).datepicker('setDate', obj.data[0].DateOfBirth);
-                var item = txtMemberType.FindItemByValue(obj.data[0].MemberType);
-                txtMemberType.SetSelectedItem(item);
                 $(txtNationality).val(obj.data[0].Nationality);
                 $(txtRemark).val(obj.data[0].Remark);
                 $("#radMale").val("M");

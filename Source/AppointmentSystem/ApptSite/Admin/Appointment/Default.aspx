@@ -208,7 +208,7 @@
                         <td style="width: 10px;">
                         </td>
                         <td class="header">
-                            DOB
+                            DOB (m/d/yyyy)
                         </td>
                         <td>
                             <input type="text" id="txtDob" class="datePicker content-input ui-widget-content ui-corner-all"
@@ -244,13 +244,8 @@
                         <td>
                         </td>
                         <td class="header">
-                            Member Type
                         </td>
                         <td>
-                            <dx:ASPxComboBox runat="server" ID="txtMemberType" Width="100%" DataSourceID="VcsMemberTypeDataSource"
-                                TabIndex="8" CssClass="content-input ui-widget-content ui-corner-all" ValueField="MemberType"
-                                TextField="MemberType" ClientInstanceName="txtMemberType">
-                            </dx:ASPxComboBox>
                         </td>
                     </tr>
                     <tr>
@@ -363,10 +358,4 @@
             </div>
         </div>
     </div>
-    <data:VcsMemberTypeDataSource ID="VcsMemberTypeDataSource" runat="server" SelectMethod="GetPaged">
-        <Parameters>
-            <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
-            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
-        </Parameters>
-    </data:VcsMemberTypeDataSource>
 </asp:Content>
