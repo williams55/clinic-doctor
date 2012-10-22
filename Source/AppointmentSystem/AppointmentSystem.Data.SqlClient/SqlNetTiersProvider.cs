@@ -934,45 +934,6 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 		
 		
-		#region "VcsMemberTypeProvider"
-		
-		private SqlVcsMemberTypeProvider innerSqlVcsMemberTypeProvider;
-
-		///<summary>
-		/// This class is the Data Access Logic Component for the <see cref="VcsMemberType"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		/// <value></value>
-		public override VcsMemberTypeProviderBase VcsMemberTypeProvider
-		{
-			get
-			{
-				if (innerSqlVcsMemberTypeProvider == null) 
-				{
-					lock (syncRoot) 
-					{
-						if (innerSqlVcsMemberTypeProvider == null)
-						{
-							this.innerSqlVcsMemberTypeProvider = new SqlVcsMemberTypeProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
-						}
-					}
-				}
-				return innerSqlVcsMemberTypeProvider;
-			}
-		}
-		
-		/// <summary>
-		/// Gets the current <see cref="SqlVcsMemberTypeProvider"/>.
-		/// </summary>
-		/// <value></value>
-		public SqlVcsMemberTypeProvider SqlVcsMemberTypeProvider
-		{
-			get {return VcsMemberTypeProvider as SqlVcsMemberTypeProvider;}
-		}
-		
-		#endregion
-		
-		
 		#region "VcsPatientProvider"
 		
 		private SqlVcsPatientProvider innerSqlVcsPatientProvider;

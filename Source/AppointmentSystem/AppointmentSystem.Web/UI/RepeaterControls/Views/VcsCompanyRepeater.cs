@@ -356,22 +356,31 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.BillingAddress; }
 		}
         /// <summary>
-        /// Gets the CompanyCity
+        /// Gets the CompanyTel
         /// </summary>
-        /// <value>The CompanyCity.</value>
+        /// <value>The CompanyTel.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String CompanyCity
+		public System.String CompanyTel
 		{
-			get { return _entity.CompanyCity; }
+			get { return _entity.CompanyTel; }
 		}
         /// <summary>
-        /// Gets the CompanyCountry
+        /// Gets the CompanyTel2
         /// </summary>
-        /// <value>The CompanyCountry.</value>
+        /// <value>The CompanyTel2.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.String CompanyCountry
+		public System.String CompanyTel2
 		{
-			get { return _entity.CompanyCountry; }
+			get { return _entity.CompanyTel2; }
+		}
+        /// <summary>
+        /// Gets the TaxNumber
+        /// </summary>
+        /// <value>The TaxNumber.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String TaxNumber
+		{
+			get { return _entity.TaxNumber; }
 		}
         /// <summary>
         /// Gets the AccountCode
@@ -381,15 +390,6 @@ namespace AppointmentSystem.Web.UI
 		public System.String AccountCode
 		{
 			get { return _entity.AccountCode; }
-		}
-        /// <summary>
-        /// Gets the CompanyTel
-        /// </summary>
-        /// <value>The CompanyTel.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String CompanyTel
-		{
-			get { return _entity.CompanyTel; }
 		}
         /// <summary>
         /// Gets the Attn
@@ -419,13 +419,49 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.AttnPhone; }
 		}
         /// <summary>
-        /// Gets the IsCcp
+        /// Gets the PaymentMode
         /// </summary>
-        /// <value>The IsCcp.</value>
+        /// <value>The PaymentMode.</value>
 		[System.ComponentModel.Bindable(true)]
-		public System.Boolean IsCcp
+		public System.String PaymentMode
 		{
-			get { return _entity.IsCcp; }
+			get { return _entity.PaymentMode; }
+		}
+        /// <summary>
+        /// Gets the CreateUser
+        /// </summary>
+        /// <value>The CreateUser.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String CreateUser
+		{
+			get { return _entity.CreateUser; }
+		}
+        /// <summary>
+        /// Gets the CreateDate
+        /// </summary>
+        /// <value>The CreateDate.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.DateTime CreateDate
+		{
+			get { return _entity.CreateDate; }
+		}
+        /// <summary>
+        /// Gets the TypeOfServices
+        /// </summary>
+        /// <value>The TypeOfServices.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String TypeOfServices
+		{
+			get { return _entity.TypeOfServices; }
+		}
+        /// <summary>
+        /// Gets the IsDisabled
+        /// </summary>
+        /// <value>The IsDisabled.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.Boolean IsDisabled
+		{
+			get { return _entity.IsDisabled; }
 		}
         /// <summary>
         /// Gets the Remark

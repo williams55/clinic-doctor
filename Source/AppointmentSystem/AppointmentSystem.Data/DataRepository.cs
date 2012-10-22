@@ -742,23 +742,6 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
-		#region VcsMemberTypeProvider
-		
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="VcsMemberType"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static VcsMemberTypeProviderBase VcsMemberTypeProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.VcsMemberTypeProvider;
-			}
-		}
-		
-		#endregion
-		
 		#region VcsPatientProvider
 		
 		///<summary>
@@ -2072,74 +2055,6 @@ namespace AppointmentSystem.Data
 	}
 
 	#endregion VcsCompanyQuery
-		
-	#region VcsMemberTypeFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="VcsMemberType"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class VcsMemberTypeFilters : VcsMemberTypeFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the VcsMemberTypeFilters class.
-		/// </summary>
-		public VcsMemberTypeFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the VcsMemberTypeFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public VcsMemberTypeFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the VcsMemberTypeFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public VcsMemberTypeFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion VcsMemberTypeFilters
-	
-	#region VcsMemberTypeQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="VcsMemberTypeParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="VcsMemberType"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class VcsMemberTypeQuery : VcsMemberTypeParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the VcsMemberTypeQuery class.
-		/// </summary>
-		public VcsMemberTypeQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the VcsMemberTypeQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public VcsMemberTypeQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the VcsMemberTypeQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public VcsMemberTypeQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion VcsMemberTypeQuery
 		
 	#region VcsPatientFilters
 	

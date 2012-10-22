@@ -84,34 +84,17 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
 		/// <remark>This method is generate from a stored procedure.</remark>
-		public void Update(System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark, System.Boolean? isDisabled)
+		public void Update(System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
 		{
-			 Update(null, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark, isDisabled);
+			 Update(null, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, updateUser, apptRemark, isDisabled);
 		}
 		
 		/// <summary>
@@ -123,36 +106,19 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remark>This method is generate from a stored procedure.</remark>
-		public void Update(int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark, System.Boolean? isDisabled)
+		public void Update(int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
 		{
-			 Update(null, start, pageLength , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark, isDisabled);
+			 Update(null, start, pageLength , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, updateUser, apptRemark, isDisabled);
 		}
 				
 		/// <summary>
@@ -164,34 +130,17 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
 		/// <remark>This method is generate from a stored procedure.</remark>
-		public void Update(TransactionManager transactionManager, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark, System.Boolean? isDisabled)
+		public void Update(TransactionManager transactionManager, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
 		{
-			 Update(transactionManager, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark, isDisabled);
+			 Update(transactionManager, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, updateUser, apptRemark, isDisabled);
 		}
 		
 		/// <summary>
@@ -203,35 +152,18 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 		/// <remark>This method is generate from a stored procedure.</remark>
-		public abstract void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark, System.Boolean? isDisabled);
+		public abstract void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled);
 		
 		#endregion
 
@@ -247,34 +179,17 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="createUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 		/// <remark>This method is generate from a stored procedure.</remark>
 		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-		public VList<VcsPatient> Insert(System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+		public VList<VcsPatient> Insert(System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String createUser, System.String apptRemark)
 		{
-			return Insert(null, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark);
+			return Insert(null, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, createUser, apptRemark);
 		}
 		
 		/// <summary>
@@ -286,36 +201,19 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="createUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <remark>This method is generate from a stored procedure.</remark>
 		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-		public VList<VcsPatient> Insert(int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+		public VList<VcsPatient> Insert(int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String createUser, System.String apptRemark)
 		{
-			return Insert(null, start, pageLength , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark);
+			return Insert(null, start, pageLength , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, createUser, apptRemark);
 		}
 				
 		/// <summary>
@@ -327,35 +225,18 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="createUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 		/// <remark>This method is generate from a stored procedure.</remark>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-		public VList<VcsPatient> Insert(TransactionManager transactionManager, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark)
+		public VList<VcsPatient> Insert(TransactionManager transactionManager, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String createUser, System.String apptRemark)
 		{
-			return Insert(transactionManager, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, memberType, nationality, homeStreet, homeWard, homeDistrict, homeCity, homeCountry, workStreet, workWard, workDistrict, workCity, workCountry, companyCode, billingAddress, homePhone, mobilePhone, companyPhone, fax, emailAddress, createDate, updateUser, updateDate, remark);
+			return Insert(transactionManager, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, createUser, apptRemark);
 		}
 		
 		/// <summary>
@@ -367,35 +248,18 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="lastName"> A <c>System.String</c> instance.</param>
 		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
 		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="memberType"> A <c>System.String</c> instance.</param>
 		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="homeStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="homeWard"> A <c>System.String</c> instance.</param>
-		/// <param name="homeDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCity"> A <c>System.String</c> instance.</param>
-		/// <param name="homeCountry"> A <c>System.String</c> instance.</param>
-		/// <param name="workStreet"> A <c>System.String</c> instance.</param>
-		/// <param name="workWard"> A <c>System.String</c> instance.</param>
-		/// <param name="workDistrict"> A <c>System.String</c> instance.</param>
-		/// <param name="workCity"> A <c>System.String</c> instance.</param>
-		/// <param name="workCountry"> A <c>System.String</c> instance.</param>
 		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="billingAddress"> A <c>System.String</c> instance.</param>
 		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
 		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="companyPhone"> A <c>System.String</c> instance.</param>
-		/// <param name="fax"> A <c>System.String</c> instance.</param>
-		/// <param name="emailAddress"> A <c>System.String</c> instance.</param>
-		/// <param name="createDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="updateDate"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="remark"> A <c>System.String</c> instance.</param>
+		/// <param name="createUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
 		/// <param name="start">Row number at which to start reading.</param>
 		/// <param name="pageLength">Number of rows to return.</param>
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 		/// <remark>This method is generate from a stored procedure.</remark>
 		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-		public abstract VList<VcsPatient> Insert(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String memberType, System.String nationality, System.String homeStreet, System.String homeWard, System.String homeDistrict, System.String homeCity, System.String homeCountry, System.String workStreet, System.String workWard, System.String workDistrict, System.String workCity, System.String workCountry, System.String companyCode, System.String billingAddress, System.String homePhone, System.String mobilePhone, System.String companyPhone, System.String fax, System.String emailAddress, System.DateTime? createDate, System.String updateUser, System.DateTime? updateDate, System.String remark);
+		public abstract VList<VcsPatient> Insert(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String createUser, System.String apptRemark);
 		
 		#endregion
 
@@ -454,17 +318,14 @@ namespace AppointmentSystem.Data.Bases
 					c.DateOfBirth = (Convert.IsDBNull(row["DateOfBirth"]))?DateTime.MinValue:(System.DateTime)row["DateOfBirth"];
 					c.Sex = (Convert.IsDBNull(row["Sex"]))?string.Empty:(System.String)row["Sex"];
 					c.MemberType = (Convert.IsDBNull(row["MemberType"]))?string.Empty:(System.String)row["MemberType"];
+					c.MembershipSosNumber = (Convert.IsDBNull(row["MembershipSOSNumber"]))?string.Empty:(System.String)row["MembershipSOSNumber"];
+					c.MembershipSosExpDate = (Convert.IsDBNull(row["MembershipSOSExpDate"]))?DateTime.MinValue:(System.DateTime?)row["MembershipSOSExpDate"];
 					c.Nationality = (Convert.IsDBNull(row["Nationality"]))?string.Empty:(System.String)row["Nationality"];
 					c.HomeStreet = (Convert.IsDBNull(row["HomeStreet"]))?string.Empty:(System.String)row["HomeStreet"];
 					c.HomeWard = (Convert.IsDBNull(row["HomeWard"]))?string.Empty:(System.String)row["HomeWard"];
 					c.HomeDistrict = (Convert.IsDBNull(row["HomeDistrict"]))?string.Empty:(System.String)row["HomeDistrict"];
 					c.HomeCity = (Convert.IsDBNull(row["HomeCity"]))?string.Empty:(System.String)row["HomeCity"];
 					c.HomeCountry = (Convert.IsDBNull(row["HomeCountry"]))?string.Empty:(System.String)row["HomeCountry"];
-					c.WorkStreet = (Convert.IsDBNull(row["WorkStreet"]))?string.Empty:(System.String)row["WorkStreet"];
-					c.WorkWard = (Convert.IsDBNull(row["WorkWard"]))?string.Empty:(System.String)row["WorkWard"];
-					c.WorkDistrict = (Convert.IsDBNull(row["WorkDistrict"]))?string.Empty:(System.String)row["WorkDistrict"];
-					c.WorkCity = (Convert.IsDBNull(row["WorkCity"]))?string.Empty:(System.String)row["WorkCity"];
-					c.WorkCountry = (Convert.IsDBNull(row["WorkCountry"]))?string.Empty:(System.String)row["WorkCountry"];
 					c.CompanyCode = (Convert.IsDBNull(row["CompanyCode"]))?string.Empty:(System.String)row["CompanyCode"];
 					c.BillingAddress = (Convert.IsDBNull(row["BillingAddress"]))?string.Empty:(System.String)row["BillingAddress"];
 					c.HomePhone = (Convert.IsDBNull(row["HomePhone"]))?string.Empty:(System.String)row["HomePhone"];
@@ -472,16 +333,16 @@ namespace AppointmentSystem.Data.Bases
 					c.CompanyPhone = (Convert.IsDBNull(row["CompanyPhone"]))?string.Empty:(System.String)row["CompanyPhone"];
 					c.Fax = (Convert.IsDBNull(row["Fax"]))?string.Empty:(System.String)row["Fax"];
 					c.EmailAddress = (Convert.IsDBNull(row["EmailAddress"]))?string.Empty:(System.String)row["EmailAddress"];
+					c.CreateUser = (Convert.IsDBNull(row["CreateUser"]))?string.Empty:(System.String)row["CreateUser"];
 					c.CreateDate = (Convert.IsDBNull(row["CreateDate"]))?DateTime.MinValue:(System.DateTime)row["CreateDate"];
 					c.ValidCorporate = (Convert.IsDBNull(row["ValidCorporate"]))?false:(System.Boolean)row["ValidCorporate"];
 					c.DefaultPaymentMode = (Convert.IsDBNull(row["DefaultPaymentMode"]))?string.Empty:(System.String)row["DefaultPaymentMode"];
 					c.InsuranceCardNumber = (Convert.IsDBNull(row["InsuranceCardNumber"]))?string.Empty:(System.String)row["InsuranceCardNumber"];
 					c.InsuranceCardExpDate = (Convert.IsDBNull(row["InsuranceCardExpDate"]))?DateTime.MinValue:(System.DateTime?)row["InsuranceCardExpDate"];
-					c.MembershipSosNumber = (Convert.IsDBNull(row["MembershipSOSNumber"]))?string.Empty:(System.String)row["MembershipSOSNumber"];
-					c.MembershipSosExpDate = (Convert.IsDBNull(row["MembershipSOSExpDate"]))?DateTime.MinValue:(System.DateTime?)row["MembershipSOSExpDate"];
 					c.IsDisabled = (Convert.IsDBNull(row["IsDisabled"]))?false:(System.Boolean)row["IsDisabled"];
 					c.UpdateUser = (Convert.IsDBNull(row["UpdateUser"]))?string.Empty:(System.String)row["UpdateUser"];
 					c.UpdateDate = (Convert.IsDBNull(row["UpdateDate"]))?DateTime.MinValue:(System.DateTime)row["UpdateDate"];
+					c.ApptRemark = (Convert.IsDBNull(row["ApptRemark"]))?string.Empty:(System.String)row["ApptRemark"];
 					c.Remark = (Convert.IsDBNull(row["Remark"]))?string.Empty:(System.String)row["Remark"];
 					c.AcceptChanges();
 					rows.Add(c);
@@ -534,6 +395,10 @@ namespace AppointmentSystem.Data.Bases
 					//entity.Sex = (Convert.IsDBNull(reader["Sex"]))?string.Empty:(System.String)reader["Sex"];
 					entity.MemberType = (System.String)reader[((int)VcsPatientColumn.MemberType)];
 					//entity.MemberType = (Convert.IsDBNull(reader["MemberType"]))?string.Empty:(System.String)reader["MemberType"];
+					entity.MembershipSosNumber = (reader.IsDBNull(((int)VcsPatientColumn.MembershipSosNumber)))?null:(System.String)reader[((int)VcsPatientColumn.MembershipSosNumber)];
+					//entity.MembershipSosNumber = (Convert.IsDBNull(reader["MembershipSOSNumber"]))?string.Empty:(System.String)reader["MembershipSOSNumber"];
+					entity.MembershipSosExpDate = (reader.IsDBNull(((int)VcsPatientColumn.MembershipSosExpDate)))?null:(System.DateTime?)reader[((int)VcsPatientColumn.MembershipSosExpDate)];
+					//entity.MembershipSosExpDate = (Convert.IsDBNull(reader["MembershipSOSExpDate"]))?DateTime.MinValue:(System.DateTime?)reader["MembershipSOSExpDate"];
 					entity.Nationality = (System.String)reader[((int)VcsPatientColumn.Nationality)];
 					//entity.Nationality = (Convert.IsDBNull(reader["Nationality"]))?string.Empty:(System.String)reader["Nationality"];
 					entity.HomeStreet = (reader.IsDBNull(((int)VcsPatientColumn.HomeStreet)))?null:(System.String)reader[((int)VcsPatientColumn.HomeStreet)];
@@ -546,16 +411,6 @@ namespace AppointmentSystem.Data.Bases
 					//entity.HomeCity = (Convert.IsDBNull(reader["HomeCity"]))?string.Empty:(System.String)reader["HomeCity"];
 					entity.HomeCountry = (reader.IsDBNull(((int)VcsPatientColumn.HomeCountry)))?null:(System.String)reader[((int)VcsPatientColumn.HomeCountry)];
 					//entity.HomeCountry = (Convert.IsDBNull(reader["HomeCountry"]))?string.Empty:(System.String)reader["HomeCountry"];
-					entity.WorkStreet = (reader.IsDBNull(((int)VcsPatientColumn.WorkStreet)))?null:(System.String)reader[((int)VcsPatientColumn.WorkStreet)];
-					//entity.WorkStreet = (Convert.IsDBNull(reader["WorkStreet"]))?string.Empty:(System.String)reader["WorkStreet"];
-					entity.WorkWard = (reader.IsDBNull(((int)VcsPatientColumn.WorkWard)))?null:(System.String)reader[((int)VcsPatientColumn.WorkWard)];
-					//entity.WorkWard = (Convert.IsDBNull(reader["WorkWard"]))?string.Empty:(System.String)reader["WorkWard"];
-					entity.WorkDistrict = (reader.IsDBNull(((int)VcsPatientColumn.WorkDistrict)))?null:(System.String)reader[((int)VcsPatientColumn.WorkDistrict)];
-					//entity.WorkDistrict = (Convert.IsDBNull(reader["WorkDistrict"]))?string.Empty:(System.String)reader["WorkDistrict"];
-					entity.WorkCity = (reader.IsDBNull(((int)VcsPatientColumn.WorkCity)))?null:(System.String)reader[((int)VcsPatientColumn.WorkCity)];
-					//entity.WorkCity = (Convert.IsDBNull(reader["WorkCity"]))?string.Empty:(System.String)reader["WorkCity"];
-					entity.WorkCountry = (reader.IsDBNull(((int)VcsPatientColumn.WorkCountry)))?null:(System.String)reader[((int)VcsPatientColumn.WorkCountry)];
-					//entity.WorkCountry = (Convert.IsDBNull(reader["WorkCountry"]))?string.Empty:(System.String)reader["WorkCountry"];
 					entity.CompanyCode = (reader.IsDBNull(((int)VcsPatientColumn.CompanyCode)))?null:(System.String)reader[((int)VcsPatientColumn.CompanyCode)];
 					//entity.CompanyCode = (Convert.IsDBNull(reader["CompanyCode"]))?string.Empty:(System.String)reader["CompanyCode"];
 					entity.BillingAddress = (reader.IsDBNull(((int)VcsPatientColumn.BillingAddress)))?null:(System.String)reader[((int)VcsPatientColumn.BillingAddress)];
@@ -570,6 +425,8 @@ namespace AppointmentSystem.Data.Bases
 					//entity.Fax = (Convert.IsDBNull(reader["Fax"]))?string.Empty:(System.String)reader["Fax"];
 					entity.EmailAddress = (reader.IsDBNull(((int)VcsPatientColumn.EmailAddress)))?null:(System.String)reader[((int)VcsPatientColumn.EmailAddress)];
 					//entity.EmailAddress = (Convert.IsDBNull(reader["EmailAddress"]))?string.Empty:(System.String)reader["EmailAddress"];
+					entity.CreateUser = (reader.IsDBNull(((int)VcsPatientColumn.CreateUser)))?null:(System.String)reader[((int)VcsPatientColumn.CreateUser)];
+					//entity.CreateUser = (Convert.IsDBNull(reader["CreateUser"]))?string.Empty:(System.String)reader["CreateUser"];
 					entity.CreateDate = (System.DateTime)reader[((int)VcsPatientColumn.CreateDate)];
 					//entity.CreateDate = (Convert.IsDBNull(reader["CreateDate"]))?DateTime.MinValue:(System.DateTime)reader["CreateDate"];
 					entity.ValidCorporate = (System.Boolean)reader[((int)VcsPatientColumn.ValidCorporate)];
@@ -580,16 +437,14 @@ namespace AppointmentSystem.Data.Bases
 					//entity.InsuranceCardNumber = (Convert.IsDBNull(reader["InsuranceCardNumber"]))?string.Empty:(System.String)reader["InsuranceCardNumber"];
 					entity.InsuranceCardExpDate = (reader.IsDBNull(((int)VcsPatientColumn.InsuranceCardExpDate)))?null:(System.DateTime?)reader[((int)VcsPatientColumn.InsuranceCardExpDate)];
 					//entity.InsuranceCardExpDate = (Convert.IsDBNull(reader["InsuranceCardExpDate"]))?DateTime.MinValue:(System.DateTime?)reader["InsuranceCardExpDate"];
-					entity.MembershipSosNumber = (reader.IsDBNull(((int)VcsPatientColumn.MembershipSosNumber)))?null:(System.String)reader[((int)VcsPatientColumn.MembershipSosNumber)];
-					//entity.MembershipSosNumber = (Convert.IsDBNull(reader["MembershipSOSNumber"]))?string.Empty:(System.String)reader["MembershipSOSNumber"];
-					entity.MembershipSosExpDate = (reader.IsDBNull(((int)VcsPatientColumn.MembershipSosExpDate)))?null:(System.DateTime?)reader[((int)VcsPatientColumn.MembershipSosExpDate)];
-					//entity.MembershipSosExpDate = (Convert.IsDBNull(reader["MembershipSOSExpDate"]))?DateTime.MinValue:(System.DateTime?)reader["MembershipSOSExpDate"];
 					entity.IsDisabled = (System.Boolean)reader[((int)VcsPatientColumn.IsDisabled)];
 					//entity.IsDisabled = (Convert.IsDBNull(reader["IsDisabled"]))?false:(System.Boolean)reader["IsDisabled"];
 					entity.UpdateUser = (reader.IsDBNull(((int)VcsPatientColumn.UpdateUser)))?null:(System.String)reader[((int)VcsPatientColumn.UpdateUser)];
 					//entity.UpdateUser = (Convert.IsDBNull(reader["UpdateUser"]))?string.Empty:(System.String)reader["UpdateUser"];
 					entity.UpdateDate = (System.DateTime)reader[((int)VcsPatientColumn.UpdateDate)];
 					//entity.UpdateDate = (Convert.IsDBNull(reader["UpdateDate"]))?DateTime.MinValue:(System.DateTime)reader["UpdateDate"];
+					entity.ApptRemark = (reader.IsDBNull(((int)VcsPatientColumn.ApptRemark)))?null:(System.String)reader[((int)VcsPatientColumn.ApptRemark)];
+					//entity.ApptRemark = (Convert.IsDBNull(reader["ApptRemark"]))?string.Empty:(System.String)reader["ApptRemark"];
 					entity.Remark = (reader.IsDBNull(((int)VcsPatientColumn.Remark)))?null:(System.String)reader[((int)VcsPatientColumn.Remark)];
 					//entity.Remark = (Convert.IsDBNull(reader["Remark"]))?string.Empty:(System.String)reader["Remark"];
 					entity.AcceptChanges();
@@ -626,6 +481,10 @@ namespace AppointmentSystem.Data.Bases
 			//entity.Sex = (Convert.IsDBNull(reader["Sex"]))?string.Empty:(System.String)reader["Sex"];
 			entity.MemberType = (System.String)reader[((int)VcsPatientColumn.MemberType)];
 			//entity.MemberType = (Convert.IsDBNull(reader["MemberType"]))?string.Empty:(System.String)reader["MemberType"];
+			entity.MembershipSosNumber = (reader.IsDBNull(((int)VcsPatientColumn.MembershipSosNumber)))?null:(System.String)reader[((int)VcsPatientColumn.MembershipSosNumber)];
+			//entity.MembershipSosNumber = (Convert.IsDBNull(reader["MembershipSOSNumber"]))?string.Empty:(System.String)reader["MembershipSOSNumber"];
+			entity.MembershipSosExpDate = (reader.IsDBNull(((int)VcsPatientColumn.MembershipSosExpDate)))?null:(System.DateTime?)reader[((int)VcsPatientColumn.MembershipSosExpDate)];
+			//entity.MembershipSosExpDate = (Convert.IsDBNull(reader["MembershipSOSExpDate"]))?DateTime.MinValue:(System.DateTime?)reader["MembershipSOSExpDate"];
 			entity.Nationality = (System.String)reader[((int)VcsPatientColumn.Nationality)];
 			//entity.Nationality = (Convert.IsDBNull(reader["Nationality"]))?string.Empty:(System.String)reader["Nationality"];
 			entity.HomeStreet = (reader.IsDBNull(((int)VcsPatientColumn.HomeStreet)))?null:(System.String)reader[((int)VcsPatientColumn.HomeStreet)];
@@ -638,16 +497,6 @@ namespace AppointmentSystem.Data.Bases
 			//entity.HomeCity = (Convert.IsDBNull(reader["HomeCity"]))?string.Empty:(System.String)reader["HomeCity"];
 			entity.HomeCountry = (reader.IsDBNull(((int)VcsPatientColumn.HomeCountry)))?null:(System.String)reader[((int)VcsPatientColumn.HomeCountry)];
 			//entity.HomeCountry = (Convert.IsDBNull(reader["HomeCountry"]))?string.Empty:(System.String)reader["HomeCountry"];
-			entity.WorkStreet = (reader.IsDBNull(((int)VcsPatientColumn.WorkStreet)))?null:(System.String)reader[((int)VcsPatientColumn.WorkStreet)];
-			//entity.WorkStreet = (Convert.IsDBNull(reader["WorkStreet"]))?string.Empty:(System.String)reader["WorkStreet"];
-			entity.WorkWard = (reader.IsDBNull(((int)VcsPatientColumn.WorkWard)))?null:(System.String)reader[((int)VcsPatientColumn.WorkWard)];
-			//entity.WorkWard = (Convert.IsDBNull(reader["WorkWard"]))?string.Empty:(System.String)reader["WorkWard"];
-			entity.WorkDistrict = (reader.IsDBNull(((int)VcsPatientColumn.WorkDistrict)))?null:(System.String)reader[((int)VcsPatientColumn.WorkDistrict)];
-			//entity.WorkDistrict = (Convert.IsDBNull(reader["WorkDistrict"]))?string.Empty:(System.String)reader["WorkDistrict"];
-			entity.WorkCity = (reader.IsDBNull(((int)VcsPatientColumn.WorkCity)))?null:(System.String)reader[((int)VcsPatientColumn.WorkCity)];
-			//entity.WorkCity = (Convert.IsDBNull(reader["WorkCity"]))?string.Empty:(System.String)reader["WorkCity"];
-			entity.WorkCountry = (reader.IsDBNull(((int)VcsPatientColumn.WorkCountry)))?null:(System.String)reader[((int)VcsPatientColumn.WorkCountry)];
-			//entity.WorkCountry = (Convert.IsDBNull(reader["WorkCountry"]))?string.Empty:(System.String)reader["WorkCountry"];
 			entity.CompanyCode = (reader.IsDBNull(((int)VcsPatientColumn.CompanyCode)))?null:(System.String)reader[((int)VcsPatientColumn.CompanyCode)];
 			//entity.CompanyCode = (Convert.IsDBNull(reader["CompanyCode"]))?string.Empty:(System.String)reader["CompanyCode"];
 			entity.BillingAddress = (reader.IsDBNull(((int)VcsPatientColumn.BillingAddress)))?null:(System.String)reader[((int)VcsPatientColumn.BillingAddress)];
@@ -662,6 +511,8 @@ namespace AppointmentSystem.Data.Bases
 			//entity.Fax = (Convert.IsDBNull(reader["Fax"]))?string.Empty:(System.String)reader["Fax"];
 			entity.EmailAddress = (reader.IsDBNull(((int)VcsPatientColumn.EmailAddress)))?null:(System.String)reader[((int)VcsPatientColumn.EmailAddress)];
 			//entity.EmailAddress = (Convert.IsDBNull(reader["EmailAddress"]))?string.Empty:(System.String)reader["EmailAddress"];
+			entity.CreateUser = (reader.IsDBNull(((int)VcsPatientColumn.CreateUser)))?null:(System.String)reader[((int)VcsPatientColumn.CreateUser)];
+			//entity.CreateUser = (Convert.IsDBNull(reader["CreateUser"]))?string.Empty:(System.String)reader["CreateUser"];
 			entity.CreateDate = (System.DateTime)reader[((int)VcsPatientColumn.CreateDate)];
 			//entity.CreateDate = (Convert.IsDBNull(reader["CreateDate"]))?DateTime.MinValue:(System.DateTime)reader["CreateDate"];
 			entity.ValidCorporate = (System.Boolean)reader[((int)VcsPatientColumn.ValidCorporate)];
@@ -672,16 +523,14 @@ namespace AppointmentSystem.Data.Bases
 			//entity.InsuranceCardNumber = (Convert.IsDBNull(reader["InsuranceCardNumber"]))?string.Empty:(System.String)reader["InsuranceCardNumber"];
 			entity.InsuranceCardExpDate = (reader.IsDBNull(((int)VcsPatientColumn.InsuranceCardExpDate)))?null:(System.DateTime?)reader[((int)VcsPatientColumn.InsuranceCardExpDate)];
 			//entity.InsuranceCardExpDate = (Convert.IsDBNull(reader["InsuranceCardExpDate"]))?DateTime.MinValue:(System.DateTime?)reader["InsuranceCardExpDate"];
-			entity.MembershipSosNumber = (reader.IsDBNull(((int)VcsPatientColumn.MembershipSosNumber)))?null:(System.String)reader[((int)VcsPatientColumn.MembershipSosNumber)];
-			//entity.MembershipSosNumber = (Convert.IsDBNull(reader["MembershipSOSNumber"]))?string.Empty:(System.String)reader["MembershipSOSNumber"];
-			entity.MembershipSosExpDate = (reader.IsDBNull(((int)VcsPatientColumn.MembershipSosExpDate)))?null:(System.DateTime?)reader[((int)VcsPatientColumn.MembershipSosExpDate)];
-			//entity.MembershipSosExpDate = (Convert.IsDBNull(reader["MembershipSOSExpDate"]))?DateTime.MinValue:(System.DateTime?)reader["MembershipSOSExpDate"];
 			entity.IsDisabled = (System.Boolean)reader[((int)VcsPatientColumn.IsDisabled)];
 			//entity.IsDisabled = (Convert.IsDBNull(reader["IsDisabled"]))?false:(System.Boolean)reader["IsDisabled"];
 			entity.UpdateUser = (reader.IsDBNull(((int)VcsPatientColumn.UpdateUser)))?null:(System.String)reader[((int)VcsPatientColumn.UpdateUser)];
 			//entity.UpdateUser = (Convert.IsDBNull(reader["UpdateUser"]))?string.Empty:(System.String)reader["UpdateUser"];
 			entity.UpdateDate = (System.DateTime)reader[((int)VcsPatientColumn.UpdateDate)];
 			//entity.UpdateDate = (Convert.IsDBNull(reader["UpdateDate"]))?DateTime.MinValue:(System.DateTime)reader["UpdateDate"];
+			entity.ApptRemark = (reader.IsDBNull(((int)VcsPatientColumn.ApptRemark)))?null:(System.String)reader[((int)VcsPatientColumn.ApptRemark)];
+			//entity.ApptRemark = (Convert.IsDBNull(reader["ApptRemark"]))?string.Empty:(System.String)reader["ApptRemark"];
 			entity.Remark = (reader.IsDBNull(((int)VcsPatientColumn.Remark)))?null:(System.String)reader[((int)VcsPatientColumn.Remark)];
 			//entity.Remark = (Convert.IsDBNull(reader["Remark"]))?string.Empty:(System.String)reader["Remark"];
 			reader.Close();
@@ -706,17 +555,14 @@ namespace AppointmentSystem.Data.Bases
 			entity.DateOfBirth = (Convert.IsDBNull(dataRow["DateOfBirth"]))?DateTime.MinValue:(System.DateTime)dataRow["DateOfBirth"];
 			entity.Sex = (Convert.IsDBNull(dataRow["Sex"]))?string.Empty:(System.String)dataRow["Sex"];
 			entity.MemberType = (Convert.IsDBNull(dataRow["MemberType"]))?string.Empty:(System.String)dataRow["MemberType"];
+			entity.MembershipSosNumber = (Convert.IsDBNull(dataRow["MembershipSOSNumber"]))?string.Empty:(System.String)dataRow["MembershipSOSNumber"];
+			entity.MembershipSosExpDate = (Convert.IsDBNull(dataRow["MembershipSOSExpDate"]))?DateTime.MinValue:(System.DateTime?)dataRow["MembershipSOSExpDate"];
 			entity.Nationality = (Convert.IsDBNull(dataRow["Nationality"]))?string.Empty:(System.String)dataRow["Nationality"];
 			entity.HomeStreet = (Convert.IsDBNull(dataRow["HomeStreet"]))?string.Empty:(System.String)dataRow["HomeStreet"];
 			entity.HomeWard = (Convert.IsDBNull(dataRow["HomeWard"]))?string.Empty:(System.String)dataRow["HomeWard"];
 			entity.HomeDistrict = (Convert.IsDBNull(dataRow["HomeDistrict"]))?string.Empty:(System.String)dataRow["HomeDistrict"];
 			entity.HomeCity = (Convert.IsDBNull(dataRow["HomeCity"]))?string.Empty:(System.String)dataRow["HomeCity"];
 			entity.HomeCountry = (Convert.IsDBNull(dataRow["HomeCountry"]))?string.Empty:(System.String)dataRow["HomeCountry"];
-			entity.WorkStreet = (Convert.IsDBNull(dataRow["WorkStreet"]))?string.Empty:(System.String)dataRow["WorkStreet"];
-			entity.WorkWard = (Convert.IsDBNull(dataRow["WorkWard"]))?string.Empty:(System.String)dataRow["WorkWard"];
-			entity.WorkDistrict = (Convert.IsDBNull(dataRow["WorkDistrict"]))?string.Empty:(System.String)dataRow["WorkDistrict"];
-			entity.WorkCity = (Convert.IsDBNull(dataRow["WorkCity"]))?string.Empty:(System.String)dataRow["WorkCity"];
-			entity.WorkCountry = (Convert.IsDBNull(dataRow["WorkCountry"]))?string.Empty:(System.String)dataRow["WorkCountry"];
 			entity.CompanyCode = (Convert.IsDBNull(dataRow["CompanyCode"]))?string.Empty:(System.String)dataRow["CompanyCode"];
 			entity.BillingAddress = (Convert.IsDBNull(dataRow["BillingAddress"]))?string.Empty:(System.String)dataRow["BillingAddress"];
 			entity.HomePhone = (Convert.IsDBNull(dataRow["HomePhone"]))?string.Empty:(System.String)dataRow["HomePhone"];
@@ -724,16 +570,16 @@ namespace AppointmentSystem.Data.Bases
 			entity.CompanyPhone = (Convert.IsDBNull(dataRow["CompanyPhone"]))?string.Empty:(System.String)dataRow["CompanyPhone"];
 			entity.Fax = (Convert.IsDBNull(dataRow["Fax"]))?string.Empty:(System.String)dataRow["Fax"];
 			entity.EmailAddress = (Convert.IsDBNull(dataRow["EmailAddress"]))?string.Empty:(System.String)dataRow["EmailAddress"];
+			entity.CreateUser = (Convert.IsDBNull(dataRow["CreateUser"]))?string.Empty:(System.String)dataRow["CreateUser"];
 			entity.CreateDate = (Convert.IsDBNull(dataRow["CreateDate"]))?DateTime.MinValue:(System.DateTime)dataRow["CreateDate"];
 			entity.ValidCorporate = (Convert.IsDBNull(dataRow["ValidCorporate"]))?false:(System.Boolean)dataRow["ValidCorporate"];
 			entity.DefaultPaymentMode = (Convert.IsDBNull(dataRow["DefaultPaymentMode"]))?string.Empty:(System.String)dataRow["DefaultPaymentMode"];
 			entity.InsuranceCardNumber = (Convert.IsDBNull(dataRow["InsuranceCardNumber"]))?string.Empty:(System.String)dataRow["InsuranceCardNumber"];
 			entity.InsuranceCardExpDate = (Convert.IsDBNull(dataRow["InsuranceCardExpDate"]))?DateTime.MinValue:(System.DateTime?)dataRow["InsuranceCardExpDate"];
-			entity.MembershipSosNumber = (Convert.IsDBNull(dataRow["MembershipSOSNumber"]))?string.Empty:(System.String)dataRow["MembershipSOSNumber"];
-			entity.MembershipSosExpDate = (Convert.IsDBNull(dataRow["MembershipSOSExpDate"]))?DateTime.MinValue:(System.DateTime?)dataRow["MembershipSOSExpDate"];
 			entity.IsDisabled = (Convert.IsDBNull(dataRow["IsDisabled"]))?false:(System.Boolean)dataRow["IsDisabled"];
 			entity.UpdateUser = (Convert.IsDBNull(dataRow["UpdateUser"]))?string.Empty:(System.String)dataRow["UpdateUser"];
 			entity.UpdateDate = (Convert.IsDBNull(dataRow["UpdateDate"]))?DateTime.MinValue:(System.DateTime)dataRow["UpdateDate"];
+			entity.ApptRemark = (Convert.IsDBNull(dataRow["ApptRemark"]))?string.Empty:(System.String)dataRow["ApptRemark"];
 			entity.Remark = (Convert.IsDBNull(dataRow["Remark"]))?string.Empty:(System.String)dataRow["Remark"];
 			entity.AcceptChanges();
 		}

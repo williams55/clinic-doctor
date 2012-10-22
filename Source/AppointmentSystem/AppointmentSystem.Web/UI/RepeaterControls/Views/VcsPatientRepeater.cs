@@ -383,6 +383,24 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.MemberType; }
 		}
         /// <summary>
+        /// Gets the MembershipSosNumber
+        /// </summary>
+        /// <value>The MembershipSosNumber.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String MembershipSosNumber
+		{
+			get { return _entity.MembershipSosNumber; }
+		}
+        /// <summary>
+        /// Gets the MembershipSosExpDate
+        /// </summary>
+        /// <value>The MembershipSosExpDate.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.DateTime? MembershipSosExpDate
+		{
+			get { return _entity.MembershipSosExpDate; }
+		}
+        /// <summary>
         /// Gets the Nationality
         /// </summary>
         /// <value>The Nationality.</value>
@@ -435,51 +453,6 @@ namespace AppointmentSystem.Web.UI
 		public System.String HomeCountry
 		{
 			get { return _entity.HomeCountry; }
-		}
-        /// <summary>
-        /// Gets the WorkStreet
-        /// </summary>
-        /// <value>The WorkStreet.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String WorkStreet
-		{
-			get { return _entity.WorkStreet; }
-		}
-        /// <summary>
-        /// Gets the WorkWard
-        /// </summary>
-        /// <value>The WorkWard.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String WorkWard
-		{
-			get { return _entity.WorkWard; }
-		}
-        /// <summary>
-        /// Gets the WorkDistrict
-        /// </summary>
-        /// <value>The WorkDistrict.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String WorkDistrict
-		{
-			get { return _entity.WorkDistrict; }
-		}
-        /// <summary>
-        /// Gets the WorkCity
-        /// </summary>
-        /// <value>The WorkCity.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String WorkCity
-		{
-			get { return _entity.WorkCity; }
-		}
-        /// <summary>
-        /// Gets the WorkCountry
-        /// </summary>
-        /// <value>The WorkCountry.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String WorkCountry
-		{
-			get { return _entity.WorkCountry; }
 		}
         /// <summary>
         /// Gets the CompanyCode
@@ -545,6 +518,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.EmailAddress; }
 		}
         /// <summary>
+        /// Gets the CreateUser
+        /// </summary>
+        /// <value>The CreateUser.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String CreateUser
+		{
+			get { return _entity.CreateUser; }
+		}
+        /// <summary>
         /// Gets the CreateDate
         /// </summary>
         /// <value>The CreateDate.</value>
@@ -590,24 +572,6 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.InsuranceCardExpDate; }
 		}
         /// <summary>
-        /// Gets the MembershipSosNumber
-        /// </summary>
-        /// <value>The MembershipSosNumber.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.String MembershipSosNumber
-		{
-			get { return _entity.MembershipSosNumber; }
-		}
-        /// <summary>
-        /// Gets the MembershipSosExpDate
-        /// </summary>
-        /// <value>The MembershipSosExpDate.</value>
-		[System.ComponentModel.Bindable(true)]
-		public System.DateTime? MembershipSosExpDate
-		{
-			get { return _entity.MembershipSosExpDate; }
-		}
-        /// <summary>
         /// Gets the IsDisabled
         /// </summary>
         /// <value>The IsDisabled.</value>
@@ -633,6 +597,15 @@ namespace AppointmentSystem.Web.UI
 		public System.DateTime UpdateDate
 		{
 			get { return _entity.UpdateDate; }
+		}
+        /// <summary>
+        /// Gets the ApptRemark
+        /// </summary>
+        /// <value>The ApptRemark.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String ApptRemark
+		{
+			get { return _entity.ApptRemark; }
 		}
         /// <summary>
         /// Gets the Remark

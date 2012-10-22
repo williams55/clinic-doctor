@@ -117,11 +117,6 @@ namespace AppointmentSystem.Data.Bases
 		public virtual VcsCompanyProviderBase VcsCompanyProvider{get {throw new NotImplementedException();}}
 		
 		///<summary>
-		/// Current VcsMemberTypeProviderBase instance.
-		///</summary>
-		public virtual VcsMemberTypeProviderBase VcsMemberTypeProvider{get {throw new NotImplementedException();}}
-		
-		///<summary>
 		/// Current VcsPatientProviderBase instance.
 		///</summary>
 		public virtual VcsPatientProviderBase VcsPatientProvider{get {throw new NotImplementedException();}}
