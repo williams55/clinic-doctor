@@ -150,7 +150,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                                                    patient.MemberType,
                                                                    patient.Nationality,
                                                                    patient.MobilePhone,
-                                                                   patient.DateOfBirth,
+                                                                   DateOfBirth = patient.DateOfBirth.ToString("MM/dd/yyyy"),
                                                                    patient.Sex,
                                                                    patient.Remark,
                                                                    propertyToSearch = ParsePatientInfo(patient),
@@ -234,7 +234,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string CreateSimplePatient(string firstName, string middleName, string lastName, string memberType
+    public static string CreateSimplePatient(string firstName, string middleName, string lastName
         , string dob, string nationality, string mobilePhone, string sex, string remark)
     {
         try
@@ -246,7 +246,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Validate patient's fields
-            if (!ValidatePatient(firstName, lastName, memberType, nationality, sex, ref _message))
+            if (!ValidatePatient(firstName, lastName, nationality, sex, ref _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -266,22 +266,16 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 MiddleName = middleName,
                 LastName = lastName,
                 Sex = sex,
-                MemberType = memberType,
                 DateOfBirth = dtDOB,
                 Nationality = nationality,
                 MobilePhone = mobilePhone,
-                Remark = remark,
-                CreateDate = DateTime.Now,
+                ApptRemark = remark,
                 UpdateUser = WebCommon.GetAuthUsername(),
-                UpdateDate = DateTime.Now
             };
 
-            var patients = DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
-                , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
-                , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
-                , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
-                , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
-                , patient.Remark);
+            var patients = DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName, patient.MiddleName
+                , patient.LastName, patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone
+                , patient.MobilePhone, patient.UpdateUser, patient.ApptRemark);
 
             if (patients == null || !patients.Any())
             {
@@ -334,7 +328,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateSimplePatient(string id, string firstName, string middleName, string lastName, string memberType
+    public static string UpdateSimplePatient(string id, string firstName, string middleName, string lastName
         , string dob, string nationality, string mobilePhone, string sex, string remark)
     {
         try
@@ -346,7 +340,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Validate patient's fields
-            if (!ValidatePatient(firstName, lastName, memberType, nationality, sex, ref _message))
+            if (!ValidatePatient(firstName, lastName, nationality, sex, ref _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
@@ -371,19 +365,15 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             patient.MiddleName = middleName;
             patient.LastName = lastName;
             patient.Sex = sex;
-            patient.MemberType = memberType;
             patient.DateOfBirth = dtDOB;
             patient.Nationality = nationality;
             patient.MobilePhone = mobilePhone;
-            patient.Remark = remark;
+            patient.ApptRemark = remark;
             patient.UpdateUser = WebCommon.GetAuthUsername();
             patient.UpdateDate = DateTime.Now;
             DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
-                , patient.DateOfBirth, patient.Sex, patient.MemberType, patient.Nationality, patient.HomeStreet, patient.HomeWard
-                , patient.HomeDistrict, patient.HomeCity, patient.HomeCountry, patient.WorkStreet, patient.WorkWard, patient.WorkDistrict
-                , patient.WorkCity, patient.WorkCountry, patient.CompanyCode, patient.BillingAddress, patient.HomePhone, patient.MobilePhone
-                , patient.CompanyPhone, patient.Fax, patient.EmailAddress, patient.CreateDate, patient.UpdateUser, patient.UpdateDate
-                , patient.Remark, patient.IsDisabled);
+                , patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone, patient.MobilePhone
+                , patient.UpdateUser, patient.ApptRemark, patient.IsDisabled);
             #endregion
 
             return WebCommon.BuildSuccessfulResult(new List<object>
@@ -423,7 +413,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <param name="message"></param>
     /// <param name="memberType"> </param>
     /// <returns></returns>
-    private static bool ValidatePatient(string firstname, string lastname, string memberType, string nationality
+    private static bool ValidatePatient(string firstname, string lastname, string nationality
         , string sex, ref string message)
     {
         try
@@ -440,13 +430,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             if (string.IsNullOrEmpty(lastname))
             {
                 message = "Please input Last Name.";
-                return false;
-            }
-
-            // Validate empty value for memberType field
-            if (string.IsNullOrEmpty(memberType))
-            {
-                message = "Please input Member Type.";
                 return false;
             }
 
