@@ -1,14 +1,16 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
-CREATE VIEW [dbo].[VCSPatient]
+CREATE VIEW dbo.VCSPatient
 AS
-SELECT     VCS.dbo.Patient.*
+SELECT     PatientCode, FirstName, MiddleName, LastName, DateOfBirth, Sex, MemberType, MembershipSOSNumber, MembershipSOSExpDate, Nationality, HomeStreet, 
+                      HomeWard, HomeDistrict, HomeCity, HomeCountry, CompanyCode, BillingAddress, HomePhone, MobilePhone, CompanyPhone, Fax, EmailAddress, CreateUser, 
+                      CreateDate, ValidCorporate, DefaultPaymentMode, InsuranceCardNumber, InsuranceCardExpDate, IsDisabled, UpdateUser, UpdateDate, ApptRemark, Remark
 FROM         VCS.dbo.Patient
-
 GO
+
 EXEC sp_addextendedproperty N'MS_DiagramPane1', N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
    Begin PaneConfigurations = 
@@ -80,11 +82,11 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "Patient"
+         Begin Table = "Patient (VCS.dbo)"
             Begin Extent = 
                Top = 6
                Left = 38
-               Bottom = 125
+               Bottom = 175
                Right = 245
             End
             DisplayFlags = 280
@@ -118,6 +120,7 @@ Begin DesignProperties =
 End
 ', 'SCHEMA', N'dbo', 'VIEW', N'VCSPatient', NULL, NULL
 GO
+
 DECLARE @xp int
 SELECT @xp=1
 EXEC sp_addextendedproperty N'MS_DiagramPaneCount', @xp, 'SCHEMA', N'dbo', 'VIEW', N'VCSPatient', NULL, NULL
