@@ -1,16 +1,35 @@
 /*
-Copyright DHTMLX LTD. http://www.dhtmlx.com
-To use this component please contact sales@dhtmlx.com to obtain license
+This software is allowed to use under GPL or you need to obtain Commercial or Enterise License
+to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 */
 (function(){
-    var old_prerender_events_line = scheduler._pre_render_events_line;
-    scheduler._pre_render_events_line = function(evs, hold){
+
+	scheduler.config.all_timed = "short";
+	scheduler.config.update_render = true;
+
+	var is_event_short = function (ev) {
+		return 	!((ev.end_date - ev.start_date)/(1000*60*60) >= 24);
+	};
+
+	var old_prerender_events_line = scheduler._pre_render_events_line;
+	scheduler._pre_render_events_line = function(evs, hold){
+		if (!this.config.all_timed)
+			return old_prerender_events_line.call(this, evs, hold);
+
 		for (var i=0; i < evs.length; i++) {
 			var ev=evs[i];
 
 			if (!ev._timed) {
 
+				if (this.config.all_timed == "short") {
+					if (!is_event_short(ev)) {
+						evs.splice(i--,1);
+						continue;
+					}
+				}
+
 				var ce = this._lame_copy({}, ev); // current event (event for one specific day) is copy of original with modified dates
+				
 				ce.start_date = new Date(ce.start_date); // as lame copy doesn't copy date objects
 
 				var next_day = scheduler.date.add(ev.start_date, 1, "day");
@@ -55,17 +74,60 @@ To use this component please contact sales@dhtmlx.com to obtain license
 				}
 			}
 		}
-	    // in case of all_timed pre_render is not applied to the original event
-	    // so we need to force redraw in case of dnd
-	    var redraw = (this._drag_mode == 'move')?false:hold;
-	    return old_prerender_events_line.call(this, evs, redraw);
-    };
+		// in case of all_timed pre_render is not applied to the original event
+		// so we need to force redraw in case of dnd
+		var redraw = (this._drag_mode == 'move')?false:hold;
+		return old_prerender_events_line.call(this, evs, redraw);
+	};
 	var old_get_visible_events = scheduler.get_visible_events;
-	scheduler.get_visible_events = function(){
+	scheduler.get_visible_events = function(only_timed){
+		if (!this.config.all_timed)
+			return old_get_visible_events.call(this, only_timed);	
 		return old_get_visible_events.call(this, false); // only timed = false
 	};
 	scheduler.attachEvent("onBeforeViewChange", function (old_mode, old_date, mode, date) {
 		scheduler._allow_dnd = (mode == "day" || mode == "week");
 		return true;
 	});
+
+	scheduler.render_view_data=function(evs, hold){
+		if(!evs){
+			if (this._not_render) {
+				this._render_wait=true;
+				return;
+			}
+			this._render_wait=false;
+
+			this.clear_view();
+			evs=this.get_visible_events( !(this._table_view || this.config.multi_day) );
+		}
+
+		if (this.config.multi_day && !this._table_view){
+
+			var tvs = [];
+			var tvd = [];
+			for (var i=0; i < evs.length; i++){
+				if (evs[i]._timed || this.config.all_timed === true || (this.config.all_timed == "short" && is_event_short(evs[i])) )
+					tvs.push(evs[i]);
+				else
+					tvd.push(evs[i]);
+			}
+
+			// normal events
+			this._rendered_location = this._els['dhx_cal_data'][0];
+			this._table_view=false;
+			this.render_data(tvs, hold);
+
+			// multiday events
+			this._rendered_location = this._els['dhx_multi_day'][0];
+			this._table_view = true;
+			this.render_data(tvd, hold);
+			this._table_view=false;
+
+		} else {
+			this._rendered_location = this._els['dhx_cal_data'][0];
+			this.render_data(evs, hold);
+		}
+	};
+
 })();
