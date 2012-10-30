@@ -1,4 +1,12 @@
 /*************************Start lightbox form for scheduler***************************/
+/* Stly cho row cua form trong dhtmlx scheduler */
+.dhx_form_row
+{
+    padding: 5px 0;
+    border-top: 0;
+    border-bottom: 1px solid #CECECE;
+}
+
 .schedulerForm
 {
     /*position: absolute;     z-index: 10001;     display: none;     font-family: Arial, Sans-Serif;     background-color: #d6e5f4;     padding: 10px;     visibility: visible;     width: 320px;     top: 22px;     left: 0px;     border: 2px solid #3380CB;*/
@@ -192,13 +200,9 @@ span.tinybox-info
 /************************ Start over roster background color **************************************/
 div.roster_color
 {
-    pointer-events:none;
+    pointer-events: none;
     position: absolute;
     width: 100%;
-    z-index: 4;
-    /*opacity: 0.5;
-    -moz-opacity: 0.5;
-    filter: alpha(opacity=50);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";*/
+    z-index: 4; /*opacity: 0.5;     -moz-opacity: 0.5;     filter: alpha(opacity=50);     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";*/
 }
 /************************ End over roster background color **************************************/

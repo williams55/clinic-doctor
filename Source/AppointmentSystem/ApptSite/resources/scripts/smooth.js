@@ -73,6 +73,7 @@ function ShowDialog(objId, title, message, url) {
         resizable: false,
         height: 150,
         modal: true,
+        zIndex: $.maxZIndex() + 1,
         buttons: {
             Ok: function() {
                 $(this).dialog("close");
@@ -90,6 +91,11 @@ function ShowDialog(objId, title, message, url) {
     });
 }
 
+// Hien thi message
+function ShowMessage(message) {
+    ShowDialog('', '', message, '');
+}
+
 function ShowProgress() {
     $("#spanMessage-content").html('<div id="progressbar"></div>');
     $("#progressbar").progressbar({
@@ -98,7 +104,8 @@ function ShowProgress() {
     $("#dialog-message-title").dialog({
         resizable: false,
         height: 120,
-        modal: false,
+        modal: true,
+        zIndex: $.maxZIndex() + 1,
         buttons: {}
     });
 }

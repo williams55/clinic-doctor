@@ -47,7 +47,11 @@
   <ItemGroup>
     <Compile Include="BoFactory.cs" />
     <Compile Include="BO\AppointmentBO.cs" />
+    <Compile Include="BO\IdBO.cs" />
+    <Compile Include="BO\RosterBO.cs" />
     <Compile Include="BO\StatusBO.cs" />
+    <Compile Include="InterfaceBO\IIdBO.cs" />
+    <Compile Include="InterfaceBO\IRosterBO.cs" />
     <Compile Include="InterfaceBO\IAppointmentBO.cs" />
     <Compile Include="InterfaceBO\IStatusBO.cs" />
     <Compile Include="InterfaceBO\IUserBO.cs" />

@@ -9,5 +9,7 @@ namespace AppointmentBusiness.BO
     {
         public static IUserBO UserBO { get { return new UserBO(); } }
         public static IStatusBO StatusBO { get { return new StatusBO(); } }
+        public static IRosterBO RosterBO { get { return new RosterBO(); } }
+        public static IIdBO IdBO { get { return new IdBO(); } }
     }
 }

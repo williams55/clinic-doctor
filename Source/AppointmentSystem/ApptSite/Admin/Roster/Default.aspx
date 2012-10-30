@@ -15,6 +15,15 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
+    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_dhx_terrace.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_active_links.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_limit.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_timeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
@@ -30,13 +39,11 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_tooltip.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/jquery.tokeninput.js") %>"></script>
-
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
 
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/styles/token-input.css") %>"
-        type="text/css" />
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler.css") %>"
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler_dhx_terrace.css") %>"
+        type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/blocksection.css") %>"
         type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/scheduler.css") %>"
         type="text/css" media="screen" title="no title" />
@@ -53,8 +60,19 @@
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
     </script>
 
+    <style media="screen">
+        /* enabling marked timespans for month view */.dhx_scheduler_month .dhx_marked_timespan
+        {
+            display: block;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
+    <div id="RosterForm" class="dialog-form" title="Roster" style="display: none;">
+        <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
+            <span class="loading"></span>
+        </div>
+    </div>
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
@@ -65,74 +83,6 @@
             </ul>
         </div>
         <div id="box-other">
-            <div id="RosterForm" class="dialog-form" title="Roster" style="display: none;">
-                <input type="hidden" id="hdId" value="" />
-                <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
-                    <span class="loading"></span>
-                </div>
-                <table class="table-form" id="tblContent">
-                    <tr>
-                        <td class="header" width="80">
-                            Doctor
-                        </td>
-                        <td>
-                            <input type="text" id="txtDoctor" style="width: 90%;" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Roster Type
-                        </td>
-                        <td>
-                            <asp:DropDownList runat="server" ID="cboRosterType">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr id="trRepeat">
-                        <td class="header">
-                            Is repeat
-                        </td>
-                        <td>
-                            <input id="chkRepeat" type="checkbox" value="repeated" checked="checked" style="float: left;" />
-                            <span id="spanMonth">
-                                <input type="text" id="txtMonth" readonly="readonly" /></span>
-                        </td>
-                    </tr>
-                    <tr id="divWeekday">
-                        <td class="header">
-                            Weekday
-                        </td>
-                        <td id="spanWeekday">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            From
-                        </td>
-                        <td>
-                            <select id="cboFromHour">
-                            </select><input type="text" id="txtFromDate" class="datePicker" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            To
-                        </td>
-                        <td>
-                            <select id="cboToHour">
-                            </select><input type="text" id="txtToDate" class="datePicker" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Note
-                        </td>
-                        <td>
-                            <textarea id="txtNote" cols="10" rows="3" style="width: 100%;"></textarea>
-                        </td>
-                    </tr>
-                </table>
-            </div>
             <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 600px;'>
                 <div class="dhx_cal_navline">
                     <div class="dhx_cal_prev_button">
@@ -143,20 +93,17 @@
                     </div>
                     <div class="dhx_cal_date">
                     </div>
-                    <div class="dhx_minical_icon" id="dhx_minical_icon" onclick=" ShowMinical()">
+                    <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="ShowMinical()" style="left: auto;
+                        right: 220px;">
                         &nbsp;</div>
-                    <div class="dhx_cal_tab" name="week_tab" style="right: 140px;">
+                    <div class="dhx_cal_tab" name="week_tab">
                     </div>
-                    <div class="dhx_cal_tab" name="timeline_tab" style="right: 280px;">
+                    <div class="dhx_cal_tab" name="day_tab">
                     </div>
-                    <div class="dhx_cal_tab" name="month_tab" style="right: 76px;">
+                    <div class="dhx_cal_tab" name="timeline_tab">
                     </div>
-                    <div style="background: url('../../resources/components/dhtmlxScheduler/imgs/buttons.gif');
-                        width: 30px; height: 20px; float: left; right: 30px; cursor: pointer; display: none;" id="move_left" title="Move left">
-                        &nbsp;</div>
-                    <div style="background: url('../../resources/components/dhtmlxScheduler/imgs/buttons.gif') -30px 0px;
-                        width: 30px; height: 20px; float: left; right: 0px; cursor: pointer; display: none;" id="move_right" title="Move right">
-                        &nbsp;</div>
+                    <div class="dhx_cal_tab" name="month_tab">
+                    </div>
                 </div>
                 <div class="dhx_cal_header">
                 </div>
@@ -165,4 +112,204 @@
             </div>
         </div>
     </div>
+    <div class="dhx_cal_light dhx_cal_light_wide" id="form-dhtmlx" style="height: 320px;
+        display: none;">
+        <input type="hidden" id="hdId" value="" />
+        <div class="dhx_cal_ltitle" id="drag-title">
+            <span class="dhx_mark">&nbsp;</span><span class="dhx_time"></span><span class="dhx_title"></span><div
+                class="dhx_close_icon" onclick="CancelRoster();" title="Close form without save">
+            </div>
+        </div>
+        <div class="dhx_cal_larea" style="height: 220px;">
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection">
+                    Doctor</div>
+                <div class="dhx_cal_ltext">
+                    <dx:ASPxComboBox ID="cboDoctor" ClientInstanceName="cboDoctor" runat="server" Width="550"
+                        DropDownWidth="550" DropDownStyle="DropDownList" DataSourceID="UsersDataSource"
+                        ValueField="Username" ValueType="System.String" TextFormatString="{0}" EnableCallbackMode="true"
+                        IncrementalFilteringMode="StartsWith">
+                        <Columns>
+                            <dx:ListBoxColumn FieldName="Username" Width="130px" />
+                            <dx:ListBoxColumn FieldName="DisplayName" Width="200px" />
+                        </Columns>
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Doctor is required" />
+                        </ValidationSettings>
+                    </dx:ASPxComboBox>
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection">
+                    Roster Type</div>
+                <div class="dhx_cal_ltext">
+                    <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="550" TextField="Title"
+                        ValueField="Id" ID="cboRosterType" ValueType="System.Int32" ClientInstanceName="cboRosterType">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Roster Type is required" />
+                        </ValidationSettings>
+                    </dx:ASPxComboBox>
+                </div>
+            </div>
+            <div class="dhx_wrap_section" id="repeater-section">
+                <div class="dhx_cal_lsection">
+                    <div class="dhx_custom_button" index="1" id="btnRepeat">
+                        <div class="dhx_custom_button_recurring" style="background-position: -5px 0px;">
+                        </div>
+                        <div>
+                            Disabled</div>
+                    </div>
+                    Repeat event</div>
+                <div class="dhx_cal_ltext" style="display: none;">
+                    <input id="chkRepeat" type="checkbox" value="repeated" style="display: none;" />
+                    <table border="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input id="chkWeekday_Sunday" type="checkbox" value="0" /><label
+                                        for="chkWeekday_Sunday">Sunday</label>
+                                </td>
+                                <td>
+                                    <input id="chkWeekday_Monday" type="checkbox" value="1" /><label
+                                        for="chkWeekday_Monday">Monday</label>
+                                </td>
+                                <td>
+                                    <input id="chkWeekday_Tuesday" type="checkbox" value="2" /><label
+                                        for="chkWeekday_Tuesday">Tuesday</label>
+                                </td>
+                                <td>
+                                    <input id="chkWeekday_Wednesday" type="checkbox" value="3" /><label
+                                        for="chkWeekday_Wednesday">Wednesday</label>
+                                </td>
+                                <td>
+                                    <input id="chkWeekday_Thursday" type="checkbox" value="4" /><label
+                                        for="chkWeekday_Thursday">Thursday</label>
+                                </td>
+                                <td>
+                                    <input id="chkWeekday_Friday" type="checkbox" value="5" /><label
+                                        for="chkWeekday_Friday">Friday</label>
+                                </td>
+                                <td>
+                                    <input id="chkWeekday_Saturday" type="checkbox" value="6" /><label
+                                        for="chkWeekday_Saturday">Saturday</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection">
+                    Time period</div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxTimeEdit ID="startTime" runat="server" ClientInstanceName="startTime" EditFormatString="HH:mm"
+                        DisplayFormatString="HH:mm" Width="70px">
+                        <ClientSideEvents ButtonClick='function(s, e) {
+                            if (e.buttonIndex == -2) //increment button
+                            {
+                                var date = s.GetDate();
+                                var minutes = date.getMinutes();
+                                date.setMinutes(minutes + minuteStep);
+                                s.SetDate(date);
+                            }
+                            else if (e.buttonIndex == -3) //down button
+                            {
+                                var date = s.GetDate();
+                                var minutes = date.getMinutes();
+                                date.setMinutes(minutes - minuteStep); 
+                                s.SetDate(date);
+                            }}' />
+                    </dx:ASPxTimeEdit>
+                </div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxDateEdit ID="startDate" ClientInstanceName="startDate" runat="server" EditFormatString="M/d/yyyy"
+                        DisplayFormatString="M/d/yyyy" Width="150px">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="From Date is required" />
+                        </ValidationSettings>
+                    </dx:ASPxDateEdit>
+                </div>
+                <div class="dhx_cal_ltext" style="float: left; text-align: center;">
+                    -
+                </div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxTimeEdit ID="endTime" ClientInstanceName="endTime" runat="server" EditFormatString="HH:mm"
+                        DisplayFormatString="HH:mm" Width="70px">
+                        <ClientSideEvents ButtonClick='function(s, e) {
+                            if (e.buttonIndex == -2) //increment button
+                            {
+                                var date = s.GetDate();
+                                var minutes = date.getMinutes();
+                                date.setMinutes(minutes + minuteStep);
+                                s.SetDate(date);
+                            }
+                            else if (e.buttonIndex == -3) //down button
+                            {
+                                var date = s.GetDate();
+                                var minutes = date.getMinutes();
+                                date.setMinutes(minutes - minuteStep); 
+                                s.SetDate(date);
+                            }}' />
+                    </dx:ASPxTimeEdit>
+                </div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxDateEdit ID="endDate" ClientInstanceName="endDate" runat="server" EditFormatString="M/d/yyyy"
+                        DisplayFormatString="M/d/yyyy" Width="150px">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="To Date is required" />
+                        </ValidationSettings>
+                    </dx:ASPxDateEdit>
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection">
+                    Note</div>
+                <div class="dhx_cal_ltext">
+                    <textarea id="txtNote" style="width: 550px; font-family: Arial;" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set">
+            <div dhx_button="1" class="dhx_save_btn">
+            </div>
+            <div title="Save roster" onclick="NewRoster();" id="btnSave">
+                Save</div>
+            <div title="Update roster" onclick="UpdateRoster();" id="btnUpdate">
+                Update</div>
+        </div>
+        <div class="dhx_btn_set dhx_left_btn_set dhx_cancel_btn_set">
+            <div dhx_button="1" class="dhx_cancel_btn">
+            </div>
+            <div title="Cancel editing" onclick="CancelRoster();">
+                Cancel</div>
+        </div>
+        <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;">
+            <div dhx_button="1" class="dhx_delete_btn">
+            </div>
+            <div title="Delete current roster" id="delete-form-roster" onclick="DeleteRoster();">
+                Delete</div>
+        </div>
+    </div>
+    <data:UsersDataSource SelectMethod="GetPaged" runat="server" ID="UsersDataSource">
+        <Parameters>
+            <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+        </Parameters>
+    </data:UsersDataSource>
+    <data:RosterTypeDataSource SelectMethod="GetPaged" runat="server" ID="RosterTypeDataSource">
+        <Parameters>
+            <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="OrderByClause" Value="Title ASC" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+        </Parameters>
+    </data:RosterTypeDataSource>
 </asp:Content>

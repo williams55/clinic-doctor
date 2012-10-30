@@ -1,33 +1,35 @@
 /*
-Copyright DHTMLX LTD. http://www.dhtmlx.com
-To use this component please contact sales@dhtmlx.com to obtain license
+This software is allowed to use under GPL or you need to obtain Commercial or Enterise License
+to use it in non-GPL project. Please contact sales@dhtmlx.com for details
 */
-
-scheduler.grid = {
-	sort_rules:{
-		"int":function(a,b, fieldName){ return a[fieldName]*1<b[fieldName]*1?1:-1},
-		"str":function(a,b, fieldName){ return a[fieldName]<b[fieldName]?1:-1},
-		"date":function(a,b, fieldName){ return new Date(a[fieldName])< new Date(b[fieldName])?1:-1}
-	},
-	_getObjName:function(name){
-		return "grid_"+name;
-	},
-	_getViewName:function(objName){
-		return objName.replace(/^grid_/,'');
-	}
-};
-
+(function(){
+	scheduler.grid = {
+		sort_rules:{
+			"int":function(a,b, getVal){ return getVal(a)*1 < getVal(b)*1?1:-1},
+			"str":function(a,b, getVal){ return getVal(a) < getVal(b)?1:-1},
+			"date":function(a,b, getVal){ return new Date(getVal(a))< new Date(getVal(b))?1:-1}
+		},
+		_getObjName:function(name){
+			return "grid_"+name;
+		},
+		_getViewName:function(objName){
+			return objName.replace(/^grid_/,'');
+		}
+	};
+}
+)();
 /*
 obj={
     name:'grid_name'
 	fields:[
                   { id:"id", label:"Id", width:80, sort:"int/date/str", template:function(start_date, end_date, ev){ return ""}, align:"right/left/center" },
-                  { id:"text", label:"Text", width:'*', sort:function(a,b){ return 1 or -1}, valign:'top/bottom/middle' }
+                  { id:"text", label:"Text", width:'*', css:"class_name", sort:function(a,b){ return 1 or -1}, valign:'top/bottom/middle' }
                   ...
             ],
 	from:new Date(0),
 	to:Date:new Date(9999,1,1),
 	rowHeight:int,
+	paging:true/false,
 	select:true/false
 }
 */
@@ -42,14 +44,21 @@ scheduler.createGridView=function(obj){
 	scheduler.config[name + '_end'] = obj.to || (new Date(9999,1,1));
 
 	scheduler[objName] = obj;
-	scheduler[objName].sort_field = 'start_date';
-	scheduler[objName].direction = 'asc';
-
+	scheduler[objName].defPadding = 8;
 	scheduler[objName].columns = scheduler[objName].fields;
 	delete scheduler[objName].fields;
+	function isValidSize(size){
+		return !(size !== undefined && (size*1 != size || size < 0));
+	}
 
-	for(var i=0; i < scheduler[objName].columns.length; i++){
-		scheduler[objName].columns[i].initialWidth = scheduler[objName].columns[i].width;
+	var cols = scheduler[objName].columns;
+	for(var i=0; i < cols.length; i++){
+		if(isValidSize(cols[i].width))
+			cols[i].initialWidth = cols[i].width;
+		if(!isValidSize(cols[i].paddingLeft))
+			delete cols[i].paddingLeft;
+		if(!isValidSize(cols[i].paddingRight))
+			delete cols[i].paddingRight;
 	}
 
 	scheduler[objName].select = obj.select === undefined ? true : obj.select;
@@ -104,12 +113,17 @@ scheduler.createGridView=function(obj){
 			return event[field_name];
 		};
 
-		scheduler.attachEvent("onSchedulerResize",function(){
-		   if (this._mode == name){
-			  this[name+'_view'](true);
-			  return false;
-		   }
-		   return true;
+		scheduler.attachEvent("onSchedulerResize", function() {
+			if (this._mode == name) {
+				this[name + '_view'](true);
+				// timeout used to run code after all onSchedulerResize handlers are finished
+				window.setTimeout(function(){
+					// we need to call event manually because handler return false, and blocks default logic
+					scheduler.callEvent("onAfterSchedulerResize", []);
+				},1);
+				return false;
+			}
+			return true;
 		});
 
 
@@ -138,8 +152,8 @@ scheduler.createGridView=function(obj){
 
 	scheduler[name+'_view']=function(mode){
 		if (mode){
-			scheduler._min_date = scheduler[objName].paging ? scheduler.date[name+'_start'](scheduler._date) : scheduler.config[name + '_start'];
-			scheduler._max_date = scheduler[objName].paging ?  scheduler.date.add(scheduler._min_date, 1, name) : scheduler.config[name + '_end'];
+			scheduler._min_date = scheduler[objName].paging ? scheduler.date[name+'_start'](new Date(scheduler._date)) : scheduler.config[name + '_start'];
+			scheduler._max_date = scheduler[objName].paging ? scheduler.date.add(scheduler._min_date, 1, name) : scheduler.config[name + '_end'];
 
 			scheduler.grid.set_full_view(objName);
 			if(scheduler._min_date > new Date(0) && scheduler._max_date < (new Date(9999,1,1)))
@@ -178,11 +192,8 @@ scheduler._click.dhx_cal_header=function(e){
 
 		scheduler.grid.draw_sort_marker(event.originalTarget || event.srcElement, params.dir);
 
-		scheduler[scheduler._gridView].sort_rule = params.rule;
-		scheduler[scheduler._gridView].sort_field = params.field;
-		scheduler[scheduler._gridView].direction = params.dir;
 		scheduler.clear_view();
-		scheduler.grid._fill_grid_tab(scheduler._gridView);
+		scheduler.grid._fill_grid_tab(scheduler._gridView, params);
 	}
 	else if(scheduler._old_header_click)
 		return scheduler._old_header_click.apply(this,arguments);
@@ -242,15 +253,29 @@ scheduler.grid.get_sort_params = function(event, objName){
 		}
 	}
 
-	var field = scheduler[objName].columns[index].id;
+
+
+	var value = null;
+	if(scheduler[objName].columns[index].template){
+		var template = scheduler[objName].columns[index].template
+		value = function(ev){
+			return template(ev.start_date, ev.end_date, ev);
+		};
+	}else{
+		var field = scheduler[objName].columns[index].id;
+		if(field == "date")
+			field = "start_date";
+		value = function(ev){ return ev[field];}
+	}
+
 	var rule = scheduler[objName].columns[index].sort;
 
 	if(typeof rule != 'function'){
 		rule = scheduler.grid.sort_rules[rule] || scheduler.grid.sort_rules['str'];
 	}
 
-	return {dir:direction, field:field, rule:rule};
-}
+	return {dir:direction, value:value, rule:rule};
+};
 
 scheduler.grid.draw_sort_marker = function(node, direction){
 	if(node.className == 'dhx_grid_view_sort')
@@ -266,21 +291,20 @@ scheduler.grid.draw_sort_marker = function(node, direction){
 	var html = "<div class='dhx_grid_view_sort' style='left:"+(+node.style.width.replace('px','') -15+node.offsetLeft)+"px'>&nbsp;</div>";
 	node.innerHTML += html;
 
-}
+};
 
-scheduler.grid.sort_grid=function(field, direction, rule){
+scheduler.grid.sort_grid=function(sort){
 
-	if(field == 'date')
-	    field = 'start_date';
+	var sort = sort || {dir:'desc', value:function(ev){return ev.start_date;}, rule:scheduler.grid.sort_rules['date']};
+
 	var events = scheduler.get_visible_events();
 
-
-	if(direction == 'desc')
-		events.sort(function(a,b){return rule(a,b,field)});
+	if(sort.dir == 'desc')
+		events.sort(function(a,b){return sort.rule(a,b,sort.value)});
 	else
-		events.sort(function(a,b){return -rule(a,b, field)});
+		events.sort(function(a,b){return -sort.rule(a,b, sort.value)});
 	return events;
-}
+};
 
 
 
@@ -293,16 +317,44 @@ scheduler.grid.set_full_view = function(mode){
 		scheduler._table_view=true;
 		scheduler.set_sizes();
 	}
-}
+};
+scheduler.grid._calcPadding = function(column, parent){
+	var padding = (column.paddingLeft !== undefined ? 1*column.paddingLeft : scheduler[parent].defPadding)
+				+ (column.paddingRight !== undefined ? 1*column.paddingRight : scheduler[parent].defPadding);
+	return padding;
+};
 
-scheduler.grid._fill_grid_tab = function(objName){
+scheduler.grid._getStyles = function(column, items){
+	var cell_style = [], style = "";
+	for(var i=0; items[i]; i++ ){
+		style = items[i] + ":";
+	    switch (items[i]){
+			case "text-align":
+				if(column.align)
+					cell_style.push(style+column.align);
+				break;
+			case "vertical-align":
+				if(column.valign)
+					cell_style.push(style+column.valign);
+				break;
+			case "padding-left":
+				if(column.paddingLeft != undefined)
+					cell_style.push(style+(column.paddingLeft||'0') + "px");
+				break;
+			case "padding-left":
+				if(column.paddingRight != undefined)
+					cell_style.push(style+(column.paddingRight||'0') + "px");
+				break;
+		}
+	}
+	return cell_style;
+};
+
+scheduler.grid._fill_grid_tab = function(objName, sort){
 	//get current date
 	var date = scheduler._date;
 	//select events for which data need to be printed
-
-	var rule = scheduler[objName].sort_rule || scheduler.grid.sort_rules['str'];
-
-	var events = scheduler.grid.sort_grid(scheduler[objName].sort_field, scheduler[objName].direction, rule)
+	var events = scheduler.grid.sort_grid(sort)
 
 	//generate html for the view
 	var columns = scheduler[objName].columns;
@@ -310,28 +362,28 @@ scheduler.grid._fill_grid_tab = function(objName){
 	var html = "<div>";
 	var left = -2;//column borders at the same pos as header borders...
 	for(var i=0; i < columns.length; i++){
-		left +=columns[i].width +5 ;//
+		var padding = scheduler.grid._calcPadding(columns[i], objName);
+		left +=columns[i].width + padding ;//
 		if(i < columns.length - 1)
 			html += "<div class='dhx_grid_v_border' style='left:"+(left)+"px'></div>";
 	}
 	html += "</div>"
-	html +="<div class='dhx_grid_area'>";
+	html +="<div class='dhx_grid_area'><table>";
+
 	for (var i=0; i<events.length; i++){
 		html += scheduler.grid._print_event_row(events[i], objName);
 	}
 
-	html +="</div>";
+	html +="</table></div>";
 	//render html
 	scheduler._els["dhx_cal_data"][0].innerHTML = html;
 	scheduler._els["dhx_cal_data"][0].scrollTop = scheduler.grid._gridScrollTop||0;
 
-	var t=scheduler._els["dhx_cal_data"][0].lastChild.childNodes;
-
+	var t=scheduler._els["dhx_cal_data"][0].getElementsByTagName("tr");
 
 	scheduler._rendered=[];
 	for (var i=0; i < t.length; i++){
-		if(t[i].className.indexOf('dhx_grid_v_border') == -1)
-			scheduler._rendered[i]=t[i]
+		scheduler._rendered[i]=t[i]
 	}
 
 };
@@ -355,8 +407,10 @@ scheduler.grid._print_event_row = function(ev, objName){
 	var columns = scheduler[objName].columns;
 	var ev_class = scheduler.templates.event_class(ev.start_date, ev.end_date, ev);
 
-	var html ="<div class='dhx_body"+(ev_class?' '+ev_class:'')+"' event_id='"+ev.id+"' " + style + ">";
+	var html ="<tr class='dhx_grid_event"+(ev_class? ' '+ev_class:'')+"' event_id='"+ev.id+"' " + style + ">";
+
 	var name = scheduler.grid._getViewName(objName);
+	var availStyles = ["text-align", "vertical-align", "padding-left","padding-right"];
 	for(var i =0; i < columns.length; i++){
 		var value;
 		if(columns[i].template){
@@ -368,22 +422,18 @@ scheduler.grid._print_event_row = function(ev, objName){
 		}else{
 			value = scheduler.templates[name + '_field'](columns[i].id, ev);
 		}
-		var cell_style = "";
-		if(columns[i].align){
-			cell_style = "text-align:"+columns[i].align+";";
-		}
 
-		var hasVAlign = (scheduler[objName]['rowHeight'] && columns[i].valign);
-		if(hasVAlign){
-			value = "<table><td style='vertical-align:"+columns[i].valign+";'>"+value+"</td></table>";
-		}
+		var cell_style = scheduler.grid._getStyles(columns[i], availStyles);
 
-		html+= "<div style='width:"+ (columns[i].width)+"px;"+cell_style+"'>"+value+"</div>";
+		var className = columns[i].css ? (" class=\""+columns[i].css+"\"") : "";
+
+		html+= "<td style='width:"+ (columns[i].width )+"px;"+cell_style.join(";")+"' "+className+">"+value+"</td>";
+
 	}
+	html+="<td class='dhx_grid_dummy'></td></tr>";
 
-	html+="</div>";
 	return html;
-}
+};
 
 scheduler.grid._print_grid_header = function(objName){
 	var head = "<div class='dhx_grid_line'>";
@@ -407,18 +457,14 @@ scheduler.grid._print_grid_header = function(objName){
 	}
 
 	var unsized_width = Math.floor(avail_width / unsized_columns);
-
+	var availStyles = ["text-align",  "padding-left","padding-right"];
 	for(var i=0; i < columns.length; i++){
 		var column_width = !widths[i] ? unsized_width : widths[i];
-		columns[i].width = column_width-4;
-		var cell_style = "";
-		if(columns[i].align){
-			cell_style = "text-align:"+columns[i].align+";";
-		}
-		head += "<div style='width:"+(columns[i].width)+"px;"+cell_style+"'>" + (columns[i].label === undefined ? columns[i].id : columns[i].label) + "</div>";
+		columns[i].width = column_width - scheduler.grid._calcPadding(columns[i], objName);
+		var cell_style = scheduler.grid._getStyles(columns[i], availStyles);
+		head += "<div style='width:"+(columns[i].width -1)+"px;"+cell_style.join(";")+"'>" + (columns[i].label === undefined ? columns[i].id : columns[i].label) + "</div>";
 	}
 	head +="</div>";
 
 	return head;
-}
-
+};
