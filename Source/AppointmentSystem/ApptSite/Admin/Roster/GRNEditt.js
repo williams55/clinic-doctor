@@ -372,14 +372,13 @@ function NewRoster() {
                 CancelRoster();
             }
             else {
+                CloseProgress();
                 ShowMessage(obj.message);
             }
         },
         fail: function() {
-            ShowMessage("Unknow error!");
-        },
-        complete: function() {
             CloseProgress();
+            ShowMessage("Unknow error!");
         }
     });
 }
@@ -461,14 +460,13 @@ function UpdateRoster() {
                 AddRoster(evs);
                 CancelRoster();
             } else {
+            CloseProgress();
                 ShowMessage(obj.message);
             }
         },
         fail: function() {
-            ShowMessage("Unknow error!");
-        },
-        complete: function() {
             CloseProgress();
+            ShowMessage("Unknow error!");
         }
     });
 }
