@@ -1,4 +1,8 @@
-﻿var CurrentEventId = "-1";
+﻿// Ten bien chua id cac form
+var formId = "form-dhtmlx";
+var classSelectedTab = 'ui-tabs-selected';
+
+var CurrentEventId = "-1";
 var CurrentAppointment;
 var miniCalendar;
 
@@ -34,56 +38,65 @@ function initSchedule(weekday) {
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
-    scheduler.config.mark_now = true;
+    scheduler.config.time_step = stepTime;
+    scheduler.config.mark_now = false;
+    scheduler.locale.labels.unit_tab = "Unit";
+    scheduler.locale.labels.timeline_tab = "Timeline";
 
-    var arrAjax = [];
-    $.each(floors, function(i, item) {
-        scheduler.locale.labels[item.Id + "_tab"] = item.ShortTitle;
-        scheduler.createUnitsView({
-            name: item.Id,
-            property: "section_id",
-            list: scheduler.serverList(item.Id, [])
-        });
+    // Tao unit view voi danh sach doctor duoc chon
+    scheduler.createUnitsView({
+        name: "unit",
+        property: "section_id",
+        list: scheduler.serverList("unit", [])
     });
-    $.when.apply($, arrAjax).done(function() {
-        scheduler.attachEvent("onBeforeDrag", BeforeDrag);
-        scheduler.attachEvent("onClick", BlockReadonly);
-        scheduler.attachEvent("onEventChanged", EventChanged);
-        scheduler.attachEvent("onBeforeViewChange", function(old_mode, old_date, mode, date) {
-            scheduler.clearAll();
-            return true;
-        });
-        scheduler.attachEvent("onViewChange", function(mode, date) {
-            if (scrollToCurrent && (new Date()).toLocaleDateString() == date.toLocaleDateString()) {
-                // Get y position
-                var top = date.getHours() * $('.dhx_scale_hour:first').outerHeight();
-                $('div.dhx_cal_data').scrollTo({ top: top + 'px', left: '0px' }, 800);
-                scrollToCurrent = false;
-            }
-            // Bi loi khi tao event
+    // Tao timeline view voi danh sach doctor duoc chon
+    scheduler.createTimelineView({
+        section_autoheight: false,
+        name: "timeline",
+        x_unit: "minute",
+        x_date: "%H:%i",
+        x_step: 60,
+        x_size: 24,
+        x_start: 0,
+        x_length: 24,
+        y_unit: scheduler.serverList("timeline", []),
+        y_property: "section_id",
+        render: "tree",
+        dx: 150,
+        folder_dy: 20,
+        dy: 40
+    });
 
-            if (!isUsing && !isLightbox) {
-                // Lam cai load roster cua doctor,
-                // neu doctor co roster thi hien thi
-                // khi hien thi, dua vao thoi gian cua roster ma to mau
-                isUsing = true;
-                LoadDoctorSection(mode, date);
-            }
-        });
-
-        // Load roster
-        if (floors.length > 0) {
-            scheduler.init('scheduler_here', currentDate, floors[0].Id);
-            ShowMinical();
-
-            // Refesh current view for mark_now can auto update
-            setInterval(function() {
-                if (!isLightbox) {
-                    scheduler.setCurrentView();
-                }
-            }, 60000);
+    scheduler.attachEvent("onBeforeDrag", BeforeDrag);
+    scheduler.attachEvent("onClick", BlockReadonly);
+    scheduler.attachEvent("onEventChanged", EventChanged);
+    scheduler.attachEvent("onViewChange", function(mode, date) {
+        if (scrollToCurrent && mode == "unit" && (new Date()).toLocaleDateString() == date.toLocaleDateString()) {
+            // Get y position
+            var top = date.getHours() * $('.dhx_scale_hour:first').outerHeight();
+            $('div.dhx_cal_data').scrollTo({ top: top + 'px', left: '0px' }, 800);
+            scrollToCurrent = false;
         }
+        if (!isUsing && !isLightbox) {
+            // Lam cai load roster cua doctor,
+            // neu doctor co roster thi hien thi
+            // khi hien thi, dua vao thoi gian cua roster ma to mau
+            isUsing = true;
+            LoadAppointment(mode, date);
+        }
+        BlockTimespan(scheduler, date, mode);
     });
+
+    // Load roster
+    scheduler.init('scheduler_here', currentDate, "unit");
+    ShowMinical();
+
+    // Refesh current view for mark_now can auto update
+    setInterval(function() {
+        if (!isLightbox) {
+            scheduler.setCurrentView();
+        }
+    }, 60000);
 }
 /****************************DHTMLX - End******************************/
 
@@ -228,31 +241,6 @@ scheduler.showLightbox = function(id) {
 /****************************Scheduler - End******************************/
 
 /****************************Form - Start******************************/
-// Init input token for searching patient, doctor, room
-function GetToken() {
-    $("#txtPatient").tokenInput(
-        'Default.aspx/SearchPatient',
-        {
-            preventDuplicates: true,
-            tokenLimit: 1,
-            resultsFormatter: function(item) { return "<li>" + item.propertyToSearch + "</li>"; },
-            tokenFormatter: function(item) { return "<li>" + item.PatientInfo + "</li>"; },
-            propertyToSearch: "propertyToSearch",
-            noResultsText: "Cannot find patient",
-            searchingText: "Searching...",
-            hintText: "Name, Birthday, Phone",
-            onAdd: function() {
-                $("[id$=createUser]").hide();
-                $("[id$=changeUser]").show();
-            },
-            onDelete: function() {
-                $("[id$=createUser]").show();
-                $("[id$=changeUser]").hide();
-            }
-        }
-    );
-}
-
 // Get available rooms
 function GetRoom() {
     var requestdata = JSON.stringify({ appointmentId: CurrentEventId, doctorId: $("#hdfDoctor").val(),
@@ -483,65 +471,8 @@ function MoveAppointment(eventId, objEvent) {
     });
 }
 
-function LoadDoctorSection(mode, date) {
-    var services = mode.split("_");
-    var requestdata = JSON.stringify({ mode: parseInt(services[1]), currentDateView: date });
-    $.ajax({
-        type: "POST",
-        url: "Default.aspx/GetSections",
-        data: requestdata,
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function(response) {
-            var obj = JSON.parse(response.d);
-
-            if (obj.result == "true") {
-                scheduler.updateCollection(mode, obj.data);
-                var arrContainer = $('#main-dhx > .dhx_scale_holder');
-                $.each(obj.data, function(i, doctor) {
-                    var container = arrContainer[i];
-                    $('.roster_color, .dhx_time_block', container).remove();
-                    $('#main-dhx [id^="' + doctor.key + '"]').remove();
-
-                    $.each(doctor.blockTime, function(j, blockTime) {
-                        scheduler.blockTime(date, blockTime, { unit: [doctor.key] });
-                    });
-                    // Tao mot lop mau de len nen scheduler
-                    $.each(doctor.roster, function(j, roster) {
-                        var top = roster.StartTime * scheduler.config.hour_size_px / 60;
-                        var height = (roster.EndTime - roster.StartTime) * scheduler.config.hour_size_px / 60;
-                        if (roster.IsBlocked) {
-                            $(container).append('<div class="dhx_time_block" style="top: ' + top + 'px; height: '
-                            + height + 'px; background-color:'
-                            + roster.Color + ';"></div>');
-                        } else {
-                            $('#main-dhx').append('<div class="roster_color" id="' + doctor.key + j + '" style="top: '
-                            + top + 'px; left: ' + $(container).css('left') + '; height: '
-                            + height + 'px; width: ' + $(container).width() + 'px; background-color:'
-                            + roster.Color + ';"></div>');
-                        }
-                    });
-
-                    scheduler.clearAll();
-                    AddAppointment(doctor.appointment);
-                });
-            }
-            else {
-                ShowDialog("", "", obj.message, "");
-            }
-        },
-        fail: function() {
-            ShowDialog("", "", "Unknow error!", "");
-        },
-        complete: function() {
-            isUsing = false;
-        }
-    });
-}
-
 function LoadAppointment(mode, date) {
-    var requestdata = JSON.stringify({ mode: mode, currentDateView: date });
-    scheduler.clearAll();
+    var requestdata = JSON.stringify({ mode: mode, date: date });
     $.ajax({
         type: "POST",
         url: "Default.aspx/GetAppointments",
@@ -550,21 +481,30 @@ function LoadAppointment(mode, date) {
         contentType: "application/json; charset=utf-8",
         success: function(response) {
             var obj = JSON.parse(response.d);
-
             if (obj.result == "true") {
+                // Xoa cac appointment hien tai
+                scheduler.clearAll();
                 var evs = obj.data;
                 if (evs) {
-                    AddAppointment(evs);
+                    // Goi ham bind tab va tao unit view, timeline view
+                    BuildTabs(evs.Sections, mode);
+
+                    if (mode == "month") {
+                        AddTimespanMonth(evs.Events);
+                    } else {
+                        AddAppointment(evs.Events);
+                    }
                 }
             }
             else {
-                ShowDialog("", "", obj.message, "");
+                ShowMessage(obj.message);
             }
         },
         fail: function() {
-            ShowDialog("", "", "Unknow error!", "");
+            ShowMessage("Unknow error!");
         },
         complete: function() {
+            isUsing = false;
         }
     });
 }
@@ -680,6 +620,121 @@ function AddAppointment(evs) {
     });
 }
 
+// Add roster into scheduler
+function AddTimespanMonth(evs) {
+    $.each(evs, function(i, item) {
+        var date = new Date(item.Date);
+        var options = {
+            start_date: date,
+            end_date: scheduler.date.add(date, 1, "day"),
+            type: "dhx_time_block", /* creating events on those dates will be disabled - dates are blocked */
+            css: "have_roster",
+            html: "Have Appointment"
+        };
+        scheduler.addMarkedTimespan(options);
+
+        if (date < new Date())
+            scheduler.addMarkedTimespan({
+                start_date: date,
+                end_date: scheduler.date.add(date, 1, "day"),
+                css: 'small_lines_section',
+                type: "dhx_time_block"
+            });
+    });
+    scheduler.updateView();
+}
+
+// Ham tao tabs va tao unit view, timeline view
+function BuildTabs(sections, mode) {
+    // Lay id cua tab dang duoc select [neu co]
+    var selectedId = $('#service-tabs li.ui-tabs-selected').attr('id');
+
+    // Bien chua doi tuong selected tab tam
+    var tmpSelectedItem = { Doctors: [] };
+
+    // Lay doi tuong chua tab sau do remove tat ca tab
+    var $tabs = $('#service-tabs');
+    $('li', $tabs).remove();
+
+    // Append cai moi
+    $.each(sections, function(i, item) {
+        $tabs.append('<li id="tab_' + item.Id + '"><a href="#tab_' + item.Id + '">' + item.Title + '</a></li>');
+
+        // Kiem tra xem danh sach moi co tab dang duoc select ko
+        // Neu co thi gan vao bien selected
+        if (selectedId == 'tab_' + item.Id) {
+            tmpSelectedItem = item;
+        }
+    });
+
+    // Tim doi tuong da select truoc do
+    var $selectedTab = $('#' + selectedId);
+    if ($selectedTab.length > 0) {
+        $selectedTab.addClass(classSelectedTab);
+    } else {
+        $('li:first', $tabs).addClass(classSelectedTab);
+        tmpSelectedItem = sections.length > 0 ? sections[0] : tmpSelectedItem;
+    }
+
+    // Update list cho unit, timeline view
+    scheduler.updateCollection("unit", tmpSelectedItem.Doctors);
+    scheduler.updateCollection("timeline", tmpSelectedItem.Doctors);
+
+    // Hien thi mau available cua tung user
+    if (mode == "timeline" || mode == "unit") {
+        $.each(tmpSelectedItem.Doctors, function(i, doctor) {
+            // Bien luu nhung khoang thoi gian available, dung de tao block time
+            var availableTime = [];
+            var day = new Date();
+            if (doctor.Rosters.length) {
+                $.each(doctor.Rosters, function(j, roster) {
+                    var startTime = new Date(roster.startTime);
+                    var endTime = new Date(roster.endTime);
+                    scheduler.addMarkedTimespan({
+                        start_date: startTime,
+                        end_date: endTime,
+                        bcolor: roster.color,
+                        sections: {
+                            timeline: doctor.key, // list of sections
+                            unit: doctor.key
+                        }
+                    });
+                    availableTime.push(startTime.getHours() * 60 + startTime.getMinutes());
+                    availableTime.push(endTime.getHours() * 60 + endTime.getMinutes());
+                    day = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate());
+                });
+            }
+            // Block toan bo thoi gian trong ngay
+            scheduler.addMarkedTimespan({
+                days: day,
+                zones: availableTime,
+                invert_zones: true,
+                type: "dhx_time_block",
+                sections: {
+                    timeline: doctor.key, // list of sections
+                    unit: doctor.key
+                }
+            });
+        });
+    }
+
+    // Bind event cho link
+    $('li a', $tabs).click(function() {
+        // Lay li cua link vua click
+        // Neu li dang duoc select thi khong lam gi,
+        // nguoc lai thi xoa selected class cua li hien tai, sau do add selected class cho li moi
+        var $currentLi = $(this).parent();
+        if (!$currentLi.hasClass(classSelectedTab) && !isLightbox && !isUsing) {
+            // Xoa class selected
+            $('li', $tabs).removeClass(classSelectedTab);
+            $currentLi.addClass(classSelectedTab);
+            scheduler.setCurrentView();
+        }
+        return false;
+    });
+    scheduler.updateView();
+}
+
 // Cancel appointment
 function CancelAppointment() {
     $(".token-input-dropdown").css("z-index", 0); // Bring to front
@@ -769,9 +824,6 @@ $(document).ready(function() {
     });
 
     initEvents();
-
-    // Call init input token
-    GetToken();
 });
 
 function DisableAllElements(obj, disabled) {

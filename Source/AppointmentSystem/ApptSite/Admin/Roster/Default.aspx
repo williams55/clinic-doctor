@@ -78,7 +78,7 @@
             <h5>
                 Roster</h5>
             <ul class="links">
-                <li class="ui-tabs-selected"><a href="javascript:return false;">Messages</a></li>
+                <li class="ui-tabs-selected"><a href="javascript:return false;">Scheduler</a></li>
                 <li><a href="Grid.aspx">Grid</a></li>
             </ul>
         </div>

@@ -16,16 +16,19 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
+    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_dhx_terrace.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_active_links.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_limit.js") %>"
+        type="text/javascript" charset="utf-8"></script>
+
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_timeline.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_units.js") %>"
-        type="text/javascript" charset="utf-8"></script>
-
-    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_treetimeline.js") %>"
-        type="text/javascript" charset="utf-8"></script>
-
-    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/ext_limit.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_minical.js") %>"
@@ -40,19 +43,15 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_collision.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/jquery.tokeninput.js") %>"></script>
-
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/maxZIndex.js") %>"></script>
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/jquery.scrollTo-1.4.2-min.js") %>"></script>
 
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/common.js") %>"></script>
-
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/jqueryRotate.js") %>"></script>
 
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/tokeninput/styles/token-input.css") %>"
-        type="text/css" />
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler.css") %>"
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler_dhx_terrace.css") %>"
+        type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/blocksection.css") %>"
         type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/scheduler.css") %>"
         type="text/css" media="screen" title="no title" />
@@ -97,17 +96,184 @@
         }, 1000);
     </script>
 
+    <style media="screen">
+        /* enabling marked timespans for month view */.dhx_scheduler_month .dhx_marked_timespan
+        {
+            display: block;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div id="pleaseWait-darkBackground" style="width: 1366px; height: 2021px; display: none;
         opacity: 0.5; visibility: visible;">
     </div>
-    <div id="box-tabs" class="box">
+    <div id="dialog-form" title="Patient" class="dialog-form">
+        <table class="table-form" style="width: 100%">
+            <tr>
+                <td class="header" style="width: 80px;">
+                    First Name
+                </td>
+                <td>
+                    <input tabindex="1" type="text" name="txtFirstName" id="txtFirstName" style="width: 100%"
+                        class="content-input ui-widget-content ui-corner-all" />
+                </td>
+                <td style="width: 10px;">
+                </td>
+                <td class="header">
+                    DOB (m/d/yyyy)
+                </td>
+                <td>
+                    <input type="text" id="txtDob" class="datePicker content-input ui-widget-content ui-corner-all"
+                        readonly="readonly" tabindex="6" />
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Middle Name
+                </td>
+                <td>
+                    <input type="text" tabindex="2" name="txtMiddileName" id="txtMiddileName" value=""
+                        style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
+                </td>
+                <td>
+                </td>
+                <td class="header">
+                    Mobile Phone
+                </td>
+                <td>
+                    <input type="text" name="txtCellPhone" tabindex="7" id="txtMobilePhone" value=""
+                        style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Last Name
+                </td>
+                <td>
+                    <input type="text" tabindex="3" name="txtLastName" id="txtLastName" value="" style="width: 100%"
+                        class="content-input ui-widget-content ui-corner-all" />
+                </td>
+                <td>
+                </td>
+                <td class="header">
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Sex
+                </td>
+                <td>
+                    <input type="radio" name="radSex" id="radMale" value="<%= SexConstant.Male.Key %>"
+                        checked="checked" tabindex="4" />
+                    <label for="radMale">
+                        <%= SexConstant.Male.Value %></label>
+                    <input type="radio" name="radSex" id="radFemale" value="<%= SexConstant.Female.Key %>" />
+                    <label for="radFemale" tabindex="5">
+                        <%= SexConstant.Female.Value %></label>
+                </td>
+                <td>
+                </td>
+                <td class="header">
+                    Nationality
+                </td>
+                <td>
+                    <input type="text" tabindex="9" name="txtNationality" id="txtNationality" value=""
+                        style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Remark
+                </td>
+                <td colspan="4">
+                    <textarea id="txtRemark" tabindex="10" style="width: 100%; height: 40px;" class="content-input ui-widget-content ui-corner-all"></textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="RosterForm" class="dialog-form" title="Appointment" style="display: none;">
+        <input type="hidden" id="hdId" value="" />
+        <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
+            <span class="loading"></span>
+        </div>
+        <table class="table-form" id="tblContent">
+            <tr>
+                <td class="header">
+                    Status
+                </td>
+                <td colspan="2">
+                    <asp:DropDownList runat="server" ID="cboStatus">
+                    </asp:DropDownList>
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Doctor
+                </td>
+                <td colspan="2">
+                    <span id="lblDoctor" style="font-weight: bold;"></span>
+                    <input type="hidden" id="hdfDoctor" />
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Patient
+                </td>
+                <td>
+                    <input type="text" id="txtPatient" />
+                </td>
+                <td>
+                    <input type="button" id="createUser" value="New" style="width: 50px;" runat="server" />
+                    <input type="button" id="changeUser" value="Change" style="width: 50px;" runat="server" />
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    From
+                </td>
+                <td colspan="2">
+                    <select id="cboFromHour">
+                    </select><input type="text" id="txtFromDate" class="datePicker" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    To
+                </td>
+                <td colspan="2">
+                    <select id="cboToHour">
+                    </select><input type="text" id="txtToDate" class="datePicker" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Room
+                </td>
+                <td colspan="2">
+                    <select id="cboRoom">
+                    </select>
+                    <input type="hidden" id="hdfRoom" />
+                    <span id="loadingRoom" class="loading"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="header">
+                    Note
+                </td>
+                <td colspan="2">
+                    <textarea id="txtNote" cols="10" rows="3" style="width: 100%;"></textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="box">
         <div class="title">
             <h5>
                 Appointment</h5>
         </div>
-        <div id="box-other">
+        <div>
             <div style="padding: 10px;">
                 <div class="appt-info">
                     <h3>
@@ -177,184 +343,42 @@
                 <div class="clear">
                 </div>
             </div>
+        </div>
+    </div>
+    <div id="box-tabs" class="box">
+        <div class="title">
+            <ul class="links" id="service-tabs" style="float: left;">
+            </ul>
+        </div>
+        <div>
             <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 530px;'>
                 <div class="dhx_cal_navline">
-                    <div class="dhx_cal_today_button" id="btnToday" style="display: none; float: right;">
+                    <div class="dhx_cal_prev_button">
+                        &nbsp;</div>
+                    <div class="dhx_cal_next_button">
+                        &nbsp;</div>
+                    <div class="dhx_cal_today_button">
                     </div>
-                    <div class="dhx_cal_date" style="right: 10px; left: auto;">
+                    <div class="dhx_cal_date">
                     </div>
-                    <asp:Repeater ID="rptFloor" runat="server">
-                        <ItemTemplate>
-                            <div class="dhx_cal_tab" name="<%# Eval("Id") %>_tab" style="left: <%# (Container.ItemIndex * 70) + 10 %>px;">
-                            </div>
-                        </ItemTemplate>
-                    </asp:Repeater>
+                    <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="ShowMinical()" style="left: auto;
+                        right: 220px;">
+                        &nbsp;</div>
+                    <div class="dhx_cal_tab" name="week_tab">
+                    </div>
+                    <div class="dhx_cal_tab" name="day_tab">
+                    </div>
+                    <div class="dhx_cal_tab" name="timeline_tab">
+                    </div>
+                    <div class="dhx_cal_tab" name="unit_tab">
+                    </div>
+                    <div class="dhx_cal_tab" name="month_tab">
+                    </div>
                 </div>
                 <div class="dhx_cal_header">
                 </div>
                 <div class="dhx_cal_data" id="main-dhx">
                 </div>
-            </div>
-            <div id="dialog-form" title="Patient" class="dialog-form">
-                <table class="table-form" style="width: 100%">
-                    <tr>
-                        <td class="header" style="width: 80px;">
-                            First Name
-                        </td>
-                        <td>
-                            <input tabindex="1" type="text" name="txtFirstName" id="txtFirstName" style="width: 100%"
-                                class="content-input ui-widget-content ui-corner-all" />
-                        </td>
-                        <td style="width: 10px;">
-                        </td>
-                        <td class="header">
-                            DOB (m/d/yyyy)
-                        </td>
-                        <td>
-                            <input type="text" id="txtDob" class="datePicker content-input ui-widget-content ui-corner-all"
-                                readonly="readonly" tabindex="6" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Middle Name
-                        </td>
-                        <td>
-                            <input type="text" tabindex="2" name="txtMiddileName" id="txtMiddileName" value=""
-                                style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
-                        </td>
-                        <td>
-                        </td>
-                        <td class="header">
-                            Mobile Phone
-                        </td>
-                        <td>
-                            <input type="text" name="txtCellPhone" tabindex="7" id="txtMobilePhone" value=""
-                                style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Last Name
-                        </td>
-                        <td>
-                            <input type="text" tabindex="3" name="txtLastName" id="txtLastName" value="" style="width: 100%"
-                                class="content-input ui-widget-content ui-corner-all" />
-                        </td>
-                        <td>
-                        </td>
-                        <td class="header">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Sex
-                        </td>
-                        <td>
-                            <input type="radio" name="radSex" id="radMale" value="<%= SexConstant.Male.Key %>"
-                                checked="checked" tabindex="4" />
-                            <label for="radMale">
-                                <%= SexConstant.Male.Value %></label>
-                            <input type="radio" name="radSex" id="radFemale" value="<%= SexConstant.Female.Key %>" />
-                            <label for="radFemale" tabindex="5">
-                                <%= SexConstant.Female.Value %></label>
-                        </td>
-                        <td>
-                        </td>
-                        <td class="header">
-                            Nationality
-                        </td>
-                        <td>
-                            <input type="text" tabindex="9" name="txtNationality" id="txtNationality" value=""
-                                style="width: 100%" class="content-input ui-widget-content ui-corner-all" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Remark
-                        </td>
-                        <td colspan="4">
-                            <textarea id="txtRemark" tabindex="10" style="width: 100%; height: 40px;" class="content-input ui-widget-content ui-corner-all"></textarea>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="RosterForm" class="dialog-form" title="Appointment" style="display: none;">
-                <input type="hidden" id="hdId" value="" />
-                <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
-                    <span class="loading"></span>
-                </div>
-                <table class="table-form" id="tblContent">
-                    <tr>
-                        <td class="header">
-                            Status
-                        </td>
-                        <td colspan="2">
-                            <asp:DropDownList runat="server" ID="cboStatus">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Doctor
-                        </td>
-                        <td colspan="2">
-                            <span id="lblDoctor" style="font-weight: bold;"></span>
-                            <input type="hidden" id="hdfDoctor" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Patient
-                        </td>
-                        <td>
-                            <input type="text" id="txtPatient" />
-                        </td>
-                        <td>
-                            <input type="button" id="createUser" value="New" style="width: 50px;" runat="server" />
-                            <input type="button" id="changeUser" value="Change" style="width: 50px;" runat="server" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            From
-                        </td>
-                        <td colspan="2">
-                            <select id="cboFromHour">
-                            </select><input type="text" id="txtFromDate" class="datePicker" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            To
-                        </td>
-                        <td colspan="2">
-                            <select id="cboToHour">
-                            </select><input type="text" id="txtToDate" class="datePicker" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Room
-                        </td>
-                        <td colspan="2">
-                            <select id="cboRoom">
-                            </select>
-                            <input type="hidden" id="hdfRoom" />
-                            <span id="loadingRoom" class="loading"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="header">
-                            Note
-                        </td>
-                        <td colspan="2">
-                            <textarea id="txtNote" cols="10" rows="3" style="width: 100%;"></textarea>
-                        </td>
-                    </tr>
-                </table>
             </div>
         </div>
     </div>

@@ -89,7 +89,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             // Get start date and end date, validate all of them
             var dtStart = new DateTime(startDate.Value.Year, startDate.Value.Month, startDate.Value.Day
-                                       , startTime.Value.Hour, startDate.Value.Minute, 0);
+                                       , startTime.Value.Hour, startTime.Value.Minute, 0);
             var dtEnd = new DateTime(endDate.Value.Year, endDate.Value.Month, endDate.Value.Day
                                      , endTime.Value.Hour, endTime.Value.Minute, 0);
             #endregion
@@ -242,7 +242,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             // Get start date and end date, validate all of them
             var dtStart = new DateTime(startDate.Value.Year, startDate.Value.Month, startDate.Value.Day
-                                       , startTime.Value.Hour, startDate.Value.Minute, 0);
+                                       , startTime.Value.Hour, startTime.Value.Minute, 0);
             var dtEnd = new DateTime(endDate.Value.Year, endDate.Value.Month, endDate.Value.Day
                                      , endTime.Value.Hour, endTime.Value.Minute, 0);
             #endregion
@@ -276,7 +276,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string LoadRoster(string mode, string currentDateView)
+    public static string LoadRoster(string mode, DateTime? date)
     {
         try
         {
@@ -286,34 +286,11 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(_message);
             }
 
-            // Get datetime to filter
-            DateTime fromDate = Convert.ToDateTime(currentDateView);
-            fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
-            var toDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 23, 59, 59);
-            if (mode == "week")
+            var lstRoster = BoFactory.RosterBO.GetByDateMode(date, mode, out _message);
+            if (!string.IsNullOrEmpty(_message))
             {
-                // Neu loai thoi gian la tuan thi lay ngay dau tuan va cuoi tuan
-                toDate = fromDate.LastDateOfWeek();
-                toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
-                fromDate = fromDate.FirstDateOfWeek();
-                fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+                return WebCommon.BuildFailedResult(_message);
             }
-            else if (mode == "month")
-            {
-                // Neu loai thoi gian la thang thi lay ngay dau thang va cuoi thang
-                toDate = fromDate.AddMonths(1).LastDayOfMonth();
-                toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
-                fromDate = (new DateTime(fromDate.Year, fromDate.Month, 1, 0, 0, 0)).AddMonths(-1);
-            }
-
-            int count;
-            var lstObj =
-                DataRepository.RosterProvider.GetPaged(
-                    String.Format("IsDisabled = 'False' AND StartTime BETWEEN N'{0}' AND N'{1}'"
-                                  , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
-                                  toDate.ToString("yyyy-MM-dd HH:mm:ss.000")), string.Empty, 0,
-                    ServiceFacade.SettingsHelper.GetPagedLength, out count);
-            DataRepository.RosterProvider.DeepLoad(lstObj);
 
             // Declare list of object are returned
             var lstResult = new List<object>();
@@ -321,18 +298,18 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             // Neu mode la thang thi select date thoi, de co the tao timespan
             if (mode == "month")
             {
-                var lstDate = lstObj.Select(item => item.StartTime.ToString("MM/dd/yyyy 00:00:00")).Distinct().ToList();
-                foreach (string date in lstDate)
+                var lstDate = lstRoster.Select(item => item.StartTime.ToString("MM/dd/yyyy 00:00:00")).Distinct().ToList();
+                foreach (string strDate in lstDate)
                 {
                     lstResult.Add(new
                     {
-                        Date = date
+                        Date = strDate
                     });
                 }
             }
             else
             {
-                foreach (Roster item in lstObj)
+                foreach (Roster item in lstRoster)
                 {
                     lstResult.Add(new
                     {
