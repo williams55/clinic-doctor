@@ -499,9 +499,11 @@ $(document).ready(function() {
         $('.dhx_cal_ltext', $container).toggle();
         if ($(':last-child', this).html().indexOf('Disabled') != -1) {
             $(':last-child', this).html('Enabled');
+            $('.dhx_custom_button_recurring', this).addClass('dhx_custom_button_recurring_enabled');
             $("#chkRepeat").attr('checked', 'checked');
         } else {
             $(':last-child', this).html('Disabled');
+            $('.dhx_custom_button_recurring', this).removeClass('dhx_custom_button_recurring_enabled');
             $("#chkRepeat").removeAttr('checked');
         }
     });

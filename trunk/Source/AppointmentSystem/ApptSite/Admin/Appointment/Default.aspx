@@ -276,8 +276,8 @@
         <div>
             <div style="padding: 10px;">
                 <div class="appt-info">
-                    <h3>
-                        Patient's Information</h3>
+                    <h5 style="padding: 0 0 5px 0; margin: 0;">
+                        Patient's Information</h5>
                     <div class="title-info">
                         First Name</div>
                     <div class="content-info" id="divFirstname" style="margin-right: 35px;">
@@ -322,11 +322,7 @@
                             style="-webkit-transform: rotate(228deg);"></div>
                     <img id="clock" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/clockface.jpg") %>">
                 </div>
-                <div style="float: right; width: 251px; height: 205px;" id="datepicker">
-                    <div class="dhx_cal_today_button" style="margin-left: 90px; font-family: Tahoma;
-                        font-size: 11px;">
-                        Today
-                    </div>
+                <div style="float: right; width: 251px; height: 180px;" id="datepicker">
                 </div>
                 <div class="status-info">
                     <asp:Repeater ID="rptStatus" runat="server">
@@ -361,9 +357,6 @@
                     </div>
                     <div class="dhx_cal_date">
                     </div>
-                    <div class="dhx_minical_icon" id="dhx_minical_icon" onclick="ShowMinical()" style="left: auto;
-                        right: 220px;">
-                        &nbsp;</div>
                     <div class="dhx_cal_tab" name="week_tab">
                     </div>
                     <div class="dhx_cal_tab" name="day_tab">

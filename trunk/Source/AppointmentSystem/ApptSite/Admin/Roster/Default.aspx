@@ -122,7 +122,7 @@
         </div>
         <div class="dhx_cal_larea" style="height: 220px;">
             <div class="dhx_form_row">
-                <div class="dhx_cal_lsection">
+                <div class="dhx_cal_lsection required">
                     Doctor</div>
                 <div class="dhx_cal_ltext">
                     <dx:ASPxComboBox ID="cboDoctor" ClientInstanceName="cboDoctor" runat="server" Width="550"
@@ -141,7 +141,7 @@
                 </div>
             </div>
             <div class="dhx_form_row">
-                <div class="dhx_cal_lsection">
+                <div class="dhx_cal_lsection required">
                     Roster Type</div>
                 <div class="dhx_cal_ltext">
                     <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="550" TextField="Title"
@@ -156,7 +156,7 @@
             <div class="dhx_wrap_section" id="repeater-section">
                 <div class="dhx_cal_lsection">
                     <div class="dhx_custom_button" index="1" id="btnRepeat">
-                        <div class="dhx_custom_button_recurring" style="background-position: -5px 0px;">
+                        <div class="dhx_custom_button_recurring">
                         </div>
                         <div>
                             Disabled</div>
@@ -203,7 +203,7 @@
                 </div>
             </div>
             <div class="dhx_form_row">
-                <div class="dhx_cal_lsection">
+                <div class="dhx_cal_lsection required">
                     Time period</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxTimeEdit ID="startTime" runat="server" ClientInstanceName="startTime" EditFormatString="HH:mm"
