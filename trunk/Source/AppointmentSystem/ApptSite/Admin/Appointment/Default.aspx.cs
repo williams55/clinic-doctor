@@ -47,7 +47,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             changeUser.Visible = CheckCreating(out _message) || CheckUpdating(out _message);
             createUser.Visible = CheckCreating(out _message) || CheckUpdating(out _message);
 
-            BindTabs();
             BindStatus();
         }
         catch (Exception ex)
@@ -58,34 +57,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     #endregion
 
     #region Methods
-    /// <summary>
-    /// Get floor list
-    /// </summary>
-    private void BindTabs()
-    {
-        try
-        {
-            int count;
-            var lst = DataRepository.ServicesProvider.GetPaged("IsDisabled = 'False'"
-                                                            , "PriorityIndex ASC", 0,
-                                                            ServiceFacade.SettingsHelper.GetPagedLength, out count)
-                .Select(x => new
-                                 {
-                                     Id = "unit_" + x.Id.ToString(),
-                                     x.Title,
-                                     x.ShortTitle
-                                 });
-            ListServices = JsonConvert.SerializeObject(lst);
-
-            rptFloor.DataSource = lst;
-            rptFloor.DataBind();
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-        }
-    }
-
     /// <summary>
     /// Get status list
     /// </summary>
@@ -901,7 +872,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     }
     #endregion
 
-    #region Appointment
+    #region Private methods for Appointment
     /// <summary>
     /// Build Appointment to returned object
     /// </summary>
@@ -1001,6 +972,68 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
         return lstEvent;
+    }
+
+    /// <summary>
+    /// Build object to string result
+    /// </summary>
+    /// <param name="lstRosters"></param>
+    /// <param name="date"></param>
+    /// <returns></returns>
+    private static object BuildListSection(TList<Roster> lstRosters, DateTime? date)
+    {
+        object lst = null;
+        try
+        {
+            DataRepository.RosterProvider.DeepLoad(lstRosters);
+
+            // Lay danh sach doctor theo appointment
+            var lstDoctor = new TList<Users>();
+
+            // Lay danh sach service theo appointment
+            var lstService = new TList<Services>();
+
+            foreach (var roster in lstRosters)
+            {
+                Roster roster1 = roster;
+                if (!lstDoctor.Exists(doctor => doctor.Username == roster1.Username))
+                {
+                    lstDoctor.Add(roster.UsernameSource);
+                }
+
+                DataRepository.UsersProvider.DeepLoad(roster1.UsernameSource);
+
+                if (!lstService.Exists(service => service.Id == roster1.UsernameSource.ServicesId))
+                {
+                    lstService.Add(roster1.UsernameSource.ServicesIdSource);
+                }
+            }
+
+            lst = lstService.Select(service => new
+                {
+                    service.Id,
+                    Title = string.IsNullOrEmpty(service.ShortTitle) ? service.Title : service.ShortTitle,
+                    Date = String.Format("{0:yyyy-MM-dd HH:mm:ss}", date),
+                    Doctors = lstDoctor.Where(doctor => doctor.ServicesId == service.Id)
+                        .Select(doctor => new
+                        {
+                            key = doctor.Username,
+                            label = doctor.DisplayName,
+                            Rosters = lstRosters.Where(roster => roster.Username == doctor.Username)
+                                .Select(roster => new
+                                    {
+                                        startTime = roster.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                                        endTime = roster.EndTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                                        color = roster.RosterTypeIdSource.ColorCode
+                                    })
+                        })
+                }).ToList();
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+        return lst;
     }
     #endregion
 
@@ -1297,13 +1330,12 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// Get list of appointment in day
     /// </summary>
     /// <param name="mode"></param>
-    /// <param name="currentDateView">Date</param>
+    /// <param name="date">Date</param>
     /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetAppointments(string mode, string currentDateView)
+    public static string GetAppointments(string mode, DateTime? date)
     {
-        TransactionManager tm = DataRepository.Provider.CreateTransaction();
         try
         {
             // Check active user
@@ -1312,55 +1344,29 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(_message);
             }
 
-            #region "Load appointment"
-            // Get datetime to filter
-            DateTime fromDate = Convert.ToDateTime(currentDateView);
-            fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
-            var toDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 23, 59, 59);
-            if (mode == "week")
+            // Goi ham lay danh sach appointment theo ngay, mode
+            var lstAppt = BoFactory.AppointmentBO.GetByDateMode(date, mode, out _message);
+            if (!string.IsNullOrEmpty(_message))
             {
-                // Neu loai thoi gian la tuan thi lay ngay dau tuan va cuoi tuan
-                toDate = fromDate.LastDateOfWeek();
-                toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
-                fromDate = fromDate.FirstDateOfWeek();
-                fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+                return WebCommon.BuildFailedResult(_message);
             }
-            else if (mode == "month")
+
+            // Goi ham lay danh sach roster
+            var lstRoster = BoFactory.RosterBO.GetByDateMode(date, mode, out _message);
+            if (!string.IsNullOrEmpty(_message))
             {
-                // Neu loai thoi gian la thang thi lay ngay dau thang va cuoi thang
-                toDate = fromDate.LastDateOfWeek();
-                toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
-                fromDate = new DateTime(fromDate.Year, fromDate.Month, 1, 0, 0, 0);
+                return WebCommon.BuildFailedResult(_message);
             }
-            int count;
 
-            // Get appointment
-            TList<Appointment> lstAppt =
-                DataRepository.AppointmentProvider.GetPaged(String.Format("IsDisabled = 'False' AND StartTime BETWEEN N'{0}' AND N'{1}'"
-                                                                          , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
-                                                                          toDate.ToString("yyyy-MM-dd HH:mm:ss.000")),
-                                                            string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength,
-                                                            out count);
-
-            tm.BeginTransaction();
-            // Set out of date for passed appointment
-            lstAppt.ForEach(x =>
-                                {
-                                    x.StatusId = x.StartTime <= DateTime.Now &&
-                                                 x.StatusId != BoFactory.StatusBO.Complete &&
-                                                 x.StatusId != BoFactory.StatusBO.Cancel
-                                                     ? BoFactory.StatusBO.Complete
-                                                     : x.StatusId;
-                                });
-            DataRepository.AppointmentProvider.Save(lstAppt);
-            #endregion
-
-            tm.Commit();
-            return WebCommon.BuildSuccessfulResult(BuildListAppointment(lstAppt));
+            // Tra ve danh sach
+            return WebCommon.BuildSuccessfulResult(new
+                {
+                    Events = BuildListAppointment(lstAppt),
+                    Sections = BuildListSection(lstRoster, date)
+                });
         }
         catch (Exception ex)
         {
-            tm.Rollback();
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult(ex.Message);
         }

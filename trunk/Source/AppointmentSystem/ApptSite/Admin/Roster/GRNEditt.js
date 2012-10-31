@@ -96,94 +96,9 @@ function initSchedule(weekday) {
                 // Load roster
                 LoadRoster(mode, date);
             }
- 
-            // Block thoi gian
-            var now, startDate, endDate;
-            scheduler.deleteMarkedTimespan();
-            switch (mode) {
-                // Truong hop view la timeline thi kiem tra ngay co phai la ngay hien tai khong            
 
-                case 'timeline':
-                case 'day':
-                    // Lay thoi gian hien tai
-                    now = new Date();
-
-                    // Lay thoi diem dau tuan
-                    startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-                    // Lay thoi diem cuoi ngay
-                    endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
-
-                    // Neu thoi gian cua view hien tai < thoi gian hien tai => gan thoi gian hien tai = gia tri do
-                    // Cai nay dung de block
-                    if (endDate < now) now = endDate;
-
-                    scheduler.addMarkedTimespan({
-                        start_date: startDate,
-                        end_date: now,
-                        css: 'small_lines_section',
-                        type: "dhx_time_block"
-                    });
-
-                    break;
-                case 'week':
-                    // Lay thu tu cua ngay xem hien tai
-                    var currentDay = date.getDay();
-                    // Neu la CN thi gan no = 7
-                    if (currentDay == 0) currentDay = 7;
-
-                    // Lay thoi diem cuoi tuan
-                    endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
-                    endDate.setDate(date.getDate() + 7 - currentDay);
-
-                    // Lay thoi diem dau tuan
-                    startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-                    startDate.setDate(date.getDate() + 1 - currentDay);
-
-                    // Lay thoi gian hien tai
-                    now = new Date();
-
-                    // Neu thoi gian cua view hien tai < thoi gian hien tai => gan thoi gian hien tai = gia tri do
-                    // Cai nay dung de block
-                    if (endDate < now) now = endDate;
-
-                    scheduler.addMarkedTimespan({
-                        start_date: startDate,
-                        end_date: now,
-                        css: 'small_lines_section',
-                        type: "dhx_time_block"
-                    });
-
-                    break;
-                case 'month':
-                    // Lay thoi diem dau thang
-                    startDate = new Date(date.getFullYear(), date.getMonth(), 1);
-
-                    // Lay thoi diem cuoi thang
-                    endDate = new Date(date.getFullYear(), date.getMonth(), 1);
-                    endDate.setMonth(endDate.getMonth() + 1);
-
-                    // Lay thoi gian hien tai
-                    now = new Date();
-                    now = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-
-                    // Neu thoi gian cua view hien tai < thoi gian hien tai => gan thoi gian hien tai = gia tri do
-                    // Cai nay dung de block
-                    if (endDate < now) now = endDate;
-
-                    scheduler.addMarkedTimespan({
-                        start_date: startDate,
-                        end_date: now,
-                        css: 'small_lines_section',
-                        type: "dhx_time_block"
-                    });
-
-                    break;
-                default:
-                    break;
-            }
-            scheduler.updateView();
-
+            // Goi ham block time
+            BlockTimespan(scheduler, date, mode);
        });
 
         //        scheduler.filter_month = function(id, event) {
@@ -277,7 +192,7 @@ scheduler.showLightbox = function(id) {
 /****************************Roster - Start******************************/
 // Load roster to scheduler
 function LoadRoster(mode, date) {
-    var requestdata = JSON.stringify({ mode: mode, currentDateView: date });
+    var requestdata = JSON.stringify({ mode: mode, date: date });
     $.ajax({
         type: "POST",
         url: "Default.aspx/LoadRoster",
@@ -300,11 +215,11 @@ function LoadRoster(mode, date) {
                 }
             }
             else {
-                ShowDialog("", "", obj.message, "");
+                ShowMessage(obj.message);
             }
         },
         fail: function() {
-            ShowDialog("", "", "Unknow error!", "");
+            ShowMessage("Unknow error!");
         },
         complete: function() {
             isUsing = false;
@@ -365,6 +280,7 @@ function NewRoster() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
+            CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 var evs = obj.data;
@@ -372,7 +288,6 @@ function NewRoster() {
                 CancelRoster();
             }
             else {
-                CloseProgress();
                 ShowMessage(obj.message);
             }
         },
@@ -453,6 +368,7 @@ function UpdateRoster() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
+            CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 var evs = obj.data;
@@ -460,7 +376,6 @@ function UpdateRoster() {
                 AddRoster(evs);
                 CancelRoster();
             } else {
-            CloseProgress();
                 ShowMessage(obj.message);
             }
         },

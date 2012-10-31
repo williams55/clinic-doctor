@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
@@ -158,6 +159,41 @@ namespace AppointmentBusiness.BO
                 LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
+        }
+
+        public TList<Roster> GetByDateMode(DateTime? date, string mode, out string message)
+        {
+            message = string.Empty;
+            try
+            {
+
+                // Get datetime to filter
+                DateTime fromDate, toDate;
+                if (!CommonBO.GetDateTimeByMode(date, mode, out fromDate, out toDate))
+                {
+                    message = "Current date is invalid.";
+                    goto StepResult;
+                }
+
+                int count;
+                var lstObj =
+                    DataRepository.RosterProvider.GetPaged(
+                        String.Format("IsDisabled = 'False' AND StartTime BETWEEN N'{0}' AND N'{1}'"
+                                      , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                                      toDate.ToString("yyyy-MM-dd HH:mm:ss.000")), string.Empty, 0,
+                        ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                DataRepository.RosterProvider.DeepLoad(lstObj);
+
+                return lstObj;
+            }
+            catch (Exception ex)
+            {
+                message = "System error. Please contact Administratos.";
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            }
+        StepResult:
+            return new TList<Roster>();
+
         }
 
         #region Private methods

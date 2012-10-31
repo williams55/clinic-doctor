@@ -1,6 +1,8 @@
 ﻿using System;
+using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
+using AppointmentSystem.Settings.BusinessLayer;
 using Common.Util;
 using Log.Controller;
 
@@ -29,6 +31,50 @@ namespace AppointmentBusiness.BO
             {
                 LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
+        }
+
+        public TList<Appointment> GetByDateMode(DateTime? date, string mode, out string message)
+        {
+            message = string.Empty;
+            try
+            {
+                // Get datetime to filter
+                DateTime fromDate, toDate;
+                if (!CommonBO.GetDateTimeByMode(date, mode, out fromDate, out toDate))
+                {
+                    message = "Current date is invalid.";
+                    goto StepResult;
+                }
+
+                // Get appointment
+                int count;
+                TList<Appointment> lstAppt =
+                    DataRepository.AppointmentProvider.GetPaged(String.Format("IsDisabled = 'False' AND StartTime BETWEEN N'{0}' AND N'{1}'"
+                                                                              , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                                                                              toDate.ToString("yyyy-MM-dd HH:mm:ss.000")),
+                                                                string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength,
+                                                                out count);
+
+                // Set out of date for passed appointment
+                //lstAppt.ForEach(x =>
+                //{
+                //    x.StatusId = x.StartTime <= DateTime.Now &&
+                //                 x.StatusId != BoFactory.StatusBO.Complete &&
+                //                 x.StatusId != BoFactory.StatusBO.Cancel
+                //                     ? BoFactory.StatusBO.Complete
+                //                     : x.StatusId;
+                //});
+                //DataRepository.AppointmentProvider.Save(lstAppt);
+
+                return lstAppt;
+            }
+            catch (Exception ex)
+            {
+                message = "System error. Please contact Administratos.";
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            }
+        StepResult:
+            return new TList<Appointment>();
         }
     }
 }

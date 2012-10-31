@@ -543,6 +543,15 @@ scheduler.config.display_marked_timespans = true;
                     block.style.left = (left + Math.round((start) / (24 * 60) * width)) + "px";
                     block.style.width = Math.round((end - start) / (24 * 60) * width) + "px";
 
+                    // PhatVT add
+                    // Neu background color, color co gia tri thi set no
+                    if (options.bcolor) {
+                        block.style.backgroundColor = options.bcolor;
+                    }
+                    if (options.color) {
+                        block.style.color = options.color;
+                    }
+
                     area.appendChild(block);
                     blocks.push(block);
                 }
@@ -561,6 +570,15 @@ scheduler.config.display_marked_timespans = true;
 
                 block.style.top = (Math.round((start * 60 * 1000 - this.config.first_hour * 60 * 60 * 1000) * this.config.hour_size_px / (60 * 60 * 1000))) % (this.config.hour_size_px * 24) + "px";
                 block.style.lineHeight = block.style.height = Math.max((Math.round(((end - start - 1) * 60 * 1000) * this.config.hour_size_px / (60 * 60 * 1000))) % (this.config.hour_size_px * 24), 1) + "px";
+
+                // PhatVT add
+                // Neu background color, color co gia tri thi set no
+                if (options.bcolor) {
+                    block.style.backgroundColor = options.bcolor;
+                }
+                if (options.color) {
+                    block.style.color = options.color;
+                }
 
                 area.appendChild(block);
                 blocks.push(block);

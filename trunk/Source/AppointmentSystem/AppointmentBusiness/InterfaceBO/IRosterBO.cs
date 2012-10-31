@@ -30,5 +30,14 @@ namespace AppointmentBusiness.BO
         /// <param name="roster"></param>
         /// <param name="message"></param>
         bool Update(ref Roster roster, ref string message);
+
+        /// <summary>
+        /// Lay danh sach Roster theo ngay, mode
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="mode"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        TList<Roster> GetByDateMode(DateTime? date, string mode, out string message);
     }
 }

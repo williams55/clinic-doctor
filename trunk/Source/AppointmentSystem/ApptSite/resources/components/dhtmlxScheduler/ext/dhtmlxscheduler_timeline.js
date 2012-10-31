@@ -885,6 +885,15 @@ scheduler._render_marked_timespan = function(options, area, unit_id) {
 
 					block.style.cssText = "height: "+height+"px; left: "+start_pos+"px; width: "+width+"px; top: 0;";
 
+					// PhatVT add
+					// Neu background color, color co gia tri thi set no
+					if (options.bcolor) {
+					    block.style.backgroundColor = options.bcolor;
+					}
+					if (options.color) {
+					    block.style.color = options.color;
+					}
+
 					area.insertBefore(block, area.firstChild);
 					blocks.push(block);
 				}
