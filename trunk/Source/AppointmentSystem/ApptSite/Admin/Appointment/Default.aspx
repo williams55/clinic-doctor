@@ -104,9 +104,6 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
-    <div id="pleaseWait-darkBackground" style="width: 1366px; height: 2021px; display: none;
-        opacity: 0.5; visibility: visible;">
-    </div>
     <div id="dialog-form" title="Patient" class="dialog-form">
         <table class="table-form" style="width: 100%">
             <tr>
@@ -189,81 +186,6 @@
                 </td>
                 <td colspan="4">
                     <textarea id="txtRemark" tabindex="10" style="width: 100%; height: 40px;" class="content-input ui-widget-content ui-corner-all"></textarea>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div id="RosterForm" class="dialog-form" title="Appointment" style="display: none;">
-        <input type="hidden" id="hdId" value="" />
-        <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
-            <span class="loading"></span>
-        </div>
-        <table class="table-form" id="tblContent">
-            <tr>
-                <td class="header">
-                    Status
-                </td>
-                <td colspan="2">
-                    <asp:DropDownList runat="server" ID="cboStatus">
-                    </asp:DropDownList>
-                </td>
-            </tr>
-            <tr>
-                <td class="header">
-                    Doctor
-                </td>
-                <td colspan="2">
-                    <span id="lblDoctor" style="font-weight: bold;"></span>
-                    <input type="hidden" id="hdfDoctor" />
-                </td>
-            </tr>
-            <tr>
-                <td class="header">
-                    Patient
-                </td>
-                <td>
-                    <input type="text" id="txtPatient" />
-                </td>
-                <td>
-                    <input type="button" id="createUser" value="New" style="width: 50px;" runat="server" />
-                    <input type="button" id="changeUser" value="Change" style="width: 50px;" runat="server" />
-                </td>
-            </tr>
-            <tr>
-                <td class="header">
-                    From
-                </td>
-                <td colspan="2">
-                    <select id="cboFromHour">
-                    </select><input type="text" id="txtFromDate" class="datePicker" readonly="readonly" />
-                </td>
-            </tr>
-            <tr>
-                <td class="header">
-                    To
-                </td>
-                <td colspan="2">
-                    <select id="cboToHour">
-                    </select><input type="text" id="txtToDate" class="datePicker" readonly="readonly" />
-                </td>
-            </tr>
-            <tr>
-                <td class="header">
-                    Room
-                </td>
-                <td colspan="2">
-                    <select id="cboRoom">
-                    </select>
-                    <input type="hidden" id="hdfRoom" />
-                    <span id="loadingRoom" class="loading"></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="header">
-                    Note
-                </td>
-                <td colspan="2">
-                    <textarea id="txtNote" cols="10" rows="3" style="width: 100%;"></textarea>
                 </td>
             </tr>
         </table>
@@ -375,4 +297,204 @@
             </div>
         </div>
     </div>
+    <div class="dhx_cal_light dhx_cal_light_wide" id="form-dhtmlx" style="height: 410px; width: 500px; display: none;">
+        <asp:HiddenField runat="server" ID="hdId" Value=""/>
+        <div class="dhx_cal_ltitle" id="drag-title">
+            <span class="dhx_mark">&nbsp;</span><span class="dhx_time"></span><span class="dhx_title"></span><div
+                class="dhx_close_icon" onclick="CancelAppointment();" title="Close form without save">
+            </div>
+        </div>
+        <div class="dhx_cal_larea" style="height: 310px; width: 482px;">
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection required">
+                    Status</div>
+                <div class="dhx_cal_ltext">
+                    <dx:ASPxComboBox runat="server" DataSourceID="StatusDataSource" Width="330px" TextField="Title"
+                        ValueField="Title" ID="cboStatus" ValueType="System.String" ClientInstanceName="cboStatus">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Status is required" />
+                        </ValidationSettings>
+                    </dx:ASPxComboBox>
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection required">
+                    Service</div>
+                <div class="dhx_cal_ltext">
+                    <dx:ASPxComboBox runat="server" DataSourceID="ServicesDataSource" Width="330px" TextField="Title"
+                        ValueField="Id" ID="cboService" ValueType="System.Int32" ClientInstanceName="cboService" >
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Service is required" />
+                        </ValidationSettings>
+                        <ClientSideEvents ValueChanged="function(s, e) { RefreshDoctorList(); }" />
+                    </dx:ASPxComboBox>
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection required">
+                    Doctor</div>
+                <div class="dhx_cal_ltext">
+                    <asp:HiddenField runat="server" ID="hdDocCon" Value="IsDisabled = 'False'"/>
+                    <dx:ASPxComboBox ID="cboDoctor" ClientInstanceName="cboDoctor" runat="server" Width="330px"
+                        DropDownStyle="DropDownList" ValueField="Username" TextField="DisplayName" ValueType="System.String" 
+                        TextFormatString="{1}" EnableCallbackMode="true" OnCallback="cboDoctor_OnCallback"
+                        IncrementalFilteringMode="StartsWith">
+                        <Columns>
+                            <dx:ListBoxColumn FieldName="Username" Width="130px" />
+                            <dx:ListBoxColumn FieldName="DisplayName" Width="200px" />
+                        </Columns>
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Doctor is required" />
+                        </ValidationSettings>
+                        <ClientSideEvents ValueChanged="function(s, e) { RefreshRoomList(); }"
+                         EndCallback="function(s, e) { cboDoctor.SetSelectedItem(cboDoctor.FindItemByValue(doctor)); }" 
+                         Init="function(s, e) { RefreshRoomList(); }"/>
+                    </dx:ASPxComboBox>
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection required">
+                    Patient</div>
+                <div class="dhx_cal_ltext">
+                    <dx:ASPxComboBox ID="cboPatient" ClientInstanceName="cboPatient" runat="server" Width="330px"
+                        DropDownStyle="DropDownList" DataSourceID="PatientDataSource"
+                        ValueField="PatientCode" TextField="LastName" ValueType="System.String" 
+                        TextFormatString="{1} {2}" EnableCallbackMode="true"
+                        IncrementalFilteringMode="StartsWith">
+                        <Columns>
+                            <dx:ListBoxColumn FieldName="PatientCode" Width="80" />
+                            <dx:ListBoxColumn FieldName="FirstName" Width="100" />
+                            <dx:ListBoxColumn FieldName="LastName" Width="100" />
+                            <dx:ListBoxColumn FieldName="Sex" Width="50" />
+                        </Columns>
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="PAtient is required" />
+                        </ValidationSettings>
+                    </dx:ASPxComboBox>
+                    <input type="button" id="createUser" value="New" style="width: 50;" runat="server" />
+                    <input type="button" id="changeUser" value="Change" style="width: 50;" runat="server" />
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection required">
+                    Time period</div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxTimeEdit ID="startTime" runat="server" ClientInstanceName="startTime" EditFormatString="HH:mm"
+                        DisplayFormatString="HH:mm" Width="55">
+                    </dx:ASPxTimeEdit>
+                </div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxDateEdit ID="startDate" ClientInstanceName="startDate" runat="server" EditFormatString="M/d/yyyy"
+                        DisplayFormatString="M/d/yyyy" Width="75">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="From Date is required" />
+                        </ValidationSettings>
+                    </dx:ASPxDateEdit>
+                </div>
+                <div class="dhx_cal_ltext" style="float: left; text-align: center;">
+                    &ndash;
+                </div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxTimeEdit ID="endTime" ClientInstanceName="endTime" runat="server" EditFormatString="HH:mm"
+                        DisplayFormatString="HH:mm" Width="55">
+                    </dx:ASPxTimeEdit>
+                </div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxDateEdit ID="endDate" ClientInstanceName="endDate" runat="server" EditFormatString="M/d/yyyy"
+                        DisplayFormatString="M/d/yyyy" Width="75">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="To Date is required" />
+                        </ValidationSettings>
+                    </dx:ASPxDateEdit>
+                </div>
+                <div style="clear: both">
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection required">
+                    Room</div>
+                <div class="dhx_cal_ltext">
+                    <dx:ASPxComboBox runat="server" Width="330px" TextField="Title"
+                        ValueField="Id" ID="cboRoom" ValueType="System.Int32" ClientInstanceName="cboRoom" OnCallback="cboRoom_OnCallback">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Room is required" />
+                        </ValidationSettings>
+                        <ClientSideEvents EndCallback="function(s, e) { 
+                            cboRoom.SetSelectedItem(cboRoom.FindItemByValue(room)); }" />
+                    </dx:ASPxComboBox>
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_lsection">
+                    Note</div>
+                <div class="dhx_cal_ltext">
+                    <textarea id="txtNote" style="width: 330px; font-family: Arial;" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set">
+            <div dhx_button="1" class="dhx_save_btn">
+            </div>
+            <div title="Save roster" onclick="NewAppointment();" id="btnSave">
+                Save</div>
+            <div title="Update roster" onclick="UpdateAppointment();" id="btnUpdate">
+                Update</div>
+        </div>
+        <div class="dhx_btn_set dhx_left_btn_set dhx_cancel_btn_set">
+            <div dhx_button="1" class="dhx_cancel_btn">
+            </div>
+            <div title="Cancel editing" onclick="CancelAppointment();">
+                Cancel</div>
+        </div>
+        <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;">
+            <div dhx_button="1" class="dhx_delete_btn">
+            </div>
+            <div title="Delete current roster" id="delete-form-roster" onclick="DeleteAppointment();">
+                Delete</div>
+        </div>
+    </div>
+    <data:UsersDataSource SelectMethod="GetPaged" runat="server" ID="UsersDataSource">
+        <Parameters>
+            <asp:ControlParameter Name="WhereClause" ControlID="hdDocCon" ConvertEmptyStringToNull="False"/>
+            <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+        </Parameters>
+    </data:UsersDataSource>
+    <data:StatusDataSource SelectMethod="GetPaged" runat="server" ID="StatusDataSource">
+        <Parameters>
+            <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="OrderByClause" Value="PriorityIndex ASC" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+        </Parameters>
+    </data:StatusDataSource>
+    <data:VcsPatientDataSource ID="PatientDataSource" runat="server" SelectMethod="GetPaged">
+        <Parameters>
+            <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+        </Parameters>
+    </data:VcsPatientDataSource>
+    <data:RoomDataSource SelectMethod="GetPaged" runat="server" ID="RoomDataSource" EnablePaging="True"
+        EnableSorting="True">
+        <DeepLoadProperties Method="IncludeChildren" Recursive="False">
+        </DeepLoadProperties>
+        <Parameters>
+            <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+        </Parameters>
+    </data:RoomDataSource>
+    <data:ServicesDataSource SelectMethod="GetPaged" runat="server" ID="ServicesDataSource">
+        <Parameters>
+            <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
+        </Parameters>
+    </data:ServicesDataSource>
 </asp:Content>
