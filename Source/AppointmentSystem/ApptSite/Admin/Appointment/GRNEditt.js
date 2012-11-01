@@ -1,8 +1,8 @@
 ﻿// Ten bien chua id cac form
 var formId = "form-dhtmlx";
+var patientFormId = "form-patient";
 var classSelectedTab = 'ui-tabs-selected';
 
-var CurrentEventId = "-1";
 var CurrentAppointment;
 var miniCalendar;
 
@@ -83,8 +83,8 @@ function initSchedule(weekday) {
             // khi hien thi, dua vao thoi gian cua roster ma to mau
             isUsing = true;
             LoadAppointment(mode, date);
+            BlockTimespan(scheduler, date, mode);
         }
-        BlockTimespan(scheduler, date, mode);
     });
 
     // Load roster
@@ -119,123 +119,73 @@ function BeforeDrag(id) {
 // Function will be raise when event changed
 function EventChanged(eventId, objEvent) {
     // Case move event
-    if (scheduler._drag_mode && (scheduler._drag_mode == 'move' || scheduler._drag_mode == 'resize')) {
+    //if (scheduler._drag_mode && (scheduler._drag_mode == 'move' || scheduler._drag_mode == 'resize')) {
         MoveAppointment(eventId, objEvent);
-    }
+    //}
 }
 
 scheduler.showLightbox = function(id) {
     isLightbox = true;
-
-    // Get current appointmentId
+    InitForm();
     var ev = scheduler.getEvent(id);
-    CurrentEventId = id;
 
-    if (ev.start_date < new Date()) {
-        if (ev.isnew == false) {
-            ShowDialog("", "", "You cannot change a passed appointment.", "");
-        } else {
-            DeleteAppointment("Lightbox");
-            scheduler.deleteEvent(id);
-            ShowDialog("", "", "You cannot create new appointment a passed day.", "");
-        }
-        return false;
-    }
-    // Clear all value
-    $("#hdId").val("");
-    $("#txtNote").val("");
-    $("#lblDoctor").val("");
-    $("#txtPatient").tokenInput("clear");
+    // Set init value
+    $("#hdId").val(id);
+    startDate.SetDate(ev.start_date);
+    endDate.SetDate(ev.end_date);
+    startTime.SetDate(ev.start_date);
+    endTime.SetDate(ev.end_date);
+    $("#txtNote").val(ev.note);
+    cboStatus.SetSelectedItem(cboStatus.FindItemByValue('Available'));
+    cboService.SetSelectedItem(cboService.FindItemByValue($('#service-tabs li.ui-tabs-selected').attr('id').replace('tab_', '')));
+
+    // Set value
+    RefreshDoctorList(ev.section_id);
 
     // Button create user and change user
     $("[id$=createUser]").show();
     $("[id$=changeUser]").hide();
 
-    // Get doctor's info
-    $("#hdfDoctor").val(ev.section_id);
-    $.each(scheduler._props[scheduler._mode].options, function(i, item) {
-        // Get name of doctor by key
-        if (item.key == ev.section_id) {
-            $("#lblDoctor").html("Dr. " + item.label);
-            return;
-        }
-    });
-
-    // Set room, do not get info
-    SetTime(ev);
-
-    // Set init value
-    $("#txtFromDate").datepicker("setDate", new Date(ev.start_date.getFullYear(), ev.start_date.getMonth(), ev.start_date.getDate()));
-    $("#txtToDate").datepicker("setDate", new Date(ev.end_date.getFullYear(), ev.end_date.getMonth(), ev.end_date.getDate()));
-    if (ev.RoomId) {
-        $("#hdfRoom").val(ev.RoomId);
-    }
-    if (ev.PatientCode) {
-        $("#txtPatient").tokenInput("add", { id: ev.PatientCode, PatientInfo: ev.PatientInfo });
-    }
-
-    // Get available room list
-    GetRoom();
-
     // Load data
     if (ev.isnew == false) {
         $("[id$=createUser]").hide();
         $("[id$=changeUser]").show();
+        $('#drag-title .dhx_time').text('Edit appoinment ' + id);
+        $("#repeater-section, #btnSave").hide();
+        $("#btnUpdate").show();
+        $("#delete-form-roster").parent().show();
 
-        // Set current user to global variable
-        CurrentAppointment = ev;
-
-        // Update case, get info from server
-        $("#RosterForm").dialog({
-            autoOpen: true,
-            height: 320,
-            width: 550,
-            modal: false,
-            zIndex: $.maxZIndex() + 1,
-            resizable: false,
-            buttons: {
-                Delete: function() {
-                    DeleteAppointment(id);
-                },
-                Cancel: function() {
-                    $(this).dialog("close");
-                },
-                Save: function() {
-                    UpdateAppointment(id);
-                }
-            },
-            close: function() {
-                CancelAppointment();
-            }
-        });
+        if (ev.status) {
+            cboStatus.SetSelectedItem(cboStatus.FindItemByValue(ev.status));
+        }
+        if (ev.service) {
+            cboService.SetSelectedItem(cboService.FindItemByValue(ev.service));
+            RefreshDoctorList(ev.service);
+        }
+        if (ev.patient) {
+            cboPatient.SetSelectedItem(cboPatient.FindItemByValue(ev.patient));
+        }
+        if (ev.room) {
+            RefreshRoomList(ev.room);
+        }
     }
     else {
-        // New mode
-        $("#RosterForm").dialog({
-            autoOpen: true,
-            height: 350,
-            width: 550,
-            modal: false,
-            zIndex: $.maxZIndex() + 1,
-            resizable: false,
-            buttons: {
-                Cancel: function() {
-                    $(this).dialog("close");
-                },
-                Save: function() {
-                    NewAppointment();
-                }
-            },
-            close: function() {
-                CancelAppointment();
-            }
-        });
+        $('#drag-title .dhx_time').text('New appoinment');
+        $("#repeater-section, #btnSave").show();
+        $("#btnUpdate").hide();
+        $("#delete-form-roster").parent().hide();
     }
 
-    $(".token-input-dropdown").css("z-index", $.maxZIndex() + 10); // Bring to front
+    var d = html("drag-title");
+    d.onmousedown = scheduler._ready_to_dnd;
+    d.onselectstart = function() { return false; };
+    d.style.cursor = "pointer";
+    scheduler._init_dnd_events();
+    scheduler.startLightbox(id, html(formId));
 
-    currentForm = $('#RosterForm');
-    scheduler.startLightbox(id, html("RosterForm"));
+    // Goi ham validate form khi form hien thi
+    ValidateForm();
+
     return true;
 };
 /****************************Scheduler - End******************************/
@@ -299,23 +249,6 @@ function SetTime(ev) {
     $("#cboToHour").val(endTime + ":00");
 }
 
-// Bind time to time box in form
-function BindTime() {
-    for (var h = 0; h < maxHour; h++) {
-        var m = 0;
-        while (m < maxMinute) {
-            var minute = m.toString();
-            var hour = h.toString();
-            if (m < 10) minute = "0" + m.toString();
-            if (h < 10) hour = "0" + h.toString();
-            var key = hour + ":" + minute + ":00";
-            var label = hour + ":" + minute;
-            m += minuteStep;
-            $("#cboFromHour").append('<option value="' + key + '">' + label + '</option>');
-            $("#cboToHour").append('<option value="' + key + '">' + label + '</option>');
-        }
-    }
-}
 /****************************DateTime - End******************************/
 
 /****************************Patient - Start******************************/
@@ -737,7 +670,6 @@ function BuildTabs(sections, mode) {
 
 // Cancel appointment
 function CancelAppointment() {
-    $(".token-input-dropdown").css("z-index", 0); // Bring to front
     scheduler.endLightbox(false, html("RosterForm"));
     isLightbox = false;
 }
@@ -796,33 +728,7 @@ function DeleteAppointment(id) {
 
 /****************************Initialize - Start******************************/
 $(document).ready(function() {
-    BindTime();
-
     initSchedule(weekday);
-
-    $(".datePicker").datepicker({
-        showOn: "button",
-        buttonImage: "../../resources/css/ui-lightness/images/calendar.gif",
-        buttonImageOnly: true, changeMonth: true,
-        changeYear: true,
-        showOtherMonths: true,
-        dateFormat: "m/d/yy",
-        selectOtherMonths: true
-    });
-
-    var currentMonth = new Date();
-    var nextMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
-    $("#txtMonth").datepicker({
-        showOn: "button",
-        buttonImage: "../../resources/css/ui-lightness/images/calendar.gif",
-        buttonImageOnly: true, changeMonth: true,
-        changeYear: true,
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        dateFormat: "mm-yy",
-        minDate: nextMonth
-    });
-
     initEvents();
 });
 
@@ -839,10 +745,6 @@ function initEvents() {
     $(".dhx_cal_today_button:not(#btnToday)").click(function() {
         $("#btnToday").click();
         scheduler.updateCalendar(miniCalendar, scheduler._date);
-    });
-
-    $("#cboFromHour, #txtFromDate, #cboToHour, #txtToDate").change(function() {
-        GetRoom();
     });
 }
 /****************************Initialize - End******************************/
@@ -1031,3 +933,39 @@ $("[id$=changeUser]").click(function() {
     });
 });
 /****************************Events - End******************************/
+
+/**************************** Form ******************************/
+function InitForm() {
+    // Set empty
+    $("#hdId").val("");
+    $("#txtNote").val("");
+}
+
+var doctor;
+function RefreshDoctorList(id) {
+    doctor = cboDoctor.GetValue();
+    cboDoctor.PerformCallback('Refresh');
+    if (id) doctor = id;
+    RefreshRoomList();
+}
+
+var room;
+function RefreshRoomList(id) {
+    room = cboRoom.GetValue();
+    cboRoom.PerformCallback('Refresh');
+    if (id) room = id;
+}
+
+// Ham kiem tra form co valid khong
+function ValidateForm() {
+    cboStatus.Validate();
+    cboDoctor.Validate();
+    cboPatient.Validate();
+    cboRoom.Validate();
+    startTime.Validate();
+    startDate.Validate();
+    endTime.Validate();
+    endDate.Validate();
+    return cboStatus.isValid && cboDoctor.isValid && cboPatient.isValid && cboRoom.isValid
+            && startTime.isValid && startDate.isValid && endTime.isValid && endDate.isValid;
+}

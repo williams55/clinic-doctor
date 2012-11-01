@@ -419,7 +419,6 @@ function AddTimespanMonth(evs) {
 
 // Cancel roster
 function CancelRoster() {
-    //$(".token-input-dropdown").css("z-index", 0); // Bring to front
     scheduler.endLightbox(false, html(formId));
     isLightbox = false;
 }
@@ -454,20 +453,12 @@ function DeleteRoster() {
     });
 }
 /****************************Roster - End******************************/
-function SetTime(ev) {
-    var startTime = ev.start_date.format("HH:MM");
-    var endTime = ev.end_date.format("HH:MM");
-    $("#cboFromHour").val(startTime + ":00");
-    $("#cboToHour").val(endTime + ":00");
-}
 
+/**************************** Form ******************************/
 function InitForm() {
     // Set empty
-    //$("#chkRepeat").removeAttr("checked");
     $("#hdId").val("");
     $("#txtNote").val("");
-
-    DisableAllElements($("#tblContent"), true);
 }
 
 // Ham kiem tra form co valid khong
@@ -508,12 +499,3 @@ $(document).ready(function() {
         }
     });
 });
-
-function DisableAllElements(obj, disabled) {
-    if (disabled) {
-        $("input, textarea, select", obj).removeAttr('disabled');
-    }
-    else {
-        $("input, textarea, select", obj).attr('disabled', true);
-    }
-}

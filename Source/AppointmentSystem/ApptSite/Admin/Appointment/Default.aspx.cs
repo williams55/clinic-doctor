@@ -13,6 +13,8 @@ using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Extension;
 using Common.Util;
+using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxEditors;
 using Log.Controller;
 using Newtonsoft.Json;
 
@@ -64,16 +66,16 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     {
         try
         {
-            var lst = DataRepository.StatusProvider.GetAll();
-            lst.Sort((x1, x2) => x1.PriorityIndex.CompareTo(x2.PriorityIndex));
+            //var lst = DataRepository.StatusProvider.GetAll();
+            //lst.Sort((x1, x2) => x1.PriorityIndex.CompareTo(x2.PriorityIndex));
 
-            cboStatus.DataSource = lst;
-            cboStatus.DataTextField = "Title";
-            cboStatus.DataValueField = "Id";
-            cboStatus.DataBind();
+            //cboStatus.DataSource = lst;
+            //cboStatus.DataTextField = "Title";
+            //cboStatus.DataValueField = "Id";
+            //cboStatus.DataBind();
 
-            rptStatus.DataSource = lst;
-            rptStatus.DataBind();
+            //rptStatus.DataSource = lst;
+            //rptStatus.DataBind();
         }
         catch (Exception ex)
         {
@@ -1097,7 +1099,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             #region "Send Appointment"
             var objPatient = DataRepository.VcsPatientProvider.GetByPatientCode(patientCode)[0];
-            
+
             DataRepository.AppointmentProvider.DeepLoad(newObj);
             string strSubject = String.Format("New Appointment: {0}{1}{2}",
                                               string.IsNullOrEmpty(newObj.ServicesIdSource.Title)
@@ -1117,7 +1119,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                                   ? string.Empty
                                                   : newObj.RoomIdSource.Title);
             string strAlarmSummary = String.Format("{0} minutes left for appointment with {1} {2}",
-                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment, 
+                ServiceFacade.SettingsHelper.TimeLeftRemindAppointment,
                                               string.IsNullOrEmpty(objPatient.FirstName)
                                                   ? string.Empty
                                                   : objPatient.FirstName + " ",
@@ -1952,6 +1954,131 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                  : patient.LastName);
     }
     #endregion
+
+    protected void cboRoom_OnCallback(object sender, CallbackEventArgsBase e)
+    {
+        try
+        {
+            if (e.Parameter == "Refresh")
+            {
+                // Validate current user have any right to get room list
+                if (!CheckCreating(out _message) && !CheckUpdating(out _message))
+                {
+                    //return WebCommon.BuildFailedResult("You have no right to get room");
+                    return;
+                }
+
+                // Get service base on doctorId
+                var userName = cboDoctor.Value == null ? string.Empty : cboDoctor.Value.ToString();
+                // Set value for service Id
+                var serviceId = cboService.Value == null ? 0 : (int)cboService.Value;
+
+                DateTime dtStart = DateTime.Now,
+                    dtEnd = DateTime.Now;
+                if (WebCommon.ValidateEmpty("From Time", startTime.Value, out _message)
+                    && WebCommon.ValidateEmpty("End Time", endTime.Value, out _message)
+                    && WebCommon.ValidateEmpty("Start Date", startDate.Value, out _message)
+                    && WebCommon.ValidateEmpty("End Date", endDate.Value, out _message))
+                {
+                    dtStart = new DateTime(((DateTime)startDate.Value).Year, ((DateTime)startDate.Value).Month, ((DateTime)startDate.Value).Day
+                                               , ((DateTime)startTime.Value).Hour, ((DateTime)startTime.Value).Minute, 0);
+                    dtEnd = new DateTime(((DateTime)endDate.Value).Year, ((DateTime)endDate.Value).Month, ((DateTime)endDate.Value).Day
+                                             , ((DateTime)endTime.Value).Hour, ((DateTime)endTime.Value).Minute, 0);
+                }
+
+
+                int count;
+                // Lay danh sach phong co appointment trong cung thoi diem
+                var lstAppointment =
+                    DataRepository.AppointmentProvider.GetPaged(
+                        String.Format(
+                            "((N'{0}' > StartTime AND N'{0}' < EndTime) OR (N'{1}' > StartTime AND N'{1}' < EndTime) OR (N'{0}' <= StartTime AND N'{1}' >= EndTime))"
+                            + " AND IsDisabled = 'False' AND Id <> '{2}'"
+                            , dtStart.ToString("yyyy-MM-dd HH:mm:00.000"),
+                            dtEnd.ToString("yyyy-MM-dd HH:mm:00.000"), hdId.Value), string.Empty, 0,
+                        ServiceFacade.SettingsHelper.GetPagedLength, out count);
+
+                // Lay danh sach phong
+                var lstRoom =
+                    DataRepository.RoomProvider.GetPaged(
+                        String.Format("IsDisabled = 'False'"), string.Empty, 0,
+                        ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                DataRepository.RoomProvider.DeepLoad(lstRoom);
+
+                // Lay danh sach phong co the su dung
+                // Danh sach nay se tro sang bang DoctorRoom de lay Priority, neu bang nay khong chua du lieu thi lay so lon nhat, cai nay de sort
+                var lstAvailableRoom = lstRoom.FindAll(x => !lstAppointment.Exists(y => y.RoomId == x.Id))
+                    // Phong dang free => Phong khong duoc ton tai trong Appointment
+                    .Select(x =>
+                    {
+                        var firstOrDefault = x.DoctorRoomCollection.FirstOrDefault();
+                        return new
+                        {
+                            x.Id,
+                            x.Title,
+                            Priority =
+                                // Lay Priority neu no ton tai voi Doctor, neu khong thi lay mot so lon
+                                (firstOrDefault != null &&
+                                    (string.IsNullOrEmpty(userName) || firstOrDefault.Username == userName)
+                                     ? firstOrDefault.Priority
+                                     : ServiceFacade.SettingsHelper.GetPagedLength),
+                            ServiceId = x.ServicesId,
+                            ServiceName = x.ServicesIdSource.Title
+                        };
+                    })
+                    .ToList();
+
+                // Tach ra lam 3 list: 
+                // - Uu tien
+                // - Khong uu tien nhung cung service
+                // - Khong uu tien va khac service
+                var lstPriority = lstAvailableRoom.FindAll(room => room.Priority != ServiceFacade.SettingsHelper.GetPagedLength);
+                var lstNonPriSameService = lstAvailableRoom.FindAll(room => room.Priority == ServiceFacade.SettingsHelper.GetPagedLength
+                        && room.ServiceId == serviceId);
+                var lstNonPriOthers = lstAvailableRoom.FindAll(room => !lstPriority.Exists(pri => pri.Id == room.Id)
+                    && !lstNonPriSameService.Exists(pri => pri.Id == room.Id));
+
+                lstPriority.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));
+                lstPriority.AddRange(lstNonPriSameService);
+                lstPriority.AddRange(lstNonPriOthers);
+
+                cboRoom.DataSource = lstPriority;
+                cboRoom.DataBind();
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+
+    protected void cboDoctor_OnCallback(object sender, CallbackEventArgsBase e)
+    {
+        try
+        {
+            if (e.Parameter == "Refresh")
+            {
+                // Validate current user have any right to get room list
+                if (!CheckCreating(out _message) && !CheckUpdating(out _message))
+                {
+                    //return WebCommon.BuildFailedResult("You have no right to get room");
+                    return;
+                }
+
+                var serviceId = cboService.Value == null ? 0 : (int)cboService.Value;
+                int count;
+                cboDoctor.DataSource =
+                   DataRepository.UsersProvider.GetPaged(
+                       String.Format("IsDisabled = 'False' AND ServicesId = '{0}'", serviceId), string.Empty, 0,
+                       ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                cboDoctor.DataBind();
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
 }
 
 public class AvaiTime

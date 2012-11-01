@@ -68,11 +68,6 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
-    <div id="RosterForm" class="dialog-form" title="Roster" style="display: none;">
-        <div class="title" id="dialog-modal" style="width: 100%; text-align: center;">
-            <span class="loading"></span>
-        </div>
-    </div>
     <div id="box-tabs" class="box">
         <div class="title">
             <h5>
