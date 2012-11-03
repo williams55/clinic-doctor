@@ -9,13 +9,27 @@ namespace AppointmentBusiness.BO
     public interface IAppointmentBO
     {
         /// <summary>
+        /// Insert mot appointment
+        /// </summary>
+        /// <param name="appointment"></param>
+        /// <param name="message"></param>
+        bool Insert(Appointment appointment, ref string message);
+
+        /// <summary>
+        /// Update mot appointment
+        /// </summary>
+        /// <param name="appointment"></param>
+        /// <param name="message"></param>
+        bool Update(ref Appointment appointment, ref string message);
+        
+        /// <summary>
         /// Them History log cua appointment
         /// </summary>
         /// <param name="username"> </param>
         /// <param name="fromStatus"></param>
         /// <param name="toStatus"></param>
         /// <param name="appointment"> </param>
-        void Insert(Appointment appointment, string username, string fromStatus, string toStatus);
+        void InsertHistory(Appointment appointment, string username, string fromStatus, string toStatus);
 
         /// <summary>
         /// Lay danh sach Appointment theo ngay, mode

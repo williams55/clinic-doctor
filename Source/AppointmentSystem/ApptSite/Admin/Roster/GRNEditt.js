@@ -342,23 +342,15 @@ function UpdateRoster() {
     }
 
     var id = $("#hdId").val();
-    var rosterType = cboRosterType.GetValue();
-    var fromTime = startTime.GetDate();
-    var toTime = endTime.GetDate();
-    var fromDate = startDate.GetDate();
-    var toDate = endDate.GetDate();
-    var note = $("#txtNote").val();
-    var doctor = cboDoctor.GetValue();
-
     var requestdata = JSON.stringify({
         id: id,
-        doctorId: doctor,
-        rosterTypeId: rosterType,
-        startTime: fromTime,
-        endTime: toTime,
-        startDate: fromDate,
-        endDate: toDate,
-        note: note
+        doctorId: cboDoctor.GetValue(),
+        rosterTypeId: cboRosterType.GetValue(),
+        startTime: startTime.GetDate(),
+        endTime: endTime.GetDate(),
+        startDate: startDate.GetDate(),
+        endDate: endDate.GetDate(),
+        note: $("#txtNote").val()
     });
     ShowProgress();
     $.ajax({

@@ -212,7 +212,7 @@ namespace AppointmentBusiness.BO
                 var objUser = DataRepository.UsersProvider.GetByUsername(roster.Username);
                 if (objUser == null || objUser.IsDisabled)
                 {
-                    message = "User is not exist.";
+                    message = "Doctor is not exist.";
                     return false;
                 }
 
@@ -227,7 +227,7 @@ namespace AppointmentBusiness.BO
                 // Kiem tra ngay bat dau, ngay ket thuc
                 if (roster.StartTime >= roster.EndTime)
                 {
-                    message = "End time must be greater than from time.";
+                    message = "End time must be greater than start time.";
                     return false;
                 }
 

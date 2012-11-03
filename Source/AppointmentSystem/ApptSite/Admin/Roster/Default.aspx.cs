@@ -79,7 +79,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             if (!WebCommon.ValidateEmpty("Doctor", doctorId, out _message)
                 || !WebCommon.ValidateEmpty("Roster Type", rosterTypeId, out _message)
-                || !WebCommon.ValidateEmpty("From Time", startTime, out _message)
+                || !WebCommon.ValidateEmpty("Start Time", startTime, out _message)
                 || !WebCommon.ValidateEmpty("End Time", endTime, out _message)
                 || !WebCommon.ValidateEmpty("Start Date", startDate, out _message)
                 || !WebCommon.ValidateEmpty("End Date", endDate, out _message))
@@ -168,7 +168,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             if (!WebCommon.ValidateEmpty("Roster Id", id, out _message)
                 || !WebCommon.ValidateEmpty("Roster Type", rosterTypeId, out _message)
                 || !WebCommon.ValidateEmpty("Doctor", doctorId, out _message)
-                || !WebCommon.ValidateEmpty("From Time", startTime, out _message)
+                || !WebCommon.ValidateEmpty("Start Time", startTime, out _message)
                 || !WebCommon.ValidateEmpty("End Time", endTime, out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
@@ -232,7 +232,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             if (!WebCommon.ValidateEmpty("Roster Id", id, out _message)
                 || !WebCommon.ValidateEmpty("Doctor", doctorId, out _message)
                 || !WebCommon.ValidateEmpty("Roster Type", rosterTypeId, out _message)
-                || !WebCommon.ValidateEmpty("From Time", startTime, out _message)
+                || !WebCommon.ValidateEmpty("Start Time", startTime, out _message)
                 || !WebCommon.ValidateEmpty("End Time", endTime, out _message)
                 || !WebCommon.ValidateEmpty("Start Date", startDate, out _message)
                 || !WebCommon.ValidateEmpty("End Date", endDate, out _message))

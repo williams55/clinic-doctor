@@ -130,7 +130,7 @@ scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
 
     // Set init value
-    $("#hdId").val(id);
+    $("[id$=hdId]").val(id);
     startDate.SetDate(ev.start_date);
     endDate.SetDate(ev.end_date);
     startTime.SetDate(ev.start_date);
@@ -148,7 +148,6 @@ scheduler.showLightbox = function(id) {
 
     // Load data
     if (ev.isnew == false) {
-        $("[id$=createUser]").hide();
         $("[id$=changeUser]").show();
         $('#drag-title .dhx_time').text('Edit appoinment ' + id);
         $("#repeater-section, #btnSave").hide();
@@ -189,67 +188,6 @@ scheduler.showLightbox = function(id) {
     return true;
 };
 /****************************Scheduler - End******************************/
-
-/****************************Form - Start******************************/
-// Get available rooms
-function GetRoom() {
-    var requestdata = JSON.stringify({ appointmentId: CurrentEventId, doctorId: $("#hdfDoctor").val(),
-        startTime: $("#cboFromHour").val(), endTime: $("#cboToHour").val(),
-        startDate: $("#txtFromDate").val(), endDate: $("#txtToDate").val()
-    });
-
-    $("#cboRoom").html("");
-    $("#cboRoom").append("<option value=''>--Choose Room--</option>");
-    $("#cboRoom").attr("disabled", "disabled");
-    $("#loadingRoom").show();
-
-    $.ajax({
-        type: "POST",
-        url: "Default.aspx/GetRoom",
-        data: requestdata,
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function(response) {
-            var obj = JSON.parse(response.d);
-
-            if (obj.result == "true") {
-                if (obj.data) {
-                    $.each(obj.data, function(i, item) {
-                        var option = document.createElement("option");
-                        $(option).val(item.Id);
-                        $(option).text(item.Title);
-                        if ($("#hdfRoom").val() == item.Id) {
-                            $(option).attr("selected", "selected");
-                        }
-                        $("#cboRoom").append(option);
-                    });
-                }
-            }
-            else {
-                ShowDialog("", "", obj.message, "");
-            }
-        },
-        fail: function() {
-            ShowDialog("", "", "Unknow error!", "");
-        },
-        complete: function() {
-            $("#cboRoom").removeAttr("disabled");
-            $("#loadingRoom").hide();
-        }
-    });
-}
-/****************************Form - End******************************/
-
-/****************************DateTime - Start******************************/
-// Set time to time in Appointment form
-function SetTime(ev) {
-    var startTime = ev.start_date.format("HH:MM");
-    var endTime = ev.end_date.format("HH:MM");
-    $("#cboFromHour").val(startTime + ":00");
-    $("#cboToHour").val(endTime + ":00");
-}
-
-/****************************DateTime - End******************************/
 
 /****************************Patient - Start******************************/
 // Get Patient's info by appointment id
@@ -372,9 +310,13 @@ function UpdateSimplePatient(id, firstname, middleName, lastname, dob, nationali
 
 // Save moved, resize appointment
 function MoveAppointment(eventId, objEvent) {
-    var requestdata = JSON.stringify({ id: eventId, startTime: objEvent.start_date
-                , endTime: objEvent.end_date, doctorId: objEvent.section_id
+    var requestdata = JSON.stringify({ 
+        id: eventId, 
+        startTime: objEvent.start_date, 
+        endTime: objEvent.end_date, 
+        doctorId: objEvent.section_id
     });
+    isUsing = true;
     $.ajax({
         type: "POST",
         url: "Default.aspx/MoveAppointment",
@@ -386,20 +328,19 @@ function MoveAppointment(eventId, objEvent) {
             var obj = JSON.parse(response.d);
 
             if (obj.result != "true") {
-                ShowDialog("", "", obj.message, "");
-                alert("Move Appointment");
+                ShowMessage(obj.message);
                 scheduler.deleteEvent(eventId);
                 scheduler.addEvent(CurrentAppointment);
             }
         },
         fail: function() {
-            ShowDialog("", "", "Unknow error!", "");
-            alert("Move Appointment2");
+            ShowMessage("Unknow error!");
             scheduler.deleteEvent(eventId);
             scheduler.addEvent(CurrentAppointment);
         },
         complete: function() {
             CurrentAppointment = null; // set null after use
+            isUsing = false;
         }
     });
 }
@@ -444,28 +385,23 @@ function LoadAppointment(mode, date) {
 
 // Add new appointment
 function NewAppointment() {
-    // Check if patient is not selected
-    var patient = $("#txtPatient").tokenInput("get");
-    if (patient.length <= 0) {
-        ShowDialog("", "", "You must choose patient.", "");
-        $("#txtPatient").focus();
+    if (!ValidateForm()) {
+        ShowMessage('Please input required fields first.');
         return;
     }
 
-    ShowProgress();
-    DisableAllElements($("#tblContent"), false);
-
     var requestdata = JSON.stringify({
-        patientCode: patient[0].id,
+        patientCode: cboPatient.GetValue(),
         note: $("#txtNote").val(),
-        startTime: $("#cboFromHour").val(),
-        endTime: $("#cboToHour").val(),
-        startDate: $("#txtFromDate").datepicker("getDate"),
-        endDate: $("#txtToDate").datepicker("getDate"),
-        doctorId: $("#hdfDoctor").val(),
-        roomId: $("#cboRoom").val(),
-        status: $("[id$=cboStatus]").val()
+        startTime: startTime.GetValue(),
+        endTime: endTime.GetValue(),
+        startDate: startDate.GetValue(),
+        endDate: endDate.GetValue(),
+        doctorId: cboDoctor.GetValue(),
+        roomId: cboRoom.GetValue(),
+        status: cboStatus.GetValue()
     });
+    ShowProgress();
     $.ajax({
         type: "POST",
         url: "Default.aspx/NewAppointment",
@@ -477,46 +413,39 @@ function NewAppointment() {
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 AddAppointment(obj.data);
-                $("#RosterForm").dialog("close");
+                CancelAppointment();
             }
             else {
-                ShowDialog("", "", obj.message, "");
+                ShowMessage(obj.message);
             }
         },
         fail: function() {
             CloseProgress();
-            ShowDialog("", "", "Unknow error!", "");
-        },
-        complete: function() {
-            DisableAllElements($("#tblContent"), true);
+            ShowMessage("Unknow error!");
         }
     });
 }
 
-function UpdateAppointment(id) {
-    // Check if patient is not selected
-    var patient = $("#txtPatient").tokenInput("get");
-    if (patient.length <= 0) {
-        ShowDialog("", "", "You must choose patient.", "");
-        $("#txtPatient").focus();
+function UpdateAppointment() {
+    if (!ValidateForm()) {
+        ShowMessage('Please input required fields first.');
         return;
     }
 
-    DisableAllElements($("#tblContent"), false);
-    ShowProgress();
-
+    var id = $("[id$=hdId]").val();
     var requestdata = JSON.stringify({
         id: id,
-        patientCode: patient[0].id,
+        patientCode: cboPatient.GetValue(),
         note: $("#txtNote").val(),
-        startTime: $("#cboFromHour").val(),
-        endTime: $("#cboToHour").val(),
-        startDate: $("#txtFromDate").datepicker("getDate"),
-        endDate: $("#txtToDate").datepicker("getDate"),
-        doctorId: $("#hdfDoctor").val(),
-        roomId: $("#cboRoom").val(),
-        status: $("[id$=cboStatus]").val()
+        startTime: startTime.GetValue(),
+        endTime: endTime.GetValue(),
+        startDate: startDate.GetValue(),
+        endDate: endDate.GetValue(),
+        doctorId: cboDoctor.GetValue(),
+        roomId: cboRoom.GetValue(),
+        status: cboStatus.GetValue()
     });
+    ShowProgress();
     $.ajax({
         type: "POST",
         url: "Default.aspx/UpdateAppointment",
@@ -530,19 +459,15 @@ function UpdateAppointment(id) {
                 var evs = obj.data;
                 scheduler.deleteEvent(id);
                 AddAppointment(evs);
-                ShowDialog("", "", "Appointment has been updated.", "");
-                $("#RosterForm").dialog("close");
+                CancelAppointment();
             }
             else {
-                ShowDialog("", "", obj.message, "");
+                ShowMessage(obj.message);
             }
         },
         fail: function() {
             CloseProgress();
-            ShowDialog("", "", "Unknow error!", "");
-        },
-        complete: function() {
-            DisableAllElements($("#tblContent"), true);
+            ShowMessage("Unknow error!");
         }
     });
 }
@@ -670,57 +595,41 @@ function BuildTabs(sections, mode) {
 
 // Cancel appointment
 function CancelAppointment() {
-    scheduler.endLightbox(false, html("RosterForm"));
+    scheduler.endLightbox(false, html(formId));
     isLightbox = false;
 }
 
-function DeleteAppointment(id) {
-    // Display confirmation box ask delete appointment
-    $("#spanMessage-content").html("Do you want to delete this appointment?");
-    $("#dialog-message-title").attr("title", "Confirmation");
-    $("#dialog-message-title").dialog({
-        resizable: false,
-        modal: false,
-        buttons: {
-            No: function() {
-                $(this).dialog("close");
-            },
-            Yes: function() {
-                $(this).dialog("close");
+function DeleteAppointment() {
+    if (!confirm("Do you want to delete this appointment?"))
+        return;
 
-                var ev = scheduler.getEvent(id);
-                if (ev.isnew == false) {
-                    DisableAllElements($("#tblContent"), false);
-                    ShowProgress();
-                    var requestdata = JSON.stringify({ id: ev.id });
-                    $.ajax({
-                        type: "POST",
-                        url: "Default.aspx/DeleteAppointment",
-                        data: requestdata,
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function(response) {
-                            CloseProgress();
-                            var obj = JSON.parse(response.d);
-                            if (obj.result == "true") {
-                                DeleteAppointment("UpdateAppointment");
-                                scheduler.deleteEvent(ev.id);
-                                ShowDialog("", "", "Appointment has been deleted.", "");
-                                $("#RosterForm").dialog("close");
-                            } else {
-                                ShowDialog("", "", obj.message, "");
-                            }
-                        },
-                        fail: function() {
-                            CloseProgress();
-                            ShowDialog("", "", "Unknow error!", "");
-                        },
-                        complete: function() {
-                            DisableAllElements($("#tblContent"), true);
-                        }
-                    });
-                }
+    var id = $("[id$=hdId]").val();
+    var requestdata = JSON.stringify({ id: id });
+    ShowProgress();
+    isUsing = true;
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/DeleteAppointment",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(response) {
+            var obj = JSON.parse(response.d);
+            CloseProgress();
+            if (obj.result == "true") {
+                scheduler.deleteEvent(id);
+                CancelAppointment();
             }
+            else {
+                ShowMessage(obj.message);
+            }
+        },
+        fail: function() {
+            CloseProgress();
+            ShowMessage("Unknow error!");
+        },
+        complete: function() {
+            isUsing = false;
         }
     });
 }
@@ -937,7 +846,7 @@ $("[id$=changeUser]").click(function() {
 /**************************** Form ******************************/
 function InitForm() {
     // Set empty
-    $("#hdId").val("");
+    $("[id$=hdId]").val("");
     $("#txtNote").val("");
 }
 

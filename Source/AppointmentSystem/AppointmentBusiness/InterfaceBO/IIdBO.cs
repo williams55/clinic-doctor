@@ -8,6 +8,7 @@ namespace AppointmentBusiness.BO
 {
     public interface IIdBO
     {
+        #region Roster
         /// <summary>
         /// Generate Id cho roster
         /// </summary>
@@ -20,5 +21,21 @@ namespace AppointmentBusiness.BO
         /// <param name="number"></param>
         /// <returns></returns>
         string RosterId(object number);
+        #endregion
+
+        #region Appointment
+        /// <summary>
+        /// Generate Id cho Appointment
+        /// </summary>
+        /// <returns></returns>
+        string AppointmentId();
+
+        /// <summary>
+        /// Generate Id cho Appointment voi so co san
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        string AppointmentId(object number);
+        #endregion
     }
 }
