@@ -171,7 +171,18 @@ public class WebCommon
     }
 
     /// <summary>
-    /// Build failed result to string for ajax with Json format
+    /// Build successfull result to string for ajax with Json format
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static string BuildSuccessfulResult(object obj, string message)
+    {
+        return BuildResult(true, message, obj);
+    }
+
+    /// <summary>
+    /// Build successfull result to string for ajax with Json format
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
@@ -181,7 +192,7 @@ public class WebCommon
     }
 
     /// <summary>
-    /// Build failed result to string for ajax with Json format
+    /// Build successfull result to string for ajax with Json format
     /// </summary>
     /// <returns></returns>
     public static string BuildSuccessfulResult()
@@ -190,7 +201,7 @@ public class WebCommon
     }
 
     /// <summary>
-    /// Build failed result to string for ajax with Json format
+    /// Build successfull result to string for ajax with Json format
     /// </summary>
     /// <param name="message"></param>
     /// <returns></returns>

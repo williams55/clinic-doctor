@@ -247,7 +247,7 @@
                 <div style="float: right; width: 251px; height: 180px;" id="datepicker">
                 </div>
                 <div class="status-info">
-                    <asp:Repeater ID="rptStatus" runat="server">
+                    <asp:Repeater ID="rptStatus" runat="server" DataSourceID="StatusDataSource">
                         <ItemTemplate>
                             <div class="tinybox" style="background-color: <%# Eval("ColorCode") %>">
                             </div>
@@ -310,7 +310,7 @@
                     Status</div>
                 <div class="dhx_cal_ltext">
                     <dx:ASPxComboBox runat="server" DataSourceID="StatusDataSource" Width="330px" TextField="Title"
-                        ValueField="Title" ID="cboStatus" ValueType="System.String" ClientInstanceName="cboStatus">
+                        ValueField="Id" ID="cboStatus" ValueType="System.String" ClientInstanceName="cboStatus">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="Status is required" />
@@ -350,7 +350,7 @@
                             <RequiredField IsRequired="True" ErrorText="Doctor is required" />
                         </ValidationSettings>
                         <ClientSideEvents ValueChanged="function(s, e) { RefreshRoomList(); }"
-                         EndCallback="function(s, e) { cboDoctor.SetSelectedItem(cboDoctor.FindItemByValue(doctor)); }" 
+                         EndCallback="function(s, e) { if(doctor){ s.SetSelectedItem(s.FindItemByValue(doctor)); s.Validate(); } }" 
                          Init="function(s, e) { RefreshRoomList(); }"/>
                     </dx:ASPxComboBox>
                 </div>
@@ -374,6 +374,9 @@
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="PAtient is required" />
                         </ValidationSettings>
+                        <ClientSideEvents ValueChanged="function(s, e) { 
+                            $('[id$=changeUser]').show(); }"
+                            />
                     </dx:ASPxComboBox>
                     <input type="button" id="createUser" value="New" style="width: 50;" runat="server" />
                     <input type="button" id="changeUser" value="Change" style="width: 50;" runat="server" />
@@ -427,7 +430,7 @@
                             <RequiredField IsRequired="True" ErrorText="Room is required" />
                         </ValidationSettings>
                         <ClientSideEvents EndCallback="function(s, e) { 
-                            cboRoom.SetSelectedItem(cboRoom.FindItemByValue(room)); }" />
+                            if(room){ s.SetSelectedItem(cboRoom.FindItemByValue(room)); s.Validate(); } }" />
                     </dx:ASPxComboBox>
                 </div>
             </div>
