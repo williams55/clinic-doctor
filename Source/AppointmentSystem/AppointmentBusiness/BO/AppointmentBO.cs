@@ -227,13 +227,13 @@ namespace AppointmentBusiness.BO
 
                 // If there has some rosters but not is booked, return error
                 DataRepository.RosterProvider.DeepLoad(lstRoster);
-                var lstRosterType = lstRoster.Select(x => x.RosterTypeIdSource.IsBooked);
-                if (!lstRosterType.Any())
-                {
-                    message = String.Format("Cannot create appointment because roster {0} is not booked roster."
-                        , lstRoster[0].RosterTypeIdSource.Title);
-                    return false;
-                }
+                //var lstRosterType = lstRoster.Select(x => x.RosterTypeIdSource.IsBooked);
+                //if (!lstRosterType.Any())
+                //{
+                //    message = String.Format("Cannot create appointment because roster {0} is not booked roster."
+                //        , lstRoster[0].RosterTypeIdSource.Title);
+                //    return false;
+                //}
                 #endregion
 
                 #region Check Conflict

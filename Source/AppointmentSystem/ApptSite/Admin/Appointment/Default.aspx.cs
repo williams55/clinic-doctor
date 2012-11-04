@@ -217,10 +217,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                                                    patient.LastName,
                                                                    patient.HomePhone,
                                                                    patient.CompanyPhone,
+                                                                   patient.CompanyCode,
                                                                    patient.MemberType,
                                                                    patient.Nationality,
                                                                    patient.MobilePhone,
-                                                                   DateOfBirth = patient.DateOfBirth.ToString("MM/dd/yyyy"),
+                                                                   DateOfBirth = patient.DateOfBirth.ToString("MM/dd/yyyy hh:mm:ss"),
                                                                    patient.Sex,
                                                                    patient.Remark,
                                                                    propertyToSearch = ParsePatientInfo(patient),
@@ -974,10 +975,30 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(_message);
             }
 
+            // Neu mode la thang thi select date thoi, de co the tao timespan
+            object events;
+            if (mode == "month")
+            {
+                var lstResult = new List<object>();
+                var lstDate = lstAppt.Select(item => String.Format("{0:MM/dd/yyyy 00:00:00}", item.StartTime)).Distinct().ToList();
+                foreach (string strDate in lstDate)
+                {
+                    lstResult.Add(new
+                    {
+                        Date = strDate
+                    });
+                }
+                events = lstResult;
+            }
+            else
+            {
+                events = BuildListAppointment(lstAppt);
+            }
+
             // Tra ve danh sach
             return WebCommon.BuildSuccessfulResult(new
                 {
-                    Events = BuildListAppointment(lstAppt),
+                    Events = events,
                     Sections = BuildListSection(lstRoster, date)
                 });
         }

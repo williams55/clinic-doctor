@@ -8229,6 +8229,97 @@
                 ]]></body>
             </procedure>
             
+            <procedure owner="dbo" name="VCSCountry_Get_List" >
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets all records from the VCSCountry view
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters/>
+                <body><![CDATA[
+                    
+                    SELECT
+                        [CountryName],
+                        [CitizenName],
+                        [NationalCode],
+                        [CreateUser],
+                        [CreateDate],
+                        [IsDisabled],
+                        [Remark]
+                    FROM
+                        [dbo].[VCSCountry]
+                        
+                    SELECT @@ROWCOUNT			
+                ]]></body>
+            </procedure>
+            
+            <procedure owner="dbo" name="VCSCountry_Get" >
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the VCSCountry view passing page index and page count parameters
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters>
+                    <parameter name="@WhereClause" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)" />
+                    <parameter name="@OrderBy" type="varchar" direction="Input" size="2000" precision="0" scale="0" param="(2000)"/>			
+                </parameters>
+                <body><![CDATA[
+                    
+                    BEGIN
+    
+                    -- Build the sql query
+                    DECLARE @SQL AS nvarchar(4000)
+                    SET @SQL = ' SELECT * FROM [dbo].[VCSCountry]'
+                    IF LEN(@WhereClause) > 0
+                    BEGIN
+                        SET @SQL = @SQL + ' WHERE ' + @WhereClause
+                    END
+                    IF LEN(@OrderBy) > 0
+                    BEGIN
+                        SET @SQL = @SQL + ' ORDER BY ' + @OrderBy
+                    END
+                    
+                    -- Execution the query
+                    EXEC sp_executesql @SQL
+                    
+                    -- Return total count
+                    SELECT @@ROWCOUNT AS TotalRowCount
+                    
+                    END
+                ]]></body>
+            </procedure>
+            
+            
+            <procedure owner="dbo" name="VCSCountry_Find_Dynamic"  skip="true">
+                <comment><![CDATA[/*
+----------------------------------------------------------------------------------------------------
+
+-- Created By:  ()
+-- Purpose: Gets records from the VCSCountry table using a dynamically generated query.
+----------------------------------------------------------------------------------------------------
+*/
+]]></comment>
+                <parameters/>
+                <body><![CDATA[
+                    
+                    BEGIN
+                    
+                    SELECT * FROM [dbo].[VCSCountry] {0}
+                    ORDER BY {1}
+    
+                    -- get total count
+                    SELECT @@ROWCOUNT AS TotalRowCount;
+                    
+                    END
+                ]]></body>
+            </procedure>
+            
             <procedure owner="dbo" name="VCSPatient_Get_List" >
                 <comment><![CDATA[/*
 ----------------------------------------------------------------------------------------------------

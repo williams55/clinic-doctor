@@ -934,6 +934,45 @@ namespace AppointmentSystem.Data.SqlClient
 		#endregion
 		
 		
+		#region "VcsCountryProvider"
+		
+		private SqlVcsCountryProvider innerSqlVcsCountryProvider;
+
+		///<summary>
+		/// This class is the Data Access Logic Component for the <see cref="VcsCountry"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		/// <value></value>
+		public override VcsCountryProviderBase VcsCountryProvider
+		{
+			get
+			{
+				if (innerSqlVcsCountryProvider == null) 
+				{
+					lock (syncRoot) 
+					{
+						if (innerSqlVcsCountryProvider == null)
+						{
+							this.innerSqlVcsCountryProvider = new SqlVcsCountryProvider(_connectionString, _useStoredProcedure, _providerInvariantName);
+						}
+					}
+				}
+				return innerSqlVcsCountryProvider;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current <see cref="SqlVcsCountryProvider"/>.
+		/// </summary>
+		/// <value></value>
+		public SqlVcsCountryProvider SqlVcsCountryProvider
+		{
+			get {return VcsCountryProvider as SqlVcsCountryProvider;}
+		}
+		
+		#endregion
+		
+		
 		#region "VcsPatientProvider"
 		
 		private SqlVcsPatientProvider innerSqlVcsPatientProvider;

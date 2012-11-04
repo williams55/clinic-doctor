@@ -742,6 +742,23 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
+		#region VcsCountryProvider
+		
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="VcsCountry"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static VcsCountryProviderBase VcsCountryProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.VcsCountryProvider;
+			}
+		}
+		
+		#endregion
+		
 		#region VcsPatientProvider
 		
 		///<summary>
@@ -2055,6 +2072,74 @@ namespace AppointmentSystem.Data
 	}
 
 	#endregion VcsCompanyQuery
+		
+	#region VcsCountryFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="VcsCountry"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class VcsCountryFilters : VcsCountryFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCountryFilters class.
+		/// </summary>
+		public VcsCountryFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCountryFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public VcsCountryFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCountryFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public VcsCountryFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion VcsCountryFilters
+	
+	#region VcsCountryQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="VcsCountryParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="VcsCountry"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class VcsCountryQuery : VcsCountryParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCountryQuery class.
+		/// </summary>
+		public VcsCountryQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCountryQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public VcsCountryQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the VcsCountryQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public VcsCountryQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion VcsCountryQuery
 		
 	#region VcsPatientFilters
 	

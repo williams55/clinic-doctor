@@ -322,6 +322,12 @@
 			<Compile Include="UI\RepeaterControls\Views\VcsCompanyRepeater.cs">
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="DataSourceControls\Views\VcsCountryDataSource.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UI\RepeaterControls\Views\VcsCountryRepeater.cs">
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="DataSourceControls\Views\VcsPatientDataSource.cs">
 			  <SubType>Code</SubType>
 			</Compile>
