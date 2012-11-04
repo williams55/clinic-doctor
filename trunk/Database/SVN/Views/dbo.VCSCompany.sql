@@ -89,7 +89,7 @@ Begin DesignProperties =
                Right = 203
             End
             DisplayFlags = 280
-            TopColumn = 0
+            TopColumn = 10
          End
       End
    End
@@ -119,6 +119,7 @@ Begin DesignProperties =
 End
 ', 'SCHEMA', N'dbo', 'VIEW', N'VCSCompany', NULL, NULL
 GO
+
 
 DECLARE @xp int
 SELECT @xp=1

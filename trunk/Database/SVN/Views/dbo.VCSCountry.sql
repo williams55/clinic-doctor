@@ -1,16 +1,12 @@
-
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-CREATE VIEW dbo.VCSPatient
+CREATE VIEW dbo.VCSCountry
 AS
-SELECT     PatientCode, FirstName, MiddleName, LastName, DateOfBirth, Sex, MemberType, MembershipSOSNumber, MembershipSOSExpDate, Nationality, HomeStreet, 
-                      HomeWard, HomeDistrict, HomeCity, HomeCountry, CompanyCode, BillingAddress, HomePhone, MobilePhone, CompanyPhone, Fax, EmailAddress, CreateUser, 
-                      CreateDate, ValidCorporate, DefaultPaymentMode, InsuranceCardNumber, InsuranceCardExpDate, IsDisabled, UpdateUser, UpdateDate, ApptRemark, Remark
-FROM         VCS.dbo.Patient
+SELECT     CountryName, CitizenName, NationalCode, CreateUser, CreateDate, IsDisabled, Remark
+FROM         VCS.dbo.Country
 GO
-
 EXEC sp_addextendedproperty N'MS_DiagramPane1', N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
    Begin PaneConfigurations = 
@@ -82,15 +78,15 @@ Begin DesignProperties =
          Left = 0
       End
       Begin Tables = 
-         Begin Table = "Patient (VCS.dbo)"
+         Begin Table = "Country (VCS.dbo)"
             Begin Extent = 
                Top = 6
                Left = 38
-               Bottom = 175
-               Right = 245
+               Bottom = 180
+               Right = 198
             End
             DisplayFlags = 280
-            TopColumn = 26
+            TopColumn = 0
          End
       End
    End
@@ -118,11 +114,9 @@ Begin DesignProperties =
       End
    End
 End
-', 'SCHEMA', N'dbo', 'VIEW', N'VCSPatient', NULL, NULL
+', 'SCHEMA', N'dbo', 'VIEW', N'VCSCountry', NULL, NULL
 GO
-
-
 DECLARE @xp int
 SELECT @xp=1
-EXEC sp_addextendedproperty N'MS_DiagramPaneCount', @xp, 'SCHEMA', N'dbo', 'VIEW', N'VCSPatient', NULL, NULL
+EXEC sp_addextendedproperty N'MS_DiagramPaneCount', @xp, 'SCHEMA', N'dbo', 'VIEW', N'VCSCountry', NULL, NULL
 GO
