@@ -128,6 +128,7 @@ scheduler.showLightbox = function(id) {
     isLightbox = true;
     InitForm();
     var ev = scheduler.getEvent(id);
+    CurrentAppointment = scheduler.getEvent(id);
 
     // Set init value
     $("[id$=hdId]").val(id);
@@ -138,17 +139,13 @@ scheduler.showLightbox = function(id) {
     $("#txtNote").val(ev.note);
     cboStatus.SetSelectedItem(cboStatus.FindItemByValue('Available'));
     cboService.SetSelectedItem(cboService.FindItemByValue($('#service-tabs li.ui-tabs-selected').attr('id').replace('tab_', '')));
+    cboPatient.SetSelectedIndex(0);
 
     // Set value
     RefreshDoctorList(ev.section_id);
-
-    // Button create user and change user
-    $("[id$=createUser]").show();
-    $("[id$=changeUser]").hide();
-
     // Load data
     if (ev.isnew == false) {
-        $("[id$=changeUser]").show();
+        CurrentAppointment = null;
         $('#drag-title .dhx_time').text('Edit appoinment ' + id);
         $("#repeater-section, #btnSave").hide();
         $("#btnUpdate").show();
@@ -487,7 +484,7 @@ function AddTimespanMonth(evs) {
             end_date: scheduler.date.add(date, 1, "day"),
             type: "dhx_time_block", /* creating events on those dates will be disabled - dates are blocked */
             css: "have_roster",
-            html: "Have Appointment"
+            html: "Have Appt"
         };
         scheduler.addMarkedTimespan(options);
 
@@ -597,6 +594,7 @@ function BuildTabs(sections, mode) {
 function CancelAppointment() {
     scheduler.endLightbox(false, html(formId));
     isLightbox = false;
+    CurrentAppointment = null;
 }
 
 function DeleteAppointment() {
@@ -641,15 +639,6 @@ $(document).ready(function() {
     initEvents();
 });
 
-function DisableAllElements(obj, disabled) {
-    if (disabled) {
-        $("input, textarea, select", obj).removeAttr('disabled');
-    }
-    else {
-        $("input, textarea, select", obj).attr('disabled', true);
-    }
-}
-
 function initEvents() {
     $(".dhx_cal_today_button:not(#btnToday)").click(function() {
         $("#btnToday").click();
@@ -658,189 +647,90 @@ function initEvents() {
 }
 /****************************Initialize - End******************************/
 
-/****************************Methods - Start******************************/
-function updateTips(t) {
-    $(".validateTips")
-				    .text(t)
-				    .addClass("ui-state-highlight");
-    setTimeout(function() {
-        $(".validateTips").removeClass("ui-state-highlight", 1500);
-    }, 500);
-}
-
-function checkLength(o, n, min, max) {
-    if (o.val().length > max || o.val().length < min) {
-        o.addClass("ui-state-error");
-        updateTips("Length of " + n + " must be between " +
-					    min + " and " + max + ".");
-        return false;
-    } else {
-        return true;
-    }
-}
-
-function checkRegexp(o, regexp, n) {
-    if (!(regexp.test(o.val()))) {
-        o.addClass("ui-state-error");
-        updateTips(n);
-        return false;
-    } else {
-        return true;
-    }
-}
-/****************************Methods - End******************************/
-
 /****************************Events - Start******************************/
-$("[id$=createUser]").click(function() {
-    $("#dialog:ui-dialog").dialog("destroy");
-
-    var txtFirstName = $("#txtFirstName"),
-        txtMiddileName = $("#txtMiddileName"),
-        txtLastName = $("#txtLastName"),
-        txtDob = $("#txtDob"),
-        txtNationality = $("#txtNationality"),
-        txtRemark = $("#txtRemark"),
-        radSex = $("input[name=radSex]"),
-        txtMobilePhone = $("#txtMobilePhone"),
-        allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtMobilePhone).add(txtMiddileName).add(txtDob)
-            .add(txtNationality).add(txtRemark);
-
-    var tmpForm = $('#RosterForm').parent();
-    $(tmpForm).hide();
-
-    $("#dialog-form").dialog({
-        autoOpen: true,
-        height: 320,
-        width: 600,
-        modal: false,
-        zIndex: $.maxZIndex() + 1,
-        resizable: false,
-        buttons: {
-            Cancel: function() {
-                $(this).dialog("close");
-            },
-            Create: function() {
-                var bValid = true;
-                allFields.removeClass("ui-state-error");
-
-                if (bValid) {
-                    CreateSimplePatient(txtFirstName, txtMiddileName, txtLastName, txtDob
-                        , txtNationality, txtRemark, txtMobilePhone, this);
-                }
-            }
-        },
-        close: function() {
-            $(".token-input-dropdown").css("z-index", $.maxZIndex() + 10); // Bring to front
-            $(tmpForm).show();
-            allFields.val("").removeClass("ui-state-error");
-        }
-    });
-
-    $(txtFirstName).val("");
-    $(txtLastName).val("");
-    $(txtMobilePhone).val("");
-    $(txtMiddileName).val("");
-    $(txtDob).val("");
-    $(txtNationality).val("");
-    $(txtRemark).val("");
-    $("#radMale").val("M");
-    $("#radFemale").val("F");
-    $("#radMale").attr("checked", "checked");
-});
-
-$("[id$=changeUser]").click(function() {
-    $("#dialog:ui-dialog").dialog("destroy");
-
-    // Check if patient is not selected
-    var patient = $("#txtPatient").tokenInput("get");
-    if (patient.length <= 0) {
-        ShowDialog("", "", "You must choose patient.", "");
-        $("#txtPatient").focus();
-        return;
-    }
-
-    var txtFirstName = $("#txtFirstName"),
-        txtMiddileName = $("#txtMiddileName"),
-        txtLastName = $("#txtLastName"),
-        txtDob = $("#txtDob"),
-        txtNationality = $("#txtNationality"),
-        txtRemark = $("#txtRemark"),
-        radSex = $("input[name=radSex]"),
-        txtMobilePhone = $("#txtMobilePhone"),
-        allFields = $([]).add(name).add(txtFirstName).add(txtLastName).add(radSex).add(txtMobilePhone).add(txtMiddileName).add(txtDob)
-            .add(txtNationality).add(txtRemark);
-
-    ShowProgress();
-    var requestdata = JSON.stringify({ id: patient[0].id });
-
-    $.ajax({
-        type: "POST",
-        url: "Default.aspx/GetPatient",
-        data: requestdata,
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function(response) {
-            CloseProgress();
-            var obj = JSON.parse(response.d);
-            if (obj.result == "true") {
-                var tmpForm = $('#RosterForm').parent();
-                $(tmpForm).hide();
-
-                $("#dialog-form").dialog({
-                    autoOpen: true,
-                    height: 320,
-                    width: 600,
-                    modal: false,
-                    zIndex: $.maxZIndex() + 1,
-                    resizable: false,
-                    buttons: {
-                        Cancel: function() {
-                            $(this).dialog("close");
-                        },
-                        Save: function() {
-                            var bValid = true;
-                            allFields.removeClass("ui-state-error");
-
-                            if (bValid) {
-                                UpdateSimplePatient(patient[0].id, txtFirstName, txtMiddileName, txtLastName, txtDob
-                                    , txtNationality, txtRemark, txtMobilePhone, this);
-                            }
-                        }
-                    },
-                    close: function() {
-                        $(".token-input-dropdown").css("z-index", $.maxZIndex() + 10); // Bring to front
-                        $(tmpForm).show();
-                        allFields.val("").removeClass("ui-state-error");
+// Ham mo form CRUD patient
+function OpenPatient(isUpdate) {
+    // Neu la update thi lay thong tin patient
+    if (isUpdate && cboPatient.GetValue()) {
+        $('#drag-title2 .dhx_time').text('Edit patient');
+        txtPatientCode.SetValue(cboPatient.GetValue());
+        var requestdata = JSON.stringify({ id: cboPatient.GetValue() });
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "Default.aspx/GetPatient",
+            data: requestdata,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function(response) {
+                var obj = JSON.parse(response.d);
+                if (obj.result == "true") {
+                    txtFirstName.SetValue(obj.data[0].FirstName);
+                    txtMiddleName.SetValue(obj.data[0].MiddleName);
+                    txtLastName.SetValue(obj.data[0].LastName);
+                    txtDob.SetValue(new Date(obj.data[0].DateOfBirth));
+                    cboNationality.SetSelectedItem(cboNationality.FindItemByValue(obj.data[0].Nationality));
+                    cboCompany.SetSelectedItem(cboCompany.FindItemByValue(obj.data[0].CompanyCode));
+                    txtMobilePhone.SetValue(obj.data[0].MobilePhone);
+                    txtHomePhone.SetValue(obj.data[0].HomePhone);
+                    $('#txtRemark').val(obj.data[0].Remark);
+                    if (obj.data[0].Sex == "M") {
+                        radMale.SetChecked(true);
+                        radFemale.SetChecked(false);
+                    } else {
+                        radFemale.SetChecked(true);
+                        radMale.SetChecked(false);
                     }
-                });
 
-                $(txtFirstName).val(obj.data[0].FirstName);
-                $(txtMiddileName).val(obj.data[0].MiddleName);
-                $(txtLastName).val(obj.data[0].LastName);
-                $(txtMobilePhone).val(obj.data[0].CellPhone);
-                $(txtDob).datepicker('setDate', obj.data[0].DateOfBirth);
-                $(txtNationality).val(obj.data[0].Nationality);
-                $(txtRemark).val(obj.data[0].Remark);
-                $("#radMale").val("M");
-                $("#radFemale").val("F");
-                if (obj.data[0].Sex == "M") {
-                    $("#radMale").attr("checked", "checked");
-                    $("#radFemale").removeAttr("checked");
                 } else {
-                    $("#radFemale").attr("checked", "checked");
-                    $("#radMale").removeAttr("checked");
+                    ShowMessage(obj.message);
                 }
-
-            } else {
-                ShowDialog("", "", obj.message, "");
+            },
+            complete: function() {
+                CloseProgress();
+                StartPatient();
             }
-        },
-        fail: function() {
-            CloseProgress();
-            ShowDialog("", "", "Unknow error!", "");
-        }
-    });
-});
+        });
+    } else {
+        $('#drag-title2 .dhx_time').text('New patient');
+        txtPatientCode.SetValue('Auto generate');
+        txtFirstName.SetValue('');
+        txtMiddleName.SetValue('');
+        txtLastName.SetValue('');
+        txtDob.SetValue(new Date());
+        cboNationality.SetValue('');
+        cboCompany.SetValue('');
+        txtMobilePhone.SetValue('');
+        txtHomePhone.SetValue('');
+        $('#txtRemark').val('');
+        radMale.SetChecked(true);
+        radFemale.SetChecked(false);
+        StartPatient();
+    }
+}
+
+function StartPatient() {
+    scheduler.endLightbox(false, html(formId));
+    if (CurrentAppointment) scheduler.addEvent(CurrentAppointment);
+
+    var d = html("drag-title2");
+    d.onmousedown = scheduler._ready_to_dnd;
+    d.onselectstart = function() { return false; };
+    d.style.cursor = "pointer";
+    scheduler._init_dnd_events();
+    scheduler.startLightbox('patient', html(patientFormId));
+}
+
+function ClosePatient() {
+    scheduler.endLightbox(false, html(patientFormId));
+    var d = html("drag-title");
+    d.onmousedown = scheduler._ready_to_dnd;
+    d.onselectstart = function() { return false; };
+    d.style.cursor = "pointer";
+    scheduler._init_dnd_events();
+    scheduler.startLightbox($("[id$=hdId]").val(), html(formId));
+    if(CurrentAppointment) scheduler._new_event = CurrentAppointment;
+}
 /****************************Events - End******************************/
 
 /**************************** Form ******************************/

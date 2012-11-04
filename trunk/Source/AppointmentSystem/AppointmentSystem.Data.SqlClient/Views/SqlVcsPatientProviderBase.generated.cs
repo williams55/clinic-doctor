@@ -423,7 +423,7 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 		SqlDatabase database = new SqlDatabase(this._connectionString);
 		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_Insert", true);
 		
-		database.AddInParameter(commandWrapper, "@PatientCode", DbType.String,  patientCode );
+		database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength,  patientCode );
 		database.AddInParameter(commandWrapper, "@FirstName", DbType.String,  firstName );
 		database.AddInParameter(commandWrapper, "@MiddleName", DbType.String,  middleName );
 		database.AddInParameter(commandWrapper, "@LastName", DbType.String,  lastName );

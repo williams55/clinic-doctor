@@ -154,6 +154,14 @@
 			  <SubType>Code</SubType>
 			</Compile>
 						
+			<Compile Include="Views\VcsCountry.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="Views\VcsCountryBase.generated.cs">
+			  <DependentUpon>VcsCountry.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+						
 			<Compile Include="Views\VcsPatient.cs">
 			  <SubType>Code</SubType>
 			</Compile>
