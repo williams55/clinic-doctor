@@ -12,5 +12,6 @@ namespace AppointmentBusiness.BO
         public static IRosterBO RosterBO { get { return new RosterBO(); } }
         public static IAppointmentBO AppointmentBO { get { return new AppointmentBO(); } }
         public static IIdBO IdBO { get { return new IdBO(); } }
+        public static IPatientBO PatientBO { get { return new PatientBO(); } }
     }
 }

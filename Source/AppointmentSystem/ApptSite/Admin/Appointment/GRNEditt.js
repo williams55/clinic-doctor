@@ -120,7 +120,7 @@ function BeforeDrag(id) {
 function EventChanged(eventId, objEvent) {
     // Case move event
     //if (scheduler._drag_mode && (scheduler._drag_mode == 'move' || scheduler._drag_mode == 'resize')) {
-        MoveAppointment(eventId, objEvent);
+    MoveAppointment(eventId, objEvent);
     //}
 }
 
@@ -221,61 +221,128 @@ function GetPatientInfo(currentId) {
     }
 }
 
-// Create new patient
-function CreateSimplePatient(firstname, middleName, lastname, dob, nationality, remark, mobilePhone, dialog) {
-    var requestdata = JSON.stringify({
-        firstName: $(firstname).val(),
-        middleName: $(middleName).val(),
-        lastName: $(lastname).val(),
-        dob: $(dob).datepicker('getDate'),
-        nationality: $(nationality).val(),
-        mobilePhone: $(mobilePhone).val(),
-        sex: $('input[name=radSex]:checked').val(),
-        remark: $(remark).val()
-    });
-    ShowProgress();
-    $.ajax({
-        type: "POST",
-        url: "Default.aspx/CreateSimplePatient",
-        data: requestdata,
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function(response) {
-            CloseProgress();
-            var obj = JSON.parse(response.d);
-            if (obj.result == "true") {
-                $("#txtPatient").tokenInput("clear");
-                $("#txtPatient").tokenInput("add", { id: obj.data[0].PatientCode, PatientInfo: obj.data[0].PatientInfo });
-                $(dialog).dialog("close");
-            } else {
-                ShowDialog("", "", obj.message, "");
+// Ham mo form CRUD patient
+function OpenPatient(isUpdate) {
+    // Neu la update thi lay thong tin patient
+    if (isUpdate && cboPatient.GetValue()) {
+        $('#drag-title2 .dhx_time').text('Edit patient');
+        txtPatientCode.SetValue(cboPatient.GetValue());
+        var requestdata = JSON.stringify({ id: cboPatient.GetValue() });
+        ShowProgress();
+        $.ajax({
+            type: "POST",
+            url: "Default.aspx/GetPatient",
+            data: requestdata,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function(response) {
+                var obj = JSON.parse(response.d);
+                if (obj.result == "true") {
+                    txtFirstName.SetValue(obj.data[0].FirstName);
+                    txtMiddleName.SetValue(obj.data[0].MiddleName);
+                    txtLastName.SetValue(obj.data[0].LastName);
+                    txtDob.SetValue(new Date(obj.data[0].DateOfBirth));
+                    cboNationality.SetSelectedItem(cboNationality.FindItemByValue(obj.data[0].Nationality));
+                    cboCompany.SetSelectedItem(cboCompany.FindItemByValue(obj.data[0].CompanyCode));
+                    txtMobilePhone.SetValue(obj.data[0].MobilePhone);
+                    txtHomePhone.SetValue(obj.data[0].HomePhone);
+                    $('#txtRemark').val(obj.data[0].Remark);
+                    if (obj.data[0].Sex == "M") {
+                        radMale.SetChecked(true);
+                        radFemale.SetChecked(false);
+                    } else {
+                        radFemale.SetChecked(true);
+                        radMale.SetChecked(false);
+                    }
+
+                } else {
+                    ShowMessage(obj.message);
+                }
+            },
+            complete: function() {
+                CloseProgress();
+                StartPatient();
             }
-        },
-        fail: function() {
-            CloseProgress();
-            ShowDialog("", "", "Cannot create patient. Please contact Administrator", "");
-        }
-    });
+        });
+    } else {
+        $('#drag-title2 .dhx_time').text('New patient');
+        txtPatientCode.SetValue('Auto generate');
+        txtFirstName.SetValue('');
+        txtMiddleName.SetValue('');
+        txtLastName.SetValue('');
+        txtDob.SetValue(new Date());
+        cboNationality.SetValue('');
+        cboCompany.SetValue('');
+        txtMobilePhone.SetValue('');
+        txtHomePhone.SetValue('');
+        $('#txtRemark').val('');
+        radMale.SetChecked(true);
+        radFemale.SetChecked(false);
+        StartPatient();
+    }
+}
+
+// Mo form patient, tam tat form appt
+function StartPatient() {
+    scheduler.endLightbox(false, html(formId));
+    if (CurrentAppointment) scheduler.addEvent(CurrentAppointment);
+
+    ValidatePatient();
+
+    var d = html("drag-title2");
+    d.onmousedown = scheduler._ready_to_dnd;
+    d.onselectstart = function() { return false; };
+    d.style.cursor = "pointer";
+    scheduler._init_dnd_events();
+    scheduler.startLightbox('patient', html(patientFormId));
+}
+
+// Tat form patient, mo lai form appt
+function ClosePatient() {
+    scheduler.endLightbox(false, html(patientFormId));
+    var d = html("drag-title");
+    d.onmousedown = scheduler._ready_to_dnd;
+    d.onselectstart = function() { return false; };
+    d.style.cursor = "pointer";
+    scheduler._init_dnd_events();
+    scheduler.startLightbox($("[id$=hdId]").val(), html(formId));
+    if (CurrentAppointment) scheduler._new_event = CurrentAppointment;
+}
+
+// Ham kiem tra form co valid khong
+function ValidatePatient() {
+    txtPatientCode.Validate();
+    txtFirstName.Validate();
+    txtLastName.Validate();
+    txtDob.Validate();
+    cboNationality.Validate();
+    return txtPatientCode.isValid && txtFirstName.isValid && txtLastName.isValid && txtDob.isValid && cboNationality.isValid;
 }
 
 // Create new patient
-function UpdateSimplePatient(id, firstname, middleName, lastname, dob, nationality, remark, mobilePhone, dialog) {
+function SavePatient() {
+    if (!ValidatePatient()) {
+        ShowMessage('Please input required fields first.');
+        return;
+    }
+
     var requestdata = JSON.stringify({
-        id: id,
-        firstName: $(firstname).val(),
-        middleName: $(middleName).val(),
-        lastName: $(lastname).val(),
-        dob: $(dob).datepicker('getDate'),
-        nationality: $(nationality).val(),
-        mobilePhone: $(mobilePhone).val(),
-        sex: $('input[name=radSex]:checked').val(),
-        remark: $(remark).val()
+        id: txtPatientCode.GetValue(),
+        firstName: txtFirstName.GetValue(),
+        middleName: txtMiddleName.GetValue(),
+        lastName: txtLastName.GetValue(),
+        dob: txtDob.GetValue(),
+        nationality: cboNationality.GetValue(),
+        company: cboCompany.GetValue(),
+        mobilePhone: txtMobilePhone.GetValue(),
+        homePhone: txtHomePhone.GetValue(),
+        sex: radFemale.GetChecked() ? "F" : "M",
+        remark: $('#txtRemark').val()
     });
     ShowProgress();
-
     $.ajax({
         type: "POST",
-        url: "Default.aspx/UpdateSimplePatient",
+        url: "Default.aspx/SavePatient",
         data: requestdata,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -283,21 +350,16 @@ function UpdateSimplePatient(id, firstname, middleName, lastname, dob, nationali
             CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
-                $("#txtPatient").tokenInput("clear");
-                $("#txtPatient").tokenInput("add", { id: obj.data[0].PatientCode, PatientInfo: obj.data[0].PatientInfo });
-
-                // Set new value for patient's info in appointment
-                CurrentAppointment.PatientInfo = obj.data[0].PatientInfo;
-                CurrentAppointment.PatientCode = obj.data[0].PatientCode;
-
-                $(dialog).dialog("close");
+                patient = obj.data[0].PatientCode;
+                cboPatient.PerformCallback();
+                ClosePatient();
             } else {
-                ShowDialog("", "", obj.message, "");
+                ShowMessage(obj.message);
             }
         },
         fail: function() {
             CloseProgress();
-            ShowDialog("", "", "Cannot update patient's info. Please contact Administrator", "");
+            ShowMessage("Cannot update patient's info. Please contact Administrator.");
         }
     });
 }
@@ -307,10 +369,10 @@ function UpdateSimplePatient(id, firstname, middleName, lastname, dob, nationali
 
 // Save moved, resize appointment
 function MoveAppointment(eventId, objEvent) {
-    var requestdata = JSON.stringify({ 
-        id: eventId, 
-        startTime: objEvent.start_date, 
-        endTime: objEvent.end_date, 
+    var requestdata = JSON.stringify({
+        id: eventId,
+        startTime: objEvent.start_date,
+        endTime: objEvent.end_date,
         doctorId: objEvent.section_id
     });
     isUsing = true;
@@ -647,92 +709,6 @@ function initEvents() {
 }
 /****************************Initialize - End******************************/
 
-/****************************Events - Start******************************/
-// Ham mo form CRUD patient
-function OpenPatient(isUpdate) {
-    // Neu la update thi lay thong tin patient
-    if (isUpdate && cboPatient.GetValue()) {
-        $('#drag-title2 .dhx_time').text('Edit patient');
-        txtPatientCode.SetValue(cboPatient.GetValue());
-        var requestdata = JSON.stringify({ id: cboPatient.GetValue() });
-        ShowProgress();
-        $.ajax({
-            type: "POST",
-            url: "Default.aspx/GetPatient",
-            data: requestdata,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function(response) {
-                var obj = JSON.parse(response.d);
-                if (obj.result == "true") {
-                    txtFirstName.SetValue(obj.data[0].FirstName);
-                    txtMiddleName.SetValue(obj.data[0].MiddleName);
-                    txtLastName.SetValue(obj.data[0].LastName);
-                    txtDob.SetValue(new Date(obj.data[0].DateOfBirth));
-                    cboNationality.SetSelectedItem(cboNationality.FindItemByValue(obj.data[0].Nationality));
-                    cboCompany.SetSelectedItem(cboCompany.FindItemByValue(obj.data[0].CompanyCode));
-                    txtMobilePhone.SetValue(obj.data[0].MobilePhone);
-                    txtHomePhone.SetValue(obj.data[0].HomePhone);
-                    $('#txtRemark').val(obj.data[0].Remark);
-                    if (obj.data[0].Sex == "M") {
-                        radMale.SetChecked(true);
-                        radFemale.SetChecked(false);
-                    } else {
-                        radFemale.SetChecked(true);
-                        radMale.SetChecked(false);
-                    }
-
-                } else {
-                    ShowMessage(obj.message);
-                }
-            },
-            complete: function() {
-                CloseProgress();
-                StartPatient();
-            }
-        });
-    } else {
-        $('#drag-title2 .dhx_time').text('New patient');
-        txtPatientCode.SetValue('Auto generate');
-        txtFirstName.SetValue('');
-        txtMiddleName.SetValue('');
-        txtLastName.SetValue('');
-        txtDob.SetValue(new Date());
-        cboNationality.SetValue('');
-        cboCompany.SetValue('');
-        txtMobilePhone.SetValue('');
-        txtHomePhone.SetValue('');
-        $('#txtRemark').val('');
-        radMale.SetChecked(true);
-        radFemale.SetChecked(false);
-        StartPatient();
-    }
-}
-
-function StartPatient() {
-    scheduler.endLightbox(false, html(formId));
-    if (CurrentAppointment) scheduler.addEvent(CurrentAppointment);
-
-    var d = html("drag-title2");
-    d.onmousedown = scheduler._ready_to_dnd;
-    d.onselectstart = function() { return false; };
-    d.style.cursor = "pointer";
-    scheduler._init_dnd_events();
-    scheduler.startLightbox('patient', html(patientFormId));
-}
-
-function ClosePatient() {
-    scheduler.endLightbox(false, html(patientFormId));
-    var d = html("drag-title");
-    d.onmousedown = scheduler._ready_to_dnd;
-    d.onselectstart = function() { return false; };
-    d.style.cursor = "pointer";
-    scheduler._init_dnd_events();
-    scheduler.startLightbox($("[id$=hdId]").val(), html(formId));
-    if(CurrentAppointment) scheduler._new_event = CurrentAppointment;
-}
-/****************************Events - End******************************/
-
 /**************************** Form ******************************/
 function InitForm() {
     // Set empty
@@ -741,6 +717,7 @@ function InitForm() {
 }
 
 var doctor;
+var patient;
 function RefreshDoctorList(id) {
     doctor = cboDoctor.GetValue();
     cboDoctor.PerformCallback('Refresh');

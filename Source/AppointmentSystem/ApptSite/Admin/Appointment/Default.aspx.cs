@@ -296,65 +296,63 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <param name="firstName"></param>
     /// <param name="middleName"></param>
     /// <param name="lastName"></param>
-    /// <param name="memberType"></param>
+    /// <param name="id"></param>
     /// <param name="dob"></param>
     /// <param name="nationality"></param>
+    /// <param name="company"></param>
     /// <param name="mobilePhone"></param>
+    /// <param name="homePhone"></param>
     /// <param name="sex"></param>
     /// <param name="remark"> </param>
     /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string CreateSimplePatient(string firstName, string middleName, string lastName
-        , string dob, string nationality, string mobilePhone, string sex, string remark)
+    public static string SavePatient(string id, string firstName, string middleName, string lastName
+        , DateTime? dob, string nationality, string company, string mobilePhone, string homePhone
+        , string sex, string remark)
     {
         try
         {
-            // Validate current user have any right to create new patient
-            if (!CheckCreating(out _message) && !CheckUpdating(out _message))
+            if (!CheckCreating(out _message))
             {
-                return WebCommon.BuildFailedResult("You have no right to create new patient.");
+                return WebCommon.BuildFailedResult("You have no right to create/update patient.");
             }
 
             // Validate patient's fields
-            if (!ValidatePatient(firstName, lastName, nationality, sex, ref _message))
+            if (!WebCommon.ValidateEmpty("Patient Code", id, out _message)
+                || !WebCommon.ValidateEmpty("First Name", firstName, out _message)
+                || !WebCommon.ValidateEmpty("Last Name", lastName, out _message)
+                || !WebCommon.ValidateEmpty("DOB", dob, out _message)
+                || !WebCommon.ValidateEmpty("Nationality", nationality, out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
 
-            // Validate field
-            DateTime dtDOB;
-            if (!DateTime.TryParse(dob, out dtDOB))
-            {
-                return WebCommon.BuildFailedResult("Date of Birth is invalid.");
-            }
-
-            #region "Insert"
             var patient = new VcsPatient
-            {
-                PatientCode = ServiceFacade.SettingsHelper.LocationCode,
-                FirstName = firstName,
-                MiddleName = middleName,
-                LastName = lastName,
-                Sex = sex,
-                DateOfBirth = dtDOB,
-                Nationality = nationality,
-                MobilePhone = mobilePhone,
-                ApptRemark = remark,
-                UpdateUser = WebCommon.GetAuthUsername(),
-            };
+                {
+                    PatientCode = id,
+                    FirstName = firstName,
+                    MiddleName = middleName,
+                    LastName = lastName,
+                    HomePhone = homePhone,
+                    Nationality = nationality,
+                    CompanyCode = company,
+                    MobilePhone = mobilePhone,
+                    DateOfBirth = Convert.ToDateTime(dob),
+                    Sex = sex,
+                    Remark = remark
+                };
 
-            var patients = DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName, patient.MiddleName
-                , patient.LastName, patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone
-                , patient.MobilePhone, patient.UpdateUser, patient.ApptRemark);
-
-            if (patients == null || !patients.Any())
+            if (id.ToLower().Contains("auto generate"))
             {
-                return WebCommon.BuildFailedResult("Cannot create new patient. Please contact Administrator.");
+                if (!BoFactory.PatientBO.Insert(patient, ref _message))
+                    return WebCommon.BuildFailedResult(_message);
             }
-            patient = patients[0];
-
-            #endregion
+            else
+            {
+                if (!BoFactory.PatientBO.Update(ref patient, ref _message))
+                    return WebCommon.BuildFailedResult(_message);
+            }
 
             return WebCommon.BuildSuccessfulResult(new List<object>
                 {
@@ -381,152 +379,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("Cannot create new patient. Please contact Administrator.");
         }
-    }
-
-    /// <summary>
-    /// Update patient with simple information
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="firstName"></param>
-    /// <param name="middleName"></param>
-    /// <param name="lastName"></param>
-    /// <param name="memberType"></param>
-    /// <param name="dob"></param>
-    /// <param name="nationality"></param>
-    /// <param name="mobilePhone"></param>
-    /// <param name="sex"></param>
-    /// <param name="remark"> </param>
-    /// <returns></returns>
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string UpdateSimplePatient(string id, string firstName, string middleName, string lastName
-        , string dob, string nationality, string mobilePhone, string sex, string remark)
-    {
-        try
-        {
-            // Validate current user have any right to update patien's info
-            if (!CheckCreating(out _message) && !CheckUpdating(out _message))
-            {
-                return WebCommon.BuildFailedResult("You have no right to update patient's information.");
-            }
-
-            // Validate patient's fields
-            if (!ValidatePatient(firstName, lastName, nationality, sex, ref _message))
-            {
-                return WebCommon.BuildFailedResult(_message);
-            }
-
-            // Validate field
-            DateTime dtDOB;
-            if (!DateTime.TryParse(dob, out dtDOB))
-            {
-                return WebCommon.BuildFailedResult("Date of Birth is invalid.");
-            }
-
-            var patients = DataRepository.VcsPatientProvider.GetByPatientCode(id);
-
-            if (patients == null || !patients.Any())
-            {
-                return WebCommon.BuildFailedResult("Cannot find patient");
-            }
-            var patient = patients[0];
-
-            #region Update
-            patient.FirstName = firstName;
-            patient.MiddleName = middleName;
-            patient.LastName = lastName;
-            patient.Sex = sex;
-            patient.DateOfBirth = dtDOB;
-            patient.Nationality = nationality;
-            patient.MobilePhone = mobilePhone;
-            patient.ApptRemark = remark;
-            patient.UpdateUser = WebCommon.GetAuthUsername();
-            patient.UpdateDate = DateTime.Now;
-            DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
-                , patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone, patient.MobilePhone
-                , patient.UpdateUser, patient.ApptRemark, patient.IsDisabled);
-            #endregion
-
-            return WebCommon.BuildSuccessfulResult(new List<object>
-                {
-                    new
-                        {
-                            patient.PatientCode,
-                            patient.FirstName,
-                            patient.MiddleName,
-                            patient.LastName,
-                            patient.HomePhone,
-                            patient.CompanyPhone,
-                            patient.MemberType,
-                            patient.Nationality,
-                            patient.MobilePhone,
-                            patient.DateOfBirth,
-                            patient.Sex,
-                            patient.Remark,
-                            PatientInfo = ParsePatientName(patient)
-                        }
-                });
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return WebCommon.BuildFailedResult("Cannot update patient. Please try again.");
-        }
-    }
-
-    /// <summary>
-    /// Validate patient's fields
-    /// </summary>
-    /// <param name="firstname"></param>
-    /// <param name="lastname"></param>
-    /// <param name="nationality"> </param>
-    /// <param name="sex"></param>
-    /// <param name="message"></param>
-    /// <param name="memberType"> </param>
-    /// <returns></returns>
-    private static bool ValidatePatient(string firstname, string lastname, string nationality
-        , string sex, ref string message)
-    {
-        try
-        {
-            #region Validate
-            // Validate empty value for Firstname field
-            if (string.IsNullOrEmpty(firstname))
-            {
-                message = "Please input First Name.";
-                return false;
-            }
-
-            // Validate empty value for Lastname field
-            if (string.IsNullOrEmpty(lastname))
-            {
-                message = "Please input Last Name.";
-                return false;
-            }
-
-            // Validate empty value for nationality field
-            if (string.IsNullOrEmpty(nationality))
-            {
-                message = "Please input Nationality.";
-                return false;
-            }
-
-            // Validate empty value for Lastname field
-            if (sex != SexConstant.Male.Key && sex != SexConstant.Female.Key)
-            {
-                message = "Please select sex.";
-                return false;
-            }
-            #endregion
-
-            return true;
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            message = ex.Message;
-            return false;
-        }
+        return null;
     }
 
     /// <summary>

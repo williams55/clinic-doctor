@@ -289,7 +289,9 @@
                             <RequiredField IsRequired="True" ErrorText="Patient is required" />
                         </ValidationSettings>
                         <ClientSideEvents ValueChanged="function(s, e) { 
-                            $('[id$=changeUser]').show(); }" />
+                            $('[id$=changeUser]').show(); }"
+                            EndCallback="function(s, e) { 
+                            if(patient){  if(s.FindItemByValue(patient))s.SetSelectedItem(s.FindItemByValue(patient)); s.Validate(); } }" />
                     </dx:ASPxComboBox>
                     <input type="button" id="createUser" value="New" style="width: 50;" runat="server" onclick="OpenPatient();" />
                     <input type="button" id="changeUser" value="Change" style="width: 50;" runat="server" onclick="OpenPatient(true);" />
