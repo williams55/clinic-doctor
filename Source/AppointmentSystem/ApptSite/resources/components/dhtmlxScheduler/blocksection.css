@@ -40,3 +40,8 @@
     font-size: 24px;
     color: #e2b8ac;
 }
+
+/*Chinh chieu cao cua calendar*/
+.dhx_mini_calendar .dhx_month_head {
+    height: 18px;
+}
