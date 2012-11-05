@@ -71,11 +71,11 @@ function initSchedule(weekday) {
                 }
             } else {
                 currentMode = "week";
-                ShowDialog("", "", obj.message, "");
+                ShowMessage(obj.message);
             }
         },
         fail: function() {
-            ShowDialog("", "", "Unknow error!", "");
+            ShowMessage("Unknow error!");
         },
         complete: function() {
         }
@@ -101,9 +101,6 @@ function initSchedule(weekday) {
             BlockTimespan(scheduler, date, mode);
        });
 
-        //        scheduler.filter_month = function(id, event) {
-        //            return scheduler.getState().mode != "month";
-        //        };
         scheduler.init('scheduler_here', currentDate, currentMode);
 
         // Refesh current view for mark_now can auto update

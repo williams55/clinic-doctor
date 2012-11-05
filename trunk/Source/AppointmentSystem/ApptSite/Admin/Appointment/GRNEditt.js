@@ -211,11 +211,11 @@ function GetPatientInfo(currentId) {
                     }
                 }
                 else {
-                    ShowDialog("", "", obj.message, "");
+                    ShowMessage(obj.message);
                 }
             },
             fail: function() {
-                ShowDialog("", "", "Cannot load Patient's info. Please try again or contact Administrator.", "");
+                ShowMessage("Cannot load Patient's info. Please try again or contact Administrator.");
             }
         });
     }

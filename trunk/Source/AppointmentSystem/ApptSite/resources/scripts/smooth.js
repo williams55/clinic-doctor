@@ -98,21 +98,11 @@ function ShowMessage(message) {
 }
 
 function ShowProgress() {
-    $("#spanMessage-content").html('<div id="progressbar"></div>');
-    $("#progressbar").progressbar({
-        value: 100
-    });
-    $("#dialog-message-title").dialog({
-        resizable: false,
-        height: 120,
-        modal: true,
-        zIndex: $.maxZIndex() + 1,
-        buttons: {}
-    });
+    LoadingPanel.Show();
 }
 
 function CloseProgress() {
-    $("#dialog-message-title").dialog("close");
+    LoadingPanel.Hide();
 }
 
 /******************************* Scheduler *********************************/
