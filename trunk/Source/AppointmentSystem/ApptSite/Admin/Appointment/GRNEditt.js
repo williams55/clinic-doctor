@@ -207,7 +207,7 @@ function GetPatientInfo(currentId) {
                         $("#divFirstname").html(arr.FirstName + " &nbsp;");
                         $("#divLastname").html(arr.LastName + " &nbsp;");
                         $("#divCellPhone").html(arr.CellPhone + " &nbsp;");
-                        $("#divBirthday").html(arr.Birthday);
+                        $("#divBirthday").html(arr.Birthdate);
                     }
                 }
                 else {
