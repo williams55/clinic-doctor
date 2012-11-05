@@ -158,7 +158,7 @@
                             style="-webkit-transform: rotate(228deg);"></div>
                     <img id="clock" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/clockface.jpg") %>">
                 </div>
-                <div style="float: right; width: 251px; height: 180px;" id="datepicker">
+                <div style="float: right; width: 251px; height: 170px;" id="datepicker">
                 </div>
                 <div class="status-info">
                     <asp:Repeater ID="rptStatus" runat="server" DataSourceID="StatusDataSource">
