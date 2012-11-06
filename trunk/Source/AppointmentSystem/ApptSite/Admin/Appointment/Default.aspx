@@ -110,7 +110,7 @@
                 Appointment</h5>
         </div>
         <div>
-            <div style="padding: 10px;">
+            <div style="padding: 5px;">
                 <div class="appt-info">
                     <h5 style="padding: 0 0 5px 0; margin: 0;">
                         Patient's Information</h5>
@@ -146,7 +146,8 @@
                     <div class="clear">
                     </div>
                 </div>
-                <div id="clockHolder">
+                <%-- div clock --%>
+                <%--<div id="clockHolder">
                     <div class="rotatingWrapper">
                         <img id="sec" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/second.png") %>"
                             style="-webkit-transform: rotate(658.5deg);"></div>
@@ -157,8 +158,8 @@
                         <img id="min" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/minute.png") %>"
                             style="-webkit-transform: rotate(228deg);"></div>
                     <img id="clock" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/clockface.jpg") %>">
-                </div>
-                <div style="float: right; width: 251px; height: 170px;" id="datepicker">
+                </div>--%>
+                <div style="float: right; width: 251px;" id="datepicker">
                 </div>
                 <div class="status-info">
                     <asp:Repeater ID="rptStatus" runat="server" DataSourceID="StatusDataSource">
