@@ -211,20 +211,20 @@
             </div>
         </div>
     </div>
-    <div class="dhx_cal_light dhx_cal_light_wide" id="form-dhtmlx" style="height: 410px;
-        width: 500px; display: none;">
+    <div class="dhx_cal_light dhx_cal_light_wide" id="form-dhtmlx" style="height: 560px;
+        width: 620px; display: none;">
         <asp:HiddenField runat="server" ID="hdId" Value="" />
         <div class="dhx_cal_ltitle" id="drag-title">
             <span class="dhx_mark">&nbsp;</span><span class="dhx_time"></span><span class="dhx_title"></span><div
                 class="dhx_close_icon" onclick="CancelAppointment();" title="Close form without save">
             </div>
         </div>
-        <div class="dhx_cal_larea" style="height: 310px; width: 482px;">
+        <div class="dhx_cal_larea" style="height: 460px; width: 602px;">
             <div class="dhx_form_row">
-                <div class="dhx_cal_lsection required">
+                <div class="dhx_cal_lsection required" style="float: left;">
                     Status</div>
-                <div class="dhx_cal_ltext">
-                    <dx:ASPxComboBox runat="server" DataSourceID="StatusDataSource" Width="330px" TextField="Title"
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxComboBox runat="server" DataSourceID="StatusDataSource" Width="165px" TextField="Title"
                         ValueField="Id" ID="cboStatus" ValueType="System.String" ClientInstanceName="cboStatus">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
@@ -232,12 +232,10 @@
                         </ValidationSettings>
                     </dx:ASPxComboBox>
                 </div>
-            </div>
-            <div class="dhx_form_row">
-                <div class="dhx_cal_lsection required">
+                <div class="dhx_cal_lsection required" style="float: left; width: 80px;">
                     Service</div>
-                <div class="dhx_cal_ltext">
-                    <dx:ASPxComboBox runat="server" DataSourceID="ServicesDataSource" Width="330px" TextField="Title"
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxComboBox runat="server" DataSourceID="ServicesDataSource" Width="165px" TextField="Title"
                         ValueField="Id" ID="cboService" ValueType="System.Int32" ClientInstanceName="cboService">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
@@ -246,13 +244,15 @@
                         <ClientSideEvents ValueChanged="function(s, e) { RefreshDoctorList(); }" />
                     </dx:ASPxComboBox>
                 </div>
+                <div class="clear">
+                </div>
             </div>
             <div class="dhx_form_row">
-                <div class="dhx_cal_lsection required">
+                <div class="dhx_cal_lsection required" style="float: left;">
                     Doctor</div>
-                <div class="dhx_cal_ltext">
+                <div class="dhx_cal_ltext" style="float: left;">
                     <asp:HiddenField runat="server" ID="hdDocCon" Value="IsDisabled = 'False'" />
-                    <dx:ASPxComboBox ID="cboDoctor" ClientInstanceName="cboDoctor" runat="server" Width="330px"
+                    <dx:ASPxComboBox ID="cboDoctor" ClientInstanceName="cboDoctor" runat="server" Width="165px"
                         DropDownStyle="DropDownList" ValueField="Username" TextField="DisplayName" ValueType="System.String"
                         TextFormatString="{1}" EnableCallbackMode="true" OnCallback="cboDoctor_OnCallback"
                         IncrementalFilteringMode="StartsWith">
@@ -269,12 +269,27 @@
                             Init="function(s, e) { RefreshRoomList(); }" />
                     </dx:ASPxComboBox>
                 </div>
+                <div class="dhx_cal_lsection required" style="float: left; width: 80px;">
+                    Room</div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxComboBox runat="server" Width="165px" TextField="Title" ValueField="Id" ID="cboRoom"
+                        ValueType="System.Int32" ClientInstanceName="cboRoom" OnCallback="cboRoom_OnCallback">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Room is required" />
+                        </ValidationSettings>
+                        <ClientSideEvents EndCallback="function(s, e) { 
+                            if(room){  if(s.FindItemByValue(room))s.SetSelectedItem(s.FindItemByValue(room)); s.Validate(); } }" />
+                    </dx:ASPxComboBox>
+                </div>
+                <div class="clear">
+                </div>
             </div>
             <div class="dhx_form_row">
-                <div class="dhx_cal_lsection required">
+                <div class="dhx_cal_lsection required" style="float: left;">
                     Patient</div>
-                <div class="dhx_cal_ltext">
-                    <dx:ASPxComboBox ID="cboPatient" ClientInstanceName="cboPatient" runat="server" Width="330px"
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <dx:ASPxComboBox ID="cboPatient" ClientInstanceName="cboPatient" runat="server" Width="165px"
                         DropDownStyle="DropDownList" DataSourceID="PatientDataSource" ValueField="PatientCode"
                         TextField="LastName" ValueType="System.String" TextFormatString="{1} {2}" EnableCallbackMode="False"
                         IncrementalFilteringMode="StartsWith">
@@ -289,12 +304,17 @@
                             <RequiredField IsRequired="True" ErrorText="Patient is required" />
                         </ValidationSettings>
                         <ClientSideEvents ValueChanged="function(s, e) { 
-                            $('[id$=changeUser]').show(); }"
-                            EndCallback="function(s, e) { 
+                            $('[id$=changeUser]').show(); }" EndCallback="function(s, e) { 
                             if(patient){  if(s.FindItemByValue(patient))s.SetSelectedItem(s.FindItemByValue(patient)); s.Validate(); } }" />
                     </dx:ASPxComboBox>
-                    <input type="button" id="createUser" value="New" style="width: 50;" runat="server" onclick="OpenPatient();" />
-                    <input type="button" id="changeUser" value="Change" style="width: 50;" runat="server" onclick="OpenPatient(true);" />
+                </div>
+                <div class="dhx_cal_ltext" style="float: left;">
+                    <input type="button" id="createUser" value="New" style="width: 50;" runat="server"
+                        onclick="OpenPatient();" />
+                    <input type="button" id="changeUser" value="Change" style="width: 50;" runat="server"
+                        onclick="OpenPatient(true);" />
+                </div>
+                <div class="clear">
                 </div>
             </div>
             <div class="dhx_form_row">
@@ -335,25 +355,43 @@
                 </div>
             </div>
             <div class="dhx_form_row">
-                <div class="dhx_cal_lsection required">
-                    Room</div>
-                <div class="dhx_cal_ltext">
-                    <dx:ASPxComboBox runat="server" Width="330px" TextField="Title" ValueField="Id" ID="cboRoom"
-                        ValueType="System.Int32" ClientInstanceName="cboRoom" OnCallback="cboRoom_OnCallback">
-                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                            ErrorText="Error">
-                            <RequiredField IsRequired="True" ErrorText="Room is required" />
-                        </ValidationSettings>
-                        <ClientSideEvents EndCallback="function(s, e) { 
-                            if(room){  if(s.FindItemByValue(room))s.SetSelectedItem(s.FindItemByValue(room)); s.Validate(); } }" />
-                    </dx:ASPxComboBox>
-                </div>
-            </div>
-            <div class="dhx_form_row">
                 <div class="dhx_cal_lsection">
                     Note</div>
                 <div class="dhx_cal_ltext">
-                    <textarea id="txtNote" style="width: 330px; font-family: Arial;" rows="3"></textarea>
+                    <textarea id="txtNote" style="width: 450px; font-family: Arial;" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="dhx_form_row">
+                <div class="dhx_cal_ltext">
+                    <dx:ASPxGridView ID="gridHistory" ClientInstanceName="grid" runat="server"
+                        Width="100%" KeyFieldName="Guid" OnCustomCallback="gridHistory_OnCustomCallback">
+                        <Columns>
+                            <dx:GridViewDataColumn Caption="No." Width="50">
+                                <DataItemTemplate>
+                                    <%# Container.ItemIndex + 1%>
+                                </DataItemTemplate>
+                                <CellStyle HorizontalAlign="Center">
+                                </CellStyle>
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                <EditFormSettings Visible="False" />
+                            </dx:GridViewDataColumn>
+                            <dx:GridViewDataDateColumn FieldName="CreateDate" Width="130" Caption="Time">
+                                <PropertiesDateEdit DisplayFormatString="MM/dd/yyyy HH:mm:ss" EditFormat="Custom" 
+                                    EditFormatString="MM/dd/yyyy HH:mm:ss" EnableAnimation="False" Width="100%">
+                                </PropertiesDateEdit>
+                                <Settings AutoFilterCondition="GreaterOrEqual" />
+                            </dx:GridViewDataDateColumn>
+                            <dx:GridViewDataColumn FieldName="CreateUser" Caption="User" Width="80" />
+                            <dx:GridViewDataColumn FieldName="Note" />
+                        </Columns>
+                        <Styles>
+                            <AlternatingRow Enabled="true" />
+                            <Table Wrap="True">
+                            </Table>
+                        </Styles>
+                        <Settings ShowVerticalScrollBar="True" />
+                        <SettingsPager Visible="False"></SettingsPager>
+                    </dx:ASPxGridView>
                 </div>
             </div>
         </div>
@@ -390,8 +428,8 @@
                 <div class="dhx_cal_lsection required" style="float: left;">
                     Patient Code</div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxTextBox runat="server" ReadOnly="True" ID="txtPatientCode" Text=""
-                        Width="165px" CssClass="text-form" ClientInstanceName="txtPatientCode">
+                    <dx:ASPxTextBox runat="server" ReadOnly="True" ID="txtPatientCode" Text="" Width="165px"
+                        CssClass="text-form" ClientInstanceName="txtPatientCode">
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection" style="float: left; width: 100px;">
@@ -402,7 +440,8 @@
                     <dx:ASPxRadioButton runat="server" Text="Female" ID="radFemale" GroupName="radSex"
                         Layout="Flow" ClientInstanceName="radFemale" />
                 </div>
-                <div class="clear"></div>
+                <div class="clear">
+                </div>
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
@@ -423,7 +462,8 @@
                         Width="165px" ClientInstanceName="txtMiddleName">
                     </dx:ASPxTextBox>
                 </div>
-                <div class="clear"></div>
+                <div class="clear">
+                </div>
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
@@ -448,16 +488,17 @@
                         </ValidationSettings>
                     </dx:ASPxDateEdit>
                 </div>
-                <div class="clear"></div>
+                <div class="clear">
+                </div>
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
                     Nationality</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxComboBox ID="cboNationality" ClientInstanceName="cboNationality" runat="server"
-                        Width="165px" DropDownStyle="DropDownList" DataSourceID="CountryDataSource" 
-                        ValueField="CitizenName" TextField="CitizenName" ValueType="System.String"
-                        EnableCallbackMode="False" IncrementalFilteringMode="StartsWith">
+                        Width="165px" DropDownStyle="DropDownList" DataSourceID="CountryDataSource" ValueField="CitizenName"
+                        TextField="CitizenName" ValueType="System.String" EnableCallbackMode="False"
+                        IncrementalFilteringMode="StartsWith">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="Nationality is required" />
@@ -468,16 +509,17 @@
                     Company</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxComboBox ID="cboCompany" ClientInstanceName="cboCompany" runat="server" Width="165px"
-                        DropDownStyle="DropDownList" DropDownWidth="300px" DataSourceID="CompanyDataSource" ValueField="CompanyCode"
-                        TextField="CompanyName" ValueType="System.String" TextFormatString="{1}" EnableCallbackMode="False"
-                        IncrementalFilteringMode="StartsWith">
+                        DropDownStyle="DropDownList" DropDownWidth="300px" DataSourceID="CompanyDataSource"
+                        ValueField="CompanyCode" TextField="CompanyName" ValueType="System.String" TextFormatString="{1}"
+                        EnableCallbackMode="False" IncrementalFilteringMode="StartsWith">
                         <Columns>
                             <dx:ListBoxColumn FieldName="CompanyCode" Width="100" />
                             <dx:ListBoxColumn FieldName="CompanyName" />
                         </Columns>
                     </dx:ASPxComboBox>
                 </div>
-                <div class="clear"></div>
+                <div class="clear">
+                </div>
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection" style="float: left;">
@@ -494,7 +536,8 @@
                         Width="165px" ClientInstanceName="txtHomePhone">
                     </dx:ASPxTextBox>
                 </div>
-                <div class="clear"></div>
+                <div class="clear">
+                </div>
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection">

@@ -140,6 +140,7 @@ scheduler.showLightbox = function(id) {
     cboStatus.SetSelectedItem(cboStatus.FindItemByValue('Available'));
     cboService.SetSelectedItem(cboService.FindItemByValue($('#service-tabs li.ui-tabs-selected').attr('id').replace('tab_', '')));
     cboPatient.SetSelectedIndex(0);
+    grid.PerformCallback('Refresh');
 
     // Set value
     RefreshDoctorList(ev.section_id);
