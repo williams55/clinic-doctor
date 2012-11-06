@@ -15,6 +15,7 @@ using Common.Extension;
 using Common.Util;
 using DevExpress.Web.ASPxClasses;
 using DevExpress.Web.ASPxEditors;
+using DevExpress.Web.ASPxGridView;
 using Log.Controller;
 using Newtonsoft.Json;
 
@@ -172,6 +173,33 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                        String.Format("IsDisabled = 'False' AND ServicesId = '{0}'", serviceId), string.Empty, 0,
                        ServiceFacade.SettingsHelper.GetPagedLength, out count);
                 cboDoctor.DataBind();
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        }
+    }
+
+    protected void gridHistory_OnCustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+    {
+        try
+        {
+            if (e.Parameters == "Refresh")
+            {
+                // Validate current user have any right to get room list
+                if (!CheckReading(out _message))
+                {
+                    //return WebCommon.BuildFailedResult("You have no right to get room");
+                    return;
+                }
+
+                int count;
+                gridHistory.DataSource =
+                   DataRepository.AppointmentHistoryProvider.GetPaged(
+                       String.Format("AppointmentId = '{0}'", hdId.Value), string.Empty, 0,
+                       ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                gridHistory.DataBind();
             }
         }
         catch (Exception ex)
