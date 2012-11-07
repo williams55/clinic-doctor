@@ -180,7 +180,7 @@
             </div>
         </div>
     </div>
-    <div class="dhx_cal_light dhx_cal_light_wide" id="form-dhtmlx" style="height: 560px;
+    <div class="dhx_cal_light dhx_cal_light_wide" id="form-scheduler" style="height: 560px;
         width: 620px; display: none;">
         <asp:HiddenField runat="server" ID="hdId" Value="" />
         <div class="dhx_cal_ltitle" id="drag-title">

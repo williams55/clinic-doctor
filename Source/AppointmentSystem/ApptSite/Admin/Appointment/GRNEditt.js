@@ -1,5 +1,5 @@
 ﻿// Ten bien chua id cac form
-var formId = "form-dhtmlx";
+var formId = "form-scheduler";
 var patientFormId = "form-patient";
 var classSelectedTab = 'ui-tabs-selected';
 
@@ -98,6 +98,7 @@ function initSchedule(weekday) {
 
             $.when.apply($, arrAjax).done(function() {
                 scheduler.updateView();
+                isUsing = false;
             });
         }
     });
@@ -111,7 +112,7 @@ function initSchedule(weekday) {
         if (!isLightbox) {
             scheduler.setCurrentView();
         }
-    }, 10000);
+    }, 600000);
 }
 /****************************DHTMLX - End******************************/
 
@@ -476,9 +477,6 @@ function LoadAppointment(arrAjax, mode, date) {
         },
         fail: function() {
             ShowMessage("Unknow error!");
-        },
-        complete: function() {
-            isUsing = false;
         }
     }));
 }
@@ -570,9 +568,8 @@ function UpdateAppointment() {
                 oldEvent.status = cboStatus.GetValue();
                 oldEvent.color = evs.color;
                 oldEvent.isnew = evs.isnew;
-                console.log(oldEvent);
-                scheduler.updateView();
                 CancelAppointment();
+                scheduler.updateView();
             }
             else {
                 ShowMessage(obj.message);
@@ -589,7 +586,10 @@ function AddAppointment(evs) {
     $.each(evs, function(i, item) {
         item.start_date = new Date(item.start_date);
         item.end_date = new Date(item.end_date);
-        scheduler.addEvent(item);
+        var serviceId = $('#service-tabs li.ui-tabs-selected').attr('id').replace('tab_', '');
+        if (serviceId == item.ServicesId) {
+            scheduler.addEvent(item);
+        }
     });
 }
 
@@ -709,13 +709,7 @@ function BuildTabs(scheduler, sections, mode) {
 // Cancel appointment
 function CancelAppointment() {
     scheduler.endLightbox(false, html(formId));
-    isLightbox = false;
-    CurrentAppointment = null;
-}
-
-// Cancel appointment
-function CloseAppointment() {
-    scheduler.endLightbox(true, html(formId));
+    scheduler._lightbox = null;
     isLightbox = false;
     CurrentAppointment = null;
 }

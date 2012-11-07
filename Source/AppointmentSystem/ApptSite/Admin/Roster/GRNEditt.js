@@ -4,6 +4,9 @@ var formId = "form-dhtmlx";
 var blStaff = false;
 var CurrentRoster;
 
+// Danh sach cac timespan cu
+var listTs = [];
+
 // True if lightbox is using, do not refesh page
 var isLightbox = false;
 
@@ -76,8 +79,6 @@ function initSchedule(weekday) {
         },
         fail: function() {
             ShowMessage("Unknow error!");
-        },
-        complete: function() {
         }
     }));
 
@@ -93,12 +94,21 @@ function initSchedule(weekday) {
                 // khi hien thi, dua vao thoi gian cua roster ma to mau
                 isUsing = true;
 
-                // Load roster
-                LoadRoster(mode, date);
-            }
+                // Clone list cu ra
+                var tmpListTs = listTs.slice();
+                listTs = [];
 
-            // Goi ham block time
-            BlockTimespan(scheduler, date, mode);
+                // Danh sach chua cac list ajax
+                arrAjax = [];
+                LoadRoster(arrAjax, mode, date);
+                BlockTimespan(scheduler, date, mode, listTs);
+                DeleteTimespan(scheduler, tmpListTs);
+     
+                $.when.apply($, arrAjax).done(function() {
+                    scheduler.updateView();
+                    isUsing = false;
+                });
+           }
        });
 
         scheduler.init('scheduler_here', currentDate, currentMode);
@@ -188,9 +198,9 @@ scheduler.showLightbox = function(id) {
 
 /****************************Roster - Start******************************/
 // Load roster to scheduler
-function LoadRoster(mode, date) {
+function LoadRoster(arrAjax, mode, date) {
     var requestdata = JSON.stringify({ mode: mode, date: date });
-    $.ajax({
+    arrAjax.push($.ajax({
         type: "POST",
         url: "Default.aspx/LoadRoster",
         data: requestdata,
@@ -201,7 +211,6 @@ function LoadRoster(mode, date) {
             if (obj.result == "true") {
                 // Xoa cac roster hien tai
                 scheduler.clearAll();
-
                 var evs = obj.data;
                 if (evs) {
                     if (mode == "month") {
@@ -217,11 +226,8 @@ function LoadRoster(mode, date) {
         },
         fail: function() {
             ShowMessage("Unknow error!");
-        },
-        complete: function() {
-            isUsing = false;
         }
-    });
+    }));
 }
 
 // Save a new roster
@@ -378,6 +384,8 @@ function UpdateRoster() {
 // Add roster into scheduler
 function AddRoster(evs) {
     $.each(evs, function(i, item) {
+        item.start_date = new Date(item.start_date);
+        item.end_date = new Date(item.end_date);
         scheduler.addEvent(item);
     });
 }
@@ -393,23 +401,24 @@ function AddTimespanMonth(evs) {
 			css: "have_roster",
 			html: "Have Roster"
 		};
-		scheduler.addMarkedTimespan(options);
+        listTs.push(scheduler.addMarkedTimespan(options));
         
         if (date < new Date())
-            scheduler.addMarkedTimespan({
+            listTs.push(scheduler.addMarkedTimespan({
                 start_date: date,
                 end_date: scheduler.date.add(date, 1, "day"),
                 css: 'small_lines_section',
                 type: "dhx_time_block"
-            });
+            }));
    });
-    scheduler.updateView();
 }
 
 // Cancel roster
 function CancelRoster() {
     scheduler.endLightbox(false, html(formId));
+    scheduler._lightbox = null;
     isLightbox = false;
+    CurrentRoster = null;
 }
 
 // Delete roster by Id

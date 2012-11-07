@@ -314,8 +314,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                     lstResult.Add(new
                     {
                         id = item.Id,
-                        start_date = item.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
-                        end_date = item.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                        start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.StartTime),
+                        end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.EndTime),
                         section_id = item.Username,
                         text = String.Format("{0}<br />Doctor: {1}<br />{2}"
                                 , item.RosterTypeIdSource.Title
@@ -400,8 +400,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         lst.Add(new
         {
             id = item.Id,
-            start_date = item.StartTime.ToString("dd/MM/yyyy HH:mm:ss"),
-            end_date = item.EndTime.ToString("dd/MM/yyyy HH:mm:ss"),
+            start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.StartTime),
+            end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.EndTime),
             section_id = item.Username,
             text = String.Format("{0}<br />Doctor: {1}<br />{2}"
                     , item.RosterTypeIdSource.Title
