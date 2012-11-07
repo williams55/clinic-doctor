@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Appt.Common.Enum
+﻿namespace Appt.Common.Constants
 {
     /// <summary>
     /// Loai hien thi month, day, year, week, timeline, unit

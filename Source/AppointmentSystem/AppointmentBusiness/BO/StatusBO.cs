@@ -8,44 +8,36 @@ namespace AppointmentBusiness.BO
 {
     public class StatusBO : IStatusBO
     {
-        public string Complete
+        public string GetColor(string status)
         {
-            get { return "Complete"; }
+            string result = string.Empty;
+            try
+            {
+                var obj = DataRepository.StatusProvider.GetById(status);
+                if (obj != null)
+                    result = obj.ColorCode;
+            }
+            catch (Exception ex)
+            {
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            }
+            return result;
         }
 
-        public string CompleteColor
+        public string GetTitle(string status)
         {
-            get { return DataRepository.StatusProvider.GetById("Complete").ColorCode; }
-        }
-
-        public string New
-        {
-            get { return "New"; }
-        }
-
-        public string NewColor
-        {
-            get { return DataRepository.StatusProvider.GetById("New").ColorCode; }
-        }
-
-        public string Processing
-        {
-            get { return "Processing"; }
-        }
-
-        public string ProcessingColor
-        {
-            get { return DataRepository.StatusProvider.GetById("Processing").ColorCode; }
-        }
-
-        public string Cancel
-        {
-            get { return "Cancel"; }
-        }
-
-        public string CancelColor
-        {
-            get { return DataRepository.StatusProvider.GetById("Cancel").ColorCode; }
+            string result = string.Empty;
+            try
+            {
+                var obj = DataRepository.StatusProvider.GetById(status);
+                if (obj != null)
+                    result = obj.Title;
+            }
+            catch (Exception ex)
+            {
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            }
+            return result;
         }
     }
 }

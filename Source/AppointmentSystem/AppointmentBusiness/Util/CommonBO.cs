@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Appt.Common.Enum;
+using Appt.Common.Constants;
 using Common.Extension;
 using Common.Util;
 using Log.Controller;
