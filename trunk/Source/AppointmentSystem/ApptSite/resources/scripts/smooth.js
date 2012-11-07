@@ -107,10 +107,9 @@ function CloseProgress() {
 
 /******************************* Scheduler *********************************/
 // Ham block time cho scheduler
-function BlockTimespan(scheduler, date, mode) {
+function BlockTimespan(scheduler, date, mode, list) {
     // Block thoi gian
     var now, startDate, endDate, currentDay;
-    scheduler.deleteMarkedTimespan();
     switch (mode) {
         // Truong hop view la timeline thi kiem tra ngay co phai la ngay hien tai khong
 
@@ -130,12 +129,12 @@ function BlockTimespan(scheduler, date, mode) {
             // Cai nay dung de block
             if (endDate < now) now = endDate;
 
-            scheduler.addMarkedTimespan({
+            list.push(scheduler.addMarkedTimespan({
                 start_date: startDate,
                 end_date: now,
                 css: 'small_lines_section',
                 type: "dhx_time_block"
-            });
+            }));
 
             break;
         case 'week':
@@ -160,12 +159,12 @@ function BlockTimespan(scheduler, date, mode) {
             // Cai nay dung de block
             if (endDate < now) now = endDate;
 
-            scheduler.addMarkedTimespan({
+            list.push(scheduler.addMarkedTimespan({
                 start_date: startDate,
                 end_date: now,
                 css: 'small_lines_section',
                 type: "dhx_time_block"
-            });
+            }));
 
             break;
         case 'month':
@@ -192,16 +191,21 @@ function BlockTimespan(scheduler, date, mode) {
             // Cai nay dung de block
             if (endDate < now) now = endDate;
 
-            scheduler.addMarkedTimespan({
+            list.push(scheduler.addMarkedTimespan({
                 start_date: startDate,
                 end_date: now,
                 css: 'small_lines_section',
                 type: "dhx_time_block"
-            });
+            }));
 
             break;
         default:
             break;
     }
-    scheduler.updateView();
+}
+
+function DeleteTimespan(scheduler, list) {
+    $.each(list, function(i, item) {
+        scheduler.deleteMarkedTimespan(item);
+    });
 }

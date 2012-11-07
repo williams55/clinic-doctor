@@ -264,6 +264,61 @@ namespace AppointmentSystem.Data.Bases
 		#endregion
 
 		
+		#region _VCSPatient_UpdateApptRemark
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_UpdateApptRemark' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void UpdateApptRemark(System.String patientCode, System.String updateUser, System.String apptRemark)
+		{
+			 UpdateApptRemark(null, 0, int.MaxValue , patientCode, updateUser, apptRemark);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_UpdateApptRemark' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void UpdateApptRemark(int start, int pageLength, System.String patientCode, System.String updateUser, System.String apptRemark)
+		{
+			 UpdateApptRemark(null, start, pageLength , patientCode, updateUser, apptRemark);
+		}
+				
+		/// <summary>
+		///	This method wrap the '_VCSPatient_UpdateApptRemark' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void UpdateApptRemark(TransactionManager transactionManager, System.String patientCode, System.String updateUser, System.String apptRemark)
+		{
+			 UpdateApptRemark(transactionManager, 0, int.MaxValue , patientCode, updateUser, apptRemark);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_UpdateApptRemark' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public abstract void UpdateApptRemark(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String updateUser, System.String apptRemark);
+		
+		#endregion
+
+		
 		#endregion
 
 		#region Helper Functions

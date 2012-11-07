@@ -47,8 +47,6 @@
 
     <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/scripts/jquery.scrollTo-1.4.2-min.js") %>"></script>
 
-    <script type="text/javascript" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/jqueryRotate.js") %>"></script>
-
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/dhtmlxscheduler_dhx_terrace.css") %>"
         type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/blocksection.css") %>"
@@ -56,8 +54,6 @@
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/scheduler.css") %>"
         type="text/css" media="screen" title="no title" />
     <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/css/dialog-form.css") %>"
-        type="text/css" media="screen" title="no title" />
-    <link rel="stylesheet" href="<%= Page.ResolveClientUrl("~/resources/components/analogClock/analogclock.css") %>"
         type="text/css" media="screen" title="no title" />
 
     <script type="text/javascript" charset="utf-8">
@@ -70,30 +66,6 @@
         var minuteStep = eval(<%=ServiceFacade.SettingsHelper.MinuteStep%>);
         var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
-
-        var angleSec = 0;
-        var angleMin = 0;
-        var angleHour = 0;
-
-        $(document).ready(function() {
-            $("#sec").rotate(angleSec);
-            $("#min").rotate(angleMin);
-            $("#hour").rotate(angleHour);
-        });
-
-        setInterval(function() {
-            var d = new Date;
-
-            angleSec = (d.getSeconds() * 6);
-            $("#sec").rotate(angleSec);
-
-            angleMin = (d.getMinutes() * 6);
-            $("#min").rotate(angleMin);
-
-            angleHour = ((d.getHours() * 5 + d.getMinutes() / 12) * 6);
-            $("#hour").rotate(angleHour);
-
-        }, 1000);
     </script>
 
     <style media="screen">
@@ -114,6 +86,7 @@
                 <div class="appt-info">
                     <h5 style="padding: 0 0 5px 0; margin: 0;">
                         Patient's Information</h5>
+                    <input type="hidden" id="hdPatient" value="" />
                     <div class="title-info">
                         First Name</div>
                     <div class="content-info" id="divFirstname" style="margin-right: 35px;">
@@ -140,26 +113,24 @@
                     </div>
                     <div class="title-info">
                         Remark</div>
-                    <div class="content-info" id="divNote" style="width: 435px;">
+                    <div class="content-info required" id="divNote" style="width: 435px;">
                         &nbsp;
                     </div>
                     <div class="clear">
                     </div>
                 </div>
-                <%-- div clock --%>
-                <%--<div id="clockHolder">
-                    <div class="rotatingWrapper">
-                        <img id="sec" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/second.png") %>"
-                            style="-webkit-transform: rotate(658.5deg);"></div>
-                    <div class="rotatingWrapper">
-                        <img id="hour" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/hour.png") %>"
-                            style="-webkit-transform: rotate(342deg);"></div>
-                    <div class="rotatingWrapper">
-                        <img id="min" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/minute.png") %>"
-                            style="-webkit-transform: rotate(228deg);"></div>
-                    <img id="clock" src="<%= Page.ResolveClientUrl("~/resources/components/analogClock/images/clockface.jpg") %>">
-                </div>--%>
                 <div style="float: right; width: 251px;" id="datepicker">
+                </div>
+                <div class="appt-info" style="float: right; width: 270px; height: 125px; margin-right: 20px;">
+                    <h5 style="padding: 0 0 5px 0; margin: 0; border: 0px;">
+                        Appointment Remark</h5>
+                    <textarea id="apptRemark" rows="5" cols="20" style="width: 274px;"></textarea>
+                    <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" style="margin: 5px 0;
+                        float: right; height: 20px; line-height: 20px;">
+                        <div title="Save appointment remark" onclick="SaveRemark();" style="height: 20px;
+                            line-height: 20px;">
+                            Save</div>
+                    </div>
                 </div>
                 <div class="status-info">
                     <asp:Repeater ID="rptStatus" runat="server" DataSourceID="StatusDataSource">
@@ -364,8 +335,8 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_ltext">
-                    <dx:ASPxGridView ID="gridHistory" ClientInstanceName="grid" runat="server"
-                        Width="100%" KeyFieldName="Guid" OnCustomCallback="gridHistory_OnCustomCallback">
+                    <dx:ASPxGridView ID="gridHistory" ClientInstanceName="grid" runat="server" Width="100%"
+                        KeyFieldName="Guid" OnCustomCallback="gridHistory_OnCustomCallback">
                         <Columns>
                             <dx:GridViewDataColumn Caption="No." Width="50">
                                 <DataItemTemplate>
@@ -377,7 +348,7 @@
                                 <EditFormSettings Visible="False" />
                             </dx:GridViewDataColumn>
                             <dx:GridViewDataDateColumn FieldName="CreateDate" Width="130" Caption="Time">
-                                <PropertiesDateEdit DisplayFormatString="MM/dd/yyyy HH:mm:ss" EditFormat="Custom" 
+                                <PropertiesDateEdit DisplayFormatString="MM/dd/yyyy HH:mm:ss" EditFormat="Custom"
                                     EditFormatString="MM/dd/yyyy HH:mm:ss" EnableAnimation="False" Width="100%">
                                 </PropertiesDateEdit>
                                 <Settings AutoFilterCondition="GreaterOrEqual" />
@@ -391,7 +362,8 @@
                             </Table>
                         </Styles>
                         <Settings ShowVerticalScrollBar="True" />
-                        <SettingsPager Visible="False"></SettingsPager>
+                        <SettingsPager Visible="False">
+                        </SettingsPager>
                     </dx:ASPxGridView>
                 </div>
             </div>

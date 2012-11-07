@@ -160,7 +160,7 @@ namespace AppointmentSystem.Web.Data
 			// VcsPatient item;
 			count = 0;
 			
-			System.String sp3_PatientCode;
+			System.String sp4_PatientCode;
 			System.String sp1_PatientCode;
 			System.String sp1_FirstName;
 			System.String sp1_MiddleName;
@@ -190,8 +190,8 @@ namespace AppointmentSystem.Web.Data
                     break;
 				// Custom
 				case VcsPatientSelectMethod.GetByPatientCode:
-					sp3_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
-					results = VcsPatientProvider.GetByPatientCode(GetTransactionManager(), StartIndex, PageSize, sp3_PatientCode);
+					sp4_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
+					results = VcsPatientProvider.GetByPatientCode(GetTransactionManager(), StartIndex, PageSize, sp4_PatientCode);
 					break;
 				case VcsPatientSelectMethod.Insert:
 					sp1_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));

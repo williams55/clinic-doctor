@@ -52,6 +52,28 @@ namespace AppointmentBusiness.BO
             return false;
         }
 
+        public bool UpdateRemark(string patientCode, string apptRemark, string updateUser, ref string message)
+        {
+            try
+            {
+                // Check exists Patient
+                var objPatients = DataRepository.VcsPatientProvider.GetByPatientCode(patientCode);
+                if (objPatients == null || !objPatients.Any() || objPatients[0].IsDisabled)
+                {
+                    message = "There is no patient to update.";
+                    return false;
+                }
+
+                DataRepository.VcsPatientProvider.UpdateApptRemark(patientCode, updateUser, apptRemark);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            }
+            return false;
+        }
+
         public bool Insert(VcsPatient patient, ref string message)
         {
             try
