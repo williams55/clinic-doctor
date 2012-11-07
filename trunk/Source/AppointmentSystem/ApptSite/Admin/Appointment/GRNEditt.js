@@ -232,7 +232,6 @@ function GetPatientInfo(currentId) {
     if (currentId && ev) {
         $("#divNote").html(ev.note + " &nbsp;");
         var requestdata = JSON.stringify({ appointmentId: currentId });
-        ShowProgress();
         $.ajax({
             type: "POST",
             url: "Default.aspx/GetPatientByAppointmentId",
@@ -241,7 +240,6 @@ function GetPatientInfo(currentId) {
             dataType: "json",
             success: function(response) {
                 var obj = JSON.parse(response.d);
-                CloseProgress();
                 if (obj.result == "true") {
                     if (obj.data) {
                         var arr = obj.data[0]; // Get first item
@@ -258,7 +256,6 @@ function GetPatientInfo(currentId) {
                 }
             },
             fail: function() {
-                CloseProgress();
                 ShowMessage("Cannot load Patient's info. Please try again or contact Administrator.");
             }
         });
@@ -575,7 +572,7 @@ function UpdateAppointment() {
                 oldEvent.isnew = evs.isnew;
                 console.log(oldEvent);
                 scheduler.updateView();
-                CloseAppointment();
+                CancelAppointment();
             }
             else {
                 ShowMessage(obj.message);

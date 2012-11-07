@@ -45,20 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ApptStatus.cs" />
     <Compile Include="Constants\SexConstants.cs" />
     <Compile Include="Constants\GeneralConstants.cs" />
     <Compile Include="Constants\OperationConstant.cs" />
-    <Compile Include="Enum\ModeView.cs" />
+    <Compile Include="Constants\ModeView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserDefine\JDoctor.cs" />
-    <Compile Include="UserDefine\JDoctorToken.cs" />
-    <Compile Include="UserDefine\JEvent.cs" />
-    <Compile Include="UserDefine\JFloor.cs" />
-    <Compile Include="UserDefine\JPatient.cs" />
-    <Compile Include="UserDefine\JPatientToken.cs" />
-    <Compile Include="UserDefine\JRoom.cs" />
-    <Compile Include="UserDefine\JRoomToken.cs" />
-    <Compile Include="UserDefine\JSection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\freelance-dll\Framework\FCommon\Common.csproj">

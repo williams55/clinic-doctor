@@ -8,13 +8,18 @@ namespace AppointmentBusiness.BO
 {
     public interface IStatusBO
     {
-        string Complete { get; }
-        string CompleteColor { get; }
-        string New { get; }
-        string NewColor { get; }
-        string Processing { get; }
-        string ProcessingColor { get; }
-        string Cancel { get; }
-        string CancelColor { get; }
+        /// <summary>
+        /// Lay mau cua status
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        string GetColor(string status);
+
+        /// <summary>
+        /// Lay ten cua status
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        string GetTitle(string status);
     }
 }

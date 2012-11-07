@@ -4,6 +4,7 @@ using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
+using Appt.Common.Constants;
 using Common.Util;
 using Log.Controller;
 
@@ -298,8 +299,8 @@ namespace AppointmentBusiness.BO
             try
             {
                 int count;
-                string query = String.Format("{3} = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'",
-                    compareValue, dtEnd.ToString("yyyy-MM-dd HH:mm:ss"), dtStart.ToString("yyyy-MM-dd HH:mm:ss"), column);
+                string query = String.Format("{3} = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}' AND StatusId <> '{4}'",
+                    compareValue, dtEnd.ToString("yyyy-MM-dd HH:mm:ss"), dtStart.ToString("yyyy-MM-dd HH:mm:ss"), column, ApptStatus.Cancel);
                 DataRepository.AppointmentProvider.GetPaged(query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
 
                 if ((count > 0 && !isUpdate) || (count > 1 && isUpdate))
