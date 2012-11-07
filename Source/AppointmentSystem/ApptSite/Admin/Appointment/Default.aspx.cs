@@ -411,6 +411,110 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     }
 
     /// <summary>
+    /// Get Patient's info by AppointmentId
+    /// </summary>
+    /// <param name="appointmentId"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string GetPatientByAppointmentId(string appointmentId)
+    {
+        try
+        {
+            // Validate current user have any right to operate this action
+            // Validate user right for reading
+            if (!CheckReading(out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            // If there is no appointment, return
+            if (string.IsNullOrEmpty(appointmentId))
+            {
+                return WebCommon.BuildFailedResult("There is no appointment.");
+            }
+
+            // Get appointment by id
+            var objAppt = DataRepository.AppointmentProvider.GetById(appointmentId);
+
+            // If there is no appointment, return
+            if (objAppt == null)
+            {
+                return WebCommon.BuildFailedResult("Appointment is not existed.");
+            }
+
+            // Check exists Patient
+            var objPatients = DataRepository.VcsPatientProvider.GetByPatientCode(objAppt.PatientCode);
+            if (objPatients == null || !objPatients.Any())
+            {
+                return WebCommon.BuildFailedResult("Patient is not exist.");
+            }
+            var objPatient = objPatients[0];
+
+            var lstPatient = new List<object>
+                                 {
+                                     new
+                                         {
+                                             Id = objPatient.PatientCode,
+                                             FirstName = objPatient.FirstName ?? "&nbsp;",
+                                             LastName = objPatient.LastName ?? "&nbsp;",
+                                             HomePhone = objPatient.HomePhone ?? "&nbsp;",
+                                             WorkPhone = objPatient.CompanyPhone ?? "&nbsp;",
+                                             CellPhone = objPatient.MobilePhone ?? "&nbsp;",
+                                             Birthdate = objPatient.DateOfBirth.ToString("MM-dd-yyyy"),
+                                             objPatient.Sex,
+                                             Remark = objPatient.Remark ?? "&nbsp;",
+                                             ApptRemark = objPatient.ApptRemark ?? string.Empty
+                                         }
+                                 };
+
+            return WebCommon.BuildSuccessfulResult(lstPatient);
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult("Cannot load patient's information. Please try again.");
+        }
+    }
+
+    /// <summary>
+    /// Update patient appointment remark
+    /// </summary>
+    /// <param name="patient"></param>
+    /// <param name="remark"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string UpdateRemark(string patient, string remark)
+    {
+        try
+        {
+            // Validate current user have any right to operate this action
+            // Validate user right for reading
+            if (!CheckReading(out _message) || !CheckUpdating(out _message) || !CheckCreating(out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            // Validate patient's fields
+            if (!WebCommon.ValidateEmpty("Patient Code", patient, out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            if (!BoFactory.PatientBO.UpdateRemark(patient, remark, Username, ref _message))
+                return WebCommon.BuildFailedResult("Cannot save appointment remark. Please try again.");
+
+            return WebCommon.BuildSuccessfulResult();
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult("System error. Please contact Administrator.");
+        }
+    }
+
+    /// <summary>
     /// Parse data to string for property search of token input
     /// </summary>
     /// <param name="obj"></param>
@@ -492,8 +596,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return new
                 {
                     id = obj.Id,
-                    start_date = String.Format("{0:dd/MM/yyyy HH:mm:ss}", obj.StartTime),
-                    end_date = String.Format("{0:dd/MM/yyyy HH:mm:ss}", obj.EndTime),
+                    start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.StartTime),
+                    end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.EndTime),
                     section_id = obj.Username,
                     text =
                         String.Format("Patient: {0}<br />Note: {1}",
@@ -508,6 +612,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     room = obj.RoomId,
                     RoomTitle = obj.RoomIdSource.Title,
                     note = obj.Note,
+                    status = obj.StatusId,
                     ReadOnly = (obj.StartTime <= DateTime.Now),
                     color = obj.StatusIdSource.ColorCode,
                     isnew = false
@@ -609,7 +714,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 {
                     service.Id,
                     Title = string.IsNullOrEmpty(service.ShortTitle) ? service.Title : service.ShortTitle,
-                    Date = String.Format("{0:yyyy-MM-dd HH:mm:ss}", date),
+                    Date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", date),
                     Doctors = lstDoctor.Where(doctor => doctor.ServicesId == service.Id)
                         .Select(doctor => new
                         {
@@ -618,8 +723,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                             Rosters = lstRosters.Where(roster => roster.Username == doctor.Username)
                                 .Select(roster => new
                                     {
-                                        startTime = roster.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                                        endTime = roster.EndTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                                        startTime = roster.StartTime.ToString("MM-dd-yyyy HH:mm:ss"),
+                                        endTime = roster.EndTime.ToString("MM-dd-yyyy HH:mm:ss"),
                                         color = roster.RosterTypeIdSource.ColorCode
                                     })
                         })
@@ -950,74 +1055,6 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             tm.Rollback();
             return WebCommon.BuildFailedResult(ex.Message);
-        }
-    }
-    #endregion
-
-    #region "Function"
-    /// <summary>
-    /// Get Patient's info by AppointmentId
-    /// </summary>
-    /// <param name="appointmentId"></param>
-    /// <returns></returns>
-    [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetPatientByAppointmentId(string appointmentId)
-    {
-        try
-        {
-            // Validate current user have any right to operate this action
-            // Validate user right for reading
-            if (!CheckReading(out _message))
-            {
-                return WebCommon.BuildFailedResult(_message);
-            }
-
-            // If there is no appointment, return
-            if (string.IsNullOrEmpty(appointmentId))
-            {
-                return WebCommon.BuildFailedResult("There is no appointment.");
-            }
-
-            // Get appointment by id
-            var objAppt = DataRepository.AppointmentProvider.GetById(appointmentId);
-
-            // If there is no appointment, return
-            if (objAppt == null)
-            {
-                return WebCommon.BuildFailedResult("Appointment is not existed.");
-            }
-
-            // Check exists Patient
-            var objPatients = DataRepository.VcsPatientProvider.GetByPatientCode(objAppt.PatientCode);
-            if (objPatients == null || !objPatients.Any())
-            {
-                return WebCommon.BuildFailedResult("Patient is not exist.");
-            }
-            var objPatient = objPatients[0];
-
-            var lstPatient = new List<object>
-                                 {
-                                     new
-                                         {
-                                             Id = objPatient.PatientCode,
-                                             FirstName = objPatient.FirstName ?? "&nbsp;",
-                                             LastName = objPatient.LastName ?? "&nbsp;",
-                                             HomePhone = objPatient.HomePhone ?? "&nbsp;",
-                                             WorkPhone = objPatient.CompanyPhone ?? "&nbsp;",
-                                             CellPhone = objPatient.MobilePhone ?? "&nbsp;",
-                                             Birthdate = objPatient.DateOfBirth.ToString("MM-dd-yyyy"),
-                                             objPatient.Sex,
-                                             Remark = objPatient.Remark ?? "&nbsp;"
-                                         }
-                                 };
-
-            return WebCommon.BuildSuccessfulResult(lstPatient);
-        }
-        catch (Exception ex)
-        {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return WebCommon.BuildFailedResult("Cannot load patient's information. Please try again.");
         }
     }
     #endregion

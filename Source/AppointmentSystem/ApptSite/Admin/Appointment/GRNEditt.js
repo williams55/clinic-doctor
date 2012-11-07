@@ -9,6 +9,9 @@ var miniCalendar;
 // This variable use for scrolling to current time in current date
 var scrollToCurrent = true;
 
+// Danh sach cac timespan cu
+var listTs = [];
+
 // Dung de danh dau la dang chay de khong chay lai su kien view change
 var isUsing = false;
 
@@ -82,8 +85,20 @@ function initSchedule(weekday) {
             // neu doctor co roster thi hien thi
             // khi hien thi, dua vao thoi gian cua roster ma to mau
             isUsing = true;
-            LoadAppointment(mode, date);
-            BlockTimespan(scheduler, date, mode);
+
+            // Clone list cu ra
+            var tmpListTs = listTs.slice();
+            listTs = [];
+
+            // Danh sach chua cac list ajax
+            var arrAjax = [];
+            LoadAppointment(arrAjax, mode, date);
+            BlockTimespan(scheduler, date, mode, listTs);
+            DeleteTimespan(scheduler, tmpListTs);
+
+            $.when.apply($, arrAjax).done(function() {
+                scheduler.updateView();
+            });
         }
     });
 
@@ -96,7 +111,7 @@ function initSchedule(weekday) {
         if (!isLightbox) {
             scheduler.setCurrentView();
         }
-    }, 60000);
+    }, 10000);
 }
 /****************************DHTMLX - End******************************/
 
@@ -130,6 +145,13 @@ scheduler.showLightbox = function(id) {
     var ev = scheduler.getEvent(id);
     CurrentAppointment = scheduler.getEvent(id);
 
+    var d = html("drag-title");
+    d.onmousedown = scheduler._ready_to_dnd;
+    d.onselectstart = function() { return false; };
+    d.style.cursor = "pointer";
+    scheduler._init_dnd_events();
+    scheduler.startLightbox(id, html(formId));
+
     // Set init value
     $("[id$=hdId]").val(id);
     startDate.SetDate(ev.start_date);
@@ -137,7 +159,7 @@ scheduler.showLightbox = function(id) {
     startTime.SetDate(ev.start_date);
     endTime.SetDate(ev.end_date);
     $("#txtNote").val(ev.note);
-    cboStatus.SetSelectedItem(cboStatus.FindItemByValue('Available'));
+    cboStatus.SetSelectedIndex(0);
     cboService.SetSelectedItem(cboService.FindItemByValue($('#service-tabs li.ui-tabs-selected').attr('id').replace('tab_', '')));
     cboPatient.SetSelectedIndex(0);
     grid.PerformCallback('Refresh');
@@ -151,7 +173,6 @@ scheduler.showLightbox = function(id) {
         $("#repeater-section, #btnSave").hide();
         $("#btnUpdate").show();
         $("#delete-form-roster").parent().show();
-
         if (ev.status) {
             cboStatus.SetSelectedItem(cboStatus.FindItemByValue(ev.status));
         }
@@ -173,13 +194,6 @@ scheduler.showLightbox = function(id) {
         $("#delete-form-roster").parent().hide();
     }
 
-    var d = html("drag-title");
-    d.onmousedown = scheduler._ready_to_dnd;
-    d.onselectstart = function() { return false; };
-    d.style.cursor = "pointer";
-    scheduler._init_dnd_events();
-    scheduler.startLightbox(id, html(formId));
-
     // Goi ham validate form khi form hien thi
     ValidateForm();
 
@@ -189,11 +203,36 @@ scheduler.showLightbox = function(id) {
 
 /****************************Patient - Start******************************/
 // Get Patient's info by appointment id
+function SaveRemark() {
+    var requestdata = JSON.stringify({ patient: $("#hdPatient").val(), remark: $("#apptRemark").val() });
+    ShowProgress();
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/UpdateRemark",
+        data: requestdata,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(response) {
+            var obj = JSON.parse(response.d);
+            CloseProgress();
+            if (obj.result != "true") {
+                ShowMessage(obj.message);
+            }
+        },
+        fail: function() {
+            CloseProgress();
+            ShowMessage("System error. Please try again or contact Administrator.");
+        }
+    });
+}
+
+// Get Patient's info by appointment id
 function GetPatientInfo(currentId) {
     var ev = scheduler.getEvent(currentId);
     if (currentId && ev) {
         $("#divNote").html(ev.note + " &nbsp;");
         var requestdata = JSON.stringify({ appointmentId: currentId });
+        ShowProgress();
         $.ajax({
             type: "POST",
             url: "Default.aspx/GetPatientByAppointmentId",
@@ -202,13 +241,16 @@ function GetPatientInfo(currentId) {
             dataType: "json",
             success: function(response) {
                 var obj = JSON.parse(response.d);
+                CloseProgress();
                 if (obj.result == "true") {
                     if (obj.data) {
                         var arr = obj.data[0]; // Get first item
+                        $("#hdPatient").val(arr.Id);
                         $("#divFirstname").html(arr.FirstName + " &nbsp;");
                         $("#divLastname").html(arr.LastName + " &nbsp;");
                         $("#divCellPhone").html(arr.CellPhone + " &nbsp;");
                         $("#divBirthday").html(arr.Birthdate);
+                        $("#apptRemark").val(arr.ApptRemark);
                     }
                 }
                 else {
@@ -216,6 +258,7 @@ function GetPatientInfo(currentId) {
                 }
             },
             fail: function() {
+                CloseProgress();
                 ShowMessage("Cannot load Patient's info. Please try again or contact Administrator.");
             }
         });
@@ -405,9 +448,9 @@ function MoveAppointment(eventId, objEvent) {
     });
 }
 
-function LoadAppointment(mode, date) {
+function LoadAppointment(arrAjax, mode, date) {
     var requestdata = JSON.stringify({ mode: mode, date: date });
-    $.ajax({
+    arrAjax.push($.ajax({
         type: "POST",
         url: "Default.aspx/GetAppointments",
         data: requestdata,
@@ -421,7 +464,7 @@ function LoadAppointment(mode, date) {
                 var evs = obj.data;
                 if (evs) {
                     // Goi ham bind tab va tao unit view, timeline view
-                    BuildTabs(evs.Sections, mode);
+                    BuildTabs(scheduler, evs.Sections, mode);
 
                     if (mode == "month") {
                         AddTimespanMonth(evs.Events);
@@ -440,7 +483,7 @@ function LoadAppointment(mode, date) {
         complete: function() {
             isUsing = false;
         }
-    });
+    }));
 }
 
 // Add new appointment
@@ -515,11 +558,24 @@ function UpdateAppointment() {
         success: function(response) {
             CloseProgress();
             var obj = JSON.parse(response.d);
-            if (obj.result == "true") {
-                var evs = obj.data;
-                scheduler.deleteEvent(id);
-                AddAppointment(evs);
-                CancelAppointment();
+            var oldEvent = scheduler.getEvent(id);
+            if (obj.result == "true" && obj.data && oldEvent) {
+                var evs = obj.data[0];
+                //scheduler.deleteEvent(id);
+                //AddAppointment(evs);
+                oldEvent.section_id = cboDoctor.GetValue();
+                oldEvent.note = evs.note;
+                oldEvent.text = evs.text;
+                oldEvent.start_date = new Date(evs.start_date);
+                oldEvent.end_date = new Date(evs.end_date);
+                oldEvent.patient = cboPatient.GetValue();
+                oldEvent.roomId = cboRoom.GetValue();
+                oldEvent.status = cboStatus.GetValue();
+                oldEvent.color = evs.color;
+                oldEvent.isnew = evs.isnew;
+                console.log(oldEvent);
+                scheduler.updateView();
+                CloseAppointment();
             }
             else {
                 ShowMessage(obj.message);
@@ -534,6 +590,8 @@ function UpdateAppointment() {
 
 function AddAppointment(evs) {
     $.each(evs, function(i, item) {
+        item.start_date = new Date(item.start_date);
+        item.end_date = new Date(item.end_date);
         scheduler.addEvent(item);
     });
 }
@@ -549,21 +607,20 @@ function AddTimespanMonth(evs) {
             css: "have_roster",
             html: "Have Appt"
         };
-        scheduler.addMarkedTimespan(options);
+        listTs.push(scheduler.addMarkedTimespan(options));
 
         if (date < new Date())
-            scheduler.addMarkedTimespan({
+            listTs.push(scheduler.addMarkedTimespan({
                 start_date: date,
                 end_date: scheduler.date.add(date, 1, "day"),
                 css: 'small_lines_section',
                 type: "dhx_time_block"
-            });
+            }));
     });
-    scheduler.updateView();
 }
 
 // Ham tao tabs va tao unit view, timeline view
-function BuildTabs(sections, mode) {
+function BuildTabs(scheduler, sections, mode) {
     // Lay id cua tab dang duoc select [neu co]
     var selectedId = $('#service-tabs li.ui-tabs-selected').attr('id');
 
@@ -606,24 +663,24 @@ function BuildTabs(sections, mode) {
             var day = new Date();
             if (doctor.Rosters.length) {
                 $.each(doctor.Rosters, function(j, roster) {
-                    var startTime = new Date(roster.startTime);
-                    var endTime = new Date(roster.endTime);
-                    scheduler.addMarkedTimespan({
-                        start_date: startTime,
-                        end_date: endTime,
+                    var varStartTime = new Date(roster.startTime);
+                    var varEndTime = new Date(roster.endTime);
+                    listTs.push(scheduler.addMarkedTimespan({
+                        start_date: varStartTime,
+                        end_date: varEndTime,
                         bcolor: roster.color,
                         sections: {
                             timeline: doctor.key, // list of sections
                             unit: doctor.key
                         }
-                    });
-                    availableTime.push(startTime.getHours() * 60 + startTime.getMinutes());
-                    availableTime.push(endTime.getHours() * 60 + endTime.getMinutes());
-                    day = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate());
+                    }));
+                    availableTime.push(varStartTime.getHours() * 60 + varStartTime.getMinutes());
+                    availableTime.push(varEndTime.getHours() * 60 + varEndTime.getMinutes());
+                    day = new Date(varStartTime.getFullYear(), varStartTime.getMonth(), varStartTime.getDate());
                 });
             }
             // Block toan bo thoi gian trong ngay
-            scheduler.addMarkedTimespan({
+            listTs.push(scheduler.addMarkedTimespan({
                 days: day,
                 zones: availableTime,
                 invert_zones: true,
@@ -632,7 +689,7 @@ function BuildTabs(sections, mode) {
                     timeline: doctor.key, // list of sections
                     unit: doctor.key
                 }
-            });
+            }));
         });
     }
 
@@ -650,12 +707,18 @@ function BuildTabs(sections, mode) {
         }
         return false;
     });
-    scheduler.updateView();
 }
 
 // Cancel appointment
 function CancelAppointment() {
     scheduler.endLightbox(false, html(formId));
+    isLightbox = false;
+    CurrentAppointment = null;
+}
+
+// Cancel appointment
+function CloseAppointment() {
+    scheduler.endLightbox(true, html(formId));
     isLightbox = false;
     CurrentAppointment = null;
 }

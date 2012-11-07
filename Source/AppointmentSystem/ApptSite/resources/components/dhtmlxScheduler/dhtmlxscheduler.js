@@ -1975,6 +1975,7 @@ scheduler.set_sizes = function() {
     var scale_x = this._table_view ? 0 : (this.xy.scale_width + this.xy.scroll_width);
     var scale_s = this._table_view ? -1 : this.xy.scale_width;
 
+    /******* Start - PhatVT remove orginal - 20121106 21:00 *******/
     this.set_xy(this._els["dhx_cal_navline"][0], w, this.xy.nav_height, 0, 0);
     this.set_xy(this._els["dhx_cal_header"][0], w - scale_x, this.xy.scale_height, scale_s, this.xy.nav_height + (this._quirks ? -1 : 1));
     //to support alter-skin, we need a way to alter height directly from css
@@ -1983,6 +1984,17 @@ scheduler.set_sizes = function() {
 
     var data_y = this.xy.scale_height + this.xy.nav_height + (this._quirks ? -2 : 0);
     this.set_xy(this._els["dhx_cal_data"][0], w, h - (data_y + 2), 0, data_y + 2);
+    /******* Start - PhatVT remove orginal - 20121106 21:00 *******/
+    
+    /******* Start - PhatVT add - 20121106 21:00 *******/
+//    this.set_xy(this._els["dhx_cal_header"][0], w, this.xy.nav_height, scale_s, 0);
+
+//    var data_y = this.xy.scale_height + (this._quirks ? -2 : 0);
+//    this.set_xy(this._els["dhx_cal_data"][0], w, h - (data_y + 2) - this.xy.nav_height, 0, data_y + 2);
+
+//    this.set_xy(this._els["dhx_cal_navline"][0], w - scale_x, this.xy.scale_height, scale_s
+//            , h - this.xy.nav_height);
+    /******* Start - PhatVT add - 20121106 21:00 *******/
 };
 scheduler.set_xy = function(node, w, h, x, y) {
     node.style.width = Math.max(0, w) + "px";

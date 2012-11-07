@@ -16,6 +16,9 @@ body
     font-size: 11px;
 }
 
+textarea {
+    font-family: Lucida Grande, Verdana, Lucida Sans Regular, Lucida Sans Unicode, Arial, sans-serif;
+}
 /* -----------------------------------------------------------
 	images
 ----------------------------------------------------------- */
