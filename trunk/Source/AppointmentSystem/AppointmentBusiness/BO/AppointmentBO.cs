@@ -238,31 +238,35 @@ namespace AppointmentBusiness.BO
                 #endregion
 
                 #region Check Conflict
-                // Check conflict Patient
-                if (!CheckConflict("PatientCode", oldAppt.PatientCode, string.Empty,
-                    String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName), Convert.ToDateTime(oldAppt.StartTime)
-                        , Convert.ToDateTime(oldAppt.EndTime), isUpdate, ref message))
+                // Neu cac trang thai khong phai la cancel, done, block [may cai nay co the thay doi] thi kiem tra conflict
+                if (oldAppt.StatusId != ApptStatus.Cancel && oldAppt.StatusId != ApptStatus.Done && oldAppt.StatusId != ApptStatus.Blocked)
                 {
-                    message = String.Format("Cannot create appointment because {0} has another appointment from {1} to {2}."
-                        , String.Format("{0:yyyy-MM-dd HH:mm}", oldAppt.StartTime)
-                        , String.Format("{0:yyyy-MM-dd HH:mm}", oldAppt.EndTime));
-                    return false;
-                }
+                    // Check conflict Patient
+                    if (!CheckConflict("PatientCode", oldAppt.PatientCode, string.Empty,
+                        String.Format("{0} {1}", objPatient.FirstName, objPatient.LastName), Convert.ToDateTime(oldAppt.StartTime)
+                            , Convert.ToDateTime(oldAppt.EndTime), oldAppt.Id, ref message))
+                    {
+                        message = String.Format("Cannot create appointment because {0} has another appointment from {1} to {2}."
+                            , objPatient.FirstName + " " + objPatient.LastName
+                            , String.Format("{0:yyyy-MM-dd HH:mm}", oldAppt.StartTime)
+                            , String.Format("{0:yyyy-MM-dd HH:mm}", oldAppt.EndTime));
+                        return false;
+                    }
 
-                // Check conflict Doctor
-                if (!CheckConflict("Username", objUser.Username, string.Empty, objUser.DisplayName
-                    , Convert.ToDateTime(oldAppt.StartTime), Convert.ToDateTime(oldAppt.EndTime), isUpdate, ref message))
-                {
-                    return false;
-                }
-
-                // Check conflict Room
-                if (oldAppt.RoomId != null && objRoom != null)
-                {
-                    if (!CheckConflict("RoomId", oldAppt.RoomId.ToString(), "Room"
-                        , objRoom.Title, Convert.ToDateTime(oldAppt.StartTime), Convert.ToDateTime(oldAppt.EndTime), isUpdate, ref message))
+                    if (!CheckConflict("Username", objUser.Username, string.Empty, objUser.DisplayName
+                        , Convert.ToDateTime(oldAppt.StartTime), Convert.ToDateTime(oldAppt.EndTime), oldAppt.Id, ref message))
                     {
                         return false;
+                    }
+
+                    // Check conflict Room
+                    if (oldAppt.RoomId != null && objRoom != null)
+                    {
+                        if (!CheckConflict("RoomId", oldAppt.RoomId.ToString(), "Room"
+                            , objRoom.Title, Convert.ToDateTime(oldAppt.StartTime), Convert.ToDateTime(oldAppt.EndTime), oldAppt.Id, ref message))
+                        {
+                            return false;
+                        }
                     }
                 }
                 #endregion
@@ -290,20 +294,27 @@ namespace AppointmentBusiness.BO
         /// <param name="title"></param>
         /// <param name="dtStart"></param>
         /// <param name="dtEnd"></param>
-        /// <param name="isUpdate">Co phai la dang update ko</param>
+        /// <param name="id">Truyen vao Id cua Appointment</param>
         /// <param name="message"></param>
         /// <returns></returns>
         private static bool CheckConflict(string column, string compareValue, string name, string title,
-            DateTime dtStart, DateTime dtEnd, bool isUpdate, ref string message)
+            DateTime dtStart, DateTime dtEnd, string id, ref string message)
         {
             try
             {
                 int count;
-                string query = String.Format("{3} = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}' AND StatusId <> '{4}'",
-                    compareValue, dtEnd.ToString("yyyy-MM-dd HH:mm:ss"), dtStart.ToString("yyyy-MM-dd HH:mm:ss"), column, ApptStatus.Cancel);
-                DataRepository.AppointmentProvider.GetPaged(query, "Id desc", 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                string query =
+                    String.Format("{3} = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'" +
+                                  " AND StatusId NOT IN ('{4}', '{5}', '{6}') AND Id <> '{7}'",
+                                  compareValue, dtEnd.ToString("yyyy-MM-dd HH:mm:ss"),
+                                  dtStart.ToString("yyyy-MM-dd HH:mm:ss"), column,
+                                  ApptStatus.Cancel, ApptStatus.Done, ApptStatus.Blocked,
+                                  string.IsNullOrEmpty(id) ? string.Empty : id);
+                DataRepository.AppointmentProvider.GetPaged(query, "Id desc", 0,
+                                                                      ServiceFacade.SettingsHelper.GetPagedLength,
+                                                                      out count);
 
-                if ((count > 0 && !isUpdate) || (count > 1 && isUpdate))
+                if (count > 0)
                 {
                     message = String.Format("Cannot assign appointment because {0} {1} is not available from {2} {3} to {4} {5}."
                         , name, title, dtStart.DayOfWeek.ToString(), dtStart.ToString("dd MMM yyyy HH:mm")

@@ -614,7 +614,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     note = obj.Note,
                     status = obj.StatusId,
                     ReadOnly = (obj.StartTime <= DateTime.Now),
-                    color = obj.StatusIdSource.ColorCode,
+                    color = BoFactory.StatusBO.GetColor(obj.StatusId),
                     isnew = false
                 };
             }
