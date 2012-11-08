@@ -231,7 +231,6 @@ function SaveRemark() {
 function GetPatientInfo(currentId) {
     var ev = scheduler.getEvent(currentId);
     if (currentId && ev) {
-        $("#divNote").html(ev.note + " &nbsp;");
         var requestdata = JSON.stringify({ appointmentId: currentId });
         $.ajax({
             type: "POST",
@@ -249,6 +248,7 @@ function GetPatientInfo(currentId) {
                         $("#divLastname").html(arr.LastName + " &nbsp;");
                         $("#divCellPhone").html(arr.CellPhone + " &nbsp;");
                         $("#divBirthday").html(arr.Birthdate);
+                        $("#divNote").html(arr.Remark);
                         $("#apptRemark").val(arr.ApptRemark);
                     }
                 }
