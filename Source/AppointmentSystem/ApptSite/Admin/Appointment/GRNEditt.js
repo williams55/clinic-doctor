@@ -37,7 +37,6 @@ function ShowMinical() {
 // Init Schedule
 function initSchedule(weekday) {
     var currentDate = new Date();
-
     scheduler.config.xml_date = "%Y-%m-%d %H:%i";
     scheduler.config.details_on_dblclick = true;
     scheduler.config.details_on_create = true;
@@ -45,6 +44,43 @@ function initSchedule(weekday) {
     scheduler.config.mark_now = false;
     scheduler.locale.labels.unit_tab = "Unit";
     scheduler.locale.labels.timeline_tab = "Timeline";
+    scheduler.xy.min_event_height = 0;
+
+    // Thay the title cua event
+    scheduler.renderEvent = function(container, ev) {
+        var bg_color = (ev.color ? ("background:" + ev.color + ";") : "background: #1796B0");
+        var color = (ev.textColor ? ("color:" + ev.textColor + ";") : "");
+        var w = parseInt(container.style.width);
+        var h = parseInt(container.style.height);
+        var bottom = container.className.indexOf('dhx_cal_select_menu') > 0;
+
+        var inner_html = '<div class="dhx_event_move" style=" width:' + (w - (this._quirks ? 4 : 14)) + 'px; height:' + (h + 1) + 'px;' + bg_color + '' + color + '">' +
+            '<div style="padding: 5px; text-align: center; font-weight: bold;">' +
+            (ev.PatientInfo ? ev.PatientInfo + '<br/>' : '') +
+            scheduler.templates.event_date(ev.start_date) + " - " + scheduler.templates.event_date(ev.end_date) +
+            '</div></div>'; // +2 css specific, moved from render_event
+        var footer_class = "dhx_event_resize";
+        if (bottom)
+            footer_class = "dhx_resize_denied";
+
+        inner_html += '<div class="' + footer_class + '" style=" width:' + (w - 8) + 'px;' + (bottom ? ' margin-top:-1px;' : '') + '' + bg_color + '' + color + '" ></div>';
+
+        container.innerHTML = inner_html;
+        return true; // required, true - we've created custom form; false - display default one instead
+    };
+    
+    // Set lai chieu cao, dinh dang cot time
+    var step = stepTime;
+    var format = scheduler.date.date_to_str("%H:%i");
+    scheduler.config.hour_size_px = (60 / step) * 22;
+    scheduler.templates.hour_scale = function(date) {
+        var htmltime = "";
+        for (var i = 0; i < 60 / step; i++) {
+            htmltime += "<div style='height:21px;line-height:21px;'>" + format(date) + "</div>";
+            date = scheduler.date.add(date, step, "minute");
+        }
+        return htmltime;
+    };
 
     // Tao unit view voi danh sach doctor duoc chon
     scheduler.createUnitsView({
@@ -105,14 +141,6 @@ function initSchedule(weekday) {
 
     // Load roster
     scheduler.init('scheduler_here', currentDate, "unit");
-
-    // Thay the title cua event
-    scheduler.templates.event_header = function(start, end, event) {
-        return event.PatientInfo ? event.PatientInfo : '';
-    };
-    scheduler.templates.event_text = function(start, end, event) {
-        return scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
-    };
 
     ShowMinical();
 
