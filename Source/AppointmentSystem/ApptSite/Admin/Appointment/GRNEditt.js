@@ -105,6 +105,15 @@ function initSchedule(weekday) {
 
     // Load roster
     scheduler.init('scheduler_here', currentDate, "unit");
+
+    // Thay the title cua event
+    scheduler.templates.event_header = function(start, end, event) {
+        return event.PatientInfo ? event.PatientInfo : '';
+    };
+    scheduler.templates.event_text = function(start, end, event) {
+        return scheduler.templates.event_date(start) + " - " + scheduler.templates.event_date(end);
+    };
+
     ShowMinical();
 
     // Refesh current view for mark_now can auto update
