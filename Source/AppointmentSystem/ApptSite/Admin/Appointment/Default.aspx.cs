@@ -599,7 +599,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.StartTime),
                     end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.EndTime),
                     section_id = obj.Username,
-                    text = string.Empty,
+                    text = ParsePatientName(patient),
                     DoctorDisplayname = obj.UsernameSource.DisplayName,
                     patient = obj.PatientCode,
                     PatientName = patient.FirstName,

@@ -45,19 +45,20 @@ function initSchedule(weekday) {
     scheduler.locale.labels.unit_tab = "Unit";
     scheduler.locale.labels.timeline_tab = "Timeline";
     scheduler.xy.min_event_height = 0;
+    scheduler.config.icons_select = ["icon_edit", "icon_delete"];
 
     // Thay the title cua event
-    scheduler.renderEvent = function(container, ev) {
-        var bg_color = (ev.color ? ("background:" + ev.color + ";") : "background: #1796B0");
-        var color = (ev.textColor ? ("color:" + ev.textColor + ";") : "");
+    scheduler.renderEvent = function(container, event) {
+        var bg_color = (event.color ? ("background:" + event.color + ";") : "background: #1796B0");
+        var color = (event.textColor ? ("color:" + event.textColor + ";") : "");
         var w = parseInt(container.style.width);
         var h = parseInt(container.style.height);
         var bottom = container.className.indexOf('dhx_cal_select_menu') > 0;
 
-        var inner_html = '<div class="dhx_event_move" style=" width:' + (w - (this._quirks ? 4 : 14)) + 'px; height:' + (h + 1) + 'px;' + bg_color + '' + color + '">' +
+        var inner_html = '<div class="dhx_event_move" style="cursor: pointer; width:' + (w - (this._quirks ? 4 : 14)) + 'px; height:' + (h + 1) + 'px;' + bg_color + '' + color + '">' +
             '<div style="padding: 5px; text-align: center; font-weight: bold;">' +
-            (ev.PatientInfo ? ev.PatientInfo + '<br/>' : '') +
-            scheduler.templates.event_date(ev.start_date) + " - " + scheduler.templates.event_date(ev.end_date) +
+            (event.PatientInfo ? event.PatientInfo + '<br/>' : '') +
+            scheduler.templates.event_date(event.start_date) + " - " + scheduler.templates.event_date(event.end_date) +
             '</div></div>'; // +2 css specific, moved from render_event
         var footer_class = "dhx_event_resize";
         if (bottom)
@@ -69,6 +70,21 @@ function initSchedule(weekday) {
         return true; // required, true - we've created custom form; false - display default one instead
     };
     
+    // Thay tooltip
+    scheduler.templates.tooltip_date_format = scheduler.date.date_to_str("%H:%i");
+    scheduler.templates.tooltip_text = function(start, end, event) {
+        return (event.PatientInfo ? '<b>Patient:</b> '  + event.PatientInfo + '<br/>' : '') + 
+            "<b>Time:</b> " + scheduler.templates.tooltip_date_format(start) + " - " + scheduler.templates.tooltip_date_format(end);
+    };
+    
+    // Thay doi su kien nut click
+    scheduler._click.buttons = {
+        "delete": function(id) {
+            DeleteAppointment(id);
+        },
+        edit: function(id) { scheduler.showLightbox(id); }
+    };
+
     // Set lai chieu cao, dinh dang cot time
     var step = stepTime;
     var format = scheduler.date.date_to_str("%H:%i");
@@ -751,11 +767,12 @@ function CancelAppointment() {
     CurrentAppointment = null;
 }
 
-function DeleteAppointment() {
+function DeleteAppointment(appt) {
     if (!confirm("Do you want to delete this appointment?"))
         return;
 
     var id = $("[id$=hdId]").val();
+    if (appt) id = appt; // Neu co doi tuong appt truyen vao thi lay id cua no
     var requestdata = JSON.stringify({ id: id });
     ShowProgress();
     isUsing = true;

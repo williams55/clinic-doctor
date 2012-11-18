@@ -403,10 +403,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.StartTime),
             end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.EndTime),
             section_id = item.Username,
-            text = String.Format("{0}<br />Doctor: {1}<br />{2}"
-                    , item.RosterTypeIdSource.Title
-                    , item.Username
-                    , item.Note),
+            text = string.Empty,
             DoctorUserName = item.Username,
             DoctorShortName = item.UsernameSource.DisplayName,
             item.RosterTypeId,
