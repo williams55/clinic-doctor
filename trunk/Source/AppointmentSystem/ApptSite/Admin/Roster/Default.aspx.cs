@@ -309,27 +309,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             }
             else
             {
-                foreach (Roster item in lstRoster)
-                {
-                    lstResult.Add(new
-                    {
-                        id = item.Id,
-                        start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.StartTime),
-                        end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.EndTime),
-                        section_id = item.Username,
-                        text = String.Format("{0}<br />Doctor: {1}<br />{2}"
-                                , item.RosterTypeIdSource.Title
-                                , item.Username
-                                , item.Note),
-                        DoctorUserName = item.Username,
-                        DoctorShortName = item.UsernameSource.DisplayName,
-                        item.RosterTypeId,
-                        RosterTypeTitle = item.RosterTypeIdSource.Title,
-                        note = item.Note,
-                        isnew = false,
-                        color = item.RosterTypeIdSource.ColorCode
-                    });
-                }
+                AddRoster(lstResult, lstRoster);
             }
             return WebCommon.BuildSuccessfulResult(lstResult);
         }
@@ -403,13 +383,14 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.StartTime),
             end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", item.EndTime),
             section_id = item.Username,
-            text = string.Empty,
+            text = item.RosterTypeIdSource.Title,
             DoctorUserName = item.Username,
             DoctorShortName = item.UsernameSource.DisplayName,
             item.RosterTypeId,
             RosterTypeTitle = item.RosterTypeIdSource.Title,
             note = item.Note,
             isnew = false,
+            ReadOnly = (item.StartTime <= DateTime.Now),
             color = item.RosterTypeIdSource.ColorCode
         });
     }

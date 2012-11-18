@@ -294,8 +294,8 @@
                     </dx:ASPxTimeEdit>
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxDateEdit ID="startDate" ClientInstanceName="startDate" runat="server" EditFormatString="M/d/yyyy"
-                        DisplayFormatString="M/d/yyyy" Width="75">
+                    <dx:ASPxDateEdit ID="startDate" ClientInstanceName="startDate" runat="server" EditFormatString="MM/dd/yyyy"
+                        DisplayFormatString="MM/dd/yyyy" Width="85">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="Start time is required" />
@@ -311,8 +311,8 @@
                     </dx:ASPxTimeEdit>
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxDateEdit ID="endDate" ClientInstanceName="endDate" runat="server" EditFormatString="M/d/yyyy"
-                        DisplayFormatString="M/d/yyyy" Width="75">
+                    <dx:ASPxDateEdit ID="endDate" ClientInstanceName="endDate" runat="server" EditFormatString="MM/dd/yyyy"
+                        DisplayFormatString="MM/dd/yyyy" Width="85">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="End time is required" />
@@ -447,10 +447,10 @@
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection required" style="float: left; width: 100px;">
-                    DOB (m/d/yyyy)</div>
+                    DOB (MM/dd/yyyy)</div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxDateEdit ID="txtDob" ClientInstanceName="txtDob" runat="server" EditFormatString="M/d/yyyy"
-                        DisplayFormatString="M/d/yyyy" Width="165px">
+                    <dx:ASPxDateEdit ID="txtDob" ClientInstanceName="txtDob" runat="server" EditFormatString="MM/dd/yyyy"
+                        DisplayFormatString="MM/dd/yyyy" Width="165px">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="DOB is required" />

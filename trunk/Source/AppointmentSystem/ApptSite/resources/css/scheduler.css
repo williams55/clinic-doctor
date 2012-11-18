@@ -1,10 +1,20 @@
 /*************************Start lightbox form for scheduler***************************/
-/* Stly cho row cua form trong dhtmlx scheduler */
+/* Style cho row cua form trong dhtmlx scheduler */
 .dhx_form_row
 {
     padding: 5px 0;
     border-top: 0;
     border-bottom: 1px solid #CECECE;
+}
+
+/* Dua event len tren block */
+.dhx_cal_container div {
+    z-index: 1;
+}
+
+/* Doi mau chu */
+.dhx_cal_event_line {
+    color: black;
 }
 
 .schedulerForm
