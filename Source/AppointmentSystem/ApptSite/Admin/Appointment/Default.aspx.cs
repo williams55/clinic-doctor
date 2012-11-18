@@ -52,7 +52,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             // Bind data cho patient
             int count;
-            var lstPatients = DataRepository.VcsPatientProvider.GetPaged("IsDisabled = 'False'", string.Empty, 
+            var lstPatients = DataRepository.VcsPatientProvider.GetPaged("IsDisabled = 'False'", string.Empty,
                 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
             cboPatient.DataSource = lstPatients.Select(patient => new
                 {
@@ -718,9 +718,12 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
                 if (!lstService.Exists(service => service.Id == roster1.UsernameSource.ServicesId))
                 {
-                    lstService.Add(roster1.UsernameSource.ServicesIdSource);
+                    lstService.Add(DataRepository.ServicesProvider.GetById(Convert.ToInt32(roster1.UsernameSource.ServicesId)));
                 }
             }
+
+            // Sort theo priority
+            lstService.Sort("PriorityIndex ASC");
 
             lst = lstService.Select(service => new
                 {
@@ -748,6 +751,59 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         return lst;
     }
+
+    /// <summary>
+    /// Update index cua service
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string UpdateIndex(int[] ids)
+    {
+        try
+        {
+            if (!CheckReading(out _message))
+            {
+                return WebCommon.BuildFailedResult(_message);
+            }
+
+            if (ids != null && ids.Length > 1)
+            {
+                // Lay danh sach service theo id
+                int count;
+                var lstServices =
+                    DataRepository.ServicesProvider.GetPaged(
+                        String.Format("IsDisabled = 'False' AND (Id IN ({0}))", String.Join(",", ids.Select(x => x.ToString()).ToArray())), string.Empty, 0,
+                        ServiceFacade.SettingsHelper.GetPagedLength, out count);
+
+                // Lay index cua cac service
+                var indexes = lstServices.Select(service => service.PriorityIndex).ToList();
+                indexes.Sort();
+
+                // Duyet tung item theo mang ids de luu lai index
+                for (int i = 0; i < ids.Length; i++)
+                {
+                    var service = lstServices.FirstOrDefault(svc => svc.Id == ids[i]);
+                    if (service != null)
+                    {
+                        // Neu index hien tai = index truoc thi se duoc tang len 1
+                        service.PriorityIndex = ((i > 0) && indexes[i] == indexes[i - 1]) ? ++indexes[i] : indexes[i];
+                    }
+                }
+
+                // Luu
+                DataRepository.ServicesProvider.Update(lstServices);
+            }
+        }
+        catch (Exception ex)
+        {
+            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult("System error. Please contact Administrator.");
+        }
+        return WebCommon.BuildSuccessfulResult();
+    }
+
     #endregion
 
     #region Appointment
@@ -796,7 +852,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 CreateUser = Username,
                 UpdateUser = Username
             };
-            
+
             if (!BoFactory.AppointmentBO.Insert(appointment, ref _message))
                 return WebCommon.BuildFailedResult(_message);
 
@@ -848,7 +904,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult("There is no appointment to update.");
             }
 
-            var appointment = (Appointment) tmpAppt.Clone();
+            var appointment = (Appointment)tmpAppt.Clone();
             tmpAppt.Dispose();
             appointment.Username = doctorId;
             appointment.StartTime = startTime;
