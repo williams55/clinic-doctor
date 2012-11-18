@@ -201,26 +201,11 @@
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxTimeEdit ID="startTime" runat="server" ClientInstanceName="startTime" EditFormatString="HH:mm"
                         DisplayFormatString="HH:mm" Width="70px">
-                        <ClientSideEvents ButtonClick='function(s, e) {
-                            if (e.buttonIndex == -2) //increment button
-                            {
-                                var date = s.GetDate();
-                                var minutes = date.getMinutes();
-                                date.setMinutes(minutes + minuteStep);
-                                s.SetDate(date);
-                            }
-                            else if (e.buttonIndex == -3) //down button
-                            {
-                                var date = s.GetDate();
-                                var minutes = date.getMinutes();
-                                date.setMinutes(minutes - minuteStep); 
-                                s.SetDate(date);
-                            }}' />
                     </dx:ASPxTimeEdit>
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxDateEdit ID="startDate" ClientInstanceName="startDate" runat="server" EditFormatString="M/d/yyyy"
-                        DisplayFormatString="M/d/yyyy" Width="150px">
+                    <dx:ASPxDateEdit ID="startDate" ClientInstanceName="startDate" runat="server" EditFormatString="MM/dd/yyyy"
+                        DisplayFormatString="MM/dd/yyyy" Width="150px">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="From Date is required" />
@@ -233,26 +218,11 @@
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxTimeEdit ID="endTime" ClientInstanceName="endTime" runat="server" EditFormatString="HH:mm"
                         DisplayFormatString="HH:mm" Width="70px">
-                        <ClientSideEvents ButtonClick='function(s, e) {
-                            if (e.buttonIndex == -2) //increment button
-                            {
-                                var date = s.GetDate();
-                                var minutes = date.getMinutes();
-                                date.setMinutes(minutes + minuteStep);
-                                s.SetDate(date);
-                            }
-                            else if (e.buttonIndex == -3) //down button
-                            {
-                                var date = s.GetDate();
-                                var minutes = date.getMinutes();
-                                date.setMinutes(minutes - minuteStep); 
-                                s.SetDate(date);
-                            }}' />
                     </dx:ASPxTimeEdit>
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxDateEdit ID="endDate" ClientInstanceName="endDate" runat="server" EditFormatString="M/d/yyyy"
-                        DisplayFormatString="M/d/yyyy" Width="150px">
+                    <dx:ASPxDateEdit ID="endDate" ClientInstanceName="endDate" runat="server" EditFormatString="MM/dd/yyyy"
+                        DisplayFormatString="MM/dd/yyyy" Width="150px">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="To Date is required" />

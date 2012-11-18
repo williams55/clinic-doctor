@@ -246,6 +246,14 @@ scheduler.showLightbox = function(id) {
     // Goi ham validate form khi form hien thi
     ValidateForm();
 
+    // Neu event la readonly thi disable cac control
+    if (ev.ReadOnly) {
+        $("#btnSave").parent().hide();
+        $("#delete-form-roster").parent().hide();
+    } else {
+        $("#btnSave").parent().show();
+    }
+
     return true;
 };
 /****************************Scheduler - End******************************/
