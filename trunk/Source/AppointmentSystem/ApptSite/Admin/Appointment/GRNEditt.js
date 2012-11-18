@@ -215,7 +215,7 @@ scheduler.showLightbox = function(id) {
     $("#txtNote").val(ev.note);
     cboStatus.SetSelectedIndex(0);
     cboService.SetSelectedItem(cboService.FindItemByValue($('#service-tabs li.ui-tabs-selected').attr('id').replace('tab_', '')));
-    cboPatient.SetSelectedIndex(0);
+    cboPatient.SetText('');
     grid.PerformCallback('Refresh');
 
     // Set value

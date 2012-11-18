@@ -257,13 +257,14 @@
                     Patient</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxComboBox ID="cboPatient" ClientInstanceName="cboPatient" runat="server" Width="165px"
-                        DropDownStyle="DropDownList" DataSourceID="PatientDataSource" ValueField="PatientCode"
+                        DropDownStyle="DropDownList" ValueField="PatientCode"
                         TextField="LastName" ValueType="System.String" TextFormatString="{1} {2}" EnableCallbackMode="False"
-                        IncrementalFilteringMode="StartsWith">
+                        IncrementalFilteringMode="Contains">
                         <Columns>
                             <dx:ListBoxColumn FieldName="PatientCode" Width="80" />
                             <dx:ListBoxColumn FieldName="FirstName" Width="100" />
                             <dx:ListBoxColumn FieldName="LastName" Width="100" />
+                            <dx:ListBoxColumn FieldName="DateOfBirth" Width="70" Caption="DOB" />
                             <dx:ListBoxColumn FieldName="Sex" Width="50" />
                         </Columns>
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
@@ -297,7 +298,7 @@
                         DisplayFormatString="M/d/yyyy" Width="75">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
-                            <RequiredField IsRequired="True" ErrorText="From Date is required" />
+                            <RequiredField IsRequired="True" ErrorText="Start time is required" />
                         </ValidationSettings>
                     </dx:ASPxDateEdit>
                 </div>
@@ -314,7 +315,7 @@
                         DisplayFormatString="M/d/yyyy" Width="75">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
-                            <RequiredField IsRequired="True" ErrorText="To Date is required" />
+                            <RequiredField IsRequired="True" ErrorText="End time is required" />
                         </ValidationSettings>
                     </dx:ASPxDateEdit>
                 </div>
