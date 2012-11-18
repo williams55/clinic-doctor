@@ -41,6 +41,61 @@ function initSchedule(weekday) {
     scheduler.config.details_on_create = true;
     scheduler.config.time_step = stepTime;
     scheduler.config.mark_now = false;
+    scheduler.xy.min_event_height = 0;
+    scheduler.config.icons_select = ["icon_edit", "icon_delete"];
+
+    // Thay the title cua event
+    scheduler.renderEvent = function(container, event) {
+        var bg_color = (event.color ? ("background:" + event.color + ";") : "background: #1796B0");
+        var color = (event.textColor ? ("color:" + event.textColor + ";") : "");
+        var w = parseInt(container.style.width);
+        var h = parseInt(container.style.height);
+        var bottom = container.className.indexOf('dhx_cal_select_menu') > 0;
+
+        var inner_html = '<div class="dhx_event_move" style="cursor: pointer; width:' + (w - (this._quirks ? 4 : 14)) + 'px; height:' + (h + 1) + 'px;' + bg_color + '' + color + '">' +
+            '<div style="padding: 5px; text-align: center; font-weight: bold;">' +
+            (event.DoctorShortName ? event.DoctorShortName + '' : '') +
+            (event.RosterTypeTitle ? ' - '  + event.RosterTypeTitle + '<br />' : '') + 
+            scheduler.templates.event_date(event.start_date) + " - " + scheduler.templates.event_date(event.end_date) +
+            '</div></div>'; // +2 css specific, moved from render_event
+        var footer_class = "dhx_event_resize";
+        if (bottom)
+            footer_class = "dhx_resize_denied";
+
+        inner_html += '<div class="' + footer_class + '" style=" width:' + (w - 8) + 'px;' + (bottom ? ' margin-top:-1px;' : '') + '' + bg_color + '' + color + '" ></div>';
+
+        container.innerHTML = inner_html;
+        return true; // required, true - we've created custom form; false - display default one instead
+    };
+    
+    // Thay tooltip
+    scheduler.templates.tooltip_date_format = scheduler.date.date_to_str("%H:%i");
+    scheduler.templates.tooltip_text = function(start, end, event) {
+        return (event.DoctorShortName ? '<b>Doctor:</b> '  + event.DoctorShortName + '<br/>' : '') + 
+            (event.RosterTypeTitle ? '<b>Type:</b> '  + event.RosterTypeTitle + '<br/>' : '') + 
+            "<b>Time:</b> " + scheduler.templates.tooltip_date_format(start) + " - " + scheduler.templates.tooltip_date_format(end);
+    };
+    
+    // Thay doi su kien nut click
+    scheduler._click.buttons = {
+        "delete": function(id) {
+            DeleteRoster(id);
+        },
+        edit: function(id) { scheduler.showLightbox(id); }
+    };
+
+    // Set lai chieu cao, dinh dang cot time
+    var step = stepTime;
+    var format = scheduler.date.date_to_str("%H:%i");
+    scheduler.config.hour_size_px = (60 / step) * 22;
+    scheduler.templates.hour_scale = function(date) {
+        var htmltime = "";
+        for (var i = 0; i < 60 / step; i++) {
+            htmltime += "<div style='height:21px;line-height:21px;'>" + format(date) + "</div>";
+            date = scheduler.date.add(date, step, "minute");
+        }
+        return htmltime;
+    };
 
     var arrAjax = [];
     arrAjax.push($.ajax({
@@ -160,8 +215,7 @@ scheduler.showLightbox = function(id) {
 
     // Set doctor
     if (ev.section_id) {
-        var doctor = scheduler.getSection(ev.section_id);
-        cboDoctor.SetText(doctor.key);
+        cboDoctor.SetText(ev.section_id);
     }
 
     // If it's edit mode
@@ -422,11 +476,12 @@ function CancelRoster() {
 }
 
 // Delete roster by Id
-function DeleteRoster() {
+function DeleteRoster(ros) {
     if (!confirm("Do you want to delete this roster?"))
         return;
 
     var id = $("#hdId").val();
+    if (ros) id = ros; // Neu co doi tuong roster truyen vao thi lay id cua no
     var requestdata = JSON.stringify({ id: id });
     ShowProgress();
     $.ajax({
