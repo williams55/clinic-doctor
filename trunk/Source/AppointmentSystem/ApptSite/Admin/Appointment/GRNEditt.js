@@ -765,6 +765,31 @@ function BuildTabs(scheduler, sections, mode) {
         }
         return false;
     });
+
+    $tabs.sortable({
+        placeholder: "ui-state-highlight",
+        update: UpdateSortList
+    });
+}
+
+// Update index cua sort list
+function UpdateSortList(event, ui) {
+    var $tabs = $('#service-tabs li');
+    var tabIds = [];
+    
+    // Lay danh sach id va dua vao mang
+    $.each($tabs, function(i, item) {
+        tabIds.push($(item).attr('id').replace('tab_', ''));
+    });
+
+    var requestdata = JSON.stringify({ ids: tabIds });
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/UpdateIndex",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8"
+    });
 }
 
 // Cancel appointment
