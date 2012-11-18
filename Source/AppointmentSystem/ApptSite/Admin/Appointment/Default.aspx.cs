@@ -49,6 +49,21 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             // Validate current user have any right to operate this action to display button
             changeUser.Visible = CheckCreating(out _message) || CheckUpdating(out _message);
             createUser.Visible = CheckCreating(out _message) || CheckUpdating(out _message);
+
+            // Bind data cho patient
+            int count;
+            var lstPatients = DataRepository.VcsPatientProvider.GetPaged("IsDisabled = 'False'", string.Empty, 
+                0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+            cboPatient.DataSource = lstPatients.Select(patient => new
+                {
+                    patient.PatientCode,
+                    patient.FirstName,
+                    patient.LastName,
+                    patient.MiddleName,
+                    DateOfBirth = String.Format("{0:MM/dd/yyyy}", patient.DateOfBirth),
+                    patient.Sex
+                });
+            cboPatient.DataBind();
         }
         catch (Exception ex)
         {
