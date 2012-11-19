@@ -42,7 +42,15 @@ function initSchedule(weekday) {
     scheduler.config.time_step = stepTime;
     scheduler.config.mark_now = false;
     scheduler.xy.min_event_height = 0;
-    scheduler.config.icons_select = ["icon_edit", "icon_delete"];
+    
+    // Them nut chuc nang dua vao quyen
+    scheduler.config.icons_select = [];
+    if ($('[id$=divUpdate]').length) {
+        scheduler.config.icons_select.push('icon_edit');
+    }
+    if ($('[id$=divDelete]').length) {
+        scheduler.config.icons_select.push('icon_delete');
+    }
 
     // Thay the title cua event
     scheduler.renderEvent = function(container, event) {
@@ -221,9 +229,8 @@ scheduler.showLightbox = function(id) {
     // If it's edit mode
     if (ev.isnew == false) {
         $('#drag-title .dhx_time').text('Edit roster ' + id);
-        $("#repeater-section, #btnSave").hide();
-        $("#btnUpdate").show();
-        $("#delete-form-roster").parent().show();
+        $("#repeater-section, [id$=divSave]").hide();
+        $("[id$=divUpdate], [id$=divDelete]").show();
 
         if (ev.RosterTypeId) {
             cboRosterType.SetSelectedItem(cboRosterType.FindItemByValue(ev.RosterTypeId));
@@ -231,9 +238,8 @@ scheduler.showLightbox = function(id) {
     }
     else {
         $('#drag-title .dhx_time').text('New roster');
-        $("#repeater-section, #btnSave").show();
-        $("#btnUpdate").hide();
-        $("#delete-form-roster").parent().hide();
+        $("#repeater-section, [id$=divSave]").show();
+        $("[id$=divUpdate], [id$=divDelete]").hide();
     }
 
     var d = html("drag-title");
@@ -248,10 +254,8 @@ scheduler.showLightbox = function(id) {
 
     // Neu event la readonly thi disable cac control
     if (ev.ReadOnly) {
-        $("#btnSave").parent().hide();
-        $("#delete-form-roster").parent().hide();
-    } else {
-        $("#btnSave").parent().show();
+        $("[id$=divSave], [id$=divUpdate]").hide();
+        $("[id$=divDelete]").hide();
     }
 
     return true;

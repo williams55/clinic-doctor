@@ -257,9 +257,8 @@
                     Patient</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxComboBox ID="cboPatient" ClientInstanceName="cboPatient" runat="server" Width="165px"
-                        DropDownStyle="DropDownList" ValueField="PatientCode"
-                        TextField="LastName" ValueType="System.String" TextFormatString="{1} {2}" EnableCallbackMode="False"
-                        IncrementalFilteringMode="Contains">
+                        DropDownStyle="DropDownList" ValueField="PatientCode" TextField="LastName" ValueType="System.String"
+                        TextFormatString="{1} {2}" EnableCallbackMode="False" IncrementalFilteringMode="Contains">
                         <Columns>
                             <dx:ListBoxColumn FieldName="PatientCode" Width="80" />
                             <dx:ListBoxColumn FieldName="FirstName" Width="100" />
@@ -364,12 +363,14 @@
                 </div>
             </div>
         </div>
-        <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set">
+        <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" id="divSave" runat="server">
             <div dhx_button="1" class="dhx_save_btn">
             </div>
-            <div title="Save roster" onclick="NewAppointment();" id="btnSave">
+            <div title="Save roster" onclick="NewAppointment();" id="btnSave" runat="server">
                 Save</div>
-            <div title="Update roster" onclick="UpdateAppointment();" id="btnUpdate">
+        </div>
+        <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" id="divUpdate" runat="server">
+            <div title="Update roster" onclick="UpdateAppointment();" id="btnUpdate" runat="server">
                 Update</div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_cancel_btn_set">
@@ -378,7 +379,8 @@
             <div title="Cancel editing" onclick="CancelAppointment();">
                 Cancel</div>
         </div>
-        <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;">
+        <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;"
+            id="divDelete" runat="server">
             <div dhx_button="1" class="dhx_delete_btn">
             </div>
             <div title="Delete current roster" id="delete-form-roster" onclick="DeleteAppointment();">
