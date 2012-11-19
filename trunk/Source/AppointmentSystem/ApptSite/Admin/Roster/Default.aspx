@@ -240,12 +240,14 @@
                 </div>
             </div>
         </div>
-        <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set">
+        <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" id="divSave" runat="server">
             <div dhx_button="1" class="dhx_save_btn">
             </div>
-            <div title="Save roster" onclick="NewRoster();" id="btnSave">
+            <div title="Save roster" onclick="NewRoster();" id="btnSave" runat="server">
                 Save</div>
-            <div title="Update roster" onclick="UpdateRoster();" id="btnUpdate">
+        </div>
+        <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" id="divUpdate" runat="server">
+            <div title="Update roster" onclick="UpdateRoster();" id="btnUpdate" runat="server">
                 Update</div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_cancel_btn_set">
@@ -254,7 +256,7 @@
             <div title="Cancel editing" onclick="CancelRoster();">
                 Cancel</div>
         </div>
-        <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;">
+        <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;" id="divDelete" runat="server">
             <div dhx_button="1" class="dhx_delete_btn">
             </div>
             <div title="Delete current roster" id="delete-form-roster" onclick="DeleteRoster();">

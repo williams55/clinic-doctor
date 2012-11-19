@@ -50,6 +50,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             changeUser.Visible = CheckCreating(out _message) || CheckUpdating(out _message);
             createUser.Visible = CheckCreating(out _message) || CheckUpdating(out _message);
 
+            // Validate quyen cua user de hien thi cac nut
+            divDelete.Visible = CheckDeleting(out _message);
+            divSave.Visible = CheckCreating(out _message);
+            divUpdate.Visible = CheckUpdating(out _message);
+
             // Bind data cho patient
             int count;
             var lstPatients = DataRepository.VcsPatientProvider.GetPaged("IsDisabled = 'False'", string.Empty,
@@ -78,7 +83,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             if (e.Parameter == "Refresh")
             {
                 // Validate current user have any right to get room list
-                if (!CheckCreating(out _message) && !CheckUpdating(out _message))
+                if (!CheckReading(out _message))
                 {
                     //return WebCommon.BuildFailedResult("You have no right to get room");
                     return;
@@ -175,7 +180,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             if (e.Parameter == "Refresh")
             {
                 // Validate current user have any right to get room list
-                if (!CheckCreating(out _message) && !CheckUpdating(out _message))
+                if (!CheckReading(out _message))
                 {
                     //return WebCommon.BuildFailedResult("You have no right to get room");
                     return;
@@ -514,7 +519,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             // Validate patient's fields
             if (!WebCommon.ValidateEmpty("Patient Code", patient, out _message))
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.BuildFailedResult("Please select appointment first.");
             }
 
             if (!BoFactory.PatientBO.UpdateRemark(patient, remark, Username, ref _message))

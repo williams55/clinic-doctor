@@ -37,6 +37,11 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 ClientScript.RegisterStartupScript(GetType(), "MainScript", @"<script src=""GRNEditt.js"" type=""text/javascript""></script>");
             }
 
+            // Validate quyen cua user de hien thi cac nut
+            divDelete.Visible = CheckDeleting(out _message);
+            divSave.Visible = CheckCreating(out _message);
+            divUpdate.Visible = CheckUpdating(out _message);
+
             BindStatus();
         }
         catch (Exception ex)

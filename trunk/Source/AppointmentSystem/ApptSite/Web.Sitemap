@@ -1,22 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
 
-  <siteMapNode title="Admin" roles="Admin,Doctor,Manager">
+	<siteMapNode title="Admin" roles="Admin,Doctor,Manager">
 
-    <siteMapNode title="Appointment" url="~/Admin/Appointment" roles="Admin,Manager" />
-    <siteMapNode title="Roster" url="~/Admin/Roster" roles="Admin,Manager,Doctor" />
-    <siteMapNode title="Administration" roles="*">
-      <siteMapNode title="Patient" url="~/Admin/Patient" roles="Admin,Manager" description="Status" />
-      <siteMapNode title="User" url="~/Admin/Users/EditUser.aspx" roles="Admin,Manager" description="Status" />
-      <siteMapNode title="User Group" url="~/Admin/Users/UserGroup.aspx" roles="Admin,Manager" description="Status" />
-      <siteMapNode title="Role" url="~/Admin/Role" roles="Admin,Manager" />
-      <siteMapNode title="Service" url="~/Admin/Services" roles="Admin,Manager" />
-      <siteMapNode title="Room" url="~/Admin/Room" roles="Admin,Manager" />
-    </siteMapNode>
-    <siteMapNode title="Others" roles="*">
-      <siteMapNode title="Status" url="~/Admin/Status" roles="Admin,Manager" description="Status" />
-      <siteMapNode title="Settings" url="~/Admin/Setting" roles="Admin,Manager" />
-    </siteMapNode>
+		<siteMapNode title="Appointment" url="~/Admin/Appointment" roles="Admin,Manager" />
+		<siteMapNode title="Roster" url="~/Admin/Roster" roles="Admin,Manager,Doctor" />
+		<siteMapNode title="Administration" roles="*">
+			<siteMapNode title="Patient" url="~/Admin/Patient" roles="Admin,Manager" description="Status" />
+			<siteMapNode title="User" url="~/Admin/Users/EditUser.aspx" roles="Admin,Manager" description="Status" />
+			<siteMapNode title="User Group" url="~/Admin/Users/UserGroup.aspx" roles="Admin,Manager" description="Status" />
+			<siteMapNode title="Role" url="~/Admin/Role" roles="Admin,Manager" />
+			<siteMapNode title="Service" url="~/Admin/Services" roles="Admin,Manager" />
+			<siteMapNode title="Room" url="~/Admin/Room" roles="Admin,Manager" />
+			<siteMapNode title="Status" url="~/Admin/Status" roles="Admin,Manager" description="Status" />
+			<siteMapNode title="Settings" url="~/Admin/Setting" roles="Admin,Manager" />
+		</siteMapNode>
 
-  </siteMapNode>
+	</siteMapNode>
 </siteMap>
