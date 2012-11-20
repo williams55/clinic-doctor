@@ -1,3 +1,4 @@
+
 SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
@@ -12,9 +13,11 @@ GO
 -- =============================================
 CREATE PROCEDURE [dbo].[_Appointment_UpdateStatus]
 	-- Add the parameters for the stored procedure here
-	@Id nvarchar(20), 
+	@PatientCode nchar(11), 
 	@StatusId nvarchar(20), 
 	@UpdateUser nvarchar(200), 
+	@Result INT OUT, 
+	@Id nvarchar(20) OUT, 
 	@Note nvarchar(500) OUT
 AS
 BEGIN
@@ -22,19 +25,32 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 	
-	SELECT @Note = Note
+	DECLARE @dt DATETIME
+	SET @dt = GETDATE()
+	SET @dt = CAST(CAST(YEAR(@dt) AS varchar) + '-' 
+		+ CAST(MONTH(@dt) AS varchar) + '-' 
+		+ CAST(DAY(@dt) AS varchar)
+		+ ' 23:59:59' AS DATETIME)
+	
+	-- Lay thong tin dua vao patient code
+	-- Lay appt dau tien thoa dieu kien thoi gian hien tai nho hon thoi gian ket thuc cua appt
+	SELECT	TOP 1
+			@Note = Note
+			,@Id = Id
 	FROM	dbo.Appointment
-	WHERE	Id = @Id
+	WHERE	PatientCode = @PatientCode
 	AND		IsDisabled = 'False'
+	AND		EndTime >= GETDATE()
+	AND		EndTime < @dt -- Thoi gian khong vuot qua ngay hien tai
+	ORDER BY EndTime
 
-    -- Insert statements for procedure here
+	-- Tien hanh cap nhat status
 	UPDATE	dbo.Appointment
 	SET		StatusId = @StatusId
 			,UpdateUser = @UpdateUser
 			,UpdateDate = GETDATE()
 	WHERE	Id = @Id
-	AND		IsDisabled = 'False'
 	
-	RETURN @@ROWCOUNT
+	SET @Result = @@ROWCOUNT
 END
 GO
