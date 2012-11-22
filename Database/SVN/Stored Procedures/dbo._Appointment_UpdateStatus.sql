@@ -13,6 +13,7 @@ GO
 -- =============================================
 CREATE PROCEDURE [dbo].[_Appointment_UpdateStatus]
 	-- Add the parameters for the stored procedure here
+	@OldId nvarchar(20) = NULL, 
 	@PatientCode nchar(11), 
 	@StatusId nvarchar(20), 
 	@UpdateUser nvarchar(200), 
@@ -32,18 +33,26 @@ BEGIN
 		+ CAST(DAY(@dt) AS varchar)
 		+ ' 23:59:59' AS DATETIME)
 	
-	-- Lay thong tin dua vao patient code
-	-- Lay appt dau tien thoa dieu kien thoi gian hien tai 
-	-- chenh lech 15mins so voi thoi gian bat dau/ket thuc
-	SELECT	TOP 1
-			@Note = Note
-			,@Id = Id
-	FROM	dbo.Appointment
-	WHERE	PatientCode = @PatientCode
-	AND		IsDisabled = 'False'
-	AND		DATEADD(minute, 15, EndTime) >= GETDATE()
-	AND		DATEADD(minute, -15, StartTime) <= GETDATE()
-	ORDER BY EndTime
+	-- Neu co truyen vao Id thi ko can tim
+	IF @OldId IS NULL
+	BEGIN
+		-- Lay thong tin dua vao patient code
+		-- Lay appt dau tien thoa dieu kien thoi gian hien tai 
+		-- chenh lech 15mins so voi thoi gian bat dau/ket thuc
+		SELECT	TOP 1
+				@Note = Note
+				,@Id = Id
+		FROM	dbo.Appointment
+		WHERE	PatientCode = @PatientCode
+		AND		IsDisabled = 'False'
+		AND		DATEADD(minute, 15, EndTime) >= GETDATE()
+		AND		DATEADD(minute, -15, StartTime) <= GETDATE()
+		ORDER BY EndTime
+	END
+	ELSE
+	BEGIN
+		SET @Id = @OldId
+	END
 
 	-- Tien hanh cap nhat status
 	UPDATE	dbo.Appointment
