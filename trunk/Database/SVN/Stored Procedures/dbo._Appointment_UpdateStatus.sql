@@ -33,15 +33,16 @@ BEGIN
 		+ ' 23:59:59' AS DATETIME)
 	
 	-- Lay thong tin dua vao patient code
-	-- Lay appt dau tien thoa dieu kien thoi gian hien tai nho hon thoi gian ket thuc cua appt
+	-- Lay appt dau tien thoa dieu kien thoi gian hien tai 
+	-- chenh lech 15mins so voi thoi gian bat dau/ket thuc
 	SELECT	TOP 1
 			@Note = Note
 			,@Id = Id
 	FROM	dbo.Appointment
 	WHERE	PatientCode = @PatientCode
 	AND		IsDisabled = 'False'
-	AND		EndTime >= GETDATE()
-	AND		EndTime < @dt -- Thoi gian khong vuot qua ngay hien tai
+	AND		DATEADD(minute, 15, EndTime) >= GETDATE()
+	AND		DATEADD(minute, -15, StartTime) <= GETDATE()
 	ORDER BY EndTime
 
 	-- Tien hanh cap nhat status
