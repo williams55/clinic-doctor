@@ -214,11 +214,14 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     return;
                 }
 
-                int count;
+                var appt = DataRepository.AppointmentProvider.GetById(hdId.Value);
+                if (appt == null || appt.IsDisabled)
+                {
+                    return;
+                }
+
                 gridHistory.DataSource =
-                   DataRepository.AppointmentHistoryProvider.GetPaged(
-                       String.Format("AppointmentId = '{0}'", hdId.Value), string.Empty, 0,
-                       ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                   GlobalUtilities.ReadLog(BoFactory.AppointmentBO.BuildApptHistory(appt), DataRepository.Provider.ExecuteDataSet);
                 gridHistory.DataBind();
             }
         }

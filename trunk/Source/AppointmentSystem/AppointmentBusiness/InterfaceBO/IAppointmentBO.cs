@@ -39,5 +39,12 @@ namespace AppointmentBusiness.BO
         /// <param name="message"></param>
         /// <returns></returns>
         TList<Appointment> GetByDateMode(DateTime? date, string mode, out string message);
+
+        /// <summary>
+        /// Build 1 appointment thanh 1 doi tuong de luu history
+        /// </summary>
+        /// <param name="appt"></param>
+        /// <returns></returns>
+        object BuildApptHistory(Appointment appt);
     }
 }

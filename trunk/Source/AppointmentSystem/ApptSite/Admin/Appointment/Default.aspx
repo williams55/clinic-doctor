@@ -341,15 +341,21 @@
                                 </CellStyle>
                                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 <EditFormSettings Visible="False" />
+                                <Settings AllowSort="False"></Settings>
                             </dx:GridViewDataColumn>
-                            <dx:GridViewDataDateColumn FieldName="CreateDate" Width="130" Caption="Time">
+                            <dx:GridViewDataDateColumn FieldName="UpdateDate" Width="140" Caption="Time">
                                 <PropertiesDateEdit DisplayFormatString="MM/dd/yyyy HH:mm:ss" EditFormat="Custom"
                                     EditFormatString="MM/dd/yyyy HH:mm:ss" EnableAnimation="False" Width="100%">
                                 </PropertiesDateEdit>
                                 <Settings AutoFilterCondition="GreaterOrEqual" />
+                                <Settings AllowSort="False"></Settings>
                             </dx:GridViewDataDateColumn>
-                            <dx:GridViewDataColumn FieldName="CreateUser" Caption="User" Width="80" />
-                            <dx:GridViewDataColumn FieldName="Note" />
+                            <dx:GridViewDataColumn FieldName="UpdateUser" Caption="User" Width="80">
+                                <Settings AllowSort="False"></Settings>
+                            </dx:GridViewDataColumn>
+                            <dx:GridViewDataColumn FieldName="LogMessage">
+                                <Settings AllowSort="False"></Settings>
+                            </dx:GridViewDataColumn>
                         </Columns>
                         <Styles>
                             <AlternatingRow Enabled="true" />
@@ -403,7 +409,7 @@
                         CssClass="text-form" ClientInstanceName="txtPatientCode">
                     </dx:ASPxTextBox>
                 </div>
-                <div class="dhx_cal_lsection" style="float: left; width: 100px;">
+                <div class="dhx_cal_lsection" style="float: left; width: 120px;">
                     Sex</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxRadioButton runat="server" Text="Male" ID="radMale" GroupName="radSex" Layout="Flow"
@@ -426,11 +432,11 @@
                         </ValidationSettings>
                     </dx:ASPxTextBox>
                 </div>
-                <div class="dhx_cal_lsection" style="float: left; width: 100px;">
+                <div class="dhx_cal_lsection" style="float: left; width: 120px;">
                     Middle Name</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxTextBox runat="server" ID="txtMiddleName" Text="" CssClass="text-form" MaxLength="50"
-                        Width="165px" ClientInstanceName="txtMiddleName">
+                        Width="145px" ClientInstanceName="txtMiddleName">
                     </dx:ASPxTextBox>
                 </div>
                 <div class="clear">
@@ -448,11 +454,11 @@
                         </ValidationSettings>
                     </dx:ASPxTextBox>
                 </div>
-                <div class="dhx_cal_lsection required" style="float: left; width: 100px;">
+                <div class="dhx_cal_lsection required" style="float: left; width: 120px;">
                     DOB (MM/dd/yyyy)</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxDateEdit ID="txtDob" ClientInstanceName="txtDob" runat="server" EditFormatString="MM/dd/yyyy"
-                        DisplayFormatString="MM/dd/yyyy" Width="165px">
+                        DisplayFormatString="MM/dd/yyyy" Width="145px">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="DOB is required" />
@@ -476,10 +482,10 @@
                         </ValidationSettings>
                     </dx:ASPxComboBox>
                 </div>
-                <div class="dhx_cal_lsection" style="float: left; width: 100px;">
+                <div class="dhx_cal_lsection" style="float: left; width: 120px;">
                     Company</div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxComboBox ID="cboCompany" ClientInstanceName="cboCompany" runat="server" Width="165px"
+                    <dx:ASPxComboBox ID="cboCompany" ClientInstanceName="cboCompany" runat="server" Width="145px"
                         DropDownStyle="DropDownList" DropDownWidth="300px" DataSourceID="CompanyDataSource"
                         ValueField="CompanyCode" TextField="CompanyName" ValueType="System.String" TextFormatString="{1}"
                         EnableCallbackMode="False" IncrementalFilteringMode="StartsWith">
@@ -500,11 +506,11 @@
                         Width="165px" ClientInstanceName="txtMobilePhone">
                     </dx:ASPxTextBox>
                 </div>
-                <div class="dhx_cal_lsection" style="float: left; width: 100px;">
+                <div class="dhx_cal_lsection" style="float: left; width: 120px;">
                     Home Phone</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxTextBox runat="server" ID="txtHomePhone" Text="" CssClass="text-form" MaxLength="50"
-                        Width="165px" ClientInstanceName="txtHomePhone">
+                        Width="145px" ClientInstanceName="txtHomePhone">
                     </dx:ASPxTextBox>
                 </div>
                 <div class="clear">

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Xml.Serialization;
 using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
@@ -45,15 +47,39 @@ namespace AppointmentBusiness.BO
                     message = "There is no appointment to update.";
                     return false;
                 }
+                
+                var comparedAppt = oldAppt.Copy();
 
                 // Gan gia tri moi
+                // Ghi log moi khi thay doi gia tri
                 oldAppt.PatientCode = appointment.PatientCode;
+                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
+                comparedAppt.PatientCode = appointment.PatientCode;
+
                 oldAppt.Username = appointment.Username;
+                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
+                comparedAppt.Username = appointment.Username;
+
                 oldAppt.RoomId = appointment.RoomId;
+                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
+                comparedAppt.RoomId = appointment.RoomId;
+
                 oldAppt.StatusId = appointment.StatusId;
+                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
+                comparedAppt.StatusId = appointment.StatusId;
+
                 oldAppt.StartTime = appointment.StartTime;
+                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
+                comparedAppt.StartTime = appointment.StartTime;
+
                 oldAppt.EndTime = appointment.EndTime;
+                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
+                comparedAppt.EndTime = appointment.EndTime;
+
                 oldAppt.Note = appointment.Note;
+                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
+                comparedAppt.Note = appointment.Note;
+
                 oldAppt.UpdateUser = appointment.UpdateUser;
 
                 DataRepository.AppointmentProvider.Update(oldAppt);
@@ -112,6 +138,35 @@ namespace AppointmentBusiness.BO
             }
         StepResult:
             return new TList<Appointment>();
+        }
+
+        public object BuildApptHistory(Appointment appt)
+        {
+            try
+            {
+                //var patient = DataRepository.VcsPatientProvider.GetByPatientCode(appt.PatientCode);
+                var room = DataRepository.RoomProvider.GetById(Convert.ToInt32(appt.RoomId));
+                var service = DataRepository.ServicesProvider.GetById(Convert.ToInt32(appt.ServicesId));
+
+                if (room != null && service != null)
+                    return new AppointmentLog
+                    {
+                        Id = appt.Id,
+                        PatientCode = appt.PatientCode,
+                        Username = appt.Username,
+                        Room = room.Title,
+                        Service = service.Title,
+                        Status = appt.StatusId,
+                        StartTime = Convert.ToDateTime(appt.StartTime),
+                        EndTime = Convert.ToDateTime(appt.EndTime),
+                        Note = appt.Note,
+                    };
+            }
+            catch (Exception ex)
+            {
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            }
+            return null;
         }
 
         public void InsertHistory(Appointment appointment, string username, string fromStatus, string toStatus)
@@ -350,7 +405,7 @@ namespace AppointmentBusiness.BO
                 string strBody = isUpdate ? "You have a new change for appointment" : "You have a new appointment";
                 string strSummary = string.Empty;
                 string strDescription = string.Empty;
-                string strLocation = appointment.RoomId == null? " - " :
+                string strLocation = appointment.RoomId == null ? " - " :
                     String.Format("Room {0}", appointment.RoomIdSource.Title);
                 string strAlarmSummary = String.Format("{0} minutes left for appointment with {1} {2}",
                     ServiceFacade.SettingsHelper.TimeLeftRemindAppointment
@@ -369,5 +424,42 @@ namespace AppointmentBusiness.BO
             return false;
         }
         #endregion
+    }
+
+    class AppointmentLog
+    {
+        [BrowsableAttribute(false), XmlIgnore()]
+        public string TableName
+        {
+            get { return "Appointment"; }
+        }
+
+        [BrowsableAttribute(false), XmlIgnore()]
+        public string[] TableColumns
+        {
+            get
+            {
+                return new[] { "Id", "PatientCode", "Username", "Room", "Service", "Status", "Note", "StartTime", "EndTime" };
+            }
+        }
+
+        [Description("Id"), DataObjectFieldAttribute(true, true, false)]
+        public string Id { get; set; }
+        [Description("Patient Code")]
+        public string PatientCode { get; set; }
+        [Description("Doctor")]
+        public string Username { get; set; }
+        [Description("Room")]
+        public string Room { get; set; }
+        [Description("Service")]
+        public string Service { get; set; }
+        [Description("Status")]
+        public string Status { get; set; }
+        [Description("Start Time")]
+        public DateTime StartTime { get; set; }
+        [Description("End Time")]
+        public DateTime EndTime { get; set; }
+        [Description("Note")]
+        public string Note { get; set; }
     }
 }
