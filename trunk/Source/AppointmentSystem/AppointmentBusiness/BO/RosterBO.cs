@@ -73,7 +73,8 @@ namespace AppointmentBusiness.BO
                                 Id = roster.Id,
                                 RepeatId = repeatRosterId,
                                 Username = roster.Username,
-                                RosterTypeId = roster.RosterTypeId,
+                                //RosterTypeId = roster.RosterTypeId,
+                                RosterTypeId = ServiceFacade.SettingsHelper.DefaultRosterType,
                                 StartTime = new DateTime(startDate.Year, startDate.Month, startDate.Day, startTime.Hour, startTime.Minute, 0),
                                 EndTime = new DateTime(startDate.Year, startDate.Month, startDate.Day, endTime.Hour, endTime.Minute, 0),
                                 Note = roster.Note,
@@ -129,7 +130,8 @@ namespace AppointmentBusiness.BO
 
                 // Gan gia tri moi
                 oldRoster.Username = roster.Username;
-                oldRoster.RosterTypeId = roster.RosterTypeId;
+                //oldRoster.RosterTypeId = roster.RosterTypeId;
+                oldRoster.RosterTypeId = ServiceFacade.SettingsHelper.DefaultRosterType;
                 oldRoster.StartTime = roster.StartTime;
                 oldRoster.EndTime = roster.EndTime;
                 oldRoster.Note = roster.Note;

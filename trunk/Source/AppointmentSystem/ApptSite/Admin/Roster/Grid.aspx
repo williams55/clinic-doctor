@@ -60,7 +60,7 @@
                         <PropertiesComboBox TextField="DisplayName" ValueField="Username" DataSourceID="UsersDataSource">
                         </PropertiesComboBox>
                     </dx:GridViewDataComboBoxColumn>
-                    <dx:GridViewDataComboBoxColumn FieldName="RosterTypeId" Caption="Roster Type" Width="120">
+                    <dx:GridViewDataComboBoxColumn FieldName="RosterTypeId" Caption="Roster Type" Width="120" Visible="False">
                         <PropertiesComboBox TextField="Title" ValueField="Id" DataSourceID="RosterTypeDataSource">
                         </PropertiesComboBox>
                     </dx:GridViewDataComboBoxColumn>
@@ -145,27 +145,12 @@
                                                         <td style="width: 80px; padding-right: 10px;">
                                                             <dx:ASPxTimeEdit ID="fromTime" runat="server" DateTime='<%# getDate(Eval("StartTime"), false) %>'
                                                                 EditFormatString="HH:mm" DisplayFormatString="HH:mm" Width="100%">
-                                                                <ClientSideEvents ButtonClick='function(s, e) {
-                                                                    if (e.buttonIndex == -2) //increment button
-                                                                    {
-                                                                        var date = s.GetDate();
-                                                                        var minutes = date.getMinutes();
-                                                                        date.setMinutes(minutes + minuteStep);
-                                                                        s.SetDate(date);
-                                                                    }
-                                                                    else if (e.buttonIndex == -3) //down button
-                                                                    {
-                                                                        var date = s.GetDate();
-                                                                        var minutes = date.getMinutes();
-                                                                        date.setMinutes(minutes - minuteStep); 
-                                                                        s.SetDate(date);
-                                                                    }}' />
                                                             </dx:ASPxTimeEdit>
                                                         </td>
                                                         <td>
                                                             <dx:ASPxDateEdit ID="fromDate" runat="server" EditFormatString="MM/dd/yyyy" DisplayFormatString="MM/dd/yyyy"
                                                                 Date='<%# Eval("StartTime") == null? DateTime.Now : DateTime.Parse(Eval("StartTime").ToString()) %>'
-                                                                Width="100%">
+                                                                Width="150px">
                                                                 <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                                     ErrorText="Error">
                                                                     <RequiredField IsRequired="True" ErrorText="From Date is required" />
@@ -204,27 +189,12 @@
                                                         <td style="width: 80px; padding-right: 10px;">
                                                             <dx:ASPxTimeEdit ID="endTime" runat="server" DateTime='<%# getDate(Eval("EndTime"), true) %>'
                                                                 EditFormatString="HH:mm" DisplayFormatString="HH:mm" Width="100%">
-                                                                <ClientSideEvents ButtonClick='function(s, e) {
-                                                                    if (e.buttonIndex == -2) //increment button
-                                                                    {
-                                                                        var date = s.GetDate();
-                                                                        var minutes = date.getMinutes();
-                                                                        date.setMinutes(minutes + minuteStep);
-                                                                        s.SetDate(date);
-                                                                    }
-                                                                    else if (e.buttonIndex == -3) //down button
-                                                                    {
-                                                                        var date = s.GetDate();
-                                                                        var minutes = date.getMinutes();
-                                                                        date.setMinutes(minutes - minuteStep); 
-                                                                        s.SetDate(date);
-                                                                    }}' />
                                                             </dx:ASPxTimeEdit>
                                                         </td>
                                                         <td>
                                                             <dx:ASPxDateEdit ID="endDate" runat="server" EditFormatString="MM/dd/yyyy" DisplayFormatString="MM/dd/yyyy"
                                                                 Date='<%# Eval("EndTime") == null? DateTime.Now : DateTime.Parse(Eval("EndTime").ToString()) %>'
-                                                                Width="100%">
+                                                                Width="150px">
                                                                 <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                                     ErrorText="Error">
                                                                     <RequiredField IsRequired="True" ErrorText="To Date is required" />
@@ -244,7 +214,7 @@
                                                     Visible="False"></asp:HiddenField>
                                                 <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="100%"
                                                     TextField="Title" ValueField="Id" ID="cboRosterType" ValueType="System.Int32"
-                                                    Value='<%# Eval("RosterTypeId") %>'>
+                                                    Value='<%# ServiceFacade.SettingsHelper.DefaultRosterType %>' Enabled="False">
                                                     <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                         ErrorText="Error">
                                                         <RequiredField IsRequired="True" ErrorText="Roster Type is required" />
@@ -388,7 +358,7 @@
                                             <td class="content-row">
                                                 <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="100%"
                                                     TextField="Title" ValueField="Id" ID="cboRosterTypeEdit" ValueType="System.Int32"
-                                                    Value='<%# Eval("RosterTypeId") %>'>
+                                                    Value='<%# Eval("RosterTypeId") %>' Enabled="False">
                                                     <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                         ErrorText="Error">
                                                         <RequiredField IsRequired="True" ErrorText="Roster Type is required" />

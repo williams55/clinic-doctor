@@ -418,5 +418,25 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
         }
         #endregion
+
+        #region Default value
+        public int DefaultRosterType
+        {
+            get
+            {
+                int result;
+                if (!ServiceFacade.SettingsService.TryGetSetting<int>("DEFAULT_ROSTER_TYPE", out result))
+                {
+                    throw new ApplicationException("Setting DEFAULT_ROSTER_TYPE was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting<int>("DEFAULT_ROSTER_TYPE", value);
+            }
+        }
+        #endregion
     }
 }
