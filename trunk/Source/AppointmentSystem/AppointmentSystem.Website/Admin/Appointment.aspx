@@ -17,7 +17,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" ShowEditButton="True" />				
-				<data:HyperLinkField HeaderText="Username" DataNavigateUrlFormatString="UsersEdit.aspx?Username={0}" DataNavigateUrlFields="Username" DataContainer="UsernameSource" DataTextField="Title" />
+				<data:HyperLinkField HeaderText="Username" DataNavigateUrlFormatString="UsersEdit.aspx?Username={0}" DataNavigateUrlFields="Username" DataContainer="UsernameSource" DataTextField="Password" />
 				<data:HyperLinkField HeaderText="Roster Id" DataNavigateUrlFormatString="RosterEdit.aspx?Id={0}" DataNavigateUrlFields="Id" DataContainer="RosterIdSource" DataTextField="StartTime" />
 				<asp:BoundField DataField="Id" HeaderText="Id" SortExpression="[Id]" ReadOnly="True" />
 				<asp:BoundField DataField="PatientCode" HeaderText="Patient Code" SortExpression="[PatientCode]"  />

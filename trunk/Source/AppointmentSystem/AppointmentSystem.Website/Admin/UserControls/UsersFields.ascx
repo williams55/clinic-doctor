@@ -4,6 +4,12 @@
 	<ItemTemplate>
 		<table border="0" cellpadding="3" cellspacing="1">
 			<tr>
+        <td class="literal"><asp:Label ID="lbldataPassword" runat="server" Text="Password:" AssociatedControlID="dataPassword" /></td>
+        <td>
+					<asp:TextBox runat="server" ID="dataPassword" Text='<%# Bind("Password") %>'  TextMode="MultiLine"  Width="250px" Rows="5"></asp:TextBox>
+				</td>
+			</tr>
+			<tr>
         <td class="literal"><asp:Label ID="lbldataServicesId" runat="server" Text="Services Id:" AssociatedControlID="dataServicesId" /></td>
         <td>
 					<data:EntityDropDownList runat="server" ID="dataServicesId" DataSourceID="ServicesIdServicesDataSource" DataTextField="Title" DataValueField="Id" SelectedValue='<%# Bind("ServicesId") %>' AppendNullItem="true" Required="false" NullItemText="< Please Choose ...>" />

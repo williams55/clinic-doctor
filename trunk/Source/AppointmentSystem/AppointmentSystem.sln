@@ -58,7 +58,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ApptSite", "ApptSite\", "{F
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "15219"
+		VWDPort = "8983"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApptCommon", "ApptCommon\ApptCommon.csproj", "{A7AF0303-7027-41CD-A6E4-4DBE978E46D4}"

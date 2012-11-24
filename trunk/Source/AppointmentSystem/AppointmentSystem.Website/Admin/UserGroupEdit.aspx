@@ -96,6 +96,7 @@
 			>
 			<Columns>
 				<asp:CommandField ShowSelectButton="True" />
+				<asp:BoundField DataField="Password" HeaderText="Password" SortExpression="[Password]" />				
 				<asp:BoundField DataField="Title" HeaderText="Title" SortExpression="[Title]" />				
 				<asp:BoundField DataField="Firstname" HeaderText="Firstname" SortExpression="[Firstname]" />				
 				<asp:BoundField DataField="Lastname" HeaderText="Lastname" SortExpression="[Lastname]" />				
