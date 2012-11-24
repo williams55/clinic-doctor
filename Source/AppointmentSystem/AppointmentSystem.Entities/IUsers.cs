@@ -25,6 +25,11 @@ namespace AppointmentSystem.Entities
 		
 		
 		/// <summary>
+		/// Password : 
+		/// </summary>
+		System.String  Password  { get; set; }
+		
+		/// <summary>
 		/// Title : Dr, Mr, Ms...
 		/// </summary>
 		System.String  Title  { get; set; }

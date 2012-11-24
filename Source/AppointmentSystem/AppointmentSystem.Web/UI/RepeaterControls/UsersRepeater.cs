@@ -341,6 +341,15 @@ namespace AppointmentSystem.Web.UI
 			get { return _entity.Username; }
 		}
         /// <summary>
+        /// Gets the Password
+        /// </summary>
+        /// <value>The Password.</value>
+		[System.ComponentModel.Bindable(true)]
+		public System.String Password
+		{
+			get { return _entity.Password; }
+		}
+        /// <summary>
         /// Gets the Title
         /// </summary>
         /// <value>The Title.</value>

@@ -669,6 +669,77 @@ namespace AppointmentSystem.Data.Bases
 		#region Custom Methods
 		
 		
+		#region _Appointment_UpdateStatus 
+		
+		/// <summary>
+		///	This method wrap the '_Appointment_UpdateStatus' stored procedure. 
+		/// </summary>
+		/// <param name="oldId"> A <c>System.String</c> instance.</param>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="statusId"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+			/// <param name="result"> A <c>System.Int32?</c> instance.</param>
+			/// <param name="id"> A <c>System.String</c> instance.</param>
+			/// <param name="note"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void UpdateStatus(System.String oldId, System.String patientCode, System.String statusId, System.String updateUser, ref System.Int32? result, ref System.String id, ref System.String note)
+		{
+			 UpdateStatus(null, 0, int.MaxValue , oldId, patientCode, statusId, updateUser, ref result, ref id, ref note);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_Appointment_UpdateStatus' stored procedure. 
+		/// </summary>
+		/// <param name="oldId"> A <c>System.String</c> instance.</param>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="statusId"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+			/// <param name="result"> A <c>System.Int32?</c> instance.</param>
+			/// <param name="id"> A <c>System.String</c> instance.</param>
+			/// <param name="note"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void UpdateStatus(int start, int pageLength, System.String oldId, System.String patientCode, System.String statusId, System.String updateUser, ref System.Int32? result, ref System.String id, ref System.String note)
+		{
+			 UpdateStatus(null, start, pageLength , oldId, patientCode, statusId, updateUser, ref result, ref id, ref note);
+		}
+				
+		/// <summary>
+		///	This method wrap the '_Appointment_UpdateStatus' stored procedure. 
+		/// </summary>
+		/// <param name="oldId"> A <c>System.String</c> instance.</param>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="statusId"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+			/// <param name="result"> A <c>System.Int32?</c> instance.</param>
+			/// <param name="id"> A <c>System.String</c> instance.</param>
+			/// <param name="note"> A <c>System.String</c> instance.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void UpdateStatus(TransactionManager transactionManager, System.String oldId, System.String patientCode, System.String statusId, System.String updateUser, ref System.Int32? result, ref System.String id, ref System.String note)
+		{
+			 UpdateStatus(transactionManager, 0, int.MaxValue , oldId, patientCode, statusId, updateUser, ref result, ref id, ref note);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_Appointment_UpdateStatus' stored procedure. 
+		/// </summary>
+		/// <param name="oldId"> A <c>System.String</c> instance.</param>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="statusId"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+			/// <param name="result"> A <c>System.Int32?</c> instance.</param>
+			/// <param name="id"> A <c>System.String</c> instance.</param>
+			/// <param name="note"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading, the first row is 0.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public abstract void UpdateStatus(TransactionManager transactionManager, int start, int pageLength , System.String oldId, System.String patientCode, System.String statusId, System.String updateUser, ref System.Int32? result, ref System.String id, ref System.String note);
+		
+		#endregion
+		
 		#endregion
 
 		#region Helper Functions	

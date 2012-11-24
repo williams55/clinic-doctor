@@ -404,14 +404,14 @@
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
                     Patient Code</div>
-                <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxTextBox runat="server" ReadOnly="True" ID="txtPatientCode" Text="" Width="165px"
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
+                    <dx:ASPxTextBox runat="server" ReadOnly="True" ID="txtPatientCode" Text="" Width="130px"
                         CssClass="text-form" ClientInstanceName="txtPatientCode">
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection" style="float: left; width: 120px;">
                     Sex</div>
-                <div class="dhx_cal_ltext" style="float: left;">
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxRadioButton runat="server" Text="Male" ID="radMale" GroupName="radSex" Layout="Flow"
                         ClientInstanceName="radMale" />
                     <dx:ASPxRadioButton runat="server" Text="Female" ID="radFemale" GroupName="radSex"
@@ -423,9 +423,9 @@
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
                     Last Name</div>
-                <div class="dhx_cal_ltext" style="float: left;">
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtLastName" Text="" CssClass="text-form" MaxLength="50"
-                        Width="165px" ClientInstanceName="txtLastName">
+                        Width="130px" ClientInstanceName="txtLastName">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="Last Name is required" />
@@ -434,9 +434,9 @@
                 </div>
                 <div class="dhx_cal_lsection" style="float: left; width: 120px;">
                     Middle Name</div>
-                <div class="dhx_cal_ltext" style="float: left;">
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtMiddleName" Text="" CssClass="text-form" MaxLength="50"
-                        Width="145px" ClientInstanceName="txtMiddleName">
+                        Width="130px" ClientInstanceName="txtMiddleName">
                     </dx:ASPxTextBox>
                 </div>
                 <div class="clear">
@@ -445,9 +445,9 @@
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
                     First Name</div>
-                <div class="dhx_cal_ltext" style="float: left;">
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtFirstName" Text="" CssClass="text-form" MaxLength="50"
-                        Width="165px" ClientInstanceName="txtFirstName">
+                        Width="130px" ClientInstanceName="txtFirstName">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="First Name is required" />
@@ -455,10 +455,10 @@
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection required" style="float: left; width: 120px;">
-                    DOB (MM/dd/yyyy)</div>
-                <div class="dhx_cal_ltext" style="float: left;">
+                    DOB <span class="min-day">(MM/dd/yyyy)</spa></div>
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxDateEdit ID="txtDob" ClientInstanceName="txtDob" runat="server" EditFormatString="MM/dd/yyyy"
-                        DisplayFormatString="MM/dd/yyyy" Width="145px">
+                        DisplayFormatString="MM/dd/yyyy" Width="130px">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="DOB is required" />
@@ -471,9 +471,9 @@
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
                     Nationality</div>
-                <div class="dhx_cal_ltext" style="float: left;">
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxComboBox ID="cboNationality" ClientInstanceName="cboNationality" runat="server"
-                        Width="165px" DropDownStyle="DropDownList" DataSourceID="CountryDataSource" ValueField="CitizenName"
+                        Width="130px" DropDownStyle="DropDownList" DataSourceID="CountryDataSource" ValueField="CitizenName"
                         TextField="CitizenName" ValueType="System.String" EnableCallbackMode="False"
                         IncrementalFilteringMode="StartsWith">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
@@ -484,8 +484,8 @@
                 </div>
                 <div class="dhx_cal_lsection" style="float: left; width: 120px;">
                     Company</div>
-                <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxComboBox ID="cboCompany" ClientInstanceName="cboCompany" runat="server" Width="145px"
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
+                    <dx:ASPxComboBox ID="cboCompany" ClientInstanceName="cboCompany" runat="server" Width="130px"
                         DropDownStyle="DropDownList" DropDownWidth="300px" DataSourceID="CompanyDataSource"
                         ValueField="CompanyCode" TextField="CompanyName" ValueType="System.String" TextFormatString="{1}"
                         EnableCallbackMode="False" IncrementalFilteringMode="StartsWith">
@@ -499,18 +499,22 @@
                 </div>
             </div>
             <div class="dhx_form_row">
-                <div class="dhx_cal_lsection" style="float: left;">
+                <div class="dhx_cal_lsection required" style="float: left;">
                     Mobile Phone</div>
-                <div class="dhx_cal_ltext" style="float: left;">
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtMobilePhone" Text="" CssClass="text-form" MaxLength="50"
-                        Width="165px" ClientInstanceName="txtMobilePhone">
+                        Width="130px" ClientInstanceName="txtMobilePhone">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Mobile Phone is required" />
+                        </ValidationSettings>
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection" style="float: left; width: 120px;">
                     Home Phone</div>
-                <div class="dhx_cal_ltext" style="float: left;">
+                <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtHomePhone" Text="" CssClass="text-form" MaxLength="50"
-                        Width="145px" ClientInstanceName="txtHomePhone">
+                        Width="130px" ClientInstanceName="txtHomePhone">
                     </dx:ASPxTextBox>
                 </div>
                 <div class="clear">
@@ -520,7 +524,7 @@
                 <div class="dhx_cal_lsection">
                     Remark</div>
                 <div class="dhx_cal_ltext">
-                    <textarea id="txtRemark" style="width: 450px; font-family: Arial;" rows="3"></textarea>
+                    <textarea id="txtRemark" style="width: 435px; font-family: Arial;" rows="3"></textarea>
                 </div>
             </div>
         </div>
