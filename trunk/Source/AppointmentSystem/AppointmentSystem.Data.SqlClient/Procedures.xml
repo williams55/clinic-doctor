@@ -4111,6 +4111,7 @@
 				
 				SELECT
 					[Username],
+					[Password],
 					[Title],
 					[Firstname],
 					[Lastname],
@@ -4193,7 +4194,7 @@
 				SET ROWCOUNT 0
 				
 				-- Return paged results
-				SELECT O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[ServicesId], O.[IsFemale], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Username], O.[Password], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[ServicesId], O.[IsFemale], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Users] O,
 				    #PageIndex PageIndex
@@ -4228,6 +4229,7 @@
 ]]></comment>
 			<parameters>
 				<parameter name="@Username" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@Password" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@Firstname" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@Lastname" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
@@ -4250,6 +4252,7 @@
 				INSERT INTO [dbo].[Users]
 					(
 					[Username]
+					,[Password]
 					,[Title]
 					,[Firstname]
 					,[Lastname]
@@ -4270,6 +4273,7 @@
 				VALUES
 					(
 					@Username
+					,@Password
 					,@Title
 					,@Firstname
 					,@Lastname
@@ -4305,6 +4309,7 @@
 			<parameters>
 				<parameter name="@Username" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@OriginalUsername" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
+				<parameter name="@Password" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault=""/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault=""/>
 				<parameter name="@Firstname" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
 				<parameter name="@Lastname" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault=""/>
@@ -4330,6 +4335,7 @@
 					[dbo].[Users]
 				SET
 					[Username] = @Username
+					,[Password] = @Password
 					,[Title] = @Title
 					,[Firstname] = @Firstname
 					,[Lastname] = @Lastname
@@ -4388,6 +4394,7 @@
 				
 				SELECT
 					[Username],
+					[Password],
 					[Title],
 					[Firstname],
 					[Lastname],
@@ -4430,6 +4437,7 @@
 				
 				SELECT
 					[Username],
+					[Password],
 					[Title],
 					[Firstname],
 					[Lastname],
@@ -4470,6 +4478,7 @@
 			<body><![CDATA[
 				SELECT
 					[Username],
+					[Password],
 					[Title],
 					[Firstname],
 					[Lastname],
@@ -4508,6 +4517,7 @@
 			<parameters>
 				<parameter name="@SearchUsingOR" type="bit" direction="Input" size="0" precision="1" scale="0" param="" nulldefault="null"/>
 				<parameter name="@Username" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
+				<parameter name="@Password" type="nvarchar" direction="Input" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
 				<parameter name="@Title" type="nvarchar" direction="Input" size="10" precision="0" scale="0" param="(10)" nulldefault="null"/>
 				<parameter name="@Firstname" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
 				<parameter name="@Lastname" type="nvarchar" direction="Input" size="50" precision="0" scale="0" param="(50)" nulldefault="null"/>
@@ -4531,6 +4541,7 @@
   BEGIN
     SELECT
 	  [Username]
+	, [Password]
 	, [Title]
 	, [Firstname]
 	, [Lastname]
@@ -4551,6 +4562,7 @@
 	[dbo].[Users]
     WHERE 
 	 ([Username] = @Username OR @Username IS NULL)
+	AND ([Password] = @Password OR @Password IS NULL)
 	AND ([Title] = @Title OR @Title IS NULL)
 	AND ([Firstname] = @Firstname OR @Firstname IS NULL)
 	AND ([Lastname] = @Lastname OR @Lastname IS NULL)
@@ -4573,6 +4585,7 @@
   BEGIN
     SELECT
 	  [Username]
+	, [Password]
 	, [Title]
 	, [Firstname]
 	, [Lastname]
@@ -4593,6 +4606,7 @@
 	[dbo].[Users]
     WHERE 
 	 ([Username] = @Username AND @Username is not null)
+	OR ([Password] = @Password AND @Password is not null)
 	OR ([Title] = @Title AND @Title is not null)
 	OR ([Firstname] = @Firstname AND @Firstname is not null)
 	OR ([Lastname] = @Lastname AND @Lastname is not null)
@@ -4644,7 +4658,7 @@
 				ORDER BY {1}
 				
 				-- Return paged results
-				SELECT O.[Username], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[ServicesId], O.[IsFemale], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
+				SELECT O.[Username], O.[Password], O.[Title], O.[Firstname], O.[Lastname], O.[DisplayName], O.[CellPhone], O.[Email], O.[Avatar], O.[Note], O.[UserGroupId], O.[ServicesId], O.[IsFemale], O.[IsDisabled], O.[CreateUser], O.[CreateDate], O.[UpdateUser], O.[UpdateDate]
 				FROM
 				    [dbo].[Users] O,
 				    #PageIndex PageIndex
@@ -7639,6 +7653,63 @@
 			]]></body>
 		</procedure>
 		
+				
+		<procedure owner="dbo" name="_Appointment_UpdateStatus"  skip="true">
+			<comment><![CDATA[-- =============================================
+-- Author:		PhatVT
+-- Create date: Nov 20 2012
+-- Description:	Ham doi status cua appointment.
+--				Tra ve 0 neu khong co row duoc update
+--				Tra ve > 0 neu co row duoc update
+--				Out la Note, tra ve Note cua appointment
+-- =============================================
+]]></comment>
+			<parameters>
+				<parameter name="@OldId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@PatientCode" type="nchar" direction="Input" size="11" precision="0" scale="0" param="(11)" nulldefault="null"/>
+				<parameter name="@StatusId" type="nvarchar" direction="Input" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@UpdateUser" type="nvarchar" direction="Input" size="200" precision="0" scale="0" param="(200)" nulldefault="null"/>
+				<parameter name="@Result" type="int" direction="InputOutput" size="4" precision="10" scale="0" param="" nulldefault="null"/>
+				<parameter name="@Id" type="nvarchar" direction="InputOutput" size="20" precision="0" scale="0" param="(20)" nulldefault="null"/>
+				<parameter name="@Note" type="nvarchar" direction="InputOutput" size="500" precision="0" scale="0" param="(500)" nulldefault="null"/>
+			</parameters>
+			<body><![CDATA[
+				
+DATETIME)
+	
+	-- Neu co truyen vao Id thi ko can tim
+	IF @OldId IS NULL
+	BEGIN
+		-- Lay thong tin dua vao patient code
+		-- Lay appt dau tien thoa dieu kien thoi gian hien tai 
+		-- chenh lech 15mins so voi thoi gian bat dau/ket thuc
+		SELECT	TOP 1
+				@Note = Note
+				,@Id = Id
+		FROM	dbo.Appointment
+		WHERE	PatientCode = @PatientCode
+		AND		IsDisabled = 'False'
+		AND		DATEADD(minute, 15, EndTime) >= GETDATE()
+		AND		DATEADD(minute, -15, StartTime) <= GETDATE()
+		ORDER BY EndTime
+	END
+	ELSE
+	BEGIN
+		SET @Id = @OldId
+	END
+
+	-- Tien hanh cap nhat status
+	UPDATE	dbo.Appointment
+	SET		StatusId = @StatusId
+			,UpdateUser = @UpdateUser
+			,UpdateDate = GETDATE()
+	WHERE	Id = @Id
+	
+	SET @Result = @@ROWCOUNT
+END
+
+			]]></body>
+					</procedure>
 		
 		<procedure owner="dbo" name="Patient_Get_List" >
 			<comment><![CDATA[/*

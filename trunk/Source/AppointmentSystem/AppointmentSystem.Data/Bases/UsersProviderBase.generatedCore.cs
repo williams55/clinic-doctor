@@ -391,6 +391,7 @@ namespace AppointmentSystem.Data.Bases
 					c.SuppressEntityEvents = true;
 					c.Username = (System.String)reader[((int)UsersColumn.Username - 1)];
 					c.OriginalUsername = c.Username;
+					c.Password = (reader.IsDBNull(((int)UsersColumn.Password - 1)))?null:(System.String)reader[((int)UsersColumn.Password - 1)];
 					c.Title = (reader.IsDBNull(((int)UsersColumn.Title - 1)))?null:(System.String)reader[((int)UsersColumn.Title - 1)];
 					c.Firstname = (reader.IsDBNull(((int)UsersColumn.Firstname - 1)))?null:(System.String)reader[((int)UsersColumn.Firstname - 1)];
 					c.Lastname = (reader.IsDBNull(((int)UsersColumn.Lastname - 1)))?null:(System.String)reader[((int)UsersColumn.Lastname - 1)];
@@ -426,6 +427,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Username = (System.String)reader[((int)UsersColumn.Username - 1)];
 			entity.OriginalUsername = (System.String)reader["Username"];
+			entity.Password = (reader.IsDBNull(((int)UsersColumn.Password - 1)))?null:(System.String)reader[((int)UsersColumn.Password - 1)];
 			entity.Title = (reader.IsDBNull(((int)UsersColumn.Title - 1)))?null:(System.String)reader[((int)UsersColumn.Title - 1)];
 			entity.Firstname = (reader.IsDBNull(((int)UsersColumn.Firstname - 1)))?null:(System.String)reader[((int)UsersColumn.Firstname - 1)];
 			entity.Lastname = (reader.IsDBNull(((int)UsersColumn.Lastname - 1)))?null:(System.String)reader[((int)UsersColumn.Lastname - 1)];
@@ -456,6 +458,7 @@ namespace AppointmentSystem.Data.Bases
 			
 			entity.Username = (System.String)dataRow["Username"];
 			entity.OriginalUsername = (System.String)dataRow["Username"];
+			entity.Password = Convert.IsDBNull(dataRow["Password"]) ? null : (System.String)dataRow["Password"];
 			entity.Title = Convert.IsDBNull(dataRow["Title"]) ? null : (System.String)dataRow["Title"];
 			entity.Firstname = Convert.IsDBNull(dataRow["Firstname"]) ? null : (System.String)dataRow["Firstname"];
 			entity.Lastname = Convert.IsDBNull(dataRow["Lastname"]) ? null : (System.String)dataRow["Lastname"];

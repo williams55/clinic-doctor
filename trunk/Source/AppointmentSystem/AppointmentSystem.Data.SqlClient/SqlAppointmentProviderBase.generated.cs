@@ -1340,6 +1340,60 @@ namespace AppointmentSystem.Data.SqlClient
 		
 		#region Custom Methods
 	
+
+		#region _Appointment_UpdateStatus
+					
+		/// <summary>
+		///	This method wraps the '_Appointment_UpdateStatus' stored procedure. 
+		/// </summary>	
+		/// <param name="oldId"> A <c>System.String</c> instance.</param>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="statusId"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+			/// <param name="result"> A <c>System.Int32?</c> instance.</param>
+			/// <param name="id"> A <c>System.String</c> instance.</param>
+			/// <param name="note"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object.</param>
+		/// <remark>This method is generated from a stored procedure.</remark>
+		public override void UpdateStatus(TransactionManager transactionManager, int start, int pageLength , System.String oldId, System.String patientCode, System.String statusId, System.String updateUser, ref System.Int32? result, ref System.String id, ref System.String note)
+		{
+			SqlDatabase database = new SqlDatabase(this._connectionString);
+			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._Appointment_UpdateStatus", true);
+			
+			database.AddInParameter(commandWrapper, "@OldId", DbType.String,  oldId );
+			database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength,  patientCode );
+			database.AddInParameter(commandWrapper, "@StatusId", DbType.String,  statusId );
+			database.AddInParameter(commandWrapper, "@UpdateUser", DbType.String,  updateUser );
+	
+			database.AddParameter(commandWrapper, "@Result", DbType.Int32, 4, ParameterDirection.InputOutput, true, 10, 0, string.Empty, DataRowVersion.Current, result);
+			database.AddParameter(commandWrapper, "@Id", DbType.String, 20, ParameterDirection.InputOutput, true, 0, 0, string.Empty, DataRowVersion.Current, id);
+			database.AddParameter(commandWrapper, "@Note", DbType.String, 500, ParameterDirection.InputOutput, true, 0, 0, string.Empty, DataRowVersion.Current, note);
+			
+			//Provider Data Requesting Command Event
+			OnDataRequesting(new CommandEventArgs(commandWrapper, "UpdateStatus", (IEntity)null));
+
+			if (transactionManager != null)
+			{	
+				Utility.ExecuteNonQuery(transactionManager, commandWrapper );
+			}
+			else
+			{
+				Utility.ExecuteNonQuery(database, commandWrapper);
+			}
+						
+			//Provider Data Requested Command Event
+			OnDataRequested(new CommandEventArgs(commandWrapper, "UpdateStatus", (IEntity)null));
+
+			result =  Utility.GetParameterValue<System.Int32?>(commandWrapper.Parameters["@Result"]);
+			id =  Utility.GetParameterValue<System.String>(commandWrapper.Parameters["@Id"]);
+			note =  Utility.GetParameterValue<System.String>(commandWrapper.Parameters["@Note"]);
+
+				
+				return;
+		}
+		#endregion
 		#endregion
 	}//end class
 } // end namespace

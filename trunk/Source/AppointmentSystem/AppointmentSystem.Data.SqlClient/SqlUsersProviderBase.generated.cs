@@ -177,6 +177,7 @@ namespace AppointmentSystem.Data.SqlClient
 		database.AddInParameter(commandWrapper, "@SearchUsingOR", DbType.Boolean, searchUsingOR);
 		
 		database.AddInParameter(commandWrapper, "@Username", DbType.String, DBNull.Value);
+		database.AddInParameter(commandWrapper, "@Password", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Title", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Firstname", DbType.String, DBNull.Value);
 		database.AddInParameter(commandWrapper, "@Lastname", DbType.String, DBNull.Value);
@@ -210,6 +211,12 @@ namespace AppointmentSystem.Data.SqlClient
 				if (clause.Trim().StartsWith("username ") || clause.Trim().StartsWith("username="))
 				{
 					database.SetParameterValue(commandWrapper, "@Username", 
+						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
+					continue;
+				}
+				if (clause.Trim().StartsWith("password ") || clause.Trim().StartsWith("password="))
+				{
+					database.SetParameterValue(commandWrapper, "@Password", 
 						clause.Trim().Remove(0,8).Trim().TrimStart(equalSign).Trim().Trim(singleQuote));
 					continue;
 				}
@@ -824,40 +831,43 @@ namespace AppointmentSystem.Data.SqlClient
 			DataTable dataTable = new DataTable();
 			DataColumn col0 = dataTable.Columns.Add("Username", typeof(System.String));
 			col0.AllowDBNull = false;		
-			DataColumn col1 = dataTable.Columns.Add("Title", typeof(System.String));
+			DataColumn col1 = dataTable.Columns.Add("Password", typeof(System.String));
 			col1.AllowDBNull = true;		
-			DataColumn col2 = dataTable.Columns.Add("Firstname", typeof(System.String));
+			DataColumn col2 = dataTable.Columns.Add("Title", typeof(System.String));
 			col2.AllowDBNull = true;		
-			DataColumn col3 = dataTable.Columns.Add("Lastname", typeof(System.String));
+			DataColumn col3 = dataTable.Columns.Add("Firstname", typeof(System.String));
 			col3.AllowDBNull = true;		
-			DataColumn col4 = dataTable.Columns.Add("DisplayName", typeof(System.String));
-			col4.AllowDBNull = false;		
-			DataColumn col5 = dataTable.Columns.Add("CellPhone", typeof(System.String));
-			col5.AllowDBNull = true;		
-			DataColumn col6 = dataTable.Columns.Add("Email", typeof(System.String));
+			DataColumn col4 = dataTable.Columns.Add("Lastname", typeof(System.String));
+			col4.AllowDBNull = true;		
+			DataColumn col5 = dataTable.Columns.Add("DisplayName", typeof(System.String));
+			col5.AllowDBNull = false;		
+			DataColumn col6 = dataTable.Columns.Add("CellPhone", typeof(System.String));
 			col6.AllowDBNull = true;		
-			DataColumn col7 = dataTable.Columns.Add("Avatar", typeof(System.String));
+			DataColumn col7 = dataTable.Columns.Add("Email", typeof(System.String));
 			col7.AllowDBNull = true;		
-			DataColumn col8 = dataTable.Columns.Add("Note", typeof(System.String));
+			DataColumn col8 = dataTable.Columns.Add("Avatar", typeof(System.String));
 			col8.AllowDBNull = true;		
-			DataColumn col9 = dataTable.Columns.Add("UserGroupId", typeof(System.String));
-			col9.AllowDBNull = false;		
-			DataColumn col10 = dataTable.Columns.Add("ServicesId", typeof(System.Int32));
-			col10.AllowDBNull = true;		
-			DataColumn col11 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
-			col11.AllowDBNull = false;		
-			DataColumn col12 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			DataColumn col9 = dataTable.Columns.Add("Note", typeof(System.String));
+			col9.AllowDBNull = true;		
+			DataColumn col10 = dataTable.Columns.Add("UserGroupId", typeof(System.String));
+			col10.AllowDBNull = false;		
+			DataColumn col11 = dataTable.Columns.Add("ServicesId", typeof(System.Int32));
+			col11.AllowDBNull = true;		
+			DataColumn col12 = dataTable.Columns.Add("IsFemale", typeof(System.Boolean));
 			col12.AllowDBNull = false;		
-			DataColumn col13 = dataTable.Columns.Add("CreateUser", typeof(System.String));
-			col13.AllowDBNull = true;		
-			DataColumn col14 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
-			col14.AllowDBNull = false;		
-			DataColumn col15 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
-			col15.AllowDBNull = true;		
-			DataColumn col16 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
-			col16.AllowDBNull = false;		
+			DataColumn col13 = dataTable.Columns.Add("IsDisabled", typeof(System.Boolean));
+			col13.AllowDBNull = false;		
+			DataColumn col14 = dataTable.Columns.Add("CreateUser", typeof(System.String));
+			col14.AllowDBNull = true;		
+			DataColumn col15 = dataTable.Columns.Add("CreateDate", typeof(System.DateTime));
+			col15.AllowDBNull = false;		
+			DataColumn col16 = dataTable.Columns.Add("UpdateUser", typeof(System.String));
+			col16.AllowDBNull = true;		
+			DataColumn col17 = dataTable.Columns.Add("UpdateDate", typeof(System.DateTime));
+			col17.AllowDBNull = false;		
 			
 			bulkCopy.ColumnMappings.Add("Username", "Username");
+			bulkCopy.ColumnMappings.Add("Password", "Password");
 			bulkCopy.ColumnMappings.Add("Title", "Title");
 			bulkCopy.ColumnMappings.Add("Firstname", "Firstname");
 			bulkCopy.ColumnMappings.Add("Lastname", "Lastname");
@@ -883,6 +893,9 @@ namespace AppointmentSystem.Data.SqlClient
 				DataRow row = dataTable.NewRow();
 				
 					row["Username"] = entity.Username;
+							
+				
+					row["Password"] = entity.Password;
 							
 				
 					row["Title"] = entity.Title;
@@ -968,6 +981,7 @@ namespace AppointmentSystem.Data.SqlClient
 			DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo.Users_Insert", _useStoredProcedure);
 			
 			database.AddInParameter(commandWrapper, "@Username", DbType.String, entity.Username );
+			database.AddInParameter(commandWrapper, "@Password", DbType.String, entity.Password );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Firstname", DbType.String, entity.Firstname );
 			database.AddInParameter(commandWrapper, "@Lastname", DbType.String, entity.Lastname );
@@ -1033,6 +1047,7 @@ namespace AppointmentSystem.Data.SqlClient
 			
 			database.AddInParameter(commandWrapper, "@Username", DbType.String, entity.Username );
 			database.AddInParameter(commandWrapper, "@OriginalUsername", DbType.String, entity.OriginalUsername);
+			database.AddInParameter(commandWrapper, "@Password", DbType.String, entity.Password );
 			database.AddInParameter(commandWrapper, "@Title", DbType.String, entity.Title );
 			database.AddInParameter(commandWrapper, "@Firstname", DbType.String, entity.Firstname );
 			database.AddInParameter(commandWrapper, "@Lastname", DbType.String, entity.Lastname );

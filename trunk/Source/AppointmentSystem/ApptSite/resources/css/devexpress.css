@@ -61,3 +61,8 @@
 .unabled {
     color: gray;
 }
+
+.min-day {
+    font: 7pt Tahoma;
+    color: black;
+}

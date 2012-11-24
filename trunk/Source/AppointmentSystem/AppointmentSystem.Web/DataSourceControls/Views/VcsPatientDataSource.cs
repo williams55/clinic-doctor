@@ -160,19 +160,19 @@ namespace AppointmentSystem.Web.Data
 			// VcsPatient item;
 			count = 0;
 			
-			System.String sp4_PatientCode;
 			System.String sp1_PatientCode;
-			System.String sp1_FirstName;
-			System.String sp1_MiddleName;
-			System.String sp1_LastName;
-			System.DateTime? sp1_DateOfBirth;
-			System.String sp1_Sex;
-			System.String sp1_Nationality;
-			System.String sp1_CompanyCode;
-			System.String sp1_HomePhone;
-			System.String sp1_MobilePhone;
-			System.String sp1_CreateUser;
-			System.String sp1_ApptRemark;
+			System.String sp2_PatientCode;
+			System.String sp2_FirstName;
+			System.String sp2_MiddleName;
+			System.String sp2_LastName;
+			System.DateTime? sp2_DateOfBirth;
+			System.String sp2_Sex;
+			System.String sp2_Nationality;
+			System.String sp2_CompanyCode;
+			System.String sp2_HomePhone;
+			System.String sp2_MobilePhone;
+			System.String sp2_CreateUser;
+			System.String sp2_ApptRemark;
 
 			switch ( SelectMethod )
 			{
@@ -190,23 +190,23 @@ namespace AppointmentSystem.Web.Data
                     break;
 				// Custom
 				case VcsPatientSelectMethod.GetByPatientCode:
-					sp4_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
-					results = VcsPatientProvider.GetByPatientCode(GetTransactionManager(), StartIndex, PageSize, sp4_PatientCode);
+					sp1_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
+					results = VcsPatientProvider.GetByPatientCode(GetTransactionManager(), StartIndex, PageSize, sp1_PatientCode);
 					break;
 				case VcsPatientSelectMethod.Insert:
-					sp1_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
-					sp1_FirstName = (System.String) EntityUtil.ChangeType(values["FirstName"], typeof(System.String));
-					sp1_MiddleName = (System.String) EntityUtil.ChangeType(values["MiddleName"], typeof(System.String));
-					sp1_LastName = (System.String) EntityUtil.ChangeType(values["LastName"], typeof(System.String));
-					sp1_DateOfBirth = (System.DateTime?) EntityUtil.ChangeType(values["DateOfBirth"], typeof(System.DateTime?));
-					sp1_Sex = (System.String) EntityUtil.ChangeType(values["Sex"], typeof(System.String));
-					sp1_Nationality = (System.String) EntityUtil.ChangeType(values["Nationality"], typeof(System.String));
-					sp1_CompanyCode = (System.String) EntityUtil.ChangeType(values["CompanyCode"], typeof(System.String));
-					sp1_HomePhone = (System.String) EntityUtil.ChangeType(values["HomePhone"], typeof(System.String));
-					sp1_MobilePhone = (System.String) EntityUtil.ChangeType(values["MobilePhone"], typeof(System.String));
-					sp1_CreateUser = (System.String) EntityUtil.ChangeType(values["CreateUser"], typeof(System.String));
-					sp1_ApptRemark = (System.String) EntityUtil.ChangeType(values["ApptRemark"], typeof(System.String));
-					results = VcsPatientProvider.Insert(GetTransactionManager(), StartIndex, PageSize, sp1_PatientCode, sp1_FirstName, sp1_MiddleName, sp1_LastName, sp1_DateOfBirth, sp1_Sex, sp1_Nationality, sp1_CompanyCode, sp1_HomePhone, sp1_MobilePhone, sp1_CreateUser, sp1_ApptRemark);
+					sp2_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
+					sp2_FirstName = (System.String) EntityUtil.ChangeType(values["FirstName"], typeof(System.String));
+					sp2_MiddleName = (System.String) EntityUtil.ChangeType(values["MiddleName"], typeof(System.String));
+					sp2_LastName = (System.String) EntityUtil.ChangeType(values["LastName"], typeof(System.String));
+					sp2_DateOfBirth = (System.DateTime?) EntityUtil.ChangeType(values["DateOfBirth"], typeof(System.DateTime?));
+					sp2_Sex = (System.String) EntityUtil.ChangeType(values["Sex"], typeof(System.String));
+					sp2_Nationality = (System.String) EntityUtil.ChangeType(values["Nationality"], typeof(System.String));
+					sp2_CompanyCode = (System.String) EntityUtil.ChangeType(values["CompanyCode"], typeof(System.String));
+					sp2_HomePhone = (System.String) EntityUtil.ChangeType(values["HomePhone"], typeof(System.String));
+					sp2_MobilePhone = (System.String) EntityUtil.ChangeType(values["MobilePhone"], typeof(System.String));
+					sp2_CreateUser = (System.String) EntityUtil.ChangeType(values["CreateUser"], typeof(System.String));
+					sp2_ApptRemark = (System.String) EntityUtil.ChangeType(values["ApptRemark"], typeof(System.String));
+					results = VcsPatientProvider.Insert(GetTransactionManager(), StartIndex, PageSize, sp2_PatientCode, sp2_FirstName, sp2_MiddleName, sp2_LastName, sp2_DateOfBirth, sp2_Sex, sp2_Nationality, sp2_CompanyCode, sp2_HomePhone, sp2_MobilePhone, sp2_CreateUser, sp2_ApptRemark);
 					break;
 				default:
 					break;

@@ -82,6 +82,7 @@ namespace AppointmentSystem.Entities
 		/// Creates a new <see cref="UsersBase"/> instance.
 		///</summary>
 		///<param name="_username"></param>
+		///<param name="_password"></param>
 		///<param name="_title">Dr, Mr, Ms...</param>
 		///<param name="_firstname"></param>
 		///<param name="_lastname"></param>
@@ -98,16 +99,17 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public UsersBase(System.String _username, System.String _title, System.String _firstname, 
-			System.String _lastname, System.String _displayName, System.String _cellPhone, System.String _email, System.String _avatar, 
-			System.String _note, System.String _userGroupId, System.Int32? _servicesId, System.Boolean _isFemale, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public UsersBase(System.String _username, System.String _password, System.String _title, 
+			System.String _firstname, System.String _lastname, System.String _displayName, System.String _cellPhone, 
+			System.String _email, System.String _avatar, System.String _note, System.String _userGroupId, System.Int32? _servicesId, 
+			System.Boolean _isFemale, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			this.entityData = new UsersEntityData();
 			this.backupData = null;
 
 			this.Username = _username;
+			this.Password = _password;
 			this.Title = _title;
 			this.Firstname = _firstname;
 			this.Lastname = _lastname;
@@ -130,6 +132,7 @@ namespace AppointmentSystem.Entities
 		/// A simple factory method to create a new <see cref="Users"/> instance.
 		///</summary>
 		///<param name="_username"></param>
+		///<param name="_password"></param>
 		///<param name="_title">Dr, Mr, Ms...</param>
 		///<param name="_firstname"></param>
 		///<param name="_lastname"></param>
@@ -146,14 +149,15 @@ namespace AppointmentSystem.Entities
 		///<param name="_createDate"></param>
 		///<param name="_updateUser"></param>
 		///<param name="_updateDate"></param>
-		public static Users CreateUsers(System.String _username, System.String _title, System.String _firstname, 
-			System.String _lastname, System.String _displayName, System.String _cellPhone, System.String _email, System.String _avatar, 
-			System.String _note, System.String _userGroupId, System.Int32? _servicesId, System.Boolean _isFemale, 
-			System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, System.String _updateUser, 
-			System.DateTime _updateDate)
+		public static Users CreateUsers(System.String _username, System.String _password, System.String _title, 
+			System.String _firstname, System.String _lastname, System.String _displayName, System.String _cellPhone, 
+			System.String _email, System.String _avatar, System.String _note, System.String _userGroupId, System.Int32? _servicesId, 
+			System.Boolean _isFemale, System.Boolean _isDisabled, System.String _createUser, System.DateTime _createDate, 
+			System.String _updateUser, System.DateTime _updateDate)
 		{
 			Users newUsers = new Users();
 			newUsers.Username = _username;
+			newUsers.Password = _password;
 			newUsers.Title = _title;
 			newUsers.Firstname = _firstname;
 			newUsers.Lastname = _lastname;
@@ -229,6 +233,44 @@ namespace AppointmentSystem.Entities
 		{
 			get { return this.entityData.OriginalUsername; }
 			set { this.entityData.OriginalUsername = value; }
+		}
+		
+		/// <summary>
+		/// 	Gets or sets the Password property. 
+		///		
+		/// </summary>
+		/// <value>This type is nvarchar.</value>
+		/// <remarks>
+		/// This property can be set to null. 
+		/// </remarks>
+		
+		
+
+
+
+
+		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
+		[DataObjectField(false, false, true, 500)]
+		public virtual System.String Password
+		{
+			get
+			{
+				return this.entityData.Password; 
+			}
+			
+			set
+			{
+				if (this.entityData.Password == value)
+					return;
+				
+                OnPropertyChanging("Password");                    
+				OnColumnChanging(UsersColumn.Password, this.entityData.Password);
+				this.entityData.Password = value;
+				if (this.EntityState == EntityState.Unchanged)
+					this.EntityState = EntityState.Changed;
+				OnColumnChanged(UsersColumn.Password, this.entityData.Password);
+				OnPropertyChanged("Password");
+			}
 		}
 		
 		/// <summary>
@@ -933,6 +975,8 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Username", "Username", 50));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
+				new CommonRules.MaxLengthRuleArgs("Password", "Password", 500));
+			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Title", "Title", 10));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("Firstname", "Firstname", 50));
@@ -979,7 +1023,7 @@ namespace AppointmentSystem.Entities
 		{
 			get
 			{
-				return new string[] {"Username", "Title", "Firstname", "Lastname", "DisplayName", "CellPhone", "Email", "Avatar", "Note", "UserGroupId", "ServicesId", "IsFemale", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
+				return new string[] {"Username", "Password", "Title", "Firstname", "Lastname", "DisplayName", "CellPhone", "Email", "Avatar", "Note", "UserGroupId", "ServicesId", "IsFemale", "IsDisabled", "CreateUser", "CreateDate", "UpdateUser", "UpdateDate"};
 			}
 		}
 		#endregion 
@@ -1129,6 +1173,7 @@ namespace AppointmentSystem.Entities
 			copy.SuppressEntityEvents = true;
 				copy.Username = this.Username;
 					copy.OriginalUsername = this.OriginalUsername;
+				copy.Password = this.Password;
 				copy.Title = this.Title;
 				copy.Firstname = this.Firstname;
 				copy.Lastname = this.Lastname;
@@ -1292,6 +1337,8 @@ namespace AppointmentSystem.Entities
 			{
 					case UsersColumn.Username:
 					return entityData.Username != _originalData.Username;
+					case UsersColumn.Password:
+					return entityData.Password != _originalData.Password;
 					case UsersColumn.Title:
 					return entityData.Title != _originalData.Title;
 					case UsersColumn.Firstname:
@@ -1352,6 +1399,7 @@ namespace AppointmentSystem.Entities
 		{
 			bool result = false;
 			result = result || entityData.Username != _originalData.Username;
+			result = result || entityData.Password != _originalData.Password;
 			result = result || entityData.Title != _originalData.Title;
 			result = result || entityData.Firstname != _originalData.Firstname;
 			result = result || entityData.Lastname != _originalData.Lastname;
@@ -1379,6 +1427,7 @@ namespace AppointmentSystem.Entities
 			if (_originalData != null)
 				return CreateUsers(
 				_originalData.Username,
+				_originalData.Password,
 				_originalData.Title,
 				_originalData.Firstname,
 				_originalData.Lastname,
@@ -1425,6 +1474,7 @@ namespace AppointmentSystem.Entities
         public override int GetHashCode()
         {
 			return this.Username.GetHashCode() ^ 
+					((this.Password == null) ? string.Empty : this.Password.ToString()).GetHashCode() ^ 
 					((this.Title == null) ? string.Empty : this.Title.ToString()).GetHashCode() ^ 
 					((this.Firstname == null) ? string.Empty : this.Firstname.ToString()).GetHashCode() ^ 
 					((this.Lastname == null) ? string.Empty : this.Lastname.ToString()).GetHashCode() ^ 
@@ -1475,6 +1525,15 @@ namespace AppointmentSystem.Entities
 			bool equal = true;
 			if (Object1.Username != Object2.Username)
 				equal = false;
+			if ( Object1.Password != null && Object2.Password != null )
+			{
+				if (Object1.Password != Object2.Password)
+					equal = false;
+			}
+			else if (Object1.Password == null ^ Object2.Password == null )
+			{
+				equal = false;
+			}
 			if ( Object1.Title != null && Object2.Title != null )
 			{
 				if (Object1.Title != Object2.Title)
@@ -1623,6 +1682,12 @@ namespace AppointmentSystem.Entities
             	
             	case UsersColumn.Username:
             		return this.Username.CompareTo(rhs.Username);
+            		
+            		                 
+            	
+            	
+            	case UsersColumn.Password:
+            		return this.Password.CompareTo(rhs.Password);
             		
             		                 
             	
@@ -1855,8 +1920,9 @@ namespace AppointmentSystem.Entities
 		public override string ToString()
 		{
 			return string.Format(System.Globalization.CultureInfo.InvariantCulture,
-				"{18}{17}- Username: {0}{17}- Title: {1}{17}- Firstname: {2}{17}- Lastname: {3}{17}- DisplayName: {4}{17}- CellPhone: {5}{17}- Email: {6}{17}- Avatar: {7}{17}- Note: {8}{17}- UserGroupId: {9}{17}- ServicesId: {10}{17}- IsFemale: {11}{17}- IsDisabled: {12}{17}- CreateUser: {13}{17}- CreateDate: {14}{17}- UpdateUser: {15}{17}- UpdateDate: {16}{17}{19}", 
+				"{19}{18}- Username: {0}{18}- Password: {1}{18}- Title: {2}{18}- Firstname: {3}{18}- Lastname: {4}{18}- DisplayName: {5}{18}- CellPhone: {6}{18}- Email: {7}{18}- Avatar: {8}{18}- Note: {9}{18}- UserGroupId: {10}{18}- ServicesId: {11}{18}- IsFemale: {12}{18}- IsDisabled: {13}{18}- CreateUser: {14}{18}- CreateDate: {15}{18}- UpdateUser: {16}{18}- UpdateDate: {17}{18}{20}", 
 				this.Username,
+				(this.Password == null) ? string.Empty : this.Password.ToString(),
 				(this.Title == null) ? string.Empty : this.Title.ToString(),
 				(this.Firstname == null) ? string.Empty : this.Firstname.ToString(),
 				(this.Lastname == null) ? string.Empty : this.Lastname.ToString(),
@@ -1910,6 +1976,11 @@ namespace AppointmentSystem.Entities
 		#endregion
 		
 		#region Non Primary key(s)
+		
+		/// <summary>
+		/// Password : 
+		/// </summary>
+		public System.String Password = null;
 		
 		/// <summary>
 		/// Title : Dr, Mr, Ms...
@@ -2140,6 +2211,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Username = this.Username;
 			_tmp.OriginalUsername = this.OriginalUsername;
 			
+			_tmp.Password = this.Password;
 			_tmp.Title = this.Title;
 			_tmp.Firstname = this.Firstname;
 			_tmp.Lastname = this.Lastname;
@@ -2196,6 +2268,7 @@ namespace AppointmentSystem.Entities
 			_tmp.Username = this.Username;
 			_tmp.OriginalUsername = this.OriginalUsername;
 			
+			_tmp.Password = this.Password;
 			_tmp.Title = this.Title;
 			_tmp.Firstname = this.Firstname;
 			_tmp.Lastname = this.Lastname;
@@ -2595,101 +2668,107 @@ namespace AppointmentSystem.Entities
 		[ColumnEnum("Username", typeof(System.String), System.Data.DbType.String, true, false, false, 50)]
 		Username = 1,
 		/// <summary>
+		/// Password : 
+		/// </summary>
+		[EnumTextValue("Password")]
+		[ColumnEnum("Password", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
+		Password = 2,
+		/// <summary>
 		/// Title : Dr, Mr, Ms...
 		/// </summary>
 		[EnumTextValue("Title")]
 		[ColumnEnum("Title", typeof(System.String), System.Data.DbType.String, false, false, true, 10)]
-		Title = 2,
+		Title = 3,
 		/// <summary>
 		/// Firstname : 
 		/// </summary>
 		[EnumTextValue("Firstname")]
 		[ColumnEnum("Firstname", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		Firstname = 3,
+		Firstname = 4,
 		/// <summary>
 		/// Lastname : 
 		/// </summary>
 		[EnumTextValue("Lastname")]
 		[ColumnEnum("Lastname", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		Lastname = 4,
+		Lastname = 5,
 		/// <summary>
 		/// DisplayName : 
 		/// </summary>
 		[EnumTextValue("DisplayName")]
 		[ColumnEnum("DisplayName", typeof(System.String), System.Data.DbType.String, false, false, false, 50)]
-		DisplayName = 5,
+		DisplayName = 6,
 		/// <summary>
 		/// CellPhone : 
 		/// </summary>
 		[EnumTextValue("CellPhone")]
 		[ColumnEnum("CellPhone", typeof(System.String), System.Data.DbType.String, false, false, true, 20)]
-		CellPhone = 6,
+		CellPhone = 7,
 		/// <summary>
 		/// Email : 
 		/// </summary>
 		[EnumTextValue("Email")]
 		[ColumnEnum("Email", typeof(System.String), System.Data.DbType.String, false, false, true, 50)]
-		Email = 7,
+		Email = 8,
 		/// <summary>
 		/// Avatar : 
 		/// </summary>
 		[EnumTextValue("Avatar")]
 		[ColumnEnum("Avatar", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		Avatar = 8,
+		Avatar = 9,
 		/// <summary>
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
 		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
-		Note = 9,
+		Note = 10,
 		/// <summary>
 		/// UserGroupId : This user belongs what groups. It's seperated by semi-comma
 		/// </summary>
 		[EnumTextValue("UserGroupId")]
 		[ColumnEnum("UserGroupId", typeof(System.String), System.Data.DbType.String, false, false, false, 20)]
-		UserGroupId = 10,
+		UserGroupId = 11,
 		/// <summary>
 		/// ServicesId : This user belongs what groups. It's seperated by semi-comma
 		/// </summary>
 		[EnumTextValue("ServicesId")]
 		[ColumnEnum("ServicesId", typeof(System.Int32), System.Data.DbType.Int32, false, false, true)]
-		ServicesId = 11,
+		ServicesId = 12,
 		/// <summary>
 		/// IsFemale : 
 		/// </summary>
 		[EnumTextValue("IsFemale")]
 		[ColumnEnum("IsFemale", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsFemale = 12,
+		IsFemale = 13,
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
 		[EnumTextValue("IsDisabled")]
 		[ColumnEnum("IsDisabled", typeof(System.Boolean), System.Data.DbType.Boolean, false, false, false)]
-		IsDisabled = 13,
+		IsDisabled = 14,
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
 		[EnumTextValue("CreateUser")]
 		[ColumnEnum("CreateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		CreateUser = 14,
+		CreateUser = 15,
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
 		[EnumTextValue("CreateDate")]
 		[ColumnEnum("CreateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		CreateDate = 15,
+		CreateDate = 16,
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
 		[EnumTextValue("UpdateUser")]
 		[ColumnEnum("UpdateUser", typeof(System.String), System.Data.DbType.String, false, false, true, 200)]
-		UpdateUser = 16,
+		UpdateUser = 17,
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
 		[EnumTextValue("UpdateDate")]
 		[ColumnEnum("UpdateDate", typeof(System.DateTime), System.Data.DbType.DateTime, false, false, false)]
-		UpdateDate = 17
+		UpdateDate = 18
 	}//End enum
 
 	#endregion UsersColumn Enum

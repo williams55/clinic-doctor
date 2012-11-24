@@ -423,7 +423,9 @@ function ValidatePatient() {
     txtLastName.Validate();
     txtDob.Validate();
     cboNationality.Validate();
-    return txtPatientCode.isValid && txtFirstName.isValid && txtLastName.isValid && txtDob.isValid && cboNationality.isValid;
+    txtMobilePhone.Validate();
+    return txtPatientCode.isValid && txtFirstName.isValid && txtLastName.isValid 
+        && txtDob.isValid && cboNationality.isValid && txtMobilePhone.isValid;
 }
 
 // Create new patient

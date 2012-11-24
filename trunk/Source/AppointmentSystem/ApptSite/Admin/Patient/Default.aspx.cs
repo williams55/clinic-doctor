@@ -111,7 +111,9 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             // Validate empty field
             if (!WebCommon.ValidateEmpty("First Name", e.NewValues["FirstName"], out _message)
                 || !WebCommon.ValidateEmpty("Last Name", e.NewValues["LastName"], out _message)
-                || !WebCommon.ValidateEmpty("DOB", e.NewValues["DateOfBirth"], out _message))
+                || !WebCommon.ValidateEmpty("DOB", e.NewValues["DateOfBirth"], out _message)
+                || !WebCommon.ValidateEmpty("Nationality", e.NewValues["Nationality"], out _message)
+                || !WebCommon.ValidateEmpty("Mobile Phone", e.NewValues["MobilePhone"], out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
@@ -201,7 +203,9 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             // Validate empty field
             if (!WebCommon.ValidateEmpty("First Name", e.NewValues["FirstName"], out _message)
                 || !WebCommon.ValidateEmpty("Last Name", e.NewValues["LastName"], out _message)
-                || !WebCommon.ValidateEmpty("DOB", e.NewValues["DateOfBirth"], out _message))
+                || !WebCommon.ValidateEmpty("DOB", e.NewValues["DateOfBirth"], out _message)
+                || !WebCommon.ValidateEmpty("Nationality", e.NewValues["Nationality"], out _message)
+                || !WebCommon.ValidateEmpty("Mobile Phone", e.NewValues["MobilePhone"], out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;

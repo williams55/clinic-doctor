@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="Default.aspx.cs" Inherits="Admin_Patient_Default" %>
 
+<%@ Register TagPrefix="a" Namespace="DevExpress.Web.ASPxEditors" Assembly="DevExpress.Web.ASPxEditors.v10.2, Version=10.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
     Patient
 </asp:Content>
@@ -48,8 +49,22 @@
                     <EditFormSettings Visible="False" />
                 </dx:GridViewDataColumn>
                 <dx:GridViewDataColumn FieldName="PatientCode" />
-                <dx:GridViewDataColumn FieldName="FirstName" />
-                <dx:GridViewDataColumn FieldName="LastName" />
+                <dx:GridViewDataTextColumn FieldName="FirstName">
+                    <PropertiesTextEdit Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error" ValidateOnLeave="True">
+                            <RequiredField IsRequired="True" ErrorText="First Name is required" />
+                        </ValidationSettings>
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="LastName">
+                    <PropertiesTextEdit Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error" ValidateOnLeave="True">
+                            <RequiredField IsRequired="True" ErrorText="Last Name is required" />
+                        </ValidationSettings>
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
                 <dx:GridViewDataColumn FieldName="MemberType" Width="120" />
                 <dx:GridViewDataColumn FieldName="Sex" Caption="Sex">
                 </dx:GridViewDataColumn>
@@ -64,13 +79,24 @@
                     <Settings AutoFilterCondition="GreaterOrEqual" />
                 </dx:GridViewDataDateColumn>
                 <dx:GridViewDataColumn FieldName="HomePhone" Visible="False" />
-                <dx:GridViewDataColumn FieldName="MobilePhone" />
-                 <dx:GridViewDataComboBoxColumn FieldName="Nationality">
+                <dx:GridViewDataTextColumn FieldName="MobilePhone">
+                    <PropertiesTextEdit Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error" ValidateOnLeave="True">
+                            <RequiredField IsRequired="True" ErrorText="Mobile Phone is required" />
+                        </ValidationSettings>
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataComboBoxColumn FieldName="Nationality">
                     <PropertiesComboBox TextField="CitizenName" ValueField="CitizenName" DataSourceID="CountryDataSource"
                         Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Nationality is required" />
+                        </ValidationSettings>
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
-               <dx:GridViewDataComboBoxColumn FieldName="CompanyCode">
+                <dx:GridViewDataComboBoxColumn FieldName="CompanyCode">
                     <PropertiesComboBox TextField="CompanyName" ValueField="CompanyCode" DataSourceID="VcsCompanyDataSource"
                         Width="100%">
                     </PropertiesComboBox>
@@ -112,29 +138,21 @@
                         <table class="edit-form">
                             <tbody>
                                 <tr>
-                                    <td class="title-row required" style="width: 100px;">
-                                        Last Name
-                                    </td>
-                                    <td class="content-row" style="width: 150px;">
-                                        <dx:ASPxTextBox runat="server" ID="txtLastName" Text='<%# Bind("LastName") %>' CssClass="text-form"
-                                            MaxLength="50" Width="100%">
-                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                                                ErrorText="Error">
-                                                <RequiredField IsRequired="True" ErrorText="Last Name is required" />
-                                            </ValidationSettings>
-                                        </dx:ASPxTextBox>
-                                    </td>
                                     <td class="title-row required" style="width: 110px;">
                                         First Name
                                     </td>
                                     <td class="content-row" style="width: 150px;">
-                                        <dx:ASPxTextBox runat="server" ID="txtFirstName" Text='<%# Bind("FirstName") %>'
-                                            CssClass="text-form" MaxLength="50" Width="100%">
-                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                                                ErrorText="Error" ValidateOnLeave="True">
-                                                <RequiredField IsRequired="True" ErrorText="First Name is required" />
-                                            </ValidationSettings>
-                                        </dx:ASPxTextBox>
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement5" runat="server"
+                                            ColumnID="2" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
+                                    </td>
+                                    <td class="title-row required" style="width: 100px;">
+                                        Last Name
+                                    </td>
+                                    <td class="content-row" style="width: 150px;">
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement6" runat="server"
+                                            ColumnID="3" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
                                     </td>
                                     <td class="title-row" style="width: 100px;">
                                         Middle Name
@@ -148,7 +166,7 @@
                                         Sex
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxRadioButton runat="server" Checked='<%# Eval("Sex") != null && Eval("Sex").ToString() == "M" %>'
+                                        <dx:ASPxRadioButton runat="server" Checked='<%# (Eval("Sex") != null && Eval("Sex").ToString() == "M") || gridPatient.IsNewRowEditing %>'
                                             Text="Male" ID="radMale" GroupName="radSex" Layout="Flow" />
                                         <dx:ASPxRadioButton runat="server" Checked='<%# Eval("Sex") != null && Eval("Sex").ToString() == "F" %>'
                                             Text="Female" ID="radFemale" GroupName="radSex" Layout="Flow" />
@@ -173,7 +191,7 @@
                                         <%} %>
                                     </td>
                                     <td class="title-row required">
-                                        DOB (m/d/yyyy)
+                                        DOB <span class="min-day">(MM/dd/yyyy)</span>
                                     </td>
                                     <td class="content-row">
                                         <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" runat="server"
@@ -197,13 +215,13 @@
                                             ColumnID="10" ReplacementType="EditFormCellEditor">
                                         </dx:ASPxGridViewTemplateReplacement>
                                     </td>
-                                    <td class="title-row">
+                                    <td class="title-row required">
                                         Mobile Phone
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="false" ID="ASPxTextBox4" Text='<%# Bind("MobilePhone") %>'
-                                            CssClass="text-form">
-                                        </dx:ASPxTextBox>
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement4" runat="server"
+                                            ColumnID="8" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
                                     </td>
                                     <td class="title-row">
                                         Home Phone
