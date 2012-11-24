@@ -138,7 +138,8 @@
                     Roster Type</div>
                 <div class="dhx_cal_ltext">
                     <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="550" TextField="Title"
-                        ValueField="Id" ID="cboRosterType" ValueType="System.Int32" ClientInstanceName="cboRosterType">
+                        ValueField="Id" ID="cboRosterType" ValueType="System.Int32" ClientInstanceName="cboRosterType" 
+                        Value='<%# ServiceFacade.SettingsHelper.DefaultRosterType %>' Enabled="False">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
                             <RequiredField IsRequired="True" ErrorText="Roster Type is required" />

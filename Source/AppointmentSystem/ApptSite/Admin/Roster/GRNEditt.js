@@ -232,9 +232,9 @@ scheduler.showLightbox = function(id) {
         $("#repeater-section, [id$=divSave]").hide();
         $("[id$=divUpdate], [id$=divDelete]").show();
 
-        if (ev.RosterTypeId) {
-            cboRosterType.SetSelectedItem(cboRosterType.FindItemByValue(ev.RosterTypeId));
-        }
+//        if (ev.RosterTypeId) {
+//            cboRosterType.SetSelectedItem(cboRosterType.FindItemByValue(ev.RosterTypeId));
+//        }
     }
     else {
         $('#drag-title .dhx_time').text('New roster');
@@ -303,7 +303,7 @@ function NewRoster() {
         return;
     }
 
-    var rosterType = cboRosterType.GetValue();
+//    var rosterType = cboRosterType.GetValue();
     var fromTime = startTime.GetDate();
     var toTime = endTime.GetDate();
     var fromDate = startDate.GetDate();
@@ -332,7 +332,8 @@ function NewRoster() {
 
     var requestdata = JSON.stringify({
         doctorId: doctor,
-        rosterTypeId: rosterType,
+//        rosterTypeId: rosterType,
+        rosterTypeId: 0,
         startTime: fromTime,
         endTime: toTime,
         startDate: fromDate,
@@ -372,7 +373,8 @@ function MoveRoster(eventId, objEvent) {
     var requestdata = JSON.stringify({
         id: objEvent.id,
         doctorId: objEvent.section_id,
-        rosterTypeId: objEvent.RosterTypeId,
+//        rosterTypeId: objEvent.RosterTypeId,
+        rosterTypeId: 0,
         startTime: objEvent.start_date,
         endTime: objEvent.end_date,
         note: objEvent.note,
@@ -414,7 +416,8 @@ function UpdateRoster() {
     var requestdata = JSON.stringify({
         id: id,
         doctorId: cboDoctor.GetValue(),
-        rosterTypeId: cboRosterType.GetValue(),
+//        rosterTypeId: cboRosterType.GetValue(),
+        rosterTypeId: 0,
         startTime: startTime.GetDate(),
         endTime: endTime.GetDate(),
         startDate: startDate.GetDate(),
@@ -504,12 +507,13 @@ function DeleteRoster(ros) {
         contentType: "application/json; charset=utf-8",
         success: function(response) {
             var obj = JSON.parse(response.d);
+            CloseProgress();
             if (obj.result == "true") {
                 scheduler.deleteEvent(id);
                 CancelRoster();
+            } else {
+                ShowMessage(obj.message);
             }
-            CloseProgress();
-            ShowMessage(obj.message);
         },
         fail: function() {
             CloseProgress();
@@ -529,12 +533,12 @@ function InitForm() {
 // Ham kiem tra form co valid khong
 function ValidateForm() {
     cboDoctor.Validate();
-    cboRosterType.Validate();
+//    cboRosterType.Validate();
     startTime.Validate();
     startDate.Validate();
     endTime.Validate();
     endDate.Validate();
-    return cboDoctor.isValid && cboRosterType.isValid && startTime.isValid && startDate.isValid && endTime.isValid && endDate.isValid;
+    return cboDoctor.isValid /*&& cboRosterType.isValid*/ && startTime.isValid && startDate.isValid && endTime.isValid && endDate.isValid;
 }
 
 $(document).ready(function() {

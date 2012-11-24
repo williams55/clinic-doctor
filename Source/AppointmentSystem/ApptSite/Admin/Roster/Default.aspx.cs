@@ -82,6 +82,9 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(_message);
             }
 
+            // Set gia tri mac dinh
+            rosterTypeId = ServiceFacade.SettingsHelper.DefaultRosterType;
+
             if (!WebCommon.ValidateEmpty("Doctor", doctorId, out _message)
                 || !WebCommon.ValidateEmpty("Roster Type", rosterTypeId, out _message)
                 || !WebCommon.ValidateEmpty("Start Time", startTime, out _message)
@@ -170,6 +173,9 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(_message);
             }
 
+            // Set gia tri mac dinh
+            rosterTypeId = ServiceFacade.SettingsHelper.DefaultRosterType;
+
             if (!WebCommon.ValidateEmpty("Roster Id", id, out _message)
                 || !WebCommon.ValidateEmpty("Roster Type", rosterTypeId, out _message)
                 || !WebCommon.ValidateEmpty("Doctor", doctorId, out _message)
@@ -233,6 +239,9 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             {
                 return WebCommon.BuildFailedResult(_message);
             }
+
+            // Set gia tri mac dinh
+            rosterTypeId = ServiceFacade.SettingsHelper.DefaultRosterType;
 
             if (!WebCommon.ValidateEmpty("Roster Id", id, out _message)
                 || !WebCommon.ValidateEmpty("Doctor", doctorId, out _message)
