@@ -9,6 +9,10 @@ namespace Appt.Common.Constants
 
         // Hang so luu gia tri all cua combobox trong cac filter
         public static ConstantKeyValue FilterAll = new ConstantKeyValue("0", "All");
+
+        // Key de ma hoa
+        public const string EncryptKey = "ASKey";
+
         #endregion
     }
 }

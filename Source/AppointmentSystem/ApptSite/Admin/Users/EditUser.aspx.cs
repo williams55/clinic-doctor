@@ -220,8 +220,21 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 return;
             }
 
+            // Get control and validate
+            var radMale = grid.FindEditFormTemplateControl("radMale") as ASPxRadioButton;
+            var radFemale = grid.FindEditFormTemplateControl("radFemale") as ASPxRadioButton;
+            var txtPsw = grid.FindEditFormTemplateControl("txtPsw") as ASPxTextBox;
+
+            if (radMale == null || radFemale == null || txtPsw == null)
+            {
+                WebCommon.AlertGridView(sender, "Add form is error.");
+                e.Cancel = true;
+                return;
+            }
+
             // Validate empty field
             if (!WebCommon.ValidateEmpty("Username", e.NewValues["Username"], out _message)
+                || !WebCommon.ValidateEmpty("Password", txtPsw.Text, out _message)
                 || !WebCommon.ValidateEmpty("Service", e.NewValues["ServicesId"], out _message)
                 || !WebCommon.ValidateEmpty("Group", e.NewValues["UserGroupId"], out _message)
                 || !WebCommon.ValidateEmpty("First Name", e.NewValues["Firstname"], out _message)
@@ -229,17 +242,6 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 || !WebCommon.ValidateEmpty("Display Name", e.NewValues["DisplayName"], out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
-                e.Cancel = true;
-                return;
-            }
-
-            // Get control and validate
-            var radMale = grid.FindEditFormTemplateControl("radMale") as ASPxRadioButton;
-            var radFemale = grid.FindEditFormTemplateControl("radFemale") as ASPxRadioButton;
-
-            if (radMale == null || radFemale == null)
-            {
-                WebCommon.AlertGridView(sender, "Add form is error.");
                 e.Cancel = true;
                 return;
             }
@@ -290,12 +292,13 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             }
 
             e.NewValues["Username"] = e.NewValues["Username"].ToString().Trim();
+            e.NewValues["Password"] = Encrypt.EncryptPassword(txtPsw.Text);
             e.NewValues["Firstname"] = e.NewValues["Firstname"].ToString().Trim();
             e.NewValues["Lastname"] = e.NewValues["Lastname"].ToString().Trim();
             e.NewValues["DisplayName"] = e.NewValues["DisplayName"].ToString().Trim();
-            e.NewValues["CellPhone"] = e.NewValues["CellPhone"].ToString().Trim();
-            e.NewValues["Email"] = e.NewValues["Email"].ToString().Trim();
-            e.NewValues["Note"] = e.NewValues["Note"].ToString().Trim();
+            e.NewValues["CellPhone"] = e.NewValues["CellPhone"] == null ? string.Empty : e.NewValues["CellPhone"].ToString().Trim();
+            e.NewValues["Email"] = e.NewValues["Email"] == null ? string.Empty : e.NewValues["Email"].ToString().Trim();
+            e.NewValues["Note"] = e.NewValues["Note"] == null ? string.Empty : e.NewValues["Note"].ToString().Trim();
             e.NewValues["UserGroupId"] = e.NewValues["UserGroupId"].ToString().Trim();
             e.NewValues["ServicesId"] = serviceId;
             e.NewValues["IsFemale"] = radFemale.Checked;
@@ -313,42 +316,42 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
 
     protected void gridUser_OnRowInserted(object sender, ASPxDataInsertedEventArgs e)
     {
-        TransactionManager tm = DataRepository.Provider.CreateTransaction();
-        tm.BeginTransaction();
-        try
-        {
-            // Validate group field
-            var userGroup = DataRepository.UserGroupProvider.GetById(e.NewValues["UserGroupId"].ToString());
-            if (userGroup == null || userGroup.IsDisabled)
-            {
-                WebCommon.AlertGridView(sender, "Group is not existed.");
-                tm.Rollback();
-                return;
-            }
-            DataRepository.UserGroupProvider.DeepLoad(userGroup);
+        //TransactionManager tm = DataRepository.Provider.CreateTransaction();
+        //tm.BeginTransaction();
+        //try
+        //{
+        //    // Validate group field
+        //    var userGroup = DataRepository.UserGroupProvider.GetById(e.NewValues["UserGroupId"].ToString());
+        //    if (userGroup == null || userGroup.IsDisabled)
+        //    {
+        //        WebCommon.AlertGridView(sender, "Group is not existed.");
+        //        tm.Rollback();
+        //        return;
+        //    }
+        //    DataRepository.UserGroupProvider.DeepLoad(userGroup);
 
-            foreach (var groupRole in userGroup.GroupRoleCollection)
-            {
-                DataRepository.UserRoleProvider.Insert(tm, new UserRole
-                    {
-                        Username = e.NewValues["Username"].ToString(),
-                        RoleId = groupRole.RoleId,
-                        CreateDate = DateTime.Now,
-                        CreateUser = WebCommon.GetAuthUsername(),
-                        UpdateDate = DateTime.Now,
-                        UpdateUser = WebCommon.GetAuthUsername(),
-                    });
-            }
-            tm.Commit();
-        }
-        catch (Exception ex)
-        {
-            tm.Rollback();
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            WebCommon.AlertGridView(sender, "Cannot insert user role. Please contact Administrator");
-        }
+        //    foreach (var groupRole in userGroup.GroupRoleCollection)
+        //    {
+        //        DataRepository.UserRoleProvider.Insert(tm, new UserRole
+        //            {
+        //                Username = e.NewValues["Username"].ToString(),
+        //                RoleId = groupRole.RoleId,
+        //                CreateDate = DateTime.Now,
+        //                CreateUser = WebCommon.GetAuthUsername(),
+        //                UpdateDate = DateTime.Now,
+        //                UpdateUser = WebCommon.GetAuthUsername(),
+        //            });
+        //    }
+        //    tm.Commit();
+        //}
+        //catch (Exception ex)
+        //{
+        //    tm.Rollback();
+        //    LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        //    WebCommon.AlertGridView(sender, "Cannot insert user role. Please contact Administrator");
+        //}
     }
-    
+
     protected void gridUser_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
     {
         try
@@ -370,8 +373,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             }
 
             // Validate empty field
-            if (!WebCommon.ValidateEmpty("Username", e.NewValues["Username"], out _message)
-                || !WebCommon.ValidateEmpty("Service", e.NewValues["ServicesId"], out _message)
+            if (!WebCommon.ValidateEmpty("Service", e.NewValues["ServicesId"], out _message)
                 || !WebCommon.ValidateEmpty("Group", e.NewValues["UserGroupId"], out _message)
                 || !WebCommon.ValidateEmpty("First Name", e.NewValues["Firstname"], out _message)
                 || !WebCommon.ValidateEmpty("Last Name", e.NewValues["Lastname"], out _message)
@@ -385,8 +387,9 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
             // Get control and validate
             var radMale = grid.FindEditFormTemplateControl("radMale") as ASPxRadioButton;
             var radFemale = grid.FindEditFormTemplateControl("radFemale") as ASPxRadioButton;
+            var txtCPsw = grid.FindEditFormTemplateControl("txtCPsw") as ASPxTextBox;
 
-            if (radMale == null || radFemale == null)
+            if (radMale == null || radFemale == null || txtCPsw == null)
             {
                 WebCommon.AlertGridView(sender, "Add form is error.");
                 e.Cancel = true;
@@ -428,12 +431,16 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 return;
             }
 
+            if (!string.IsNullOrEmpty(txtCPsw.Text))
+            {
+                e.NewValues["Password"] = Encrypt.EncryptPassword(txtCPsw.Text);
+            }
             e.NewValues["Firstname"] = e.NewValues["Firstname"].ToString().Trim();
             e.NewValues["Lastname"] = e.NewValues["Lastname"].ToString().Trim();
             e.NewValues["DisplayName"] = e.NewValues["DisplayName"].ToString().Trim();
-            e.NewValues["CellPhone"] = e.NewValues["CellPhone"].ToString().Trim();
-            e.NewValues["Email"] = e.NewValues["Email"].ToString().Trim();
-            e.NewValues["Note"] = e.NewValues["Note"].ToString().Trim();
+            e.NewValues["CellPhone"] = e.NewValues["CellPhone"] == null ? string.Empty : e.NewValues["CellPhone"].ToString().Trim();
+            e.NewValues["Email"] = e.NewValues["Email"] == null ? string.Empty : e.NewValues["Email"].ToString().Trim();
+            e.NewValues["Note"] = e.NewValues["Note"] == null ? string.Empty : e.NewValues["Note"].ToString().Trim();
             e.NewValues["UserGroupId"] = e.NewValues["UserGroupId"].ToString().Trim();
             e.NewValues["ServicesId"] = serviceId;
             e.NewValues["IsFemale"] = radFemale.Checked;

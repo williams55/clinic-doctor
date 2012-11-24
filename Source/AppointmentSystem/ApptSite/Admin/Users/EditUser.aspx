@@ -61,19 +61,63 @@
                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                     <EditFormSettings Visible="False" />
                 </dx:GridViewDataColumn>
-                <dx:GridViewDataColumn FieldName="Username" />
+                <dx:GridViewDataTextColumn FieldName="Username">
+                    <PropertiesTextEdit Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error" ValidateOnLeave="True">
+                            <RequiredField IsRequired="True" ErrorText="Username is required" />
+                        </ValidationSettings>
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
                 <dx:GridViewDataColumn FieldName="Title" Visible="False" />
-                <dx:GridViewDataColumn FieldName="Firstname" />
-                <dx:GridViewDataColumn FieldName="Lastname" />
-                <dx:GridViewDataColumn FieldName="DisplayName" />
-                <dx:GridViewDataColumn FieldName="CellPhone" />
+                <dx:GridViewDataTextColumn FieldName="Firstname" Caption="First Name">
+                    <PropertiesTextEdit Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error" ValidateOnLeave="True">
+                            <RequiredField IsRequired="True" ErrorText="First Name is required" />
+                        </ValidationSettings>
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Lastname" Caption="Last Name">
+                    <PropertiesTextEdit Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error" ValidateOnLeave="True">
+                            <RequiredField IsRequired="True" ErrorText="Last Name is required" />
+                        </ValidationSettings>
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="DisplayName" Caption="Display Name">
+                    <PropertiesTextEdit Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error" ValidateOnLeave="True">
+                            <RequiredField IsRequired="True" ErrorText="Display Name is required" />
+                        </ValidationSettings>
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="CellPhone">
+                    <PropertiesTextEdit Width="100%">
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
                 <dx:GridViewDataComboBoxColumn Caption="Service" FieldName="ServicesId">
-                    <PropertiesComboBox DropDownStyle="DropDown" ValueField="Id" TextField="Title" DataSourceID="ServicesDataSource">
+                    <PropertiesComboBox DropDownStyle="DropDownList" ValueField="Id" TextField="Title" DataSourceID="ServicesDataSource"
+                        Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Service is required" />
+                        </ValidationSettings>
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
-                <dx:GridViewDataColumn FieldName="Email" />
+                <dx:GridViewDataTextColumn FieldName="Email">
+                    <PropertiesTextEdit Width="100%">
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
                 <dx:GridViewDataComboBoxColumn Caption="Group" FieldName="UserGroupId">
-                    <PropertiesComboBox DropDownStyle="DropDown" ValueField="Id" TextField="Title" DataSourceID="UserGroupDatas">
+                    <PropertiesComboBox DropDownStyle="DropDownList" ValueField="Id" TextField="Title" DataSourceID="UserGroupDatas"
+                        Width="100%">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error">
+                            <RequiredField IsRequired="True" ErrorText="Group is required" />
+                        </ValidationSettings>
                     </PropertiesComboBox>
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewCommandColumn Name="btnCommand" ButtonType="Image" Width="60" Caption="Operation">
@@ -93,6 +137,15 @@
                     </CellStyle>
                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                 </dx:GridViewCommandColumn>
+                <dx:GridViewDataTextColumn FieldName="Password" Visible="False">
+                    <PropertiesTextEdit Width="100%" Password="True">
+                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                            ErrorText="Error" ValidateOnLeave="True">
+                            <RequiredField IsRequired="True" ErrorText="Password is required" />
+                        </ValidationSettings>
+                    </PropertiesTextEdit>
+                    <EditFormSettings Visible="True"></EditFormSettings>
+                </dx:GridViewDataTextColumn>
                 <dx:GridViewCommandColumn Caption="#" ShowSelectCheckbox="True" Width="15">
                     <HeaderTemplate>
                         <dx:ASPxCheckBox ID="SelectAllCheckBox" runat="server" ToolTip="Select/Unselect all rows on the page"
@@ -196,7 +249,7 @@
                         <table class="edit-form users">
                             <tbody>
                                 <tr>
-                                    <td class="title-row">
+                                    <td class="title-row required">
                                         Username
                                     </td>
                                     <td class="content-row">
@@ -206,109 +259,119 @@
                                         <%}
                                           else
                                           { %>
-                                        <dx:ASPxTextBox runat="server" ID="txtUsernamme" MaxLength="50" TabIndex="1" Text=""
-                                            CssClass="text-form" Width="100%" Value='<%# Bind("Username") %>'>
-                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                                                ErrorText="Error">
-                                                <RequiredField IsRequired="True" ErrorText="Username is required" />
-                                            </ValidationSettings>
-                                        </dx:ASPxTextBox>
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement1" runat="server"
+                                            ColumnID="1" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
                                         <%} %>
                                     </td>
-                                    <td class="title-row">
-                                        First Name
+                                    <%if (!gridUser.IsNewRowEditing)
+                                      { %>
+                                    <td colspan="2" class="title-row">
+                                        Change Password <span class="min-day">(If want)</span> <span style="float: right;
+                                            width: 170px;">
+                                            <dx:ASPxTextBox runat="server" ID="txtCPsw" MaxLength="50" TabIndex="1" Text="" CssClass="text-form"
+                                                Width="100%" Password="True">
+                                                <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
+                                                    ErrorText="Error">
+                                                    <RequiredField IsRequired="True" ErrorText="Password is required" />
+                                                </ValidationSettings>
+                                            </dx:ASPxTextBox>
+                                        </span>
+                                    </td>
+                                    <%}
+                                      else
+                                      { %>
+                                    <td class="title-row required">
+                                        Password
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtFirstname" MaxLength="50" TabIndex="4" Text='<%# Bind("Firstname") %>'
-                                            CssClass="text-form" Width="100%">
+                                        <dx:ASPxTextBox runat="server" ID="txtPsw" MaxLength="50" TabIndex="1" Text="" CssClass="text-form"
+                                            Width="100%" Password="True">
                                             <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                                                 ErrorText="Error">
-                                                <RequiredField IsRequired="True" ErrorText="First Name is required" />
+                                                <RequiredField IsRequired="True" ErrorText="Password is required" />
                                             </ValidationSettings>
                                         </dx:ASPxTextBox>
                                     </td>
-                                    <td class="title-row">
+                                    <%} %>
+                                    <td class="title-row required">
                                         Sex
                                     </td>
                                     <td class="content-row">
                                         <dx:ASPxRadioButton runat="server" Checked='<%# !(Eval("IsFemale") != null && Boolean.Parse(Eval("IsFemale").ToString())) %>'
-                                            Text="Male" ID="radMale" GroupName="radSex" Layout="Flow" TabIndex="7" />
+                                            Text="Male" ID="radMale" GroupName="radSex" Layout="Flow" TabIndex="3" />
                                         <dx:ASPxRadioButton runat="server" Checked='<%# Eval("IsFemale") != null && Boolean.Parse(Eval("IsFemale").ToString()) %>'
-                                            Text="Female" ID="radFemale" GroupName="radSex" Layout="Flow" TabIndex="8" />
+                                            Text="Female" ID="radFemale" GroupName="radSex" Layout="Flow" TabIndex="4" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="title-row">
-                                        Service
+                                    <td class="title-row required">
+                                        First Name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxComboBox runat="server" ID="ASPxComboBox2" TabIndex="2" TextField="Title"
-                                            ValueField="Id" Value='<%# Bind("ServicesId") %>' DataSourceID="ServicesDataSource"
-                                            ValueType="System.Int32" Width="100%">
-                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                                                ErrorText="Error">
-                                                <RequiredField IsRequired="True" ErrorText="Service is required" />
-                                            </ValidationSettings>
-                                        </dx:ASPxComboBox>
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement2" runat="server"
+                                            ColumnID="3" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
                                     </td>
-                                    <td class="title-row">
+                                    <td class="title-row required">
                                         Last Name
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtLastname" MaxLength="50" TabIndex="5" Text='<%# Bind("Lastname") %>'
-                                            CssClass="text-form" Width="100%">
-                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                                                ErrorText="Error">
-                                                <RequiredField IsRequired="True" ErrorText="Last Name is required" />
-                                            </ValidationSettings>
-                                        </dx:ASPxTextBox>
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement5" runat="server"
+                                            ColumnID="4" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
                                     </td>
+                                    <td class="title-row required">
+                                        Display Name
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement6" runat="server"
+                                            ColumnID="5" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="title-row required">
+                                        Group
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement7" runat="server"
+                                            ColumnID="9" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
+                                    </td>
+                                    <td class="title-row required">
+                                        Service
+                                    </td>
+                                    <td class="content-row">
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement8" runat="server"
+                                            ColumnID="7" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
+                                    </td>
+                                    <td class="title-row">
+                                    </td>
+                                    <td class="content-row">
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="title-row">
                                         Email
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtEmail" MaxLength="50" TabIndex="9" Text='<%# Bind("Email") %>'
-                                            CssClass="text-form">
-                                        </dx:ASPxTextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="title-row">
-                                        User Group
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxComboBox runat="server" ID="ASPxComboBox1" TabIndex="3" TextField="Title"
-                                            ValueField="Id" Value='<%# Bind("UserGroupId") %>' DataSourceID="UserGroupDatas"
-                                            ValueType="System.String" Width="100%">
-                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                                                ErrorText="Error">
-                                                <RequiredField IsRequired="True" ErrorText="Group is required" />
-                                            </ValidationSettings>
-                                        </dx:ASPxComboBox>
-                                    </td>
-                                    <td class="title-row">
-                                        Display Name
-                                    </td>
-                                    <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ID="txtDisplayname" MaxLength="50" TabIndex="6" Text='<%# Bind("DisplayName") %>'
-                                            CssClass="text-form" Width="100%">
-                                            <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                                                ErrorText="Error">
-                                                <RequiredField IsRequired="True" ErrorText="Display Name is required" />
-                                            </ValidationSettings>
-                                        </dx:ASPxTextBox>
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement10" runat="server"
+                                            ColumnID="8" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
                                     </td>
                                     <td class="title-row">
                                         Cell Phone
                                     </td>
                                     <td class="content-row">
-                                        <dx:ASPxTextBox runat="server" ReadOnly="false" MaxLength="20" TabIndex="10" ID="txtCellphone"
-                                            Text='<%# Bind("CellPhone") %>' CssClass="text-form">
-                                        </dx:ASPxTextBox>
+                                        <dx:ASPxGridViewTemplateReplacement ID="ASPxGridViewTemplateReplacement11" runat="server"
+                                            ColumnID="6" ReplacementType="EditFormCellEditor">
+                                        </dx:ASPxGridViewTemplateReplacement>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
+                                    <td class="title-row">
+                                    </td>
+                                    <td class="content-row">
                                     </td>
                                 </tr>
                                 <tr>
@@ -316,7 +379,7 @@
                                         Note
                                     </td>
                                     <td class="content-row" colspan="6">
-                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" MaxLength="500" TabIndex="11" Text='<%# Bind("Note")%>'
+                                        <dx:ASPxMemo runat="server" ID="ASPxTextBox6" MaxLength="500" TabIndex="0" Text='<%# Bind("Note")%>'
                                             CssClass="text-form">
                                         </dx:ASPxMemo>
                                     </td>
@@ -348,8 +411,8 @@
             <SettingsEditing Mode="EditFormAndDisplayRow" />
             <Settings ShowGroupPanel="False" ShowFilterRow="True" ShowFilterRowMenu="True" />
         </dx:ASPxGridView>
-        <data:UsersDataSource ID="UsersDataSource" runat="server" SelectMethod="GetPaged" EnablePaging="True"
-            EnableSorting="True" InsertMethod="Insert" UpdateMethod="Update">
+        <data:UsersDataSource ID="UsersDataSource" runat="server" SelectMethod="GetPaged"
+            EnablePaging="True" EnableSorting="True" InsertMethod="Insert" UpdateMethod="Update">
             <Parameters>
                 <data:CustomParameter Name="WhereClause" Value="IsDisabled ='false'" />
                 <data:CustomParameter Name="OrderByClause" Value="Username" />
