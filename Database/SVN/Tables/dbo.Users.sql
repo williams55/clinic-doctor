@@ -1,6 +1,7 @@
 CREATE TABLE [dbo].[Users]
 (
 [Username] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+[Password] [nvarchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Title] [nvarchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Firstname] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [Lastname] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
