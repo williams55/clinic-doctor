@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using ApptSite;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
 
@@ -14,7 +15,7 @@ public partial class Admin_AppointmentGroup_Default : System.Web.UI.Page
     }
     protected void gridRoom_RowInserting(object sender, ASPxDataInsertingEventArgs e)
     {
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
     protected void gridRoom_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
@@ -26,7 +27,7 @@ public partial class Admin_AppointmentGroup_Default : System.Web.UI.Page
         //   // var abc = DataRepository.RoomProvider.GetById(id);
         //    var obj =(Room)DataRepository.RoomProvider.GetById(id);
         //    obj.IsDisabled = true;
-        //    obj.UpdateUser = WebCommon.GetAuthUsername();
+        //    obj.UpdateUser = AccountSession.Session;
         //    obj.UpdateDate = DateTime.Now;
         //    DataRepository.RoomProvider.Update(obj);
         //}
@@ -47,7 +48,7 @@ public partial class Admin_AppointmentGroup_Default : System.Web.UI.Page
     }
     protected void detailGrid_RowInserting(object sender, ASPxDataInsertingEventArgs e)
     {
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
         e.NewValues["UnitId"] = (sender as ASPxGridView).GetMasterRowKeyValue();
     }

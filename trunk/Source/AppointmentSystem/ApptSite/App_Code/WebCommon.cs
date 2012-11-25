@@ -17,10 +17,10 @@ using Newtonsoft.Json;
 /// </summary>
 public class WebCommon
 {
-    public static string GetAuthUsername()
-    {
-        return HttpContext.Current.User.Identity.Name.Split('\\')[1];
-    }
+    //public static string GetAuthUsername()
+    //{
+    //    return HttpContext.Current.User.Identity.Name.Split('\\')[1];
+    //}
 
     /// <summary>
     /// Get Screen code of current page

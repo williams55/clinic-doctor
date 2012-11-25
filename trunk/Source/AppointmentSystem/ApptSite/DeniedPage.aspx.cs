@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AppointmentSystem.Data;
+using ApptSite;
 
 public partial class DeniedPage : System.Web.UI.Page
 {
@@ -13,7 +14,7 @@ public partial class DeniedPage : System.Web.UI.Page
     {
         try
         {
-            var user = DataRepository.UsersProvider.GetByUsername(EntitiesUtilities.GetAuthName());
+            var user = DataRepository.UsersProvider.GetByUsername(AccountSession.Session);
             if (user != null && !user.IsDisabled)
             {
                 Response.Redirect("~/");

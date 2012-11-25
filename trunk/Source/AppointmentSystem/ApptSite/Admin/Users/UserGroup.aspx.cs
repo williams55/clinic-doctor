@@ -9,6 +9,7 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
+using ApptSite;
 using Common.Util;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
@@ -25,7 +26,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         try
         {
             // Check reading right
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridGroup.Visible = false;
@@ -42,13 +43,13 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
             if (commandColumn == null) return;
 
             // Gan visible cho nut new, edit bang cach kiem tra quyen
-            commandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
+            commandColumn.EditButton.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _message);
 
             // Set hien thi/an cho nut new
-            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+            btnAdd.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message);
 
             // Set hien thi/an cho nut delete
-            btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+            btnGeneralDelete.Visible = RightAccess.CheckUserRight(AccountSession.Session,
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,
                                                                                   out _message);
@@ -82,7 +83,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
             if (e.ButtonID != "btnDelete") return;
 
             // Check deleting right
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 return;
@@ -111,7 +112,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
                 return;
             }
             userGroup.IsDisabled = true;
-            userGroup.UpdateUser = WebCommon.GetAuthUsername();
+            userGroup.UpdateUser = AccountSession.Session;
             userGroup.UpdateDate = DateTime.Now;
             DataRepository.UserGroupProvider.Update(userGroup);
 
@@ -134,7 +135,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
             if (e.Parameters == "Delete")
             {
                 // Check deleting right
-                if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+                if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
                 {
                     WebCommon.AlertGridView(sender, _message);
                     tm.Rollback();
@@ -173,7 +174,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
                         return;
                     }
                     userGroup.IsDisabled = true;
-                    userGroup.UpdateUser = WebCommon.GetAuthUsername();
+                    userGroup.UpdateUser = AccountSession.Session;
                     userGroup.UpdateDate = DateTime.Now;
                     DataRepository.UserGroupProvider.Update(tm, userGroup);
                 }
@@ -197,7 +198,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         try
         {
             // Validate user right for creating
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
@@ -223,7 +224,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
 
             e.NewValues["Id"] = e.NewValues["Title"].ToString().Trim().Replace(" ", "");
             e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
             WebCommon.AlertGridView(sender, "Group is created successfully.");
         }
@@ -238,7 +239,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
     {
         try
         {
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
@@ -263,7 +264,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
             }
 
             e.NewValues["Username"] = e.NewValues["Title"].ToString().Trim();
-            e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["UpdateUser"] = AccountSession.Session;
             e.NewValues["UpdateDate"] = DateTime.Now;
             WebCommon.AlertGridView(sender, "Group is update successfully.");
         }
@@ -290,7 +291,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
             }
 
             // Check reading right
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 grid.Visible = false;
@@ -310,11 +311,11 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
             commandColumn.EditButton.Visible = false;
 
             // Set hien thi/an cho nut new
-            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,
+            btnAdd.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode,
                                                         OperationConstant.Create.Key, out _message);
 
             // Set hien thi/an cho nut delete
-            btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+            btnGeneralDelete.Visible = RightAccess.CheckUserRight(AccountSession.Session,
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,
                                                                                   out _message);
@@ -360,7 +361,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
             if (e.ButtonID != "btnDelete") return;
 
             // Check deleting right
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 return;
@@ -387,7 +388,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
                     return;
                 }
                 groupRole.IsDisabled = true;
-                groupRole.UpdateUser = WebCommon.GetAuthUsername();
+                groupRole.UpdateUser = AccountSession.Session;
                 groupRole.UpdateDate = DateTime.Now;
                 DataRepository.GroupRoleProvider.Update(groupRole);
 
@@ -411,7 +412,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
             if (e.Parameters == "Delete")
             {
                 // Check deleting right
-                if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+                if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
                 {
                     WebCommon.AlertGridView(sender, _message);
                     return;
@@ -449,7 +450,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
                     }
 
                     groupRole.IsDisabled = true;
-                    groupRole.UpdateUser = WebCommon.GetAuthUsername();
+                    groupRole.UpdateUser = AccountSession.Session;
                     groupRole.UpdateDate = DateTime.Now;
                     DataRepository.GroupRoleProvider.Update(tm, groupRole);
                 }
@@ -474,7 +475,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         try
         {
             // Validate user right for creating
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
@@ -499,7 +500,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
             }
 
             e.NewValues["GroupId"] = groupId;
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
             WebCommon.AlertGridView(sender, "Group role is created successfully.");
