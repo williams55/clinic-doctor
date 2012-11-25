@@ -10,6 +10,7 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
+using ApptSite;
 using Common.Extension;
 using Common.Util;
 using Log.Controller;
@@ -19,7 +20,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 {
     private const string ScreenCode = "Roster";
     static string _message;
-    static readonly string Username = EntitiesUtilities.GetAuthName();
+    //static readonly string Username = AccountSession.Session;
 
     #region Event
     protected void Page_Load(object sender, EventArgs e)
@@ -27,7 +28,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         try
         {
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
             }
@@ -109,8 +110,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 StartTime = dtStart,
                 EndTime = dtEnd,
                 Note = note,
-                CreateUser = Username,
-                UpdateUser = Username
+                CreateUser = AccountSession.Session,
+                UpdateUser = AccountSession.Session
             };
 
             // Declare list of object are returned
@@ -198,7 +199,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 StartTime = Convert.ToDateTime(startTime),
                 EndTime = Convert.ToDateTime(endTime),
                 Note = note,
-                UpdateUser = Username
+                UpdateUser = AccountSession.Session
             };
 
             if (!BoFactory.RosterBO.Update(ref roster, ref _message))
@@ -272,7 +273,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 StartTime = dtStart,
                 EndTime = dtEnd,
                 Note = note,
-                UpdateUser = Username
+                UpdateUser = AccountSession.Session
             };
 
             if (!BoFactory.RosterBO.Update(ref roster, ref _message))
@@ -365,7 +366,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             }
 
             roster.IsDisabled = true;
-            roster.UpdateUser = Username;
+            roster.UpdateUser = AccountSession.Session;
             roster.UpdateDate = DateTime.Now;
 
             DataRepository.RosterProvider.Save(tm, roster);
@@ -575,7 +576,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     /// <returns></returns>
     private static bool CheckReading(out string message)
     {
-        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out message);
+        return RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out message);
     }
 
     /// <summary>
@@ -585,7 +586,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     /// <returns></returns>
     private static bool CheckDeleting(out string message)
     {
-        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Delete.Key, out message);
+        return RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out message);
     }
 
     /// <summary>
@@ -595,7 +596,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     /// <returns></returns>
     private static bool CheckUpdating(out string message)
     {
-        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Update.Key, out message);
+        return RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out message);
     }
 
     /// <summary>
@@ -605,7 +606,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     /// <returns></returns>
     private static bool CheckCreating(out string message)
     {
-        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Create.Key, out message);
+        return RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out message);
     }
     #endregion
 

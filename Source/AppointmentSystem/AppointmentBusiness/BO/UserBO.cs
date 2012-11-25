@@ -34,12 +34,30 @@ namespace AppointmentBusiness.BO
 
                 blResult = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
         StepResult:
             return blResult;
+        }
+
+        public bool Authentication(string username, string password)
+        {
+            try
+            {
+                int count;
+                DataRepository.UsersProvider.GetPaged(
+                    String.Format("Username = '{0}' AND Password = '{1}' AND IsDisabled = 'False'", username,
+                                  Encrypt.EncryptPassword(password)), string.Empty, 0,
+                    1, out count);
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            }
+            return false;
         }
     }
 }

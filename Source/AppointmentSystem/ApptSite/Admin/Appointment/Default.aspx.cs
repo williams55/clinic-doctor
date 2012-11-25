@@ -11,6 +11,7 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
+using ApptSite;
 using Common.Extension;
 using Common.Util;
 using DevExpress.Web.ASPxClasses;
@@ -27,7 +28,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
     private const string ScreenCode = "Appointment";
     static string _message;
-    static readonly string Username = EntitiesUtilities.GetAuthName();
+    //static readonly string Username = AccountSession.Session;
     #endregion
 
     #region Events
@@ -526,7 +527,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult("Please select appointment first.");
             }
 
-            if (!BoFactory.PatientBO.UpdateRemark(patient, remark, Username, ref _message))
+            if (!BoFactory.PatientBO.UpdateRemark(patient, remark, AccountSession.Session, ref _message))
                 return WebCommon.BuildFailedResult("Cannot save appointment remark. Please try again.");
 
             return WebCommon.BuildSuccessfulResult();
@@ -858,8 +859,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 StartTime = dtStart,
                 EndTime = dtEnd,
                 Note = note,
-                CreateUser = Username,
-                UpdateUser = Username
+                CreateUser = AccountSession.Session,
+                UpdateUser = AccountSession.Session
             };
 
             if (!BoFactory.AppointmentBO.Insert(appointment, ref _message))
@@ -918,7 +919,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             appointment.Username = doctorId;
             appointment.StartTime = startTime;
             appointment.EndTime = endTime;
-            appointment.UpdateUser = Username;
+            appointment.UpdateUser = AccountSession.Session;
             appointment.UpdateDate = DateTime.Now;
 
             if (!BoFactory.AppointmentBO.Update(ref appointment, ref _message))
@@ -991,7 +992,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 StartTime = dtStart,
                 EndTime = dtEnd,
                 Note = note,
-                UpdateUser = Username
+                UpdateUser = AccountSession.Session
             };
 
             if (!BoFactory.AppointmentBO.Update(ref appointment, ref _message))
@@ -1100,7 +1101,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             tm.BeginTransaction();
 
             appointment.IsDisabled = true;
-            appointment.UpdateUser = Username;
+            appointment.UpdateUser = AccountSession.Session;
             appointment.UpdateDate = DateTime.Now;
 
             DataRepository.AppointmentProvider.Save(tm, appointment);
@@ -1144,7 +1145,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <returns></returns>
     private static bool CheckReading(out string message)
     {
-        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Read.Key, out message);
+        return RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out message);
     }
 
     /// <summary>
@@ -1154,7 +1155,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <returns></returns>
     private static bool CheckDeleting(out string message)
     {
-        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Delete.Key, out message);
+        return RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out message);
     }
 
     /// <summary>
@@ -1164,7 +1165,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <returns></returns>
     private static bool CheckUpdating(out string message)
     {
-        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Update.Key, out message);
+        return RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out message);
     }
 
     /// <summary>
@@ -1174,7 +1175,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <returns></returns>
     private static bool CheckCreating(out string message)
     {
-        return RightAccess.CheckUserRight(Username, ScreenCode, OperationConstant.Create.Key, out message);
+        return RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out message);
     }
     #endregion
 

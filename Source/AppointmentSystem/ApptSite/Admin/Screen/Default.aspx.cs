@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AppointmentBusiness.Util;
 using Appt.Common.Constants;
+using ApptSite;
 using DevExpress.Web.ASPxGridView;
 using Log.Controller;
 using Common.Util;
@@ -18,7 +19,7 @@ public partial class Admin_Screen_Default : System.Web.UI.Page
     {
         try
         {
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridScreen.Visible = false;
@@ -26,8 +27,8 @@ public partial class Admin_Screen_Default : System.Web.UI.Page
             }
             var gridcolums = gridScreen.Columns["btnCommand"] as GridViewCommandColumn;
             if (gridcolums == null) return;
-            gridcolums.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
-            gridcolums.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+            gridcolums.EditButton.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _message);
+            gridcolums.NewButton.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message);
             GridViewCommandColumnCustomButton btnDelete = null;
             foreach (GridViewCommandColumnCustomButton customButton in gridcolums.CustomButtons)
             {
@@ -37,7 +38,7 @@ public partial class Admin_Screen_Default : System.Web.UI.Page
                     break;
                 }
             }
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
@@ -63,7 +64,7 @@ public partial class Admin_Screen_Default : System.Web.UI.Page
             return;
 
         }
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
     protected void gridScreen_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
@@ -75,7 +76,7 @@ public partial class Admin_Screen_Default : System.Web.UI.Page
             return;
 
         }
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
 }

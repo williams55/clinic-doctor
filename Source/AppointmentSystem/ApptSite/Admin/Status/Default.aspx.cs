@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AppointmentSystem.Data;
+using ApptSite;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
@@ -23,7 +24,7 @@ public partial class Admin_Status_Default : System.Web.UI.Page
         try
         {
             // Check reading right of user
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 grid.Visible = false;
@@ -37,7 +38,7 @@ public partial class Admin_Status_Default : System.Web.UI.Page
             if (gridViewCommandColumn == null) return;
 
             // Set visible for edit button
-            gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+            gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(AccountSession.Session,
                                                                                   ScreenCode,
                                                                                   OperationConstant.Update.Key,
                                                                                   out _message);
@@ -52,7 +53,7 @@ public partial class Admin_Status_Default : System.Web.UI.Page
         try
         {
             // Check updating right of user
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key,
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key,
                                        out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
@@ -91,7 +92,7 @@ public partial class Admin_Status_Default : System.Web.UI.Page
             e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
             e.NewValues["PriorityIndex"] = index.Value;
             e.NewValues["ColorCode"] = color.Text.Trim();
-            e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["UpdateUser"] = AccountSession.Session;
             e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert delete successfully

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using ApptSite;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
@@ -24,7 +25,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
     {
         try
         {
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridPatient.Visible = false;
@@ -38,17 +39,17 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             if (gridViewCommandColumn == null) return;
 
             // Set hien thi/an cho nut edit cua tung row
-            gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+            gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(AccountSession.Session,
                                                                                   ScreenCode,
                                                                                   OperationConstant.Update.Key,
                                                                                   out _message);
 
             // Set hien thi/an cho nut new
-            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,
+            btnAdd.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode,
                                                         OperationConstant.Create.Key, out _message);
           
             // Set hien thi/an cho nut delete
-            btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+            btnGeneralDelete.Visible = RightAccess.CheckUserRight(AccountSession.Session,
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,
                                                                                   out _message);
@@ -82,7 +83,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
     {
         try
         {
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message))
             {
                 e.Cancel = true;
 
@@ -144,7 +145,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                     MobilePhone = e.NewValues["MobilePhone"] == null ? null : e.NewValues["MobilePhone"].ToString(),
                     CompanyCode = e.NewValues["CompanyCode"] == null ? null : e.NewValues["CompanyCode"].ToString(),
                     ApptRemark = e.NewValues["ApptRemark"] == null ? null : e.NewValues["ApptRemark"].ToString(),
-                    UpdateUser = WebCommon.GetAuthUsername(),
+                    UpdateUser = AccountSession.Session,
                 };
 
             var patients = DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName, patient.MiddleName
@@ -174,7 +175,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         try
         {
             // Check update right
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _message))
             {
                 e.Cancel = true;
                 return;
@@ -243,7 +244,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             patient.MobilePhone = e.NewValues["MobilePhone"] == null ? null : e.NewValues["MobilePhone"].ToString();
             patient.CompanyCode = e.NewValues["CompanyCode"] == null ? null : e.NewValues["CompanyCode"].ToString();
             patient.ApptRemark = e.NewValues["ApptRemark"] == null ? null : e.NewValues["ApptRemark"].ToString();
-            patient.UpdateUser = WebCommon.GetAuthUsername();
+            patient.UpdateUser = AccountSession.Session;
             DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
                 , patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone, patient.MobilePhone
                 , patient.UpdateUser, patient.ApptRemark, patient.IsDisabled);
@@ -273,7 +274,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             if (e.ButtonID != "btnDelete") return;
 
             // Kiem tra xem user co quyen delete khong
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, "You do not have permission delete");
                 return;
@@ -304,7 +305,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
                 return;
             }
             patient.IsDisabled = true;
-            patient.UpdateUser = WebCommon.GetAuthUsername();
+            patient.UpdateUser = AccountSession.Session;
             DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
                 , patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone, patient.MobilePhone
                 , patient.UpdateUser, patient.ApptRemark, patient.IsDisabled);
@@ -361,7 +362,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
             if (e.Parameters == "Delete")
             {
                 // Kiem tra xem user co quyen delete khong
-                if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+                if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
                 {
                     WebCommon.AlertGridView(sender, "You do not have permission delete");
                     tm.Rollback();
@@ -412,7 +413,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
 
                     // Tien anh cap nhat
                     patient.IsDisabled = true;
-                    patient.UpdateUser = WebCommon.GetAuthUsername();
+                    patient.UpdateUser = AccountSession.Session;
                     DataRepository.VcsPatientProvider.Update(patient.PatientCode, patient.FirstName, patient.MiddleName, patient.LastName
                         , patient.DateOfBirth, patient.Sex, patient.Nationality, patient.CompanyCode, patient.HomePhone, patient.MobilePhone
                         , patient.UpdateUser, patient.ApptRemark, patient.IsDisabled);

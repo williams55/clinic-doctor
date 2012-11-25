@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using ApptSite;
 using DevExpress.Web.ASPxGridView;
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
@@ -19,8 +20,8 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
     {
         try
         {
-            bool chas = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message);
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            bool chas = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message);
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridGroupRole.Visible = false;
@@ -28,8 +29,8 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
             }
             var gridcolums = gridGroupRole.Columns["btnCommand"] as GridViewCommandColumn;
             if (gridcolums == null) return;
-            gridcolums.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
-            gridcolums.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+            gridcolums.EditButton.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _message);
+            gridcolums.NewButton.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message);
             //var btnDelete = gridcolums.CustomButtons.Find(x => x.ID == "btnDelete");
             GridViewCommandColumnCustomButton btnDelete = null;
             foreach (GridViewCommandColumnCustomButton customButton in gridcolums.CustomButtons)
@@ -40,7 +41,7 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
                     break;
                 }
             }
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,OperationConstant.Delete.Key,out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode,OperationConstant.Delete.Key,out _message))
             {
                 btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
@@ -55,13 +56,13 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
   
     protected void Gridrole_OnRowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
     {
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
     protected void Gridrole_OnRowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
     {
         e.NewValues["GroupId"] =(sender as ASPxGridView).GetMasterRowKeyValue().ToString();
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
         int Id = int.Parse(e.NewValues["RoleId"].ToString());
         string sql=string.Format("RoleId={0} and GroupId='{1}' and IsDisabled='false'",Id,e.NewValues["GroupId"]);
@@ -80,7 +81,7 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
         try
         {
             if (e.ButtonID != "btnDeleteRoleGroup") return;
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 return;
@@ -96,7 +97,7 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
                     return;
                 }
                 obj.IsDisabled = true;
-                obj.UpdateUser = WebCommon.GetAuthUsername();
+                obj.UpdateUser = AccountSession.Session;
                 obj.UpdateDate = DateTime.Now;
                 DataRepository.GroupRoleProvider.Update(obj);
             }
@@ -115,8 +116,8 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
         if (gridColunms == null) return;
 
         // Gan visible cho nut new, edit bang cach kiem tra quyen
-        gridColunms.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
-        gridColunms.NewButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+        gridColunms.EditButton.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _message);
+        gridColunms.NewButton.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message);
         // Rieng nut delete thi kiem tra khac boi vi no su dung custom button
        //var btnDelete = gridColunms.CustomButtons.Find(x => x.ID == "btnDeleteRolegroup");
         GridViewCommandColumnCustomButton btnDelete = null;
@@ -128,7 +129,7 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
                 break;
             }
         }
-        if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+        if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
         {
             btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
         }
@@ -152,12 +153,12 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
     }
     protected void gridGroupRole_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
     {
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
     protected void gridGroupRole_OnRowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
     {
-        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+        e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
         e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
     }
     protected void gridGroupRole_CustomButtonCallback(object sender, ASPxGridViewCustomButtonCallbackEventArgs e)
@@ -165,7 +166,7 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
         try
         {
             if (e.ButtonID != "btnDelete") return;
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 return;
@@ -185,7 +186,7 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
                 return;
             }
             obj.IsDisabled = true;
-            obj.UpdateUser = WebCommon.GetAuthUsername();
+            obj.UpdateUser = AccountSession.Session;
             obj.UpdateDate = DateTime.Now;
             DataRepository.UserGroupProvider.Update(obj);
             

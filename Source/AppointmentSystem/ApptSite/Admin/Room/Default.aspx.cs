@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.UI;
 using AppointmentSystem.Data;
 using AppointmentSystem.Settings.BusinessLayer;
+using ApptSite;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
 using DevExpress.Web.ASPxEditors;
@@ -22,7 +23,7 @@ public partial class Admin_Room_edit : Page
         try
         {
             // Check reading right
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridRoom.Visible = false;
@@ -39,15 +40,15 @@ public partial class Admin_Room_edit : Page
             if (gridcolums == null) return;
 
             // Gan visible cho nut new, edit bang cach kiem tra quyen
-            gridcolums.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,
+            gridcolums.EditButton.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode,
                                                                        OperationConstant.Update.Key, out _message);
 
             // Set hien thi/an cho nut new
-            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,
+            btnAdd.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode,
                                                         OperationConstant.Create.Key, out _message);
 
             // Set hien thi/an cho nut delete
-            btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+            btnGeneralDelete.Visible = RightAccess.CheckUserRight(AccountSession.Session,
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,
                                                                                   out _message);
@@ -81,7 +82,7 @@ public partial class Admin_Room_edit : Page
             if (e.ButtonID != "btnDelete") return;
             #region Delete row
             // Check deleting right
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 return;
@@ -113,7 +114,7 @@ public partial class Admin_Room_edit : Page
                     return;
                 }
                 room.IsDisabled = true;
-                room.UpdateUser = WebCommon.GetAuthUsername();
+                room.UpdateUser = AccountSession.Session;
                 room.UpdateDate = DateTime.Now;
                 DataRepository.RoomProvider.Update(room);
                 WebCommon.AlertGridView(sender, "Room is deleted successfully.");
@@ -132,7 +133,7 @@ public partial class Admin_Room_edit : Page
         try
         {
             // Validate user right for creating
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
@@ -159,7 +160,7 @@ public partial class Admin_Room_edit : Page
 
             // Set pure value
             e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert delete successfully
@@ -178,7 +179,7 @@ public partial class Admin_Room_edit : Page
         try
         {
             // Validate user right for updating
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message))//Kiem tra xem user co quyen cap nhat hay khong
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _message))//Kiem tra xem user co quyen cap nhat hay khong
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
@@ -205,7 +206,7 @@ public partial class Admin_Room_edit : Page
 
             // Set pure value
             e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert delete successfully
@@ -250,7 +251,7 @@ public partial class Admin_Room_edit : Page
             if (e.Parameters == "Delete")
             {
                 // Check deleting right
-                if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+                if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
                 {
                     WebCommon.AlertGridView(sender, _message);
                     tm.Rollback();
@@ -298,7 +299,7 @@ public partial class Admin_Room_edit : Page
                         return;
                     }
                     room.IsDisabled = true;
-                    room.UpdateUser = WebCommon.GetAuthUsername();
+                    room.UpdateUser = AccountSession.Session;
                     room.UpdateDate = DateTime.Now;
                     DataRepository.RoomProvider.Update(tm, room);
                 }

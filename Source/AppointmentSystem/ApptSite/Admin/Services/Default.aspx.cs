@@ -4,6 +4,7 @@ using System.Linq;
 using AppointmentSystem.Data;
 using AppointmentSystem.Settings.BusinessLayer;
 using AppointmentSystem.Web.Data;
+using ApptSite;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
@@ -22,7 +23,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
         try
         {
             // Validate user right for reading
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridServices.Visible = false;
@@ -39,17 +40,17 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             if (gridViewCommandColumn == null) return;
 
             // Gan visible cho nut new, edit bang cach kiem tra quyen
-            gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+            gridViewCommandColumn.EditButton.Visible = RightAccess.CheckUserRight(AccountSession.Session,
                                                                                   ScreenCode,
                                                                                   OperationConstant.Update.Key,
                                                                                   out _message);
 
             // Set hien thi/an cho nut new
-            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode,
+            btnAdd.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode,
                                                         OperationConstant.Create.Key, out _message);
 
             // Set hien thi/an cho nut delete
-            btnGeneralDelete.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(),
+            btnGeneralDelete.Visible = RightAccess.CheckUserRight(AccountSession.Session,
                                                                                   ScreenCode,
                                                                                   OperationConstant.Delete.Key,
                                                                                   out _message);
@@ -81,7 +82,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
         {
             #region Validating
             // Validate user right for creating
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key,
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key,
                                        out _message))
             {
                 // Cau lenh nay se quang ra exception va DevExpress se nhan duoc exception de thong bao loi cho nguoi dung
@@ -121,7 +122,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
             e.NewValues["ShortTitle"] = e.NewValues["Title"].ToString().Trim();
             e.NewValues["PriorityIndex"] = index.Value;
-            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
             e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert delete successfully
@@ -144,7 +145,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             if (e.ButtonID != "btnDelete") return;
 
             // Validate user right for deleting
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 // Cau lenh nay se quang ra exception va DevExpress se nhan duoc exception de thong bao loi cho nguoi dung
                 WebCommon.AlertGridView(sender, _message);
@@ -199,7 +200,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             // Neu service dang trong tinh trang hoan toan khong duoc su dung thi tien hanh xoa
             // viec xoa chi o day chi la doi gia tri cua IsDisabled thanh True
             services.IsDisabled = true;
-            services.UpdateUser = WebCommon.GetAuthUsername();
+            services.UpdateUser = AccountSession.Session;
             services.UpdateDate = DateTime.Now;
             DataRepository.ServicesProvider.Update(services);
 
@@ -219,7 +220,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
         {
             #region Validating
             // Validate user right for updating
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
@@ -253,7 +254,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             e.NewValues["Title"] = e.NewValues["Title"].ToString().Trim();
             e.NewValues["ShortTitle"] = e.NewValues["ShortTitle"].ToString().Trim();
             e.NewValues["PriorityIndex"] = index.Value;
-            e.NewValues["UpdateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["UpdateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
             e.NewValues["UpdateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert update successfully
@@ -281,7 +282,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
             if (e.Parameters == "Delete")
             {
                 // Check deleting right
-                if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+                if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
                 {
                     WebCommon.AlertGridView(sender, _message);
                     tm.Rollback();
@@ -331,7 +332,7 @@ public partial class Admin_Services_Default : System.Web.UI.Page
                         return;
                     }
                     services.IsDisabled = true;
-                    services.UpdateUser = WebCommon.GetAuthUsername();
+                    services.UpdateUser = AccountSession.Session;
                     services.UpdateDate = DateTime.Now;
                     DataRepository.ServicesProvider.Update(tm, services);
                 }

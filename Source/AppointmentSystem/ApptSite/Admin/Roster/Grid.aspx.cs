@@ -11,6 +11,7 @@ using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using AppointmentSystem.Web.Data;
 using Appt.Common.Constants;
+using ApptSite;
 using Common;
 using Common.Util;
 using DevExpress.Utils;
@@ -35,7 +36,7 @@ public partial class Admin_Roster_Grid : Page
             }
 
             // Check reading right
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Read.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _message))
             {
                 WebCommon.ShowDialog(this, _message, WebCommon.GetHomepageUrl(this));
                 gridRoster.Visible = false;
@@ -52,8 +53,8 @@ public partial class Admin_Roster_Grid : Page
             if (commandColumn == null) return;
 
             // Gan visible cho nut new, edit bang cach kiem tra quyen
-            commandColumn.EditButton.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message);
-            btnAdd.Visible = RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message);
+            commandColumn.EditButton.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _message);
+            btnAdd.Visible = RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message);
 
             // Get delete button
             GridViewCommandColumnCustomButton btnDelete =
@@ -61,7 +62,7 @@ public partial class Admin_Roster_Grid : Page
                     customButton => customButton.ID == "btnDelete");
 
             // Check delete right, if user has no right to delete => invisible delete button
-            if (btnDelete != null && !RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (btnDelete != null && !RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 btnDelete.Visibility = GridViewCustomButtonVisibility.Invisible;
             }
@@ -90,7 +91,7 @@ public partial class Admin_Roster_Grid : Page
             if (e.ButtonID != "btnDelete") return;
             #region Delete row
             // Check deleting right
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Delete.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 return;
@@ -111,7 +112,7 @@ public partial class Admin_Roster_Grid : Page
             }
 
             roster.IsDisabled = true;
-            roster.UpdateUser = WebCommon.GetAuthUsername();
+            roster.UpdateUser = AccountSession.Session;
             roster.UpdateDate = DateTime.Now;
             DataRepository.RosterProvider.Update(roster);
             WebCommon.AlertGridView(sender, "Roster is deleted successfully.");
@@ -134,7 +135,7 @@ public partial class Admin_Roster_Grid : Page
         try
         {
             // Validate user right for creating
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Create.Key, out _message))
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _message))
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
@@ -263,7 +264,7 @@ public partial class Admin_Roster_Grid : Page
                 e.NewValues["RepeatId"] = repeatRoster;
                 e.NewValues["Username"] = username;
                 e.NewValues["RosterTypeId"] = intRosterTypeId;
-                e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+                e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
                 e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
 
                 // Lay danh sach ngay duoc lap lai
@@ -298,8 +299,8 @@ public partial class Admin_Roster_Grid : Page
                             EndTime = dtTmpEnd,
                             RepeatId = repeatRoster,
                             Note = note,
-                            CreateUser = WebCommon.GetAuthUsername(),
-                            UpdateUser = WebCommon.GetAuthUsername()
+                            CreateUser = AccountSession.Session,
+                            UpdateUser = AccountSession.Session
                         });
                     }
                 }
@@ -366,7 +367,7 @@ public partial class Admin_Roster_Grid : Page
                 e.NewValues["RosterTypeId"] = intRosterTypeId;
                 e.NewValues["StartTime"] = dtStart;
                 e.NewValues["EndTime"] = dtEnd;
-                e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+                e.NewValues["CreateUser"] = e.NewValues["UpdateUser"] = AccountSession.Session;
                 e.NewValues["CreateDate"] = e.NewValues["UpdateDate"] = DateTime.Now;
             }
 
@@ -394,7 +395,7 @@ public partial class Admin_Roster_Grid : Page
             tm.BeginTransaction();
 
             // Validate user right for updating
-            if (!RightAccess.CheckUserRight(EntitiesUtilities.GetAuthName(), ScreenCode, OperationConstant.Update.Key, out _message))//Kiem tra xem user co quyen cap nhat hay khong
+            if (!RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _message))//Kiem tra xem user co quyen cap nhat hay khong
             {
                 WebCommon.AlertGridView(sender, _message);
                 e.Cancel = true;
@@ -560,7 +561,7 @@ public partial class Admin_Roster_Grid : Page
                     roster.Note = note;
                     roster.RosterTypeId = intRosterTypeId;
                     roster.Username = username;
-                    roster.UpdateUser = WebCommon.GetAuthUsername();
+                    roster.UpdateUser = AccountSession.Session;
                     roster.UpdateDate = DateTime.Now;
                     DataRepository.RosterProvider.Save(tm, roster);
                 }
@@ -579,7 +580,7 @@ public partial class Admin_Roster_Grid : Page
             e.NewValues["RosterTypeId"] = intRosterTypeId;
             e.NewValues["StartTime"] = newStartTime;
             e.NewValues["EndTime"] = newEndTime;
-            e.NewValues["UpdateUser"] = WebCommon.GetAuthUsername();
+            e.NewValues["UpdateUser"] = AccountSession.Session;
             e.NewValues["UpdateDate"] = DateTime.Now;
 
             // Show message alert delete successfully

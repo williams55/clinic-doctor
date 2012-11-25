@@ -16,5 +16,13 @@ namespace AppointmentBusiness.BO
         /// <param name="message">Message is returned</param>
         /// <returns></returns>
         bool ValidateCurrentUser(string username, out Users user, out string message);
+
+        /// <summary>
+        /// Kiem tra username va password khi dang nhap co thanh cong khong
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        bool Authentication(string username, string password);
     }
 }
