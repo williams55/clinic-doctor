@@ -548,10 +548,10 @@
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
         </Parameters>
     </data:UsersDataSource>
-    <data:StatusDataSource SelectMethod="GetPaged" runat="server" ID="StatusDataSource">
+    <data:StatusDataSource SelectMethod="GetPaged" runat="server" ID="StatusDataSource" EnableSorting="True">
         <Parameters>
             <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
-            <data:CustomParameter Name="OrderByClause" Value="PriorityIndex ASC" ConvertEmptyStringToNull="false" />
+            <data:CustomParameter Name="OrderBy" Value="PriorityIndex ASC" ConvertEmptyStringToNull="false" />
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
         </Parameters>
     </data:StatusDataSource>
