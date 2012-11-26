@@ -60,17 +60,19 @@ function initSchedule(weekday) {
         var h = parseInt(container.style.height);
         var bottom = container.className.indexOf('dhx_cal_select_menu') > 0;
 
-        var inner_html = '<div class="dhx_event_move" style="cursor: pointer; width:' + (w - (this._quirks ? 4 : 14)) + 'px; height:' + (h + 1) + 'px;' + bg_color + '' + color + '">' +
+        var inner_html = '<div class="dhx_event_move" style="cursor: pointer; width:' + (w - (this._quirks ? 4 : 14)) 
+            // Chieu cao giam di de cho border
+            + 'px; height:' + (h - 3) + 'px;' + bg_color + '' + color + '">' +
             '<div style="padding: 5px; text-align: center; font-weight: bold;">' +
             (event.DoctorShortName ? event.DoctorShortName + '' : '') +
             (event.RosterTypeTitle ? ' - '  + event.RosterTypeTitle + '<br />' : '') + 
-            scheduler.templates.event_date(event.start_date) + " - " + scheduler.templates.event_date(event.end_date) +
+            //scheduler.templates.event_date(event.start_date) + " - " + scheduler.templates.event_date(event.end_date) +
             '</div></div>'; // +2 css specific, moved from render_event
         var footer_class = "dhx_event_resize";
         if (bottom)
             footer_class = "dhx_resize_denied";
 
-        inner_html += '<div class="' + footer_class + '" style=" width:' + (w - 8) + 'px;' + (bottom ? ' margin-top:-1px;' : '') + '' + bg_color + '' + color + '" ></div>';
+        inner_html += '<div class="' + footer_class + '" style=" width:' + (w - 14) + 'px;' + (bottom ? ' margin-top:-1px;' : '') + '' + bg_color + '' + color + '" ></div>';
 
         container.innerHTML = inner_html;
         return true; // required, true - we've created custom form; false - display default one instead

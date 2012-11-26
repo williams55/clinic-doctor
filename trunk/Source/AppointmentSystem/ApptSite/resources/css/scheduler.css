@@ -12,6 +12,17 @@
     z-index: 1;
 }
 
+/* Ke border */
+.dhx_event_move {
+    border: 1px solid #999;
+}
+
+/* Ke border */
+.dhx_event_resize {
+    height: 2px;
+    margin: -3px 0 0 1px;
+}
+
 /* Doi mau chu */
 .dhx_cal_event_line {
     color: black;
