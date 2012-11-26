@@ -120,7 +120,7 @@
                 EnablePaging="True" EnableSorting="True">
                 <Parameters>
                     <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
-                    <data:CustomParameter Name="OrderByClause" Value="" ConvertEmptyStringToNull="false" />
+                    <data:CustomParameter Name="OrderBy" Value="PriorityIndex ASC" ConvertEmptyStringToNull="false" />
                     <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
                 </Parameters>
             </data:StatusDataSource>

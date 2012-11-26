@@ -42,7 +42,6 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             divDelete.Visible = CheckDeleting(out _message);
             divSave.Visible = CheckCreating(out _message);
             divUpdate.Visible = CheckUpdating(out _message);
-
             BindStatus();
         }
         catch (Exception ex)
