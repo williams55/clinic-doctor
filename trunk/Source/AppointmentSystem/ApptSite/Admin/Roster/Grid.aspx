@@ -34,7 +34,7 @@
             <h5>
                 Roster</h5>
             <ul class="links">
-                <li><a href="Default.aspx">Messages</a></li>
+                <li><a href="Default.aspx">Scheduler</a></li>
                 <li class="ui-tabs-selected"><a href="javascript:return false;">Grid</a></li>
             </ul>
         </div>

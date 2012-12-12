@@ -45,7 +45,8 @@ function initSchedule(weekday) {
     scheduler.locale.labels.unit_tab = "Unit";
     scheduler.locale.labels.timeline_tab = "Timeline";
     scheduler.xy.min_event_height = 0;
-    
+    scheduler.config.multi_day = true; // rest of multiday events would be displayed at the top
+
     // Them nut chuc nang dua vao quyen
     scheduler.config.icons_select = [];
     if ($('[id$=divUpdate]').length) {
@@ -484,7 +485,8 @@ function MoveAppointment(eventId, objEvent) {
         id: eventId,
         startTime: objEvent.start_date,
         endTime: objEvent.end_date,
-        doctorId: objEvent.section_id
+        doctorId: objEvent.section_id,
+        mode: scheduler._mode
     });
     isUsing = true;
     $.ajax({
@@ -566,7 +568,8 @@ function NewAppointment() {
         endDate: endDate.GetValue(),
         doctorId: cboDoctor.GetValue(),
         roomId: cboRoom.GetValue(),
-        status: cboStatus.GetValue()
+        status: cboStatus.GetValue(),
+        mode: scheduler._mode
     });
     ShowProgress();
     $.ajax({
@@ -610,7 +613,8 @@ function UpdateAppointment() {
         endDate: endDate.GetValue(),
         doctorId: cboDoctor.GetValue(),
         roomId: cboRoom.GetValue(),
-        status: cboStatus.GetValue()
+        status: cboStatus.GetValue(),
+        mode: scheduler._mode
     });
     ShowProgress();
     $.ajax({

@@ -42,6 +42,7 @@ function initSchedule(weekday) {
     scheduler.config.time_step = stepTime;
     scheduler.config.mark_now = false;
     scheduler.xy.min_event_height = 0;
+    scheduler.config.multi_day = true; // rest of multiday events would be displayed at the top
     
     // Them nut chuc nang dua vao quyen
     scheduler.config.icons_select = [];

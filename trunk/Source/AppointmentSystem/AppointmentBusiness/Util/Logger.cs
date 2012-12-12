@@ -61,51 +61,59 @@ namespace AppointmentBusiness.Util
         /// Write log changes between two version of an oject before and after modify.
         /// </summary>
         /// <param name="originalObject">The original object to compare.</param>
-        /// <param name="modifiedObject">The modified object to compare.</param>
+        /// <param name="modifiedObject">The modified object to compare. If null => create new</param>
         /// <param name="user">The user name was made changes.</param>
         /// <param name="executeDataSetMethods">The methods to execute Dataset </param>
         public static void WriteLog(object originalObject, object modifiedObject, string user, ExcuteDataSet executeDataSetMethods)
         {
-            // if not changes between two version
-            if (ReferenceEquals(originalObject, modifiedObject))
-            {
-                // do nothing
-                return;
-            }
-
-            // get all infos of versions
-            var originalInfos = originalObject.GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => Attribute.GetCustomAttribute(p, typeof(DescriptionAttribute)) != null)
-                .ToList();
-            var modifiedInfos = modifiedObject.GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => Attribute.GetCustomAttribute(p, typeof(DescriptionAttribute)) != null)
-                .ToList();
-
-            originalInfos.Sort((info, propertyInfo) => String.CompareOrdinal(info.Name, propertyInfo.Name));
-            modifiedInfos.Sort((info, propertyInfo) => String.CompareOrdinal(info.Name, propertyInfo.Name));
-
             var stringBuilder = new StringBuilder();
 
-            // with each property
-            for (var i = 0; i < originalInfos.Count; i++)
+            // If create object
+            if (modifiedObject == null)
             {
-                // get value of property
-                var originalValue = originalInfos[i].GetValue(originalObject, null);
-                var modifiedValue = modifiedInfos[i].GetValue(modifiedObject, null);
-
-                // if current property is not changes
-                if (AreValuesEqual(originalValue, modifiedValue))
+                stringBuilder.AppendLine(String.Format("Create new"));
+            }
+            else
+            {
+                // if not changes between two version
+                if (ReferenceEquals(originalObject, modifiedObject))
                 {
-                    // go next property
-                    continue;
+                    // do nothing
+                    return;
                 }
-                // append change to log
-                stringBuilder.AppendLine(String.Format("Change {0} from \"{1}\" to \"{2}\"",
-                                                       originalInfos[i].Name,
-                                                       originalValue,
-                                                       modifiedValue));
+
+                // get all infos of versions
+                var originalInfos = originalObject.GetType()
+                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(p => Attribute.GetCustomAttribute(p, typeof(DescriptionAttribute)) != null)
+                    .ToList();
+                var modifiedInfos = modifiedObject.GetType()
+                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(p => Attribute.GetCustomAttribute(p, typeof(DescriptionAttribute)) != null)
+                    .ToList();
+
+                originalInfos.Sort((info, propertyInfo) => String.CompareOrdinal(info.Name, propertyInfo.Name));
+                modifiedInfos.Sort((info, propertyInfo) => String.CompareOrdinal(info.Name, propertyInfo.Name));
+
+                // with each property
+                for (var i = 0; i < originalInfos.Count; i++)
+                {
+                    // get value of property
+                    var originalValue = originalInfos[i].GetValue(originalObject, null);
+                    var modifiedValue = modifiedInfos[i].GetValue(modifiedObject, null);
+
+                    // if current property is not changes
+                    if (AreValuesEqual(originalValue, modifiedValue))
+                    {
+                        // go next property
+                        continue;
+                    }
+                    // append change to log
+                    stringBuilder.AppendLine(String.Format("Change {0} from \"{1}\" to \"{2}\"",
+                                                           originalInfos[i].Name,
+                                                           originalValue,
+                                                           modifiedValue));
+                }
             }
 
             //Create log table if not exist
