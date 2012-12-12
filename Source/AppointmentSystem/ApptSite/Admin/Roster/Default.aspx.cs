@@ -11,7 +11,6 @@ using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using ApptSite;
-using Common.Extension;
 using Common.Util;
 using Log.Controller;
 using Newtonsoft.Json;
@@ -312,7 +311,18 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             // Neu mode la thang thi select date thoi, de co the tao timespan
             if (mode == "month")
             {
-                var lstDate = lstRoster.Select(item => item.StartTime.ToString("MM/dd/yyyy 00:00:00")).Distinct().ToList();
+                var lstDate = new List<string>();
+                foreach (var roster in lstRoster)
+                {
+                    var dt = new DateTime(roster.StartTime.Year, roster.StartTime.Month,
+                                               roster.StartTime.Day);
+                    while (dt <= roster.EndTime)
+                    {
+                        lstDate.Add(String.Format("{0:MM/dd/yyyy 00:00:00}", dt));
+                        dt = dt.AddDays(1);
+                    }
+                }
+
                 foreach (string strDate in lstDate)
                 {
                     lstResult.Add(new
@@ -320,6 +330,8 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                         Date = strDate
                     });
                 }
+
+                lstResult = lstResult.Distinct().ToList();
             }
             else
             {

@@ -20,6 +20,7 @@ namespace AppointmentBusiness.BO
             {
                 if (!ValidateAppointment(appointment, false, ref message)) return false;
                 DataRepository.AppointmentProvider.Insert(appointment);
+                GlobalUtilities.WriteLog(BuildApptHistory(appointment), null, appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
                 SendEmail(appointment, false);
                 return true;
             }
@@ -47,7 +48,7 @@ namespace AppointmentBusiness.BO
                     message = "There is no appointment to update.";
                     return false;
                 }
-                
+
                 var comparedAppt = oldAppt.Copy();
 
                 // Gan gia tri moi
@@ -112,11 +113,14 @@ namespace AppointmentBusiness.BO
                 // Get appointment
                 int count;
                 TList<Appointment> lstAppt =
-                    DataRepository.AppointmentProvider.GetPaged(String.Format("IsDisabled = 'False' AND StartTime BETWEEN N'{0}' AND N'{1}'"
-                                                                              , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
-                                                                              toDate.ToString("yyyy-MM-dd HH:mm:ss.000")),
-                                                                string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength,
-                                                                out count);
+                    DataRepository.AppointmentProvider.GetPaged(
+                        String.Format("IsDisabled = 'False' AND (StartTime BETWEEN N'{0}' AND N'{1}'"
+                                      + " OR EndTime BETWEEN N'{0}' AND N'{1}'"
+                                      + " OR (StartTime <= N'{0}' AND EndTime >= N'{1}'))"
+                                      , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
+                                      toDate.ToString("yyyy-MM-dd HH:mm:ss.000")),
+                        string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength,
+                        out count);
 
                 // Set out of date for passed appointment
                 //lstAppt.ForEach(x =>

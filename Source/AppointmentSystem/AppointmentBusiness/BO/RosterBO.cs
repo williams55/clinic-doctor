@@ -180,7 +180,9 @@ namespace AppointmentBusiness.BO
                 int count;
                 var lstObj =
                     DataRepository.RosterProvider.GetPaged(
-                        String.Format("IsDisabled = 'False' AND StartTime BETWEEN N'{0}' AND N'{1}'"
+                        String.Format("IsDisabled = 'False' AND (StartTime BETWEEN N'{0}' AND N'{1}'"
+                                            + " OR EndTime BETWEEN N'{0}' AND N'{1}'"
+                                            + " OR (StartTime <= N'{0}' AND EndTime >= N'{1}'))"
                                       , fromDate.ToString("yyyy-MM-dd HH:mm:ss.000"),
                                       toDate.ToString("yyyy-MM-dd HH:mm:ss.000")), string.Empty, 0,
                         ServiceFacade.SettingsHelper.GetPagedLength, out count);

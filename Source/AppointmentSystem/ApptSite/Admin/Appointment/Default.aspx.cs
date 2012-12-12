@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -216,13 +217,16 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 }
 
                 var appt = DataRepository.AppointmentProvider.GetById(hdId.Value);
-                if (appt == null || appt.IsDisabled)
+                var lst = new DataSet();
+                if (appt != null && !appt.IsDisabled)
                 {
-                    return;
+                    gridHistory.DataSource = GlobalUtilities.ReadLog(BoFactory.AppointmentBO.BuildApptHistory(appt), DataRepository.Provider.ExecuteDataSet);
+                }
+                else
+                {
+                    gridHistory.DataSource = new List<Appointment>();
                 }
 
-                gridHistory.DataSource =
-                   GlobalUtilities.ReadLog(BoFactory.AppointmentBO.BuildApptHistory(appt), DataRepository.Provider.ExecuteDataSet);
                 gridHistory.DataBind();
             }
         }
@@ -602,8 +606,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// Build Appointment to returned object
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="dt"></param>
+    /// <param name="mode"></param>
     /// <returns></returns>
-    private static object BuildAppointment(Appointment obj)
+    private static object BuildAppointment(Appointment obj, DateTime dt, string mode)
     {
         try
         {
@@ -618,11 +624,14 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             if (obj.StartTime != null && obj.EndTime != null)
             {
+                var dtEnd = new DateTime(dt.Year, dt.Month, dt.Day, 23, 59, 59);
+                var dtStart = new DateTime(dt.Year, dt.Month, dt.Day);
+
                 return new
                 {
                     id = obj.Id,
-                    start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.StartTime),
-                    end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.EndTime),
+                    start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.StartTime < dtStart && mode != "week" ? dtStart : obj.StartTime),
+                    end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.EndTime > dtEnd && mode != "week" ? dtEnd : obj.EndTime),
                     section_id = obj.Username,
                     text = ParsePatientName(patient),
                     DoctorDisplayname = obj.UsernameSource.DisplayName,
@@ -652,8 +661,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// Build object to string result
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="dt"></param>
+    /// <param name="mode"></param>
     /// <returns></returns>
-    private static List<object> BuildListAppointment(Appointment obj)
+    private static List<object> BuildListAppointment(Appointment obj, DateTime dt, string mode)
     {
         var lstEvent = new List<object>();
         try
@@ -666,7 +677,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             DataRepository.AppointmentProvider.DeepLoad(obj);
 
             if (obj.StartTime != null && obj.EndTime != null)
-                lstEvent.Add(BuildAppointment(obj));
+                lstEvent.Add(BuildAppointment(obj, dt, mode));
         }
         catch (Exception ex)
         {
@@ -679,8 +690,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// Build object to string result
     /// </summary>
     /// <param name="lst"></param>
+    /// <param name="dt"></param>
+    /// <param name="mode"></param>
     /// <returns></returns>
-    private static List<object> BuildListAppointment(TList<Appointment> lst)
+    private static List<object> BuildListAppointment(TList<Appointment> lst, DateTime dt, string mode)
     {
         var lstEvent = new List<object>();
         try
@@ -688,7 +701,9 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             // Load all relational info
             DataRepository.AppointmentProvider.DeepLoad(lst);
 
-            lstEvent.AddRange(from appointment in lst where appointment != null && appointment.StartTime != null && appointment.EndTime != null select BuildAppointment(appointment));
+            lstEvent.AddRange(from appointment in lst
+                              where appointment != null && appointment.StartTime != null && appointment.EndTime != null
+                              select BuildAppointment(appointment, dt, mode));
         }
         catch (Exception ex)
         {
@@ -735,6 +750,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             // Sort theo priority
             lstService.Sort("PriorityIndex ASC");
 
+            var dtStart = Convert.ToDateTime(date);
+            var dtEnd = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, 23, 59, 59);
+            dtStart = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day);
+
             lst = lstService.Select(service => new
                 {
                     service.Id,
@@ -748,11 +767,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                             Rosters = lstRosters.Where(roster => roster.Username == doctor.Username)
                                 .Select(roster => new
                                     {
-                                        startTime = roster.StartTime.ToString("MM-dd-yyyy HH:mm:ss"),
-                                        endTime = roster.EndTime.ToString("MM-dd-yyyy HH:mm:ss"),
+                                        startTime = (roster.StartTime < dtStart ? dtStart : roster.StartTime).ToString("MM-dd-yyyy HH:mm:ss"),
+                                        endTime = (roster.EndTime > dtEnd ? dtEnd : roster.EndTime).ToString("MM-dd-yyyy HH:mm:ss"),
                                         color = roster.RosterTypeIdSource.ColorCode
-                                    })
-                        })
+                                    }).ToList()
+                        }).ToList()
                 }).ToList();
         }
         catch (Exception ex)
@@ -820,7 +839,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string NewAppointment(string patientCode, string note, DateTime? startTime, DateTime? endTime
-        , DateTime? startDate, DateTime? endDate, string doctorId, int? roomId, string status)
+        , DateTime? startDate, DateTime? endDate, string doctorId, int? roomId, string status, string mode)
     {
         try
         {
@@ -866,7 +885,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             if (!BoFactory.AppointmentBO.Insert(appointment, ref _message))
                 return WebCommon.BuildFailedResult(_message);
 
-            return WebCommon.BuildSuccessfulResult(BuildListAppointment(appointment), _message);
+            return WebCommon.BuildSuccessfulResult(BuildListAppointment(appointment, dtStart, mode), _message);
         }
         catch (Exception ex)
         {
@@ -885,7 +904,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string MoveAppointment(string id, DateTime? startTime, DateTime? endTime, string doctorId)
+    public static string MoveAppointment(string id, DateTime? startTime, DateTime? endTime, string doctorId, string mode)
     {
         try
         {
@@ -925,7 +944,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             if (!BoFactory.AppointmentBO.Update(ref appointment, ref _message))
                 return WebCommon.BuildFailedResult(_message);
 
-            return WebCommon.BuildSuccessfulResult(BuildListAppointment(appointment));
+            return WebCommon.BuildSuccessfulResult(BuildListAppointment(appointment, Convert.ToDateTime(startTime), mode));
         }
         catch (Exception ex)
         {
@@ -951,7 +970,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static string UpdateAppointment(string id, string patientCode, string note, DateTime? startTime, DateTime? endTime
-        , DateTime? startDate, DateTime? endDate, string doctorId, int? roomId, string status)
+        , DateTime? startDate, DateTime? endDate, string doctorId, int? roomId, string status, string mode)
     {
         try
         {
@@ -998,7 +1017,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             if (!BoFactory.AppointmentBO.Update(ref appointment, ref _message))
                 return WebCommon.BuildFailedResult(_message);
 
-            return WebCommon.BuildSuccessfulResult(BuildListAppointment(appointment));
+            return WebCommon.BuildSuccessfulResult(BuildListAppointment(appointment, dtStart, mode));
         }
         catch (Exception ex)
         {
@@ -1044,7 +1063,23 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             if (mode == "month")
             {
                 var lstResult = new List<object>();
-                var lstDate = lstAppt.Select(item => String.Format("{0:MM/dd/yyyy 00:00:00}", item.StartTime)).Distinct().ToList();
+                var lstDate = new List<string>();
+
+                foreach (var appointment in lstAppt)
+                {
+                    if (appointment.StartTime == null || appointment.EndTime == null)
+                    {
+                        continue;
+                    }
+                    var dt = new DateTime(appointment.StartTime.Value.Year, appointment.StartTime.Value.Month,
+                                               appointment.StartTime.Value.Day);
+                    while (dt <= appointment.EndTime.Value)
+                    {
+                        lstDate.Add(String.Format("{0:MM/dd/yyyy 00:00:00}", dt));
+                        dt = dt.AddDays(1);
+                    }
+                }
+
                 foreach (string strDate in lstDate)
                 {
                     lstResult.Add(new
@@ -1052,11 +1087,13 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                         Date = strDate
                     });
                 }
+
+                lstResult = lstResult.Distinct().ToList();
                 events = lstResult;
             }
             else
             {
-                events = BuildListAppointment(lstAppt);
+                events = BuildListAppointment(lstAppt, Convert.ToDateTime(date), mode);
             }
 
             // Tra ve danh sach
