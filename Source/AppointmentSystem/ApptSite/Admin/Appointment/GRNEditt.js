@@ -167,7 +167,7 @@ function initSchedule(weekday) {
     });
 
     // Load roster
-    scheduler.init('scheduler_here', currentDate, "unit");
+    scheduler.init('scheduler_here', currentDate, "timeline");
 
     ShowMinical();
 
