@@ -363,15 +363,19 @@ namespace AppointmentBusiness.BO
             {
                 int count;
                 string query =
-                    String.Format("{3} = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'" +
-                                  " AND StatusId NOT IN ('{4}', '{5}') AND Id <> '{6}'",
-                                  compareValue, dtEnd.ToString("yyyy-MM-dd HH:mm:ss"),
-                                  dtStart.ToString("yyyy-MM-dd HH:mm:ss"), column,
+                    String.Format("{3} = '{0}' AND IsDisabled = 'False' AND (StartTime BETWEEN N'{1}' AND N'{2}'"
+                                  + " OR EndTime BETWEEN N'{1}' AND N'{2}'"
+                                  + " OR (StartTime <= N'{1}' AND EndTime >= N'{2}'))"
+                                  + " AND StatusId NOT IN ('{4}', '{5}') AND Id <> '{6}'",
+                                  compareValue, dtStart.ToString("yyyy-MM-dd HH:mm:ss"),
+                                  dtEnd.ToString("yyyy-MM-dd HH:mm:ss"), column,
                                   ApptStatus.Cancelled, ApptStatus.Completed,
                                   string.IsNullOrEmpty(id) ? string.Empty : id);
                 DataRepository.AppointmentProvider.GetPaged(query, "Id desc", 0,
                                                                       ServiceFacade.SettingsHelper.GetPagedLength,
                                                                       out count);
+
+                
 
                 if (count > 0)
                 {
