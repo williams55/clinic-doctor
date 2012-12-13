@@ -474,6 +474,51 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 	}
 	#endregion
 
+	#region _VCSPatient_UpdateRemark
+	
+	/// <summary>
+	///	This method wraps the '_VCSPatient_UpdateRemark' stored procedure. 
+	/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="remark"> A <c>System.String</c> instance.</param>
+	/// <param name="start">Row number at which to start reading.</param>
+	/// <param name="pageLength">Number of rows to return.</param>
+	/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+	/// <remark>This method is generated from a stored procedure.</remark>
+	public override void UpdateRemark(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String updateUser, System.String remark)
+	{
+		SqlDatabase database = new SqlDatabase(this._connectionString);
+		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_UpdateRemark", true);
+		
+		database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength,  patientCode );
+		database.AddInParameter(commandWrapper, "@UpdateUser", DbType.String,  updateUser );
+		database.AddInParameter(commandWrapper, "@Remark", DbType.String,  remark );
+		
+
+		try
+		{
+			
+			if (transactionManager != null)
+			{	
+				Utility.ExecuteNonQuery(transactionManager, commandWrapper);
+			}
+			else
+			{
+				Utility.ExecuteNonQuery(database, commandWrapper);
+			}
+			
+			
+			
+			return;
+		}
+		catch(SqlException ex)
+		{
+			throw new DataException("A data access error occured, please check inner SqlException.", ex);
+		}
+	}
+	#endregion
+
 	#region _VCSPatient_UpdateApptRemark
 	
 	/// <summary>
