@@ -5,12 +5,11 @@
     /// </summary>
     public class ApptStatus
     {
-        public const string Available = "Available";
-        public const string Blocked = "Blocked";
-        public const string CheckedIn = "CheckedIn";
-        public const string Done = "Done";
-        public const string InProgress = "InProgress";
-        public const string Occuppied = "Occuppied";
-        public const string Cancel = "Cancel";
+        public const string Cancelled = "Cancelled";
+        public const string CheckedIn = "Checked-in";
+        public const string Completed = "Completed";
+        public const string Confirmed = "Confirmed";
+        public const string NoShow = "No Show";
+        public const string Reserved = "Reserved";
     }
 }

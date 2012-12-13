@@ -64,7 +64,7 @@ namespace AppointmentBusiness.BO
                     return false;
                 }
 
-                DataRepository.VcsPatientProvider.UpdateApptRemark(patientCode, updateUser, apptRemark);
+                DataRepository.VcsPatientProvider.UpdateRemark(patientCode, updateUser, apptRemark);
                 return true;
             }
             catch (Exception ex)

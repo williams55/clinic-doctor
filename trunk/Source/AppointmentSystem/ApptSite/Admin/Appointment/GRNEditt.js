@@ -316,8 +316,9 @@ function GetPatientInfo(currentId) {
                         $("#divLastname").html(arr.LastName + " &nbsp;");
                         $("#divCellPhone").html(arr.CellPhone + " &nbsp;");
                         $("#divBirthday").html(arr.Birthdate);
-                        $("#divNote").html(arr.Remark);
-                        $("#apptRemark").val(arr.ApptRemark);
+                        $("#divExpDate").html(arr.ExpDate);
+                        $("#divNationality").html(arr.Nationality);
+                        $("#apptRemark").val(arr.Remark);
                     }
                 }
                 else {
