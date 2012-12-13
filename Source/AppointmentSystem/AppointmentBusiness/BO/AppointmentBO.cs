@@ -298,7 +298,7 @@ namespace AppointmentBusiness.BO
 
                 #region Check Conflict
                 // Neu cac trang thai khong phai la cancel, done, block [may cai nay co the thay doi] thi kiem tra conflict
-                if (oldAppt.StatusId != ApptStatus.Cancel && oldAppt.StatusId != ApptStatus.Done && oldAppt.StatusId != ApptStatus.Blocked)
+                if (oldAppt.StatusId != ApptStatus.Cancelled && oldAppt.StatusId != ApptStatus.Completed)
                 {
                     // Check conflict Patient
                     if (!CheckConflict("PatientCode", oldAppt.PatientCode, string.Empty,
@@ -364,10 +364,10 @@ namespace AppointmentBusiness.BO
                 int count;
                 string query =
                     String.Format("{3} = '{0}' AND IsDisabled = 'False' AND StartTime < '{1}' AND EndTime > '{2}'" +
-                                  " AND StatusId NOT IN ('{4}', '{5}', '{6}') AND Id <> '{7}'",
+                                  " AND StatusId NOT IN ('{4}', '{5}') AND Id <> '{6}'",
                                   compareValue, dtEnd.ToString("yyyy-MM-dd HH:mm:ss"),
                                   dtStart.ToString("yyyy-MM-dd HH:mm:ss"), column,
-                                  ApptStatus.Cancel, ApptStatus.Done, ApptStatus.Blocked,
+                                  ApptStatus.Cancelled, ApptStatus.Completed,
                                   string.IsNullOrEmpty(id) ? string.Empty : id);
                 DataRepository.AppointmentProvider.GetPaged(query, "Id desc", 0,
                                                                       ServiceFacade.SettingsHelper.GetPagedLength,

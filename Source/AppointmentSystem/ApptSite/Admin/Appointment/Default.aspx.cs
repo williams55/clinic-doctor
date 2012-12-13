@@ -481,21 +481,23 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             var objPatient = objPatients[0];
 
             var lstPatient = new List<object>
-                                 {
-                                     new
-                                         {
-                                             Id = objPatient.PatientCode,
-                                             FirstName = objPatient.FirstName ?? "&nbsp;",
-                                             LastName = objPatient.LastName ?? "&nbsp;",
-                                             HomePhone = objPatient.HomePhone ?? "&nbsp;",
-                                             WorkPhone = objPatient.CompanyPhone ?? "&nbsp;",
-                                             CellPhone = objPatient.MobilePhone ?? "&nbsp;",
-                                             Birthdate = objPatient.DateOfBirth.ToString("MM-dd-yyyy"),
-                                             objPatient.Sex,
-                                             Remark = objPatient.Remark ?? "&nbsp;",
-                                             ApptRemark = objPatient.ApptRemark ?? string.Empty
-                                         }
-                                 };
+                {
+                    new
+                        {
+                            Id = objPatient.PatientCode,
+                            FirstName = objPatient.FirstName ?? "&nbsp;",
+                            LastName = objPatient.LastName ?? "&nbsp;",
+                            HomePhone = objPatient.HomePhone ?? "&nbsp;",
+                            WorkPhone = objPatient.CompanyPhone ?? "&nbsp;",
+                            CellPhone = objPatient.MobilePhone ?? "&nbsp;",
+                            Birthdate = objPatient.DateOfBirth.ToString("MM-dd-yyyy"),
+                            objPatient.Sex,
+                            Nationality = objPatient.Nationality ?? "&nbsp;",
+                            ExpDate = objPatient.MembershipSosExpDate != null? String.Format("{0:MM-dd-yyyy}", objPatient.MembershipSosExpDate) : "&nbsp;",
+                            Remark = objPatient.Remark ?? string.Empty,
+                            ApptRemark = objPatient.ApptRemark ?? string.Empty
+                        }
+                };
 
             return WebCommon.BuildSuccessfulResult(lstPatient);
         }

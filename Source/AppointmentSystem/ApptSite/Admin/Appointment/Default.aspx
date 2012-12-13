@@ -110,8 +110,13 @@
                     <div class="clear">
                     </div>
                     <div class="title-info">
-                        Remark</div>
-                    <div class="content-info required" id="divNote" style="width: 435px;">
+                        Exp Date</div>
+                    <div class="content-info required" id="divExpDate" style="margin-right: 35px;">
+                        &nbsp;
+                    </div>
+                    <div class="title-info">
+                        Nationality</div>
+                    <div class="content-info" id="divNationality">
                         &nbsp;
                     </div>
                     <div class="clear">
@@ -121,7 +126,7 @@
                 </div>
                 <div class="appt-info" style="float: right; width: 270px; height: 125px; margin-right: 20px;">
                     <h5 style="padding: 0 0 5px 0; margin: 0; border: 0px;">
-                        Appointment Remark</h5>
+                        Patient Remark</h5>
                     <textarea id="apptRemark" rows="5" cols="20" style="width: 274px;"></textarea>
                     <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" style="margin: 5px 0;
                         float: right; height: 20px; line-height: 20px;">
