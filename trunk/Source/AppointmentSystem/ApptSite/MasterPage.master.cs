@@ -8,26 +8,32 @@ using AppointmentSystem.Data;
 using ApptSite;
 using Common.Util;
 using Log.Controller;
+using System.Web.Security;
 
 public partial class MasterPage : System.Web.UI.MasterPage
 {
     #region Events
     protected void Page_Load(object sender, EventArgs e)
     {
-        try
-        {
-            if (!AccountSession.IsLogin)
-                Response.Redirect(ResolveUrl("~/Login.aspx") + "?ReturnUrl=" + ResolveUrl(Request.Url.AbsoluteUri));
-
-            var user = DataRepository.UsersProvider.GetByUsername(AccountSession.Session);
-            if (user == null || user.IsDisabled)
+        if (!IsPostBack)
+            try
             {
-                Response.Redirect(ResolveUrl("~/DeniedPage.aspx"));
+                if (!AccountSession.IsLogin)
+                    //Response.Redirect(ResolveUrl("~/Login.aspx") + "?ReturnUrl=" + ResolveUrl(Request.Url.AbsoluteUri));
+                    FormsAuthentication.RedirectToLoginPage();
+                else
+                {
+                    var user = DataRepository.UsersProvider.GetByUsername(AccountSession.Session);
+                    //if (user == null || user.IsDisabled)
+                    //{
+                    //    Response.Redirect(ResolveUrl("~/DeniedPage.aspx"));
+                    //}
+                    lbl_Username.Text = user.DisplayName;
+                }
             }
-        }
-        catch (Exception ex)
-        {
-        }
+            catch (Exception ex)
+            {
+            }
     }
     #endregion
 }

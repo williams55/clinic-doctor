@@ -56,8 +56,8 @@ namespace AppointmentBusiness.BO
             catch (Exception ex)
             {
                 LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                throw ex;
             }
-            return false;
         }
     }
 }

@@ -59,8 +59,8 @@ public class CustomRoleProvider : RoleProvider
 
     public override string[] GetRolesForUser(string username)
     {
-        string authUserName = username.Split('\\')[1];
-        var user = DataRepository.UsersProvider.GetByUsername(authUserName);
+        //string authUserName = username.Split('\\')[1];
+        var user = DataRepository.UsersProvider.GetByUsername(username);
         if (user == null || user.IsDisabled)
         {
             return new string[] { };

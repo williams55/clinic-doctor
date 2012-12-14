@@ -14,7 +14,8 @@ public partial class Login : System.Web.UI.Page
     {
         if (!IsPostBack && AccountSession.IsLogin)
         {
-            Response.Redirect(ResolveUrl("~/"));
+            //Response.Redirect(ResolveUrl("~/"));
+            FormsAuthentication.RedirectFromLoginPage(AccountSession.Session, false);
         }
     }
 
@@ -24,7 +25,8 @@ public partial class Login : System.Web.UI.Page
         if (BoFactory.UserBO.Authentication(usn, txtPsw.Text))
         {
             AccountSession.Session = usn;
-            Response.Redirect(ResolveUrl(Request["ReturnUrl"] ?? "~/"), false);
+            //Response.Redirect(ResolveUrl(Request["ReturnUrl"] ?? "~/"), false);
+            FormsAuthentication.RedirectFromLoginPage(AccountSession.Session, true);
         }
         else
         {
