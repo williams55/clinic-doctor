@@ -137,7 +137,7 @@ function initSchedule(weekday) {
     scheduler.attachEvent("onClick", BlockReadonly);
     scheduler.attachEvent("onEventChanged", EventChanged);
     scheduler.attachEvent("onViewChange", function(mode, date) {
-        if (scrollToCurrent && mode == "unit" && (new Date()).toLocaleDateString() == date.toLocaleDateString()) {
+        if (scrollToCurrent && mode == "day" && (new Date()).toLocaleDateString() == date.toLocaleDateString()) {
             // Get y position
             var top = date.getHours() * $('.dhx_scale_hour:first').outerHeight();
             $('div.dhx_cal_data').scrollTo({ top: top + 'px', left: '0px' }, 800);
@@ -167,7 +167,7 @@ function initSchedule(weekday) {
     });
 
     // Load roster
-    scheduler.init('scheduler_here', currentDate, "timeline");
+    scheduler.init('scheduler_here', currentDate, "day");
 
     ShowMinical();
 

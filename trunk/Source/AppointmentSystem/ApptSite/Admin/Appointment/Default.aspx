@@ -22,8 +22,6 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_active_links.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
-    <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_all_timed.js") %>"
-        type="text/javascript" charset="utf-8"></script>
 
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_limit.js") %>"
         type="text/javascript" charset="utf-8"></script>
