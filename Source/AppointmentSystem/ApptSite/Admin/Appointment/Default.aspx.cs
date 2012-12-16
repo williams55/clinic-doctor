@@ -632,8 +632,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 return new
                 {
                     id = obj.Id,
-                    start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.StartTime < dtStart && mode != "week" ? dtStart : obj.StartTime),
-                    end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.EndTime > dtEnd && mode != "week" ? dtEnd : obj.EndTime),
+                    //start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.StartTime < dtStart && mode != "week" ? dtStart : obj.StartTime),
+                    //end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.EndTime > dtEnd && mode != "week" ? dtEnd : obj.EndTime),
+                    start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.StartTime),
+                    end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.EndTime),
                     section_id = obj.Username,
                     text = ParsePatientName(patient),
                     DoctorDisplayname = obj.UsernameSource.DisplayName,
