@@ -110,10 +110,14 @@ function initSchedule(weekday) {
     };
 
     // Tao unit view voi danh sach doctor duoc chon
+    // Co du lieu de tranh bi loi khi init view unit
     scheduler.createUnitsView({
         name: "unit",
         property: "section_id",
-        list: scheduler.serverList("unit", [])
+        list: scheduler.serverList("unit", [{
+            key: "",
+            label: ""
+        }])
     });
     // Tao timeline view voi danh sach doctor duoc chon
     scheduler.createTimelineView({
@@ -167,7 +171,7 @@ function initSchedule(weekday) {
     });
 
     // Load roster
-    scheduler.init('scheduler_here', currentDate, "day");
+    scheduler.init('scheduler_here', currentDate, "unit");
 
     ShowMinical();
 
@@ -723,6 +727,7 @@ function BuildTabs(scheduler, sections, mode) {
     }
 
     // Update list cho unit, timeline view
+    console.log(tmpSelectedItem.Doctors);
     scheduler.updateCollection("unit", tmpSelectedItem.Doctors);
     scheduler.updateCollection("timeline", tmpSelectedItem.Doctors);
 
