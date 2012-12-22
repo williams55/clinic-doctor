@@ -1,7 +1,8 @@
 SET IDENTITY_INSERT [dbo].[Role] ON
-INSERT INTO [dbo].[Role] ([Id], [Title], [Note], [IsLocked], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (1, N'Roster Role', NULL, 0, 0, N'GOWU', '2012-08-29 22:27:43.950', N'GOWU', '2012-08-29 22:27:43.950')
-SET IDENTITY_INSERT [dbo].[Role] OFF
-SET IDENTITY_INSERT [dbo].[Role] ON
+INSERT INTO [dbo].[Role] ([Id], [Title], [Note], [IsLocked], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (1, N'Master', N'System full access', 0, 0, N'duong.phan', '2012-12-10 10:56:31.097', N'duong.phan', '2012-12-10 10:56:31.097')
 INSERT INTO [dbo].[Role] ([Id], [Title], [Note], [IsLocked], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (2, N'Test Role', NULL, 0, 1, N'GOWU', '2012-08-29 22:22:07.543', N'GOWU', '2012-10-10 14:03:32.447')
 INSERT INTO [dbo].[Role] ([Id], [Title], [Note], [IsLocked], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (3, N'Test abc', NULL, 0, 0, N'GOWU', '2012-08-29 23:49:14.807', N'GOWU', '2012-10-07 20:45:18.657')
+INSERT INTO [dbo].[Role] ([Id], [Title], [Note], [IsLocked], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (4, N'Viewer', N'Can view appointment only', 0, 0, N'duong.phan', '2012-12-10 10:51:49.113', N'duong.phan', '2012-12-10 10:51:49.113')
+INSERT INTO [dbo].[Role] ([Id], [Title], [Note], [IsLocked], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (5, N'User', N'View, create, update Appointments', 0, 0, N'duong.phan', '2012-12-10 10:53:04.863', N'duong.phan', '2012-12-10 10:53:04.863')
+INSERT INTO [dbo].[Role] ([Id], [Title], [Note], [IsLocked], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (6, N'Manager', N'View, update, delete Appointments and Rosters', 0, 0, N'duong.phan', '2012-12-10 10:54:23.597', N'duong.phan', '2012-12-10 10:54:23.597')
 SET IDENTITY_INSERT [dbo].[Role] OFF

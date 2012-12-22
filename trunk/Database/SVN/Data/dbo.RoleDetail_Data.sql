@@ -1,5 +1,7 @@
 SET IDENTITY_INSERT [dbo].[RoleDetail] ON
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (1, 1, 'Roster', 'CRUD', 0, N'GOWU', '2012-08-29 23:08:15.543', N'GOWU', '2012-11-19 08:59:50.977')
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (5, 1, 'Services', 'CRUD', 0, N'GOWU', '2012-07-18 19:45:29.677', N'GOWU', '2012-08-29 23:15:09.573')
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (6, 1, 'Appointment', 'CRUD', 0, N'GOWU', '2012-07-19 23:20:18.583', N'GOWU', '2012-11-19 09:03:54.953')
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (7, 1, 'User', 'CRUD', 0, N'GOWU', '2012-07-22 14:17:33.853', N'GOWU', '2012-08-29 23:17:22.923')
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (9, 1, 'Patient', 'CRUD', 0, NULL, '2012-07-27 23:24:29.487', NULL, '2012-07-27 23:24:29.487')
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (10, 1, 'Status', 'CRUD', 0, NULL, '2012-07-29 15:23:18.920', N'GOWU', '2012-08-29 23:17:27.600')
@@ -11,8 +13,10 @@ INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisable
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (19, 3, 'Appointment', 'CRU', 1, N'GOWU', '2012-08-30 20:25:23.593', N'GOWU', '2012-10-10 23:27:15.267')
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (20, 3, 'Patient', 'U', 1, N'GOWU', '2012-08-30 19:33:59.530', N'GOWU', '2012-10-10 23:27:15.270')
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (21, 1, 'Group', 'CRUD', 0, NULL, '2012-10-10 23:06:26.133', NULL, '2012-10-10 23:06:26.133')
-SET IDENTITY_INSERT [dbo].[RoleDetail] OFF
-SET IDENTITY_INSERT [dbo].[RoleDetail] ON
-INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (1, 1, 'Roster', 'CRUD', 0, N'GOWU', '2012-08-29 23:08:15.543', N'GOWU', '2012-11-19 08:59:50.977')
-INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (6, 1, 'Appointment', 'CRUD', 0, N'GOWU', '2012-07-19 23:20:18.583', N'GOWU', '2012-11-19 09:03:54.953')
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (22, 4, 'Appointment', 'R', 0, N'duong.phan', '2012-12-10 10:52:21.067', N'duong.phan', '2012-12-10 10:52:21.067')
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (23, 5, 'Appointment', 'CRU', 0, N'duong.phan', '2012-12-10 10:53:30.973', N'duong.phan', '2012-12-10 10:53:30.973')
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (24, 6, 'Appointment', 'CRUD', 0, N'duong.phan', '2012-12-10 10:54:39.380', N'duong.phan', '2012-12-10 10:54:39.380')
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (25, 6, 'Roster', 'CRUD', 0, N'duong.phan', '2012-12-10 10:54:53.473', N'duong.phan', '2012-12-10 10:54:53.473')
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (26, 5, 'Patient', 'CRUD', 0, N'duong.phan', '2012-12-10 10:55:32.270', N'duong.phan', '2012-12-10 10:55:32.270')
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (27, 6, 'Patient', 'CRUD', 0, N'duong.phan', '2012-12-10 10:55:52.457', N'duong.phan', '2012-12-10 10:55:52.457')
 SET IDENTITY_INSERT [dbo].[RoleDetail] OFF
