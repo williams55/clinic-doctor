@@ -145,7 +145,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                                     (string.IsNullOrEmpty(userName) || firstOrDefault.Username == userName)
                                      ? firstOrDefault.Priority
                                      : ServiceFacade.SettingsHelper.GetPagedLength),
-                            ServiceId = x.ServicesId,
+                            ServiceId = x.ServicesId == null ? 0 : x.ServicesId.Value,
                             ServiceName = x.ServicesIdSource.Title
                         };
                     })
@@ -155,15 +155,16 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 // - Uu tien
                 // - Khong uu tien nhung cung service
                 // - Khong uu tien va khac service
-                var lstPriority = lstAvailableRoom.FindAll(room => room.Priority != ServiceFacade.SettingsHelper.GetPagedLength);
+                var lstPriority = lstAvailableRoom.FindAll(room => room.Priority != ServiceFacade.SettingsHelper.GetPagedLength).ToList();
                 var lstNonPriSameService = lstAvailableRoom.FindAll(room => room.Priority == ServiceFacade.SettingsHelper.GetPagedLength
-                        && room.ServiceId == serviceId);
+                        && room.ServiceId == serviceId).ToList();
                 var lstNonPriOthers = lstAvailableRoom.FindAll(room => !lstPriority.Exists(pri => pri.Id == room.Id)
-                    && !lstNonPriSameService.Exists(pri => pri.Id == room.Id));
+                    && !lstNonPriSameService.Exists(pri => pri.Id == room.Id)).ToList();
 
                 lstPriority.Sort((p1, p2) => p1.Priority.CompareTo(p2.Priority));
                 lstPriority.AddRange(lstNonPriSameService);
                 lstPriority.AddRange(lstNonPriOthers);
+                lstPriority.Insert(0, new { Id = -1, Title = string.Empty, Priority = 0, ServiceId = 0, ServiceName = string.Empty });
 
                 cboRoom.DataSource = lstPriority;
                 cboRoom.DataBind();
@@ -626,14 +627,9 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             if (obj.StartTime != null && obj.EndTime != null)
             {
-                var dtEnd = new DateTime(dt.Year, dt.Month, dt.Day, 23, 59, 59);
-                var dtStart = new DateTime(dt.Year, dt.Month, dt.Day);
-
                 return new
                 {
                     id = obj.Id,
-                    //start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.StartTime < dtStart && mode != "week" ? dtStart : obj.StartTime),
-                    //end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.EndTime > dtEnd && mode != "week" ? dtEnd : obj.EndTime),
                     start_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.StartTime),
                     end_date = String.Format("{0:MM-dd-yyyy HH:mm:ss}", obj.EndTime),
                     section_id = obj.Username,
@@ -644,8 +640,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     PatientInfo = ParsePatientName(patient),
                     obj.ServicesId,
                     ServicesTitle = obj.ServicesIdSource.Title,
-                    room = obj.RoomId,
-                    RoomTitle = obj.RoomIdSource.Title,
+                    room = obj.RoomId ?? CommonBO.NonValue,
+                    RoomTitle = obj.RoomId == null? string.Empty: obj.RoomIdSource.Title,
                     note = obj.Note,
                     status = obj.StatusId,
                     ReadOnly = (obj.StartTime <= DateTime.Now),

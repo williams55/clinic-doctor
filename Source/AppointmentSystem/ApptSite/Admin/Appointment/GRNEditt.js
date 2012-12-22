@@ -221,6 +221,12 @@ scheduler.showLightbox = function(id) {
     scheduler._init_dnd_events();
     scheduler.startLightbox(id, html(formId));
 
+    // Reset variable
+    room = -1;
+    patient = '';
+    doctor = '';
+    cboRoom.SetValue(room);
+
     // Set init value
     $("[id$=hdId]").val(id);
     startDate.SetDate(ev.start_date);
@@ -727,7 +733,6 @@ function BuildTabs(scheduler, sections, mode) {
     }
 
     // Update list cho unit, timeline view
-    console.log(tmpSelectedItem.Doctors);
     scheduler.updateCollection("unit", tmpSelectedItem.Doctors);
     scheduler.updateCollection("timeline", tmpSelectedItem.Doctors);
 
@@ -897,11 +902,10 @@ function ValidateForm() {
     cboStatus.Validate();
     cboDoctor.Validate();
     cboPatient.Validate();
-    cboRoom.Validate();
     startTime.Validate();
     startDate.Validate();
     endTime.Validate();
     endDate.Validate();
-    return cboStatus.isValid && cboDoctor.isValid && cboPatient.isValid && cboRoom.isValid
+    return cboStatus.isValid && cboDoctor.isValid && cboPatient.isValid
             && startTime.isValid && startDate.isValid && endTime.isValid && endDate.isValid;
 }
