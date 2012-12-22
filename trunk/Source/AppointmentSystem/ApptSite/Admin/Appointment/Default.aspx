@@ -247,12 +247,8 @@
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxComboBox runat="server" Width="165px" TextField="Title" ValueField="Id" ID="cboRoom"
                         ValueType="System.Int32" ClientInstanceName="cboRoom" OnCallback="cboRoom_OnCallback">
-                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                            ErrorText="Error">
-                            <RequiredField IsRequired="True" ErrorText="Room is required" />
-                        </ValidationSettings>
                         <ClientSideEvents EndCallback="function(s, e) { 
-                            if(room){  if(s.FindItemByValue(room))s.SetSelectedItem(s.FindItemByValue(room)); s.Validate(); } }" />
+                            if(room){  if(s.FindItemByValue(room))s.SetSelectedItem(s.FindItemByValue(room)); } }" />
                     </dx:ASPxComboBox>
                 </div>
                 <div class="clear">

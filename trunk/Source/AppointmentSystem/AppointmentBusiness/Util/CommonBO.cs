@@ -12,6 +12,11 @@ namespace AppointmentBusiness.Util
     public class CommonBO
     {
         /// <summary>
+        /// Define value of none or all value
+        /// </summary>
+        public const int NonValue = -1;
+
+        /// <summary>
         /// Ham tach ngay truyen vao ra thanh ngay bat dau va ngay ket thuc tuy vao mode xem la gi
         /// </summary>
         /// <param name="dateTime"></param>

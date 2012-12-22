@@ -152,13 +152,13 @@ namespace AppointmentBusiness.BO
                 var room = DataRepository.RoomProvider.GetById(Convert.ToInt32(appt.RoomId));
                 var service = DataRepository.ServicesProvider.GetById(Convert.ToInt32(appt.ServicesId));
 
-                if (room != null && service != null)
+                if (service != null)
                     return new AppointmentLog
                     {
                         Id = appt.Id,
                         PatientCode = appt.PatientCode,
                         Username = appt.Username,
-                        Room = room.Title,
+                        Room = room == null ? string.Empty : room.Title,
                         Service = service.Title,
                         Status = appt.StatusId,
                         StartTime = Convert.ToDateTime(appt.StartTime),
@@ -236,6 +236,7 @@ namespace AppointmentBusiness.BO
 
                 // Kiem tra room co ton tai khong
                 Room objRoom = null;
+                oldAppt.RoomId = oldAppt.RoomId != CommonBO.NonValue ? oldAppt.RoomId : null;
                 if (oldAppt.RoomId != null)
                 {
                     objRoom = DataRepository.RoomProvider.GetById(Convert.ToInt32(oldAppt.RoomId));
@@ -319,7 +320,7 @@ namespace AppointmentBusiness.BO
                     }
 
                     // Check conflict Room
-                    if (oldAppt.RoomId != null && objRoom != null)
+                    if (oldAppt.RoomId != null && oldAppt.RoomId != CommonBO.NonValue && objRoom != null)
                     {
                         if (!CheckConflict("RoomId", oldAppt.RoomId.ToString(), "Room"
                             , objRoom.Title, Convert.ToDateTime(oldAppt.StartTime), Convert.ToDateTime(oldAppt.EndTime), oldAppt.Id, ref message))
@@ -375,7 +376,7 @@ namespace AppointmentBusiness.BO
                                                                       ServiceFacade.SettingsHelper.GetPagedLength,
                                                                       out count);
 
-                
+
 
                 if (count > 0)
                 {
