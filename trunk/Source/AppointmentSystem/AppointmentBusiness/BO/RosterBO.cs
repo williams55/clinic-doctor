@@ -141,7 +141,7 @@ namespace AppointmentBusiness.BO
                 // Neu co thi khong thay doi duoc
                 DataRepository.RosterProvider.DeepLoad(oldRoster);
                 if (oldRoster.AppointmentCollection
-                    .Any(appointment => (appointment.StartTime < oldRoster.StartTime || appointment.EndTime > oldRoster.EndTime) 
+                    .Any(appointment => (appointment.StartTime < oldRoster.StartTime || appointment.EndTime > oldRoster.EndTime)
                         && !appointment.IsDisabled))
                 {
                     message = String.Format("Cannot change roster {0} because there are some appointments.", oldRoster.Id);
@@ -163,7 +163,7 @@ namespace AppointmentBusiness.BO
             return false;
         }
 
-        public TList<Roster> GetByDateMode(DateTime? date, string mode, out string message)
+        public TList<Roster> GetByDateMode(DateTime? date, string mode, string group, out string message)
         {
             message = string.Empty;
             try
@@ -187,6 +187,13 @@ namespace AppointmentBusiness.BO
                                       toDate.ToString("yyyy-MM-dd HH:mm:ss.000")), string.Empty, 0,
                         ServiceFacade.SettingsHelper.GetPagedLength, out count);
                 DataRepository.RosterProvider.DeepLoad(lstObj);
+
+                // Get roster by service or username
+                if (group != CommonBO.NonValue.ToString())
+                {
+                    lstObj =lstObj.FindAll(
+                            obj => Int32.TryParse(group, out count) ? obj.UsernameSource.ServicesId == count : obj.Username == group);
+                }
 
                 return lstObj;
             }
@@ -227,7 +234,7 @@ namespace AppointmentBusiness.BO
                     message = "Roster Type is not exist.";
                     return false;
                 }
-                
+
                 // Kiem tra ngay bat dau, ngay ket thuc
                 if (roster.StartTime >= roster.EndTime)
                 {

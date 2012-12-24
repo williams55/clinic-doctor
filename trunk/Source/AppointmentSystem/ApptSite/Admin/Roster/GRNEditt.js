@@ -108,88 +108,82 @@ function initSchedule(weekday) {
         return htmltime;
     };
 
-    var arrAjax = [];
-    arrAjax.push($.ajax({
-        type: "POST",
-        url: "Default.aspx/GetDoctorTree",
-        data: "{}",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function(response) {
-            var obj = JSON.parse(response.d);
-
-            if (obj.result == "true") {
-                var elements = obj.data;
-                if (elements) {
-                    scheduler.createTimelineView({
-                        section_autoheight: false,
-                        name: "timeline",
-                        x_unit: "minute",
-                        x_date: "%H:%i",
-                        x_step: 60,
-                        x_size: 24,
-                        x_start: 0,
-                        x_length: 24,
-                        y_unit: elements,
-                        y_property: "section_id",
-                        render: "tree",
-                        dx: 150,
-                        folder_dy: 20,
-                        dy: 40
-                    });
-                }
-            } else {
-                currentMode = "week";
-                ShowMessage(obj.message);
-            }
-        },
-        fail: function() {
-            ShowMessage("Unknow error!");
-        }
-    }));
-
-    $.when.apply($, arrAjax).done(function() {
-        scheduler.attachEvent("onBeforeDrag", BeforeDrag);
-        scheduler.attachEvent("onClick", BlockReadonly);
-        scheduler.attachEvent("onEventChanged", EventChanged);
-
-        scheduler.attachEvent("onViewChange", function(mode, date) {
-            if (!isUsing && !isLightbox) {
-                // Lam cai load roster cua doctor,
-                // neu doctor co roster thi hien thi
-                // khi hien thi, dua vao thoi gian cua roster ma to mau
-                isUsing = true;
-
-                // Clone list cu ra
-                var tmpListTs = listTs.slice();
-                listTs = [];
-
-                // Danh sach chua cac list ajax
-                arrAjax = [];
-                LoadRoster(arrAjax, mode, date);
-                BlockTimespan(scheduler, date, mode, listTs);
-                DeleteTimespan(scheduler, tmpListTs);
-     
-                $.when.apply($, arrAjax).done(function() {
-                    scheduler.updateView();
-                    isUsing = false;
-                });
-           }
-       });
-
-        scheduler.init('scheduler_here', currentDate, currentMode);
-
-        // Refesh current view for mark_now can auto update
-        setInterval(function() {
-            if (!isLightbox) {
-                scheduler.setCurrentView();
-            }
-        }, 60000);
+    scheduler.createTimelineView({
+        section_autoheight: false,
+        name: "timeline",
+        x_unit: "minute",
+        x_date: "%H:%i",
+        x_step: 60,
+        x_size: 24,
+        x_start: 0,
+        x_length: 24,
+        y_unit: scheduler.serverList("timeline", []),
+        y_property: "section_id",
+        render: "tree",
+        dx: 150,
+        folder_dy: 20,
+        dy: 40
     });
+
+
+    scheduler.attachEvent("onBeforeDrag", BeforeDrag);
+    scheduler.attachEvent("onClick", BlockReadonly);
+    scheduler.attachEvent("onEventChanged", EventChanged);
+
+    scheduler.attachEvent("onViewChange", CallChangeView);
+
+    scheduler.init('scheduler_here', currentDate, currentMode);
+
+    CallDoctorTree();
+
+    // Refesh current view for mark_now can auto update
+    setInterval(function() {
+        if (!isLightbox) {
+            scheduler.setCurrentView();
+        }
+    }, 60000);
 }
 /****************************DHTMLX - End******************************/
 
 /****************************Scheduler - Start******************************/
+function CallDoctorTree() {
+    if (scheduler._mode == 'timeline') {
+        var trees = $.grep(listTree, function (e) { return e.key == cboSelector.GetValue(); });
+        if (trees.length > 0) {
+            scheduler.updateCollection("timeline", trees[0].list);
+        }
+    }
+    setTimeout(function() {
+        CallChangeView();
+    }, 200);
+}
+
+function CallChangeView(mode, date) {
+    if (!mode) mode = scheduler._mode;
+    if (!date) date = scheduler._min_date;
+    if (!isUsing && !isLightbox) {
+        // Lam cai load roster cua doctor,
+        // neu doctor co roster thi hien thi
+        // khi hien thi, dua vao thoi gian cua roster ma to mau
+        isUsing = true;
+
+        // Clone list cu ra
+        var tmpListTs = listTs.slice();
+        listTs = [];
+
+        // Danh sach chua cac list ajax
+        var arrAjax = [];
+        LoadRoster(arrAjax, mode, date);
+        BlockTimespan(scheduler, date, mode, listTs);
+        DeleteTimespan(scheduler, tmpListTs);
+
+        $.when.apply($, arrAjax).done(function() {
+            scheduler.updateView();
+            isUsing = false;
+        });
+    }
+}
+
 // Set readonly property for event
 function BlockReadonly(id) {
     if (!id) return true;
@@ -268,7 +262,7 @@ scheduler.showLightbox = function(id) {
 /****************************Roster - Start******************************/
 // Load roster to scheduler
 function LoadRoster(arrAjax, mode, date) {
-    var requestdata = JSON.stringify({ mode: mode, date: date });
+    var requestdata = JSON.stringify({ group: cboSelector.GetValue() , mode: mode, date: date });
     arrAjax.push($.ajax({
         type: "POST",
         url: "Default.aspx/LoadRoster",

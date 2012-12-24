@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
+using System.Web.UI.WebControls;
 using AppointmentBusiness.BO;
 using AppointmentBusiness.Util;
 using AppointmentSystem.Data;
@@ -20,6 +21,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     private const string ScreenCode = "Roster";
     static string _message;
     //static readonly string Username = AccountSession.Session;
+    protected string TreeList = string.Empty;
 
     #region Event
     protected void Page_Load(object sender, EventArgs e)
@@ -41,7 +43,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             divDelete.Visible = CheckDeleting(out _message);
             divSave.Visible = CheckCreating(out _message);
             divUpdate.Visible = CheckUpdating(out _message);
-            BindStatus();
+            BindSelector();
         }
         catch (Exception ex)
         {
@@ -52,12 +54,83 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
     #region Methods
     /// <summary>
-    /// Get roster type
+    /// Get service, user then bind to combobox
     /// </summary>
-    private void BindStatus()
+    private void BindSelector()
     {
         try
         {
+            // Get service
+            int count;
+            var lstService = DataRepository.ServicesProvider.GetAll().FindAll(x => !x.IsDisabled);
+
+            // Get all available staffs
+            var lstUsers = DataRepository.UsersProvider.GetPaged("IsDisabled = 'False' AND ServicesId IS NOT NULL"
+                , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+
+            // Sort user by name
+            lstUsers.Sort((x1, x2) => String.CompareOrdinal(x1.DisplayName, x2.DisplayName));
+
+            // Chi lay nhung service co doctor
+            lstService = lstService.FindAll(service => lstUsers.FindAll(user => user.ServicesId == service.Id).Count > 0);
+
+            // Add item to list
+            var treeList = new List<object>();
+            foreach (var service in lstService)
+            {
+                cboSelector.Items.Add(String.Format("<strong><i>{0}</i></strong>", service.Title),
+                                      String.Format("{0}", service.Id));
+
+                Services service1 = service;
+                treeList.Add(new
+                {
+                    key = service.Id.ToString(),
+                    list = lstService.FindAll(sv => service1.Id == sv.Id).Select(item => new
+                    {
+                        key = item.Id,
+                        label = item.Title,
+                        open = true,
+                        children = lstUsers.FindAll(x => x.ServicesId == item.Id).Select(user => new
+                        {
+                            key = user.Username,
+                            label = user.DisplayName
+                        })
+                    })
+                });
+
+                foreach (var user in lstUsers)
+                {
+                    if (user.ServicesId == service.Id)
+                    {
+                        cboSelector.Items.Add(String.Format("&nbsp;&nbsp;{0}", user.DisplayName),
+                                              user.Username);
+
+                        Users user1 = user;
+                        treeList.Add(new
+                        {
+                            key = user.Username,
+                            list = lstService.FindAll(sv => service1.Id == sv.Id).Select(item => new
+                            {
+                                key = item.Id,
+                                label = item.Title,
+                                open = true,
+                                children = lstUsers.FindAll(x => x.ServicesId == item.Id && user1.Username == x.Username).Select(us => new
+                                {
+                                    key = us.Username,
+                                    label = us.DisplayName
+                                })
+                            })
+                        });
+                    }
+                }
+            }
+
+            // Set current session
+            var index = cboSelector.Items.IndexOfValue(AccountSession.CurrentRosterSelection);
+            cboSelector.SelectedIndex = index >= 0 ? cboSelector.Items.IndexOfValue(index) : cboSelector.Items.Count > 0 ? 0 : -1;
+
+            // Gen treelist
+            TreeList = JsonConvert.SerializeObject(treeList);
         }
         catch (Exception ex)
         {
@@ -121,7 +194,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             // Repeat roster
             if (repeatRoster != null && repeatRoster == true)
             {
-                if(!BoFactory.RosterBO.InsertRepeat(roster, weekday, lstRoster, ref _message))
+                if (!BoFactory.RosterBO.InsertRepeat(roster, weekday, lstRoster, ref _message))
                     return WebCommon.BuildFailedResult(_message);
             }
             else
@@ -287,9 +360,16 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
         }
     }
 
+    /// <summary>
+    /// Get roster's list
+    /// </summary>
+    /// <param name="group">A service or a doctor</param>
+    /// <param name="mode"></param>
+    /// <param name="date"></param>
+    /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string LoadRoster(string mode, DateTime? date)
+    public static string LoadRoster(string group, string mode, DateTime? date)
     {
         try
         {
@@ -299,7 +379,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(_message);
             }
 
-            var lstRoster = BoFactory.RosterBO.GetByDateMode(date, mode, out _message);
+            var lstRoster = BoFactory.RosterBO.GetByDateMode(date, mode, group, out _message);
             if (!string.IsNullOrEmpty(_message))
             {
                 return WebCommon.BuildFailedResult(_message);
@@ -439,10 +519,11 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     /// <summary>
     /// Lay danh sach doctor
     /// </summary>
+    /// <param name="group"></param>
     /// <returns></returns>
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string GetDoctorTree()
+    public static string GetDoctorTree(string group)
     {
         try
         {
@@ -452,12 +533,16 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult(_message);
             }
 
-            // Get all services
-            int count;
-            var lstService = DataRepository.ServicesProvider.GetAll().FindAll(x => !x.IsDisabled);
+            // Get all services or a service based on group's value
+            int count, serviceId;
+            var lstService = Int32.TryParse(group, out serviceId) ?
+                DataRepository.ServicesProvider.GetPaged(String.Format("IsDisabled = 'False' AND Id = {0}", serviceId),
+                    string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count)
+                : DataRepository.ServicesProvider.GetAll().FindAll(x => !x.IsDisabled);
 
-            // Get all available staffs
-            var lstUsers = DataRepository.UsersProvider.GetPaged("IsDisabled = 'False' AND ServicesId IS NOT NULL"
+            // Get all available staffs or a user by username
+            var lstUsers = DataRepository.UsersProvider.GetPaged("IsDisabled = 'False' AND ServicesId IS NOT NULL AND " +
+                    (Int32.TryParse(group, out serviceId) ? String.Format("ServicesId = {0}", group) : String.Format("Username = '{0}'", group))
                 , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
 
             // Sort user by name
@@ -470,7 +555,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             {
                 key = item.Id,
                 label = item.Title,
-                open = false,
+                open = true,
                 children = lstUsers.FindAll(x => x.ServicesId == item.Id).Select(user => new
                 {
                     key = user.Username,

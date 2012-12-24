@@ -39,5 +39,22 @@ namespace ApptSite
                 return HttpContext.Current.Session[SessionName] != null;
             }
         }
+
+        /// <summary>
+        /// Lay thong tin hoac gan gia tri cho session cua user
+        /// </summary>
+        public static string CurrentRosterSelection
+        {
+            get
+            {
+                return HttpContext.Current.Session["RosterSelector"] == null
+                           ? null
+                           : HttpContext.Current.Session["RosterSelector"].ToString();
+            }
+            set
+            {
+                HttpContext.Current.Session["RosterSelector"] = value;
+            }
+        }
     }
 }

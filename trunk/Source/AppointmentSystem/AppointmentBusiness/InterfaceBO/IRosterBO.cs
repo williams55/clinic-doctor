@@ -36,8 +36,9 @@ namespace AppointmentBusiness.BO
         /// </summary>
         /// <param name="date"></param>
         /// <param name="mode"></param>
+        /// <param name="group">ServiceId or username</param>
         /// <param name="message"></param>
         /// <returns></returns>
-        TList<Roster> GetByDateMode(DateTime? date, string mode, out string message);
+        TList<Roster> GetByDateMode(DateTime? date, string mode, string group, out string message);
     }
 }

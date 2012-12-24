@@ -56,6 +56,8 @@
         var minuteStep = eval(<%=ServiceFacade.SettingsHelper.RosterMinuteStep%>);
         var maxHour = eval(<%=ServiceFacade.SettingsHelper.MaxHour%>);
         var maxMinute = eval(<%=ServiceFacade.SettingsHelper.MaxMinute%>);
+
+        var listTree = <%=TreeList%>;
     </script>
 
     <style media="screen">
@@ -71,7 +73,15 @@
             <h5>
                 Roster</h5>
             <ul class="links">
-                <li class="ui-tabs-selected"><a href="javascript:return false;">Scheduler</a></li>
+                <li class="ui-tabs-selected"><a href="javascript:return false;">Scheduler</a>
+                    <div style="position: absolute; top: 20px; right: 70px;">
+                        <dx:ASPxComboBox runat="server" TextField="Text" ValueField="Value" ID="cboSelector"
+                            ValueType="System.String" ClientInstanceName="cboSelector" EncodeHtml="False" 
+                            DropDownStyle="DropDownList" IncrementalFilteringMode="Contains">
+                            <ClientSideEvents ValueChanged="function(s, e) { CallDoctorTree(); }"></ClientSideEvents>
+                        </dx:ASPxComboBox>
+                    </div>
+                </li>
                 <li><a href="Grid.aspx">Grid</a></li>
             </ul>
         </div>
@@ -138,7 +148,7 @@
                     Roster Type</div>
                 <div class="dhx_cal_ltext">
                     <dx:ASPxComboBox runat="server" DataSourceID="RosterTypeDataSource" Width="550" TextField="Title"
-                        ValueField="Id" ID="cboRosterType" ValueType="System.Int32" ClientInstanceName="cboRosterType" 
+                        ValueField="Id" ID="cboRosterType" ValueType="System.Int32" ClientInstanceName="cboRosterType"
                         Value='<%# ServiceFacade.SettingsHelper.DefaultRosterType %>' Enabled="False">
                         <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
                             ErrorText="Error">
@@ -162,32 +172,25 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <input id="chkWeekday_Sunday" type="checkbox" value="0" /><label
-                                        for="chkWeekday_Sunday">Sunday</label>
+                                    <input id="chkWeekday_Sunday" type="checkbox" value="0" /><label for="chkWeekday_Sunday">Sunday</label>
                                 </td>
                                 <td>
-                                    <input id="chkWeekday_Monday" type="checkbox" value="1" /><label
-                                        for="chkWeekday_Monday">Monday</label>
+                                    <input id="chkWeekday_Monday" type="checkbox" value="1" /><label for="chkWeekday_Monday">Monday</label>
                                 </td>
                                 <td>
-                                    <input id="chkWeekday_Tuesday" type="checkbox" value="2" /><label
-                                        for="chkWeekday_Tuesday">Tuesday</label>
+                                    <input id="chkWeekday_Tuesday" type="checkbox" value="2" /><label for="chkWeekday_Tuesday">Tuesday</label>
                                 </td>
                                 <td>
-                                    <input id="chkWeekday_Wednesday" type="checkbox" value="3" /><label
-                                        for="chkWeekday_Wednesday">Wednesday</label>
+                                    <input id="chkWeekday_Wednesday" type="checkbox" value="3" /><label for="chkWeekday_Wednesday">Wednesday</label>
                                 </td>
                                 <td>
-                                    <input id="chkWeekday_Thursday" type="checkbox" value="4" /><label
-                                        for="chkWeekday_Thursday">Thursday</label>
+                                    <input id="chkWeekday_Thursday" type="checkbox" value="4" /><label for="chkWeekday_Thursday">Thursday</label>
                                 </td>
                                 <td>
-                                    <input id="chkWeekday_Friday" type="checkbox" value="5" /><label
-                                        for="chkWeekday_Friday">Friday</label>
+                                    <input id="chkWeekday_Friday" type="checkbox" value="5" /><label for="chkWeekday_Friday">Friday</label>
                                 </td>
                                 <td>
-                                    <input id="chkWeekday_Saturday" type="checkbox" value="6" /><label
-                                        for="chkWeekday_Saturday">Saturday</label>
+                                    <input id="chkWeekday_Saturday" type="checkbox" value="6" /><label for="chkWeekday_Saturday">Saturday</label>
                                 </td>
                             </tr>
                         </tbody>
@@ -257,7 +260,8 @@
             <div title="Cancel editing" onclick="CancelRoster();">
                 Cancel</div>
         </div>
-        <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;" id="divDelete" runat="server">
+        <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;"
+            id="divDelete" runat="server">
             <div dhx_button="1" class="dhx_delete_btn">
             </div>
             <div title="Delete current roster" id="delete-form-roster" onclick="DeleteRoster();">
