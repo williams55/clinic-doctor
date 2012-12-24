@@ -1052,7 +1052,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Goi ham lay danh sach roster
-            var lstRoster = BoFactory.RosterBO.GetByDateMode(date, mode, out _message);
+            var lstRoster = BoFactory.RosterBO.GetByDateMode(date, mode, CommonBO.NonValue.ToString(), out _message);
             if (!string.IsNullOrEmpty(_message))
             {
                 return WebCommon.BuildFailedResult(_message);
