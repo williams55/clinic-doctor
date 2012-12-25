@@ -296,15 +296,13 @@ function SaveRemark() {
         dataType: "json",
         success: function(response) {
             var obj = JSON.parse(response.d);
-            CloseProgress();
             if (obj.result != "true") {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            CloseProgress();
-            ShowMessage("System error. Please try again or contact Administrator.");
-        }
+        fail: CallError,
+        error: CallError,
+        complete: CloseProgress
     });
 }
 
@@ -338,9 +336,9 @@ function GetPatientInfo(currentId) {
                     ShowMessage(obj.message);
                 }
             },
-            fail: function() {
-                ShowMessage("Cannot load Patient's info. Please try again or contact Administrator.");
-            }
+            fail: CallError,
+            error: CallError,
+            complete: CloseProgress
         });
     }
 }
@@ -473,7 +471,6 @@ function SavePatient() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 patient = obj.data[0].PatientCode;
@@ -483,10 +480,9 @@ function SavePatient() {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            CloseProgress();
-            ShowMessage("Cannot update patient's info. Please contact Administrator.");
-        }
+        fail: CallError,
+        error: CallError,
+        complete: CloseProgress
     });
 }
 /****************************Patient - End******************************/
@@ -520,7 +516,7 @@ function MoveAppointment(eventId, objEvent) {
             }
         },
         fail: function() {
-            ShowMessage("Unknow error!");
+            CallError();
             scheduler.deleteEvent(eventId);
             scheduler.addEvent(CurrentAppointment);
         },
@@ -560,9 +556,9 @@ function LoadAppointment(arrAjax, mode, date) {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            ShowMessage("Unknow error!");
-        }
+        fail: CallError,
+        error: CallError,
+        complete: CloseProgress
     }));
 }
 
@@ -593,7 +589,6 @@ function NewAppointment() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 AddAppointment(obj.data);
@@ -603,10 +598,9 @@ function NewAppointment() {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            CloseProgress();
-            ShowMessage("Unknow error!");
-        }
+        fail: CallError,
+        error: CallError,
+        complete: CloseProgress
     });
 }
 
@@ -638,7 +632,6 @@ function UpdateAppointment() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            CloseProgress();
             var obj = JSON.parse(response.d);
             var oldEvent = scheduler.getEvent(id);
             if (obj.result == "true" && obj.data && oldEvent) {
@@ -662,10 +655,9 @@ function UpdateAppointment() {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            CloseProgress();
-            ShowMessage("Unknow error!");
-        }
+        fail: CallError,
+        error: CallError,
+        complete: CloseProgress
     });
 }
 
@@ -843,7 +835,6 @@ function DeleteAppointment(appt) {
         contentType: "application/json; charset=utf-8",
         success: function(response) {
             var obj = JSON.parse(response.d);
-            CloseProgress();
             if (obj.result == "true") {
                 scheduler.deleteEvent(id);
                 CancelAppointment();
@@ -852,12 +843,11 @@ function DeleteAppointment(appt) {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            CloseProgress();
-            ShowMessage("Unknow error!");
-        },
+        fail: CallError,
+        error: CallError,
         complete: function() {
             isUsing = false;
+            CloseProgress();
         }
     });
 }
