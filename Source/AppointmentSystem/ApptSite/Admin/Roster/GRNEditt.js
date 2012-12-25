@@ -124,7 +124,9 @@ function initSchedule(weekday) {
         folder_dy: 20,
         dy: 40
     });
-
+    scheduler.templates["timeline_date"] = function(datea, dateb){ 
+		return scheduler.templates.day_date(datea);
+	};
 
     scheduler.attachEvent("onBeforeDrag", BeforeDrag);
     scheduler.attachEvent("onClick", BlockReadonly);
@@ -287,9 +289,8 @@ function LoadRoster(arrAjax, mode, date) {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            ShowMessage("Unknow error!");
-        }
+        fail: CallError,
+        error: CallError
     }));
 }
 
@@ -305,6 +306,9 @@ function NewRoster() {
     var toTime = endTime.GetDate();
     var fromDate = startDate.GetDate();
     var toDate = endDate.GetDate();
+    fromDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), fromTime.getHours(), fromTime.getMinutes(), 0);
+    toDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), toTime.getHours(), toTime.getMinutes(), 0);
+    
     var note = $("#txtNote").val();
     var doctor = cboDoctor.GetValue();
 
@@ -329,10 +333,7 @@ function NewRoster() {
 
     var requestdata = JSON.stringify({
         doctorId: doctor,
-//        rosterTypeId: rosterType,
         rosterTypeId: 0,
-        startTime: fromTime,
-        endTime: toTime,
         startDate: fromDate,
         endDate: toDate,
         note: note,
@@ -347,7 +348,6 @@ function NewRoster() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 var evs = obj.data;
@@ -358,10 +358,9 @@ function NewRoster() {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            CloseProgress();
-            ShowMessage("Unknow error!");
-        }
+        fail: CallError,
+        error: CallError,
+        complete: CloseProgress
     });
 }
 

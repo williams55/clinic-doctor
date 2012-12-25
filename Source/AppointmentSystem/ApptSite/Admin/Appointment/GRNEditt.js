@@ -136,6 +136,9 @@ function initSchedule(weekday) {
         folder_dy: 20,
         dy: 40
     });
+    scheduler.templates["timeline_date"] = function(datea, dateb) {
+        return scheduler.templates.day_date(datea);
+    };
 
     scheduler.attachEvent("onBeforeDrag", BeforeDrag);
     scheduler.attachEvent("onClick", BlockReadonly);

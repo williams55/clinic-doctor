@@ -204,7 +204,7 @@
                     Time period</div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxTimeEdit ID="startTime" runat="server" ClientInstanceName="startTime" EditFormatString="HH:mm"
-                        DisplayFormatString="HH:mm" Width="70px">
+                        DisplayFormatString="HH:mm" Width="70px" EditFormat="Time">
                     </dx:ASPxTimeEdit>
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
@@ -221,7 +221,7 @@
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxTimeEdit ID="endTime" ClientInstanceName="endTime" runat="server" EditFormatString="HH:mm"
-                        DisplayFormatString="HH:mm" Width="70px">
+                        DisplayFormatString="HH:mm" Width="70px" EditFormat="Time">
                     </dx:ASPxTimeEdit>
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
