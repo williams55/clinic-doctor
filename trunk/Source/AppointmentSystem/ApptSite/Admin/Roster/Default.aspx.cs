@@ -142,7 +142,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
     #region "Roster"
     [WebMethod]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static string NewRoster(string doctorId, int? rosterTypeId, DateTime? startTime, DateTime? endTime,
+    public static string NewRoster(string doctorId, int? rosterTypeId,
         DateTime? startDate, DateTime? endDate, string note, bool? repeatRoster, string weekday)
     {
         try
@@ -159,27 +159,19 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
 
             if (!WebCommon.ValidateEmpty("Doctor", doctorId, out _message)
                 || !WebCommon.ValidateEmpty("Roster Type", rosterTypeId, out _message)
-                || !WebCommon.ValidateEmpty("Start Time", startTime, out _message)
-                || !WebCommon.ValidateEmpty("End Time", endTime, out _message)
                 || !WebCommon.ValidateEmpty("Start Date", startDate, out _message)
                 || !WebCommon.ValidateEmpty("End Date", endDate, out _message))
             {
                 return WebCommon.BuildFailedResult(_message);
             }
-
-            // Get start date and end date, validate all of them
-            var dtStart = new DateTime(startDate.Value.Year, startDate.Value.Month, startDate.Value.Day
-                                       , startTime.Value.Hour, startTime.Value.Minute, 0);
-            var dtEnd = new DateTime(endDate.Value.Year, endDate.Value.Month, endDate.Value.Day
-                                     , endTime.Value.Hour, endTime.Value.Minute, 0);
             #endregion
 
             var roster = new Roster
             {
                 Username = doctorId,
                 RosterTypeId = Convert.ToInt32(rosterTypeId),
-                StartTime = dtStart,
-                EndTime = dtEnd,
+                StartTime = startDate.Value,
+                EndTime = endDate.Value,
                 Note = note,
                 CreateUser = AccountSession.Session,
                 UpdateUser = AccountSession.Session

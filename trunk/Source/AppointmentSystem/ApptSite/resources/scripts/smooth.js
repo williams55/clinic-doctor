@@ -97,6 +97,11 @@ function ShowMessage(message) {
     ShowDialog('', '', message, '');
 }
 
+// Hien thi message
+function CallError() {
+    ShowDialog('', 'Error', 'System error. Please contact Administrator', '');
+}
+
 function ShowProgress() {
     LoadingPanel.Show();
 }
