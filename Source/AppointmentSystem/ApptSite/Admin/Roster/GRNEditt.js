@@ -373,7 +373,7 @@ function MoveRoster(eventId, objEvent) {
         rosterTypeId: 0,
         startTime: objEvent.start_date,
         endTime: objEvent.end_date,
-        note: objEvent.note,
+        note: objEvent.note
     });
     $.ajax({
         type: "POST",
@@ -391,12 +391,13 @@ function MoveRoster(eventId, objEvent) {
             }
         },
         fail: function() {
-            ShowMessage("Unknow error!");
+            CallError();
             scheduler.deleteEvent(eventId);
             scheduler.addEvent(CurrentRoster);
         },
         complete: function() {
             CurrentRoster = null; // set null after use
+            CloseProgress();
         }
     });
 }
@@ -428,7 +429,6 @@ function UpdateRoster() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            CloseProgress();
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 var evs = obj.data;
@@ -439,10 +439,9 @@ function UpdateRoster() {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            CloseProgress();
-            ShowMessage("Unknow error!");
-        }
+        fail: CallError,
+        error: CallError,
+        complete: CloseProgress
     });
 }
 
@@ -511,10 +510,9 @@ function DeleteRoster(ros) {
                 ShowMessage(obj.message);
             }
         },
-        fail: function() {
-            CloseProgress();
-            ShowMessage("Unknow error!");
-        }
+        fail: CallError,
+        error: CallError,
+        complete: CloseProgress
     });
 }
 /****************************Roster - End******************************/
