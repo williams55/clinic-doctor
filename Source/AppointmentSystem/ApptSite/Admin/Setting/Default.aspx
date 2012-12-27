@@ -5,6 +5,7 @@
     Settings
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
+
     <script type="text/javascript">
         // <![CDATA[
         function OnNameValidation(s, e) {
@@ -44,6 +45,7 @@
         }
         // ]]>
     </script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <input type="reset" id="resetTmp" style="display: none;" />
@@ -74,8 +76,8 @@
                             <dx:ASPxLabel runat="server" ID="RosterLabel" AssociatedControlID="RosterTextBox"
                                 Text="Roster:" EnableViewState="False" />
                         </div>
-                        <dx:ASPxTextBox runat="server" EnableClientSideAPI="True" ID="RosterTextBox"
-                            MaxLength="5" Width="200px">
+                        <dx:ASPxTextBox runat="server" EnableClientSideAPI="True" ID="RosterTextBox" MaxLength="5"
+                            Width="200px">
                             <ValidationSettings>
                                 <RequiredField IsRequired="True" ErrorText="Roster Prefix is required" />
                             </ValidationSettings>
@@ -86,8 +88,8 @@
                             <dx:ASPxLabel runat="server" ID="PatientLabel" AssociatedControlID="PatientTextBox"
                                 Text="Patient:" EnableViewState="False" />
                         </div>
-                        <dx:ASPxTextBox runat="server" EnableClientSideAPI="True" ID="PatientTextBox"
-                            MaxLength="5" Width="200px">
+                        <dx:ASPxTextBox runat="server" EnableClientSideAPI="True" ID="PatientTextBox" MaxLength="5"
+                            Width="200px">
                             <ValidationSettings>
                                 <RequiredField IsRequired="True" ErrorText="Patient Prefix is required" />
                             </ValidationSettings>
@@ -95,11 +97,11 @@
                     </div>
                     <div class="field">
                         <div class="label">
-                            <dx:ASPxLabel runat="server" ID="UserLabel" AssociatedControlID="UserTextBox"
-                                Text="User:" EnableViewState="False" />
+                            <dx:ASPxLabel runat="server" ID="UserLabel" AssociatedControlID="UserTextBox" Text="User:"
+                                EnableViewState="False" />
                         </div>
-                        <dx:ASPxTextBox runat="server" EnableClientSideAPI="True" ID="UserTextBox"
-                            MaxLength="5" Width="200px">
+                        <dx:ASPxTextBox runat="server" EnableClientSideAPI="True" ID="UserTextBox" MaxLength="5"
+                            Width="200px">
                             <ValidationSettings>
                                 <RequiredField IsRequired="True" ErrorText="User Prefix is required" />
                             </ValidationSettings>
@@ -139,7 +141,8 @@
                                 Text="Minute Step:" EnableViewState="False" />
                         </div>
                         <dx:ASPxTextBox runat="server" EnableClientSideAPI="True" ID="MinuteStepTextBox"
-                            ClientInstanceName="MinuteStep" OnValidation="MinuteStepTextBox_Validation" MaxLength="2" Width="200px">
+                            ClientInstanceName="MinuteStep" OnValidation="MinuteStepTextBox_Validation" MaxLength="2"
+                            Width="200px">
                             <ValidationSettings ErrorText="Minute Step must be between 5 and 60">
                                 <RequiredField IsRequired="True" ErrorText="Minute Step is required" />
                                 <RegularExpression ErrorText="Invalid number" ValidationExpression="[0-9]*" />

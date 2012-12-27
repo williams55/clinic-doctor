@@ -12,7 +12,7 @@ public partial class Logout : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         AccountSession.Session = null;
-        //Response.Redirect(ResolveUrl("~/Login.aspx"));
-        FormsAuthentication.RedirectToLoginPage();
+        Response.Redirect(ResolveUrl("~/Login.aspx"));
+        //FormsAuthentication.RedirectToLoginPage();
     }
 }

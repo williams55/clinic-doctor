@@ -77,9 +77,9 @@
                 </div>
                 <div id="user" style="float: left">
                     <div class="welcome">
-                        Welcome <strong>
-                            <asp:Label runat="server" ID="lbl_Username" /></strong> | <a href="<%= ResolveUrl("~/Logout.aspx") %>"
-                                style="color: white;">Logout</a></div>
+                        Welcome <strong><a href="<%= ResolveUrl("~/Admin/Setting/ChangePassword.aspx") %>" style="color: white;">
+                            <asp:Label runat="server" ID="lbl_Username" />
+                        </a></strong>| <a href="<%= ResolveUrl("~/Logout.aspx") %>" style="color: white;">Logout</a></div>
                 </div>
                 <!-- quick -->
                 <ul id="quick">
