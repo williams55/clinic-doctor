@@ -24,5 +24,14 @@ namespace AppointmentBusiness.BO
         /// <param name="password"></param>
         /// <returns></returns>
         bool Authentication(string username, string password);
+
+        /// <summary>
+        /// Change password
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        bool ChangePassword(string username, string password, string newPassword);
     }
 }

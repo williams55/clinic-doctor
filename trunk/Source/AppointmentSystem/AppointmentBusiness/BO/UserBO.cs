@@ -56,8 +56,32 @@ namespace AppointmentBusiness.BO
             catch (Exception ex)
             {
                 LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-                throw ex;
             }
+            return false;
+        }
+
+        public bool ChangePassword(string username, string password, string newPassword)
+        {
+            try
+            {
+                int count;
+                var users = DataRepository.UsersProvider.GetPaged(
+                    String.Format("Username = '{0}' AND Password = '{1}' AND IsDisabled = 'False'", username,
+                                  Encrypt.EncryptPassword(password)), string.Empty, 0,
+                    1, out count);
+                if (count > 0)
+                {
+                    var user = users[0];
+                    user.Password = Encrypt.EncryptPassword(newPassword);
+                    DataRepository.UsersProvider.Save(user);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            }
+            return false;
         }
     }
 }
