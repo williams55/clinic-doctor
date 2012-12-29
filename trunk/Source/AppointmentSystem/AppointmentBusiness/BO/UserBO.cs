@@ -47,10 +47,9 @@ namespace AppointmentBusiness.BO
             try
             {
                 int count;
-                DataRepository.UsersProvider.GetPaged(
+                DataRepository.UsersProvider.GetTotalItems(
                     String.Format("Username = '{0}' AND Password = '{1}' AND IsDisabled = 'False'", username,
-                                  Encrypt.EncryptPassword(password)), string.Empty, 0,
-                    1, out count);
+                                  Encrypt.EncryptPassword(password)), out count);
                 return count > 0;
             }
             catch (Exception ex)

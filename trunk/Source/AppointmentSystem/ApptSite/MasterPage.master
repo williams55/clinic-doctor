@@ -47,6 +47,7 @@
 
     <script src="<%= ResolveUrl("~/") %>resources/scripts/smooth.autocomplete.js" type="text/javascript"></script>
 
+    <form id="frm" runat="server">
     <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
     </asp:ContentPlaceHolder>
     <div id="dialog-message-title" title="Message">
@@ -77,9 +78,10 @@
                 </div>
                 <div id="user" style="float: left">
                     <div class="welcome">
-                        Welcome <strong><a href="<%= ResolveUrl("~/Admin/Setting/ChangePassword.aspx") %>" style="color: white;">
-                            <asp:Label runat="server" ID="lbl_Username" />
-                        </a></strong>| <a href="<%= ResolveUrl("~/Logout.aspx") %>" style="color: white;">Logout</a></div>
+                        Welcome <strong>
+                            <asp:Label runat="server" ID="lbl_Username" /></strong> |
+                        <asp:LinkButton runat="server" ID="btn_Logout" Text="Logout" OnClick="btn_Logout_Click"
+                            ForeColor="White" /></div>
                 </div>
                 <!-- quick -->
                 <ul id="quick">
@@ -120,10 +122,8 @@
     <!-- end header -->
     <!-- content -->
     <div id="content">
-        <form id="frm" runat="server">
         <asp:ContentPlaceHolder ID="ContentContent" runat="server">
         </asp:ContentPlaceHolder>
-        </form>
     </div>
     <!-- end content -->
     <!-- footer -->
@@ -135,6 +135,7 @@
     <dx:ASPxLoadingPanel ID="LoadingPanel" runat="server" ClientInstanceName="LoadingPanel"
         Modal="True">
     </dx:ASPxLoadingPanel>
+    </form>
 
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
