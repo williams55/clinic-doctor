@@ -79,7 +79,9 @@
                 <div id="user" style="float: left">
                     <div class="welcome">
                         Welcome <strong>
-                            <asp:Label runat="server" ID="lbl_Username" /></strong> |
+                            <asp:Label runat="server" ID="lbl_Username" /></strong> | <a class="link" style="color: White"
+                                href="<%= ResolveUrl("~/Admin/Setting/ChangePassword.aspx") %>">Change Password</a>
+                        |
                         <asp:LinkButton runat="server" ID="btn_Logout" Text="Logout" OnClick="btn_Logout_Click"
                             ForeColor="White" /></div>
                 </div>
