@@ -422,15 +422,15 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                 return;
             }
 
-            // Check email is exists
-            string squery = string.Format("Email='{0}' and IsDisabled='False' and Username!='{1}'", e.NewValues["Email"], e.OldValues["Username"]);
-            int count;
-            if (DataRepository.UsersProvider.GetPaged(squery, "", 0, 0, out count).Any())
-            {
-                WebCommon.AlertGridView(sender, "Email is existed.");
-                e.Cancel = true;
-                return;
-            }
+            //// Check email is exists
+            //string squery = string.Format("Email='{0}' and IsDisabled='False' and Username!='{1}'", e.NewValues["Email"], e.OldValues["Username"]);
+            //int count;
+            //if (DataRepository.UsersProvider.GetPaged(squery, "", 0, 0, out count).Any())
+            //{
+            //    WebCommon.AlertGridView(sender, "Email is existed.");
+            //    e.Cancel = true;
+            //    return;
+            //}
 
             if (!string.IsNullOrEmpty(txtCPsw.Text))
             {
@@ -569,10 +569,12 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
                     WebCommon.AlertGridView(sender, "User role is not existed. You cannot delete it.");
                     return;
                 }
-                userRole.IsDisabled = true;
-                userRole.UpdateUser = AccountSession.Session;
-                userRole.UpdateDate = DateTime.Now;
-                DataRepository.UserRoleProvider.Update(userRole);
+                //Change disable to delete
+                //userRole.IsDisabled = true;
+                //userRole.UpdateUser = AccountSession.Session;
+                //userRole.UpdateDate = DateTime.Now;
+                //DataRepository.UserRoleProvider.Update(userRole);
+                DataRepository.UserRoleProvider.Delete(userRole);
 
                 // Show message alert delete successfully
                 WebCommon.AlertGridView(sender, "User role is deleted successfully.");
