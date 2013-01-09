@@ -191,10 +191,11 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
                 var serviceId = cboService.Value == null ? 0 : (int)cboService.Value;
                 int count;
-                cboDoctor.DataSource =
-                   DataRepository.UsersProvider.GetPaged(
-                       String.Format("IsDisabled = 'False' AND ServicesId = '{0}'", serviceId), string.Empty, 0,
+                var doctors = DataRepository.UsersProvider.GetPaged(
+                       String.Format("IsDisabled = 'False' AND ServicesId = '{0}'", serviceId), "DisplayName Asc", 0,
                        ServiceFacade.SettingsHelper.GetPagedLength, out count);
+
+                cboDoctor.DataSource = doctors;
                 cboDoctor.DataBind();
             }
         }
