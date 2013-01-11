@@ -183,7 +183,7 @@ function initSchedule(weekday) {
         if (!isLightbox) {
             scheduler.setCurrentView();
         }
-    }, 600000);
+    }, 60000);
 }
 /****************************DHTMLX - End******************************/
 

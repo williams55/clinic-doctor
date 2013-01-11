@@ -364,8 +364,8 @@ namespace AppointmentBusiness.BO
             {
                 int count;
                 string query =
-                    String.Format("{3} = '{0}' AND IsDisabled = 'False' AND (StartTime BETWEEN N'{1}' AND N'{2}'"
-                                  + " OR EndTime BETWEEN N'{1}' AND N'{2}'"
+                    String.Format("{3} = '{0}' AND IsDisabled = 'False' AND ((StartTime >= N'{1}' AND StartTime < N'{2}')"
+                                  + " OR (EndTime > N'{1}' AND EndTime <= N'{2}')"
                                   + " OR (StartTime <= N'{1}' AND EndTime >= N'{2}'))"
                                   + " AND StatusId NOT IN ('{4}', '{5}') AND Id <> '{6}'",
                                   compareValue, dtStart.ToString("yyyy-MM-dd HH:mm:ss"),
