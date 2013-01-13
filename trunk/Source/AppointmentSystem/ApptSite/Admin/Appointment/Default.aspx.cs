@@ -626,6 +626,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 patient = patients[0];
             }
 
+            // Get current day for limitation change
+            var dtNow = DateTime.Now;
+            dtNow = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day);
+
             if (obj.StartTime != null && obj.EndTime != null)
             {
                 return new
@@ -645,7 +649,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     RoomTitle = obj.RoomId == null? string.Empty: obj.RoomIdSource.Title,
                     note = obj.Note,
                     status = obj.StatusId,
-                    ReadOnly = (obj.StartTime <= DateTime.Now),
+                    ReadOnly = obj.StartTime <= dtNow,
                     color = BoFactory.StatusBO.GetColor(obj.StatusId),
                     isnew = false
                 };

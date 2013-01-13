@@ -259,10 +259,14 @@ namespace AppointmentBusiness.BO
                     return false;
                 }
 
-                // If oldAppt is created in a passed or current day
-                if (DateTime.Now >= oldAppt.StartTime)
+                // Kiểm tra xem appt có được tạo vào thời điểm đã qua không
+                // Riêng trường hợp update thì cho phép update trong ngày
+                var dtNow = DateTime.Now;
+                dtNow = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day);
+                if ((DateTime.Now >= oldAppt.StartTime && !isUpdate)
+                    || (dtNow > oldAppt.EndTime && isUpdate))
                 {
-                    message = "You can not change appointment to passed or current date.";
+                    message = "You can not change appointment to passed time.";
                     return false;
                 }
                 #endregion

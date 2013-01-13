@@ -20,8 +20,8 @@ public partial class Admin_Setting_ChangePassword : System.Web.UI.Page
     {
         string message;
         if (string.IsNullOrEmpty(OldPasswordTextBox.Text)
-            || string.IsNullOrEmpty(NewPasswordTextBox.Text) || NewPasswordTextBox.Text.Length < 7
-            || string.IsNullOrEmpty(ConfirmPasswordTextBox.Text) || ConfirmPasswordTextBox.Text.Length < 7
+            || string.IsNullOrEmpty(NewPasswordTextBox.Text)
+            || string.IsNullOrEmpty(ConfirmPasswordTextBox.Text)
             || NewPasswordTextBox.Text != ConfirmPasswordTextBox.Text)
         {
             message = "Invalid input";
