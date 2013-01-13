@@ -38,14 +38,6 @@
                             <ValidationSettings>
                                 <RequiredField IsRequired="True" ErrorText="New Password is required" />
                             </ValidationSettings>
-                            <ClientSideEvents Validation="function(s, e) {
-                                    if (NewPassword.GetText() != ''){
-                                        if(NewPassword.GetText().length < 7){
-                                            e.isValid = false;
-                                            e.errorText = 'New Password must be at least 7 characters.';
-                                        }
-                                    }
-                                }" />
                         </dx:ASPxTextBox>
                     </div>
                     <div class="field">
@@ -59,15 +51,9 @@
                                 <RequiredField IsRequired="True" ErrorText="Confirm New Password is required" />
                             </ValidationSettings>
                             <ClientSideEvents Validation="function(s, e) {
-                                    if (ConfirmPassword.GetText() != ''){
-                                        if(ConfirmPassword.GetText().length < 7){
-                                            e.isValid = false;
-                                            e.errorText = 'Confirm password must be at least 7 characters.';
-                                        }
-                                        else if(NewPassword.GetText() != ConfirmPassword.GetText()){
-                                            e.isValid = false;
-                                            e.errorText = 'Confirm password is not match.';
-                                        }
+                                    if (ConfirmPassword.GetText() != '' && NewPassword.GetText() != ConfirmPassword.GetText()){
+                                        e.isValid = false;
+                                        e.errorText = 'Confirm password is not match.';
                                     }
                                 }" />
                         </dx:ASPxTextBox>

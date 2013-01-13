@@ -1985,6 +1985,13 @@ scheduler.set_sizes = function() {
     this.set_xy(this._els["dhx_cal_data"][0], w, h - (data_y + 2), 0, data_y + 2);
 };
 scheduler.set_xy = function(node, w, h, x, y) {
+    /* PhatVT Add Jan 13 2013*/
+    if (isNaN(w)) w = 0;
+    if (isNaN(h)) w = 0;
+    if (isNaN(x)) w = 0;
+    if (isNaN(y)) w = 0;
+    /* PhatVT Add Jan 13 2013*/
+    
     node.style.width = Math.max(0, w) + "px";
     node.style.height = Math.max(0, h) + "px";
     if (arguments.length > 3) {
