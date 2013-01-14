@@ -56,7 +56,7 @@ dhtmlxAjax = {
     postSync: function(url, post) {
         return this.post(url, post, null, true);
     }
-}
+};
 
 /**
 *     @desc: xmlLoader object

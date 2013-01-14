@@ -84,9 +84,8 @@ function initSchedule(weekday) {
     // Thay tooltip
     scheduler.templates.tooltip_date_format = scheduler.date.date_to_str("%H:%i");
     scheduler.templates.tooltip_text = function(start, end, event) {
-        //        return (event.PatientInfo ? '<b>Patient:</b> '  + event.PatientInfo + '<br/>' : '') + 
-        //            "<b>Time:</b> " + scheduler.templates.tooltip_date_format(start) + " - " + scheduler.templates.tooltip_date_format(end);
-        return event.note;
+        return (event.PatientInfo ? '<b>Patient:</b> ' + event.PatientInfo + '<br/>' : '') +
+                    "<b>Time:</b> " + scheduler.templates.tooltip_date_format(start) + " - " + scheduler.templates.tooltip_date_format(end) + "<br/><b>Note:</b> " + event.note;
     };
 
     // Thay doi su kien nut click
