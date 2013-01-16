@@ -48,7 +48,7 @@
     <DataWriteAllFilesInOneDirectory>true</DataWriteAllFilesInOneDirectory>
   </WriteToFileOptions>
   <DataFileSet>
-    <Count>19</Count>
+    <Count>21</Count>
     <DataFile>dbo.Patient_Data.sql</DataFile>
     <DataFile>dbo.Role_Data.sql</DataFile>
     <DataFile>dbo.RosterType_Data.sql</DataFile>
@@ -68,5 +68,7 @@
     <DataFile>dbo.Roster_Data.sql</DataFile>
     <DataFile>dbo.UserRole_Data.sql</DataFile>
     <DataFile>dbo.Users_Data.sql</DataFile>
+    <DataFile>dbo.Appointment_Log_Data.sql</DataFile>
+    <DataFile>dbo.AppointmentHistory_Data.sql</DataFile>
   </DataFileSet>
 </DatabaseInformation>
