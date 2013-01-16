@@ -26,22 +26,20 @@ namespace AppointmentBusiness.Util
             try
             {
                 // Get role list of user
-                var objUserRole = DataRepository.UsersProvider.GetByUsername(username);
-                DataRepository.UsersProvider.DeepLoad(objUserRole);
-                var lstUserRole = objUserRole.UserRoleCollection;
+                var lstUserRole = DataRepository.UserRoleProvider.GetByUsername(username);
 
                 int count;
-                var abc = lstUserRole.Select(userRole => DataRepository.RoleDetailProvider.GetPaged(
-                    String.Format("IsDisabled = 'False' AND RoleId = {0} AND ScreenCode = '{1}'", userRole.RoleId,
-                                  screen)
-                    , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count));
+                var roleDetails = DataRepository.RoleDetailProvider.GetPaged(
+                    String.Format("IsDisabled = 'False' AND ScreenCode = '{0}'", screen),
+                    string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                roleDetails = roleDetails.FindAll(
+                    roleDetail =>
+                    lstUserRole.Exists(userRole => roleDetail.RoleId == userRole.RoleId) &&
+                    roleDetail.Crud.ToLower().Contains(operation.ToLower()));
+
                 // Get list of role
-                if (lstUserRole.Select(userRole => DataRepository.RoleDetailProvider.GetPaged(
-                    String.Format("IsDisabled = 'False' AND RoleId = {0} AND ScreenCode = '{1}'", userRole.RoleId, screen)
-                    , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count)).Any(lstRoleDetail => lstRoleDetail.Exists(x => x.Crud.ToLower().Contains(operation.ToLower()))))
-                {
+                if(roleDetails.Any())
                     return true;
-                }
             }
             catch (Exception ex)
             {

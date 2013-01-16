@@ -5,6 +5,7 @@
 <head>
     <title>Login</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
     <!-- stylesheets -->
     <link rel="stylesheet" type="text/css" href="resources/css/reset.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/style.css" media="screen" />
