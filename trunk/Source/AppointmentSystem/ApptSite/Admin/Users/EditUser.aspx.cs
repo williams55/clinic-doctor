@@ -294,9 +294,9 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
 
             e.NewValues["Username"] = e.NewValues["Username"].ToString().Trim();
             e.NewValues["Password"] = Encrypt.EncryptPassword(txtPsw.Text);
-            e.NewValues["Firstname"] = e.NewValues["Firstname"].ToString().Trim();
-            e.NewValues["Lastname"] = e.NewValues["Lastname"].ToString().Trim();
-            e.NewValues["DisplayName"] = e.NewValues["DisplayName"].ToString().Trim();
+            e.NewValues["Firstname"] = FString.ToTitleCase(e.NewValues["Firstname"].ToString().Trim());
+            e.NewValues["Lastname"] = FString.ToTitleCase(e.NewValues["Lastname"].ToString().Trim());
+            e.NewValues["DisplayName"] = FString.ToTitleCase(e.NewValues["DisplayName"].ToString().Trim());
             e.NewValues["CellPhone"] = e.NewValues["CellPhone"] == null ? string.Empty : e.NewValues["CellPhone"].ToString().Trim();
             e.NewValues["Email"] = e.NewValues["Email"] == null ? string.Empty : e.NewValues["Email"].ToString().Trim();
             e.NewValues["Note"] = e.NewValues["Note"] == null ? string.Empty : e.NewValues["Note"].ToString().Trim();

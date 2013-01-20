@@ -13,5 +13,6 @@ namespace AppointmentBusiness.BO
         public static IAppointmentBO AppointmentBO { get { return new AppointmentBO(); } }
         public static IIdBO IdBO { get { return new IdBO(); } }
         public static IPatientBO PatientBO { get { return new PatientBO(); } }
+        public static IMessageConfigBO MessageConfigBO { get { return new MessageConfigBO(); } }
     }
 }

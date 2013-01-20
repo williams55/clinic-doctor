@@ -643,7 +643,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     patient = obj.PatientCode,
                     PatientName = patient.FirstName,
                     PatientInfo = ParsePatientName(patient),
-                    obj.ServicesId,
+                    obj.UsernameSource.ServicesId,
                     ServicesTitle = obj.ServicesIdSource.Title,
                     room = obj.RoomId ?? CommonBO.NonValue,
                     RoomTitle = obj.RoomId == null? string.Empty: obj.RoomIdSource.Title,

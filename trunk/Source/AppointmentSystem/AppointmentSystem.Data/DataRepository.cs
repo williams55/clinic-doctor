@@ -554,35 +554,18 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
-		#region RoleProvider
+		#region RoleDetailProvider
 
 		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Role"/> business entity.
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="RoleDetail"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
-		public static RoleProviderBase RoleProvider
+		public static RoleDetailProviderBase RoleDetailProvider
 		{
 			get 
 			{
 				LoadProviders();
-				return _provider.RoleProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region AppointmentGroupProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="AppointmentGroup"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static AppointmentGroupProviderBase AppointmentGroupProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.AppointmentGroupProvider;
+				return _provider.RoleDetailProvider;
 			}
 		}
 		
@@ -605,35 +588,18 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
-		#region AppointmentHistoryProvider
+		#region AppointmentGroupProvider
 
 		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="AppointmentHistory"/> business entity.
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="AppointmentGroup"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
-		public static AppointmentHistoryProviderBase AppointmentHistoryProvider
+		public static AppointmentGroupProviderBase AppointmentGroupProvider
 		{
 			get 
 			{
 				LoadProviders();
-				return _provider.AppointmentHistoryProvider;
-			}
-		}
-		
-		#endregion
-		
-		#region RoleDetailProvider
-
-		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="RoleDetail"/> business entity.
-		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
-		///</summary>
-		public static RoleDetailProviderBase RoleDetailProvider
-		{
-			get 
-			{
-				LoadProviders();
-				return _provider.RoleDetailProvider;
+				return _provider.AppointmentGroupProvider;
 			}
 		}
 		
@@ -656,6 +622,40 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
+		#region AppointmentHistoryProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="AppointmentHistory"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static AppointmentHistoryProviderBase AppointmentHistoryProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.AppointmentHistoryProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region RoleProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Role"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static RoleProviderBase RoleProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.RoleProvider;
+			}
+		}
+		
+		#endregion
+		
 		#region RosterProvider
 
 		///<summary>
@@ -673,18 +673,35 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
-		#region GroupRoleProvider
+		#region MessageConfigProvider
 
 		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="GroupRole"/> business entity.
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="MessageConfig"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
-		public static GroupRoleProviderBase GroupRoleProvider
+		public static MessageConfigProviderBase MessageConfigProvider
 		{
 			get 
 			{
 				LoadProviders();
-				return _provider.GroupRoleProvider;
+				return _provider.MessageConfigProvider;
+			}
+		}
+		
+		#endregion
+		
+		#region PatientProvider
+
+		///<summary>
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="Patient"/> business entity.
+		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
+		///</summary>
+		public static PatientProviderBase PatientProvider
+		{
+			get 
+			{
+				LoadProviders();
+				return _provider.PatientProvider;
 			}
 		}
 		
@@ -707,18 +724,18 @@ namespace AppointmentSystem.Data
 		
 		#endregion
 		
-		#region PatientProvider
+		#region GroupRoleProvider
 
 		///<summary>
-		/// Gets the current instance of the Data Access Logic Component for the <see cref="Patient"/> business entity.
+		/// Gets the current instance of the Data Access Logic Component for the <see cref="GroupRole"/> business entity.
 		/// It exposes CRUD methods as well as selecting on index, foreign keys and custom stored procedures.
 		///</summary>
-		public static PatientProviderBase PatientProvider
+		public static GroupRoleProviderBase GroupRoleProvider
 		{
 			get 
 			{
 				LoadProviders();
-				return _provider.PatientProvider;
+				return _provider.GroupRoleProvider;
 			}
 		}
 		
@@ -1325,141 +1342,73 @@ namespace AppointmentSystem.Data
 
 	#endregion UnitsQuery
 		
-	#region RoleFilters
+	#region RoleDetailFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Role"/> object.
+	/// that is used exclusively with a <see cref="RoleDetail"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class RoleFilters : RoleFilterBuilder
+	public class RoleDetailFilters : RoleDetailFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the RoleFilters class.
+		/// Initializes a new instance of the RoleDetailFilters class.
 		/// </summary>
-		public RoleFilters() : base() { }
+		public RoleDetailFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the RoleFilters class.
+		/// Initializes a new instance of the RoleDetailFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoleFilters(bool ignoreCase) : base(ignoreCase) { }
+		public RoleDetailFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the RoleFilters class.
+		/// Initializes a new instance of the RoleDetailFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoleFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RoleDetailFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion RoleFilters
+	#endregion RoleDetailFilters
 	
-	#region RoleQuery
+	#region RoleDetailQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="RoleParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Role"/> object.
+	/// A strongly-typed instance of the <see cref="RoleDetailParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="RoleDetail"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class RoleQuery : RoleParameterBuilder
+	public class RoleDetailQuery : RoleDetailParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the RoleQuery class.
+		/// Initializes a new instance of the RoleDetailQuery class.
 		/// </summary>
-		public RoleQuery() : base() { }
+		public RoleDetailQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the RoleQuery class.
+		/// Initializes a new instance of the RoleDetailQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoleQuery(bool ignoreCase) : base(ignoreCase) { }
+		public RoleDetailQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the RoleQuery class.
+		/// Initializes a new instance of the RoleDetailQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoleQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public RoleDetailQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion RoleQuery
-		
-	#region AppointmentGroupFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="AppointmentGroup"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class AppointmentGroupFilters : AppointmentGroupFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupFilters class.
-		/// </summary>
-		public AppointmentGroupFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentGroupFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentGroupFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion AppointmentGroupFilters
-	
-	#region AppointmentGroupQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="AppointmentGroupParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="AppointmentGroup"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class AppointmentGroupQuery : AppointmentGroupParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupQuery class.
-		/// </summary>
-		public AppointmentGroupQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentGroupQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the AppointmentGroupQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentGroupQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion AppointmentGroupQuery
+	#endregion RoleDetailQuery
 		
 	#region UsersFilters
 	
@@ -1529,141 +1478,73 @@ namespace AppointmentSystem.Data
 
 	#endregion UsersQuery
 		
-	#region AppointmentHistoryFilters
+	#region AppointmentGroupFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="AppointmentHistory"/> object.
+	/// that is used exclusively with a <see cref="AppointmentGroup"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class AppointmentHistoryFilters : AppointmentHistoryFilterBuilder
+	public class AppointmentGroupFilters : AppointmentGroupFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentHistoryFilters class.
+		/// Initializes a new instance of the AppointmentGroupFilters class.
 		/// </summary>
-		public AppointmentHistoryFilters() : base() { }
+		public AppointmentGroupFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentHistoryFilters class.
+		/// Initializes a new instance of the AppointmentGroupFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentHistoryFilters(bool ignoreCase) : base(ignoreCase) { }
+		public AppointmentGroupFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentHistoryFilters class.
+		/// Initializes a new instance of the AppointmentGroupFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentHistoryFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public AppointmentGroupFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion AppointmentHistoryFilters
+	#endregion AppointmentGroupFilters
 	
-	#region AppointmentHistoryQuery
+	#region AppointmentGroupQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="AppointmentHistoryParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="AppointmentHistory"/> object.
+	/// A strongly-typed instance of the <see cref="AppointmentGroupParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="AppointmentGroup"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class AppointmentHistoryQuery : AppointmentHistoryParameterBuilder
+	public class AppointmentGroupQuery : AppointmentGroupParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentHistoryQuery class.
+		/// Initializes a new instance of the AppointmentGroupQuery class.
 		/// </summary>
-		public AppointmentHistoryQuery() : base() { }
+		public AppointmentGroupQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentHistoryQuery class.
+		/// Initializes a new instance of the AppointmentGroupQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public AppointmentHistoryQuery(bool ignoreCase) : base(ignoreCase) { }
+		public AppointmentGroupQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the AppointmentHistoryQuery class.
+		/// Initializes a new instance of the AppointmentGroupQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public AppointmentHistoryQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public AppointmentGroupQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion AppointmentHistoryQuery
-		
-	#region RoleDetailFilters
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="RoleDetail"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class RoleDetailFilters : RoleDetailFilterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailFilters class.
-		/// </summary>
-		public RoleDetailFilters() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoleDetailFilters(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailFilters class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoleDetailFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion RoleDetailFilters
-	
-	#region RoleDetailQuery
-	
-	/// <summary>
-	/// A strongly-typed instance of the <see cref="RoleDetailParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="RoleDetail"/> object.
-	/// </summary>
-	[CLSCompliant(true)]
-	public class RoleDetailQuery : RoleDetailParameterBuilder
-	{
-		#region Constructors
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailQuery class.
-		/// </summary>
-		public RoleDetailQuery() : base() { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public RoleDetailQuery(bool ignoreCase) : base(ignoreCase) { }
-
-		/// <summary>
-		/// Initializes a new instance of the RoleDetailQuery class.
-		/// </summary>
-		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public RoleDetailQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
-
-		#endregion Constructors
-	}
-
-	#endregion RoleDetailQuery
+	#endregion AppointmentGroupQuery
 		
 	#region DoctorRoomFilters
 	
@@ -1733,6 +1614,142 @@ namespace AppointmentSystem.Data
 
 	#endregion DoctorRoomQuery
 		
+	#region AppointmentHistoryFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="AppointmentHistory"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class AppointmentHistoryFilters : AppointmentHistoryFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentHistoryFilters class.
+		/// </summary>
+		public AppointmentHistoryFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentHistoryFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public AppointmentHistoryFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentHistoryFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public AppointmentHistoryFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion AppointmentHistoryFilters
+	
+	#region AppointmentHistoryQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="AppointmentHistoryParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="AppointmentHistory"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class AppointmentHistoryQuery : AppointmentHistoryParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentHistoryQuery class.
+		/// </summary>
+		public AppointmentHistoryQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentHistoryQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public AppointmentHistoryQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the AppointmentHistoryQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public AppointmentHistoryQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion AppointmentHistoryQuery
+		
+	#region RoleFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="Role"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class RoleFilters : RoleFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the RoleFilters class.
+		/// </summary>
+		public RoleFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the RoleFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public RoleFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the RoleFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public RoleFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion RoleFilters
+	
+	#region RoleQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="RoleParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Role"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class RoleQuery : RoleParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the RoleQuery class.
+		/// </summary>
+		public RoleQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the RoleQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public RoleQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the RoleQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public RoleQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion RoleQuery
+		
 	#region RosterFilters
 	
 	/// <summary>
@@ -1801,73 +1818,141 @@ namespace AppointmentSystem.Data
 
 	#endregion RosterQuery
 		
-	#region GroupRoleFilters
+	#region MessageConfigFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="GroupRole"/> object.
+	/// that is used exclusively with a <see cref="MessageConfig"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class GroupRoleFilters : GroupRoleFilterBuilder
+	public class MessageConfigFilters : MessageConfigFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the GroupRoleFilters class.
+		/// Initializes a new instance of the MessageConfigFilters class.
 		/// </summary>
-		public GroupRoleFilters() : base() { }
+		public MessageConfigFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the GroupRoleFilters class.
+		/// Initializes a new instance of the MessageConfigFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public GroupRoleFilters(bool ignoreCase) : base(ignoreCase) { }
+		public MessageConfigFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the GroupRoleFilters class.
+		/// Initializes a new instance of the MessageConfigFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public GroupRoleFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public MessageConfigFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion GroupRoleFilters
+	#endregion MessageConfigFilters
 	
-	#region GroupRoleQuery
+	#region MessageConfigQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="GroupRoleParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="GroupRole"/> object.
+	/// A strongly-typed instance of the <see cref="MessageConfigParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="MessageConfig"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class GroupRoleQuery : GroupRoleParameterBuilder
+	public class MessageConfigQuery : MessageConfigParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the GroupRoleQuery class.
+		/// Initializes a new instance of the MessageConfigQuery class.
 		/// </summary>
-		public GroupRoleQuery() : base() { }
+		public MessageConfigQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the GroupRoleQuery class.
+		/// Initializes a new instance of the MessageConfigQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public GroupRoleQuery(bool ignoreCase) : base(ignoreCase) { }
+		public MessageConfigQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the GroupRoleQuery class.
+		/// Initializes a new instance of the MessageConfigQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public GroupRoleQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public MessageConfigQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion GroupRoleQuery
+	#endregion MessageConfigQuery
+		
+	#region PatientFilters
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
+	/// that is used exclusively with a <see cref="Patient"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class PatientFilters : PatientFilterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the PatientFilters class.
+		/// </summary>
+		public PatientFilters() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the PatientFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public PatientFilters(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the PatientFilters class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public PatientFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion PatientFilters
+	
+	#region PatientQuery
+	
+	/// <summary>
+	/// A strongly-typed instance of the <see cref="PatientParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="Patient"/> object.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class PatientQuery : PatientParameterBuilder
+	{
+		#region Constructors
+
+		/// <summary>
+		/// Initializes a new instance of the PatientQuery class.
+		/// </summary>
+		public PatientQuery() : base() { }
+
+		/// <summary>
+		/// Initializes a new instance of the PatientQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		public PatientQuery(bool ignoreCase) : base(ignoreCase) { }
+
+		/// <summary>
+		/// Initializes a new instance of the PatientQuery class.
+		/// </summary>
+		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
+		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
+		public PatientQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+
+		#endregion Constructors
+	}
+
+	#endregion PatientQuery
 		
 	#region AppointmentFilters
 	
@@ -1937,73 +2022,73 @@ namespace AppointmentSystem.Data
 
 	#endregion AppointmentQuery
 		
-	#region PatientFilters
+	#region GroupRoleFilters
 	
 	/// <summary>
 	/// A strongly-typed instance of the <see cref="SqlFilterBuilder&lt;EntityColumn&gt;"/> class
-	/// that is used exclusively with a <see cref="Patient"/> object.
+	/// that is used exclusively with a <see cref="GroupRole"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class PatientFilters : PatientFilterBuilder
+	public class GroupRoleFilters : GroupRoleFilterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the PatientFilters class.
+		/// Initializes a new instance of the GroupRoleFilters class.
 		/// </summary>
-		public PatientFilters() : base() { }
+		public GroupRoleFilters() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the PatientFilters class.
+		/// Initializes a new instance of the GroupRoleFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public PatientFilters(bool ignoreCase) : base(ignoreCase) { }
+		public GroupRoleFilters(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the PatientFilters class.
+		/// Initializes a new instance of the GroupRoleFilters class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public PatientFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public GroupRoleFilters(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion PatientFilters
+	#endregion GroupRoleFilters
 	
-	#region PatientQuery
+	#region GroupRoleQuery
 	
 	/// <summary>
-	/// A strongly-typed instance of the <see cref="PatientParameterBuilder"/> class
-	/// that is used exclusively with a <see cref="Patient"/> object.
+	/// A strongly-typed instance of the <see cref="GroupRoleParameterBuilder"/> class
+	/// that is used exclusively with a <see cref="GroupRole"/> object.
 	/// </summary>
 	[CLSCompliant(true)]
-	public class PatientQuery : PatientParameterBuilder
+	public class GroupRoleQuery : GroupRoleParameterBuilder
 	{
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the PatientQuery class.
+		/// Initializes a new instance of the GroupRoleQuery class.
 		/// </summary>
-		public PatientQuery() : base() { }
+		public GroupRoleQuery() : base() { }
 
 		/// <summary>
-		/// Initializes a new instance of the PatientQuery class.
+		/// Initializes a new instance of the GroupRoleQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
-		public PatientQuery(bool ignoreCase) : base(ignoreCase) { }
+		public GroupRoleQuery(bool ignoreCase) : base(ignoreCase) { }
 
 		/// <summary>
-		/// Initializes a new instance of the PatientQuery class.
+		/// Initializes a new instance of the GroupRoleQuery class.
 		/// </summary>
 		/// <param name="ignoreCase">Specifies whether to create case-insensitive statements.</param>
 		/// <param name="useAnd">Specifies whether to combine statements using AND or OR.</param>
-		public PatientQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
+		public GroupRoleQuery(bool ignoreCase, bool useAnd) : base(ignoreCase, useAnd) { }
 
 		#endregion Constructors
 	}
 
-	#endregion PatientQuery
+	#endregion GroupRoleQuery
 		
 	#region VcsCompanyFilters
 	

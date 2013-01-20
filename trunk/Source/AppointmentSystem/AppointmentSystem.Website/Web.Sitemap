@@ -8,6 +8,7 @@
 	<siteMapNode url="~/Admin/AppointmentHistory.aspx" title="Appointment History"  description="" />
 	<siteMapNode url="~/Admin/DoctorRoom.aspx" title="Doctor Room"  description="" />
 	<siteMapNode url="~/Admin/GroupRole.aspx" title="Group Role"  description="" />
+	<siteMapNode url="~/Admin/MessageConfig.aspx" title="Message Config"  description="" />
 	<siteMapNode url="~/Admin/Patient.aspx" title="Patient"  description="" />
 	<siteMapNode url="~/Admin/Role.aspx" title="Role"  description="" />
 	<siteMapNode url="~/Admin/RoleDetail.aspx" title="Role Detail"  description="" />

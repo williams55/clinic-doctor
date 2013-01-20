@@ -55,7 +55,7 @@
 		</table>
 	</div>
 	<div id="divBaseLinks">
-	    &copy 2012 Copyright - <asp:HyperLink runat="server" ID="Hyperlink1" NavigateUrl="~/" Text="CompanyName"></asp:HyperLink>
+	    &copy 2013 Copyright - <asp:HyperLink runat="server" ID="Hyperlink1" NavigateUrl="~/" Text="CompanyName"></asp:HyperLink>
 	 </div>
 	<!-- begin bottom rounded corner styles -->
 	<b class="rbottom"><b class="r4"></b> <b class="r3"></b> <b class="r2"></b> <b class="r1"></b></b>

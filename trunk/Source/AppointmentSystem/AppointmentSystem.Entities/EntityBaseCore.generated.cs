@@ -169,16 +169,6 @@ namespace AppointmentSystem.Entities
 		public abstract object ParentCollection{get;set;}
 		
 		#region Common Columns
-		/// <summary>
-		/// 
-		/// </summary>
-		
-		public abstract System.String CreateUser {get;set;}
-		/// <summary>
-		/// 
-		/// </summary>
-		
-		public abstract System.DateTime CreateDate {get;set;}
 		#endregion		
 				
 		/// <summary>
