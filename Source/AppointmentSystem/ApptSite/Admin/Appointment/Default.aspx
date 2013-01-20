@@ -22,7 +22,6 @@
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_active_links.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
-
     <script src="<%= Page.ResolveClientUrl("~/resources/components/dhtmlxScheduler/ext/dhtmlxscheduler_limit.js") %>"
         type="text/javascript" charset="utf-8"></script>
 
@@ -68,6 +67,22 @@
         /* enabling marked timespans for month view */.dhx_scheduler_month .dhx_marked_timespan
         {
             display: block;
+        }
+        
+        a.autocomplete {
+            border-top: 1px solid gray;
+            margin: 0;
+            padding: 0;
+        }
+        
+        a:hover.autocomplete {
+            font-weight: normal;
+        }
+        
+        a.autocomplete div.col {
+            float: left;
+            padding: 0;
+            margin: 0;
         }
     </style>
 </asp:Content>
@@ -258,24 +273,10 @@
                 <div class="dhx_cal_lsection required" style="float: left;">
                     Patient</div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <dx:ASPxComboBox ID="cboPatient" ClientInstanceName="cboPatient" runat="server" Width="165px"
-                        DropDownStyle="DropDownList" ValueField="PatientCode" TextField="LastName" ValueType="System.String"
-                        TextFormatString="{1} {2}" EnableCallbackMode="False" IncrementalFilteringMode="Contains">
-                        <Columns>
-                            <dx:ListBoxColumn FieldName="PatientCode" Width="80" />
-                            <dx:ListBoxColumn FieldName="FirstName" Width="100" />
-                            <dx:ListBoxColumn FieldName="LastName" Width="100" />
-                            <dx:ListBoxColumn FieldName="DateOfBirth" Width="70" Caption="DOB" />
-                            <dx:ListBoxColumn FieldName="Sex" Width="50" />
-                        </Columns>
-                        <ValidationSettings SetFocusOnError="True" ErrorDisplayMode="ImageWithTooltip" Display="Dynamic"
-                            ErrorText="Error">
-                            <RequiredField IsRequired="True" ErrorText="Patient is required" />
-                        </ValidationSettings>
-                        <ClientSideEvents ValueChanged="function(s, e) { 
-                            $('[id$=changeUser]').show(); }" EndCallback="function(s, e) { 
-                            if(patient){  if(s.FindItemByValue(patient))s.SetSelectedItem(s.FindItemByValue(patient)); s.Validate(); } }" />
-                    </dx:ASPxComboBox>
+                    <input type="text" name="patient" id="patient-search" maxlength="20" style="width: 200px;" class="form-input"/>
+                    <input type="hidden" name="patient" id="patient-name"/>
+                    <input type="hidden" name="patient" id="patient-code"/>
+                    <img class="error-icon" title="Patient is required"/>
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <input type="button" id="createUser" value="New" style="width: 50;" runat="server"
@@ -550,7 +551,8 @@
             <data:CustomParameter Name="RecordCount" Value="0" Type="Int32" />
         </Parameters>
     </data:UsersDataSource>
-    <data:StatusDataSource SelectMethod="GetPaged" runat="server" ID="StatusDataSource" EnableSorting="True">
+    <data:StatusDataSource SelectMethod="GetPaged" runat="server" ID="StatusDataSource"
+        EnableSorting="True">
         <Parameters>
             <data:CustomParameter Name="WhereClause" Value="" ConvertEmptyStringToNull="false" />
             <data:CustomParameter Name="OrderBy" Value="PriorityIndex ASC" ConvertEmptyStringToNull="false" />

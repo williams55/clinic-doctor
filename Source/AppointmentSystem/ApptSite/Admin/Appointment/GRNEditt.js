@@ -119,6 +119,7 @@ function initSchedule(weekday) {
             label: ""
 }])
         });
+
         // Tao timeline view voi danh sach doctor duoc chon
         scheduler.createTimelineView({
             section_autoheight: false,
@@ -239,7 +240,8 @@ function initSchedule(weekday) {
         $("#txtNote").val(ev.note);
         cboStatus.SetSelectedIndex(0);
         cboService.SetSelectedItem(cboService.FindItemByValue($('#service-tabs li.ui-tabs-selected').attr('id').replace('tab_', '')));
-        cboPatient.SetText('');
+        $('#patient-search, #patient-name').val('');
+        $('#patient-code').val('');
         grid.PerformCallback('Refresh');
 
         // Set value
@@ -857,6 +859,51 @@ function initSchedule(weekday) {
     $(document).ready(function() {
         initSchedule(weekday);
         initEvents();
+
+        $('#patient-search').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    type: "POST",
+                    url: "Default.aspx/SearchPatient",
+                    data: JSON.stringify({ keyword: request.term }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(data) {
+                        var obj = JSON.parse(data.d);
+                        if (obj.result == "true") {
+                            response($.map(obj.data,
+                                function(item) {
+                                    return {
+                                        label: item.FirstName + ' ' + item.LastName,
+                                        value: item.PatientCode,
+                                        FirstName: item.FirstName,
+                                        LastName: item.LastName,
+                                        DateOfBirth: item.DateOfBirth,
+                                        Sex: item.Sex
+                                    };
+                                }
+                            ));
+                        }
+                    }
+                });
+            },
+            minLength: 1,
+            select: function(event, ui) {
+                $('#patient-name').val(ui.item.FirstName + ' ' + ui.item.LastName);
+                $('#patient-code').val(ui.item.value);
+            }
+        }).data("autocomplete")._renderItem = function(ul, item) {
+            var html = "<a class='autocomplete'><div class='col' style='width:90px;'>" + item.value + "</div>"
+                + "<div class='col' style='width:120px;'>" + item.FirstName + "</div>"
+                + "<div class='col' style='width:120px;'>" + item.LastName + "</div>"
+                + "<div class='col' style='width:70px;'>" + item.DateOfBirth + "</div>"
+                + "<div class='col' style='width:50px;'>" + item.Sex + "</div>"
+                + "<div style='clear:both;'></div></a>";
+            return $("<li>")
+                .data("item.autocomplete", item)
+                .append(html)
+                .appendTo(ul);
+        };
     });
 
     function initEvents() {
@@ -894,11 +941,10 @@ function initSchedule(weekday) {
     function ValidateForm() {
         cboStatus.Validate();
         cboDoctor.Validate();
-        cboPatient.Validate();
         startTime.Validate();
         startDate.Validate();
         endTime.Validate();
         endDate.Validate();
-        return cboStatus.isValid && cboDoctor.isValid && cboPatient.isValid
+        return cboStatus.isValid && cboDoctor.isValid
             && startTime.isValid && startDate.isValid && endTime.isValid && endDate.isValid;
     }
