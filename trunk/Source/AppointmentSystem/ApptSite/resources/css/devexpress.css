@@ -66,3 +66,17 @@
     font: 7pt Tahoma;
     color: black;
 }
+
+/********************** Appt/Rost form ***********************/
+.error-icon {
+    background: url(../../resources/images/error.png) no-repeat;
+    width: 14px;
+    height: 14px;
+    display: none;
+    border: 0px;
+}
+
+input.form-input {
+    border: 1px solid #A0A0A0;
+    padding: 2px;
+}

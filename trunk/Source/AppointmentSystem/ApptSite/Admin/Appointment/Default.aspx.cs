@@ -59,18 +59,18 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             // Bind data cho patient
             int count;
-            var lstPatients = DataRepository.VcsPatientProvider.GetPaged("IsDisabled = 'False'", string.Empty,
-                0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
-            cboPatient.DataSource = lstPatients.Select(patient => new
-                {
-                    patient.PatientCode,
-                    patient.FirstName,
-                    patient.LastName,
-                    patient.MiddleName,
-                    DateOfBirth = String.Format("{0:MM/dd/yyyy}", patient.DateOfBirth),
-                    patient.Sex
-                });
-            cboPatient.DataBind();
+            //var lstPatients = DataRepository.VcsPatientProvider.GetPaged("IsDisabled = 'False'", string.Empty,
+            //    0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+            //cboPatient.DataSource = lstPatients.Select(patient => new
+            //    {
+            //        patient.PatientCode,
+            //        patient.FirstName,
+            //        patient.LastName,
+            //        patient.MiddleName,
+            //        DateOfBirth = String.Format("{0:MM/dd/yyyy}", patient.DateOfBirth),
+            //        patient.Sex
+            //    });
+            //cboPatient.DataBind();
         }
         catch (Exception ex)
         {
@@ -301,8 +301,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     /// </summary>
     /// <returns></returns>
     [WebMethod]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-    public static string SearchPatient()
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string SearchPatient(string keyword)
     {
         // Validate current user have any right to create new patient
         if (!CheckCreating(out _message) && !CheckUpdating(out _message))
@@ -310,42 +310,30 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             return WebCommon.BuildFailedResult("You have no right to search patient.");
         }
 
-        var keyword = HttpContext.Current.Request["q"];
-        var lstTk = new List<object>();
+        keyword = keyword.Trim();
         try
         {
             int count;
             var lst = DataRepository.VcsPatientProvider.GetPaged(String.Format("FirstName LIKE '%{0}%' OR LastName LIKE '%{0}%'" +
-                                                                             " OR HomePhone LIKE '%{0}%'" +
+                                                                             " OR HomePhone LIKE '%{0}%' OR PatientCode LIKE '%{0}%'" +
                                                                              " OR CompanyPhone LIKE '%{0}%' OR MobilePhone LIKE '%{0}%'" +
                                                                              " OR CAST(DateOfBirth AS varchar(20)) LIKE '%{0}%'", keyword)
-                , string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                , string.Empty, 0, 10, out count);
 
-            var lstResult = lst.Select(patient => new
+            return WebCommon.BuildSuccessfulResult(lst.Select(patient => new
             {
-                id = patient.PatientCode,
+                patient.PatientCode,
                 patient.FirstName,
-                patient.MiddleName,
                 patient.LastName,
-                patient.HomePhone,
-                patient.CompanyPhone,
-                patient.MemberType,
-                patient.Nationality,
-                patient.MobilePhone,
-                patient.DateOfBirth,
-                patient.Sex,
-                patient.Remark,
-                propertyToSearch = ParsePatientInfo(patient),
-                PatientInfo = ParsePatientName(patient)
-            });
-            return JsonConvert.SerializeObject(lstResult);
+                DateOfBirth = String.Format("{0:MM/dd/yyyy}", patient.DateOfBirth),
+                Sex = SexConstant.Instant().GetValueByKey(patient.Sex)
+            }));
         }
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult("Cannot create new patient. Please contact Administrator.");
         }
-
-        return JsonConvert.SerializeObject(lstTk);
     }
 
     /// <summary>
