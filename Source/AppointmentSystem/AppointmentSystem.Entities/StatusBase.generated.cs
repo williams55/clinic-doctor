@@ -323,7 +323,7 @@ namespace AppointmentSystem.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, true, 200)]
-		public override System.String CreateUser
+		public virtual System.String CreateUser
 		{
 			get
 			{
@@ -361,7 +361,7 @@ namespace AppointmentSystem.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, false)]
-		public override System.DateTime CreateDate
+		public virtual System.DateTime CreateDate
 		{
 			get
 			{

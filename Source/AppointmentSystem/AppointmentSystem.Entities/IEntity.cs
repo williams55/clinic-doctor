@@ -90,16 +90,6 @@ namespace AppointmentSystem.Entities
 		/// <value>A string array that holds the columns names.</value>
 		string[] TableColumns {get;}
 		
-		/// <summary>
-		/// 
-		/// </summary>
-		System.String CreateUser{ get; }
-
-		/// <summary>
-		/// 
-		/// </summary>
-		System.DateTime CreateDate{ get; }
-
 		
 		/// <summary>
 		///     Gets or sets the object that contains supplemental data about this object.

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AppointmentBusiness.BO;
 using AppointmentSystem.Data;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
@@ -25,6 +26,12 @@ namespace AppointmentBusiness.Util
             message = string.Empty;
             try
             {
+                if (string.IsNullOrEmpty(username))
+                {
+                    message = BoFactory.MessageConfigBO.GetMessage(MessageCode.AuthCode.SessionTimeOut);
+                    return false;
+                }
+
                 // Get role list of user
                 var lstUserRole = DataRepository.UserRoleProvider.GetByUsername(username);
 

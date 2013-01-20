@@ -66,115 +66,123 @@ namespace AppointmentBusiness.Util
         /// <param name="executeDataSetMethods">The methods to execute Dataset </param>
         public static void WriteLog(object originalObject, object modifiedObject, string user, ExcuteDataSet executeDataSetMethods)
         {
-            var stringBuilder = new StringBuilder();
+            try
+            {
+                var stringBuilder = new StringBuilder();
 
-            // If create object
-            if (modifiedObject == null)
-            {
-                stringBuilder.AppendLine(String.Format("Create new"));
-            }
-            else
-            {
-                // if not changes between two version
-                if (ReferenceEquals(originalObject, modifiedObject))
+                // If create object
+                if (modifiedObject == null)
                 {
-                    // do nothing
-                    return;
+                    stringBuilder.AppendLine(String.Format("Create new"));
                 }
-
-                // get all infos of versions
-                var originalInfos = originalObject.GetType()
-                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(p => Attribute.GetCustomAttribute(p, typeof(DescriptionAttribute)) != null)
-                    .ToList();
-                var modifiedInfos = modifiedObject.GetType()
-                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(p => Attribute.GetCustomAttribute(p, typeof(DescriptionAttribute)) != null)
-                    .ToList();
-
-                originalInfos.Sort((info, propertyInfo) => String.CompareOrdinal(info.Name, propertyInfo.Name));
-                modifiedInfos.Sort((info, propertyInfo) => String.CompareOrdinal(info.Name, propertyInfo.Name));
-
-                // with each property
-                for (var i = 0; i < originalInfos.Count; i++)
+                else
                 {
-                    // get value of property
-                    var originalValue = originalInfos[i].GetValue(originalObject, null);
-                    var modifiedValue = modifiedInfos[i].GetValue(modifiedObject, null);
-
-                    // if current property is not changes
-                    if (AreValuesEqual(originalValue, modifiedValue))
+                    // if not changes between two version
+                    if (ReferenceEquals(originalObject, modifiedObject))
                     {
-                        // go next property
-                        continue;
+                        // do nothing
+                        return;
                     }
-                    // append change to log
-                    stringBuilder.AppendLine(String.Format("Change {0} from \"{1}\" to \"{2}\"",
-                                                           originalInfos[i].Name,
-                                                           originalValue,
-                                                           modifiedValue));
-                }
-            }
 
-            //Create log table if not exist
-            if (!string.IsNullOrEmpty(stringBuilder.ToString()))
-            {
-                var tableColumnsProperty = originalObject.GetType().GetProperty("TableColumns");
-                var tableNameProperty = originalObject.GetType().GetProperty("TableName");
-                var tableName = (string)tableNameProperty.GetValue(originalObject, null);
-                var columns = (string[])tableColumnsProperty.GetValue(originalObject, null);
-                var sql = string.Format("IF OBJECT_ID('[dbo].[{0}]','U') IS NULL ", tableName + "_Log");
-                sql += string.Format("CREATE TABLE [dbo].[{0}]([LogId] [bigint] IDENTITY(1,1) NOT NULL, ",
-                                     tableName + "_Log");
-                //Insert into log table
-                var insertSQL = string.Format("INSERT INTO [dbo].[{0}](", tableName + "_Log");
-                var valueSQL = "";
-                foreach (var column in columns)
-                {
-                    var mi = originalObject.GetType().GetMember(column);
-                    if (mi.Length > 0)
+                    // get all infos of versions
+                    var originalInfos = originalObject.GetType()
+                        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                        .Where(p => Attribute.GetCustomAttribute(p, typeof(DescriptionAttribute)) != null)
+                        .ToList();
+                    var modifiedInfos = modifiedObject.GetType()
+                        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                        .Where(p => Attribute.GetCustomAttribute(p, typeof(DescriptionAttribute)) != null)
+                        .ToList();
+
+                    originalInfos.Sort((info, propertyInfo) => String.CompareOrdinal(info.Name, propertyInfo.Name));
+                    modifiedInfos.Sort((info, propertyInfo) => String.CompareOrdinal(info.Name, propertyInfo.Name));
+
+                    // with each property
+                    for (var i = 0; i < originalInfos.Count; i++)
                     {
-                        var myAt =
-                            (DataObjectFieldAttribute)
-                            Attribute.GetCustomAttribute(mi[0], typeof(DataObjectFieldAttribute));
-                        if (myAt!= null && myAt.PrimaryKey)
+                        // get value of property
+                        var originalValue = originalInfos[i].GetValue(originalObject, null);
+                        var modifiedValue = modifiedInfos[i].GetValue(modifiedObject, null);
+
+                        // if current property is not changes
+                        if (AreValuesEqual(originalValue, modifiedValue))
                         {
-                            var sql_dataset =
-                                string.Format(
-                                    "SELECT '[' +COLUMN_NAME+'] ['+  DATA_TYPE +  '] ('+ CAST(ISNULL(CHARACTER_MAXIMUM_LENGTH,'')  AS NVARCHAR)+' ) ' + CASE IS_NULLABLE WHEN 'YES' THEN 'NULL' ELSE 'NOT NULL, ' END  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='{0}'  AND TABLE_NAME='{1}'",
-                                    column, tableName);
-                            var dataSet = executeDataSetMethods(CommandType.Text, sql_dataset);
-                            sql += dataSet.Tables[0].Rows[0][0].ToString();
-                            insertSQL += "[" + column + "],";
-                            PropertyInfo propertyInfo = originalObject.GetType().GetProperty(column);
-                            var value = propertyInfo.GetValue(originalObject, null);
-                            if (IsNumeric(propertyInfo.PropertyType))
-                                valueSQL += value + ",";
-                            else
-                                valueSQL += "'" + value + "',";
+                            // go next property
+                            continue;
+                        }
+                        // append change to log
+                        stringBuilder.AppendLine(String.Format("Change {0} from \"{1}\" to \"{2}\"",
+                                                               originalInfos[i].Name,
+                                                               originalValue,
+                                                               modifiedValue));
+                    }
+                }
+
+                //Create log table if not exist
+                if (!string.IsNullOrEmpty(stringBuilder.ToString()))
+                {
+                    var tableColumnsProperty = originalObject.GetType().GetProperty("TableColumns");
+                    var tableNameProperty = originalObject.GetType().GetProperty("TableName");
+                    var tableName = (string)tableNameProperty.GetValue(originalObject, null);
+                    var columns = (string[])tableColumnsProperty.GetValue(originalObject, null);
+                    var sql = string.Format("IF OBJECT_ID('[dbo].[{0}]','U') IS NULL ", tableName + "_Log");
+                    sql += string.Format("CREATE TABLE [dbo].[{0}]([LogId] [bigint] IDENTITY(1,1) NOT NULL, ",
+                                         tableName + "_Log");
+                    //Insert into log table
+                    var insertSQL = string.Format("INSERT INTO [dbo].[{0}](", tableName + "_Log");
+                    var valueSQL = "";
+                    foreach (var column in columns)
+                    {
+                        var mi = originalObject.GetType().GetMember(column);
+                        if (mi.Length > 0)
+                        {
+                            var myAt =
+                                (DataObjectFieldAttribute)
+                                Attribute.GetCustomAttribute(mi[0], typeof(DataObjectFieldAttribute));
+                            if (myAt != null && myAt.PrimaryKey)
+                            {
+                                var sql_dataset =
+                                    string.Format(
+                                        "SELECT '[' +COLUMN_NAME+'] ['+  DATA_TYPE +  '] ('+ CAST(ISNULL(CHARACTER_MAXIMUM_LENGTH,'')  AS NVARCHAR)+' ) ' + CASE IS_NULLABLE WHEN 'YES' THEN 'NULL' ELSE 'NOT NULL, ' END  FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME='{0}'  AND TABLE_NAME='{1}'",
+                                        column, tableName);
+                                var dataSet = executeDataSetMethods(CommandType.Text, sql_dataset);
+                                sql += dataSet.Tables[0].Rows[0][0].ToString();
+                                insertSQL += "[" + column + "],";
+                                PropertyInfo propertyInfo = originalObject.GetType().GetProperty(column);
+                                var value = propertyInfo.GetValue(originalObject, null);
+                                if (IsNumeric(propertyInfo.PropertyType))
+                                    valueSQL += value + ",";
+                                else
+                                    valueSQL += "'" + value + "',";
+                            }
                         }
                     }
+                    insertSQL += "[UpdateUser],[UpdateDate],[LogMessage]) VALUES(";
+                    sql +=
+                        string.Format(
+                            "[UpdateUser] [nvarchar](50) NULL,[UpdateDate] [datetime] NOT NULL,[LogMessage] [nvarchar](250) NULL, CONSTRAINT [PK_{0}] PRIMARY KEY CLUSTERED ",
+                            tableName + "_Log");
+                    sql +=
+                        "([LogId] ASC)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]) ON [PRIMARY] ";
+                    valueSQL += string.Format("'{0}','{1}','{2}')", user, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
+                                              stringBuilder);
+                    executeDataSetMethods(CommandType.Text, sql);
+                    executeDataSetMethods(CommandType.Text, insertSQL + valueSQL);
                 }
-                insertSQL += "[UpdateUser],[UpdateDate],[LogMessage]) VALUES(";
-                sql +=
-                    string.Format(
-                        "[UpdateUser] [nvarchar](50) NULL,[UpdateDate] [datetime] NOT NULL,[LogMessage] [nvarchar](250) NULL, CONSTRAINT [PK_{0}] PRIMARY KEY CLUSTERED ",
-                        tableName + "_Log");
-                sql +=
-                    "([LogId] ASC)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]) ON [PRIMARY] ";
-                valueSQL += string.Format("'{0}','{1}','{2}')", user, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
-                                          stringBuilder);
-                executeDataSetMethods(CommandType.Text, sql);
-                executeDataSetMethods(CommandType.Text, insertSQL + valueSQL);
+                //// Write log to text file
+                //Stream str = new FileStream("\\" + "logger.txt",
+                //                            FileMode.Append,
+                //                            FileAccess.Write,
+                //                            FileShare.ReadWrite);
+                //var data = Encoding.UTF8.GetBytes(stringBuilder.ToString());
+                //str.Write(data, 0, data.Length);
+                //str.Close();
+
             }
-            //// Write log to text file
-            //Stream str = new FileStream("\\" + "logger.txt",
-            //                            FileMode.Append,
-            //                            FileAccess.Write,
-            //                            FileShare.ReadWrite);
-            //var data = Encoding.UTF8.GetBytes(stringBuilder.ToString());
-            //str.Write(data, 0, data.Length);
-            //str.Close();
+            catch (Exception)
+            {
+
+            }
         }
 
         public static bool IsNumeric(Type type)

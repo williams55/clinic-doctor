@@ -482,7 +482,7 @@ namespace AppointmentSystem.Entities
 
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
-		[DataObjectField(false, false, true, 500)]
+		[DataObjectField(false, false, true, 1000)]
 		public virtual System.String Note
 		{
 			get
@@ -715,7 +715,7 @@ namespace AppointmentSystem.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, true, 200)]
-		public override System.String CreateUser
+		public virtual System.String CreateUser
 		{
 			get
 			{
@@ -753,7 +753,7 @@ namespace AppointmentSystem.Entities
 
 		[DescriptionAttribute(@""), System.ComponentModel.Bindable( System.ComponentModel.BindableSupport.Yes)]
 		[DataObjectField(false, false, false)]
-		public override System.DateTime CreateDate
+		public virtual System.DateTime CreateDate
 		{
 			get
 			{
@@ -962,7 +962,7 @@ namespace AppointmentSystem.Entities
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("StatusId", "Status Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
-				new CommonRules.MaxLengthRuleArgs("Note", "Note", 500));
+				new CommonRules.MaxLengthRuleArgs("Note", "Note", 1000));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
 				new CommonRules.MaxLengthRuleArgs("RosterId", "Roster Id", 20));
 			ValidationRules.AddRule( CommonRules.StringMaxLength, 
@@ -2650,7 +2650,7 @@ namespace AppointmentSystem.Entities
 		/// Note : 
 		/// </summary>
 		[EnumTextValue("Note")]
-		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 500)]
+		[ColumnEnum("Note", typeof(System.String), System.Data.DbType.String, false, false, true, 1000)]
 		Note = 8,
 		/// <summary>
 		/// StartTime : 

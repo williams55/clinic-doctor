@@ -81,6 +81,7 @@ namespace AppointmentBusiness.BO
                 GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
                 comparedAppt.Note = appointment.Note;
 
+                oldAppt.ServicesId = appointment.ServicesId;
                 oldAppt.UpdateUser = appointment.UpdateUser;
 
                 DataRepository.AppointmentProvider.Update(oldAppt);
@@ -251,7 +252,7 @@ namespace AppointmentBusiness.BO
                 }
                 #endregion
 
-                #region Validate date time
+                #region Validate data
                 // Kiem tra ngay bat dau, ngay ket thuc
                 if (oldAppt.StartTime >= oldAppt.EndTime)
                 {
@@ -267,6 +268,13 @@ namespace AppointmentBusiness.BO
                     || (dtNow > oldAppt.EndTime && isUpdate))
                 {
                     message = "You can not change appointment to passed time.";
+                    return false;
+                }
+
+                // Validate note's max length
+                if (oldAppt.Note.Length > 500)
+                {
+                    message = String.Format(BoFactory.MessageConfigBO.GetMessage(MessageCode.StringCode.OverMaxLength), "Note", 500);
                     return false;
                 }
                 #endregion

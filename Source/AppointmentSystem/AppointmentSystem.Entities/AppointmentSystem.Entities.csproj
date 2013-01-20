@@ -235,6 +235,19 @@
 			</Compile>
 		
 		
+			<Compile Include="MessageConfig.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="MessageConfigBase.generated.cs">
+			  <DependentUpon>MessageConfig.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="IMessageConfig.cs">
+			  <DependentUpon>MessageConfig.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
+		
+		
 			<Compile Include="Patient.cs">
 			  <SubType>Code</SubType>
 			</Compile>

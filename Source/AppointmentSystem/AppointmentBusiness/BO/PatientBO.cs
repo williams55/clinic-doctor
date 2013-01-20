@@ -28,9 +28,9 @@ namespace AppointmentBusiness.BO
                 var oldPatient = objPatients[0];
 
                 // Gan gia tri moi
-                oldPatient.LastName = patient.LastName;
-                oldPatient.FirstName = patient.FirstName;
-                oldPatient.MiddleName = patient.MiddleName;
+                oldPatient.LastName = FString.ToTitleCase(patient.LastName);
+                oldPatient.FirstName = FString.ToTitleCase(patient.FirstName);
+                oldPatient.MiddleName = FString.ToTitleCase(patient.MiddleName);
                 oldPatient.Sex = patient.Sex;
                 oldPatient.DateOfBirth = patient.DateOfBirth;
                 oldPatient.Nationality = patient.Nationality;
@@ -79,6 +79,9 @@ namespace AppointmentBusiness.BO
             try
             {
                 patient.PatientCode = ServiceFacade.SettingsHelper.LocationCode;
+                patient.FirstName = FString.ToTitleCase(patient.FirstName);
+                patient.MiddleName = FString.ToTitleCase(patient.MiddleName);
+                patient.LastName = FString.ToTitleCase(patient.LastName);
 
                 if (!Validate(patient, ref message)) return false;
                 var patients = DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName,

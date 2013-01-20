@@ -52,10 +52,12 @@
   <ItemGroup>
     <Compile Include="BoFactory.cs" />
     <Compile Include="BO\AppointmentBO.cs" />
+    <Compile Include="BO\MessageConfigBO.cs" />
     <Compile Include="BO\PatientBO.cs" />
     <Compile Include="BO\IdBO.cs" />
     <Compile Include="BO\RosterBO.cs" />
     <Compile Include="BO\StatusBO.cs" />
+    <Compile Include="InterfaceBO\IMessageConfigBO.cs" />
     <Compile Include="InterfaceBO\IPatientBO.cs" />
     <Compile Include="InterfaceBO\IIdBO.cs" />
     <Compile Include="InterfaceBO\IRosterBO.cs" />

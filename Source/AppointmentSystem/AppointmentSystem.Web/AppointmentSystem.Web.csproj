@@ -238,6 +238,12 @@
 			<Compile Include="UI\RepeaterControls\GroupRoleRepeater.cs">
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="DataSourceControls\MessageConfigDataSource.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			<Compile Include="UI\RepeaterControls\MessageConfigRepeater.cs">
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="DataSourceControls\PatientDataSource.cs">
 			  <SubType>Code</SubType>
 			</Compile>

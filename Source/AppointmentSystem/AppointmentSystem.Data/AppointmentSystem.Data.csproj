@@ -211,6 +211,14 @@
 			  <DependentUpon>GroupRoleProviderBase.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="Bases\MessageConfigProviderBase.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="Bases\MessageConfigProviderBase.generatedCore.cs">
+			  <DependentUpon>MessageConfigProviderBase.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="Bases\PatientProviderBase.cs">
 			  <SubType>Code</SubType>
 			</Compile>

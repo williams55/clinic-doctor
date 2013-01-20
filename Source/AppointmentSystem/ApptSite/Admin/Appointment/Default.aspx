@@ -125,7 +125,7 @@
                 <div class="appt-info" style="float: right; width: 270px; height: 125px; margin-right: 20px;">
                     <h5 style="padding: 0 0 5px 0; margin: 0; border: 0px;">
                         Patient Remark</h5>
-                    <textarea id="apptRemark" rows="5" cols="20" style="width: 274px;"></textarea>
+                    <textarea id="apptRemark" rows="5" cols="20" style="width: 274px;" maxlength="200"></textarea>
                     <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" style="margin: 5px 0;
                         float: right; height: 20px; line-height: 20px;">
                         <div title="Save appointment remark" onclick="SaveRemark();" style="height: 20px;
@@ -327,7 +327,7 @@
                 <div class="dhx_cal_lsection">
                     Note</div>
                 <div class="dhx_cal_ltext">
-                    <textarea id="txtNote" style="width: 450px; font-family: Arial;" rows="2"></textarea>
+                    <textarea id="txtNote" style="width: 450px; font-family: Arial;" rows="2" maxlength="500"></textarea>
                 </div>
             </div>
             <div class="dhx_form_row">

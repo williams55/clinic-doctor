@@ -214,6 +214,14 @@
 			  <DependentUpon>SqlGroupRoleProvider.cs</DependentUpon>
 			  <SubType>Code</SubType>
 			</Compile>
+			<Compile Include="SqlMessageConfigProvider.cs">
+			  <SubType>Code</SubType>
+			</Compile>
+			
+			<Compile Include="SqlMessageConfigProviderBase.generated.cs">
+			  <DependentUpon>SqlMessageConfigProvider.cs</DependentUpon>
+			  <SubType>Code</SubType>
+			</Compile>
 			<Compile Include="SqlPatientProvider.cs">
 			  <SubType>Code</SubType>
 			</Compile>
