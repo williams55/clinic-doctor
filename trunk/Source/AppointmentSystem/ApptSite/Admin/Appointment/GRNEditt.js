@@ -117,8 +117,8 @@ function initSchedule(weekday) {
         list: scheduler.serverList("unit", [{
             key: "",
             label: ""
-}])
-        });
+        }])
+    });
 
         // Tao timeline view voi danh sach doctor duoc chon
         scheduler.createTimelineView({
@@ -260,7 +260,8 @@ function initSchedule(weekday) {
                 RefreshDoctorList(ev.service);
             }
             if (ev.patient) {
-                cboPatient.SetSelectedItem(cboPatient.FindItemByValue(ev.patient));
+                $('#patient-search, #patient-name').val(ev.PatientInfo);
+                $('#patient-code').val(ev.patient);
             }
             if (ev.room) {
                 RefreshRoomList(ev.room);
@@ -348,10 +349,10 @@ function initSchedule(weekday) {
     // Ham mo form CRUD patient
     function OpenPatient(isUpdate) {
         // Neu la update thi lay thong tin patient
-        if (isUpdate && cboPatient.GetValue()) {
+        if (isUpdate && $('#patient-code').val()) {
             $('#drag-title2 .dhx_time').text('Edit patient');
-            txtPatientCode.SetValue(cboPatient.GetValue());
-            var requestdata = JSON.stringify({ id: cboPatient.GetValue() });
+            txtPatientCode.SetValue($('#patient-code').val());
+            var requestdata = JSON.stringify({ id: $('#patient-code').val() });
             ShowProgress();
             $.ajax({
                 type: "POST",
@@ -476,7 +477,8 @@ function initSchedule(weekday) {
                 var obj = JSON.parse(response.d);
                 if (obj.result == "true") {
                     patient = obj.data[0].PatientCode;
-                    cboPatient.PerformCallback();
+                    $('#patient-search, #patient-name').val(obj.data[0].PatientInfo);
+                    $('#patient-code').val(obj.data[0].PatientCode);
                     ClosePatient();
                 } else {
                     ShowMessage(obj.message);
@@ -572,7 +574,7 @@ function initSchedule(weekday) {
         }
 
         var requestdata = JSON.stringify({
-            patientCode: cboPatient.GetValue(),
+            patientCode: $('#patient-code').val(),
             note: $("#txtNote").val(),
             startTime: startTime.GetValue(),
             endTime: endTime.GetValue(),
@@ -615,7 +617,7 @@ function initSchedule(weekday) {
         var id = $("[id$=hdId]").val();
         var requestdata = JSON.stringify({
             id: id,
-            patientCode: cboPatient.GetValue(),
+            patientCode: $('#patient-code').val(),
             note: $("#txtNote").val(),
             startTime: startTime.GetValue(),
             endTime: endTime.GetValue(),
@@ -645,7 +647,8 @@ function initSchedule(weekday) {
                     oldEvent.text = evs.text;
                     oldEvent.start_date = new Date(evs.start_date);
                     oldEvent.end_date = new Date(evs.end_date);
-                    oldEvent.patient = cboPatient.GetValue();
+                    oldEvent.patient = $('#patient-code').val();
+                    oldEvent.PatientInfo = $('#patient-name').val();
                     oldEvent.roomId = cboRoom.GetValue();
                     oldEvent.status = cboStatus.GetValue();
                     oldEvent.color = evs.color;
@@ -874,8 +877,9 @@ function initSchedule(weekday) {
                             response($.map(obj.data,
                                 function(item) {
                                     return {
-                                        label: item.FirstName + ' ' + item.LastName,
-                                        value: item.PatientCode,
+                                        label: item.PatientInfo,
+                                        value: item.PatientInfo,
+                                        PatientCode: item.PatientCode,
                                         FirstName: item.FirstName,
                                         LastName: item.LastName,
                                         DateOfBirth: item.DateOfBirth,
@@ -889,11 +893,11 @@ function initSchedule(weekday) {
             },
             minLength: 1,
             select: function(event, ui) {
-                $('#patient-name').val(ui.item.FirstName + ' ' + ui.item.LastName);
-                $('#patient-code').val(ui.item.value);
+                $('#patient-name').val(ui.item.label);
+                $('#patient-code').val(ui.item.PatientCode);
             }
         }).data("autocomplete")._renderItem = function(ul, item) {
-            var html = "<a class='autocomplete'><div class='col' style='width:90px;'>" + item.value + "</div>"
+            var html = "<a class='autocomplete'><div class='col' style='width:90px;'>" + item.PatientCode + "</div>"
                 + "<div class='col' style='width:120px;'>" + item.FirstName + "</div>"
                 + "<div class='col' style='width:120px;'>" + item.LastName + "</div>"
                 + "<div class='col' style='width:70px;'>" + item.DateOfBirth + "</div>"
@@ -939,6 +943,12 @@ function initSchedule(weekday) {
 
     // Ham kiem tra form co valid khong
     function ValidateForm() {
+        if ($('#patient-code').val() == '') {
+            $('#patient-error').show();
+            return false;
+        }
+        $('#patient-error').hide();
+        
         cboStatus.Validate();
         cboDoctor.Validate();
         startTime.Validate();
