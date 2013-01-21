@@ -326,7 +326,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                 patient.FirstName,
                 patient.LastName,
                 DateOfBirth = String.Format("{0:MM/dd/yyyy}", patient.DateOfBirth),
-                Sex = SexConstant.Instant().GetValueByKey(patient.Sex)
+                Sex = SexConstant.Instant().GetValueByKey(patient.Sex),
+                PatientInfo = ParsePatientName(patient)
             }));
         }
         catch (Exception ex)
@@ -634,7 +635,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     obj.UsernameSource.ServicesId,
                     ServicesTitle = obj.ServicesIdSource.Title,
                     room = obj.RoomId ?? CommonBO.NonValue,
-                    RoomTitle = obj.RoomId == null? string.Empty: obj.RoomIdSource.Title,
+                    RoomTitle = obj.RoomId == null ? string.Empty : obj.RoomIdSource.Title,
                     note = obj.Note,
                     status = obj.StatusId,
                     ReadOnly = obj.StartTime <= dtNow,

@@ -276,7 +276,7 @@
                     <input type="text" name="patient" id="patient-search" maxlength="20" style="width: 200px;" class="form-input"/>
                     <input type="hidden" name="patient" id="patient-name"/>
                     <input type="hidden" name="patient" id="patient-code"/>
-                    <img class="error-icon" title="Patient is required"/>
+                    <img class="error-icon" id="patient-error" title="Patient is required"/>
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <input type="button" id="createUser" value="New" style="width: 50;" runat="server"

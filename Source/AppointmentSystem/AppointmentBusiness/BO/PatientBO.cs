@@ -28,9 +28,15 @@ namespace AppointmentBusiness.BO
                 var oldPatient = objPatients[0];
 
                 // Gan gia tri moi
-                oldPatient.LastName = FString.ToTitleCase(patient.LastName);
-                oldPatient.FirstName = FString.ToTitleCase(patient.FirstName);
-                oldPatient.MiddleName = FString.ToTitleCase(patient.MiddleName);
+                oldPatient.LastName = string.IsNullOrEmpty(patient.LastName)
+                                            ? patient.MiddleName
+                                            : FString.ToTitleCase(patient.LastName);
+                oldPatient.FirstName = string.IsNullOrEmpty(patient.FirstName)
+                                            ? patient.MiddleName
+                                            : FString.ToTitleCase(patient.FirstName);
+                oldPatient.MiddleName = string.IsNullOrEmpty(patient.MiddleName)
+                                            ? patient.MiddleName
+                                            : FString.ToTitleCase(patient.MiddleName);
                 oldPatient.Sex = patient.Sex;
                 oldPatient.DateOfBirth = patient.DateOfBirth;
                 oldPatient.Nationality = patient.Nationality;
@@ -79,9 +85,15 @@ namespace AppointmentBusiness.BO
             try
             {
                 patient.PatientCode = ServiceFacade.SettingsHelper.LocationCode;
-                patient.FirstName = FString.ToTitleCase(patient.FirstName);
-                patient.MiddleName = FString.ToTitleCase(patient.MiddleName);
-                patient.LastName = FString.ToTitleCase(patient.LastName);
+                patient.LastName = string.IsNullOrEmpty(patient.LastName)
+                                            ? patient.MiddleName
+                                            : FString.ToTitleCase(patient.LastName);
+                patient.FirstName = string.IsNullOrEmpty(patient.FirstName)
+                                            ? patient.MiddleName
+                                            : FString.ToTitleCase(patient.FirstName);
+                patient.MiddleName = string.IsNullOrEmpty(patient.MiddleName)
+                                            ? patient.MiddleName
+                                            : FString.ToTitleCase(patient.MiddleName);
 
                 if (!Validate(patient, ref message)) return false;
                 var patients = DataRepository.VcsPatientProvider.Insert(patient.PatientCode, patient.FirstName,
