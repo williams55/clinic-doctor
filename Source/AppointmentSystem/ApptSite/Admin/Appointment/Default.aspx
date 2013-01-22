@@ -2,7 +2,6 @@
     CodeFile="Default.aspx.cs" Inherits="Admin_Appointment_Default" %>
 
 <%@ Import Namespace="AppointmentSystem.Settings.BusinessLayer" %>
-<%@ Import Namespace="Appt.Common.Constants" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
     Appointment
 </asp:Content>
@@ -458,7 +457,7 @@
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection required" style="float: left; width: 120px;">
-                    DOB <span class="min-day">(MM/dd/yyyy)</spa></div>
+                    DOB <span class="min-day">(MM/dd/yyyy)</span></div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxDateEdit ID="txtDob" ClientInstanceName="txtDob" runat="server" EditFormatString="MM/dd/yyyy"
                         DisplayFormatString="MM/dd/yyyy" Width="130px">
