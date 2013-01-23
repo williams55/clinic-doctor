@@ -733,6 +733,8 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     lstDoctor.Add(roster.UsernameSource);
                 }
 
+                lstDoctor.Sort((p1, p2) => p1.DisplayName.CompareTo(p2.DisplayName));
+
                 DataRepository.UsersProvider.DeepLoad(roster1.UsernameSource);
 
                 if (!lstService.Exists(service => service.Id == roster1.UsernameSource.ServicesId))

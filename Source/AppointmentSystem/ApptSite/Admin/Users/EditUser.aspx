@@ -6,10 +6,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ScriptContent" runat="Server">
 
-    <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/devexpress.js") %>"></script>
-
-    <script type="text/javascript" src="<%= ResolveUrl("~/resources/scripts/cst/function.js") %>"></script>
-
     <script type="text/javascript">
         function OnClickButtonDel() {
             var currentGrid = grid;
