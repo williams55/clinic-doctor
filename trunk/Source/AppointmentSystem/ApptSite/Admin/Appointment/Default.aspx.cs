@@ -29,6 +29,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
     private const string ScreenCode = "Appointment";
     static string _message;
+    static string _messageCode;
     //static readonly string Username = AccountSession.Session;
     #endregion
 
@@ -1035,23 +1036,23 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         try
         {
             // Check active user
-            if (!CheckReading(out _message))
+            if (!ValidateReading())
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.RenderFailedResult(_messageCode);
             }
 
             // Goi ham lay danh sach appointment theo ngay, mode
             var lstAppt = BoFactory.AppointmentBO.GetByDateMode(date, mode, out _message);
             if (!string.IsNullOrEmpty(_message))
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.RenderFailedResult(_messageCode);
             }
 
             // Goi ham lay danh sach roster
             var lstRoster = BoFactory.RosterBO.GetByDateMode(date, mode, CommonBO.NonValue.ToString(), out _message);
             if (!string.IsNullOrEmpty(_message))
             {
-                return WebCommon.BuildFailedResult(_message);
+                return WebCommon.RenderFailedResult(_messageCode);
             }
 
             // Neu mode la thang thi select date thoi, de co the tao timespan
@@ -1093,7 +1094,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             }
 
             // Tra ve danh sach
-            return WebCommon.BuildSuccessfulResult(new
+            return WebCommon.RenderSuccessfulResult(new
                 {
                     Events = events,
                     Sections = BuildListSection(lstRoster, date)
@@ -1102,7 +1103,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         catch (Exception ex)
         {
             LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
-            return WebCommon.BuildFailedResult(ex.Message);
+            return WebCommon.RenderFailedResult(MessageCode.GeneralCode.SystemError);
         }
     }
 
@@ -1209,6 +1210,44 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
     private static bool CheckCreating(out string message)
     {
         return RightAccess.CheckUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out message);
+    }
+    #endregion
+
+    #region Validate user right
+    /// <summary>
+    /// Checking user right for reading
+    /// </summary>
+    /// <returns></returns>
+    private static bool ValidateReading()
+    {
+        return RightAccess.ValidateUserRight(AccountSession.Session, ScreenCode, OperationConstant.Read.Key, out _messageCode);
+    }
+
+    /// <summary>
+    /// Checking user right for deleting
+    /// </summary>
+    /// <returns></returns>
+    private static bool ValidateDeleting()
+    {
+        return RightAccess.ValidateUserRight(AccountSession.Session, ScreenCode, OperationConstant.Delete.Key, out _messageCode);
+    }
+
+    /// <summary>
+    /// Checking user right for updating
+    /// </summary>
+    /// <returns></returns>
+    private static bool ValidateUpdating()
+    {
+        return RightAccess.ValidateUserRight(AccountSession.Session, ScreenCode, OperationConstant.Update.Key, out _messageCode);
+    }
+
+    /// <summary>
+    /// Checking user right for creating
+    /// </summary>
+    /// <returns></returns>
+    private static bool ValidateCreating()
+    {
+        return RightAccess.ValidateUserRight(AccountSession.Session, ScreenCode, OperationConstant.Create.Key, out _messageCode);
     }
     #endregion
 

@@ -554,7 +554,7 @@ function LoadAppointment(arrAjax, mode, date) {
         contentType: "application/json; charset=utf-8",
         success: function (response) {
             var obj = JSON.parse(response.d);
-            if (obj.result == "true") {
+            if (obj.result) {
                 // Xoa cac appointment hien tai
                 scheduler.clearAll();
                 var evs = obj.data;
@@ -570,7 +570,7 @@ function LoadAppointment(arrAjax, mode, date) {
                 }
             }
             else {
-                ShowMessage(obj.message);
+                RenderMessage(obj.code);
             }
         },
         fail: CallError,
@@ -875,7 +875,6 @@ function DeleteAppointment(appt) {
 $(document).ready(function () {
     initSchedule();
     initEvents();
-    
     // Call init autocomplete function
     InitAutocompletePatient();
 });

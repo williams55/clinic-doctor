@@ -109,7 +109,7 @@ function ShowMessage(message) {
 
 // Hien thi message
 function CallError() {
-    ShowDialog('', 'Error', 'System error. Please contact Administrator', '');
+    RenderMessage('GEN0001');
 }
 
 function ShowProgress() {
@@ -224,3 +224,34 @@ function DeleteTimespan(scheduler, list) {
         scheduler.deleteMarkedTimespan(item);
     });
 }
+
+/******************************* Message Start *********************************/
+var Message = [
+    { k: 'ATH0001', v: "You're still not login or your session was expired" },
+    { k: 'ATH0002', v: "You have no right to read" },
+    { k: 'ATH0003', v: "You have no right to create" },
+    { k: 'ATH0004', v: "You have no right to update" },
+    { k: 'ATH0005', v: "You have no right to delete" },
+    
+    { k: 'GEN0001', v: "System error. Please contact Administrator" }
+
+];
+
+var MessageCode = { SystemError: 'System error. Please contact Administrator' };
+
+function RenderMessage(k) {
+    var messages = $.grep(Message, function (e) { return e.k == k; });
+
+    if (messages.length) {
+        if (k == 'ATH0001') {
+            ShowDialog('', '', messages[0].v, rootUrl + "Login.aspx");
+        } else if (k == 'ATH0002') {
+            ShowDialog('', '', messages[0].v, rootUrl);
+        } else {
+            ShowDialog('', '', messages[0].v, '');
+        }
+    } else {
+        ShowDialog('', '', MessageCode.SystemError, '');
+    }
+}
+/******************************* Message End *********************************/
