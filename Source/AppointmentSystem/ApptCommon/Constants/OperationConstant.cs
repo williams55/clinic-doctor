@@ -16,9 +16,17 @@ namespace Appt.Common.Constants
             return new OperationConstant();
         }
 
-        public static ConstantKeyValue Create = new ConstantKeyValue("C", "Create");
-        public static ConstantKeyValue Read = new ConstantKeyValue("R", "Read");
-        public static ConstantKeyValue Update = new ConstantKeyValue("U", "Update");
-        public static ConstantKeyValue Delete = new ConstantKeyValue("D", "Delete");
+        public class Const
+        {
+            public const string Create = "C";
+            public const string Read = "R";
+            public const string Update = "U";
+            public const string Delete = "D";
+        }
+
+        public static ConstantKeyValue Create = new ConstantKeyValue(Const.Create, "Create");
+        public static ConstantKeyValue Read = new ConstantKeyValue(Const.Read, "Read");
+        public static ConstantKeyValue Update = new ConstantKeyValue(Const.Update, "Update");
+        public static ConstantKeyValue Delete = new ConstantKeyValue(Const.Delete, "Delete");
     }
 }

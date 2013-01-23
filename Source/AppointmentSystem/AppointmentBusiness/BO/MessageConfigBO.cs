@@ -51,6 +51,11 @@ namespace AppointmentBusiness.BO
         public class AuthCode
         {
             public const string SessionTimeOut = "ATH0001";
+
+            public const string NoRightToRead = "ATH0002";
+            public const string NoRightToCreate = "ATH0003";
+            public const string NoRightToUpdate = "ATH0004";
+            public const string NoRightToDelete = "ATH0005";
         }
     }
 }

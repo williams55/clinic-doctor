@@ -210,4 +210,84 @@ public class WebCommon
         return BuildResult(true, message, new List<object>());
     }
     #endregion
+
+    #region Render Result for Ajax call with Json format
+    /// <summary>
+    /// Render to string result for ajax with Json format
+    /// </summary>
+    /// <param name="isSuccess">Result: True, False</param>
+    /// <param name="code"></param>
+    /// <param name="data">List of data</param>
+    /// <returns></returns>
+    public static string RenderResult(bool isSuccess, object code, object data)
+    {
+        return JsonConvert.SerializeObject(new
+        {
+            result = isSuccess,
+            code,
+            data
+        });
+    }
+
+    /// <summary>
+    /// Render failed result to string for ajax with Json format
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static string RenderFailedResult(object message)
+    {
+        return RenderResult(false, message, new List<object>());
+    }
+
+    /// <summary>
+    /// Render failed result to string for ajax with Json format
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="data">List of data</param>
+    /// <returns></returns>
+    public static string RenderFailedResult(object message, object data)
+    {
+        return RenderResult(false, message, data);
+    }
+
+    /// <summary>
+    /// Render successfull result to string for ajax with Json format
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static string RenderSuccessfulResult(object obj, string message)
+    {
+        return RenderResult(true, message, obj);
+    }
+
+    /// <summary>
+    /// Render successfull result to string for ajax with Json format
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static string RenderSuccessfulResult(object obj)
+    {
+        return RenderResult(true, string.Empty, obj);
+    }
+
+    /// <summary>
+    /// Render successfull result to string for ajax with Json format
+    /// </summary>
+    /// <returns></returns>
+    public static string RenderSuccessfulResult()
+    {
+        return RenderResult(true, string.Empty, new List<object>());
+    }
+
+    /// <summary>
+    /// Render successfull result to string for ajax with Json format
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static string RenderSuccessfulResult(string message)
+    {
+        return RenderResult(true, message, new List<object>());
+    }
+    #endregion
 }

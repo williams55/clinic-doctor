@@ -45,7 +45,7 @@ namespace AppointmentBusiness.Util
                     roleDetail.Crud.ToLower().Contains(operation.ToLower()));
 
                 // Get list of role
-                if(roleDetails.Any())
+                if (roleDetails.Any())
                     return true;
             }
             catch (Exception ex)
@@ -55,6 +55,67 @@ namespace AppointmentBusiness.Util
 
             // There is no right for user
             message = String.Format("You have no right to {0}", OperationConstant.Instant().GetValueByKey(operation));
+            return false;
+        }
+
+        /// <summary>
+        /// Check right of user
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <param name="screen">What screen need to operation</param>
+        /// <param name="operation">Operation [CRUD]</param>
+        /// <param name="messageCode">Message code is returned</param>
+        /// <returns></returns>
+        public static bool ValidateUserRight(string username, string screen, string operation, out string messageCode)
+        {
+            messageCode = string.Empty;
+            try
+            {
+                if (string.IsNullOrEmpty(username))
+                {
+                    messageCode = MessageCode.AuthCode.SessionTimeOut;
+                    return false;
+                }
+
+                // Get role list of user
+                var lstUserRole = DataRepository.UserRoleProvider.GetByUsername(username);
+
+                int count;
+                var roleDetails = DataRepository.RoleDetailProvider.GetPaged(
+                    String.Format("IsDisabled = 'False' AND ScreenCode = '{0}'", screen),
+                    string.Empty, 0, ServiceFacade.SettingsHelper.GetPagedLength, out count);
+                roleDetails = roleDetails.FindAll(
+                    roleDetail =>
+                    lstUserRole.Exists(userRole => roleDetail.RoleId == userRole.RoleId) &&
+                    roleDetail.Crud.ToLower().Contains(operation.ToLower()));
+
+                // Get list of role
+                if (roleDetails.Any())
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            }
+
+            messageCode = MessageCode.GeneralCode.SystemError;
+
+            // There is no right for user
+            switch (operation)
+            {
+                case OperationConstant.Const.Read:
+                    messageCode = MessageCode.AuthCode.NoRightToRead;
+                    break;
+                case OperationConstant.Const.Create:
+                    messageCode = MessageCode.AuthCode.NoRightToCreate;
+                    break;
+                case OperationConstant.Const.Update:
+                    messageCode = MessageCode.AuthCode.NoRightToUpdate;
+                    break;
+                case OperationConstant.Const.Delete:
+                    messageCode = MessageCode.AuthCode.NoRightToDelete;
+                    break;
+            }
             return false;
         }
     }
