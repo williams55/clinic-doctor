@@ -484,12 +484,14 @@ function SavePatient() {
         data: requestdata,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function (response) {
+        success: function(response) {
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 patient = obj.data[0].PatientCode;
-                $('#patient-search, #patient-name').val(obj.data[0].PatientInfo);
+                $txtPatientSearch.val(obj.data[0].PatientInfo);
+                $hdfPatientName.val(obj.data[0].PatientInfo);
                 $hdfPatientCode.val(obj.data[0].PatientCode);
+                ValidateSearchPatient();
                 ClosePatient();
             } else {
                 ShowMessage(obj.message);
@@ -915,18 +917,18 @@ function RefreshRoomList(id) {
 /******* Validate Start *******/
 // Validate form
 function ValidateForm() {
-    ValidatePatient();
+    ValidateSearchPatient();
     cboStatus.Validate();
     cboDoctor.Validate();
     startTime.Validate();
     startDate.Validate();
     endTime.Validate();
     endDate.Validate();
-    return cboStatus.isValid && cboDoctor.isValid && ValidatePatient()
+    return cboStatus.isValid && cboDoctor.isValid && ValidateSearchPatient()
         && startTime.isValid && startDate.isValid && endTime.isValid && endDate.isValid;
 }
 
-function ValidatePatient() {
+function ValidateSearchPatient() {
     if ($hdfPatientCode.val() == '') {
         $imgPatientError.show();
         return false;
