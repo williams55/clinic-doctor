@@ -163,9 +163,9 @@ namespace AppointmentBusiness.BO
             return false;
         }
 
-        public TList<Roster> GetByDateMode(DateTime? date, string mode, string group, out string message)
+        public TList<Roster> GetByDateMode(DateTime? date, string mode, string group, out string messageCode)
         {
-            message = string.Empty;
+            messageCode = MessageCode.GeneralCode.SystemError;
             try
             {
 
@@ -173,7 +173,6 @@ namespace AppointmentBusiness.BO
                 DateTime fromDate, toDate;
                 if (!CommonBO.GetDateTimeByMode(date, mode, out fromDate, out toDate))
                 {
-                    message = "Current date is invalid.";
                     goto StepResult;
                 }
 
@@ -195,11 +194,11 @@ namespace AppointmentBusiness.BO
                             obj => Int32.TryParse(group, out count) ? obj.UsernameSource.ServicesId == count : obj.Username == group);
                 }
 
+                messageCode = string.Empty;
                 return lstObj;
             }
             catch (Exception ex)
             {
-                message = "System error. Please contact Administratos.";
                 LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
         StepResult:
