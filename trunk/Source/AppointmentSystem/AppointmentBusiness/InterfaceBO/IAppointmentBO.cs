@@ -36,9 +36,9 @@ namespace AppointmentBusiness.BO
         /// </summary>
         /// <param name="date"></param>
         /// <param name="mode"></param>
-        /// <param name="message"></param>
+        /// <param name="messageCode"></param>
         /// <returns></returns>
-        TList<Appointment> GetByDateMode(DateTime? date, string mode, out string message);
+        TList<Appointment> GetByDateMode(DateTime? date, string mode, out string messageCode);
 
         /// <summary>
         /// Build 1 appointment thanh 1 doi tuong de luu history

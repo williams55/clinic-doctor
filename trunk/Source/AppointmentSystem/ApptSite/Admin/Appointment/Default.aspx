@@ -278,9 +278,9 @@
                     <img class="error-icon" id="patient-error" title="Patient is required"/>
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <input type="button" id="createUser" value="New" style="width: 50;" runat="server"
+                    <input type="button" id="createUser" value="New" style="width: 50px;" runat="server"
                         onclick="OpenPatient();" />
-                    <input type="button" id="changeUser" value="Change" style="width: 50;" runat="server"
+                    <input type="button" id="changeUser" value="Change" style="width: 50px;" runat="server"
                         onclick="OpenPatient(true);" />
                 </div>
                 <div class="clear">

@@ -374,6 +374,7 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
             var lstRoster = BoFactory.RosterBO.GetByDateMode(date, mode, group, out _message);
             if (!string.IsNullOrEmpty(_message))
             {
+                _message = "System Error.";
                 return WebCommon.BuildFailedResult(_message);
             }
 

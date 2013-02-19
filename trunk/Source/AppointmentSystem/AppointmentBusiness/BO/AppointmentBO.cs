@@ -98,16 +98,15 @@ namespace AppointmentBusiness.BO
             return false;
         }
 
-        public TList<Appointment> GetByDateMode(DateTime? date, string mode, out string message)
+        public TList<Appointment> GetByDateMode(DateTime? date, string mode, out string messageCode)
         {
-            message = string.Empty;
+            messageCode = MessageCode.GeneralCode.SystemError;
             try
             {
                 // Get datetime to filter
                 DateTime fromDate, toDate;
                 if (!CommonBO.GetDateTimeByMode(date, mode, out fromDate, out toDate))
                 {
-                    message = "Current date is invalid.";
                     goto StepResult;
                 }
 
@@ -134,11 +133,12 @@ namespace AppointmentBusiness.BO
                 //});
                 //DataRepository.AppointmentProvider.Save(lstAppt);
 
+                messageCode = string.Empty;
                 return lstAppt;
             }
             catch (Exception ex)
             {
-                message = "System error. Please contact Administratos.";
+                messageCode = "System error. Please contact Administratos.";
                 LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
         StepResult:

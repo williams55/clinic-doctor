@@ -293,6 +293,8 @@ scheduler.showLightbox = function (id) {
         $("[id$=divDelete]").hide();
     }
 
+    $('#patient-search').focus();
+    
     return true;
 };
 /****************************Scheduler - End******************************/
@@ -443,6 +445,8 @@ function ClosePatient() {
     scheduler._init_dnd_events();
     scheduler.startLightbox($("[id$=hdId]").val(), html(formId));
     if (CurrentAppointment) scheduler._new_event = CurrentAppointment;
+    
+    $('#patient-search').focus();
 }
 
 // Ham kiem tra form co valid khong
@@ -484,7 +488,7 @@ function SavePatient() {
         data: requestdata,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function(response) {
+        success: function (response) {
             var obj = JSON.parse(response.d);
             if (obj.result == "true") {
                 patient = obj.data[0].PatientCode;
@@ -679,6 +683,48 @@ function UpdateAppointment() {
     });
 }
 
+// Cancel appointment
+function CancelAppointment() {
+    scheduler.endLightbox(false, html(formId));
+    scheduler._lightbox = null;
+    isLightbox = false;
+    CurrentAppointment = null;
+}
+
+function DeleteAppointment(appt) {
+    if (!confirm("Do you want to delete this appointment?"))
+        return;
+
+    var id = $("[id$=hdId]").val();
+    if (appt) id = appt; // Neu co doi tuong appt truyen vao thi lay id cua no
+    var requestdata = JSON.stringify({ id: id });
+    ShowProgress();
+    isUsing = true;
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/DeleteAppointment",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            var obj = JSON.parse(response.d);
+            if (obj.result == "true") {
+                scheduler.deleteEvent(id);
+                CancelAppointment();
+            }
+            else {
+                ShowMessage(obj.message);
+            }
+        },
+        fail: CallError,
+        error: CallError,
+        complete: function () {
+            isUsing = false;
+            CloseProgress();
+        }
+    });
+}
+
 function AddAppointment(evs) {
     $.each(evs, function (i, item) {
         item.start_date = new Date(item.start_date);
@@ -827,56 +873,100 @@ function UpdateSortList(event, ui) {
         contentType: "application/json; charset=utf-8"
     });
 }
-
-// Cancel appointment
-function CancelAppointment() {
-    scheduler.endLightbox(false, html(formId));
-    scheduler._lightbox = null;
-    isLightbox = false;
-    CurrentAppointment = null;
-}
-
-function DeleteAppointment(appt) {
-    if (!confirm("Do you want to delete this appointment?"))
-        return;
-
-    var id = $("[id$=hdId]").val();
-    if (appt) id = appt; // Neu co doi tuong appt truyen vao thi lay id cua no
-    var requestdata = JSON.stringify({ id: id });
-    ShowProgress();
-    isUsing = true;
-    $.ajax({
-        type: "POST",
-        url: "Default.aspx/DeleteAppointment",
-        data: requestdata,
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (response) {
-            var obj = JSON.parse(response.d);
-            if (obj.result == "true") {
-                scheduler.deleteEvent(id);
-                CancelAppointment();
-            }
-            else {
-                ShowMessage(obj.message);
-            }
-        },
-        fail: CallError,
-        error: CallError,
-        complete: function () {
-            isUsing = false;
-            CloseProgress();
-        }
-    });
-}
 /****************************Appointment - End******************************/
 
 /****************************Initialize - Start******************************/
 $(document).ready(function () {
     initSchedule();
     initEvents();
+
     // Call init autocomplete function
     InitAutocompletePatient();
+    
+    $('#form-scheduler').keydown(function (e) {
+        var key = e.which ? e.which : e.keyCode;
+
+        if (key == 78 && e.ctrlKey) {
+            OpenPatient();
+            e.preventDefault();
+            return false;
+        }
+        
+        var isIE = (document.all ? true : false);
+        
+        switch (key) {
+            case 112:
+                // F1
+                if (isIE) {
+                    document.onhelp = function () {
+                        return (false);
+                    };
+                    window.onhelp = function () {
+                        return (false);
+                    };
+                }
+                cboStatus.SetValue(AppStatusCode.CheckedIn);
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            case 113:
+                // F2
+                cboStatus.SetValue(AppStatusCode.Completed);
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            case 114:
+                // F3
+                e.originalEvent.keyCode = 0;
+                cboStatus.SetValue(AppStatusCode.Cancelled);
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            case 13:
+                // Enter
+                var ev = scheduler.getEvent($("[id$=hdId]").val());
+                if (ev.isnew == false) UpdateAppointment(); else NewAppointment();
+                return false;
+            case 27:
+                // Esc
+                CancelAppointment();
+                return false;
+            default:
+                break;
+        }
+    });
+
+    $('#form-patient').keydown(function (e) {
+        var key = e.which ? e.which : e.keyCode;
+        switch (key) {
+            case 13:
+                // Enter
+                SavePatient();
+                return false;
+            case 27:
+                // Esc
+                ClosePatient();
+                return false;
+            default:
+                break;
+        }
+    });
+
+    $(document).keydown(function (e) {
+        var key = e.which ? e.which : e.keyCode;
+        switch (key) {
+            case 13:
+                //dhx_cal_select_menu
+                // Enter
+                var $menu = $('.dhx_cal_select_menu:first');
+                if ($menu.length > 0) {
+                    scheduler.showLightbox($menu.attr('event_id'));
+                    return false;
+                }
+            default:
+                break;
+        }
+    });
 });
 
 function initEvents() {
@@ -941,18 +1031,18 @@ function ValidateSearchPatient() {
 
 function InitAutocompletePatient() {
     $('#patient-search').autocomplete({
-        source: function(request, response) {
+        source: function (request, response) {
             $.ajax({
                 type: "POST",
                 url: "Default.aspx/SearchPatient",
                 data: JSON.stringify({ keyword: request.term }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     var obj = JSON.parse(data.d);
                     if (obj.result == "true") {
                         response($.map(obj.data,
-                            function(item) {
+                            function (item) {
                                 return {
                                     label: item.PatientInfo,
                                     value: item.PatientInfo,
@@ -969,12 +1059,12 @@ function InitAutocompletePatient() {
             });
         },
         minLength: 1,
-        select: function(event, ui) {
+        select: function (event, ui) {
             $hdfPatientName.val(ui.item.label);
             $hdfPatientCode.val(ui.item.PatientCode);
             ValidateForm();
         }
-    }).blur(function() {
+    }).blur(function () {
         if ($txtPatientSearch.val()) {
             $txtPatientSearch.val($hdfPatientName.val());
         } else {
@@ -982,19 +1072,20 @@ function InitAutocompletePatient() {
             $hdfPatientCode.val('');
         }
         ValidateForm();
-    }).data("autocomplete")._renderItem = function(ul, item) {
-            var html = "<a class='autocomplete'><div class='col' style='width:90px;'>" + item.PatientCode + "</div>"
-                + "<div class='col' style='width:120px;'>" + item.FirstName + "</div>"
-                + "<div class='col' style='width:120px;'>" + item.LastName + "</div>"
-                + "<div class='col' style='width:70px;'>" + item.DateOfBirth + "</div>"
-                + "<div class='col' style='width:50px;'>" + item.Sex + "</div>"
-                + "<div style='clear:both;'></div></a>";
-            return $("<li>")
-                .data("item.autocomplete", item)
-                .append(html)
-                .appendTo(ul);
-        };
+    }).data("autocomplete")._renderItem = function (ul, item) {
+        var html = "<a class='autocomplete'><div class='col' style='width:90px;'>" + item.PatientCode + "</div>"
+            + "<div class='col' style='width:120px;'>" + item.FirstName + "</div>"
+            + "<div class='col' style='width:120px;'>" + item.LastName + "</div>"
+            + "<div class='col' style='width:70px;'>" + item.DateOfBirth + "</div>"
+            + "<div class='col' style='width:50px;'>" + item.Sex + "</div>"
+            + "<div style='clear:both;'></div></a>";
+        return $("<li>")
+            .data("item.autocomplete", item)
+            .append(html)
+            .appendTo(ul);
+    };
 }
+
 /******* Init Autocomplete End *******/
 
 /**************************** Appointment Form End ******************************/

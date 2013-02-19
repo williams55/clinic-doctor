@@ -257,6 +257,8 @@ scheduler.showLightbox = function(id) {
         $("[id$=divDelete]").hide();
     }
 
+    $('#txtNote').focus();
+
     return true;
 };
 /****************************Scheduler - End******************************/
@@ -560,5 +562,18 @@ $(document).ready(function() {
             $('.dhx_custom_button_recurring', this).removeClass('dhx_custom_button_recurring_enabled');
             $("#chkRepeat").removeAttr('checked');
         }
+    });
+    
+    $('#form-dhtmlx').keydown(function (e) {
+        if (e.which == 13 || e.keyCode == 13) {
+            // Enter
+            var ev = scheduler.getEvent($("#hdId").val());
+            if (ev.isnew == false) UpdateRoster(); else NewRoster();
+        }
+        else if (e.which == 27 || e.keyCode == 13) {
+            // Esc
+            CancelRoster();
+        }
+        return false;
     });
 });

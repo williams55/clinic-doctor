@@ -255,3 +255,11 @@ function RenderMessage(k) {
     }
 }
 /******************************* Message End *********************************/
+
+/******************************* Appt's Status Start *********************************/
+var AppStatusCode = {
+    CheckedIn: 'Checked-in',
+    Completed: 'Completed',
+    Cancelled: 'Cancelled'
+};
+/******************************* Appt's Status End *********************************/
