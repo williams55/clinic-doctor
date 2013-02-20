@@ -1043,14 +1043,14 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
 
             // Goi ham lay danh sach appointment theo ngay, mode
             var lstAppt = BoFactory.AppointmentBO.GetByDateMode(date, mode, out _messageCode);
-            if (!string.IsNullOrEmpty(_message))
+            if (!string.IsNullOrEmpty(_messageCode))
             {
                 return WebCommon.RenderFailedResult(_messageCode);
             }
 
             // Goi ham lay danh sach roster
             var lstRoster = BoFactory.RosterBO.GetByDateMode(date, mode, CommonBO.NonValue.ToString(), out _messageCode);
-            if (!string.IsNullOrEmpty(_message))
+            if (!string.IsNullOrEmpty(_messageCode))
             {
                 return WebCommon.RenderFailedResult(_messageCode);
             }

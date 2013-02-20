@@ -63,22 +63,25 @@
     </script>
 
     <style media="screen">
-        /* enabling marked timespans for month view */.dhx_scheduler_month .dhx_marked_timespan
+        /* enabling marked timespans for month view */ .dhx_scheduler_month .dhx_marked_timespan
         {
             display: block;
         }
-        
-        a.autocomplete {
+
+        a.autocomplete
+        {
             border-top: 1px solid gray;
             margin: 0;
             padding: 0;
         }
-        
-        a:hover.autocomplete {
+
+        a:hover.autocomplete
+        {
             font-weight: normal;
         }
-        
-        a.autocomplete div.col {
+
+        a.autocomplete div.col
+        {
             float: left;
             padding: 0;
             margin: 0;
@@ -88,46 +91,56 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentContent" runat="Server">
     <div class="box">
         <div class="title">
-            <h5>
-                Appointment</h5>
+            <h5>Appointment</h5>
+            <ul class="links">
+                <li class="ui-tabs-selected">
+                    <a href="javascript:return false;">Scheduler</a>
+                </li>
+                <li><a href="Grid.aspx">Grid</a></li>
+            </ul>
         </div>
         <div>
             <div style="padding: 5px;">
                 <div class="appt-info">
-                    <h5 style="padding: 0 0 5px 0; margin: 0;">
-                        Patient's Information</h5>
+                    <h5 style="padding: 0 0 5px 0; margin: 0;">Patient's Information</h5>
                     <input type="hidden" id="hdPatient" value="" />
                     <div class="title-info">
-                        First Name</div>
+                        First Name
+                    </div>
                     <div class="content-info" id="divFirstname" style="margin-right: 35px;">
                         &nbsp;
                     </div>
                     <div class="title-info">
-                        Last Name</div>
+                        Last Name
+                    </div>
                     <div class="content-info" id="divLastname">
                         &nbsp;
                     </div>
                     <div class="clear">
                     </div>
                     <div class="title-info">
-                        Mobile phone</div>
+                        Mobile phone
+                    </div>
                     <div class="content-info" id="divCellPhone" style="margin-right: 35px;">
                         &nbsp;
                     </div>
                     <div class="title-info">
-                        DOB</div>
+                        DOB
+                    </div>
                     <div class="content-info" id="divBirthday">
                         &nbsp;
                     </div>
                     <div class="clear">
                     </div>
                     <div class="title-info">
-                        Exp Date</div>
+                        Exp Date
+                    </div>
                     <div class="content-info required" id="divExpDate" style="margin-right: 35px;">
                         &nbsp;
                     </div>
                     <div class="title-info">
-                        Nationality</div>
+                        Nationality
+                    </div>
                     <div class="content-info" id="divNationality">
                         &nbsp;
                     </div>
@@ -137,14 +150,12 @@
                 <div style="float: right; width: 251px;" id="datepicker">
                 </div>
                 <div class="appt-info" style="float: right; width: 270px; height: 125px; margin-right: 20px;">
-                    <h5 style="padding: 0 0 5px 0; margin: 0; border: 0px;">
-                        Patient Remark</h5>
+                    <h5 style="padding: 0 0 5px 0; margin: 0; border: 0px;">Patient Remark</h5>
                     <textarea id="apptRemark" rows="5" cols="20" style="width: 274px;" maxlength="200"></textarea>
-                    <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" style="margin: 5px 0;
-                        float: right; height: 20px; line-height: 20px;">
-                        <div title="Save appointment remark" onclick="SaveRemark();" style="height: 20px;
-                            line-height: 20px;">
-                            Save</div>
+                    <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" style="margin: 5px 0; float: right; height: 20px; line-height: 20px;">
+                        <div title="Save appointment remark" onclick="SaveRemark();" style="height: 20px; line-height: 20px;">
+                            Save
+                        </div>
                     </div>
                 </div>
                 <div class="status-info">
@@ -173,9 +184,11 @@
             <div id="scheduler_here" class="dhx_cal_container" style='width: 100%; height: 530px;'>
                 <div class="dhx_cal_navline">
                     <div class="dhx_cal_prev_button">
-                        &nbsp;</div>
+                        &nbsp;
+                    </div>
                     <div class="dhx_cal_next_button">
-                        &nbsp;</div>
+                        &nbsp;
+                    </div>
                     <div class="dhx_cal_today_button">
                     </div>
                     <div class="dhx_cal_date">
@@ -198,8 +211,7 @@
             </div>
         </div>
     </div>
-    <div class="dhx_cal_light dhx_cal_light_wide" id="form-scheduler" style="height: 560px;
-        width: 620px; display: none;">
+    <div class="dhx_cal_light dhx_cal_light_wide" id="form-scheduler" style="height: 560px; width: 620px; display: none;">
         <asp:HiddenField runat="server" ID="hdId" Value="" />
         <div class="dhx_cal_ltitle" id="drag-title">
             <span class="dhx_mark">&nbsp;</span><span class="dhx_time"></span><span class="dhx_title"></span><div
@@ -209,7 +221,8 @@
         <div class="dhx_cal_larea" style="height: 460px; width: 602px;">
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
-                    Status</div>
+                    Status
+                </div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxComboBox runat="server" DataSourceID="StatusDataSource" Width="165px" TextField="Title"
                         ValueField="Id" ID="cboStatus" ValueType="System.String" ClientInstanceName="cboStatus">
@@ -220,7 +233,8 @@
                     </dx:ASPxComboBox>
                 </div>
                 <div class="dhx_cal_lsection required" style="float: left; width: 80px;">
-                    Service</div>
+                    Service
+                </div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxComboBox runat="server" DataSourceID="ServicesDataSource" Width="165px" TextField="Title"
                         ValueField="Id" ID="cboService" ValueType="System.Int32" ClientInstanceName="cboService">
@@ -236,7 +250,8 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
-                    Doctor</div>
+                    Doctor
+                </div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <asp:HiddenField runat="server" ID="hdDocCon" Value="IsDisabled = 'False'" />
                     <dx:ASPxComboBox ID="cboDoctor" ClientInstanceName="cboDoctor" runat="server" Width="165px"
@@ -257,7 +272,8 @@
                     </dx:ASPxComboBox>
                 </div>
                 <div class="dhx_cal_lsection required" style="float: left; width: 80px;">
-                    Room</div>
+                    Room
+                </div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxComboBox runat="server" Width="165px" TextField="Title" ValueField="Id" ID="cboRoom"
                         ValueType="System.Int32" ClientInstanceName="cboRoom" OnCallback="cboRoom_OnCallback">
@@ -270,12 +286,13 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
-                    Patient</div>
+                    Patient
+                </div>
                 <div class="dhx_cal_ltext" style="float: left;">
-                    <input type="text" name="patient" id="patient-search" maxlength="20" style="width: 200px;" class="form-input"/>
-                    <input type="hidden" name="patient" id="patient-name"/>
-                    <input type="hidden" name="patient" id="patient-code"/>
-                    <img class="error-icon" id="patient-error" title="Patient is required"/>
+                    <input type="text" name="patient" id="patient-search" maxlength="20" style="width: 200px;" class="form-input" />
+                    <input type="hidden" name="patient" id="patient-name" />
+                    <input type="hidden" name="patient" id="patient-code" />
+                    <img class="error-icon" id="patient-error" title="Patient is required" />
                 </div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <input type="button" id="createUser" value="New" style="width: 50px;" runat="server"
@@ -288,7 +305,8 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required">
-                    Time period</div>
+                    Time period
+                </div>
                 <div class="dhx_cal_ltext" style="float: left;">
                     <dx:ASPxTimeEdit ID="startTime" runat="server" ClientInstanceName="startTime" EditFormatString="HH:mm"
                         DisplayFormatString="HH:mm" Width="55">
@@ -325,7 +343,8 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection">
-                    Note</div>
+                    Note
+                </div>
                 <div class="dhx_cal_ltext">
                     <textarea id="txtNote" style="width: 450px; font-family: Arial;" rows="2" maxlength="500"></textarea>
                 </div>
@@ -375,28 +394,31 @@
             <div dhx_button="1" class="dhx_save_btn">
             </div>
             <div title="Save roster" onclick="NewAppointment();" id="btnSave" runat="server">
-                Save</div>
+                Save
+            </div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" id="divUpdate" runat="server">
             <div title="Update roster" onclick="UpdateAppointment();" id="btnUpdate" runat="server">
-                Update</div>
+                Update
+            </div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_cancel_btn_set">
             <div dhx_button="1" class="dhx_cancel_btn">
             </div>
             <div title="Cancel editing" onclick="CancelAppointment();">
-                Cancel</div>
+                Cancel
+            </div>
         </div>
         <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;"
             id="divDelete" runat="server">
             <div dhx_button="1" class="dhx_delete_btn">
             </div>
             <div title="Delete current roster" id="delete-form-roster" onclick="DeleteAppointment();">
-                Delete</div>
+                Delete
+            </div>
         </div>
     </div>
-    <div class="dhx_cal_light dhx_cal_light_wide" id="form-patient" style="height: 410px;
-        width: 620px; display: none;">
+    <div class="dhx_cal_light dhx_cal_light_wide" id="form-patient" style="height: 410px; width: 620px; display: none;">
         <div class="dhx_cal_ltitle" id="drag-title2">
             <span class="dhx_mark">&nbsp;</span><span class="dhx_time"></span><span class="dhx_title"></span><div
                 class="dhx_close_icon" onclick="ClosePatient();" title="Close form without save">
@@ -405,14 +427,16 @@
         <div class="dhx_cal_larea" style="height: 310px; width: 602px;">
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
-                    Patient Code</div>
+                    Patient Code
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ReadOnly="True" ID="txtPatientCode" Text="" Width="130px"
                         CssClass="text-form" ClientInstanceName="txtPatientCode">
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection" style="float: left; width: 120px;">
-                    Sex</div>
+                    Sex
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxRadioButton runat="server" Text="Male" ID="radMale" GroupName="radSex" Layout="Flow"
                         ClientInstanceName="radMale" />
@@ -424,7 +448,8 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
-                    Last Name</div>
+                    Last Name
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtLastName" Text="" CssClass="text-form" MaxLength="50"
                         Width="130px" ClientInstanceName="txtLastName">
@@ -435,7 +460,8 @@
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection" style="float: left; width: 120px;">
-                    Middle Name</div>
+                    Middle Name
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtMiddleName" Text="" CssClass="text-form" MaxLength="50"
                         Width="130px" ClientInstanceName="txtMiddleName">
@@ -446,7 +472,8 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
-                    First Name</div>
+                    First Name
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtFirstName" Text="" CssClass="text-form" MaxLength="50"
                         Width="130px" ClientInstanceName="txtFirstName">
@@ -457,7 +484,8 @@
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection required" style="float: left; width: 120px;">
-                    DOB <span class="min-day">(MM/dd/yyyy)</span></div>
+                    DOB <span class="min-day">(MM/dd/yyyy)</span>
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxDateEdit ID="txtDob" ClientInstanceName="txtDob" runat="server" EditFormatString="MM/dd/yyyy"
                         DisplayFormatString="MM/dd/yyyy" Width="130px">
@@ -472,7 +500,8 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
-                    Nationality</div>
+                    Nationality
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxComboBox ID="cboNationality" ClientInstanceName="cboNationality" runat="server"
                         Width="130px" DropDownStyle="DropDownList" DataSourceID="CountryDataSource" ValueField="CitizenName"
@@ -485,7 +514,8 @@
                     </dx:ASPxComboBox>
                 </div>
                 <div class="dhx_cal_lsection" style="float: left; width: 120px;">
-                    Company</div>
+                    Company
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxComboBox ID="cboCompany" ClientInstanceName="cboCompany" runat="server" Width="130px"
                         DropDownStyle="DropDownList" DropDownWidth="300px" DataSourceID="CompanyDataSource"
@@ -502,7 +532,8 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection required" style="float: left;">
-                    Mobile Phone</div>
+                    Mobile Phone
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtMobilePhone" Text="" CssClass="text-form" MaxLength="50"
                         Width="130px" ClientInstanceName="txtMobilePhone">
@@ -513,7 +544,8 @@
                     </dx:ASPxTextBox>
                 </div>
                 <div class="dhx_cal_lsection" style="float: left; width: 120px;">
-                    Home Phone</div>
+                    Home Phone
+                </div>
                 <div class="dhx_cal_ltext" style="float: left; width: 165px;">
                     <dx:ASPxTextBox runat="server" ID="txtHomePhone" Text="" CssClass="text-form" MaxLength="50"
                         Width="130px" ClientInstanceName="txtHomePhone">
@@ -524,7 +556,8 @@
             </div>
             <div class="dhx_form_row">
                 <div class="dhx_cal_lsection">
-                    Remark</div>
+                    Remark
+                </div>
                 <div class="dhx_cal_ltext">
                     <textarea id="txtRemark" style="width: 435px; font-family: Arial;" rows="3"></textarea>
                 </div>
@@ -534,13 +567,15 @@
             <div dhx_button="1" class="dhx_save_btn">
             </div>
             <div title="Save patient" onclick="SavePatient();" id="btnSavePatient">
-                Save</div>
+                Save
+            </div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_cancel_btn_set">
             <div dhx_button="1" class="dhx_cancel_btn">
             </div>
             <div title="Cancel editing" onclick="ClosePatient();">
-                Cancel</div>
+                Cancel
+            </div>
         </div>
     </div>
     <data:UsersDataSource SelectMethod="GetPaged" runat="server" ID="UsersDataSource">
