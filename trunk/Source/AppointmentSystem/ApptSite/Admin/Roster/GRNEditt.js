@@ -411,14 +411,19 @@ function UpdateRoster() {
         return;
     }
 
+    var tmpStartTime = startTime.GetDate(),
+      tmpEndTime = endTime.GetDate();
+    // Set year cho time vi bi loi invalid time trong IE
+    tmpStartTime.setFullYear(2000);
+    tmpEndTime.setFullYear(2000);
     var id = $("#hdId").val();
     var requestdata = JSON.stringify({
         id: id,
         doctorId: cboDoctor.GetValue(),
 //        rosterTypeId: cboRosterType.GetValue(),
         rosterTypeId: 0,
-        startTime: startTime.GetDate(),
-        endTime: endTime.GetDate(),
+        startTime: tmpStartTime,
+        endTime: tmpEndTime,
         startDate: startDate.GetDate(),
         endDate: endDate.GetDate(),
         note: $("#txtNote").val()
