@@ -590,11 +590,16 @@ function NewAppointment() {
         return;
     }
 
+    var tmpStartTime = startTime.GetDate(),
+        tmpEndTime = endTime.GetDate();
+    // Set year cho time vi bi loi invalid time trong IE
+    tmpStartTime.setFullYear(2000);
+    tmpEndTime.setFullYear(2000);
     var requestdata = JSON.stringify({
         patientCode: $hdfPatientCode.val(),
         note: $("#txtNote").val(),
-        startTime: startTime.GetValue(),
-        endTime: endTime.GetValue(),
+        startTime: tmpStartTime,
+        endTime: tmpEndTime,
         startDate: startDate.GetValue(),
         endDate: endDate.GetValue(),
         doctorId: cboDoctor.GetValue(),
@@ -619,8 +624,14 @@ function NewAppointment() {
                 ShowMessage(obj.message);
             }
         },
-        fail: CallError,
-        error: CallError,
+        //fail: CallError,
+        //error: CallError,
+        fail: function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        },
+        error: function (jqXHR, textStatus) {
+            alert('Uncaught Error.\n' + jqXHR.responseText);
+        },
         complete: CloseProgress
     });
 }
@@ -632,12 +643,17 @@ function UpdateAppointment() {
     }
 
     var id = $("[id$=hdId]").val();
+    var tmpStartTime = startTime.GetDate(),
+      tmpEndTime = endTime.GetDate();
+    // Set year cho time vi bi loi invalid time trong IE
+    tmpStartTime.setFullYear(2000);
+    tmpEndTime.setFullYear(2000);
     var requestdata = JSON.stringify({
         id: id,
         patientCode: $hdfPatientCode.val(),
         note: $("#txtNote").val(),
-        startTime: startTime.GetValue(),
-        endTime: endTime.GetValue(),
+        startTime: tmpStartTime,
+        endTime: tmpEndTime,
         startDate: startDate.GetValue(),
         endDate: endDate.GetValue(),
         doctorId: cboDoctor.GetValue(),
