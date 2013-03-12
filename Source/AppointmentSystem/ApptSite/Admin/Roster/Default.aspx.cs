@@ -449,6 +449,13 @@ public partial class Admin_Roster_Default : System.Web.UI.Page
                 return WebCommon.BuildFailedResult("Cannot delete roster. Roster is expired.");
             }
 
+            // Lấy danh sách appointment dựa theo roster để kiểm tra xem roster đã được đăng ký appointment chưa
+            DataRepository.RosterProvider.DeepLoad(roster);
+            if (roster.AppointmentCollection.Exists(appointment => !appointment.IsDisabled))
+            {
+                return WebCommon.BuildFailedResult("Cannot delete roster. Roster had Appointment.");
+            }
+
             roster.IsDisabled = true;
             roster.UpdateUser = AccountSession.Session;
             roster.UpdateDate = DateTime.Now;

@@ -215,7 +215,7 @@
         <asp:HiddenField runat="server" ID="hdId" Value="" />
         <div class="dhx_cal_ltitle" id="drag-title">
             <span class="dhx_mark">&nbsp;</span><span class="dhx_time"></span><span class="dhx_title"></span><div
-                class="dhx_close_icon" onclick="CancelAppointment();" title="Close form without save">
+                class="dhx_close_icon" onclick="CancelAppointment();" title="Close form without save (Esc)">
             </div>
         </div>
         <div class="dhx_cal_larea" style="height: 460px; width: 602px;">
@@ -393,19 +393,19 @@
         <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" id="divSave" runat="server">
             <div dhx_button="1" class="dhx_save_btn">
             </div>
-            <div title="Save roster" onclick="NewAppointment();" id="btnSave" runat="server">
+            <div title="Save roster (Enter)" onclick="NewAppointment();" id="btnSave" runat="server">
                 Save
             </div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" id="divUpdate" runat="server">
-            <div title="Update roster" onclick="UpdateAppointment();" id="btnUpdate" runat="server">
+            <div title="Update roster (Enter)" onclick="UpdateAppointment();" id="btnUpdate" runat="server">
                 Update
             </div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_cancel_btn_set">
             <div dhx_button="1" class="dhx_cancel_btn">
             </div>
-            <div title="Cancel editing" onclick="CancelAppointment();">
+            <div title="Cancel editing (Esc)" onclick="CancelAppointment();">
                 Cancel
             </div>
         </div>
@@ -421,7 +421,7 @@
     <div class="dhx_cal_light dhx_cal_light_wide" id="form-patient" style="height: 410px; width: 620px; display: none;">
         <div class="dhx_cal_ltitle" id="drag-title2">
             <span class="dhx_mark">&nbsp;</span><span class="dhx_time"></span><span class="dhx_title"></span><div
-                class="dhx_close_icon" onclick="ClosePatient();" title="Close form without save">
+                class="dhx_close_icon" onclick="ClosePatient();" title="Close form without save (Esc)">
             </div>
         </div>
         <div class="dhx_cal_larea" style="height: 310px; width: 602px;">
@@ -566,14 +566,14 @@
         <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set">
             <div dhx_button="1" class="dhx_save_btn">
             </div>
-            <div title="Save patient" onclick="SavePatient();" id="btnSavePatient">
+            <div title="Save patient (Enter)" onclick="SavePatient();" id="btnSavePatient">
                 Save
             </div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_cancel_btn_set">
             <div dhx_button="1" class="dhx_cancel_btn">
             </div>
-            <div title="Cancel editing" onclick="ClosePatient();">
+            <div title="Cancel editing (Esc)" onclick="ClosePatient();">
                 Cancel
             </div>
         </div>
