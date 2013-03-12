@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[Appointment]
 [ServicesId] [int] NULL,
 [StatusId] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [AppointmentGroupId] [int] NULL,
-[Note] [nvarchar] (500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Note] [nvarchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [StartTime] [datetime] NULL,
 [EndTime] [datetime] NULL,
 [RosterId] [nvarchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
