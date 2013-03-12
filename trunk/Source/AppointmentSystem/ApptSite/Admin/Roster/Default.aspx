@@ -120,7 +120,7 @@
         <input type="hidden" id="hdId" value="" />
         <div class="dhx_cal_ltitle" id="drag-title">
             <span class="dhx_mark">&nbsp;</span><span class="dhx_time"></span><span class="dhx_title"></span><div
-                class="dhx_close_icon" onclick="CancelRoster();" title="Close form without save">
+                class="dhx_close_icon" onclick="CancelRoster();" title="Close form without save (Esc)">
             </div>
         </div>
         <div class="dhx_cal_larea" style="height: 220px;">
@@ -247,17 +247,17 @@
         <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" id="divSave" runat="server">
             <div dhx_button="1" class="dhx_save_btn">
             </div>
-            <div title="Save roster" onclick="NewRoster();" id="btnSave" runat="server">
+            <div title="Save roster (Enter)" onclick="NewRoster();" id="btnSave" runat="server">
                 Save</div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_save_btn_set" id="divUpdate" runat="server">
-            <div title="Update roster" onclick="UpdateRoster();" id="btnUpdate" runat="server">
+            <div title="Update roster (Enter)" onclick="UpdateRoster();" id="btnUpdate" runat="server">
                 Update</div>
         </div>
         <div class="dhx_btn_set dhx_left_btn_set dhx_cancel_btn_set">
             <div dhx_button="1" class="dhx_cancel_btn">
             </div>
-            <div title="Cancel editing" onclick="CancelRoster();">
+            <div title="Cancel editing (Esc)" onclick="CancelRoster();">
                 Cancel</div>
         </div>
         <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;"
