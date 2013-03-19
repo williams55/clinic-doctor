@@ -81,6 +81,7 @@ namespace AppointmentBusiness.BO
                 GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
                 comparedAppt.Note = appointment.Note;
 
+                oldAppt.RosterId = appointment.RosterId;
                 oldAppt.ServicesId = appointment.ServicesId;
                 oldAppt.UpdateUser = appointment.UpdateUser;
 
