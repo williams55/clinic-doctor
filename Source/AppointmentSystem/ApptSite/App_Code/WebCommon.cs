@@ -9,7 +9,7 @@ using Appt.Common.Constants;
 using Common;
 using Common.Util;
 using DevExpress.Web.ASPxGridView;
-using Log.Controller;
+using Logger.Controller;
 using Newtonsoft.Json;
 
 /// <summary>
@@ -82,7 +82,7 @@ public class WebCommon
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 
@@ -106,7 +106,7 @@ public class WebCommon
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             message = "System error. Please contact administrator.";
         }
         return false;

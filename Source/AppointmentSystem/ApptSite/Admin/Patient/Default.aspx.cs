@@ -8,7 +8,6 @@ using ApptSite;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
-using Log.Controller;
 using Common.Util;
 using Appt.Common.Constants;
 using AppointmentBusiness.Util;
@@ -16,6 +15,8 @@ using AppointmentSystem.Settings.BusinessLayer;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Data;
 using DevExpress.Web.ASPxUploadControl;
+using Logger.Controller;
+
 public partial class Admin_Patient_Default : System.Web.UI.Page
 {
     string ScreenCode = "Patient";
@@ -70,7 +71,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
   
@@ -159,7 +160,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot add patient. Please contact Administrator");
         }
         e.Cancel = true;
@@ -256,7 +257,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot update patient. Please contact Administrator");
         }
         e.Cancel = true;
@@ -315,7 +316,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
     
@@ -449,7 +450,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         catch (Exception ex)
         {
             tm.Rollback();
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete Roster. Please contact Administrator.");
         }
     }
@@ -470,7 +471,7 @@ public partial class Admin_Patient_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 

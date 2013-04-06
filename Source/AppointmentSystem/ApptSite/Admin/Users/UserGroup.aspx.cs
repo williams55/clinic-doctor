@@ -14,7 +14,7 @@ using Common.Util;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
-using Log.Controller;
+using Logger.Controller;
 
 public partial class Admin_Users_UserGroup : System.Web.UI.Page
 {
@@ -71,7 +71,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 
@@ -121,7 +121,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete group. Please contact Administrator.");
         }
     }
@@ -188,7 +188,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         catch (Exception ex)
         {
             tm.Rollback();
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete group. Please contact Administrator.");
         }
     }
@@ -230,7 +230,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot insert group. Please contact Administrator");
             e.Cancel = true;
         }
@@ -270,7 +270,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot update group. Please contact Administrator");
             e.Cancel = true;
         }
@@ -349,7 +349,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(this, "System is error. Please contact Administrator.");
         }
     }
@@ -398,7 +398,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete group role. Please contact Administrator.");
         }
     }
@@ -465,7 +465,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         catch (Exception ex)
         {
             tm.Rollback();
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete user role. Please contact Administrator.");
         }
     }
@@ -507,7 +507,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot create group role. Please contact Administrator");
             e.Cancel = true;
         }
@@ -544,7 +544,7 @@ public partial class Admin_Users_UserGroup : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(this, "System is error. Please contact Administrator.");
         }
     }

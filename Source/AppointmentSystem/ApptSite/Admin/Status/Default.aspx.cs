@@ -12,8 +12,8 @@ using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
 using Appt.Common.Constants;
 using AppointmentBusiness.Util;
-using Log.Controller;
 using Common.Util;
+using Logger.Controller;
 
 public partial class Admin_Status_Default : System.Web.UI.Page
 {
@@ -45,7 +45,7 @@ public partial class Admin_Status_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
     protected void grid_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
@@ -100,7 +100,7 @@ public partial class Admin_Status_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             e.Cancel = true;
             WebCommon.AlertGridView(sender, "Cannot update service. Please contact Administrator");
         }

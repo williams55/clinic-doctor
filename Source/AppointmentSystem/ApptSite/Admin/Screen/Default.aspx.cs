@@ -8,8 +8,8 @@ using AppointmentBusiness.Util;
 using Appt.Common.Constants;
 using ApptSite;
 using DevExpress.Web.ASPxGridView;
-using Log.Controller;
 using Common.Util;
+using Logger.Controller;
 
 public partial class Admin_Screen_Default : System.Web.UI.Page
 {
@@ -47,7 +47,7 @@ public partial class Admin_Screen_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
     protected void gridScreen_CustomButtonCallback(object sender, DevExpress.Web.ASPxGridView.ASPxGridViewCustomButtonCallbackEventArgs e)

@@ -6,7 +6,7 @@ using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Common.Extension;
 using Common.Util;
-using Log.Controller;
+using Logger.Controller;
 
 namespace AppointmentBusiness.BO
 {
@@ -22,7 +22,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }
@@ -108,7 +108,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }
@@ -158,7 +158,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }
@@ -199,7 +199,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
         StepResult:
             return new TList<Roster>();
@@ -274,7 +274,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }

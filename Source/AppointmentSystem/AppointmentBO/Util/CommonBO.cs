@@ -5,7 +5,7 @@ using System.Text;
 using Appt.Common.Constants;
 using Common.Extension;
 using Common.Util;
-using Logger.Controller;
+using Log.Controller;
 
 namespace AppointmentBusiness.Util
 {
@@ -54,7 +54,7 @@ namespace AppointmentBusiness.Util
             }
             catch (Exception ex)
             {
-                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }
