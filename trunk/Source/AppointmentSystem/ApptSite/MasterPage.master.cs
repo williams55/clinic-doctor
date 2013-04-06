@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 using AppointmentSystem.Data;
 using ApptSite;
 using Common.Util;
-using Log.Controller;
 using System.Web.Security;
 
 public partial class MasterPage : System.Web.UI.MasterPage

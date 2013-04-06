@@ -18,7 +18,7 @@ using Common.Util;
 using DevExpress.Web.ASPxClasses;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
-using Log.Controller;
+using Logger.Controller;
 using Newtonsoft.Json;
 
 public partial class Admin_Appointment_Default : System.Web.UI.Page
@@ -75,7 +75,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 
@@ -173,7 +173,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 
@@ -202,7 +202,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 
@@ -235,7 +235,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
     #endregion
@@ -291,7 +291,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult(ex.Message);
         }
 
@@ -333,7 +333,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("Cannot create new patient. Please contact Administrator.");
         }
     }
@@ -425,7 +425,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("Cannot create new patient. Please contact Administrator.");
         }
         return null;
@@ -495,7 +495,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("Cannot load patient's information. Please try again.");
         }
     }
@@ -532,7 +532,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("System error. Please contact Administrator.");
         }
     }
@@ -567,7 +567,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
         return strResult;
     }
@@ -589,7 +589,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
         return strResult;
     }
@@ -647,7 +647,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
         return null;
     }
@@ -676,7 +676,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
         return lstEvent;
     }
@@ -702,7 +702,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
         return lstEvent;
     }
@@ -773,7 +773,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
         return lst;
     }
@@ -824,7 +824,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("System error. Please contact Administrator.");
         }
         return WebCommon.BuildSuccessfulResult();
@@ -886,7 +886,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("System error. Please contact Administrator.");
         }
     }
@@ -945,7 +945,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("System error. Please contact Administrator.");
         }
     }
@@ -1018,7 +1018,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.BuildFailedResult("System error. Please contact Administrator.");
         }
     }
@@ -1102,7 +1102,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             return WebCommon.RenderFailedResult(MessageCode.GeneralCode.SystemError);
         }
     }
@@ -1164,7 +1164,7 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             tm.Rollback();
             return WebCommon.BuildFailedResult(ex.Message);
         }

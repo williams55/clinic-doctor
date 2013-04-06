@@ -2,7 +2,7 @@
 using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using Common.Util;
-using Log.Controller;
+using Logger.Controller;
 
 namespace AppointmentBusiness.BO
 {
@@ -36,7 +36,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
         StepResult:
             return blResult;
@@ -54,7 +54,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }
@@ -78,7 +78,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }

@@ -8,7 +8,7 @@ using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Util;
-using Log.Controller;
+using Logger.Controller;
 
 namespace AppointmentBusiness.BO
 {
@@ -28,7 +28,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return string.Empty;
         }

@@ -10,8 +10,8 @@ using DevExpress.Web.Data;
 using DevExpress.Web.ASPxEditors;
 using AppointmentBusiness.Util;
 using Appt.Common.Constants;
-using Log.Controller;
 using Common.Util;
+using Logger.Controller;
 
 public partial class Admin_Room_edit : Page
 {
@@ -70,7 +70,7 @@ public partial class Admin_Room_edit : Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.ShowDialog(this, "System is error. Please contact Administrator.");
         }
     }
@@ -123,7 +123,7 @@ public partial class Admin_Room_edit : Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete room. Please contact Administrator");
         }
     }
@@ -168,7 +168,7 @@ public partial class Admin_Room_edit : Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             e.Cancel = true;
             WebCommon.AlertGridView(sender, "Cannot create new room. Please contact Administrator");
         }
@@ -214,7 +214,7 @@ public partial class Admin_Room_edit : Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             e.Cancel = true;
             WebCommon.AlertGridView(sender, "Cannot update room. Please contact Administrator");
         }
@@ -314,7 +314,7 @@ public partial class Admin_Room_edit : Page
         catch (Exception ex)
         {
             tm.Rollback();
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete service. Please contact Administrator.");
         }
     }

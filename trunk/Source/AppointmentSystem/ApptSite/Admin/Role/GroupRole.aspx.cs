@@ -10,8 +10,9 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentBusiness.Util;
 using Appt.Common.Constants;
-using Log.Controller;
 using Common.Util;
+using Logger.Controller;
+
 public partial class Admin_Role_GroupRole : System.Web.UI.Page
 {
     string _message;
@@ -50,7 +51,7 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
   
@@ -104,7 +105,7 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "There is system error. Please contact Administrator.";
         }
     }
@@ -193,7 +194,7 @@ public partial class Admin_Role_GroupRole : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             ((ASPxGridView)sender).JSProperties[GeneralConstants.ApptMessage] = "There is system error. Please contact Administrator.";
         }
     }

@@ -7,7 +7,7 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Util;
-using Logger.Controller;
+using Log.Controller;
 
 namespace AppointmentBusiness.Util
 {
@@ -50,7 +50,7 @@ namespace AppointmentBusiness.Util
             }
             catch (Exception ex)
             {
-                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
 
             // There is no right for user
@@ -95,7 +95,7 @@ namespace AppointmentBusiness.Util
             }
             catch (Exception ex)
             {
-                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
 
             messageCode = MessageCode.GeneralCode.SystemError;

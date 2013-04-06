@@ -18,7 +18,7 @@ using DevExpress.Utils;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
-using Log.Controller;
+using Logger.Controller;
 using Newtonsoft.Json;
 
 public partial class Admin_Appointment_Grid : Page
@@ -48,7 +48,7 @@ public partial class Admin_Appointment_Grid : Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.ShowDialog(this, "System is error. Please contact Administrator.");
         }
     }

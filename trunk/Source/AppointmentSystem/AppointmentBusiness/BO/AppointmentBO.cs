@@ -8,7 +8,9 @@ using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using Common.Util;
-using Log.Controller;
+using Log;
+using Newtonsoft.Json;
+using Logger.Controller;
 
 namespace AppointmentBusiness.BO
 {
@@ -26,7 +28,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }
@@ -49,37 +51,42 @@ namespace AppointmentBusiness.BO
                     return false;
                 }
 
+                SingletonLogger.Instance.Debug(String.Format("{0}-------{1}-------IP: {2}", "Update Appointment",
+                                                             JsonConvert.SerializeObject(new
+                                                                 {
+                                                                     appointment.Username,
+                                                                     appointment.ServicesId,
+                                                                     appointment.StatusId,
+                                                                     appointment.EndTime,
+                                                                     appointment.StartTime,
+                                                                     appointment.RosterId,
+                                                                     appointment.PatientCode,
+                                                                     appointment.UpdateUser,
+                                                                     appointment.CreateUser
+                                                                 }), Network.GetIpClient()));
+
                 var comparedAppt = oldAppt.Copy();
 
                 // Gan gia tri moi
                 // Ghi log moi khi thay doi gia tri
                 oldAppt.PatientCode = appointment.PatientCode;
-                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
-                comparedAppt.PatientCode = appointment.PatientCode;
-
                 oldAppt.Username = appointment.Username;
-                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
-                comparedAppt.Username = appointment.Username;
-
                 oldAppt.RoomId = appointment.RoomId;
-                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
-                comparedAppt.RoomId = appointment.RoomId;
-
                 oldAppt.StatusId = appointment.StatusId;
-                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
-                comparedAppt.StatusId = appointment.StatusId;
-
                 oldAppt.StartTime = appointment.StartTime;
-                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
-                comparedAppt.StartTime = appointment.StartTime;
-
                 oldAppt.EndTime = appointment.EndTime;
-                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
-                comparedAppt.EndTime = appointment.EndTime;
-
                 oldAppt.Note = appointment.Note;
-                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt), appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
+
+                GlobalUtilities.WriteLog(BuildApptHistory(comparedAppt), BuildApptHistory(oldAppt),
+                                         appointment.UpdateUser, DataRepository.Provider.ExecuteDataSet);
+
+                comparedAppt.PatientCode = appointment.PatientCode;
+                comparedAppt.Username = appointment.Username;
                 comparedAppt.Note = appointment.Note;
+                comparedAppt.RoomId = appointment.RoomId;
+                comparedAppt.StatusId = appointment.StatusId;
+                comparedAppt.StartTime = appointment.StartTime;
+                comparedAppt.EndTime = appointment.EndTime;
 
                 oldAppt.RosterId = appointment.RosterId;
                 oldAppt.ServicesId = appointment.ServicesId;
@@ -94,7 +101,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }
@@ -140,7 +147,7 @@ namespace AppointmentBusiness.BO
             catch (Exception ex)
             {
                 messageCode = "System error. Please contact Administratos.";
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
         StepResult:
             return new TList<Appointment>();
@@ -170,7 +177,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return null;
         }
@@ -194,7 +201,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
         }
 
@@ -354,7 +361,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }
@@ -403,7 +410,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
                 message = ex.Message;
                 return false;
             }
@@ -441,7 +448,7 @@ namespace AppointmentBusiness.BO
             }
             catch (Exception ex)
             {
-                LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+                LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             }
             return false;
         }

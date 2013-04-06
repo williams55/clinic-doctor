@@ -10,8 +10,9 @@ using ApptSite;
 using Common.Util;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
-using Log.Controller;
 using DevExpress.Web.ASPxEditors;
+using Logger.Controller;
+
 public partial class Admin_Users_EditUser : System.Web.UI.Page
 {
     private const string ScreenCode = "User";
@@ -66,7 +67,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         }
     }
 
@@ -122,7 +123,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete user. Please contact Administrator.");
         }
     }
@@ -195,7 +196,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         catch (Exception ex)
         {
             tm.Rollback();
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete user. Please contact Administrator.");
         }
     }
@@ -309,7 +310,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot insert user. Please contact Administrator");
             e.Cancel = true;
         }
@@ -348,7 +349,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         //catch (Exception ex)
         //{
         //    tm.Rollback();
-        //    LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+        //    LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
         //    WebCommon.AlertGridView(sender, "Cannot insert user role. Please contact Administrator");
         //}
     }
@@ -451,7 +452,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot update user. Please contact Administrator");
             e.Cancel = true;
         }
@@ -530,7 +531,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(this, "System is error. Please contact Administrator.");
         }
     }
@@ -582,7 +583,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete user role. Please contact Administrator.");
         }
     }
@@ -624,7 +625,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot create user role. Please contact Administrator");
             e.Cancel = true;
         }
@@ -697,7 +698,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         catch (Exception ex)
         {
             tm.Rollback();
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(sender, "Cannot delete user role. Please contact Administrator.");
         }
     }
@@ -738,7 +739,7 @@ public partial class Admin_Users_EditUser : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            LogController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
             WebCommon.AlertGridView(this, "System is error. Please contact Administrator.");
         }
     }

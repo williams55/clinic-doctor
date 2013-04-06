@@ -3,7 +3,6 @@ using AppointmentSystem.Data;
 using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Common.Util;
-using Log.Controller;
 
 namespace AppointmentBusiness.BO
 {
