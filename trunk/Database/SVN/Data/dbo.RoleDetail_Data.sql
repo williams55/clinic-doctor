@@ -1,4 +1,8 @@
 SET IDENTITY_INSERT [dbo].[RoleDetail] ON
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (29, 6, 'Sms', 'CRUD', 0, N'duong.phan', '2012-12-28 14:48:20.280', N'duong.phan', '2012-12-28 14:48:20.280')
+INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (30, 1, 'Sms', 'CRUD', 0, N'GOWU', '2012-07-22 14:17:33.853', N'GOWU', '2012-08-29 23:17:22.923')
+SET IDENTITY_INSERT [dbo].[RoleDetail] OFF
+SET IDENTITY_INSERT [dbo].[RoleDetail] ON
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (1, 1, 'Roster', 'CRUD', 0, N'GOWU', '2012-08-29 23:08:15.543', N'GOWU', '2012-11-19 08:59:50.977')
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (5, 1, 'Services', 'CRUD', 0, N'GOWU', '2012-07-18 19:45:29.677', N'GOWU', '2012-08-29 23:15:09.573')
 INSERT INTO [dbo].[RoleDetail] ([Id], [RoleId], [ScreenCode], [Crud], [IsDisabled], [CreateUser], [CreateDate], [UpdateUser], [UpdateDate]) VALUES (6, 1, 'Appointment', 'CRUD', 0, N'GOWU', '2012-07-19 23:20:18.583', N'GOWU', '2012-11-19 09:03:54.953')
