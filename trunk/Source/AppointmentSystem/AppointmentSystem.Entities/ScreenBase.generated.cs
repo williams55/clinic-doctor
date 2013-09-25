@@ -150,8 +150,6 @@ namespace AppointmentSystem.Entities
 		/// This property can not be set to null. 
 		/// </remarks>
 		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
-		
-		
 
 
 
@@ -169,8 +167,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.ScreenCode == value)
 					return;
-				
-                OnPropertyChanging("ScreenCode");                    
+					
 				OnColumnChanging(ScreenColumn.ScreenCode, this.entityData.ScreenCode);
 				this.entityData.ScreenCode = value;
 				this.EntityId.ScreenCode = value;
@@ -203,8 +200,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -222,8 +217,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.ScreenName == value)
 					return;
-				
-                OnPropertyChanging("ScreenName");                    
+					
 				OnColumnChanging(ScreenColumn.ScreenName, this.entityData.ScreenName);
 				this.entityData.ScreenName = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -241,8 +235,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -260,8 +252,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.PriorityIndex == value)
 					return;
-				
-                OnPropertyChanging("PriorityIndex");                    
+					
 				OnColumnChanging(ScreenColumn.PriorityIndex, this.entityData.PriorityIndex);
 				this.entityData.PriorityIndex = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -279,8 +270,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -298,8 +287,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.IsDisabled == value)
 					return;
-				
-                OnPropertyChanging("IsDisabled");                    
+					
 				OnColumnChanging(ScreenColumn.IsDisabled, this.entityData.IsDisabled);
 				this.entityData.IsDisabled = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -317,8 +305,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -336,8 +322,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateUser == value)
 					return;
-				
-                OnPropertyChanging("CreateUser");                    
+					
 				OnColumnChanging(ScreenColumn.CreateUser, this.entityData.CreateUser);
 				this.entityData.CreateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -355,8 +340,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -374,8 +357,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateDate == value)
 					return;
-				
-                OnPropertyChanging("CreateDate");                    
+					
 				OnColumnChanging(ScreenColumn.CreateDate, this.entityData.CreateDate);
 				this.entityData.CreateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -393,8 +375,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -412,8 +392,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateUser == value)
 					return;
-				
-                OnPropertyChanging("UpdateUser");                    
+					
 				OnColumnChanging(ScreenColumn.UpdateUser, this.entityData.UpdateUser);
 				this.entityData.UpdateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -431,8 +410,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -450,8 +427,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateDate == value)
 					return;
-				
-                OnPropertyChanging("UpdateDate");                    
+					
 				OnColumnChanging(ScreenColumn.UpdateDate, this.entityData.UpdateDate);
 				this.entityData.UpdateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -1260,48 +1236,48 @@ namespace AppointmentSystem.Entities
 		
 		#region Non Primary key(s)
 		
+		
 		/// <summary>
 		/// ScreenName : 
 		/// </summary>
-		public System.String ScreenName = null;
+		public System.String		  ScreenName = null;
 		
 		/// <summary>
 		/// PriorityIndex : 
 		/// </summary>
-		public System.Int32 PriorityIndex = (int)1;
+		public System.Int32		  PriorityIndex = (int)1;
 		
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
-		public System.Boolean IsDisabled = false;
+		public System.Boolean		  IsDisabled = false;
 		
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
-		public System.String CreateUser = null;
+		public System.String		  CreateUser = null;
 		
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
-		public System.DateTime CreateDate = DateTime.Now;
+		public System.DateTime		  CreateDate = DateTime.Now;
 		
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
-		public System.String UpdateUser = null;
+		public System.String		  UpdateUser = null;
 		
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
-		public System.DateTime UpdateDate = DateTime.Now;
+		public System.DateTime		  UpdateDate = DateTime.Now;
 		#endregion
 			
 		#region Source Foreign Key Property
 				
 		#endregion
-        
 		#endregion Variable Declarations
-
+	
 		#region Data Properties
 
 		#region RoleDetailCollection
@@ -1330,6 +1306,7 @@ namespace AppointmentSystem.Entities
 		#endregion
 
 		#endregion Data Properties
+		
 		#region Clone Method
 
 		/// <summary>
@@ -1417,6 +1394,16 @@ namespace AppointmentSystem.Entities
 	
 	}//End struct
 
+
+
+
+
+
+
+
+
+
+
 		#endregion
 		
 				
@@ -1451,8 +1438,8 @@ namespace AppointmentSystem.Entities
 		public virtual void OnColumnChanging(ScreenColumn column, object value)
 		{
 			if(IsEntityTracked && EntityState != EntityState.Added && !EntityManager.TrackChangedEntities)
-                EntityManager.StopTracking(entityTrackingKey);
-                
+				EntityManager.StopTracking(entityTrackingKey);
+				
 			if (!SuppressEntityEvents)
 			{
 				ScreenEventHandler handler = ColumnChanging;
@@ -1563,9 +1550,9 @@ namespace AppointmentSystem.Entities
         }
 
 		/// <summary>
-        /// Determines whether the specified <see cref="Screen"/> instances are considered equal.
+        /// Determines whether the specified <c cref="Screen"/> instances are considered equal.
         /// </summary>
-        /// <param name="a">The first <see cref="Screen"/> to compare.</param>
+        /// <param name="a">The first <c cref="Screen"/> to compare.</param>
         /// <param name="b">The second <c>Screen</c> to compare.</param>
         /// <returns>true if objA is the same instance as objB or if both are null references or if objA.Equals(objB) returns true; otherwise, false.</returns>
         public bool Equals(Screen a, Screen b)

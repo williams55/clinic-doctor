@@ -154,8 +154,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -173,8 +171,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Id == value)
 					return;
-				
-                OnPropertyChanging("Id");                    
+					
 				OnColumnChanging(RoleDetailColumn.Id, this.entityData.Id);
 				this.entityData.Id = value;
 				this.EntityId.Id = value;
@@ -195,8 +192,6 @@ namespace AppointmentSystem.Entities
 		/// If this column is null, this property will return (int)0. It is up to the developer
 		/// to check the value of IsRoleIdNull() and perform business logic appropriately.
 		/// </remarks>
-		
-		
 
 
 
@@ -214,8 +209,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.RoleId == value)
 					return;
-				
-                OnPropertyChanging("RoleId");                    
+					
 				OnColumnChanging(RoleDetailColumn.RoleId, this.entityData.RoleId);
 				this.entityData.RoleId = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -233,8 +227,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -252,8 +244,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.ScreenCode == value)
 					return;
-				
-                OnPropertyChanging("ScreenCode");                    
+					
 				OnColumnChanging(RoleDetailColumn.ScreenCode, this.entityData.ScreenCode);
 				this.entityData.ScreenCode = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -275,8 +266,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -294,8 +283,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Crud == value)
 					return;
-				
-                OnPropertyChanging("Crud");                    
+					
 				OnColumnChanging(RoleDetailColumn.Crud, this.entityData.Crud);
 				this.entityData.Crud = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -313,8 +301,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -332,8 +318,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.IsDisabled == value)
 					return;
-				
-                OnPropertyChanging("IsDisabled");                    
+					
 				OnColumnChanging(RoleDetailColumn.IsDisabled, this.entityData.IsDisabled);
 				this.entityData.IsDisabled = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -351,8 +336,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -370,8 +353,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateUser == value)
 					return;
-				
-                OnPropertyChanging("CreateUser");                    
+					
 				OnColumnChanging(RoleDetailColumn.CreateUser, this.entityData.CreateUser);
 				this.entityData.CreateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -389,8 +371,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -408,8 +388,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateDate == value)
 					return;
-				
-                OnPropertyChanging("CreateDate");                    
+					
 				OnColumnChanging(RoleDetailColumn.CreateDate, this.entityData.CreateDate);
 				this.entityData.CreateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -427,8 +406,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -446,8 +423,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateUser == value)
 					return;
-				
-                OnPropertyChanging("UpdateUser");                    
+					
 				OnColumnChanging(RoleDetailColumn.UpdateUser, this.entityData.UpdateUser);
 				this.entityData.UpdateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -465,8 +441,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -484,8 +458,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateDate == value)
 					return;
-				
-                OnPropertyChanging("UpdateDate");                    
+					
 				OnColumnChanging(RoleDetailColumn.UpdateDate, this.entityData.UpdateDate);
 				this.entityData.UpdateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -1330,15 +1303,16 @@ namespace AppointmentSystem.Entities
 		
 		#region Non Primary key(s)
 		
+		
 		/// <summary>
 		/// RoleId : 
 		/// </summary>
-		public System.Int32? RoleId = null;
+		public System.Int32?		  RoleId = null;
 		
 		/// <summary>
 		/// ScreenCode : What screen role can access
 		/// </summary>
-		public System.String ScreenCode = null;
+		public System.String		  ScreenCode = null;
 		
 		/// <summary>
 		/// Crud : Define what action user can do.
@@ -1347,32 +1321,32 @@ namespace AppointmentSystem.Entities
 		/// 		/// U: Update
 		/// 		/// D: Delete
 		/// </summary>
-		public System.String Crud = null;
+		public System.String		  Crud = null;
 		
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
-		public System.Boolean IsDisabled = false;
+		public System.Boolean		  IsDisabled = false;
 		
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
-		public System.String CreateUser = null;
+		public System.String		  CreateUser = null;
 		
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
-		public System.DateTime CreateDate = DateTime.Now;
+		public System.DateTime		  CreateDate = DateTime.Now;
 		
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
-		public System.String UpdateUser = null;
+		public System.String		  UpdateUser = null;
 		
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
-		public System.DateTime UpdateDate = DateTime.Now;
+		public System.DateTime		  UpdateDate = DateTime.Now;
 		#endregion
 			
 		#region Source Foreign Key Property
@@ -1404,12 +1378,12 @@ namespace AppointmentSystem.Entities
             set { this._screenCodeSource = value; }
       	}
 		#endregion
-        
 		#endregion Variable Declarations
-
+	
 		#region Data Properties
 
 		#endregion Data Properties
+		
 		#region Clone Method
 
 		/// <summary>
@@ -1504,6 +1478,16 @@ namespace AppointmentSystem.Entities
 	
 	}//End struct
 
+
+
+
+
+
+
+
+
+
+
 		#endregion
 		
 				
@@ -1538,8 +1522,8 @@ namespace AppointmentSystem.Entities
 		public virtual void OnColumnChanging(RoleDetailColumn column, object value)
 		{
 			if(IsEntityTracked && EntityState != EntityState.Added && !EntityManager.TrackChangedEntities)
-                EntityManager.StopTracking(entityTrackingKey);
-                
+				EntityManager.StopTracking(entityTrackingKey);
+				
 			if (!SuppressEntityEvents)
 			{
 				RoleDetailEventHandler handler = ColumnChanging;
@@ -1650,9 +1634,9 @@ namespace AppointmentSystem.Entities
         }
 
 		/// <summary>
-        /// Determines whether the specified <see cref="RoleDetail"/> instances are considered equal.
+        /// Determines whether the specified <c cref="RoleDetail"/> instances are considered equal.
         /// </summary>
-        /// <param name="a">The first <see cref="RoleDetail"/> to compare.</param>
+        /// <param name="a">The first <c cref="RoleDetail"/> to compare.</param>
         /// <param name="b">The second <c>RoleDetail</c> to compare.</param>
         /// <returns>true if objA is the same instance as objB or if both are null references or if objA.Equals(objB) returns true; otherwise, false.</returns>
         public bool Equals(RoleDetail a, RoleDetail b)

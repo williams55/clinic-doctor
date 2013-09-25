@@ -147,20 +147,18 @@ namespace AppointmentSystem.Web.Data
 		/// <summary>
 		/// Gets a collection of Entity objects based on the value of the SelectMethod property.
 		/// </summary>
-	    /// <param name="values"></param>
 		/// <param name="count">The total number of rows in the DataSource.</param>
 		/// <returns>A collection of Entity objects.</returns>
-		protected override IList<VcsPatient> GetSelectData(IDictionary values, out int count)
-		{	
-            if (values == null || values.Count == 0) values = CollectionsUtil.CreateCaseInsensitiveHashtable(GetParameterValues());
-            
+		protected override IList<VcsPatient> GetSelectData(out int count)
+		{
+			Hashtable values = CollectionsUtil.CreateCaseInsensitiveHashtable(GetParameterValues());
+			
 			Hashtable customOutput = CollectionsUtil.CreateCaseInsensitiveHashtable();
 			
 			IList<VcsPatient> results = null;
 			// VcsPatient item;
 			count = 0;
 			
-			System.String sp1_PatientCode;
 			System.String sp2_PatientCode;
 			System.String sp2_FirstName;
 			System.String sp2_MiddleName;
@@ -173,6 +171,7 @@ namespace AppointmentSystem.Web.Data
 			System.String sp2_MobilePhone;
 			System.String sp2_CreateUser;
 			System.String sp2_ApptRemark;
+			System.String sp1_PatientCode;
 
 			switch ( SelectMethod )
 			{
@@ -189,10 +188,6 @@ namespace AppointmentSystem.Web.Data
 					results = VcsPatientProvider.Find(GetTransactionManager(), FilterParameters, OrderBy, StartIndex, PageSize, out count);
                     break;
 				// Custom
-				case VcsPatientSelectMethod.GetByPatientCode:
-					sp1_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
-					results = VcsPatientProvider.GetByPatientCode(GetTransactionManager(), StartIndex, PageSize, sp1_PatientCode);
-					break;
 				case VcsPatientSelectMethod.Insert:
 					sp2_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
 					sp2_FirstName = (System.String) EntityUtil.ChangeType(values["FirstName"], typeof(System.String));
@@ -207,6 +202,10 @@ namespace AppointmentSystem.Web.Data
 					sp2_CreateUser = (System.String) EntityUtil.ChangeType(values["CreateUser"], typeof(System.String));
 					sp2_ApptRemark = (System.String) EntityUtil.ChangeType(values["ApptRemark"], typeof(System.String));
 					results = VcsPatientProvider.Insert(GetTransactionManager(), StartIndex, PageSize, sp2_PatientCode, sp2_FirstName, sp2_MiddleName, sp2_LastName, sp2_DateOfBirth, sp2_Sex, sp2_Nationality, sp2_CompanyCode, sp2_HomePhone, sp2_MobilePhone, sp2_CreateUser, sp2_ApptRemark);
+					break;
+				case VcsPatientSelectMethod.GetByPatientCode:
+					sp1_PatientCode = (System.String) EntityUtil.ChangeType(values["PatientCode"], typeof(System.String));
+					results = VcsPatientProvider.GetByPatientCode(GetTransactionManager(), StartIndex, PageSize, sp1_PatientCode);
 					break;
 				default:
 					break;
@@ -256,13 +255,13 @@ namespace AppointmentSystem.Web.Data
 		/// </summary>
 		Find,
 		/// <summary>
-		/// Represents the GetByPatientCode method.
-		/// </summary>
-		GetByPatientCode,
-		/// <summary>
 		/// Represents the Insert method.
 		/// </summary>
-		Insert
+		Insert,
+		/// <summary>
+		/// Represents the GetByPatientCode method.
+		/// </summary>
+		GetByPatientCode
 	}
 	
 	#endregion VcsPatientSelectMethod

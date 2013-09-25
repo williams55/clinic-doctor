@@ -63,25 +63,21 @@
     </script>
 
     <style media="screen">
-        /* enabling marked timespans for month view */ .dhx_scheduler_month .dhx_marked_timespan
-        {
+        /* enabling marked timespans for month view */ .dhx_scheduler_month .dhx_marked_timespan {
             display: block;
         }
 
-        a.autocomplete
-        {
+        a.autocomplete {
             border-top: 1px solid gray;
             margin: 0;
             padding: 0;
         }
 
-        a:hover.autocomplete
-        {
+        a:hover.autocomplete {
             font-weight: normal;
         }
 
-        a.autocomplete div.col
-        {
+        a.autocomplete div.col {
             float: left;
             padding: 0;
             margin: 0;
@@ -415,6 +411,14 @@
             </div>
             <div title="Delete current roster" id="delete-form-roster" onclick="DeleteAppointment();">
                 Delete
+            </div>
+        </div>
+        <div class="dhx_btn_set dhx_right_btn_set dhx_delete_btn_set" style="float: right;"
+            id="divManualSms" runat="server">
+            <div dhx_button="1" class="dhx_delete_btn">
+            </div>
+            <div title="Send SMS" id="send-sms-form" onclick="SendSms();">
+                Send SMS
             </div>
         </div>
     </div>

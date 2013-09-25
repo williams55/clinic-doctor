@@ -559,7 +559,6 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Units))]
 		Units,
-	
 		///<summary>
 		/// Collection of <c>AppointmentGroup</c> as OneToMany for AppointmentCollection
 		///</summary>

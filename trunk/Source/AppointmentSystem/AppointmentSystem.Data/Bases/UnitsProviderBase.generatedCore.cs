@@ -418,7 +418,6 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum UnitsChildEntityTypes
 	{
-
 		///<summary>
 		/// Collection of <c>Units</c> as OneToMany for AppointmentGroupCollection
 		///</summary>

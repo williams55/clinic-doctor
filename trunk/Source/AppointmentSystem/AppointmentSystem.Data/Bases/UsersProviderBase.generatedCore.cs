@@ -556,6 +556,27 @@ namespace AppointmentSystem.Data.Bases
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
 			// Deep load child collections  - Call GetByUsername methods when available
 			
+			#region AppointmentCollection
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<Appointment>|AppointmentCollection", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'AppointmentCollection' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.AppointmentCollection = DataRepository.AppointmentProvider.GetByUsername(transactionManager, entity.Username);
+
+				if (deep && entity.AppointmentCollection.Count > 0)
+				{
+					deepHandles.Add("AppointmentCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<Appointment>) DataRepository.AppointmentProvider.DeepLoad,
+						new object[] { transactionManager, entity.AppointmentCollection, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
+			
 			#region UserRoleCollection
 			//Relationship Type One : Many
 			if (CanDeepLoad(entity, "List<UserRole>|UserRoleCollection", deepLoadType, innerList)) 
@@ -592,27 +613,6 @@ namespace AppointmentSystem.Data.Bases
 					deepHandles.Add("DoctorRoomCollection",
 						new KeyValuePair<Delegate, object>((DeepLoadHandle<DoctorRoom>) DataRepository.DoctorRoomProvider.DeepLoad,
 						new object[] { transactionManager, entity.DoctorRoomCollection, deep, deepLoadType, childTypes, innerList }
-					));
-				}
-			}		
-			#endregion 
-			
-			
-			#region AppointmentCollection
-			//Relationship Type One : Many
-			if (CanDeepLoad(entity, "List<Appointment>|AppointmentCollection", deepLoadType, innerList)) 
-			{
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'AppointmentCollection' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-
-				entity.AppointmentCollection = DataRepository.AppointmentProvider.GetByUsername(transactionManager, entity.Username);
-
-				if (deep && entity.AppointmentCollection.Count > 0)
-				{
-					deepHandles.Add("AppointmentCollection",
-						new KeyValuePair<Delegate, object>((DeepLoadHandle<Appointment>) DataRepository.AppointmentProvider.DeepLoad,
-						new object[] { transactionManager, entity.AppointmentCollection, deep, deepLoadType, childTypes, innerList }
 					));
 				}
 			}		
@@ -696,6 +696,36 @@ namespace AppointmentSystem.Data.Bases
 			//used to hold DeepSave method delegates and fire after all the local children have been saved.
 			Dictionary<string, KeyValuePair<Delegate, object>> deepHandles = new Dictionary<string, KeyValuePair<Delegate, object>>();
 	
+			#region List<Appointment>
+				if (CanDeepSave(entity.AppointmentCollection, "List<Appointment>|AppointmentCollection", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(Appointment child in entity.AppointmentCollection)
+					{
+						if(child.UsernameSource != null)
+						{
+							child.Username = child.UsernameSource.Username;
+						}
+						else
+						{
+							child.Username = entity.Username;
+						}
+
+					}
+
+					if (entity.AppointmentCollection.Count > 0 || entity.AppointmentCollection.DeletedItems.Count > 0)
+					{
+						//DataRepository.AppointmentProvider.Save(transactionManager, entity.AppointmentCollection);
+						
+						deepHandles.Add("AppointmentCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< Appointment >) DataRepository.AppointmentProvider.DeepSave,
+							new object[] { transactionManager, entity.AppointmentCollection, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
+	
 			#region List<UserRole>
 				if (CanDeepSave(entity.UserRoleCollection, "List<UserRole>|UserRoleCollection", deepSaveType, innerList)) 
 				{	
@@ -750,36 +780,6 @@ namespace AppointmentSystem.Data.Bases
 						deepHandles.Add("DoctorRoomCollection",
 						new KeyValuePair<Delegate, object>((DeepSaveHandle< DoctorRoom >) DataRepository.DoctorRoomProvider.DeepSave,
 							new object[] { transactionManager, entity.DoctorRoomCollection, deepSaveType, childTypes, innerList }
-						));
-					}
-				} 
-			#endregion 
-				
-	
-			#region List<Appointment>
-				if (CanDeepSave(entity.AppointmentCollection, "List<Appointment>|AppointmentCollection", deepSaveType, innerList)) 
-				{	
-					// update each child parent id with the real parent id (mostly used on insert)
-					foreach(Appointment child in entity.AppointmentCollection)
-					{
-						if(child.UsernameSource != null)
-						{
-							child.Username = child.UsernameSource.Username;
-						}
-						else
-						{
-							child.Username = entity.Username;
-						}
-
-					}
-
-					if (entity.AppointmentCollection.Count > 0 || entity.AppointmentCollection.DeletedItems.Count > 0)
-					{
-						//DataRepository.AppointmentProvider.Save(transactionManager, entity.AppointmentCollection);
-						
-						deepHandles.Add("AppointmentCollection",
-						new KeyValuePair<Delegate, object>((DeepSaveHandle< Appointment >) DataRepository.AppointmentProvider.DeepSave,
-							new object[] { transactionManager, entity.AppointmentCollection, deepSaveType, childTypes, innerList }
 						));
 					}
 				} 
@@ -847,31 +847,27 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Services))]
 		Services,
-			
+		
 		///<summary>
 		/// Composite Property for <c>UserGroup</c> at UserGroupIdSource
 		///</summary>
 		[ChildEntityType(typeof(UserGroup))]
 		UserGroup,
-	
-		///<summary>
-		/// Collection of <c>Users</c> as OneToMany for UserRoleCollection
-		///</summary>
-		[ChildEntityType(typeof(TList<UserRole>))]
-		UserRoleCollection,
-
-		///<summary>
-		/// Collection of <c>Users</c> as OneToMany for DoctorRoomCollection
-		///</summary>
-		[ChildEntityType(typeof(TList<DoctorRoom>))]
-		DoctorRoomCollection,
-
 		///<summary>
 		/// Collection of <c>Users</c> as OneToMany for AppointmentCollection
 		///</summary>
 		[ChildEntityType(typeof(TList<Appointment>))]
 		AppointmentCollection,
-
+		///<summary>
+		/// Collection of <c>Users</c> as OneToMany for UserRoleCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<UserRole>))]
+		UserRoleCollection,
+		///<summary>
+		/// Collection of <c>Users</c> as OneToMany for DoctorRoomCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<DoctorRoom>))]
+		DoctorRoomCollection,
 		///<summary>
 		/// Collection of <c>Users</c> as OneToMany for RosterCollection
 		///</summary>

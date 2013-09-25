@@ -1,9 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Runtime.Serialization;
 using System.Text;
+using Microsoft.Practices.ObjectBuilder2;
 
 namespace AppointmentSystem.Entities
 {
@@ -48,30 +48,30 @@ namespace AppointmentSystem.Entities
 
         #region LocateOrCreate<Entity>
         /// <summary>
-        /// Locates an entity for retrieval from the <see cref="EntityLocator"/>, or instatiates a new instance 
+        /// Locates an entity for retrieval from the <see cref="Locator"/>, or instatiates a new instance 
         /// of the entity if not currently being tracked.
         /// </summary>
-        /// <typeparam name="TEntity">Must implement <see cref="IEntity"/> and is the default type to create, and will be the return type.</typeparam>
+        /// <typeparam name="Entity">Must implement <see cref="IEntity"/> and is the default type to create, and will be the return type.</typeparam>
         /// <param name="key">primary key representation</param>
         /// <param name="typeString">type string to create</param>
         /// <param name="entityFactoryType">factory used to try to create this entity.</param>
         /// <returns>Created entity of T</returns>
-        public static TEntity LocateOrCreate<TEntity>(string key, string typeString, Type entityFactoryType) where TEntity : class, IEntity, new()
+        public static Entity LocateOrCreate<Entity>(string key, string typeString, Type entityFactoryType) where Entity : class, IEntity, new()
         {
-			return LocateOrCreate<TEntity>(key, typeString, entityFactoryType, true);
+			return LocateOrCreate<Entity>(key, typeString, entityFactoryType, true);
 		}
 		
 		/// <summary>
-        /// Locates an entity for retrieval from the <see cref="EntityLocator"/>, or instatiates a new instance 
+        /// Locates an entity for retrieval from the <see cref="Locator"/>, or instatiates a new instance 
         /// of the entity if not currently being tracked.
         /// </summary>
-        /// <typeparam name="TEntity">Must implement <see cref="IEntity"/> and is the default type to create, and will be the return type.</typeparam>
+        /// <typeparam name="Entity">Must implement <see cref="IEntity"/> and is the default type to create, and will be the return type.</typeparam>
         /// <param name="key">primary key representation</param>
         /// <param name="typeString">type string to create</param>
         /// <param name="entityFactoryType">factory used to try to create this entity.</param>
         /// <param name="isLocatorEnabled">bool determining whether to use Entity Locating.</param>
         /// <returns>Created entity of T</returns>
-        public static TEntity LocateOrCreate<TEntity>(string key, string typeString, Type entityFactoryType, bool isLocatorEnabled) where TEntity : class, IEntity, new()
+        public static Entity LocateOrCreate<Entity>(string key, string typeString, Type entityFactoryType, bool isLocatorEnabled) where Entity : class, IEntity, new()
         {
             #region Validation
             if (string.IsNullOrEmpty(typeString))
@@ -81,18 +81,18 @@ namespace AppointmentSystem.Entities
                 throw new ArgumentException("entityFactoryType");
             #endregion 
 			
-            TEntity entity = default(TEntity);
+			Entity entity = default(Entity);
 			
 			lock (syncObject) //This is here because most of the classes in ObjectBuilder are NOT thread-safe
 			{
 				//Generated Table Entities Type
-                Type defaultType = typeof(TEntity);
+				Type defaultType = typeof(Entity);
 				bool isCacheable = defaultType.GetInterface("IEntityCacheItem") != null;
 	
 				//see if entity is cachable, if IEntityCacheItem
 				//retrieve from cache.
 				if (isCacheable)
-                    entity = EntityCache.GetItem<TEntity>(key.ToString());
+					entity = EntityCache.GetItem<Entity>(key.ToString());
 	
 				if (entity != null)
 					return entity;
@@ -114,14 +114,14 @@ namespace AppointmentSystem.Entities
 					{
 						if (EntityLocator.Contains(key))
 						{
-                            entity = EntityLocator.Get(key) as TEntity;
+							entity = EntityLocator.Get(key) as Entity;
 						}
 					}
 				}
 	
 				//if not found try create from factory
 				if (entity == null)
-					entity = factory.CreateEntity(typeString, defaultType) as TEntity;
+					entity = factory.CreateEntity(typeString, defaultType) as Entity;
 	
 				//add to locator and start tracking.
 				if (!entity.IsEntityTracked)
@@ -140,11 +140,11 @@ namespace AppointmentSystem.Entities
         /// <summary>
         /// instatiates a new instance of the entity for view entities that don't implement IEntity and can't be tracked
         /// </summary>
-        /// <typeparam name="TEntity">is the default type to create, and will be the return type.</typeparam>
+        /// <typeparam name="Entity">is the default type to create, and will be the return type.</typeparam>
         /// <param name="typeString">type string to create</param>
         /// <param name="entityFactoryType">factory used to try to create this entity.</param>
         /// <returns>Created entity of T</returns>
-        public static TEntity CreateViewEntity<TEntity>(string typeString, Type entityFactoryType) where TEntity : class, new()
+        public static Entity CreateViewEntity<Entity>(string typeString, Type entityFactoryType) where Entity : class, new()
         {
             #region Validation
             if (string.IsNullOrEmpty(typeString))
@@ -154,10 +154,10 @@ namespace AppointmentSystem.Entities
                 throw new ArgumentException("entityFactoryType");
             #endregion 
 
-            TEntity entity = default(TEntity);
+            Entity entity = default(Entity);
             
             //Generated Table Entities Type
-            Type defaultType = typeof(TEntity);
+            Type defaultType = typeof(Entity);
 
             
             IEntityFactory factory = null;
@@ -170,7 +170,7 @@ namespace AppointmentSystem.Entities
                 	factory = TryAddEntityFactory(entityFactoryType);
 			}
          
-            entity = factory.CreateViewEntity(typeString, defaultType) as TEntity;
+            entity = factory.CreateViewEntity(typeString, defaultType) as Entity;
             
             return entity;
         }
@@ -178,15 +178,15 @@ namespace AppointmentSystem.Entities
 		
 		#region LocateEntity
 		/// <summary>
-        /// Locates an entity for retrieval from the <see cref="EntityLocator"/> if tracking is enabled.
+        /// Locates an entity for retrieval from the <see cref="Locator"/> if tracking is enabled.
         /// </summary>
-        /// <typeparam name="TEntity">Must implement <see cref="IEntity"/> and is the default type to create, and will be the return type.</typeparam>
+        /// <typeparam name="Entity">Must implement <see cref="IEntity"/> and is the default type to create, and will be the return type.</typeparam>
         /// <param name="key">primary key representation</param>
         /// <param name="isLocatorEnabled">bool determining whether to use Entity Locating.</param>
         /// <returns>found entity of T, or null</returns>
-		public static TEntity LocateEntity<TEntity>(string key, bool isLocatorEnabled) where TEntity : class, IEntity, new()
+		public static Entity LocateEntity<Entity>(string key, bool isLocatorEnabled) where Entity : class, IEntity, new()
         {
-			TEntity entity = null;
+			Entity entity = null;
 			
 			//attempt to locate
             if (key != null && isLocatorEnabled)
@@ -195,7 +195,7 @@ namespace AppointmentSystem.Entities
 				{
                 	if (EntityLocator.Contains(key))
                 	{
-                        entity = EntityLocator.Get(key) as TEntity;
+                    	entity = EntityLocator.Get(key) as Entity;
                 	}
 				}
             }
@@ -213,7 +213,7 @@ namespace AppointmentSystem.Entities
         {
             if (key == null)
                 throw new ArgumentNullException("key");
-
+            
             return EntityLocator.Remove(key);
         }
         #endregion 
@@ -242,7 +242,6 @@ namespace AppointmentSystem.Entities
 					
             return;
         }
-
         #endregion 
 
         #region EntityFactories

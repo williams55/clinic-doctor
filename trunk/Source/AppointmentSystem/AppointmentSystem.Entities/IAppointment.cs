@@ -119,6 +119,13 @@ namespace AppointmentSystem.Entities
 		/// </summary>	
 		TList<AppointmentHistory> AppointmentHistoryCollection {  get;  set;}	
 
+
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _smsAppointmentId
+		/// </summary>	
+		TList<Sms> SmsCollection {  get;  set;}	
+
 		#endregion Data Properties
 
 	}

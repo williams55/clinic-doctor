@@ -325,27 +325,6 @@ namespace AppointmentSystem.Data.Bases
 			#endregion 
 			
 			
-			#region RoleDetailCollection
-			//Relationship Type One : Many
-			if (CanDeepLoad(entity, "List<RoleDetail>|RoleDetailCollection", deepLoadType, innerList)) 
-			{
-				#if NETTIERS_DEBUG
-				System.Diagnostics.Debug.WriteLine("- property 'RoleDetailCollection' loaded. key " + entity.EntityTrackingKey);
-				#endif 
-
-				entity.RoleDetailCollection = DataRepository.RoleDetailProvider.GetByRoleId(transactionManager, entity.Id);
-
-				if (deep && entity.RoleDetailCollection.Count > 0)
-				{
-					deepHandles.Add("RoleDetailCollection",
-						new KeyValuePair<Delegate, object>((DeepLoadHandle<RoleDetail>) DataRepository.RoleDetailProvider.DeepLoad,
-						new object[] { transactionManager, entity.RoleDetailCollection, deep, deepLoadType, childTypes, innerList }
-					));
-				}
-			}		
-			#endregion 
-			
-			
 			#region UserRoleCollection
 			//Relationship Type One : Many
 			if (CanDeepLoad(entity, "List<UserRole>|UserRoleCollection", deepLoadType, innerList)) 
@@ -361,6 +340,27 @@ namespace AppointmentSystem.Data.Bases
 					deepHandles.Add("UserRoleCollection",
 						new KeyValuePair<Delegate, object>((DeepLoadHandle<UserRole>) DataRepository.UserRoleProvider.DeepLoad,
 						new object[] { transactionManager, entity.UserRoleCollection, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
+			
+			#region RoleDetailCollection
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<RoleDetail>|RoleDetailCollection", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'RoleDetailCollection' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.RoleDetailCollection = DataRepository.RoleDetailProvider.GetByRoleId(transactionManager, entity.Id);
+
+				if (deep && entity.RoleDetailCollection.Count > 0)
+				{
+					deepHandles.Add("RoleDetailCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<RoleDetail>) DataRepository.RoleDetailProvider.DeepLoad,
+						new object[] { transactionManager, entity.RoleDetailCollection, deep, deepLoadType, childTypes, innerList }
 					));
 				}
 			}		
@@ -435,36 +435,6 @@ namespace AppointmentSystem.Data.Bases
 			#endregion 
 				
 	
-			#region List<RoleDetail>
-				if (CanDeepSave(entity.RoleDetailCollection, "List<RoleDetail>|RoleDetailCollection", deepSaveType, innerList)) 
-				{	
-					// update each child parent id with the real parent id (mostly used on insert)
-					foreach(RoleDetail child in entity.RoleDetailCollection)
-					{
-						if(child.RoleIdSource != null)
-						{
-							child.RoleId = child.RoleIdSource.Id;
-						}
-						else
-						{
-							child.RoleId = entity.Id;
-						}
-
-					}
-
-					if (entity.RoleDetailCollection.Count > 0 || entity.RoleDetailCollection.DeletedItems.Count > 0)
-					{
-						//DataRepository.RoleDetailProvider.Save(transactionManager, entity.RoleDetailCollection);
-						
-						deepHandles.Add("RoleDetailCollection",
-						new KeyValuePair<Delegate, object>((DeepSaveHandle< RoleDetail >) DataRepository.RoleDetailProvider.DeepSave,
-							new object[] { transactionManager, entity.RoleDetailCollection, deepSaveType, childTypes, innerList }
-						));
-					}
-				} 
-			#endregion 
-				
-	
 			#region List<UserRole>
 				if (CanDeepSave(entity.UserRoleCollection, "List<UserRole>|UserRoleCollection", deepSaveType, innerList)) 
 				{	
@@ -489,6 +459,36 @@ namespace AppointmentSystem.Data.Bases
 						deepHandles.Add("UserRoleCollection",
 						new KeyValuePair<Delegate, object>((DeepSaveHandle< UserRole >) DataRepository.UserRoleProvider.DeepSave,
 							new object[] { transactionManager, entity.UserRoleCollection, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
+	
+			#region List<RoleDetail>
+				if (CanDeepSave(entity.RoleDetailCollection, "List<RoleDetail>|RoleDetailCollection", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(RoleDetail child in entity.RoleDetailCollection)
+					{
+						if(child.RoleIdSource != null)
+						{
+							child.RoleId = child.RoleIdSource.Id;
+						}
+						else
+						{
+							child.RoleId = entity.Id;
+						}
+
+					}
+
+					if (entity.RoleDetailCollection.Count > 0 || entity.RoleDetailCollection.DeletedItems.Count > 0)
+					{
+						//DataRepository.RoleDetailProvider.Save(transactionManager, entity.RoleDetailCollection);
+						
+						deepHandles.Add("RoleDetailCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< RoleDetail >) DataRepository.RoleDetailProvider.DeepSave,
+							new object[] { transactionManager, entity.RoleDetailCollection, deepSaveType, childTypes, innerList }
 						));
 					}
 				} 
@@ -520,24 +520,21 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum RoleChildEntityTypes
 	{
-
 		///<summary>
 		/// Collection of <c>Role</c> as OneToMany for GroupRoleCollection
 		///</summary>
 		[ChildEntityType(typeof(TList<GroupRole>))]
 		GroupRoleCollection,
-
-		///<summary>
-		/// Collection of <c>Role</c> as OneToMany for RoleDetailCollection
-		///</summary>
-		[ChildEntityType(typeof(TList<RoleDetail>))]
-		RoleDetailCollection,
-
 		///<summary>
 		/// Collection of <c>Role</c> as OneToMany for UserRoleCollection
 		///</summary>
 		[ChildEntityType(typeof(TList<UserRole>))]
 		UserRoleCollection,
+		///<summary>
+		/// Collection of <c>Role</c> as OneToMany for RoleDetailCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<RoleDetail>))]
+		RoleDetailCollection,
 	}
 	
 	#endregion RoleChildEntityTypes

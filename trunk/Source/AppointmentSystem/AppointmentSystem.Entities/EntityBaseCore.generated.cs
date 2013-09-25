@@ -19,7 +19,7 @@ namespace AppointmentSystem.Entities
 	/// The base object for each database table entity.
 	/// </summary>
 	[Serializable]
-	public abstract partial class EntityBaseCore : IEntity, INotifyPropertyChanged, IDataErrorInfo, IDeserializationCallback, INotifyPropertyChanging
+	public abstract partial class EntityBaseCore : IEntity, INotifyPropertyChanged, IDataErrorInfo, IDeserializationCallback
 	{
 		#region Constructors
 		
@@ -36,7 +36,6 @@ namespace AppointmentSystem.Entities
 	    /// Determines whether the entity is being tracked by the Locator.
 	    /// </summary>
 		[NonSerialized]
-		
 		private bool isEntityTracked = false;
 
 		/// <summary>
@@ -44,7 +43,6 @@ namespace AppointmentSystem.Entities
 		/// useful when loading the entities from the database.
 		/// </summary>
 	    [NonSerialized] 
-		
 		private bool suppressEntityEvents = false;
 		
 		
@@ -53,7 +51,6 @@ namespace AppointmentSystem.Entities
 		/// Indicates that we are in the middle of an IBinding insert transaction.
 		/// </summary>
 		[NonSerialized]
-		
 		protected bool bindingIsNew = true;
 	
 		///<summary>
@@ -64,14 +61,12 @@ namespace AppointmentSystem.Entities
 		/// <summary>
 		///	The name of the underlying database table.
 		/// </summary>
-		
 		public abstract string TableName { get;}
 		
 		/// <summary>
 		///		The name of the underlying database table's columns.
 		/// </summary>
 		/// <value>A string array that holds the columns names.</value>
-		
 		public abstract string[] TableColumns {get;}
 
 		//private bool _isDeleted = false;
@@ -79,7 +74,6 @@ namespace AppointmentSystem.Entities
 		/// 	True if object has been <see cref="MarkToDelete"/>. ReadOnly.
 		/// </summary>
 		[BrowsableAttribute(false), XmlIgnoreAttribute()]
-		
 		public virtual bool IsDeleted
 		{
 			get { return this.EntityState == EntityState.Deleted; }
@@ -91,7 +85,6 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		/// <remarks>True if object has been modified from its original state; otherwise False;</remarks>
 		[BrowsableAttribute(false), XmlIgnoreAttribute()]
-		
 		public virtual bool IsDirty
 		{
 			get { return this.EntityState != EntityState.Unchanged; }
@@ -104,7 +97,6 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		/// <remarks>True if objectis new; otherwise False;</remarks>
 		[BrowsableAttribute(false), XmlIgnoreAttribute()]
-		
 		public virtual bool IsNew
 		{
 			get { return this.EntityState == EntityState.Added; }
@@ -117,7 +109,6 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		/// <remarks>0=Unchanged, 1=Added, 2=Changed</remarks>
 		[BrowsableAttribute(false), XmlIgnoreAttribute()]
-		
 		public abstract EntityState EntityState { get; set; }
 		
 		/// <summary>
@@ -213,7 +204,6 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		[System.ComponentModel.Bindable(false)]
 		[BrowsableAttribute(false), XmlIgnoreAttribute()]
-		
 		public bool IsEntityTracked 
 		{	
 			get
@@ -232,7 +222,6 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		[System.ComponentModel.Bindable(false)]
 		[BrowsableAttribute(false), XmlIgnoreAttribute()]
-		
 		public bool SuppressEntityEvents
 		{	
 			get
@@ -249,7 +238,6 @@ namespace AppointmentSystem.Entities
 		/// Provides the tracking key for the <see cref="EntityLocator"/>
 		///</summary>
 		[XmlIgnoreAttribute(), BrowsableAttribute(false)]
-		
 		public abstract string EntityTrackingKey {	get; set; }
 		
 		///<summary>
@@ -262,46 +250,6 @@ namespace AppointmentSystem.Entities
 			
 			return entityHashCode.GetHashCode(); 
 		}
-        
-
-        #region INotifyPropertyChanging Members
-
-        /// <summary>
-        /// Event to indicate that a property is changing.
-        /// </summary>
-        [field: NonSerialized]
-        public event PropertyChangingEventHandler PropertyChanging;
-
-        /// <summary>
-        /// Called when a property is changing
-        /// </summary>
-        /// <param name="propertyName">The name of the property that is changing.</param>
-        protected virtual void OnPropertyChanging(string propertyName)
-        {
-            if (!suppressEntityEvents)
-            {
-                OnPropertyChanging(new PropertyChangingEventArgs(propertyName));
-            }
-        }
-
-        /// <summary>
-        /// Called when a property is changing
-        /// </summary>
-        /// <param name="e">PropertyChangingEventArgs</param>
-        protected virtual void OnPropertyChanging(PropertyChangingEventArgs e)
-        {
-            if (!suppressEntityEvents)
-            {
-                // Check field level security instead of ValidationRules.ValidateRules(e.PropertyName);
-
-                if (null != PropertyChanging)
-                {
-                    PropertyChanging(this, e);
-                }
-            }
-        }
-
-        #endregion        
 		
 		#region INotifyPropertyChanged Members
 		
@@ -350,7 +298,6 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		/// <value></value>
 		/// <returns>An error message indicating what is wrong with this object. The default is an empty string ("").</returns>      
-		
 		public string Error
 		{
 			get 
@@ -424,7 +371,6 @@ namespace AppointmentSystem.Entities
 		/// </summary>
 		/// <returns><see cref="Validation.BrokenRulesList" /></returns>
 		[XmlIgnoreAttribute()]
-		
 		public virtual Validation.BrokenRulesList BrokenRulesList
 		{
 			get
@@ -466,7 +412,6 @@ namespace AppointmentSystem.Entities
 		/// <see langword="false" /> if the object validation rules that have indicated failure. 
 		/// </summary>
 		[Browsable(false)]
-		
 		public virtual bool IsValid
 		{
 			get

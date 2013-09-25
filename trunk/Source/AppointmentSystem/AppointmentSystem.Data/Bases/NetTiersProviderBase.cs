@@ -1,5 +1,4 @@
-﻿
-#region Using directives
+﻿#region Using directives
 
 using System;
 using System.Collections.Specialized;
@@ -219,7 +218,7 @@ namespace AppointmentSystem.Data.Bases
 		/// <summary>
 		/// Get or set the current LoadPolicy in effect
 		/// </summary>
-		/// <value>A <see cref="LoadPolicy"/> enumeration member.</value>
+		/// <value>A <c cref="LoadPolicy"/> enumeration member.</value>
 		public virtual LoadPolicy CurrentLoadPolicy
 		{
 			get
@@ -233,12 +232,12 @@ namespace AppointmentSystem.Data.Bases
 		}
 		
 		///<summary>
-		/// Indicates if the current <see cref="NetTiersProvider"/> implementation is supporting Transactions.
+		/// Indicates if the current <c cref="NetTiersProvider"/> implementation is supporting Transactions.
 		///</summary>
 		public abstract bool IsTransactionSupported{get;}
 		
 		/// <summary>
-		/// Creates a new <see cref="TransactionManager"/> instance from the current datasource.
+		/// Creates a new <c cref="TransactionManager"/> instance from the current datasource.
 		/// </summary>
 		/// <returns></returns>
 		public virtual TransactionManager CreateTransaction() {throw new NotSupportedException();}

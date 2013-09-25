@@ -426,7 +426,6 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum ScreenChildEntityTypes
 	{
-
 		///<summary>
 		/// Collection of <c>Screen</c> as OneToMany for RoleDetailCollection
 		///</summary>

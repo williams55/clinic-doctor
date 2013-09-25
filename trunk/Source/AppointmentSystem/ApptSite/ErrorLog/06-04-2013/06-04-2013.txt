@@ -1,0 +1,2 @@
+﻿4/6/2013 11:07:41 PM-----Message : Update Appointment-------{"Username":"H.Anh","ServicesId":34,"StatusId":"Checked-in","EndTime":"\/Date(1365318300000+0700)\/","StartTime":"\/Date(1365317400000+0700)\/","RosterId":"OST130330002","PatientCode":"HCM01 00001"}-------IP: ::1
+4/6/2013 11:13:53 PM-----Message : Update Appointment-------{"Username":"H.Anh","ServicesId":34,"StatusId":"Checked-in","EndTime":"\/Date(1365318300000+0700)\/","StartTime":"\/Date(1365317400000+0700)\/","RosterId":"OST130330002","PatientCode":"HCM01 00001"}-------IP: ::1

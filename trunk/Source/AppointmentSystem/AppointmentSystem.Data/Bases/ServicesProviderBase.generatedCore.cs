@@ -523,19 +523,16 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum ServicesChildEntityTypes
 	{
-
 		///<summary>
 		/// Collection of <c>Services</c> as OneToMany for UsersCollection
 		///</summary>
 		[ChildEntityType(typeof(TList<Users>))]
 		UsersCollection,
-
 		///<summary>
 		/// Collection of <c>Services</c> as OneToMany for AppointmentCollection
 		///</summary>
 		[ChildEntityType(typeof(TList<Appointment>))]
 		AppointmentCollection,
-
 		///<summary>
 		/// Collection of <c>Services</c> as OneToMany for RoomCollection
 		///</summary>

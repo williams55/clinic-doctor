@@ -483,7 +483,7 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Appointment))]
 		Appointment,
-		}
+	}
 	
 	#endregion AppointmentHistoryChildEntityTypes
 	

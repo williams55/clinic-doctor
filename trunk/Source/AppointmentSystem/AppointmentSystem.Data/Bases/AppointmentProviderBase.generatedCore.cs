@@ -1089,6 +1089,27 @@ namespace AppointmentSystem.Data.Bases
 			#endregion 
 			
 			
+			#region SmsCollection
+			//Relationship Type One : Many
+			if (CanDeepLoad(entity, "List<Sms>|SmsCollection", deepLoadType, innerList)) 
+			{
+				#if NETTIERS_DEBUG
+				System.Diagnostics.Debug.WriteLine("- property 'SmsCollection' loaded. key " + entity.EntityTrackingKey);
+				#endif 
+
+				entity.SmsCollection = DataRepository.SmsProvider.GetByAppointmentId(transactionManager, entity.Id);
+
+				if (deep && entity.SmsCollection.Count > 0)
+				{
+					deepHandles.Add("SmsCollection",
+						new KeyValuePair<Delegate, object>((DeepLoadHandle<Sms>) DataRepository.SmsProvider.DeepLoad,
+						new object[] { transactionManager, entity.SmsCollection, deep, deepLoadType, childTypes, innerList }
+					));
+				}
+			}		
+			#endregion 
+			
+			
 			//Fire all DeepLoad Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
 		    {
@@ -1210,6 +1231,36 @@ namespace AppointmentSystem.Data.Bases
 				} 
 			#endregion 
 				
+	
+			#region List<Sms>
+				if (CanDeepSave(entity.SmsCollection, "List<Sms>|SmsCollection", deepSaveType, innerList)) 
+				{	
+					// update each child parent id with the real parent id (mostly used on insert)
+					foreach(Sms child in entity.SmsCollection)
+					{
+						if(child.AppointmentIdSource != null)
+						{
+							child.AppointmentId = child.AppointmentIdSource.Id;
+						}
+						else
+						{
+							child.AppointmentId = entity.Id;
+						}
+
+					}
+
+					if (entity.SmsCollection.Count > 0 || entity.SmsCollection.DeletedItems.Count > 0)
+					{
+						//DataRepository.SmsProvider.Save(transactionManager, entity.SmsCollection);
+						
+						deepHandles.Add("SmsCollection",
+						new KeyValuePair<Delegate, object>((DeepSaveHandle< Sms >) DataRepository.SmsProvider.DeepSave,
+							new object[] { transactionManager, entity.SmsCollection, deepSaveType, childTypes, innerList }
+						));
+					}
+				} 
+			#endregion 
+				
 			//Fire all DeepSave Items
 			foreach(KeyValuePair<Delegate, object> pair in deepHandles.Values)
 		    {
@@ -1242,42 +1293,46 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(AppointmentGroup))]
 		AppointmentGroup,
-			
+		
 		///<summary>
 		/// Composite Property for <c>Services</c> at ServicesIdSource
 		///</summary>
 		[ChildEntityType(typeof(Services))]
 		Services,
-			
+		
 		///<summary>
 		/// Composite Property for <c>Room</c> at RoomIdSource
 		///</summary>
 		[ChildEntityType(typeof(Room))]
 		Room,
-			
+		
 		///<summary>
 		/// Composite Property for <c>Roster</c> at RosterIdSource
 		///</summary>
 		[ChildEntityType(typeof(Roster))]
 		Roster,
-			
+		
 		///<summary>
 		/// Composite Property for <c>Status</c> at StatusIdSource
 		///</summary>
 		[ChildEntityType(typeof(Status))]
 		Status,
-			
+		
 		///<summary>
 		/// Composite Property for <c>Users</c> at UsernameSource
 		///</summary>
 		[ChildEntityType(typeof(Users))]
 		Users,
-	
 		///<summary>
 		/// Collection of <c>Appointment</c> as OneToMany for AppointmentHistoryCollection
 		///</summary>
 		[ChildEntityType(typeof(TList<AppointmentHistory>))]
 		AppointmentHistoryCollection,
+		///<summary>
+		/// Collection of <c>Appointment</c> as OneToMany for SmsCollection
+		///</summary>
+		[ChildEntityType(typeof(TList<Sms>))]
+		SmsCollection,
 	}
 	
 	#endregion AppointmentChildEntityTypes

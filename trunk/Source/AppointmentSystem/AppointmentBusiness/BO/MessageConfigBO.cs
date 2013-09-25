@@ -57,5 +57,13 @@ namespace AppointmentBusiness.BO
             public const string NoRightToUpdate = "ATH0004";
             public const string NoRightToDelete = "ATH0005";
         }
+
+        public class SmsCode
+        {
+            public const string Success = "SMS0000";
+            public const string ApptNotExists = "SMS0001";
+            public const string CannotSend = "SMS0002";
+            public const string NoMobile = "SMS0003";
+        }
     }
 }

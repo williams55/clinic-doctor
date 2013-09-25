@@ -13,6 +13,11 @@ namespace Appt.Common.Constants
         // Key de ma hoa
         public const string EncryptKey = "ASKey";
 
+        /// <summary>
+        /// Seperate char
+        /// </summary>
+        public const string Seperate = ";";
+
         #endregion
     }
 }

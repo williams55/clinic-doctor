@@ -1241,17 +1241,6 @@ namespace AppointmentSystem.Web.Data
 
 			return entityList;
 		}
-        
-        /// <summary>
-		/// Gets a collection of previously selected Entity objects.
-        /// </summary>
-        /// <param name="values">An IDictionary object of name/value pairs.</param>
-		/// <returns>A collection of Entity objects from the underlying data storage.</returns>
-        private IList<Entity> GetEntityList(IDictionary values)
-		{
-			int count = 0;
-            return GetCachedData(values, out count);
-		}
 
 		/// <summary>
 		/// Gets a collection of Entity objects.  Provides internal caching of values
@@ -1298,7 +1287,7 @@ namespace AppointmentSystem.Web.Data
 			GetSelectParameters(values);
 
 			int count = 0;
-			IList<Entity> entityList = GetCachedData(values, out count);
+			IList<Entity> entityList = GetCachedData(out count);
 			arguments.TotalRowCount = count;
 			return entityList;
 		}
@@ -1306,10 +1295,19 @@ namespace AppointmentSystem.Web.Data
 		/// <summary>
 		/// Gets a collection of previously selected Entity objects.
 		/// </summary>
-	    /// <param name="values"></param>
+		/// <returns>A collection of Entity objects from the underlying data storage.</returns>
+		private IList<Entity> GetEntityList()
+		{
+			int count = 0;
+			return GetCachedData(out count);
+		}
+
+		/// <summary>
+		/// Gets a collection of previously selected Entity objects.
+		/// </summary>
 		/// <param name="count">The total number of rows in the DataSource.</param>
 		/// <returns>A collection of Entity objects from the underlying data storage.</returns>
-		private IList<Entity> GetCachedData(IDictionary values, out int count)
+		private IList<Entity> GetCachedData(out int count)
 		{
 			// check temporary cache first
 			IList<Entity> entityList = _tempList;
@@ -1331,7 +1329,7 @@ namespace AppointmentSystem.Web.Data
 				if ( entityList == null )
 				{
 					// execute select method
-					entityList = GetSelectData(values, out count);
+					entityList = GetSelectData(out count);
 
 					// make sure paging and sorting were not enabled
 					if ( entityList is ListBase<Entity> && !EnablePaging && !EnableSorting )
@@ -1362,31 +1360,18 @@ namespace AppointmentSystem.Web.Data
 
 			return entityList;
 		}
-        
-        /// <summary>
-	    /// Gets a collection of Entity objects based on the value of the SelectMethod property.
-	    /// </summary>
-	    /// <param name="count">The total number of rows in the DataSource.</param>
-	    /// <returns>A collection of Entity objects.</returns>
-	    /// <remarks>This method can be overridden by sub-classes needing to provide
-	    /// additional data retrieval functionality.</remarks>
-	    protected virtual IList<Entity> GetSelectData(out int count)
+
+		/// <summary>
+		/// Gets a collection of Entity objects based on the value of the SelectMethod property.
+		/// </summary>
+		/// <param name="count">The total number of rows in the DataSource.</param>
+		/// <returns>A collection of Entity objects.</returns>
+		/// <remarks>This method can be overridden by sub-classes needing to provide
+		/// additional data retrieval functionality.</remarks>
+		protected virtual IList<Entity> GetSelectData(out int count)
 		{
 			count = 0;
 			return null;
-		}
-        
-        /// <summary>
-	    /// Gets a collection of Entity objects based on the value of the SelectMethod property.
-	    /// </summary>
-	    /// <param name="values"></param>
-	    /// <param name="count">The total number of rows in the DataSource.</param>
-	    /// <returns>A collection of Entity objects.</returns>
-	    /// <remarks>This method can be overridden by sub-classes needing to provide
-	    /// additional data retrieval functionality.</remarks>
-	    protected virtual IList<Entity> GetSelectData(IDictionary values, out int count)
-		{
-			return GetSelectData(out count);
 		}
 
 		/// <summary>
@@ -1553,7 +1538,7 @@ namespace AppointmentSystem.Web.Data
 				return 0;
 			}
 
-			IList<Entity> entityList = GetEntityList(keys);		
+			IList<Entity> entityList = GetEntityList();		
 			
 			Entity entity = GetCurrentEntity(entityList, keys);
 			int count = 0;
@@ -1662,7 +1647,7 @@ namespace AppointmentSystem.Web.Data
 				return 0;
 			}
 
-			IList<Entity> entityList = GetEntityList(keys);
+			IList<Entity> entityList = GetEntityList();
 			Entity entity = GetCurrentEntity(entityList, keys);
 			int count = 0;
 
