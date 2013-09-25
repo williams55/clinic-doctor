@@ -125,8 +125,6 @@ namespace AppointmentSystem.Entities
 		/// This property can not be set to null. 
 		/// </remarks>
 		/// <exception cref="ArgumentNullException">If you attempt to set to null.</exception>
-		
-		
 
 
 
@@ -144,8 +142,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.MessageKey == value)
 					return;
-				
-                OnPropertyChanging("MessageKey");                    
+					
 				OnColumnChanging(MessageConfigColumn.MessageKey, this.entityData.MessageKey);
 				this.entityData.MessageKey = value;
 				this.EntityId.MessageKey = value;
@@ -177,8 +174,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -196,8 +191,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.MessageValue == value)
 					return;
-				
-                OnPropertyChanging("MessageValue");                    
+					
 				OnColumnChanging(MessageConfigColumn.MessageValue, this.entityData.MessageValue);
 				this.entityData.MessageValue = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -215,8 +209,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -234,8 +226,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Description == value)
 					return;
-				
-                OnPropertyChanging("Description");                    
+					
 				OnColumnChanging(MessageConfigColumn.Description, this.entityData.Description);
 				this.entityData.Description = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -946,26 +937,27 @@ namespace AppointmentSystem.Entities
 		
 		#region Non Primary key(s)
 		
+		
 		/// <summary>
 		/// MessageValue : 
 		/// </summary>
-		public System.String MessageValue = null;
+		public System.String		  MessageValue = null;
 		
 		/// <summary>
 		/// Description : 
 		/// </summary>
-		public System.String Description = null;
+		public System.String		  Description = null;
 		#endregion
 			
 		#region Source Foreign Key Property
 				
 		#endregion
-        
 		#endregion Variable Declarations
-
+	
 		#region Data Properties
 
 		#endregion Data Properties
+		
 		#region Clone Method
 
 		/// <summary>
@@ -1038,6 +1030,16 @@ namespace AppointmentSystem.Entities
 	
 	}//End struct
 
+
+
+
+
+
+
+
+
+
+
 		#endregion
 		
 				
@@ -1072,8 +1074,8 @@ namespace AppointmentSystem.Entities
 		public virtual void OnColumnChanging(MessageConfigColumn column, object value)
 		{
 			if(IsEntityTracked && EntityState != EntityState.Added && !EntityManager.TrackChangedEntities)
-                EntityManager.StopTracking(entityTrackingKey);
-                
+				EntityManager.StopTracking(entityTrackingKey);
+				
 			if (!SuppressEntityEvents)
 			{
 				MessageConfigEventHandler handler = ColumnChanging;
@@ -1184,9 +1186,9 @@ namespace AppointmentSystem.Entities
         }
 
 		/// <summary>
-        /// Determines whether the specified <see cref="MessageConfig"/> instances are considered equal.
+        /// Determines whether the specified <c cref="MessageConfig"/> instances are considered equal.
         /// </summary>
-        /// <param name="a">The first <see cref="MessageConfig"/> to compare.</param>
+        /// <param name="a">The first <c cref="MessageConfig"/> to compare.</param>
         /// <param name="b">The second <c>MessageConfig</c> to compare.</param>
         /// <returns>true if objA is the same instance as objB or if both are null references or if objA.Equals(objB) returns true; otherwise, false.</returns>
         public bool Equals(MessageConfig a, MessageConfig b)

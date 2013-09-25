@@ -144,8 +144,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -163,8 +161,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Id == value)
 					return;
-				
-                OnPropertyChanging("Id");                    
+					
 				OnColumnChanging(RoleColumn.Id, this.entityData.Id);
 				this.entityData.Id = value;
 				this.EntityId.Id = value;
@@ -183,8 +180,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -202,8 +197,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Title == value)
 					return;
-				
-                OnPropertyChanging("Title");                    
+					
 				OnColumnChanging(RoleColumn.Title, this.entityData.Title);
 				this.entityData.Title = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -221,8 +215,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -240,8 +232,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.Note == value)
 					return;
-				
-                OnPropertyChanging("Note");                    
+					
 				OnColumnChanging(RoleColumn.Note, this.entityData.Note);
 				this.entityData.Note = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -259,8 +250,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -278,8 +267,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.IsLocked == value)
 					return;
-				
-                OnPropertyChanging("IsLocked");                    
+					
 				OnColumnChanging(RoleColumn.IsLocked, this.entityData.IsLocked);
 				this.entityData.IsLocked = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -297,8 +285,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -316,8 +302,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.IsDisabled == value)
 					return;
-				
-                OnPropertyChanging("IsDisabled");                    
+					
 				OnColumnChanging(RoleColumn.IsDisabled, this.entityData.IsDisabled);
 				this.entityData.IsDisabled = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -335,8 +320,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -354,8 +337,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateUser == value)
 					return;
-				
-                OnPropertyChanging("CreateUser");                    
+					
 				OnColumnChanging(RoleColumn.CreateUser, this.entityData.CreateUser);
 				this.entityData.CreateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -373,8 +355,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -392,8 +372,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.CreateDate == value)
 					return;
-				
-                OnPropertyChanging("CreateDate");                    
+					
 				OnColumnChanging(RoleColumn.CreateDate, this.entityData.CreateDate);
 				this.entityData.CreateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -411,8 +390,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -430,8 +407,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateUser == value)
 					return;
-				
-                OnPropertyChanging("UpdateUser");                    
+					
 				OnColumnChanging(RoleColumn.UpdateUser, this.entityData.UpdateUser);
 				this.entityData.UpdateUser = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -449,8 +425,6 @@ namespace AppointmentSystem.Entities
 		/// <remarks>
 		/// This property can not be set to null. 
 		/// </remarks>
-		
-		
 
 
 
@@ -468,8 +442,7 @@ namespace AppointmentSystem.Entities
 			{
 				if (this.entityData.UpdateDate == value)
 					return;
-				
-                OnPropertyChanging("UpdateDate");                    
+					
 				OnColumnChanging(RoleColumn.UpdateDate, this.entityData.UpdateDate);
 				this.entityData.UpdateDate = value;
 				if (this.EntityState == EntityState.Unchanged)
@@ -499,17 +472,6 @@ namespace AppointmentSystem.Entities
 		}
 	
 		/// <summary>
-		///	Holds a collection of RoleDetail objects
-		///	which are related to this object through the relation FK_RoleDetail_Role
-		/// </summary>	
-		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
-		public virtual TList<RoleDetail> RoleDetailCollection
-		{
-			get { return entityData.RoleDetailCollection; }
-			set { entityData.RoleDetailCollection = value; }	
-		}
-	
-		/// <summary>
 		///	Holds a collection of UserRole objects
 		///	which are related to this object through the relation FK_UserRole_Role
 		/// </summary>	
@@ -518,6 +480,17 @@ namespace AppointmentSystem.Entities
 		{
 			get { return entityData.UserRoleCollection; }
 			set { entityData.UserRoleCollection = value; }	
+		}
+	
+		/// <summary>
+		///	Holds a collection of RoleDetail objects
+		///	which are related to this object through the relation FK_RoleDetail_Role
+		/// </summary>	
+		[System.ComponentModel.Bindable(System.ComponentModel.BindableSupport.Yes)]
+		public virtual TList<RoleDetail> RoleDetailCollection
+		{
+			get { return entityData.RoleDetailCollection; }
+			set { entityData.RoleDetailCollection = value; }	
 		}
 		#endregion Children Collections
 		
@@ -721,8 +694,8 @@ namespace AppointmentSystem.Entities
 		
 			//deep copy nested objects
 			copy.GroupRoleCollection = (TList<GroupRole>) MakeCopyOf(this.GroupRoleCollection, existingCopies); 
-			copy.RoleDetailCollection = (TList<RoleDetail>) MakeCopyOf(this.RoleDetailCollection, existingCopies); 
 			copy.UserRoleCollection = (TList<UserRole>) MakeCopyOf(this.UserRoleCollection, existingCopies); 
+			copy.RoleDetailCollection = (TList<RoleDetail>) MakeCopyOf(this.RoleDetailCollection, existingCopies); 
 			copy.EntityState = this.EntityState;
 			copy.SuppressEntityEvents = false;
 			return copy;
@@ -1314,53 +1287,53 @@ namespace AppointmentSystem.Entities
 		
 		#region Non Primary key(s)
 		
+		
 		/// <summary>
 		/// Title : 
 		/// </summary>
-		public System.String Title = null;
+		public System.String		  Title = null;
 		
 		/// <summary>
 		/// Note : 
 		/// </summary>
-		public System.String Note = null;
+		public System.String		  Note = null;
 		
 		/// <summary>
 		/// IsLocked : You can CRUD if it's false (Admin, Manager...) These group is set by developer or database administrator
 		/// </summary>
-		public System.Boolean IsLocked = false;
+		public System.Boolean		  IsLocked = false;
 		
 		/// <summary>
 		/// IsDisabled : 
 		/// </summary>
-		public System.Boolean IsDisabled = false;
+		public System.Boolean		  IsDisabled = false;
 		
 		/// <summary>
 		/// CreateUser : 
 		/// </summary>
-		public System.String CreateUser = null;
+		public System.String		  CreateUser = null;
 		
 		/// <summary>
 		/// CreateDate : 
 		/// </summary>
-		public System.DateTime CreateDate = DateTime.Now;
+		public System.DateTime		  CreateDate = DateTime.Now;
 		
 		/// <summary>
 		/// UpdateUser : 
 		/// </summary>
-		public System.String UpdateUser = null;
+		public System.String		  UpdateUser = null;
 		
 		/// <summary>
 		/// UpdateDate : 
 		/// </summary>
-		public System.DateTime UpdateDate = DateTime.Now;
+		public System.DateTime		  UpdateDate = DateTime.Now;
 		#endregion
 			
 		#region Source Foreign Key Property
 				
 		#endregion
-        
 		#endregion Variable Declarations
-
+	
 		#region Data Properties
 
 		#region GroupRoleCollection
@@ -1384,31 +1357,6 @@ namespace AppointmentSystem.Entities
 				return _groupRoleRoleId;
 			}
 			set { _groupRoleRoleId = value; }
-		}
-		
-		#endregion
-
-		#region RoleDetailCollection
-		
-		private TList<RoleDetail> _roleDetailRoleId;
-		
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _roleDetailRoleId
-		/// </summary>
-		
-		public TList<RoleDetail> RoleDetailCollection
-		{
-			get
-			{
-				if (_roleDetailRoleId == null)
-				{
-				_roleDetailRoleId = new TList<RoleDetail>();
-				}
-	
-				return _roleDetailRoleId;
-			}
-			set { _roleDetailRoleId = value; }
 		}
 		
 		#endregion
@@ -1438,7 +1386,33 @@ namespace AppointmentSystem.Entities
 		
 		#endregion
 
+		#region RoleDetailCollection
+		
+		private TList<RoleDetail> _roleDetailRoleId;
+		
+		/// <summary>
+		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _roleDetailRoleId
+		/// </summary>
+		
+		public TList<RoleDetail> RoleDetailCollection
+		{
+			get
+			{
+				if (_roleDetailRoleId == null)
+				{
+				_roleDetailRoleId = new TList<RoleDetail>();
+				}
+	
+				return _roleDetailRoleId;
+			}
+			set { _roleDetailRoleId = value; }
+		}
+		
+		#endregion
+
 		#endregion Data Properties
+		
 		#region Clone Method
 
 		/// <summary>
@@ -1467,10 +1441,10 @@ namespace AppointmentSystem.Entities
 			//deep copy nested objects
 			if (this._groupRoleRoleId != null)
 				_tmp.GroupRoleCollection = (TList<GroupRole>) MakeCopyOf(this.GroupRoleCollection); 
-			if (this._roleDetailRoleId != null)
-				_tmp.RoleDetailCollection = (TList<RoleDetail>) MakeCopyOf(this.RoleDetailCollection); 
 			if (this._userRoleRoleId != null)
 				_tmp.UserRoleCollection = (TList<UserRole>) MakeCopyOf(this.UserRoleCollection); 
+			if (this._roleDetailRoleId != null)
+				_tmp.RoleDetailCollection = (TList<RoleDetail>) MakeCopyOf(this.RoleDetailCollection); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -1507,8 +1481,8 @@ namespace AppointmentSystem.Entities
 			#region Child Collections
 			//deep copy nested objects
 			_tmp.GroupRoleCollection = (TList<GroupRole>) MakeCopyOf(this.GroupRoleCollection, existingCopies); 
-			_tmp.RoleDetailCollection = (TList<RoleDetail>) MakeCopyOf(this.RoleDetailCollection, existingCopies); 
 			_tmp.UserRoleCollection = (TList<UserRole>) MakeCopyOf(this.UserRoleCollection, existingCopies); 
+			_tmp.RoleDetailCollection = (TList<RoleDetail>) MakeCopyOf(this.RoleDetailCollection, existingCopies); 
 			#endregion Child Collections
 			
 			//EntityState
@@ -1531,6 +1505,16 @@ namespace AppointmentSystem.Entities
 		}
 	
 	}//End struct
+
+
+
+
+
+
+
+
+
+
 
 		#endregion
 		
@@ -1566,8 +1550,8 @@ namespace AppointmentSystem.Entities
 		public virtual void OnColumnChanging(RoleColumn column, object value)
 		{
 			if(IsEntityTracked && EntityState != EntityState.Added && !EntityManager.TrackChangedEntities)
-                EntityManager.StopTracking(entityTrackingKey);
-                
+				EntityManager.StopTracking(entityTrackingKey);
+				
 			if (!SuppressEntityEvents)
 			{
 				RoleEventHandler handler = ColumnChanging;
@@ -1678,9 +1662,9 @@ namespace AppointmentSystem.Entities
         }
 
 		/// <summary>
-        /// Determines whether the specified <see cref="Role"/> instances are considered equal.
+        /// Determines whether the specified <c cref="Role"/> instances are considered equal.
         /// </summary>
-        /// <param name="a">The first <see cref="Role"/> to compare.</param>
+        /// <param name="a">The first <c cref="Role"/> to compare.</param>
         /// <param name="b">The second <c>Role</c> to compare.</param>
         /// <returns>true if objA is the same instance as objB or if both are null references or if objA.Equals(objB) returns true; otherwise, false.</returns>
         public bool Equals(Role a, Role b)

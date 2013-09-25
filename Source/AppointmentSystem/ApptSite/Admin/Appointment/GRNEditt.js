@@ -262,7 +262,7 @@ scheduler.showLightbox = function (id) {
         CurrentAppointment = null;
         $('#drag-title .dhx_time').text('Edit appoinment ' + id);
         $("#repeater-section, [id$=divSave]").hide();
-        $("[id$=divUpdate], [id$=divDelete]").show();
+        $("[id$=divUpdate], [id$=divDelete], [id$=divManualSms]").show();
         if (ev.status) {
             cboStatus.SetSelectedItem(cboStatus.FindItemByValue(ev.status));
         }
@@ -281,7 +281,7 @@ scheduler.showLightbox = function (id) {
     else {
         $('#drag-title .dhx_time').text('New appoinment');
         $("#repeater-section, [id$=divSave]").show();
-        $("[id$=divUpdate], [id$=divDelete]").hide();
+        $("[id$=divUpdate], [id$=divDelete], [id$=divManualSms]").hide();
     }
 
     // Goi ham validate form khi form hien thi
@@ -608,6 +608,10 @@ function NewAppointment() {
         mode: scheduler._mode
     });
     ShowProgress();
+
+    // Luu id cua appt
+    var id = '';
+    
     $.ajax({
         type: "POST",
         url: "Default.aspx/NewAppointment",
@@ -619,6 +623,9 @@ function NewAppointment() {
             if (obj.result == "true") {
                 AddAppointment(obj.data);
                 CancelAppointment();
+                if (obj.data.length > 0 && obj.data[0].issms) {
+                    id = obj.data[0].id;
+                }
             }
             else {
                 ShowMessage(obj.message);
@@ -632,7 +639,12 @@ function NewAppointment() {
         error: function (jqXHR, textStatus) {
             alert('Uncaught Error.\n' + jqXHR.responseText);
         },
-        complete: CloseProgress
+        complete: function () {
+            CloseProgress();
+            if (id != '') {
+                SendSms(id);
+            }
+        }
     });
 }
 
@@ -731,6 +743,34 @@ function DeleteAppointment(appt) {
             else {
                 ShowMessage(obj.message);
             }
+        },
+        fail: CallError,
+        error: CallError,
+        complete: function () {
+            isUsing = false;
+            CloseProgress();
+        }
+    });
+}
+
+function SendSms(appt) {
+    if (!confirm("Do you want to send SMS?"))
+        return;
+
+    var id = $("[id$=hdId]").val();
+    if (appt) id = appt; // Neu co doi tuong appt truyen vao thi lay id cua no
+    var requestdata = JSON.stringify({ id: id });
+    ShowProgress();
+    isUsing = true;
+    $.ajax({
+        type: "POST",
+        url: "Default.aspx/SendSms",
+        data: requestdata,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            var obj = JSON.parse(response.d);
+            ShowMessage(obj.message);
         },
         fail: CallError,
         error: CallError,

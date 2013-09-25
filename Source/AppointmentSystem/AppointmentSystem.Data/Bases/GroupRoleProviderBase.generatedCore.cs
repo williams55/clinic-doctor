@@ -609,13 +609,13 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Role))]
 		Role,
-			
+		
 		///<summary>
 		/// Composite Property for <c>UserGroup</c> at GroupIdSource
 		///</summary>
 		[ChildEntityType(typeof(UserGroup))]
 		UserGroup,
-		}
+	}
 	
 	#endregion GroupRoleChildEntityTypes
 	

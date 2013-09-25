@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Services;
 using System.Web.Script.Services;
 using AppointmentBusiness.BO;
@@ -13,13 +11,10 @@ using AppointmentSystem.Entities;
 using AppointmentSystem.Settings.BusinessLayer;
 using Appt.Common.Constants;
 using ApptSite;
-using Common.Extension;
 using Common.Util;
 using DevExpress.Web.ASPxClasses;
-using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using Logger.Controller;
-using Newtonsoft.Json;
 
 public partial class Admin_Appointment_Default : System.Web.UI.Page
 {
@@ -641,7 +636,10 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
                     status = obj.StatusId,
                     ReadOnly = obj.StartTime <= dtNow,
                     color = BoFactory.StatusBO.GetColor(obj.StatusId),
-                    isnew = false
+                    isnew = false,
+
+                    // Biến này để cho biết có vượt quá thời gian yêu cầu để hỏi gửi SMS ko
+                    issms = obj.StartTime > DateTime.Now.AddMinutes(ServiceFacade.SettingsHelper.ApptSmsHour)
                 };
             }
         }
@@ -1169,6 +1167,31 @@ public partial class Admin_Appointment_Default : System.Web.UI.Page
             return WebCommon.BuildFailedResult(ex.Message);
         }
     }
+    #endregion
+
+    #region SMS
+
+    [WebMethod]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+    public static string SendSms(string id)
+    {
+        try
+        {
+            string messageCode;
+            if (!BoFactory.SmsBO.SendSmsAppointment(id, SmsCase.WebApp, out messageCode))
+            {
+                return WebCommon.BuildFailedResult(BoFactory.MessageConfigBO.GetMessage(messageCode));
+            }
+
+            return WebCommon.BuildSuccessfulResult(BoFactory.MessageConfigBO.GetMessage(messageCode));
+        }
+        catch (Exception ex)
+        {
+            LoggerController.WriteLog(System.Runtime.InteropServices.Marshal.GetExceptionCode(), ex, Network.GetIpClient());
+            return WebCommon.BuildFailedResult("System error. Please contact Administrator.");
+        }
+    }
+
     #endregion
 
     #region Check user right

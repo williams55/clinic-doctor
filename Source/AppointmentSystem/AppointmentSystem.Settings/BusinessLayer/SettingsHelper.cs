@@ -438,5 +438,166 @@ namespace AppointmentSystem.Settings.BusinessLayer
             }
         }
         #endregion
+
+        #region Sms
+        /// <summary>
+        /// Template cho SMS của appointment.
+        /// {0}: FirstName của patient
+        /// {1}: Thời gian hẹn
+        /// {2}: Tên bác sĩ
+        /// {3}: Phòng
+        /// {4}: Dịch vụ
+        /// </summary>
+        public string ApptSmsTemplate
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("ApptSmsTemplate", out result))
+                {
+                    throw new ApplicationException("Setting ApptSmsTemplate was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("ApptSmsTemplate", value);
+            }
+        }
+
+        /// <summary>
+        /// Template cho SMS của appointment khi chạy tự động.
+        /// {0}: FirstName của patient
+        /// {1}: Thời gian hẹn
+        /// {2}: Tên bác sĩ
+        /// {3}: Phòng
+        /// {4}: Dịch vụ
+        /// </summary>
+        public string ApptAutoSmsTemplate
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("ApptAutoSmsTemplate", out result))
+                {
+                    throw new ApplicationException("Setting ApptAutoSmsTemplate was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("ApptAutoSmsTemplate", value);
+            }
+        }
+
+        /// <summary>
+        /// Tên người gửi SMS
+        /// </summary>
+        public string SmsSender
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("SmsSender", out result))
+                {
+                    throw new ApplicationException("Setting SmsSender was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("SmsSender", value);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string SmsUsername
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("SmsUsername", out result))
+                {
+                    throw new ApplicationException("Setting SmsUsername was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("SmsUsername", value);
+            }
+        }
+
+        /// <summary>
+        /// Tên người gửi SMS
+        /// </summary>
+        public string SmsPassword
+        {
+            get
+            {
+                string result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("SmsPassword", out result))
+                {
+                    throw new ApplicationException("Setting SmsPassword was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("SmsPassword", value);
+            }
+        }
+
+        /// <summary>
+        /// Cấu hình thời gian sms được gửi khi tạo mới appt.
+        /// Đơn vị là phút
+        /// </summary>
+        public long ApptSmsHour
+        {
+            get
+            {
+                long result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("ApptSmsHour", out result))
+                {
+                    throw new ApplicationException("Setting ApptSmsHour was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("ApptSmsHour", value);
+            }
+        }
+
+        /// <summary>
+        /// Cấu hình thời gian sms tự động gửi khi nằm trong khoảng yêu cầu
+        /// Đơn vị là phút
+        /// </summary>
+        public long ApptAutoSmsHour
+        {
+            get
+            {
+                long result;
+                if (!ServiceFacade.SettingsService.TryGetSetting("ApptAutoSmsHour", out result))
+                {
+                    throw new ApplicationException("Setting ApptAutoSmsHour was not found.");
+                }
+
+                return result;
+            }
+            set
+            {
+                ServiceFacade.SettingsService.SaveSetting("ApptAutoSmsHour", value);
+            }
+        }
+        #endregion
     }
 }

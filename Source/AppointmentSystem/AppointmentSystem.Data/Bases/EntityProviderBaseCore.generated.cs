@@ -3,11 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Configuration.Provider;
 using System.Diagnostics;
 using System.Text;
 
 using AppointmentSystem.Entities;
+using Microsoft.Practices.ObjectBuilder2;
 #endregion
 
 namespace AppointmentSystem.Data.Bases
@@ -439,7 +439,7 @@ namespace AppointmentSystem.Data.Bases
 		public virtual TList<Entity> Find(TransactionManager transactionManager, IFilterParameterCollection parameters, string orderBy, int start, int pageLength, out int count)
 		{
 			count = 0;
-			throw new NotImplementedException("This code has not been implemented.");
+			return null;
 		}
 
 		#endregion Parameterized Find Methods

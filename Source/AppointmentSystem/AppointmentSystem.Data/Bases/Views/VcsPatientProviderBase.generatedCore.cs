@@ -21,153 +21,6 @@ namespace AppointmentSystem.Data.Bases
 		#region Custom Methods
 		
 		
-		#region _VCSPatient_GetByPatientCode
-		
-		/// <summary>
-		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
-		/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-		/// <remark>This method is generate from a stored procedure.</remark>
-		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-		public VList<VcsPatient> GetByPatientCode(System.String patientCode)
-		{
-			return GetByPatientCode(null, 0, int.MaxValue , patientCode);
-		}
-		
-		/// <summary>
-		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
-		/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remark>This method is generate from a stored procedure.</remark>
-		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-		public VList<VcsPatient> GetByPatientCode(int start, int pageLength, System.String patientCode)
-		{
-			return GetByPatientCode(null, start, pageLength , patientCode);
-		}
-				
-		/// <summary>
-		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
-		/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-		/// <remark>This method is generate from a stored procedure.</remark>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-		public VList<VcsPatient> GetByPatientCode(TransactionManager transactionManager, System.String patientCode)
-		{
-			return GetByPatientCode(transactionManager, 0, int.MaxValue , patientCode);
-		}
-		
-		/// <summary>
-		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
-		/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <remark>This method is generate from a stored procedure.</remark>
-		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-		public abstract VList<VcsPatient> GetByPatientCode(TransactionManager transactionManager, int start, int pageLength, System.String patientCode);
-		
-		#endregion
-
-		
-		#region _VCSPatient_Update
-		
-		/// <summary>
-		///	This method wrap the '_VCSPatient_Update' stored procedure. 
-		/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-		/// <param name="firstName"> A <c>System.String</c> instance.</param>
-		/// <param name="middleName"> A <c>System.String</c> instance.</param>
-		/// <param name="lastName"> A <c>System.String</c> instance.</param>
-		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
-		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
-		/// <remark>This method is generate from a stored procedure.</remark>
-		public void Update(System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
-		{
-			 Update(null, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, updateUser, apptRemark, isDisabled);
-		}
-		
-		/// <summary>
-		///	This method wrap the '_VCSPatient_Update' stored procedure. 
-		/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-		/// <param name="firstName"> A <c>System.String</c> instance.</param>
-		/// <param name="middleName"> A <c>System.String</c> instance.</param>
-		/// <param name="lastName"> A <c>System.String</c> instance.</param>
-		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
-		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <remark>This method is generate from a stored procedure.</remark>
-		public void Update(int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
-		{
-			 Update(null, start, pageLength , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, updateUser, apptRemark, isDisabled);
-		}
-				
-		/// <summary>
-		///	This method wrap the '_VCSPatient_Update' stored procedure. 
-		/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-		/// <param name="firstName"> A <c>System.String</c> instance.</param>
-		/// <param name="middleName"> A <c>System.String</c> instance.</param>
-		/// <param name="lastName"> A <c>System.String</c> instance.</param>
-		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
-		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
-		/// <remark>This method is generate from a stored procedure.</remark>
-		public void Update(TransactionManager transactionManager, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
-		{
-			 Update(transactionManager, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, updateUser, apptRemark, isDisabled);
-		}
-		
-		/// <summary>
-		///	This method wrap the '_VCSPatient_Update' stored procedure. 
-		/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-		/// <param name="firstName"> A <c>System.String</c> instance.</param>
-		/// <param name="middleName"> A <c>System.String</c> instance.</param>
-		/// <param name="lastName"> A <c>System.String</c> instance.</param>
-		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
-		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
-		/// <param name="start">Row number at which to start reading.</param>
-		/// <param name="pageLength">Number of rows to return.</param>
-		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-		/// <remark>This method is generate from a stored procedure.</remark>
-		public abstract void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled);
-		
-		#endregion
-
-		
 		#region _VCSPatient_Insert
 		
 		/// <summary>
@@ -370,6 +223,153 @@ namespace AppointmentSystem.Data.Bases
 		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
 		/// <remark>This method is generate from a stored procedure.</remark>
 		public abstract void UpdateApptRemark(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String updateUser, System.String apptRemark);
+		
+		#endregion
+
+		
+		#region _VCSPatient_Update
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Update' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
+		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void Update(System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
+		{
+			 Update(null, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, updateUser, apptRemark, isDisabled);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Update' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
+		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void Update(int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
+		{
+			 Update(null, start, pageLength , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, updateUser, apptRemark, isDisabled);
+		}
+				
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Update' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
+		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public void Update(TransactionManager transactionManager, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
+		{
+			 Update(transactionManager, 0, int.MaxValue , patientCode, firstName, middleName, lastName, dateOfBirth, sex, nationality, companyCode, homePhone, mobilePhone, updateUser, apptRemark, isDisabled);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_Update' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
+		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		public abstract void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled);
+		
+		#endregion
+
+		
+		#region _VCSPatient_GetByPatientCode
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+		public VList<VcsPatient> GetByPatientCode(System.String patientCode)
+		{
+			return GetByPatientCode(null, 0, int.MaxValue , patientCode);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+		public VList<VcsPatient> GetByPatientCode(int start, int pageLength, System.String patientCode)
+		{
+			return GetByPatientCode(null, start, pageLength , patientCode);
+		}
+				
+		/// <summary>
+		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+		public VList<VcsPatient> GetByPatientCode(TransactionManager transactionManager, System.String patientCode)
+		{
+			return GetByPatientCode(transactionManager, 0, int.MaxValue , patientCode);
+		}
+		
+		/// <summary>
+		///	This method wrap the '_VCSPatient_GetByPatientCode' stored procedure. 
+		/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="start">Row number at which to start reading.</param>
+		/// <param name="pageLength">Number of rows to return.</param>
+		/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+		/// <remark>This method is generate from a stored procedure.</remark>
+		/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+		public abstract VList<VcsPatient> GetByPatientCode(TransactionManager transactionManager, int start, int pageLength, System.String patientCode);
 		
 		#endregion
 

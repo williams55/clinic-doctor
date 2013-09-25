@@ -275,127 +275,6 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 	#region Custom Methods
 	
 
-	#region _VCSPatient_GetByPatientCode
-	
-	/// <summary>
-	///	This method wraps the '_VCSPatient_GetByPatientCode' stored procedure. 
-	/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-	/// <param name="start">Row number at which to start reading.</param>
-	/// <param name="pageLength">Number of rows to return.</param>
-	/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-	/// <remark>This method is generated from a stored procedure.</remark>
-	/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
-	public override VList<VcsPatient> GetByPatientCode(TransactionManager transactionManager, int start, int pageLength, System.String patientCode)
-	{
-		SqlDatabase database = new SqlDatabase(this._connectionString);
-		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_GetByPatientCode", true);
-		
-		database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength,  patientCode );
-		
-
-		try
-		{
-			
-			IDataReader reader = null;
-
-			if (transactionManager != null)
-			{	
-				reader = Utility.ExecuteReader(transactionManager, commandWrapper);
-			}
-			else
-			{
-				reader = Utility.ExecuteReader(database, commandWrapper);
-			}			
-			
-			// Create Collection
-				VList<VcsPatient> rows = new VList<VcsPatient>();
-				try
-				{  
-					Fill(reader, rows, start, pageLength);
-				}
-				finally
-				{
-					if (reader != null) 
-						reader.Close();
-				}
-				
-				
-				
-				return rows;
-		}
-		catch(SqlException ex)
-		{
-			throw new DataException("A data access error occured, please check inner SqlException.", ex);
-		}
-	}
-	#endregion
-
-	#region _VCSPatient_Update
-	
-	/// <summary>
-	///	This method wraps the '_VCSPatient_Update' stored procedure. 
-	/// </summary>
-		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
-		/// <param name="firstName"> A <c>System.String</c> instance.</param>
-		/// <param name="middleName"> A <c>System.String</c> instance.</param>
-		/// <param name="lastName"> A <c>System.String</c> instance.</param>
-		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
-		/// <param name="sex"> A <c>System.String</c> instance.</param>
-		/// <param name="nationality"> A <c>System.String</c> instance.</param>
-		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
-		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
-		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
-		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
-		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
-	/// <param name="start">Row number at which to start reading.</param>
-	/// <param name="pageLength">Number of rows to return.</param>
-	/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
-	/// <remark>This method is generated from a stored procedure.</remark>
-	public override void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
-	{
-		SqlDatabase database = new SqlDatabase(this._connectionString);
-		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_Update", true);
-		
-		database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength,  patientCode );
-		database.AddInParameter(commandWrapper, "@FirstName", DbType.String,  firstName );
-		database.AddInParameter(commandWrapper, "@MiddleName", DbType.String,  middleName );
-		database.AddInParameter(commandWrapper, "@LastName", DbType.String,  lastName );
-		database.AddInParameter(commandWrapper, "@DateOfBirth", DbType.DateTime,  dateOfBirth );
-		database.AddInParameter(commandWrapper, "@Sex", DbType.AnsiStringFixedLength,  sex );
-		database.AddInParameter(commandWrapper, "@Nationality", DbType.String,  nationality );
-		database.AddInParameter(commandWrapper, "@CompanyCode", DbType.StringFixedLength,  companyCode );
-		database.AddInParameter(commandWrapper, "@HomePhone", DbType.String,  homePhone );
-		database.AddInParameter(commandWrapper, "@MobilePhone", DbType.String,  mobilePhone );
-		database.AddInParameter(commandWrapper, "@UpdateUser", DbType.String,  updateUser );
-		database.AddInParameter(commandWrapper, "@ApptRemark", DbType.String,  apptRemark );
-		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean,  isDisabled );
-		
-
-		try
-		{
-			
-			if (transactionManager != null)
-			{	
-				Utility.ExecuteNonQuery(transactionManager, commandWrapper);
-			}
-			else
-			{
-				Utility.ExecuteNonQuery(database, commandWrapper);
-			}
-			
-			
-			
-			return;
-		}
-		catch(SqlException ex)
-		{
-			throw new DataException("A data access error occured, please check inner SqlException.", ex);
-		}
-	}
-	#endregion
-
 	#region _VCSPatient_Insert
 	
 	/// <summary>
@@ -556,6 +435,127 @@ public abstract partial class SqlVcsPatientProviderBase : VcsPatientProviderBase
 			
 			
 			return;
+		}
+		catch(SqlException ex)
+		{
+			throw new DataException("A data access error occured, please check inner SqlException.", ex);
+		}
+	}
+	#endregion
+
+	#region _VCSPatient_Update
+	
+	/// <summary>
+	///	This method wraps the '_VCSPatient_Update' stored procedure. 
+	/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+		/// <param name="firstName"> A <c>System.String</c> instance.</param>
+		/// <param name="middleName"> A <c>System.String</c> instance.</param>
+		/// <param name="lastName"> A <c>System.String</c> instance.</param>
+		/// <param name="dateOfBirth"> A <c>System.DateTime?</c> instance.</param>
+		/// <param name="sex"> A <c>System.String</c> instance.</param>
+		/// <param name="nationality"> A <c>System.String</c> instance.</param>
+		/// <param name="companyCode"> A <c>System.String</c> instance.</param>
+		/// <param name="homePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="mobilePhone"> A <c>System.String</c> instance.</param>
+		/// <param name="updateUser"> A <c>System.String</c> instance.</param>
+		/// <param name="apptRemark"> A <c>System.String</c> instance.</param>
+		/// <param name="isDisabled"> A <c>System.Boolean?</c> instance.</param>
+	/// <param name="start">Row number at which to start reading.</param>
+	/// <param name="pageLength">Number of rows to return.</param>
+	/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+	/// <remark>This method is generated from a stored procedure.</remark>
+	public override void Update(TransactionManager transactionManager, int start, int pageLength, System.String patientCode, System.String firstName, System.String middleName, System.String lastName, System.DateTime? dateOfBirth, System.String sex, System.String nationality, System.String companyCode, System.String homePhone, System.String mobilePhone, System.String updateUser, System.String apptRemark, System.Boolean? isDisabled)
+	{
+		SqlDatabase database = new SqlDatabase(this._connectionString);
+		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_Update", true);
+		
+		database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength,  patientCode );
+		database.AddInParameter(commandWrapper, "@FirstName", DbType.String,  firstName );
+		database.AddInParameter(commandWrapper, "@MiddleName", DbType.String,  middleName );
+		database.AddInParameter(commandWrapper, "@LastName", DbType.String,  lastName );
+		database.AddInParameter(commandWrapper, "@DateOfBirth", DbType.DateTime,  dateOfBirth );
+		database.AddInParameter(commandWrapper, "@Sex", DbType.AnsiStringFixedLength,  sex );
+		database.AddInParameter(commandWrapper, "@Nationality", DbType.String,  nationality );
+		database.AddInParameter(commandWrapper, "@CompanyCode", DbType.StringFixedLength,  companyCode );
+		database.AddInParameter(commandWrapper, "@HomePhone", DbType.String,  homePhone );
+		database.AddInParameter(commandWrapper, "@MobilePhone", DbType.String,  mobilePhone );
+		database.AddInParameter(commandWrapper, "@UpdateUser", DbType.String,  updateUser );
+		database.AddInParameter(commandWrapper, "@ApptRemark", DbType.String,  apptRemark );
+		database.AddInParameter(commandWrapper, "@IsDisabled", DbType.Boolean,  isDisabled );
+		
+
+		try
+		{
+			
+			if (transactionManager != null)
+			{	
+				Utility.ExecuteNonQuery(transactionManager, commandWrapper);
+			}
+			else
+			{
+				Utility.ExecuteNonQuery(database, commandWrapper);
+			}
+			
+			
+			
+			return;
+		}
+		catch(SqlException ex)
+		{
+			throw new DataException("A data access error occured, please check inner SqlException.", ex);
+		}
+	}
+	#endregion
+
+	#region _VCSPatient_GetByPatientCode
+	
+	/// <summary>
+	///	This method wraps the '_VCSPatient_GetByPatientCode' stored procedure. 
+	/// </summary>
+		/// <param name="patientCode"> A <c>System.String</c> instance.</param>
+	/// <param name="start">Row number at which to start reading.</param>
+	/// <param name="pageLength">Number of rows to return.</param>
+	/// <param name="transactionManager"><see cref="TransactionManager"/> object</param>
+	/// <remark>This method is generated from a stored procedure.</remark>
+	/// <returns>A <see cref="VList&lt;VcsPatient&gt;"/> instance.</returns>
+	public override VList<VcsPatient> GetByPatientCode(TransactionManager transactionManager, int start, int pageLength, System.String patientCode)
+	{
+		SqlDatabase database = new SqlDatabase(this._connectionString);
+		DbCommand commandWrapper = StoredProcedureProvider.GetCommandWrapper(database, "dbo._VCSPatient_GetByPatientCode", true);
+		
+		database.AddInParameter(commandWrapper, "@PatientCode", DbType.StringFixedLength,  patientCode );
+		
+
+		try
+		{
+			
+			IDataReader reader = null;
+
+			if (transactionManager != null)
+			{	
+				reader = Utility.ExecuteReader(transactionManager, commandWrapper);
+			}
+			else
+			{
+				reader = Utility.ExecuteReader(database, commandWrapper);
+			}			
+			
+			// Create Collection
+				VList<VcsPatient> rows = new VList<VcsPatient>();
+				try
+				{  
+					Fill(reader, rows, start, pageLength);
+				}
+				finally
+				{
+					if (reader != null) 
+						reader.Close();
+				}
+				
+				
+				
+				return rows;
 		}
 		catch(SqlException ex)
 		{

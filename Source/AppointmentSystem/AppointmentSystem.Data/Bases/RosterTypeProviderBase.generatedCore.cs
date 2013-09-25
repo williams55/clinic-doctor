@@ -682,7 +682,6 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum RosterTypeChildEntityTypes
 	{
-
 		///<summary>
 		/// Collection of <c>RosterType</c> as OneToMany for RosterCollection
 		///</summary>

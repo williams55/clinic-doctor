@@ -53,7 +53,7 @@ namespace AppointmentSystem.Web.UI
 	}
 
     /// <summary>
-    /// A strongly typed repeater control for the <see cref="VcsCompanyRepeater"/> Type.
+    /// A strongly typed repeater control for the <c cref="VcsCompanyRepeater"></c> Type.
     /// </summary>
 	[Designer(typeof(VcsCompanyRepeaterDesigner))]
 	[ParseChildren(true)]

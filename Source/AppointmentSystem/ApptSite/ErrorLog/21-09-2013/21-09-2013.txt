@@ -1,0 +1,1 @@
+﻿9/21/2013 3:47:13 PM-----Message : Update Appointment-------{"Username":"GM","ServicesId":12,"StatusId":"Reserved","EndTime":"\/Date(1379759400000+0700)\/","StartTime":"\/Date(1379757900000+0700)\/","RosterId":"OST130921001","PatientCode":"HCM01.00007","UpdateUser":"vy.le","CreateUser":"vy.le"}-------IP: ::1

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Text;
 
 using System.ComponentModel;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+
 
 namespace AppointmentSystem.Entities
 {
@@ -211,15 +211,7 @@ namespace AppointmentSystem.Entities
          _isSorted = false;
       }
 
-       /// <summary>
-       /// This override was needed due to how WPF was calling sort. It was causing a FatalExecutionEngineError because the inherited class was calling base.InsertItem and the BindingList was throwing the exception.
-       /// </summary>
-       /// <param name="index"></param>
-       /// <param name="item"></param>
-       protected override void InsertItem(int index, T item)
-       {
-           this.Items.Insert(index, item);
-       }
+
 
       #endregion
 
@@ -400,7 +392,7 @@ namespace AppointmentSystem.Entities
       }
 
       /// <summary>
-      /// Force the filtering of the collection, based on the filter expression set through the <see cref="Filter"/> property.
+      /// Force the filtering of the collection, based on the filter expression set through the <c cref="Filter"/> property.
       /// </summary>
       public void ApplyFilter()
       {
@@ -1090,11 +1082,11 @@ namespace AppointmentSystem.Entities
             //look at current type's props, and if child hold a ref to it, so that you can recursively add the child.
             foreach (PropertyDescriptor prop in props)
             {
-               if (prop.Attributes.Matches(new Attribute[] { new ReadOnlyAttribute(false), new System.ComponentModel.BindableAttribute(true)}))
+               if (prop.Attributes.Matches(new Attribute[] { new ReadOnlyAttribute(false), new System.ComponentModel.BindableAttribute(true), new DescriptionAttribute() }))
                   primaryKey.Add(dataTable.Columns.Add(prop.Name, prop.PropertyType));
                else if (prop.PropertyType.GetInterface("IList") != null && prop.PropertyType.IsGenericType && (prop.PropertyType.BaseType != null && prop.PropertyType.BaseType.GetGenericTypeDefinition() == typeof(ListBase<>)))
                   children.Add(prop);
-               else if (prop.PropertyType.GetInterface("IEntity") == null && prop.Attributes.Matches(new Attribute[] { new System.ComponentModel.BindableAttribute(true) }))
+               else if (prop.PropertyType.GetInterface("IEntity") == null && prop.Attributes.Matches(new Attribute[] { new System.ComponentModel.BindableAttribute(true), new DescriptionAttribute() }))
                {
                   //check if nullable property, get param, otherwise, just add property type
                   Type columnType = (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? prop.PropertyType.GetGenericArguments()[0] : prop.PropertyType);

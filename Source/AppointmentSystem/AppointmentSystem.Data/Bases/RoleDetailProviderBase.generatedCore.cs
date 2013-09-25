@@ -612,13 +612,13 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Role))]
 		Role,
-			
+		
 		///<summary>
 		/// Composite Property for <c>Screen</c> at ScreenCodeSource
 		///</summary>
 		[ChildEntityType(typeof(Screen))]
 		Screen,
-		}
+	}
 	
 	#endregion RoleDetailChildEntityTypes
 	

@@ -799,19 +799,18 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Room))]
 		Room,
-			
+		
 		///<summary>
 		/// Composite Property for <c>RosterType</c> at RosterTypeIdSource
 		///</summary>
 		[ChildEntityType(typeof(RosterType))]
 		RosterType,
-			
+		
 		///<summary>
 		/// Composite Property for <c>Users</c> at UsernameSource
 		///</summary>
 		[ChildEntityType(typeof(Users))]
 		Users,
-	
 		///<summary>
 		/// Collection of <c>Roster</c> as OneToMany for AppointmentCollection
 		///</summary>

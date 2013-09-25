@@ -418,7 +418,6 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum StatusChildEntityTypes
 	{
-
 		///<summary>
 		/// Collection of <c>Status</c> as OneToMany for AppointmentCollection
 		///</summary>

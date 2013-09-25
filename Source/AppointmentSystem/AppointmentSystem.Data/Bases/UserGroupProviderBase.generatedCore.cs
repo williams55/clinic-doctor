@@ -475,13 +475,11 @@ namespace AppointmentSystem.Data.Bases
 	///</summary>
 	public enum UserGroupChildEntityTypes
 	{
-
 		///<summary>
 		/// Collection of <c>UserGroup</c> as OneToMany for GroupRoleCollection
 		///</summary>
 		[ChildEntityType(typeof(TList<GroupRole>))]
 		GroupRoleCollection,
-
 		///<summary>
 		/// Collection of <c>UserGroup</c> as OneToMany for UsersCollection
 		///</summary>

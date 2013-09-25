@@ -120,6 +120,13 @@ namespace AppointmentSystem.Entities
 
 		/// <summary>
 		///	Holds a collection of entity objects
+		///	which are related to this object through the relation _appointmentUsername
+		/// </summary>	
+		TList<Appointment> AppointmentCollection {  get;  set;}	
+
+
+		/// <summary>
+		///	Holds a collection of entity objects
 		///	which are related to this object through the relation _userRoleUsername
 		/// </summary>	
 		TList<UserRole> UserRoleCollection {  get;  set;}	
@@ -130,13 +137,6 @@ namespace AppointmentSystem.Entities
 		///	which are related to this object through the relation _doctorRoomUsername
 		/// </summary>	
 		TList<DoctorRoom> DoctorRoomCollection {  get;  set;}	
-
-
-		/// <summary>
-		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentUsername
-		/// </summary>	
-		TList<Appointment> AppointmentCollection {  get;  set;}	
 
 
 		/// <summary>

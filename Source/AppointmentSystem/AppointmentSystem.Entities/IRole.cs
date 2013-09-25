@@ -77,16 +77,16 @@ namespace AppointmentSystem.Entities
 
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _roleDetailRoleId
+		///	which are related to this object through the relation _userRoleRoleId
 		/// </summary>	
-		TList<RoleDetail> RoleDetailCollection {  get;  set;}	
+		TList<UserRole> UserRoleCollection {  get;  set;}	
 
 
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _userRoleRoleId
+		///	which are related to this object through the relation _roleDetailRoleId
 		/// </summary>	
-		TList<UserRole> UserRoleCollection {  get;  set;}	
+		TList<RoleDetail> RoleDetailCollection {  get;  set;}	
 
 		#endregion Data Properties
 

@@ -612,13 +612,13 @@ namespace AppointmentSystem.Data.Bases
 		///</summary>
 		[ChildEntityType(typeof(Room))]
 		Room,
-			
+		
 		///<summary>
 		/// Composite Property for <c>Users</c> at UsernameSource
 		///</summary>
 		[ChildEntityType(typeof(Users))]
 		Users,
-		}
+	}
 	
 	#endregion DoctorRoomChildEntityTypes
 	

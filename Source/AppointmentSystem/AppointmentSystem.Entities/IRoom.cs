@@ -71,16 +71,16 @@ namespace AppointmentSystem.Entities
 
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _doctorRoomRoomId
+		///	which are related to this object through the relation _appointmentRoomId
 		/// </summary>	
-		TList<DoctorRoom> DoctorRoomCollection {  get;  set;}	
+		TList<Appointment> AppointmentCollection {  get;  set;}	
 
 
 		/// <summary>
 		///	Holds a collection of entity objects
-		///	which are related to this object through the relation _appointmentRoomId
+		///	which are related to this object through the relation _doctorRoomRoomId
 		/// </summary>	
-		TList<Appointment> AppointmentCollection {  get;  set;}	
+		TList<DoctorRoom> DoctorRoomCollection {  get;  set;}	
 
 
 		/// <summary>

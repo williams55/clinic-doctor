@@ -589,6 +589,10 @@ namespace AppointmentSystem.Web.UI
         /// <param name="e"></param>
         void lnkExport_Click(object sender, EventArgs e)
         {
+            GridViewSearchPanel gvsp =
+  (GridViewSearchPanel)this.Parent.FindControl("GridViewSearchPanel1");
+            if (gvsp != null)
+                gvsp.DataBind();
             if (ExcelColumns != null)
             {
                 foreach (DataControlField field in ExcelColumns)
@@ -652,7 +656,6 @@ namespace AppointmentSystem.Web.UI
         #endregion
 
         #region Protected Methods
-
         /// <summary>
         ///  Get Sort Expression by Looking up the existing Grid View Sort Expression 
         /// </summary>
@@ -670,19 +673,20 @@ namespace AppointmentSystem.Web.UI
 
             //if User clicked on the columns in the existing sort sequence.
             //Toggle the sort order or remove the column from sort appropriately
+
             if (sortAttribute.IndexOf(e.SortExpression) > 0 || sortAttribute.StartsWith(e.SortExpression))
                 sortAttribute = ModifySortExpression(sortColumns, e.SortExpression);
             else
-                sortAttribute += string.Format(", {0}{1} ", e.SortExpression, DefaultSortDirection == SortDirection.Ascending ? " ASC" : string.Empty );
-
+                sortAttribute += String.Concat(",", e.SortExpression, " ASC ");
             return sortAttribute.TrimStart(",".ToCharArray()).TrimEnd(",".ToCharArray());
-        }
 
+        }
         /// <summary>
         ///  Toggle the sort order or remove the column from sort appropriately
         /// </summary>
         protected string ModifySortExpression(string[] sortColumns, string sortExpression)
         {
+
             string ascSortExpression = String.Concat(sortExpression, " ASC ");
             string descSortExpression = String.Concat(sortExpression, " DESC ");
 
@@ -701,8 +705,8 @@ namespace AppointmentSystem.Web.UI
             }
 
             return String.Join(",", sortColumns).Replace(",,", ",").TrimStart(",".ToCharArray());
-        }
 
+        }
         /// <summary>
         ///  Lookup the Current Sort Expression to determine the Order of a specific item.
         /// </summary>

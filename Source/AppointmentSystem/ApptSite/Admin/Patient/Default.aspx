@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
     CodeFile="Default.aspx.cs" Inherits="Admin_Patient_Default" %>
 
-<%@ Register TagPrefix="a" Namespace="DevExpress.Web.ASPxEditors" Assembly="DevExpress.Web.ASPxEditors.v10.2, Version=10.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="Server">
     Patient
 </asp:Content>
